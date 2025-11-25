@@ -137,7 +137,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 ? _buildEmptyState(context)
                 : _buildChatMessages(context, chatNotifier),
           ),
-          _buildMessageInput(context, chatNotifier, chatState),
+          _buildMessageInput(context, chatNotifier),
         ],
       ),
     );

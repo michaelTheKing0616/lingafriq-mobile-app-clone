@@ -101,7 +101,7 @@ class GamesScreen extends ConsumerWidget {
                           return _GameLanguageCard(
                             language: language,
                             onTap: () {
-                              ref.read(navigationProvider).navigateTo(
+                              ref.read(navigationProvider).naviateTo(
                                 GameTypesScreen(language: language),
                               );
                             },
