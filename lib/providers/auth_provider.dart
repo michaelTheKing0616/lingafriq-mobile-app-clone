@@ -6,7 +6,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
-import '../screens/onboarding/onboarding_screen.dart';
+import '../screens/onboarding/modern_onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
@@ -66,7 +66,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        ref.read(navigationProvider).naviateOffAll(const OnboardingScreen());
+        ref.read(navigationProvider).naviateOffAll(const TabsView());
         return user;
       }
       return user;
