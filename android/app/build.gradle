@@ -70,20 +70,26 @@ android {
             // Only configure signing if properties file exists
             if (keystorePropertiesFile.exists()) {
                 def keystorePath = keystoreProperties['storeFile']
-                // Try multiple locations: CI/CD location first, then root location
+                // rootProject.projectDir is already the android/ directory
+                // So we resolve paths relative to android/
                 def keystoreFile = null
                 if (keystorePath) {
-                    // Try CI/CD location: android/app/upload-keystore.jks
-                    def ciKeystore = file("${rootProject.projectDir}/android/${keystorePath}")
-                    // Try root location: upload-keystore.jks (for local development)
-                    def rootKeystore = file("${rootProject.projectDir}/${keystorePath.split('/').last()}")
+                    // Try path as specified in key.properties (relative to android/)
+                    def relativeKeystore = file("${rootProject.projectDir}/${keystorePath}")
+                    // Try absolute path from project root (for local development)
+                    def rootKeystore = file("${rootProject.projectDir}/../${keystorePath.split('/').last()}")
+                    // Try in app/ subdirectory (CI/CD default location)
+                    def appKeystore = file("${rootProject.projectDir}/app/${keystorePath.split('/').last()}")
                     
-                    if (ciKeystore.exists()) {
-                        keystoreFile = ciKeystore
-                        println("✅ Found keystore at CI/CD location: ${keystoreFile.absolutePath}")
+                    if (relativeKeystore.exists()) {
+                        keystoreFile = relativeKeystore
+                        println("✅ Found keystore at relative path: ${keystoreFile.absolutePath}")
+                    } else if (appKeystore.exists()) {
+                        keystoreFile = appKeystore
+                        println("✅ Found keystore in app/ directory: ${keystoreFile.absolutePath}")
                     } else if (rootKeystore.exists()) {
                         keystoreFile = rootKeystore
-                        println("✅ Found keystore at root location: ${keystoreFile.absolutePath}")
+                        println("✅ Found keystore at project root: ${keystoreFile.absolutePath}")
                     }
                 }
                 
@@ -93,11 +99,15 @@ android {
                     keyPassword keystoreProperties['keyPassword']
                     storeFile keystoreFile
                     storePassword keystoreProperties['storePassword']
-                    println("✅ Keystore configured successfully")
+                    println("✅ Keystore configured successfully: ${keystoreFile.absolutePath}")
                 } else {
                     println("⚠️ Keystore file not found. Tried:")
-                    println("   - ${rootProject.projectDir}/android/${keystorePath}")
-                    println("   - ${rootProject.projectDir}/${keystorePath?.split('/')?.last()}")
+                    if (keystorePath) {
+                        println("   - ${rootProject.projectDir}/${keystorePath}")
+                        println("   - ${rootProject.projectDir}/app/${keystorePath.split('/').last()}")
+                        println("   - ${rootProject.projectDir}/../${keystorePath.split('/').last()}")
+                    }
+                    println("⚠️ No valid keystore found — building unsigned release (Play App Signing expected)")
                 }
             }
         }
