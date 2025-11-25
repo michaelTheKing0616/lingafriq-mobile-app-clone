@@ -1,0 +1,53 @@
+// Top-level build file for LingAfriq (Gradle 8.6 / Kotlin 2.x compatible)
+
+buildscript {
+    ext {
+        kotlin_version = '2.2.0' // ✅ Upgrade to Kotlin 2.x (1.9.x soon unsupported)
+        agp_version = '8.6.0'     // ✅ Android Gradle Plugin (works with Flutter 3.35+)
+        gms_version = '4.4.2'     // ✅ Google Services plugin
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:$agp_version"
+        classpath "com.google.gms:google-services:$gms_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+// ✅ Ensure clean build directory structure
+rootProject.buildDir = '../build'
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                // ✅ Ensure every submodule has a namespace (Gradle 8+ requirement)
+                if (!namespace) {
+                    namespace project.group
+                }
+            }
+        }
+    }
+
+    // Keep each module’s build output organized under root /build/
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app')
+}
+
+// ✅ Clean task
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}

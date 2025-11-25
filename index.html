@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+</head>
+<body>
+    <video id='videoPlayer'
+        width="320"
+        height="240" 
+        controls="controls"
+        autoplay="true"
+        muted="muted>
+        <source id='mp4Source' src="" type="video/mp4" />
+    </video>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            // theVid will be populated by query string, for testing it's hard coded.
+            //var theVid = 'http://html5demos.com/assets/dizzy.mp4';
+            
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            var theVid = urlParams.get('video') 
+            // 'http://techslides.com/demos/sample-videos/small.mp4';
+
+            var player = document.getElementById('videoPlayer');
+            var mp4Vid = document.getElementById('mp4Source');
+
+            player.pause();
+
+            // Now simply set the 'src' attribute of the mp4Vid variable!!!!
+            // (...using the jQuery library in this case)
+
+            $('#mp4Source').attr('src', theVid);
+            player.load();
+            //player.show();
+            var resp = player.play();
+
+            if (resp !== undefined) {
+                resp.then(_ => {
+                    // autoplay starts!
+                }).catch(error => {
+                    //show error
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+
+
+Take quiz- change color of button to green
+leaderboard- assign default profile pic to user after registration so it is not empty as is on the leaderboard currently
+leaderboard avatar of user- should be clickable and lead to profile page of user
+leaderboad points - should be clickable and lead to Progress tab
+Error text anywhere in app -  beautified (Oops, an error occured. Try again). The Try Again button should have a button background so it is obvious to the user
+
+More intuitive text in textboxes for all forms
+Registration Page
+   -Enter your First Name
+   -Enter your Last Name
+   -Enter a name that stands you out
+   -Enter a valid email which contains an @
+   -Enter a strong password
+
+Login page
+  -Enter your registered email
+  -Enter your password
+
+Profile page list should be changed to 
+   -Global Rank
+   -Country Rank (to be added)
+   -Change your Password
+   -Give us Feedback
+   -Who are we?
+   -App Privacy and User Policy
+   -Delete yout Account
+
+Update logos- app icon, login page, registration page
+
+The ordering of the content in the lessons and quizzes pages should be:
+1. Audio
+2. Video
+3. Image
+4. Text
+Note: Content placeholder should not be visible when there is no content inside
+
+After user deletes account, the app should navigate to the login page

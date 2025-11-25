@@ -1,0 +1,84 @@
+{
+  "project_info": {
+    "project_number": "202890241823",
+    "project_id": "lingafriq-mobile-app",
+    "storage_bucket": "lingafriq-mobile-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202890241823:android:bb7801cf2cc6e5b878722a",
+        "android_client_info": {
+          "package_name": "com.cracklog.lingafriq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202890241823-mc3to8jvrpvfcsv5ohgsh742ubi71i27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmrruENewwglxkBOwgFEULiriFXXrjcxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202890241823-mc3to8jvrpvfcsv5ohgsh742ubi71i27.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "202890241823-6eb76rreah64ms60f18jjbm8j81j9lh6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.owlab.lingafriq",
+                "app_store_id": "1546840527"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202890241823:android:d9768ee175c0941778722a",
+        "android_client_info": {
+          "package_name": "com.owlab.lingafriq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "202890241823-mc3to8jvrpvfcsv5ohgsh742ubi71i27.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmrruENewwglxkBOwgFEULiriFXXrjcxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "202890241823-mc3to8jvrpvfcsv5ohgsh742ubi71i27.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "202890241823-6eb76rreah64ms60f18jjbm8j81j9lh6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.owlab.lingafriq",
+                "app_store_id": "1546840527"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

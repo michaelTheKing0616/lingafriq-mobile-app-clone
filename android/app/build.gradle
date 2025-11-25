@@ -1,0 +1,140 @@
+plugins {
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
+    id "com.google.gms.google-services"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+// 🧩 All custom code comes *after* plugins {} — required in Gradle 8+
+import java.util.Properties
+import java.io.FileInputStream
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader) }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode') ?: '1'
+def flutterVersionName = localProperties.getProperty('flutter.versionName') ?: '1.0'
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace = "com.cracklog.lingafriq"
+
+    // Fix for AndroidX + SDK36 plugin requirements
+    compileSdk = 36
+    ndkVersion "26.1.10909125"
+
+    defaultConfig {
+        applicationId "com.cracklog.lingafriq"
+        minSdkVersion flutter.minSdkVersion
+        targetSdk = 35
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        
+        // Support 16KB page size (required for Android 15+)
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+    }
+    
+    // 16KB page size support
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    signingConfigs {
+        release {
+            // Only configure signing if properties file exists
+            if (keystorePropertiesFile.exists()) {
+                def keystorePath = keystoreProperties['storeFile']
+                // Try multiple locations: CI/CD location first, then root location
+                def keystoreFile = null
+                if (keystorePath) {
+                    // Try CI/CD location: android/app/upload-keystore.jks
+                    def ciKeystore = file("${rootProject.projectDir}/android/${keystorePath}")
+                    // Try root location: upload-keystore.jks (for local development)
+                    def rootKeystore = file("${rootProject.projectDir}/${keystorePath.split('/').last()}")
+                    
+                    if (ciKeystore.exists()) {
+                        keystoreFile = ciKeystore
+                        println("✅ Found keystore at CI/CD location: ${keystoreFile.absolutePath}")
+                    } else if (rootKeystore.exists()) {
+                        keystoreFile = rootKeystore
+                        println("✅ Found keystore at root location: ${keystoreFile.absolutePath}")
+                    }
+                }
+                
+                // Only set signing config if keystore file actually exists
+                if (keystoreFile != null && keystoreFile.exists()) {
+                    keyAlias keystoreProperties['keyAlias']
+                    keyPassword keystoreProperties['keyPassword']
+                    storeFile keystoreFile
+                    storePassword keystoreProperties['storePassword']
+                    println("✅ Keystore configured successfully")
+                } else {
+                    println("⚠️ Keystore file not found. Tried:")
+                    println("   - ${rootProject.projectDir}/android/${keystorePath}")
+                    println("   - ${rootProject.projectDir}/${keystorePath?.split('/')?.last()}")
+                }
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            // Enable minification to generate mapping.txt for crash analysis
+            minifyEnabled true
+            shrinkResources true
+
+            // Use signing config if it's properly configured
+            if (keystorePropertiesFile.exists() && signingConfigs.release.storeFile != null) {
+                signingConfig signingConfigs.release
+                println("✅ Using local keystore for release signing")
+            } else {
+                println("⚠️ No valid keystore found — building unsigned release (Play App Signing expected)")
+            }
+
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lint {
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.4'
+    
+    // Note: Play Core is NOT included - it's incompatible with SDK 34+
+    // Flutter references it for deferred components, but we don't use that feature
+    // ProGuard rules will handle the missing classes
+}
+
+flutter {
+    source '../..'
+}

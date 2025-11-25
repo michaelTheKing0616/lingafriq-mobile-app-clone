@@ -1,0 +1,9 @@
+# Keystore Configuration
+# Copy this file to android/key.properties and fill in your actual values
+# DO NOT commit key.properties to git - it contains sensitive information
+
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=YOUR_KEY_ALIAS
+storeFile=../upload-keystore.jks
+
