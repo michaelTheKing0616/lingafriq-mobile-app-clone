@@ -318,7 +318,8 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
               
               // Submit button
               PrimaryButton(
-                onTap: _selectedAnswer != null ? _submitAnswer : null,
+                onTap: _submitAnswer,
+                enabled: _selectedAnswer != null,
                 text: _currentIndex < _questions.length - 1 ? 'Next' : 'Finish',
                 color: AppColors.accentOrange,
               ),
