@@ -12,6 +12,7 @@ import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/fill_blank_game.dart';
+import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -256,10 +257,15 @@ class GameTypesScreen extends StatelessWidget {
             _GameTypeCard(
               icon: Icons.volume_up_rounded,
               title: 'Pronunciation Practice',
-              description: 'Listen and repeat words correctly',
+              description: 'Coming soon - Practice pronunciation',
               color: AppColors.accentOrange,
               onTap: () {
-                // Navigate to pronunciation game
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Pronunciation Practice coming soon!'),
+                    backgroundColor: AppColors.accentOrange,
+                  ),
+                );
               },
             ),
             const SizedBox(height: 12),
@@ -269,7 +275,12 @@ class GameTypesScreen extends StatelessWidget {
               description: 'Answer questions as fast as you can',
               color: AppColors.oceanBlue,
               onTap: () {
-                // Navigate to speed challenge game
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SpeedChallengeGame(language: language),
+                  ),
+                );
               },
             ),
           ],
