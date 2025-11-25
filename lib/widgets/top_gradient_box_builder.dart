@@ -26,7 +26,13 @@ class TopGradientBox extends StatelessWidget {
       ),
       child: SafeArea(
         bottom: false,
-        child: child,
+        minimum: EdgeInsets.zero,
+        child: Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewPadding.bottom > 0 ? 0 : 0,
+          ),
+          child: child,
+        ),
       ),
     );
   }

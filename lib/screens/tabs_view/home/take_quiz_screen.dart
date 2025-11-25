@@ -20,6 +20,8 @@ import '../../../models/word_correction_model.dart';
 import '../../../providers/dialog_provider.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../random_quiz/models/random_quiz_lesson_model.dart';
+import '../../../screens/tabs_view/app_drawer/app_drawer.dart';
+import '../../../screens/tabs_view/tabs_view.dart';
 import '../../../utils/api.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/greegins_builder.dart';
@@ -34,17 +36,35 @@ class TakeQuizScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    return LoadingOverlayPro(
-      isLoading: isLoading,
-      child: Scaffold(
-        body: Column(
-          children: [
-            TopGradientBox(
-              borderRadius: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  BackButton(color: Colors.white),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          ref.read(navigationProvider).pop();
+        }
+      },
+      child: LoadingOverlayPro(
+        isLoading: isLoading,
+        child: Scaffold(
+          drawer: const AppDrawer(),
+          body: Column(
+            children: [
+              TopGradientBox(
+                borderRadius: 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                          onPressed: () {
+                            ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                          },
+                        ),
+                        const BackButton(color: Colors.white),
+                      ],
+                    ),
                   // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                   GreetingsBuilder(
                     greetingTitle: '',
@@ -151,6 +171,7 @@ class TakeQuizScreen extends ConsumerWidget {
               ],
             ).expand()
           ],
+        ),
         ),
       ),
     );

@@ -10,6 +10,7 @@ import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../models/word_correction_model.dart';
+import '../providers/navigation_provider.dart';
 import '../widgets/points_and_profile_image_builder.dart';
 
 class ChoicesNotifier extends Notifier<List<String>> {
@@ -91,17 +92,24 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
             return singleQuizIndicatorBuilder(isCorrect);
           }),
         ),
-        child: Scaffold(
-          body: Column(
-            children: [
-              TopGradientBox(
-                borderRadius: 0,
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const BackButton(color: Colors.white),
+        child: PopScope(
+          canPop: true,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              ref.read(navigationProvider).pop();
+            }
+          },
+          child: Scaffold(
+            body: Column(
+              children: [
+                TopGradientBox(
+                  borderRadius: 0,
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const BackButton(color: Colors.white),
                         widget.title.text.xl2.semiBold
                             .maxLines(2)
                             .ellipsis
@@ -239,6 +247,7 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                 ),
               ).expand()
             ],
+          ),
           ),
         ),
       ),

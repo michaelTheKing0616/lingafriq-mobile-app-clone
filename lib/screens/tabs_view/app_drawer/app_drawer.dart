@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/constants.dart';
@@ -50,11 +52,34 @@ class AppDrawer extends ConsumerWidget {
                 ),
                 ListTile(
                   leading: Icon(
+                    Icons.chat_bubble_outline_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'AI Chat'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const AiChatScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.games_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Language Games'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const GamesScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
                     Icons.settings_rounded,
                     color: context.primaryColor,
                   ),
                   title: 'Settings'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
+                    Navigator.pop(context);
                     ref.read(navigationProvider).naviateTo(const ProfileEditScreen());
                   },
                 ),

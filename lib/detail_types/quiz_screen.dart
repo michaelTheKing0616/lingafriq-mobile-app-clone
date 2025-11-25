@@ -66,17 +66,24 @@ class QuizScreen extends HookConsumerWidget {
             return multiQuizIndicatorBuilder();
           }),
         ),
-        child: Scaffold(
-          body: Column(
-            children: [
-              TopGradientBox(
-                borderRadius: 0,
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const BackButton(color: Colors.white),
+        child: PopScope(
+          canPop: true,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              ref.read(navigationProvider).pop();
+            }
+          },
+          child: Scaffold(
+            body: Column(
+              children: [
+                TopGradientBox(
+                  borderRadius: 0,
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const BackButton(color: Colors.white),
                         title.text.xl2.semiBold
                             .maxLines(2)
                             .ellipsis
@@ -217,6 +224,7 @@ class QuizScreen extends HookConsumerWidget {
                 ).p16(),
               )
             ],
+          ),
           ),
         ),
       ),

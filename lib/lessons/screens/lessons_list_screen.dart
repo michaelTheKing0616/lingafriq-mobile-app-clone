@@ -11,6 +11,8 @@ import 'package:lingafriq/widgets/loading_builder.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
 import '../../providers/navigation_provider.dart';
+import '../../screens/tabs_view/app_drawer/app_drawer.dart';
+import '../../screens/tabs_view/tabs_view.dart';
 import '../models/lesson_response.dart';
 import 'section_lessons_list.dart';
 
@@ -28,17 +30,35 @@ class LessonsListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lessonsAsync = ref.watch(lessonsListProvider(language.id));
-    return Scaffold(
-      body: lessonsAsync.when(
-        data: (lessonResponse) {
-          return Column(
-            children: [
-              TopGradientBox(
-                borderRadius: 0,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const BackButton(color: Colors.white),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          ref.read(navigationProvider).pop();
+        }
+      },
+      child: Scaffold(
+        drawer: const AppDrawer(),
+        body: lessonsAsync.when(
+          data: (lessonResponse) {
+            return Column(
+              children: [
+                TopGradientBox(
+                  borderRadius: 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                            onPressed: () {
+                              ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                            },
+                          ),
+                          const BackButton(color: Colors.white),
+                        ],
+                      ),
                     LangguageTypeHeaderBuilder(
                       title: "Sections",
                       level: '',
@@ -107,6 +127,7 @@ class LessonsListScreen extends ConsumerWidget {
           );
         },
         loading: () => const LoadingBuilder(title: "Sections"),
+        ),
       ),
     );
   }

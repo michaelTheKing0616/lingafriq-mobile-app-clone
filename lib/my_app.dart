@@ -34,7 +34,8 @@ class _MyAppState extends ConsumerState<MyApp> {
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(
                 textScaleFactor: 1.0,
-                // Support edge-to-edge display
+                // Support edge-to-edge display - use viewPadding instead of deprecated padding
+                viewPadding: EdgeInsets.zero,
                 padding: EdgeInsets.zero,
               ),
               child: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -43,6 +44,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                   statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
                   systemNavigationBarColor: Colors.transparent,
                   systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
+                  systemNavigationBarDividerColor: Colors.transparent,
                 ),
                 child: _Unfocus(child: child),
               ),
