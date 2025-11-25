@@ -5,11 +5,13 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/auth/login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class ModernOnboardingScreen extends HookConsumerWidget {
   const ModernOnboardingScreen({Key? key}) : super(key: key);
