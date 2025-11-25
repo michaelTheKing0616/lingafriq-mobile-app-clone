@@ -324,11 +324,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     if: always()
 
     steps:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📥 Download Android AAB and mapping file
         continue-on-error: true
@@ -376,8 +379,9 @@ jobs:
             echo "⚠️ iOS artifacts not found"
           fi
 
-      - name: 🏁 Create GitHub Release
+      - name: 🏁 Create GitHub Release (Optional)
         continue-on-error: true
+        if: steps.check-artifacts.outputs.android_exists == 'true'
         uses: softprops/action-gh-release@v2
         with:
           name: "LingAfriq v${{ steps.version.outputs.version }}"
@@ -385,9 +389,6 @@ jobs:
           files: |
             build/release/android/*.aab
             build/release/android/mapping.txt
-            build/release/ios/*.ipa
-            build/release/ios/*.zip
-            build/release/ios/*.xcarchive.zip
           generate_release_notes: true
           draft: false
           prerelease: false
