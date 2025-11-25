@@ -6,6 +6,7 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -172,20 +173,9 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
     
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Word Match - ${widget.language.name}',
-          style: TextStyle(fontSize: isSmall ? 16.sp : 18.sp),
-        ),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                AppColors.primaryGreen,
-                AppColors.accentGold,
-              ],
-            ),
-          ),
-        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: SafeArea(
         child: _gameComplete
@@ -193,6 +183,17 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             : Column(
                 children: [
                   _buildScoreBar(),
+                  Padding(
+                    padding: EdgeInsets.all(DesignSystem.spacingM),
+                    child: Text(
+                      'Match the pairs',
+                      style: TextStyle(
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.bold,
+                        color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
@@ -203,11 +204,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                               Expanded(
                                 child: _buildCardColumn(_leftCards, true),
                               ),
-                              Container(
-                                height: 2,
-                                color: context.adaptive12,
-                                margin: EdgeInsets.symmetric(vertical: 8),
-                              ),
+                              SizedBox(height: DesignSystem.spacingM),
                               Expanded(
                                 child: _buildCardColumn(_rightCards, false),
                               ),
@@ -219,10 +216,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                               Expanded(
                                 child: _buildCardColumn(_leftCards, true),
                               ),
-                              Container(
-                                width: 2,
-                                color: context.adaptive12,
-                              ),
+                              SizedBox(width: DesignSystem.spacingM),
                               Expanded(
                                 child: _buildCardColumn(_rightCards, false),
                               ),
@@ -241,27 +235,53 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   Widget _buildScoreBar() {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmall = screenWidth < 360;
+    final isDark = context.isDarkMode;
+    final progress = _wordPairs.isNotEmpty ? _matches / _wordPairs.length : 0.0;
     
     return Container(
       padding: EdgeInsets.all(isSmall ? 12 : 16),
       decoration: BoxDecoration(
-        color: context.adaptive12,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        color: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
+        boxShadow: DesignSystem.shadowSmall,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
         children: [
-          _buildScoreItem(Icons.star, 'Score', _score.toString()),
-          _buildScoreItem(
-            Icons.check_circle,
-            'Matches',
-            '$_matches/${_wordPairs.length}',
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: Icon(Icons.close, color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight),
+                onPressed: () => Navigator.pop(context),
+              ),
+              Expanded(
+                child: Container(
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: FractionallySizedBox(
+                    alignment: Alignment.centerLeft,
+                    widthFactor: progress,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.stitchPrimaryGame,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 16),
+              Text(
+                '$_matches/${_wordPairs.length}',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.stitchPrimaryGame,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -297,8 +317,10 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   Widget _buildCardColumn(List<WordCard> cards, bool isLeft) {
+    final isDark = context.isDarkMode;
+    
     return ListView.builder(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       itemCount: cards.length,
       itemBuilder: (context, index) {
         final card = cards[index];
@@ -306,49 +328,84 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             (!isLeft && _selectedRight == card);
 
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: ModernCard(
-            onTap: () => _selectCard(card),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: card.isMatched
-                    ? AppColors.success.withOpacity(0.2)
-                    : isSelected
-                        ? AppColors.primaryGreen.withOpacity(0.2)
-                        : null,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _selectCard(card),
+              borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+              child: Container(
+                height: 64,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
                   color: card.isMatched
-                      ? AppColors.success
+                      ? AppColors.stitchPrimary.withOpacity(0.2)
                       : isSelected
-                          ? AppColors.primaryGreen
-                          : Colors.transparent,
-                  width: 2,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (card.isMatched)
-                    Icon(
-                      Icons.check_circle,
-                      color: AppColors.success,
-                      size: 20.sp,
+                          ? AppColors.stitchSecondary.withOpacity(0.1)
+                          : (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight),
+                  borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: card.isMatched
+                          ? AppColors.stitchPrimary
+                          : isSelected
+                              ? AppColors.stitchSecondary
+                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+                      width: 4,
                     ),
-                  if (card.isMatched) const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      card.text,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: context.adaptive,
-                      ),
-                      textAlign: TextAlign.center,
+                    left: BorderSide(
+                      color: card.isMatched
+                          ? AppColors.stitchPrimary
+                          : isSelected
+                              ? AppColors.stitchSecondary
+                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+                      width: 2,
+                    ),
+                    right: BorderSide(
+                      color: card.isMatched
+                          ? AppColors.stitchPrimary
+                          : isSelected
+                              ? AppColors.stitchSecondary
+                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+                      width: 2,
+                    ),
+                    top: BorderSide(
+                      color: card.isMatched
+                          ? AppColors.stitchPrimary
+                          : isSelected
+                              ? AppColors.stitchSecondary
+                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+                      width: 2,
                     ),
                   ),
-                ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (card.isMatched)
+                      Icon(
+                        Icons.check_circle,
+                        color: AppColors.stitchPrimary,
+                        size: 20.sp,
+                      ),
+                    if (card.isMatched) const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        card.text,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                          color: card.isMatched
+                              ? AppColors.stitchPrimary
+                              : isSelected
+                                  ? AppColors.stitchSecondary
+                                  : (isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

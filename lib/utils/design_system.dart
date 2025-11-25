@@ -45,7 +45,7 @@ class DesignSystem {
         ),
       ];
 
-  // Gradients
+  // Gradients - Updated to match Stitch designs
   static const LinearGradient primaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
@@ -56,6 +56,13 @@ class DesignSystem {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [AppColors.primaryGreen, AppColors.accentGold],
+  );
+
+  // Stitch Design Gradients
+  static const LinearGradient stitchPrimaryGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [AppColors.stitchPrimary, Color(0xFF22C55E)],
   );
 
   static const LinearGradient successGradient = LinearGradient(
@@ -92,7 +99,7 @@ class DesignSystem {
   }
 }
 
-/// Modern Card Widget with enhanced styling
+/// Modern Card Widget with enhanced styling (Stitch Design)
 class ModernCardV2 extends StatelessWidget {
   final Widget child;
   final VoidCallback? onTap;
@@ -101,6 +108,8 @@ class ModernCardV2 extends StatelessWidget {
   final Color? color;
   final bool elevated;
   final double borderRadius;
+  final bool isSelected;
+  final Color? borderColor;
 
   const ModernCardV2({
     Key? key,
@@ -111,26 +120,43 @@ class ModernCardV2 extends StatelessWidget {
     this.color,
     this.elevated = true,
     this.borderRadius = DesignSystem.radiusL,
+    this.isSelected = false,
+    this.borderColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
+    final cardColor = color ?? (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight);
+    final border = isSelected 
+        ? Border.all(color: AppColors.stitchPrimary, width: 2)
+        : Border.all(
+            color: borderColor ?? (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+            width: 2,
+          );
+
     final card = Container(
       margin: margin ?? EdgeInsets.zero,
       padding: padding ?? EdgeInsets.all(DesignSystem.spacingM),
       decoration: BoxDecoration(
-        color: color ?? (context.isDarkMode ? AppColors.surfaceDark : AppColors.surfaceLight),
+        color: isSelected 
+            ? AppColors.stitchPrimary.withOpacity(0.2)
+            : cardColor,
         borderRadius: BorderRadius.circular(borderRadius),
-        boxShadow: elevated ? DesignSystem.shadowMedium : null,
+        border: border,
+        boxShadow: elevated ? DesignSystem.shadowSmall : null,
       ),
       child: child,
     );
 
     if (onTap != null) {
-      return InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(borderRadius),
-        child: card,
+      return Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(borderRadius),
+          child: card,
+        ),
       );
     }
 
@@ -138,12 +164,13 @@ class ModernCardV2 extends StatelessWidget {
   }
 }
 
-/// Enhanced Language Card with modern design
+/// Enhanced Language Card matching Stitch design
 class ModernLanguageCard extends StatelessWidget {
   final String languageName;
   final String? imageUrl;
   final VoidCallback onTap;
   final bool isFeatured;
+  final bool isSelected;
 
   const ModernLanguageCard({
     Key? key,
@@ -151,107 +178,109 @@ class ModernLanguageCard extends StatelessWidget {
     this.imageUrl,
     required this.onTap,
     this.isFeatured = false,
+    this.isSelected = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.isDarkMode;
+    final cardColor = isSelected
+        ? AppColors.stitchPrimary.withOpacity(0.2)
+        : (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight);
+    final borderColor = isSelected
+        ? AppColors.stitchPrimary
+        : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight);
+
     return Container(
+      margin: EdgeInsets.only(bottom: DesignSystem.spacingM),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-        boxShadow: DesignSystem.shadowMedium,
+        borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+        boxShadow: DesignSystem.shadowSmall,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            child: Stack(
-              fit: StackFit.expand,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+          child: Container(
+            padding: EdgeInsets.all(DesignSystem.spacingM),
+            decoration: BoxDecoration(
+              color: cardColor,
+              borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+              border: Border.all(color: borderColor, width: isSelected ? 2 : 1),
+            ),
+            child: Row(
               children: [
-                // Background Image or Gradient
-                if (imageUrl != null && imageUrl!.isNotEmpty)
-                  Image.network(
-                    imageUrl!,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => _buildGradientBackground(),
-                  )
-                else
-                  _buildGradientBackground(),
-                
-                // Overlay
+                // Language Flag/Image
                 Container(
+                  width: 48,
+                  height: 48,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.7),
-                      ],
-                    ),
+                    borderRadius: BorderRadius.circular(DesignSystem.radiusS),
+                    image: imageUrl != null && imageUrl!.isNotEmpty
+                        ? DecorationImage(
+                            image: NetworkImage(imageUrl!),
+                            fit: BoxFit.cover,
+                            onError: (exception, stackTrace) => null,
+                          )
+                        : null,
+                    color: imageUrl == null || imageUrl!.isEmpty
+                        ? AppColors.stitchPrimary.withOpacity(0.3)
+                        : null,
                   ),
+                  child: imageUrl == null || imageUrl!.isEmpty
+                      ? Icon(
+                          Icons.language,
+                          color: AppColors.stitchPrimary,
+                          size: 24,
+                        )
+                      : null,
                 ),
-                
-                // Content
-                Positioned(
-                  bottom: DesignSystem.spacingM,
-                  left: DesignSystem.spacingM,
-                  right: DesignSystem.spacingM,
+                SizedBox(width: DesignSystem.spacingM),
+                // Language Info
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (isFeatured)
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: DesignSystem.spacingS,
-                            vertical: DesignSystem.spacingXS,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.accentGold,
-                            borderRadius: BorderRadius.circular(DesignSystem.radiusS),
-                          ),
-                          child: Text(
-                            'FEATURED',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.2,
-                            ),
-                          ),
-                        ),
-                      SizedBox(height: isFeatured ? DesignSystem.spacingS : 0),
                       Text(
                         languageName,
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black.withOpacity(0.5),
-                              blurRadius: 4,
-                            ),
-                          ],
+                          color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
                         ),
                       ),
+                      if (isFeatured)
+                        Text(
+                          'Most popular course',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: (isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight)
+                                .withOpacity(0.8),
+                          ),
+                        ),
                     ],
                   ),
                 ),
+                // Checkmark if selected
+                if (isSelected)
+                  Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                      color: AppColors.stitchPrimary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildGradientBackground() {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: DesignSystem.accentGradient,
       ),
     );
   }

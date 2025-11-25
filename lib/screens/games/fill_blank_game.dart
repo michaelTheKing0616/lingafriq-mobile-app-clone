@@ -6,6 +6,7 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -131,103 +132,176 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
     
     final question = _questions[_currentIndex];
     
+    final isDark = context.isDarkMode;
+    final progress = (_currentIndex + 1) / _questions.length;
+    
     return Scaffold(
+      backgroundColor: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
       appBar: AppBar(
-        title: Text('Fill in the Blank - ${widget.language.name}'),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [AppColors.accentGold, AppColors.primaryOrange],
-            ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Text(
+          'Fill in the Blank',
+          style: TextStyle(
+            color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        centerTitle: true,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(16.sp),
-          child: Column(
-            children: [
-              // Progress indicator
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          children: [
+            // Progress Bar (Stitch style)
+            Padding(
+              padding: EdgeInsets.all(DesignSystem.spacingM),
+              child: Column(
                 children: [
-                  Text(
-                    'Question ${_currentIndex + 1}/${_questions.length}',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Question ${_currentIndex + 1} of ${_questions.length}',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Score: $_score',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  SizedBox(height: DesignSystem.spacingS),
+                  Container(
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: FractionallySizedBox(
+                      alignment: Alignment.centerLeft,
+                      widthFactor: progress,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.stitchPrimary,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-              SizedBox(height: 8.sp),
-              LinearProgressIndicator(
-                value: (_currentIndex + 1) / _questions.length,
-                backgroundColor: context.adaptive12,
-                color: AppColors.accentGold,
-              ),
-              SizedBox(height: 24.sp),
-              
-              // Question
-              Expanded(
+            ),
+            
+            // Main Content
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(DesignSystem.spacingM),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      question.sentence,
-                      style: TextStyle(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        color: context.adaptive,
+                    // Illustration Area (placeholder for now)
+                    Container(
+                      width: double.infinity,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        color: AppColors.stitchPrimary.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
                       ),
-                      textAlign: TextAlign.center,
+                      child: Icon(
+                        Icons.image,
+                        size: 64,
+                        color: AppColors.stitchPrimary.withOpacity(0.3),
+                      ),
                     ),
-                    SizedBox(height: 32.sp),
+                    SizedBox(height: DesignSystem.spacingL),
                     
-                    // Options
+                    // Sentence Display
+                    Column(
+                      children: [
+                        Text(
+                          question.sentence,
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w500,
+                            color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: DesignSystem.spacingS),
+                        TextButton.icon(
+                          onPressed: () {
+                            // Show translation
+                          },
+                          icon: Icon(Icons.translate, size: 16),
+                          label: Text('Show translation'),
+                          style: TextButton.styleFrom(
+                            foregroundColor: (isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight)
+                                .withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: DesignSystem.spacingL),
+                    
+                    // Answer Options (Stitch style with borders)
                     ...question.options.map((option) {
                       final isSelected = _selectedAnswer == option;
                       final isCorrect = option == question.correctAnswer;
                       
                       return Padding(
-                        padding: EdgeInsets.only(bottom: 12.sp),
-                        child: ModernCard(
-                          onTap: () => _selectAnswer(option),
-                          child: Container(
-                            padding: EdgeInsets.all(16.sp),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? (isCorrect 
-                                      ? AppColors.success.withOpacity(0.2)
-                                      : AppColors.red.withOpacity(0.2))
-                                  : null,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
+                        padding: EdgeInsets.only(bottom: DesignSystem.spacingM),
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () => _selectAnswer(option),
+                            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                            child: Container(
+                              width: double.infinity,
+                              height: 56,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
                                 color: isSelected
-                                    ? (isCorrect ? AppColors.success : AppColors.red)
-                                    : Colors.transparent,
-                                width: 2,
+                                    ? (isCorrect 
+                                        ? AppColors.stitchPrimary.withOpacity(0.2)
+                                        : AppColors.stitchDanger.withOpacity(0.2))
+                                    : (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight),
+                                borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? (isCorrect ? AppColors.stitchPrimary : AppColors.stitchDanger)
+                                      : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+                                  width: 2,
+                                ),
+                                boxShadow: isSelected ? DesignSystem.shadowSmall : null,
                               ),
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    option,
-                                    style: TextStyle(
-                                      fontSize: 18.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: context.adaptive,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      option,
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                        color: isSelected
+                                            ? (isCorrect ? AppColors.stitchPrimary : AppColors.stitchDanger)
+                                            : (isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                if (isSelected)
-                                  Icon(
-                                    isCorrect ? Icons.check_circle : Icons.cancel,
-                                    color: isCorrect ? AppColors.success : AppColors.red,
-                                  ),
-                              ],
+                                  if (isSelected)
+                                    Icon(
+                                      isCorrect ? Icons.check_circle : Icons.cancel,
+                                      color: isCorrect ? AppColors.stitchPrimary : AppColors.stitchDanger,
+                                    ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -236,16 +310,34 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
                   ],
                 ),
               ),
-              
-              // Submit button
-              PrimaryButton(
-                onTap: _submitAnswer,
-                enabled: _selectedAnswer != null,
-                text: _currentIndex < _questions.length - 1 ? 'Next' : 'Finish',
-                color: AppColors.accentGold,
+            ),
+            
+            // Footer with Action Button (Stitch style)
+            Container(
+              padding: EdgeInsets.all(DesignSystem.spacingM),
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
+                border: Border(
+                  top: BorderSide(
+                    color: isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight,
+                    width: 1,
+                  ),
+                ),
               ),
-            ],
-          ),
+              child: SafeArea(
+                top: false,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: PrimaryButton(
+                    onTap: _submitAnswer,
+                    enabled: _selectedAnswer != null,
+                    text: 'Check Answer',
+                    color: AppColors.stitchPrimary,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
