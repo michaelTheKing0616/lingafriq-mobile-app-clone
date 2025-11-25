@@ -167,9 +167,15 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmall = screenWidth < 360;
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Word Match - ${widget.language.name}'),
+        title: Text(
+          'Word Match - ${widget.language.name}',
+          style: TextStyle(fontSize: isSmall ? 16.sp : 18.sp),
+        ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -181,35 +187,63 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           ),
         ),
       ),
-      body: _gameComplete
-          ? _buildGameComplete()
-          : Column(
-              children: [
-                _buildScoreBar(),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCardColumn(_leftCards, true),
-                      ),
-                      Container(
-                        width: 2,
-                        color: context.adaptive12,
-                      ),
-                      Expanded(
-                        child: _buildCardColumn(_rightCards, false),
-                      ),
-                    ],
+      body: SafeArea(
+        child: _gameComplete
+            ? _buildGameComplete()
+            : Column(
+                children: [
+                  _buildScoreBar(),
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        // Responsive layout: stack on small screens, side-by-side on larger
+                        if (screenWidth < 400) {
+                          return Column(
+                            children: [
+                              Expanded(
+                                child: _buildCardColumn(_leftCards, true),
+                              ),
+                              Container(
+                                height: 2,
+                                color: context.adaptive12,
+                                margin: EdgeInsets.symmetric(vertical: 8),
+                              ),
+                              Expanded(
+                                child: _buildCardColumn(_rightCards, false),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Row(
+                            children: [
+                              Expanded(
+                                child: _buildCardColumn(_leftCards, true),
+                              ),
+                              Container(
+                                width: 2,
+                                color: context.adaptive12,
+                              ),
+                              Expanded(
+                                child: _buildCardColumn(_rightCards, false),
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
+      ),
     );
   }
 
   Widget _buildScoreBar() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmall = screenWidth < 360;
+    
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isSmall ? 12 : 16),
       decoration: BoxDecoration(
         color: context.adaptive12,
         boxShadow: [
@@ -235,14 +269,18 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   Widget _buildScoreItem(IconData icon, String label, String value) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isSmall = screenWidth < 360;
+    
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: AppColors.primaryGreen, size: 24.sp),
-        const SizedBox(height: 4),
+        Icon(icon, color: AppColors.primaryGreen, size: isSmall ? 20.sp : 24.sp),
+        SizedBox(height: isSmall ? 2 : 4),
         Text(
           value,
           style: TextStyle(
-            fontSize: 20.sp,
+            fontSize: isSmall ? 18.sp : 20.sp,
             fontWeight: FontWeight.bold,
             color: context.adaptive,
           ),
@@ -250,7 +288,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
         Text(
           label,
           style: TextStyle(
-            fontSize: 12.sp,
+            fontSize: isSmall ? 10.sp : 12.sp,
             color: context.adaptive54,
           ),
         ),

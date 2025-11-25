@@ -116,14 +116,23 @@ class HomeTab extends HookConsumerWidget {
                             ref.invalidate(languagesProvider);
                             return Future.value();
                           },
-                          child: GridView.count(
-                            padding: EdgeInsets.zero,
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 16,
-                            childAspectRatio: 1.1,
-                            children:
-                                featuredLanguages.map((e) => LanguageItem(language: e)).toList(),
+                          child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              // Responsive grid columns based on screen width
+                              final screenWidth = MediaQuery.of(context).size.width;
+                              final crossAxisCount = screenWidth > 600 ? 3 : (screenWidth > 400 ? 2 : 2);
+                              final spacing = screenWidth > 600 ? 16.0 : 12.0;
+                              
+                              return GridView.count(
+                                padding: EdgeInsets.zero,
+                                crossAxisCount: crossAxisCount,
+                                crossAxisSpacing: spacing,
+                                mainAxisSpacing: spacing,
+                                childAspectRatio: screenWidth > 600 ? 1.2 : 1.1,
+                                children:
+                                    featuredLanguages.map((e) => LanguageItem(language: e)).toList(),
+                              );
+                            },
                           ),
                         ).expand(),
                         "More Languages".text.size(22.sp).medium.make().py8().px8(),

@@ -13,6 +13,7 @@ import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/fill_blank_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
+import 'package:lingafriq/screens/games/pronunciation_game.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -257,13 +258,13 @@ class GameTypesScreen extends StatelessWidget {
             _GameTypeCard(
               icon: Icons.volume_up_rounded,
               title: 'Pronunciation Practice',
-              description: 'Coming soon - Practice pronunciation',
+              description: 'Listen and repeat words correctly',
               color: AppColors.accentOrange,
               onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Pronunciation Practice coming soon!'),
-                    backgroundColor: AppColors.accentOrange,
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PronunciationGame(language: language),
                   ),
                 );
               },
