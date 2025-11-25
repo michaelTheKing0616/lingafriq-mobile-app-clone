@@ -1,0 +1,192 @@
+/// Comprehensive word lists for different languages
+/// Used in language games like Word Match
+class LanguageWords {
+  static Map<String, List<Map<String, String>>> getWordsByLanguage() {
+    return {
+      'Hausa': [
+        {'english': 'Hello', 'translation': 'Sannu'},
+        {'english': 'Thank you', 'translation': 'Na gode'},
+        {'english': 'Goodbye', 'translation': 'Sai an jima'},
+        {'english': 'Water', 'translation': 'Ruwa'},
+        {'english': 'Food', 'translation': 'Abinci'},
+        {'english': 'Friend', 'translation': 'Aboki'},
+        {'english': 'House', 'translation': 'Gida'},
+        {'english': 'Book', 'translation': 'Littafi'},
+        {'english': 'School', 'translation': 'Makaranta'},
+        {'english': 'Teacher', 'translation': 'Malami'},
+        {'english': 'Student', 'translation': 'Dalibi'},
+        {'english': 'Mother', 'translation': 'Uwa'},
+        {'english': 'Father', 'translation': 'Uba'},
+        {'english': 'Child', 'translation': 'Yaro'},
+        {'english': 'Good', 'translation': 'Nagari'},
+        {'english': 'Bad', 'translation': 'Mugun'},
+        {'english': 'Big', 'translation': 'Babba'},
+        {'english': 'Small', 'translation': 'Karami'},
+        {'english': 'Hot', 'translation': 'Zafi'},
+        {'english': 'Cold', 'translation': 'Sanyi'},
+        {'english': 'Day', 'translation': 'Rana'},
+        {'english': 'Night', 'translation': 'Dare'},
+        {'english': 'Sun', 'translation': 'Rana'},
+        {'english': 'Moon', 'translation': 'Wata'},
+        {'english': 'Star', 'translation': 'Tauraro'},
+        {'english': 'Tree', 'translation': 'Itace'},
+        {'english': 'Bird', 'translation': 'Tsuntsu'},
+        {'english': 'Dog', 'translation': 'Kare'},
+        {'english': 'Cat', 'translation': 'Kyanwa'},
+        {'english': 'Money', 'translation': 'Kudi'},
+      ],
+      'Pidgin English': [
+        {'english': 'Hello', 'translation': 'How you dey'},
+        {'english': 'Thank you', 'translation': 'Thank you'},
+        {'english': 'Goodbye', 'translation': 'Bye bye'},
+        {'english': 'Water', 'translation': 'Water'},
+        {'english': 'Food', 'translation': 'Chop'},
+        {'english': 'Friend', 'translation': 'Padi'},
+        {'english': 'House', 'translation': 'House'},
+        {'english': 'Book', 'translation': 'Book'},
+        {'english': 'School', 'translation': 'School'},
+        {'english': 'Teacher', 'translation': 'Teacher'},
+        {'english': 'Student', 'translation': 'Student'},
+        {'english': 'Mother', 'translation': 'Mama'},
+        {'english': 'Father', 'translation': 'Papa'},
+        {'english': 'Child', 'translation': 'Pikin'},
+        {'english': 'Good', 'translation': 'Fine'},
+        {'english': 'Bad', 'translation': 'Bad'},
+        {'english': 'Big', 'translation': 'Big'},
+        {'english': 'Small', 'translation': 'Small'},
+        {'english': 'Hot', 'translation': 'Hot'},
+        {'english': 'Cold', 'translation': 'Cold'},
+        {'english': 'Day', 'translation': 'Day'},
+        {'english': 'Night', 'translation': 'Night'},
+        {'english': 'Sun', 'translation': 'Sun'},
+        {'english': 'Moon', 'translation': 'Moon'},
+        {'english': 'Star', 'translation': 'Star'},
+        {'english': 'Tree', 'translation': 'Tree'},
+        {'english': 'Bird', 'translation': 'Bird'},
+        {'english': 'Dog', 'translation': 'Dog'},
+        {'english': 'Cat', 'translation': 'Cat'},
+        {'english': 'Money', 'translation': 'Money'},
+      ],
+      'Yoruba': [
+        {'english': 'Hello', 'translation': 'Bawo'},
+        {'english': 'Thank you', 'translation': 'E se'},
+        {'english': 'Goodbye', 'translation': 'O daabo'},
+        {'english': 'Water', 'translation': 'Omi'},
+        {'english': 'Food', 'translation': 'Ounje'},
+        {'english': 'Friend', 'translation': 'Ore'},
+        {'english': 'House', 'translation': 'Ile'},
+        {'english': 'Book', 'translation': 'Iwe'},
+        {'english': 'School', 'translation': 'Ile-eko'},
+        {'english': 'Teacher', 'translation': 'Oluko'},
+        {'english': 'Student', 'translation': 'Akeko'},
+        {'english': 'Mother', 'translation': 'Iya'},
+        {'english': 'Father', 'translation': 'Baba'},
+        {'english': 'Child', 'translation': 'Omo'},
+        {'english': 'Good', 'translation': 'Dara'},
+        {'english': 'Bad', 'translation': 'Buburu'},
+        {'english': 'Big', 'translation': 'Nla'},
+        {'english': 'Small', 'translation': 'Kekere'},
+        {'english': 'Hot', 'translation': 'Gbona'},
+        {'english': 'Cold', 'translation': 'Tutu'},
+        {'english': 'Day', 'translation': 'Ojo'},
+        {'english': 'Night', 'translation': 'Ale'},
+        {'english': 'Sun', 'translation': 'Oorun'},
+        {'english': 'Moon', 'translation': 'Osupa'},
+        {'english': 'Star', 'translation': 'Irawon'},
+        {'english': 'Tree', 'translation': 'Igi'},
+        {'english': 'Bird', 'translation': 'Eye'},
+        {'english': 'Dog', 'translation': 'Aja'},
+        {'english': 'Cat', 'translation': 'Ologbo'},
+        {'english': 'Money', 'translation': 'Owo'},
+      ],
+      'Igbo': [
+        {'english': 'Hello', 'translation': 'Ndewo'},
+        {'english': 'Thank you', 'translation': 'Daalu'},
+        {'english': 'Goodbye', 'translation': 'Ka omesia'},
+        {'english': 'Water', 'translation': 'Mmiri'},
+        {'english': 'Food', 'translation': 'Nri'},
+        {'english': 'Friend', 'translation': 'Enyi'},
+        {'english': 'House', 'translation': 'Ulo'},
+        {'english': 'Book', 'translation': 'Akwukwo'},
+        {'english': 'School', 'translation': 'Ulo akwukwo'},
+        {'english': 'Teacher', 'translation': 'Onye nkuzi'},
+        {'english': 'Student', 'translation': 'Nwa akwukwo'},
+        {'english': 'Mother', 'translation': 'Nne'},
+        {'english': 'Father', 'translation': 'Nna'},
+        {'english': 'Child', 'translation': 'Nwa'},
+        {'english': 'Good', 'translation': 'Oma'},
+        {'english': 'Bad', 'translation': 'Ojoo'},
+        {'english': 'Big', 'translation': 'Nnukwu'},
+        {'english': 'Small', 'translation': 'Nta'},
+        {'english': 'Hot', 'translation': 'Oku'},
+        {'english': 'Cold', 'translation': 'Oyi'},
+        {'english': 'Day', 'translation': 'Ubochi'},
+        {'english': 'Night', 'translation': 'Abali'},
+        {'english': 'Sun', 'translation': 'Anyanwu'},
+        {'english': 'Moon', 'translation': 'Onwa'},
+        {'english': 'Star', 'translation': 'Kpakpando'},
+        {'english': 'Tree', 'translation': 'Osisi'},
+        {'english': 'Bird', 'translation': 'Nnunu'},
+        {'english': 'Dog', 'translation': 'Nkita'},
+        {'english': 'Cat', 'translation': 'Pusi'},
+        {'english': 'Money', 'translation': 'Ego'},
+      ],
+      'Swahili': [
+        {'english': 'Hello', 'translation': 'Hujambo'},
+        {'english': 'Thank you', 'translation': 'Asante'},
+        {'english': 'Goodbye', 'translation': 'Kwaheri'},
+        {'english': 'Water', 'translation': 'Maji'},
+        {'english': 'Food', 'translation': 'Chakula'},
+        {'english': 'Friend', 'translation': 'Rafiki'},
+        {'english': 'House', 'translation': 'Nyumba'},
+        {'english': 'Book', 'translation': 'Kitabu'},
+        {'english': 'School', 'translation': 'Shule'},
+        {'english': 'Teacher', 'translation': 'Mwalimu'},
+        {'english': 'Student', 'translation': 'Mwanafunzi'},
+        {'english': 'Mother', 'translation': 'Mama'},
+        {'english': 'Father', 'translation': 'Baba'},
+        {'english': 'Child', 'translation': 'Mtoto'},
+        {'english': 'Good', 'translation': 'Nzuri'},
+        {'english': 'Bad', 'translation': 'Mbaya'},
+        {'english': 'Big', 'translation': 'Kubwa'},
+        {'english': 'Small', 'translation': 'Ndogo'},
+        {'english': 'Hot', 'translation': 'Moto'},
+        {'english': 'Cold', 'translation': 'Baridi'},
+        {'english': 'Day', 'translation': 'Siku'},
+        {'english': 'Night', 'translation': 'Usiku'},
+        {'english': 'Sun', 'translation': 'Jua'},
+        {'english': 'Moon', 'translation': 'Mwezi'},
+        {'english': 'Star', 'translation': 'Nyota'},
+        {'english': 'Tree', 'translation': 'Mti'},
+        {'english': 'Bird', 'translation': 'Ndege'},
+        {'english': 'Dog', 'translation': 'Mbwa'},
+        {'english': 'Cat', 'translation': 'Paka'},
+        {'english': 'Money', 'translation': 'Pesa'},
+      ],
+    };
+  }
+
+  static List<Map<String, String>> getWordsForLanguage(String languageName) {
+    final allWords = getWordsByLanguage();
+    // Try exact match first
+    if (allWords.containsKey(languageName)) {
+      return allWords[languageName]!;
+    }
+    // Try case-insensitive match
+    for (var key in allWords.keys) {
+      if (key.toLowerCase() == languageName.toLowerCase()) {
+        return allWords[key]!;
+      }
+    }
+    // Try partial match (e.g., "Pidgin" matches "Pidgin English")
+    for (var key in allWords.keys) {
+      if (key.toLowerCase().contains(languageName.toLowerCase()) ||
+          languageName.toLowerCase().contains(key.toLowerCase())) {
+        return allWords[key]!;
+      }
+    }
+    // Default to Hausa if no match found
+    return allWords['Hausa']!;
+  }
+}
+

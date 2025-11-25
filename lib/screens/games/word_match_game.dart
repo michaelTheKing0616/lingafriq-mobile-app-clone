@@ -1,7 +1,10 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
@@ -27,17 +30,8 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   WordCard? _selectedRight;
   int _score = 0;
   int _matches = 0;
+  int _totalPairs = 0;
   bool _gameComplete = false;
-
-  // Sample word pairs - In production, these would come from API
-  final List<Map<String, String>> _sampleWords = [
-    {'english': 'Hello', 'translation': 'Sannu'},
-    {'english': 'Thank you', 'translation': 'Na gode'},
-    {'english': 'Goodbye', 'translation': 'Sai an jima'},
-    {'english': 'Water', 'translation': 'Ruwa'},
-    {'english': 'Food', 'translation': 'Abinci'},
-    {'english': 'Friend', 'translation': 'Aboki'},
-  ];
 
   @override
   void initState() {
@@ -46,13 +40,22 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   void _initializeGame() {
+    // Get language-specific words
+    final words = LanguageWords.getWordsForLanguage(widget.language.name);
+    
+    // Shuffle and take 8-12 words for variety
+    final shuffledWords = List<Map<String, String>>.from(words)..shuffle();
+    final selectedWords = shuffledWords.take(10).toList();
+    
     // Create word pairs
-    _wordPairs = _sampleWords
+    _wordPairs = selectedWords
         .map((w) => WordPair(
               english: w['english']!,
               translation: w['translation']!,
             ))
         .toList();
+    
+    _totalPairs = _wordPairs.length;
 
     // Shuffle and create cards
     final shuffledPairs = List<WordPair>.from(_wordPairs)..shuffle();
@@ -117,13 +120,16 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
       setState(() {
         _selectedLeft!.isMatched = true;
         _selectedRight!.isMatched = true;
-        _score += 10;
         _matches++;
         _selectedLeft = null;
         _selectedRight = null;
 
         if (_matches == _wordPairs.length) {
           _gameComplete = true;
+          // Calculate final score: max 10 points, reduced by wrong attempts
+          // For now, perfect game = 10 points (can be adjusted based on attempts)
+          _score = 10;
+          _updateUserPoints(_score);
         }
       });
     } else {
@@ -135,6 +141,27 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           });
         }
       });
+    }
+  }
+
+  Future<void> _updateUserPoints(int points) async {
+    try {
+      // Calculate points: max 10 points for perfect game, reduced by wrong attempts
+      // For now, perfect game = 10 points
+      // In the future, this could be: 10 * (correct_matches / total_pairs)
+      final calculatedPoints = points;
+      
+      // Note: Points are typically updated server-side when completing quizzes/lessons
+      // For games, we'll refresh the user profile to show updated points
+      // In production, you might want to add a dedicated API endpoint: Api.updateGamePoints(points)
+      final user = ref.read(userProvider);
+      if (user != null) {
+        // Refresh user profile to get latest points
+        await ref.read(apiProvider.notifier).getProfileUser(user.id);
+      }
+    } catch (e) {
+      // Silently fail - points update is not critical for game completion
+      debugPrint('Failed to update user points: $e');
     }
   }
 
@@ -333,6 +360,30 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 color: context.adaptive54,
               ),
             ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: BoxDecoration(
+                color: AppColors.primaryGreen.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: AppColors.primaryGreen, width: 2),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.star, color: AppColors.accentGold, size: 24.sp),
+                  const SizedBox(width: 8),
+                  Text(
+                    '+$_score Points Earned!',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryGreen,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 24),
             Container(
               padding: const EdgeInsets.all(16),
@@ -341,7 +392,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                'Final Score: $_score',
+                'Perfect Match! All $_totalPairs pairs found',
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,

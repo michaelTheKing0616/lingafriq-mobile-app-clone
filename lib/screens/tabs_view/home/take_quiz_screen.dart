@@ -62,7 +62,13 @@ class TakeQuizScreen extends ConsumerWidget {
                             ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                           },
                         ),
-                        const BackButton(color: Colors.white),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                          onPressed: () {
+                            ref.read(navigationProvider).pop();
+                          },
+                        ),
                       ],
                     ),
                   // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),

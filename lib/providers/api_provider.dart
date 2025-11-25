@@ -546,7 +546,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: false);
       return mappedLessonsList;
     } catch (e) {
-      state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: false);
       rethrow;
     }
   }
