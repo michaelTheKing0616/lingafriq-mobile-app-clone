@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile - Language Learning App</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f49d25",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#221a10",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden text-stone-900 dark:text-stone-50 pb-24">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<div class="flex size-12 shrink-0 items-center">
+<!-- Empty div for spacing -->
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Profile</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 bg-transparent gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined text-stone-900 dark:text-stone-50">settings</span>
+</button>
+</div>
+</div>
+<!-- Profile Header -->
+<div class="flex p-4 @container">
+<div class="flex w-full flex-col gap-4 items-center">
+<div class="flex gap-4 flex-col items-center">
+<div class="relative">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32" data-alt="User avatar with a vibrant orange and yellow circular pattern" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBjk8r45-b7srkxzX4XgkvIEMSzyBoRcBSVyZdK7vnE5qTdMTmIZuVNcwmeFFV8W7WowfRKM9hytWX-Js_yTmXI_LELzl3x1z8TXgxClgImAEOLbD8LwwIaFI9w2LIH9Naj-BmI8h-2CTHwTCkgY_NSLewdqDwjwTUakwuHCnH3ZBDn8ESV5p1WAG0HwU1DlO2PgM5x8K1cWlj4nVlMNdwjMo2M1gy6wFw2SgW3PlOcvm5JRRTd3arY6SmpawyuHg0CwiXJGc44VLmy");'></div>
+<button class="absolute bottom-0 right-0 grid place-items-center bg-primary text-background-dark rounded-full size-8 border-4 border-background-light dark:border-background-dark">
+<span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+</button>
+</div>
+<div class="flex flex-col items-center justify-center justify-center">
+<p class="text-[22px] font-bold leading-tight tracking-[-0.015em] text-center">Adebayo Adekunle</p>
+<p class="text-stone-600 dark:text-stone-400 text-base font-normal leading-normal text-center">Member since Oct 2023</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats -->
+<div class="flex flex-wrap gap-3 p-4">
+<div class="flex min-w-[100px] flex-1 flex-col gap-2 rounded-lg p-4 bg-stone-50/5 dark:bg-stone-900/40 border border-stone-200 dark:border-stone-800">
+<p class="text-stone-600 dark:text-stone-400 text-sm font-medium leading-normal">Current Streak</p>
+<p class="text-2xl font-bold leading-tight tracking-tight">15 Days</p>
+</div>
+<div class="flex min-w-[100px] flex-1 flex-col gap-2 rounded-lg p-4 bg-stone-50/5 dark:bg-stone-900/40 border border-stone-200 dark:border-stone-800">
+<p class="text-stone-600 dark:text-stone-400 text-sm font-medium leading-normal">Total XP</p>
+<p class="text-2xl font-bold leading-tight tracking-tight">12,500</p>
+</div>
+<div class="flex min-w-[100px] flex-1 flex-col gap-2 rounded-lg p-4 bg-stone-50/5 dark:bg-stone-900/40 border border-stone-200 dark:border-stone-800">
+<p class="text-stone-600 dark:text-stone-400 text-sm font-medium leading-normal">Words Learned</p>
+<p class="text-2xl font-bold leading-tight tracking-tight">350</p>
+</div>
+</div>
+<!-- "My Languages" Section -->
+<h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">My Languages</h2>
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch px-4 gap-4">
+<div class="flex h-full flex-1 flex-col gap-3 rounded-lg min-w-60">
+<div class="w-full bg-center bg-no-repeat aspect-[1.5/1] bg-cover rounded-lg flex flex-col p-3 justify-end" data-alt="Illustration of Nigerian cultural symbols in warm tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdOB_I8ZrZFnHsR9luTyuDV6mpbug-kn5tKg0VFcG8xp7RYQY-vlv22fDb4_11CHa-tijVuY427PrkNDVzwUVXaZPSFeXU8OhfuY7MJcRp-6QeGUhqpxZT68BUG4vW9llnfQCorJ6Vq4PcWCBK8UOTPKxk6fDAkb4Ntao8GwjBzdflwEirRlCENvZjTlejzIGbbmkLCW4cmpBZ2LHPzL-atjN0iZgS2LgfKRbrNdqSC1SJkVLC4C4tmYIC7Mm5s3vubVMZAYWEKkE3");'>
+<div class="w-full h-2 rounded-full bg-white/30"><div class="h-2 rounded-full bg-primary" style="width: 60%;"></div></div>
+</div>
+<div>
+<p class="text-base font-bold leading-normal">Yoruba</p>
+<p class="text-stone-600 dark:text-stone-400 text-sm font-normal leading-normal">Level 5 - 60% progress</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-3 rounded-lg min-w-60">
+<div class="w-full bg-center bg-no-repeat aspect-[1.5/1] bg-cover rounded-lg flex flex-col p-3 justify-end" data-alt="Illustration of Kenyan savannah landscape at sunset" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCnMSNCff-RK9c4MuyJaPtTQ0RZcmFBW9LQIF6W5vBp4HzDd2-TZPJ5EYyTTxcxCGmmNJCuLBd3calTylrSRN8L68IeEVxdx08qbZXEZsiVl5fnHuua-vFgtiBRhWRWE7EfbdUlvgM_kEZ2SycVLimStTRPOCHHlkGgTfMPDr-yxnqDCFuWLEi42rWcEs3scA-i2JzbRcL0zOZKk5eGN7phBAMrPM9vGcDYn5dqu9pxDMCEAPs0K4VlJiQpbxFuJb1uw2usDCT1qRhH");'>
+<div class="w-full h-2 rounded-full bg-white/30"><div class="h-2 rounded-full bg-primary" style="width: 30%;"></div></div>
+</div>
+<div>
+<p class="text-base font-bold leading-normal">Swahili</p>
+<p class="text-stone-600 dark:text-stone-400 text-sm font-normal leading-normal">Level 2 - 30% progress</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-3 rounded-lg min-w-60">
+<div class="w-full bg-center bg-no-repeat aspect-[1.5/1] bg-cover rounded-lg flex flex-col p-3 justify-end" data-alt="Abstract illustration with green and white Igbo patterns" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeyu2L3bGmIfHHav8ZRNNtsszXqyXcvQ7kgsyIHzvBNdZEckPjXsp80ad9TvFqPjItqaxvFiP6rWcQHSO2-n5ScBXoZheL9LwKfde20NUcAsB-dgZFSuismQjoJEZ7uv-zpl6Lfhk1aVpbeMlVjBfxXB7jkmS6MVJtrC1LdWqgGYlZHzcCsXAPw5KkufrHG3GjDATcZ06jZZHJecmIwEOPPR8kHvErR8QOhNgXFimPDnw5eWN0sv-6fxRJvfaxxKQQ1aByaIal3pC6");'>
+<div class="w-full h-2 rounded-full bg-white/30"><div class="h-2 rounded-full bg-primary" style="width: 10%;"></div></div>
+</div>
+<div>
+<p class="text-base font-bold leading-normal">Igbo</p>
+<p class="text-stone-600 dark:text-stone-400 text-sm font-normal leading-normal">Level 1 - 10% progress</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Achievements Section -->
+<h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Achievements</h2>
+<div class="grid grid-cols-4 gap-4 px-4">
+<div class="flex flex-col items-center gap-2">
+<div class="bg-primary/20 p-4 rounded-full aspect-square flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-4xl">local_fire_department</span>
+</div>
+<p class="text-xs text-center font-medium">10-Day Streak</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="bg-primary/20 p-4 rounded-full aspect-square flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-4xl">school</span>
+</div>
+<p class="text-xs text-center font-medium">Yoruba Novice</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="bg-primary/20 p-4 rounded-full aspect-square flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-4xl">workspace_premium</span>
+</div>
+<p class="text-xs text-center font-medium">Perfect Lesson</p>
+</div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="bg-stone-200 dark:bg-stone-800 p-4 rounded-full aspect-square flex items-center justify-center">
+<span class="material-symbols-outlined text-stone-500 dark:text-stone-400 text-4xl">social_leaderboard</span>
+</div>
+<p class="text-xs text-center font-medium text-stone-500 dark:text-stone-400">Top 10 Finisher</p>
+</div>
+<div class="flex flex-col items-center gap-2 opacity-40">
+<div class="bg-stone-200 dark:bg-stone-800 p-4 rounded-full aspect-square flex items-center justify-center">
+<span class="material-symbols-outlined text-stone-500 dark:text-stone-400 text-4xl">schedule</span>
+</div>
+<p class="text-xs text-center font-medium text-stone-500 dark:text-stone-400">Early Bird</p>
+</div>
+</div>
+<!-- Activity Feed Section -->
+<h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Recent Activity</h2>
+<div class="flex flex-col gap-4 px-4">
+<div class="flex items-center gap-4">
+<div class="bg-primary/20 text-primary p-3 rounded-full">
+<span class="material-symbols-outlined">task_alt</span>
+</div>
+<div class="flex-1">
+<p class="font-medium">Completed 'Greetings' lesson in Swahili</p>
+<p class="text-sm text-stone-600 dark:text-stone-400">2 hours ago</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-primary/20 text-primary p-3 rounded-full">
+<span class="material-symbols-outlined">emoji_events</span>
+</div>
+<div class="flex-1">
+<p class="font-medium">Earned the 'Consistency' badge</p>
+<p class="text-sm text-stone-600 dark:text-stone-400">1 day ago</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="bg-primary/20 text-primary p-3 rounded-full">
+<span class="material-symbols-outlined">add</span>
+</div>
+<div class="flex-1">
+<p class="font-medium">Started the Igbo language course</p>
+<p class="text-sm text-stone-600 dark:text-stone-400">3 days ago</p>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 h-20 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-lg border-t border-stone-200 dark:border-stone-800">
+<div class="flex justify-around items-center h-full max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-stone-600 dark:text-stone-400" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-xs font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-stone-600 dark:text-stone-400" href="#">
+<span class="material-symbols-outlined">local_library</span>
+<span class="text-xs font-medium">Lessons</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-stone-600 dark:text-stone-400" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-xs font-medium">Community</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs font-bold">Profile</span>
+</a>
+</div>
+</div>
+</div>
+</body></html>

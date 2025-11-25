@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Word Match Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#58CC02", // Bright Green
+              "secondary": "#1CB0F6", // Vibrant Blue
+              "danger": "#FF4B4B", // Bright Red
+              "neutral-gray": "#AFAFAF",
+              "text-dark": "#4B4B4B",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+              "card-light": "#FFFFFF",
+              "card-dark": "#1F3527",
+              "border-light": "#E5E5E5",
+              "border-dark": "#2A4A35",
+              "text-light": "#4B4B4B",
+              "text-dark-theme": "#E0E0E0",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative mx-auto flex h-screen min-h-screen w-full max-w-md flex-col group/design-root overflow-x-hidden">
+<header class="flex flex-col p-4 pt-6 bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<button class="text-neutral-gray dark:text-text-dark-theme">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+<div class="flex-grow">
+<div class="h-4 w-full rounded-full bg-border-light dark:bg-border-dark">
+<div class="h-4 rounded-full bg-primary" style="width: 60%;"></div>
+</div>
+</div>
+<span class="text-lg font-bold text-primary">3/5</span>
+</div>
+</header>
+<main class="flex-grow flex flex-col px-4">
+<h1 class="text-text-light dark:text-text-dark-theme text-[28px] font-bold leading-tight pt-5 pb-8">Match the pairs</h1>
+<div class="flex-grow flex items-center justify-between gap-4">
+<!-- Left Column - African Language -->
+<div class="flex flex-col justify-around h-full space-y-4 w-1/2">
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-lg text-text-light dark:text-text-dark-theme text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Omi</span>
+</button>
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-secondary bg-secondary/10 dark:bg-secondary/20 rounded-lg text-secondary text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Iná</span>
+</button>
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-lg text-text-light dark:text-text-dark-theme text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Ilẹ</span>
+</button>
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-lg text-text-light dark:text-text-dark-theme text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Afẹfẹ</span>
+</button>
+</div>
+<!-- Right Column - English Translation -->
+<div class="flex flex-col justify-around h-full space-y-4 w-1/2">
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-lg text-text-light dark:text-text-dark-theme text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Earth</span>
+</button>
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-lg text-text-light dark:text-text-dark-theme text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Water</span>
+</button>
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark rounded-lg text-text-light dark:text-text-dark-theme text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Wind</span>
+</button>
+<button class="flex items-center justify-center w-full h-16 px-4 py-2 border-2 border-secondary bg-secondary/10 dark:bg-secondary/20 rounded-lg text-secondary text-lg font-bold focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary border-b-4">
+<span>Fire</span>
+</button>
+</div>
+</div>
+</main>
+<footer class="w-full">
+<!-- This is a placeholder for the feedback bar. It would be dynamically shown. -->
+<!-- Example: Correct State -->
+<div class="hidden bg-primary/20 dark:bg-primary/30 p-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">check_circle</span>
+<p class="text-xl font-bold text-primary">Great job!</p>
+</div>
+</div>
+<!-- Example: Incorrect State -->
+<div class="hidden bg-danger/20 dark:bg-danger/30 p-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-danger text-3xl">cancel</span>
+<p class="text-xl font-bold text-danger">Try again.</p>
+</div>
+</div>
+<div class="px-4 py-5 border-t-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
+<button class="flex w-full min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-primary text-white text-lg font-bold uppercase tracking-wider shadow-[0_4px_0_0_#4AA302] active:translate-y-1 active:shadow-none">
+<span class="truncate">Check</span>
+</button>
+<!-- Disabled state example -->
+<!-- 
+                <button disabled class="flex w-full min-w-[84px] max-w-[480px] cursor-not-allowed items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-neutral-gray text-white text-lg font-bold uppercase tracking-wider shadow-[0_4px_0_0_#999999]">
+                    <span class="truncate">Check</span>
+                </button> 
+                -->
+</div>
+</footer>
+</div>
+</body></html>

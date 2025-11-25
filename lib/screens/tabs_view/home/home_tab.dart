@@ -13,6 +13,7 @@ import 'package:lingafriq/screens/tabs_view/home/search_languages_page.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/greegins_builder.dart';
@@ -101,8 +102,10 @@ class HomeTab extends HookConsumerWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              "Featured Languages".text.size(22.sp).medium.make(),
-              12.heightBox,
+              ModernSectionHeader(
+                title: "Featured Languages",
+                subtitle: "Start your learning journey",
+              ),
               Expanded(
                 child: languagesAsync.when(
                   data: (languageRespponse) {
@@ -203,6 +206,115 @@ class LanguageItem extends ConsumerWidget {
   final Language language;
   final Function? onTap;
   const LanguageItem({
+    Key? key,
+    required this.language,
+    this.onTap,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ModernLanguageCard(
+      languageName: language.name,
+      imageUrl: language.background,
+      isFeatured: language.is_featured,
+      onTap: () async {
+        onTap?.call();
+        final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
+        if (result) {
+          ref.read(navigationProvider).naviateTo(IntroductionScreen(language: language));
+          return;
+        }
+        // Show lesson/quiz options
+        _showLanguageOptions(context, ref);
+      },
+    );
+  }
+
+  void _showLanguageOptions(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: context.adaptive12,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(DesignSystem.radiusXL)),
+        ),
+        padding: EdgeInsets.only(
+          top: DesignSystem.spacingL,
+          left: DesignSystem.spacingL,
+          right: DesignSystem.spacingL,
+          bottom: MediaQuery.of(context).viewPadding.bottom + DesignSystem.spacingL,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Handle bar
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: context.adaptive38,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            SizedBox(height: DesignSystem.spacingL),
+            Text(
+              language.name,
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                color: context.adaptive,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: DesignSystem.spacingL),
+            PrimaryButton(
+              onTap: () {
+                Navigator.pop(context);
+                // Pre-load lessons data for faster navigation
+                ref.read(apiProvider.notifier).getLessons(language.id);
+                ref.read(navigationProvider).naviateTo(LessonsListScreen(language: language));
+              },
+              text: "Take a Lesson",
+              color: AppColors.primaryGreen,
+            ),
+            SizedBox(height: DesignSystem.spacingM),
+            PrimaryButton(
+              onTap: () {
+                Navigator.pop(context);
+                // Pre-load quiz data for faster navigation
+                ref.read(apiProvider.notifier).getRandomQuizLessons(language.id);
+                ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
+              },
+              text: "Take a Quiz",
+              color: AppColors.primaryOrange,
+            ),
+            SizedBox(height: DesignSystem.spacingM),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
+              },
+              child: Text(
+                "View Details",
+                style: TextStyle(color: context.primaryColor),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LanguageItemOld extends ConsumerWidget {
+  final Language language;
+  final Function? onTap;
+  const LanguageItemOld({
     Key? key,
     required this.language,
     this.onTap,

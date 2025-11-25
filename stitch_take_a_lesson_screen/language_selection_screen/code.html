@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Language Selection Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2bee6c",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+              "neutral-text-light": "#4B4B4B",
+              "neutral-text-dark": "#E0E0E0",
+              "neutral-bg-light": "#FFFFFF",
+              "neutral-bg-dark": "#1A2C20",
+              "neutral-border-light": "#E5E5E5",
+              "neutral-border-dark": "#334D3C"
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<button class="text-neutral-text-light dark:text-neutral-text-dark flex size-12 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-neutral-text-light dark:text-neutral-text-dark text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Choose a language</h1>
+<div class="size-12 shrink-0"></div> <!-- Spacer -->
+</header>
+<!-- Main Content -->
+<main class="flex flex-col w-full grow px-4">
+<!-- Hero Illustration -->
+<div class="flex w-full justify-center py-4">
+<div class="w-full max-w-sm aspect-[4/3]">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="A friendly, colorful illustration of diverse people communicating and learning together around a globe." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBqACTMhWWN9FwtNdwHiTAjSPtURAVBmM5VgGbXDRHE8ioHoQJ6luKD8XusThBnFw91ShG5dt_xnK5O01DvklF_HZy0FKGcaqO6NNuNunr3ivkeZFyFBF6Jn3kOdkfNI22yHIZBTapLkN8K-0o5DN1Wbb3WgoUbO5xe0v7ArXVY1bkcnPUAS-4bIWzG1ja7eisX0hHHQctl2f4cTAqmpncW8YUQdPmtT12r-YRcAJk8LE3FoUsT1gLOwpHqiHYXyGS_4alinGxOloID");'></div>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="py-3">
+<label class="flex flex-col min-w-40 h-14 w-full">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-neutral-bg-light dark:bg-neutral-bg-dark border border-neutral-border-light dark:border-neutral-border-dark">
+<div class="text-neutral-text-light/70 dark:text-neutral-text-dark/70 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-2xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-neutral-text-light dark:text-neutral-text-dark focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-neutral-text-light/50 dark:placeholder:text-neutral-text-dark/50 px-2 text-base font-normal leading-normal" placeholder="Search for a language" value=""/>
+</div>
+</label>
+</div>
+<!-- Language List -->
+<div class="flex flex-col gap-3 py-3">
+<!-- Language Item: Spanish (Selected) -->
+<div class="flex items-center gap-4 bg-primary/20 dark:bg-primary/20 px-4 min-h-[72px] py-2 justify-between rounded-lg border-2 border-primary">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12 shadow-sm" data-alt="Flag of Spain" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPYklV_WceL1UNbk5MQqpzpEDigDXPOVViRgy_4s2m02x_qBJThbpdzD2k8Eid_U6zWEC6j-vX5j00gQnRnrkszvRj3GQ3yyyWZ5jxEYD_4k5BqFG_YcRz8CHiTugXp1P7yFfpL9gzYQBojdgeCZJH4_J7AE1_dzxC2a3NSv1t-hIWbgLxOh3kwlUzVxobAbuQMx7GRif9KznUh03JjXHPFSaA7GxMo-UA4EtqliiDI4E8FW8JBAqjMJQ8su--duuTOvrZ-_axCi7y");'></div>
+<div class="flex flex-col justify-center">
+<p class="text-neutral-text-light dark:text-neutral-text-dark text-base font-bold leading-normal line-clamp-1">Spanish</p>
+<p class="text-neutral-text-light/80 dark:text-neutral-text-dark/80 text-sm font-normal leading-normal line-clamp-2">Most popular course</p>
+</div>
+</div>
+<div class="shrink-0">
+<div class="flex size-7 items-center justify-center rounded-full bg-primary">
+<span class="material-symbols-outlined text-lg text-white font-bold">check</span>
+</div>
+</div>
+</div>
+<!-- Language Item: French -->
+<div class="flex items-center gap-4 bg-neutral-bg-light dark:bg-neutral-bg-dark px-4 min-h-[72px] py-2 justify-between rounded-lg border border-neutral-border-light dark:border-neutral-border-dark">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12 shadow-sm" data-alt="Flag of France" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuChmmumUcID0qjEv7wuEx_pHEHeqOHam7hym0P-2ho_byaEWoM9Ue2_pNNZnOyT7Xb6-WJ8u_nMgUg6WUXvKXssagiCIjAah86lppRclmc9UxAdfKXZ6NMz-DMBVWY42eFZ054GGVnajzm6pq0c4YP5zni2LirQJ45BY6PmgjPSN8MWsnpuO8tbQ75nXYyV7sj2CRnrFYqgBhGdMaJNh_hvnzALnlQC6Srxkctlv1prq_Kn63UTLZ-BtOWV9LHV2_DyUW0jGATKfEco");'></div>
+<div class="flex flex-col justify-center">
+<p class="text-neutral-text-light dark:text-neutral-text-dark text-base font-bold leading-normal line-clamp-1">French</p>
+<p class="text-neutral-text-light/80 dark:text-neutral-text-dark/80 text-sm font-normal leading-normal line-clamp-2">25M learners</p>
+</div>
+</div>
+</div>
+<!-- Language Item: German -->
+<div class="flex items-center gap-4 bg-neutral-bg-light dark:bg-neutral-bg-dark px-4 min-h-[72px] py-2 justify-between rounded-lg border border-neutral-border-light dark:border-neutral-border-dark">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12 shadow-sm" data-alt="Flag of Germany" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbY8ydG9Mvr0U5rotfItrfXYwMWJhjQdPkmb2Kd-Q4sfMXUSuoRl-ZKEPb8ybKgk3CdjMh0bL68EC15F-HZvRFgh9zTgaThzuUghuo53mCi08_o6wUb8sxsXkcnWmc8T2azG78t4HE8aEmzGcshwXm6hO-dssy2RhwwS-OFbzmDNEnP0A_4Wdk9Ga6hdDgFtrR7PSXTM0k5Kt4qfZf6tRCfF1lRvbdyUNrRr9Xx3-Lvvp-HROZ7YMVSSNG_khiqHhJob2RD-XDjh5Q");'></div>
+<div class="flex flex-col justify-center">
+<p class="text-neutral-text-light dark:text-neutral-text-dark text-base font-bold leading-normal line-clamp-1">German</p>
+<p class="text-neutral-text-light/80 dark:text-neutral-text-dark/80 text-sm font-normal leading-normal line-clamp-2">For travelers</p>
+</div>
+</div>
+</div>
+<!-- Language Item: Japanese -->
+<div class="flex items-center gap-4 bg-neutral-bg-light dark:bg-neutral-bg-dark px-4 min-h-[72px] py-2 justify-between rounded-lg border border-neutral-border-light dark:border-neutral-border-dark">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12 shadow-sm" data-alt="Flag of Japan" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBqwV3fYEZhNtukyd3nYm3-sgJ5ttqdVvkFZryscCionflgyxoaf3gAFUl2h77J9JSClQtYJ3QgD_l0EY3y1LrGudnZPaIxdWNsjkURWkP42PTlZWU0LVyxdNzY_hD15jvvKyhzTTKbU4eXI1LCeHi4TRezFOmO05bEt_C2u3qZO4HZaZuADUsi1IXZSQh1wFzZFyvG5A5F1s2_Has2HgXUb7VZKa3N5vxNbMZbN9pfyxj2BNNR1PC55QzyV7-BuukaNhuJwDAkAafX");'></div>
+<div class="flex flex-col justify-center">
+<p class="text-neutral-text-light dark:text-neutral-text-dark text-base font-bold leading-normal line-clamp-1">Japanese</p>
+<p class="text-neutral-text-light/80 dark:text-neutral-text-dark/80 text-sm font-normal leading-normal line-clamp-2">15M learners</p>
+</div>
+</div>
+</div>
+<!-- Language Item: Italian -->
+<div class="flex items-center gap-4 bg-neutral-bg-light dark:bg-neutral-bg-dark px-4 min-h-[72px] py-2 justify-between rounded-lg border border-neutral-border-light dark:border-neutral-border-dark">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-12 shadow-sm" data-alt="Flag of Italy" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPcpa5hi9wV5LwaHE0XtASQMpX0d6DwNQcSRFqCDU-GFTMJ3z165s48DW8FBKXmSS1jWsVpxh0ACAtJZpWJrDlsp0s0e4JIZU0RNnpLzsmBSOYq7t1xHAcxcaIqD2ZS2UTYYSPZuVHGArJaQx9mvGddEztZsU4blRh2YKVY0WcpuLjA0BsgEvGBrVNWeHPdOGKH3Po4airWKJoA5rIZgtrxeVoHOwpWMkGg5nKylovByvkF5R0qZUAmEJDDaswb2m9HuSeXfCTeaLn");'></div>
+<div class="flex flex-col justify-center">
+<p class="text-neutral-text-light dark:text-neutral-text-dark text-base font-bold leading-normal line-clamp-1">Italian</p>
+<p class="text-neutral-text-light/80 dark:text-neutral-text-dark/80 text-sm font-normal leading-normal line-clamp-2">10M learners</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Footer with Button -->
+<footer class="sticky bottom-0 z-10 w-full bg-gradient-to-t from-background-light via-background-light to-transparent dark:from-background-dark dark:via-background-dark p-4 pt-6">
+<button class="flex h-14 w-full items-center justify-center gap-2.5 rounded-lg bg-primary px-5 shadow-[0_4px_14px_0] shadow-primary/30">
+<span class="text-base font-bold text-black">Continue</span>
+</button>
+</footer>
+</div>
+</body></html>

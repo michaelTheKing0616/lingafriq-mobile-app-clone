@@ -70,34 +70,42 @@ class _BottomNavigationBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(tabIndexProvider);
-    return ClipRRect(
-      borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-      child: AnimatedBottomNavigationBar(
-        gapLocation: GapLocation.none,
-        backgroundColor: context.primaryColor,
-        activeColor: context.isDarkMode ? Colors.black : AppColors.primaryOrange,
-        inactiveColor: Colors.white54,
-        splashColor: context.isDarkMode ? AppColors.primaryGreen : AppColors.primaryOrange,
-        splashRadius: 30.sp,
-        icons: const [
-          Icons.home_rounded,
-          Icons.folder_copy_rounded,
-          Icons.bar_chart_rounded,
-          Icons.person_rounded
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 20,
+            offset: const Offset(0, -5),
+          ),
         ],
-        iconSize: 30.sp,
-        activeIndex: index,
-        onTap: (value) {
-          //Refresh languages provider when tab is changed to courses tab
-          if (value == 1) {
-            ref.invalidate(languagesProvider);
-          }
-          // if (value == 2) {
-          //   ref.invalidate(profilesProvider);
-          // }
-          HapticFeedback.lightImpact();
-          ref.read(tabIndexProvider.notifier).setIndex(value);
-        },
+      ),
+      child: ClipRRect(
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        child: AnimatedBottomNavigationBar(
+          gapLocation: GapLocation.none,
+          backgroundColor: context.primaryColor,
+          activeColor: context.isDarkMode ? Colors.black : AppColors.primaryOrange,
+          inactiveColor: Colors.white.withOpacity(0.6),
+          splashColor: context.isDarkMode ? AppColors.primaryGreen : AppColors.primaryOrange,
+          splashRadius: 30.sp,
+          icons: const [
+            Icons.home_rounded,
+            Icons.folder_copy_rounded,
+            Icons.bar_chart_rounded,
+            Icons.person_rounded
+          ],
+          iconSize: 30.sp,
+          activeIndex: index,
+          onTap: (value) {
+            //Refresh languages provider when tab is changed to courses tab
+            if (value == 1) {
+              ref.invalidate(languagesProvider);
+            }
+            HapticFeedback.lightImpact();
+            ref.read(tabIndexProvider.notifier).setIndex(value);
+          },
+        ),
       ),
     );
   }

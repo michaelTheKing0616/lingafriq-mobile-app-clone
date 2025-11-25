@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Fill in the Blank Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#0df233",
+              "background-light": "#f5f8f6",
+              "background-dark": "#102213",
+              "text-light": "#102213",
+              "text-dark": "#f5f8f6",
+              "card-light": "#ffffff",
+              "card-dark": "#1a2c1e",
+              "card-alt-light": "#e7f4e9",
+              "card-alt-dark": "#203824",
+              "border-light": "#e1e4e2",
+              "border-dark": "#3a4d3f",
+              "success": "#22c55e",
+              "error": "#ef4444",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="flex items-center p-4 pb-2 justify-between sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm z-10">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5">
+<span class="material-symbols-outlined text-text-light dark:text-text-dark">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Fill in the Blank</h1>
+<div class="size-10 shrink-0"></div>
+</header>
+<!-- Progress Bar -->
+<div class="flex flex-col gap-2 p-4 pt-2">
+<div class="flex gap-6 justify-between">
+<p class="text-base font-medium leading-normal">Question 5 of 10</p>
+</div>
+<div class="rounded-full bg-border-light dark:bg-border-dark">
+<div class="h-2 rounded-full bg-primary" style="width: 50%;"></div>
+</div>
+</div>
+<main class="flex-grow flex flex-col gap-4 px-4 pb-4">
+<!-- Illustration Card -->
+<div class="w-full grow flex bg-card-alt-light dark:bg-card-alt-dark rounded-xl overflow-hidden aspect-[4/3]">
+<div class="w-full bg-center bg-no-repeat bg-cover aspect-auto flex-1" data-alt="Stylized illustration of a bustling African market scene with colorful stalls and people" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDmEuxQKa74u9P-bvUrHvg3Lg2LmtJJiVsVtqVfg96cpKNTCwLmzkiFU_hepAYPZxja6zGN3RBYfFFO4V6H4hdNeRWk7MzjGgw4c5ioRWQbmp3L0P7lGLCPsiOmGSrDuAIUyMwnc0ZE-f-HnHKTODHx367xVAYV6JZ0iME09nxZYk1SJcH7lMnC2ig5FruoZajj_hUXbd45GpEz1aw22HCJsboDo6dwsBgtdMbcNHqqJBP8v9DEbZx5n5n_wgcqHWYs7LwHWZjBi1XW");'></div>
+</div>
+<!-- Sentence Display -->
+<div class="flex flex-col items-center justify-center text-center py-4">
+<p class="text-xl font-medium leading-normal">Mimi ninaenda _______.</p>
+<button class="mt-2 flex items-center gap-1.5 text-sm text-text-light/70 dark:text-text-dark/70 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-base">translate</span>
+<span>Show translation</span>
+</button>
+</div>
+<!-- Answer Options -->
+<div class="flex flex-1 gap-3 max-w-[480px] w-full flex-col items-stretch mx-auto">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-start overflow-hidden rounded-xl h-14 px-5 bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-border-light dark:border-border-dark hover:border-primary/50 dark:hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all">
+<span class="truncate">sokoni</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-start overflow-hidden rounded-xl h-14 px-5 bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-primary ring-2 ring-primary/30">
+<span class="truncate">shuleni</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-start overflow-hidden rounded-xl h-14 px-5 bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark text-base font-bold leading-normal tracking-[0.015em] w-full border-2 border-border-light dark:border-border-dark hover:border-primary/50 dark:hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all">
+<span class="truncate">nyumbani</span>
+</button>
+</div>
+</main>
+<!-- Footer with Action Button -->
+<footer class="sticky bottom-0 bg-background-light dark:bg-background-dark p-4 pt-2">
+<button class="flex min-w-[84px] max-w-[480px] w-full mx-auto cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-text-light dark:text-background-dark text-lg font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="truncate">Check Answer</span>
+</button>
+</footer>
+</div>
+</body></html>

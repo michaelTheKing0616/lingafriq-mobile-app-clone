@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Language Pronunciation Game</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2bee6c",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+            },
+            fontFamily: {
+              "display": ["Lexend", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="text-[#111813] dark:text-white flex size-12 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</div>
+<h2 class="text-[#111813] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">3/10</h2>
+<div class="flex w-12 items-center justify-end">
+<p class="text-primary text-base font-bold leading-normal tracking-[0.015em] shrink-0">250 pts</p>
+</div>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-700 h-1">
+<div class="bg-primary h-1" style="width: 30%;"></div>
+</div>
+<!-- Illustration Area -->
+<div class="flex w-full grow bg-background-light dark:bg-background-dark @container py-3">
+<div class="w-full gap-1 overflow-hidden bg-background-light dark:bg-background-dark @[480px]:gap-2 aspect-[3/2] flex">
+<div class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1" data-alt="Illustration of a friendly character smiling and giving a thumbs up, representing encouragement in a language learning app" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDm81ITU32tdhpcemY_6DXJMNirJHi0QoqgB8e3XbrghoQOJdZa59VKfKxeMQg81BszOi7JaSRFKS6Hqr1S-ObxnD4qVDZuIdId4Zu2tQ6xWQkstLTqyYnO9-baVDi1QVCy-IDCwGNFHSmc-6xQFmVglHuQG7lcOollVZXGtyG8Y4bh1sstyXgmryqSvH7hAVFFWJ9-rrB_Ptcp9RYvkv1c-0LUcuhQyeQaQaWFg18FCidOSgMgc6aWV3WEm7OMERHEkL4JdVqC-A_C");'></div>
+</div>
+</div>
+<div class="px-4 py-3 flex-grow flex flex-col justify-end">
+<!-- Content Card -->
+<div class="bg-white dark:bg-background-dark dark:border dark:border-white/10 rounded-lg p-6 flex flex-col items-center shadow-sm mb-6">
+<!-- Headline Text -->
+<h1 class="text-[#111813] dark:text-white tracking-light text-[32px] font-bold leading-tight text-center">Bawo ni?</h1>
+<!-- Body Text -->
+<p class="text-slate-600 dark:text-slate-400 text-base font-normal leading-normal pt-1 text-center">How are you?</p>
+<!-- Single Button (Audio) -->
+<div class="flex pt-4 justify-center">
+<button class="flex min-w-[56px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 w-14 bg-primary/20 text-primary gap-2 text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="material-symbols-outlined text-3xl">volume_up</span>
+</button>
+</div>
+</div>
+<!-- Feedback Module -->
+<div class="bg-white dark:bg-background-dark dark:border dark:border-white/10 rounded-lg p-6 flex flex-col items-center shadow-sm mb-6">
+<div class="relative w-24 h-24">
+<svg class="w-full h-full" viewbox="0 0 36 36">
+<path class="text-slate-200 dark:text-slate-700" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="85, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-2xl font-bold text-[#111813] dark:text-white">85%</span>
+</div>
+</div>
+<p class="text-[#111813] dark:text-white text-lg font-semibold pt-4">Great!</p>
+<div class="flex gap-4 mt-4">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-primary/20 text-primary gap-2 text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="material-symbols-outlined text-xl">compare_arrows</span>
+<span>Compare</span>
+</button>
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-6 bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="material-symbols-outlined text-xl">refresh</span>
+<span>Try Again</span>
+</button>
+</div>
+</div>
+<!-- Navigation Buttons -->
+<div class="flex w-full gap-4 pb-4">
+<button class="flex-1 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-4 bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em]">
+                    Skip
+                </button>
+<button class="flex-1 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-4 bg-primary text-[#111813] gap-2 text-base font-bold leading-normal tracking-[0.015em]">
+                    Continue
+                </button>
+</div>
+</div>
+</div>
+</body></html>

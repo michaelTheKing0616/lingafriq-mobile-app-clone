@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Language Quiz</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2bee6c",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+              "text-light": "#0d1b12",
+              "text-dark": "#f0fdf4",
+              "surface-light": "#ffffff",
+              "surface-dark": "#1a2c20",
+              "border-light": "#e0e7e2",
+              "border-dark": "#2d3f33",
+              "success": "#2bee6c",
+              "error": "#ff5c5c",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "1.5rem", "xl": "2rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Main Content Area -->
+<main class="flex-grow flex flex-col p-4 pb-0">
+<!-- Header: Close Button and Progress Bar -->
+<div class="flex items-center gap-4">
+<button class="text-text-light/60 dark:text-text-dark/60 flex h-10 w-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+<div class="flex-grow">
+<div class="h-4 rounded-full bg-border-light dark:bg-border-dark overflow-hidden">
+<div class="h-full rounded-full bg-primary" style="width: 30%;"></div>
+</div>
+</div>
+<div class="flex items-center gap-1 text-error">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-bold text-base text-text-light dark:text-text-dark">3</span>
+</div>
+</div>
+<!-- Question Area -->
+<div class="flex-grow flex flex-col justify-center gap-6 pt-6">
+<h1 class="text-text-light dark:text-text-dark tracking-tight text-[28px] font-bold leading-tight text-left">
+                    Which of these is "the apple"?
+                </h1>
+<!-- Image Grid for Answers -->
+<div class="grid grid-cols-2 gap-4">
+<!-- Option 1 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg border-2 border-border-light dark:border-border-dark group-hover:border-primary/50 dark:group-hover:border-primary/50 transition-all cursor-pointer overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9Z6YLNfazZExmn13icnyDyaXAyezoEPSbtwqu52OfemJee40-T3yV969LGw97KqcnnLpeesEbBCHja7-abPpJXEj5a1QKDKzOJiAaxWnodUCD4XARYQBPVRgdfea25QRbyO96Pf99TEdnpx0tpt6eyqQjMIweVgDmtVMYK5YBs-BLlo0zYjlkg_opA0S1qIUXJE9x69kNRFJQoGDnFJvp5y4CRzQ3fmU_mtxwLCk6f2Ol8QUJPrunsXPza-cvWoEm_8tX42j_Hd7U");'>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<p class="text-center text-lg font-bold text-text-light dark:text-text-dark">La manzana</p>
+</div>
+<!-- Option 2 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg border-2 border-border-light dark:border-border-dark group-hover:border-primary/50 dark:group-hover:border-primary/50 transition-all cursor-pointer overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9Z6YLNfazZExmn13icnyDyaXAyezoEPSbtwqu52OfemJee40-T3yV969LGw97KqcnnLpeesEbBCHja7-abPpJXEj5a1QKDKzOJiAaxWnodUCD4XARYQBPVRgdfea25QRbyO96Pf99TEdnpx0tpt6eyqQjMIweVgDmtVMYK5YBs-BLlo0zYjlkg_opA0S1qIUXJE9x69kNRFJQoGDnFJvp5y4CRzQ3fmU_mtxwLCk6f2Ol8QUJPrunsXPza-cvWoEm_8tX42j_Hd7U");'>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<p class="text-center text-lg font-bold text-text-light dark:text-text-dark">La naranja</p>
+</div>
+<!-- Option 3 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg border-2 border-border-light dark:border-border-dark group-hover:border-primary/50 dark:group-hover:border-primary/50 transition-all cursor-pointer overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9Z6YLNfazZExmn13icnyDyaXAyezoEPSbtwqu52OfemJee40-T3yV969LGw97KqcnnLpeesEbBCHja7-abPpJXEj5a1QKDKzOJiAaxWnodUCD4XARYQBPVRgdfea25QRbyO96Pf99TEdnpx0tpt6eyqQjMIweVgDmtVMYK5YBs-BLlo0zYjlkg_opA0S1qIUXJE9x69kNRFJQoGDnFJvp5y4CRzQ3fmU_mtxwLCk6f2Ol8QUJPrunsXPza-cvWoEm_8tX42j_Hd7U");'>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<p class="text-center text-lg font-bold text-text-light dark:text-text-dark">El plátano</p>
+</div>
+<!-- Option 4 -->
+<div class="flex flex-col gap-3 group">
+<div class="relative w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg border-2 border-border-light dark:border-border-dark group-hover:border-primary/50 dark:group-hover:border-primary/50 transition-all cursor-pointer overflow-hidden" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9Z6YLNfazZExmn13icnyDyaXAyezoEPSbtwqu52OfemJee40-T3yV969LGw97KqcnnLpeesEbBCHja7-abPpJXEj5a1QKDKzOJiAaxWnodUCD4XARYQBPVRgdfea25QRbyO96Pf99TEdnpx0tpt6eyqQjMIweVgDmtVMYK5YBs-BLlo0zYjlkg_opA0S1qIUXJE9x69kNRFJQoGDnFJvp5y4CRzQ3fmU_mtxwLCk6f2Ol8QUJPrunsXPza-cvWoEm_8tX42j_Hd7U");'>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<p class="text-center text-lg font-bold text-text-light dark:text-text-dark">La piña</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer / Action Bar -->
+<footer class="sticky bottom-0">
+<!-- Correct Feedback Banner -->
+<div class="bg-[#d7ffde] dark:bg-[#1a3822] px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-success">
+<span class="material-symbols-outlined text-text-light font-semibold">check</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-bold text-lg text-[#2a8c4a] dark:text-success">Correct!</h3>
+<p class="text-sm text-[#2a8c4a]/80 dark:text-success/80">Well done.</p>
+</div>
+</div>
+</div>
+<!-- Check/Continue Button -->
+<div class="flex p-4 border-t-2 border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 flex-1 bg-primary text-text-light text-lg font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-opacity-90 transition-all">
+<span class="truncate">Continue</span>
+</button>
+</div>
+</footer>
+</div>
+</body></html>
