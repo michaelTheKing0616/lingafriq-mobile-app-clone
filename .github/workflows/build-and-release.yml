@@ -24,32 +24,46 @@ jobs:
         id: increment
         run: |
           # Extract current version from pubspec.yaml
-          current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')
+          current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
           version_name=$(echo $current_version | cut -d'+' -f1)
           build_number=$(echo $current_version | cut -d'+' -f2)
           
-          # Ensure build number is at least 91 (last prod was 90)
-          # If current build is less than 91, set to 91, otherwise increment
-          if [ "$build_number" -lt 91 ]; then
-            echo "⚠️ Build number $build_number is less than 91. Setting to 91."
-            build_number=91
-          elif [ "$build_number" -eq 90 ]; then
-            echo "📦 Current build is 90, incrementing to 91."
+          echo "📦 Current version: $current_version"
+          echo "📦 Version name: $version_name"
+          echo "📦 Current build number: $build_number"
+          
+          # Always increment build number (Play Console last used 90, so we need at least 91)
+          if [ -z "$build_number" ] || [ "$build_number" -le 90 ]; then
+            echo "⚠️ Build number $build_number is <= 90. Setting to 91."
             build_number=91
           else
             # Increment build number
             build_number=$((build_number + 1))
+            echo "📦 Incrementing build number to: $build_number"
           fi
           
           new_version="${version_name}+${build_number}"
           
-          # Update pubspec.yaml
-          sed -i "s/^version: .*/version: $new_version/" pubspec.yaml
+          # Update pubspec.yaml with the new version
+          if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' "s/^version:.*/version: $new_version/" pubspec.yaml
+          else
+            sed -i "s/^version:.*/version: $new_version/" pubspec.yaml
+          fi
+          
+          # Verify the update
+          updated_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          echo "✅ Updated pubspec.yaml version to: $updated_version"
+          
+          if [ "$updated_version" != "$new_version" ]; then
+            echo "❌ ERROR: Version update failed! Expected $new_version but got $updated_version"
+            exit 1
+          fi
           
           echo "version=$new_version" >> $GITHUB_OUTPUT
           echo "version_name=$version_name" >> $GITHUB_OUTPUT
           echo "build_number=$build_number" >> $GITHUB_OUTPUT
-          echo "📦 Updated version: $new_version (build number: $build_number)"
+          echo "📦 Final version: $new_version (build number: $build_number)"
 
       - name: 💾 Commit version update
         run: |
@@ -84,6 +98,49 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.35.0'
+
+      - name: ✅ Verify and enforce version
+        run: |
+          expected_version="${{ needs.increment-version.outputs.version }}"
+          expected_build_number="${{ needs.increment-version.outputs.build_number }}"
+          
+          echo "📦 Expected version: $expected_version"
+          echo "📦 Expected build number: $expected_build_number"
+          
+          # Read current version from pubspec.yaml
+          current_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
+          current_build_number=$(echo $current_version | cut -d'+' -f2)
+          
+          echo "📦 Current version in pubspec.yaml: $current_version"
+          echo "📦 Current build number: $current_build_number"
+          
+          # If version doesn't match, update it
+          if [ "$current_version" != "$expected_version" ]; then
+            echo "⚠️ Version mismatch! Updating pubspec.yaml to $expected_version"
+            if [[ "$OSTYPE" == "darwin"* ]]; then
+              sed -i '' "s/^version:.*/version: $expected_version/" pubspec.yaml
+            else
+              sed -i "s/^version:.*/version: $expected_version/" pubspec.yaml
+            fi
+            
+            # Verify update
+            updated_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')
+            if [ "$updated_version" != "$expected_version" ]; then
+              echo "❌ ERROR: Failed to update version!"
+              exit 1
+            fi
+            echo "✅ Updated pubspec.yaml to $expected_version"
+          else
+            echo "✅ Version already correct: $current_version"
+          fi
+          
+          # Double-check the build number
+          final_build_number=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ' | cut -d'+' -f2)
+          if [ "$final_build_number" -lt 91 ]; then
+            echo "❌ ERROR: Build number $final_build_number is less than 91!"
+            exit 1
+          fi
+          echo "✅ Build number verified: $final_build_number"
 
       - name: 🛠️ Configure Android SDK
         run: |
