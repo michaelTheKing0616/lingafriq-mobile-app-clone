@@ -19,6 +19,7 @@ extension BuildContextExtended on BuildContext {
   Color get adaptive87 => theme.dividerColor.withOpacity(0.87);
   Color get adaptive => theme.dividerColor;
   Color get shadow => theme.brightness == Brightness.dark ? Colors.transparent : Colors.black12;
+  bool get isDarkMode => theme.brightness == Brightness.dark;
   bool get isSmall => MediaQuery.of(this).size.height < 700;
   bool get isExtraSmall => MediaQuery.of(this).size.height < 600;
   bool get isTablet => MediaQuery.of(this).size.height > 1100;
