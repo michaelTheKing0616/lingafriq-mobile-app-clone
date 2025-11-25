@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/utils.dart';
 
 /// Modern Design System for LingAfriq
 /// Based on Material Design 3 principles and modern UI best practices
