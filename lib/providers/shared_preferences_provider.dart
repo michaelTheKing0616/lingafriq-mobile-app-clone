@@ -72,6 +72,14 @@ class SharedPreferencesProvider {
   Future<void> setLanguageIntro(int id) async {
     await prefs.setBool("language/$id", false);
   }
+
+  bool get hasSeenOnboarding {
+    return prefs.getBool("has_seen_onboarding") ?? false;
+  }
+
+  Future<void> setOnboardingSeen() async {
+    await prefs.setBool("has_seen_onboarding", true);
+  }
 }
 
 class _EmailAndPassword {

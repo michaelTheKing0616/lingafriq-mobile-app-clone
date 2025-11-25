@@ -24,6 +24,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> navigateBasedOnCondition() async {
+    // Check if user has seen onboarding
+    final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
+    if (!hasSeenOnboarding) {
+      ref.read(navigationProvider).naviateOffAll(const ModernOnboardingScreen());
+      return;
+    }
+    
     final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
     if (emailAndPassword == null) {
       ref.read(navigationProvider).naviateOffAll(const LoginScreen());
