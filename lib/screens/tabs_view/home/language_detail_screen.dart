@@ -170,12 +170,21 @@ class LanguageDetailScreen extends ConsumerWidget {
                       ),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.6,
-                        child: PrimaryButton(
-                          onTap: () {
-                            ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
-                          },
-                          color: AppColors.primaryGreen,
-                          text: "Take Quiz",
+                        child: SafeArea(
+                          top: false,
+                          minimum: EdgeInsets.zero,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewPadding.bottom,
+                            ),
+                            child: PrimaryButton(
+                              onTap: () {
+                                ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
+                              },
+                              color: AppColors.primaryGreen,
+                              text: "Take Quiz",
+                            ),
+                          ),
                         ),
                       ),
                     ),
