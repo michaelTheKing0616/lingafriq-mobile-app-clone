@@ -80,17 +80,64 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
       final englishWord = word['english']!;
       final emoji = emojiMap[englishWord] ?? '📝';
       
-      // Create contextual sentence templates with emoji
-      final templates = [
-        'I need some $emoji _____.',
-        'This is a $emoji _____.',
-        'I like $emoji _____.',
-        'Where is the $emoji _____?',
-        'Can I have some $emoji _____?',
-        'Look at the $emoji _____.',
-        'I see a $emoji _____.',
-        'The $emoji _____ is here.',
-      ];
+      // Create contextual sentence templates that make sense with emoji
+      // Match templates to word types for better context
+      List<String> templates = [];
+      
+      if (['Water', 'Food', 'Money'].contains(englishWord)) {
+        templates = [
+          'I need some $emoji _____.',
+          'Can I have some $emoji _____?',
+          'Please give me $emoji _____.',
+          'I want $emoji _____.',
+        ];
+      } else if (['Friend', 'Teacher', 'Student', 'Mother', 'Father', 'Child'].contains(englishWord)) {
+        templates = [
+          'This is my $emoji _____.',
+          'I see my $emoji _____.',
+          'My $emoji _____ is here.',
+          'I love my $emoji _____.',
+        ];
+      } else if (['House', 'School', 'Book'].contains(englishWord)) {
+        templates = [
+          'This is a $emoji _____.',
+          'I am in the $emoji _____.',
+          'The $emoji _____ is big.',
+          'I go to the $emoji _____.',
+        ];
+      } else if (['Hello', 'Thank you', 'Goodbye'].contains(englishWord)) {
+        templates = [
+          '$emoji _____! How are you?',
+          'I say $emoji _____ to you.',
+          '$emoji _____ my friend.',
+        ];
+      } else if (['Good', 'Bad', 'Big', 'Small', 'Hot', 'Cold'].contains(englishWord)) {
+        templates = [
+          'This is $emoji _____.',
+          'It is $emoji _____.',
+          'I feel $emoji _____.',
+        ];
+      } else if (['Day', 'Night', 'Sun', 'Moon', 'Star'].contains(englishWord)) {
+        templates = [
+          'It is $emoji _____.',
+          'I see the $emoji _____.',
+          'The $emoji _____ is bright.',
+        ];
+      } else if (['Tree', 'Bird', 'Dog', 'Cat'].contains(englishWord)) {
+        templates = [
+          'I see a $emoji _____.',
+          'Look at the $emoji _____.',
+          'The $emoji _____ is beautiful.',
+        ];
+      } else {
+        // Default templates for other words
+        templates = [
+          'I need $emoji _____.',
+          'This is $emoji _____.',
+          'I see $emoji _____.',
+        ];
+      }
+      
       final template = templates[Random().nextInt(templates.length)];
       final sentence = template.replaceAll('_____', englishWord);
       final options = [
@@ -156,28 +203,39 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
-      // Points are already calculated: max 10 points for perfect game
-      // Formula: 10 * (correct_answers / total_questions)
-      // Update user points using the same pattern as quizzes/lessons
+      debugPrint('Updating user points: $points (correct: $_correctAnswers, total: ${_questions.length})');
+      
       final user = ref.read(userProvider);
       if (user != null) {
-        // First, call accountUpdate which may trigger server-side point updates
+        final oldPoints = user.completed_point;
+        debugPrint('User points before update: $oldPoints');
+        
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
+        debugPrint('Account update success: $updateSuccess');
         
         if (updateSuccess) {
-          // Wait a bit for server to process
-          await Future.delayed(const Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 1000));
           
-          // Refresh user profile to get latest points (same as quizzes/lessons)
-          final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-          if (updatedUser != null) {
-            ref.read(userProvider.notifier).overrideUser(updatedUser);
-            debugPrint('Game points updated successfully. New total: ${updatedUser.completed_point}');
+          try {
+            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+            if (updatedUser != null) {
+              final newPoints = updatedUser.completed_point;
+              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+              ref.read(userProvider.notifier).overrideUser(updatedUser);
+              
+              if (newPoints > oldPoints) {
+                debugPrint('✅ Game points successfully added!');
+              } else {
+                debugPrint('⚠️ Points may not have been added. Server may need game completion endpoint.');
+              }
+            }
+          } catch (e) {
+            debugPrint('Error refreshing user profile: $e');
           }
         }
       }
     } catch (e) {
-      debugPrint('Failed to update user points: $e');
+      debugPrint('❌ Failed to update user points: $e');
     }
   }
 

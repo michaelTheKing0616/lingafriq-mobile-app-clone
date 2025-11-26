@@ -123,19 +123,22 @@ class TakeQuizScreen extends ConsumerWidget {
                                     child: _RandomTextBuilder(
                                       onTap: () async {
                                         try {
+                                          debugPrint('Fetching random quizzes for language: ${language.id}');
+                                          
                                           final randomQuizes = await ref
                                               .read(apiProvider.notifier)
                                               .getRandomQuizLessons(language.id);
                                           
-                                          // randomQuizes.shuffle();
+                                          debugPrint('Received ${randomQuizes.length} quizzes');
+                                          
                                           if (randomQuizes.isEmpty) {
-                                            // Show message - dialog provider handles context validation
                                             ref
                                                 .read(dialogProvider(
-                                                    "We're working to add random quiz!"))
+                                                    "No quizzes available for this language yet. We're working to add more!"))
                                                 .showSuccessSnackBar();
                                             return;
                                           }
+                                          
                                           final random = Random();
                                           do {
                                             if (randomQuizes.isEmpty) break;
@@ -149,9 +152,10 @@ class TakeQuizScreen extends ConsumerWidget {
                                             }
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e) {
-                                          // Show error dialog - context is checked by dialog provider
-                                          // The API provider already handles loading state clearing
-                                          ref.read(dialogProvider(e.toString())).showExceptionDialog();
+                                          debugPrint('Error in Take Quiz: $e');
+                                          ref.read(dialogProvider(
+                                            'Failed to load quiz. ${e.toString()}'
+                                          )).showExceptionDialog();
                                         }
                                       },
                                     ).animate(effects: kGradientTextEffects),

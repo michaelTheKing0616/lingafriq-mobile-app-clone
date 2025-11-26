@@ -135,28 +135,39 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
-      // Points are already calculated: max 10 points for perfect game
-      // Formula: 10 * (correct_answers / total_questions)
-      // Update user points using the same pattern as quizzes/lessons
+      debugPrint('Updating user points: $points (correct: $_correctAnswers, total: ${_questions.length})');
+      
       final user = ref.read(userProvider);
       if (user != null) {
-        // First, call accountUpdate which may trigger server-side point updates
+        final oldPoints = user.completed_point;
+        debugPrint('User points before update: $oldPoints');
+        
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
+        debugPrint('Account update success: $updateSuccess');
         
         if (updateSuccess) {
-          // Wait a bit for server to process
-          await Future.delayed(const Duration(milliseconds: 500));
+          await Future.delayed(const Duration(milliseconds: 1000));
           
-          // Refresh user profile to get latest points (same as quizzes/lessons)
-          final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-          if (updatedUser != null) {
-            ref.read(userProvider.notifier).overrideUser(updatedUser);
-            debugPrint('Game points updated successfully. New total: ${updatedUser.completed_point}');
+          try {
+            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+            if (updatedUser != null) {
+              final newPoints = updatedUser.completed_point;
+              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+              ref.read(userProvider.notifier).overrideUser(updatedUser);
+              
+              if (newPoints > oldPoints) {
+                debugPrint('✅ Game points successfully added!');
+              } else {
+                debugPrint('⚠️ Points may not have been added. Server may need game completion endpoint.');
+              }
+            }
+          } catch (e) {
+            debugPrint('Error refreshing user profile: $e');
           }
         }
       }
     } catch (e) {
-      debugPrint('Failed to update user points: $e');
+      debugPrint('❌ Failed to update user points: $e');
     }
   }
 
@@ -165,6 +176,10 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
     if (!_gameStarted) {
       return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
           title: Text('Speed Challenge - ${widget.language.name}'),
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -442,8 +457,8 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                 ),
               ),
               SizedBox(height: 24.sp),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   PrimaryButton(
                     onTap: () {
@@ -462,13 +477,13 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                     text: 'Play Again',
                     color: AppColors.oceanBlue,
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(height: 12),
                   PrimaryButton(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    text: 'Back to Games',
-                    color: AppColors.oceanBlue.withOpacity(0.5),
+                    text: 'Return to Games',
+                    color: AppColors.oceanBlue.withOpacity(0.7),
                   ),
                 ],
               ),

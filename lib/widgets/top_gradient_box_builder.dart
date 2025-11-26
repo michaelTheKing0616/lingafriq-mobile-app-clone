@@ -26,7 +26,10 @@ class TopGradientBox extends StatelessWidget {
         minimum: EdgeInsets.zero,
         child: Padding(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).viewPadding.top,
+            top: MediaQuery.of(context).viewPadding.top + 16,
+            bottom: 8,
+            left: 8,
+            right: 8,
           ),
           child: child,
         ),

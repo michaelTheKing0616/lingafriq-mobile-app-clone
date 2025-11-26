@@ -138,35 +138,57 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
         String? generatedText;
         
         try {
-          if (response.data is List) {
-            // Handle list response
-            final listData = response.data as List;
-            if (listData.isNotEmpty) {
-              final firstItem = listData[0];
-              if (firstItem is Map) {
-                // Check for error first
-                if (firstItem.containsKey('error')) {
-                  throw Exception(firstItem['error'].toString());
-                }
-                generatedText = firstItem['generated_text'] as String?;
-              } else if (firstItem is String) {
-                generatedText = firstItem;
+          // Log response for debugging
+          debugPrint('AI Response status: ${response.statusCode}');
+          debugPrint('AI Response data type: ${response.data.runtimeType}');
+          debugPrint('AI Response data: ${response.data}');
+          
+          // Handle different response formats
+          dynamic responseData = response.data;
+          
+          // If responseData is null, throw error
+          if (responseData == null) {
+            throw Exception('Null response from AI API');
+          }
+          
+          // Handle List response
+          if (responseData is List) {
+            if (responseData.isEmpty) {
+              throw Exception('Empty list response from AI API');
+            }
+            final firstItem = responseData[0];
+            if (firstItem is Map<String, dynamic>) {
+              if (firstItem.containsKey('error')) {
+                throw Exception(firstItem['error'].toString());
               }
+              generatedText = firstItem['generated_text'] as String?;
+            } else if (firstItem is String) {
+              generatedText = firstItem;
+            } else {
+              // Try to convert to string
+              generatedText = firstItem.toString();
             }
-          } else if (response.data is Map) {
-            // Handle map response
-            final mapData = response.data as Map;
+          }
+          // Handle Map response
+          else if (responseData is Map<String, dynamic>) {
             // Check for error first
-            if (mapData.containsKey('error')) {
-              throw Exception(mapData['error'].toString());
+            if (responseData.containsKey('error')) {
+              final error = responseData['error'];
+              throw Exception(error is String ? error : error.toString());
             }
-            generatedText = mapData['generated_text'] as String?;
-            // Sometimes the response is nested
-            if (generatedText == null && mapData.containsKey('output')) {
-              final output = mapData['output'];
+            
+            // Try different possible keys
+            generatedText = responseData['generated_text'] as String?;
+            
+            if (generatedText == null) {
+              generatedText = responseData['text'] as String?;
+            }
+            
+            if (generatedText == null && responseData.containsKey('output')) {
+              final output = responseData['output'];
               if (output is List && output.isNotEmpty) {
                 final firstOutput = output[0];
-                if (firstOutput is Map) {
+                if (firstOutput is Map<String, dynamic>) {
                   generatedText = firstOutput['generated_text'] as String?;
                 } else if (firstOutput is String) {
                   generatedText = firstOutput;
@@ -175,21 +197,25 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
                 generatedText = output;
               }
             }
-            // Check for text field directly
-            if (generatedText == null && mapData.containsKey('text')) {
-              generatedText = mapData['text'] as String?;
-            }
-          } else if (response.data is String) {
-            generatedText = response.data as String;
+          }
+          // Handle String response
+          else if (responseData is String) {
+            generatedText = responseData;
+          }
+          // Try to convert to string as last resort
+          else {
+            generatedText = responseData.toString();
           }
           
-          if (generatedText == null || generatedText.isEmpty) {
-            // Log the actual response for debugging
-            debugPrint('AI Response data type: ${response.data.runtimeType}');
-            debugPrint('AI Response data: ${response.data}');
-            throw Exception('Empty response from AI. Please try again.');
+          // Validate we got text
+          if (generatedText == null || generatedText.trim().isEmpty) {
+            debugPrint('Failed to extract text from response');
+            throw Exception('Empty response from AI. Response format: ${responseData.runtimeType}');
           }
+          
+          debugPrint('Successfully extracted text: ${generatedText.substring(0, generatedText.length > 50 ? 50 : generatedText.length)}...');
         } catch (e) {
+          debugPrint('Error parsing AI response: $e');
           // If it's already an Exception, rethrow it
           if (e is Exception) {
             rethrow;

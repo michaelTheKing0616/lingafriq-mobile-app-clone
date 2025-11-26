@@ -147,34 +147,47 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
-      // Calculate points: max 10 points for perfect game
-      // Formula: 10 * (correct_matches / total_pairs)
-      final calculatedPoints = _totalPairs > 0 
-          ? (10 * (_matches / _totalPairs)).round()
-          : 0;
+      debugPrint('Updating user points: $points (matches: $_matches, total: $_totalPairs)');
       
       // Update user points using the same pattern as quizzes/lessons
-      // Call accountUpdate to trigger server-side point calculation, then refresh profile
       final user = ref.read(userProvider);
       if (user != null) {
-        // First, call accountUpdate which may trigger server-side point updates
+        final oldPoints = user.completed_point;
+        debugPrint('User points before update: $oldPoints');
+        
+        // Call accountUpdate which should refresh user profile with latest points
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
+        debugPrint('Account update success: $updateSuccess');
         
         if (updateSuccess) {
-          // Wait a bit for server to process
-          await Future.delayed(const Duration(milliseconds: 500));
+          // Wait for server to process
+          await Future.delayed(const Duration(milliseconds: 1000));
           
-          // Refresh user profile to get latest points (same as quizzes/lessons)
-          final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-          if (updatedUser != null) {
-            ref.read(userProvider.notifier).overrideUser(updatedUser);
-            debugPrint('Game points updated successfully. New total: ${updatedUser.completed_point}');
+          // Refresh user profile to get latest points
+          try {
+            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+            if (updatedUser != null) {
+              final newPoints = updatedUser.completed_point;
+              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+              ref.read(userProvider.notifier).overrideUser(updatedUser);
+              
+              if (newPoints > oldPoints) {
+                debugPrint('✅ Game points successfully added!');
+              } else {
+                debugPrint('⚠️ Points may not have been added. Server may need game completion endpoint.');
+              }
+            }
+          } catch (e) {
+            debugPrint('Error refreshing user profile: $e');
           }
+        } else {
+          debugPrint('⚠️ Account update failed');
         }
+      } else {
+        debugPrint('⚠️ No user logged in, cannot update points');
       }
     } catch (e) {
-      // Log error but don't block game completion
-      debugPrint('Failed to update user points: $e');
+      debugPrint('❌ Failed to update user points: $e');
     }
   }
 
@@ -187,7 +200,13 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SafeArea(
         child: _gameComplete
@@ -514,20 +533,35 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               child: Padding(
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewPadding.bottom,
+                  left: 16,
+                  right: 16,
                 ),
-                child: PrimaryButton(
-                  onTap: () {
-                    // Restart the game instead of going back
-                    setState(() {
-                      _gameComplete = false;
-                      _score = 0;
-                      _matches = 0;
-                      _selectedLeft = null;
-                      _selectedRight = null;
-                    });
-                    _initializeGame();
-                  },
-                  text: 'Play Again',
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    PrimaryButton(
+                      onTap: () {
+                        // Restart the game
+                        setState(() {
+                          _gameComplete = false;
+                          _score = 0;
+                          _matches = 0;
+                          _selectedLeft = null;
+                          _selectedRight = null;
+                        });
+                        _initializeGame();
+                      },
+                      text: 'Play Again',
+                    ),
+                    const SizedBox(height: 12),
+                    PrimaryButton(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      text: 'Return to Games',
+                      color: AppColors.primaryGreen.withOpacity(0.7),
+                    ),
+                  ],
                 ),
               ),
             ),
