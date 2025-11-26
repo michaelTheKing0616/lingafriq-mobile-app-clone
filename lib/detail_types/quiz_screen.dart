@@ -145,12 +145,12 @@ class QuizScreen extends HookConsumerWidget {
                                     "Failed to mark quiz as complete".log("quiz_screen");
                                   }
                                 }
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.of(context).pop(true);
                                 }
                               }
                               if (!correct && isTakeQuiz) {
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.of(context).pop(false);
                                 }
                               }
@@ -180,12 +180,12 @@ class QuizScreen extends HookConsumerWidget {
                                     "Failed to mark quiz as complete".log("quiz_screen");
                                   }
                                 }
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.of(context).pop(true);
                                 }
                               }
                               if (!correct && isTakeQuiz) {
-                                if (mounted) {
+                                if (context.mounted) {
                                   Navigator.of(context).pop(false);
                                 }
                               }

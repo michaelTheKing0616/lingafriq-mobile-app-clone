@@ -116,12 +116,11 @@ class TakeQuizScreen extends ConsumerWidget {
                                               .getRandomQuizLessons(language.id);
                                           // randomQuizes.shuffle();
                                           if (randomQuizes.isEmpty) {
-                                            if (mounted) {
-                                              ref
-                                                  .read(dialogProvider(
-                                                      "We're working to add random quiz!"))
-                                                  .showSuccessSnackBar();
-                                            }
+                                            // Show message - dialog provider handles context validation
+                                            ref
+                                                .read(dialogProvider(
+                                                    "We're working to add random quiz!"))
+                                                .showSuccessSnackBar();
                                             return;
                                           }
                                           final random = Random();
