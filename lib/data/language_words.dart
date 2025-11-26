@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Comprehensive word lists for different languages
 /// Used in language games like Word Match
 class LanguageWords {
@@ -163,29 +165,295 @@ class LanguageWords {
         {'english': 'Cat', 'translation': 'Paka'},
         {'english': 'Money', 'translation': 'Pesa'},
       ],
+      // Nigerian Pidgin English - comprehensive list
+      'Nigerian Pidgin': [
+        {'english': 'Hello', 'translation': 'How you dey'},
+        {'english': 'How are you', 'translation': 'How you dey'},
+        {'english': 'Thank you', 'translation': 'Thank you'},
+        {'english': 'Thank you very much', 'translation': 'Thank you well well'},
+        {'english': 'Goodbye', 'translation': 'Bye bye'},
+        {'english': 'See you later', 'translation': 'I go see you later'},
+        {'english': 'Water', 'translation': 'Water'},
+        {'english': 'Food', 'translation': 'Chop'},
+        {'english': 'To eat', 'translation': 'Chop'},
+        {'english': 'Friend', 'translation': 'Padi'},
+        {'english': 'House', 'translation': 'House'},
+        {'english': 'Book', 'translation': 'Book'},
+        {'english': 'School', 'translation': 'School'},
+        {'english': 'Teacher', 'translation': 'Teacher'},
+        {'english': 'Student', 'translation': 'Student'},
+        {'english': 'Mother', 'translation': 'Mama'},
+        {'english': 'Father', 'translation': 'Papa'},
+        {'english': 'Child', 'translation': 'Pikin'},
+        {'english': 'Children', 'translation': 'Pikin dem'},
+        {'english': 'Good', 'translation': 'Fine'},
+        {'english': 'Very good', 'translation': 'Fine well well'},
+        {'english': 'Bad', 'translation': 'Bad'},
+        {'english': 'Big', 'translation': 'Big'},
+        {'english': 'Small', 'translation': 'Small'},
+        {'english': 'Hot', 'translation': 'Hot'},
+        {'english': 'Cold', 'translation': 'Cold'},
+        {'english': 'Day', 'translation': 'Day'},
+        {'english': 'Night', 'translation': 'Night'},
+        {'english': 'Sun', 'translation': 'Sun'},
+        {'english': 'Moon', 'translation': 'Moon'},
+        {'english': 'Star', 'translation': 'Star'},
+        {'english': 'Tree', 'translation': 'Tree'},
+        {'english': 'Bird', 'translation': 'Bird'},
+        {'english': 'Dog', 'translation': 'Dog'},
+        {'english': 'Cat', 'translation': 'Cat'},
+        {'english': 'Money', 'translation': 'Money'},
+        {'english': 'I', 'translation': 'I'},
+        {'english': 'You', 'translation': 'You'},
+        {'english': 'We', 'translation': 'We'},
+        {'english': 'They', 'translation': 'Dem'},
+        {'english': 'Come', 'translation': 'Come'},
+        {'english': 'Go', 'translation': 'Go'},
+        {'english': 'Come here', 'translation': 'Come here'},
+        {'english': 'Go there', 'translation': 'Go there'},
+        {'english': 'Yes', 'translation': 'Yes'},
+        {'english': 'No', 'translation': 'No'},
+        {'english': 'Please', 'translation': 'Abeg'},
+        {'english': 'Sorry', 'translation': 'Sorry'},
+        {'english': 'Excuse me', 'translation': 'Abeg'},
+        {'english': 'What', 'translation': 'Wetin'},
+        {'english': 'Where', 'translation': 'Where'},
+        {'english': 'When', 'translation': 'When'},
+        {'english': 'Why', 'translation': 'Why'},
+        {'english': 'How', 'translation': 'How'},
+        {'english': 'What is your name', 'translation': 'Wetin be your name'},
+        {'english': 'My name is', 'translation': 'My name na'},
+        {'english': 'I am fine', 'translation': 'I dey fine'},
+        {'english': 'I am hungry', 'translation': 'I dey hungry'},
+        {'english': 'I am tired', 'translation': 'I dey tire'},
+        {'english': 'I want', 'translation': 'I want'},
+        {'english': 'I like', 'translation': 'I like'},
+        {'english': 'I don\'t like', 'translation': 'I no like'},
+        {'english': 'I understand', 'translation': 'I sabi'},
+        {'english': 'I don\'t understand', 'translation': 'I no sabi'},
+        {'english': 'See', 'translation': 'See'},
+        {'english': 'Look', 'translation': 'Look'},
+        {'english': 'Listen', 'translation': 'Listen'},
+        {'english': 'Speak', 'translation': 'Talk'},
+        {'english': 'Walk', 'translation': 'Walk'},
+        {'english': 'Run', 'translation': 'Run'},
+        {'english': 'Sit', 'translation': 'Sit down'},
+        {'english': 'Stand', 'translation': 'Stand up'},
+        {'english': 'Sleep', 'translation': 'Sleep'},
+        {'english': 'Wake up', 'translation': 'Wake up'},
+        {'english': 'Work', 'translation': 'Work'},
+        {'english': 'Play', 'translation': 'Play'},
+        {'english': 'Learn', 'translation': 'Learn'},
+        {'english': 'Teach', 'translation': 'Teach'},
+        {'english': 'Read', 'translation': 'Read'},
+        {'english': 'Write', 'translation': 'Write'},
+        {'english': 'Buy', 'translation': 'Buy'},
+        {'english': 'Sell', 'translation': 'Sell'},
+        {'english': 'Give', 'translation': 'Give'},
+        {'english': 'Take', 'translation': 'Take'},
+        {'english': 'Help', 'translation': 'Help'},
+        {'english': 'Stop', 'translation': 'Stop'},
+        {'english': 'Start', 'translation': 'Start'},
+        {'english': 'Open', 'translation': 'Open'},
+        {'english': 'Close', 'translation': 'Close'},
+        {'english': 'One', 'translation': 'One'},
+        {'english': 'Two', 'translation': 'Two'},
+        {'english': 'Three', 'translation': 'Three'},
+        {'english': 'Four', 'translation': 'Four'},
+        {'english': 'Five', 'translation': 'Five'},
+        {'english': 'Ten', 'translation': 'Ten'},
+        {'english': 'Twenty', 'translation': 'Twenty'},
+        {'english': 'Hundred', 'translation': 'Hundred'},
+      ],
+      // IsiZulu (Zulu) - comprehensive list
+      'IsiZulu': [
+        {'english': 'Hello', 'translation': 'Sawubona'},
+        {'english': 'How are you', 'translation': 'Unjani'},
+        {'english': 'I am fine', 'translation': 'Ngikhona'},
+        {'english': 'Thank you', 'translation': 'Ngiyabonga'},
+        {'english': 'Thank you very much', 'translation': 'Ngiyabonga kakhulu'},
+        {'english': 'Goodbye', 'translation': 'Hamba kahle'},
+        {'english': 'See you later', 'translation': 'Sizobonana'},
+        {'english': 'Water', 'translation': 'Amanzi'},
+        {'english': 'Food', 'translation': 'Ukudla'},
+        {'english': 'Friend', 'translation': 'Umngane'},
+        {'english': 'House', 'translation': 'Indlu'},
+        {'english': 'Book', 'translation': 'Incwadi'},
+        {'english': 'School', 'translation': 'Isikole'},
+        {'english': 'Teacher', 'translation': 'Uthisha'},
+        {'english': 'Student', 'translation': 'Umfundi'},
+        {'english': 'Mother', 'translation': 'Umama'},
+        {'english': 'Father', 'translation': 'Ubaba'},
+        {'english': 'Child', 'translation': 'Ingane'},
+        {'english': 'Children', 'translation': 'Izingane'},
+        {'english': 'Good', 'translation': 'Kuhle'},
+        {'english': 'Bad', 'translation': 'Kubi'},
+        {'english': 'Big', 'translation': 'Mkhulu'},
+        {'english': 'Small', 'translation': 'Mncane'},
+        {'english': 'Hot', 'translation': 'Shisa'},
+        {'english': 'Cold', 'translation': 'Banda'},
+        {'english': 'Day', 'translation': 'Usuku'},
+        {'english': 'Night', 'translation': 'Ubusuku'},
+        {'english': 'Sun', 'translation': 'Ilanga'},
+        {'english': 'Moon', 'translation': 'Inyanga'},
+        {'english': 'Star', 'translation': 'Inkanyezi'},
+        {'english': 'Tree', 'translation': 'Isihlahla'},
+        {'english': 'Bird', 'translation': 'Inyoni'},
+        {'english': 'Dog', 'translation': 'Inja'},
+        {'english': 'Cat', 'translation': 'Ikati'},
+        {'english': 'Money', 'translation': 'Imali'},
+        {'english': 'I', 'translation': 'Mina'},
+        {'english': 'You', 'translation': 'Wena'},
+        {'english': 'We', 'translation': 'Thina'},
+        {'english': 'They', 'translation': 'Bona'},
+        {'english': 'Come', 'translation': 'Woza'},
+        {'english': 'Go', 'translation': 'Hamba'},
+        {'english': 'Come here', 'translation': 'Woza lapha'},
+        {'english': 'Go there', 'translation': 'Hamba lapho'},
+        {'english': 'Yes', 'translation': 'Yebo'},
+        {'english': 'No', 'translation': 'Cha'},
+        {'english': 'Please', 'translation': 'Ngiyacela'},
+        {'english': 'Sorry', 'translation': 'Uxolo'},
+        {'english': 'Excuse me', 'translation': 'Uxolo'},
+        {'english': 'What', 'translation': 'Yini'},
+        {'english': 'Where', 'translation': 'Kuphi'},
+        {'english': 'When', 'translation': 'Nini'},
+        {'english': 'Why', 'translation': 'Kungani'},
+        {'english': 'How', 'translation': 'Kanjanjani'},
+        {'english': 'What is your name', 'translation': 'Ubani igama lakho'},
+        {'english': 'My name is', 'translation': 'Igama lami ngu'},
+        {'english': 'I am hungry', 'translation': 'Ngilambile'},
+        {'english': 'I am tired', 'translation': 'Ngikhathele'},
+        {'english': 'I want', 'translation': 'Ngifuna'},
+        {'english': 'I like', 'translation': 'Ngithanda'},
+        {'english': 'I don\'t like', 'translation': 'Angithandi'},
+        {'english': 'I understand', 'translation': 'Ngiyaqonda'},
+        {'english': 'I don\'t understand', 'translation': 'Angiqondi'},
+        {'english': 'See', 'translation': 'Bona'},
+        {'english': 'Look', 'translation': 'Bheka'},
+        {'english': 'Listen', 'translation': 'Lalela'},
+        {'english': 'Speak', 'translation': 'Khuluma'},
+        {'english': 'Walk', 'translation': 'Hamba'},
+        {'english': 'Run', 'translation': 'Gijima'},
+        {'english': 'Sit', 'translation': 'Hlala phansi'},
+        {'english': 'Stand', 'translation': 'Mema'},
+        {'english': 'Sleep', 'translation': 'Lala'},
+        {'english': 'Wake up', 'translation': 'Vuka'},
+        {'english': 'Work', 'translation': 'Sebenza'},
+        {'english': 'Play', 'translation': 'Dlala'},
+        {'english': 'Learn', 'translation': 'Funda'},
+        {'english': 'Teach', 'translation': 'Fundisa'},
+        {'english': 'Read', 'translation': 'Funda'},
+        {'english': 'Write', 'translation': 'Bhala'},
+        {'english': 'Buy', 'translation': 'Thenga'},
+        {'english': 'Sell', 'translation': 'Thengisa'},
+        {'english': 'Give', 'translation': 'Nika'},
+        {'english': 'Take', 'translation': 'Thatha'},
+        {'english': 'Help', 'translation': 'Siza'},
+        {'english': 'Stop', 'translation': 'Yima'},
+        {'english': 'Start', 'translation': 'Qala'},
+        {'english': 'Open', 'translation': 'Vula'},
+        {'english': 'Close', 'translation': 'Vala'},
+        {'english': 'One', 'translation': 'Kunye'},
+        {'english': 'Two', 'translation': 'Kubili'},
+        {'english': 'Three', 'translation': 'Kuthathu'},
+        {'english': 'Four', 'translation': 'Kune'},
+        {'english': 'Five', 'translation': 'Kuhlanu'},
+        {'english': 'Ten', 'translation': 'Ishumi'},
+        {'english': 'Twenty', 'translation': 'Amashumi amabili'},
+        {'english': 'Hundred', 'translation': 'Ikhulu'},
+      ],
+      // Zulu (alternative name)
+      'Zulu': [
+        {'english': 'Hello', 'translation': 'Sawubona'},
+        {'english': 'How are you', 'translation': 'Unjani'},
+        {'english': 'I am fine', 'translation': 'Ngikhona'},
+        {'english': 'Thank you', 'translation': 'Ngiyabonga'},
+        {'english': 'Thank you very much', 'translation': 'Ngiyabonga kakhulu'},
+        {'english': 'Goodbye', 'translation': 'Hamba kahle'},
+        {'english': 'See you later', 'translation': 'Sizobonana'},
+        {'english': 'Water', 'translation': 'Amanzi'},
+        {'english': 'Food', 'translation': 'Ukudla'},
+        {'english': 'Friend', 'translation': 'Umngane'},
+        {'english': 'House', 'translation': 'Indlu'},
+        {'english': 'Book', 'translation': 'Incwadi'},
+        {'english': 'School', 'translation': 'Isikole'},
+        {'english': 'Teacher', 'translation': 'Uthisha'},
+        {'english': 'Student', 'translation': 'Umfundi'},
+        {'english': 'Mother', 'translation': 'Umama'},
+        {'english': 'Father', 'translation': 'Ubaba'},
+        {'english': 'Child', 'translation': 'Ingane'},
+        {'english': 'Children', 'translation': 'Izingane'},
+        {'english': 'Good', 'translation': 'Kuhle'},
+        {'english': 'Bad', 'translation': 'Kubi'},
+        {'english': 'Big', 'translation': 'Mkhulu'},
+        {'english': 'Small', 'translation': 'Mncane'},
+        {'english': 'Hot', 'translation': 'Shisa'},
+        {'english': 'Cold', 'translation': 'Banda'},
+        {'english': 'Day', 'translation': 'Usuku'},
+        {'english': 'Night', 'translation': 'Ubusuku'},
+        {'english': 'Sun', 'translation': 'Ilanga'},
+        {'english': 'Moon', 'translation': 'Inyanga'},
+        {'english': 'Star', 'translation': 'Inkanyezi'},
+        {'english': 'Tree', 'translation': 'Isihlahla'},
+        {'english': 'Bird', 'translation': 'Inyoni'},
+        {'english': 'Dog', 'translation': 'Inja'},
+        {'english': 'Cat', 'translation': 'Ikati'},
+        {'english': 'Money', 'translation': 'Imali'},
+      ],
     };
   }
 
   static List<Map<String, String>> getWordsForLanguage(String languageName) {
     final allWords = getWordsByLanguage();
+    final normalizedName = languageName.trim();
+    
     // Try exact match first
-    if (allWords.containsKey(languageName)) {
-      return allWords[languageName]!;
+    if (allWords.containsKey(normalizedName)) {
+      return allWords[normalizedName]!;
     }
+    
     // Try case-insensitive match
     for (var key in allWords.keys) {
-      if (key.toLowerCase() == languageName.toLowerCase()) {
+      if (key.toLowerCase() == normalizedName.toLowerCase()) {
         return allWords[key]!;
       }
     }
-    // Try partial match (e.g., "Pidgin" matches "Pidgin English")
+    
+    // Try partial match with priority order
+    // Check for "Pidgin" variations first
+    if (normalizedName.toLowerCase().contains('pidgin') || 
+        normalizedName.toLowerCase().contains('nigerian pidgin')) {
+      if (allWords.containsKey('Nigerian Pidgin')) {
+        return allWords['Nigerian Pidgin']!;
+      }
+      if (allWords.containsKey('Pidgin English')) {
+        return allWords['Pidgin English']!;
+      }
+    }
+    
+    // Check for "Zulu" variations
+    if (normalizedName.toLowerCase().contains('zulu') || 
+        normalizedName.toLowerCase().contains('isizulu')) {
+      if (allWords.containsKey('IsiZulu')) {
+        return allWords['IsiZulu']!;
+      }
+      if (allWords.containsKey('Zulu')) {
+        return allWords['Zulu']!;
+      }
+    }
+    
+    // Try general partial match
     for (var key in allWords.keys) {
-      if (key.toLowerCase().contains(languageName.toLowerCase()) ||
-          languageName.toLowerCase().contains(key.toLowerCase())) {
+      final keyLower = key.toLowerCase();
+      final nameLower = normalizedName.toLowerCase();
+      if (keyLower.contains(nameLower) || nameLower.contains(keyLower)) {
         return allWords[key]!;
       }
     }
-    // Default to Hausa if no match found
+    
+    // Log warning and default to Hausa if no match found
+    debugPrint('Warning: No word list found for language: $languageName, defaulting to Hausa');
     return allWords['Hausa']!;
   }
 }

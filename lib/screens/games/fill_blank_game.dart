@@ -41,28 +41,69 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
     final words = LanguageWords.getWordsForLanguage(widget.language.name);
     final shuffledWords = List<Map<String, String>>.from(words)..shuffle();
     
-    // Create 10 fill-in-the-blank questions
+    // Emoji mapping for common words to provide visual context
+    final emojiMap = {
+      'Water': '💧',
+      'Food': '🍽️',
+      'Friend': '👫',
+      'House': '🏠',
+      'Book': '📚',
+      'School': '🏫',
+      'Teacher': '👨‍🏫',
+      'Student': '👨‍🎓',
+      'Mother': '👩',
+      'Father': '👨',
+      'Child': '👶',
+      'Good': '👍',
+      'Bad': '👎',
+      'Big': '🔵',
+      'Small': '🔴',
+      'Hot': '🔥',
+      'Cold': '❄️',
+      'Day': '☀️',
+      'Night': '🌙',
+      'Sun': '☀️',
+      'Moon': '🌙',
+      'Star': '⭐',
+      'Tree': '🌳',
+      'Bird': '🐦',
+      'Dog': '🐕',
+      'Cat': '🐱',
+      'Money': '💰',
+      'Hello': '👋',
+      'Thank you': '🙏',
+      'Goodbye': '👋',
+    };
+    
+    // Create 10 fill-in-the-blank questions with better context
     _questions = shuffledWords.take(10).map((word) {
-      // Create simple sentence templates
+      final englishWord = word['english']!;
+      final emoji = emojiMap[englishWord] ?? '📝';
+      
+      // Create contextual sentence templates with emoji
       final templates = [
-        'I need some _____.',
-        'This is a _____.',
-        'I like _____.',
-        'Where is the _____?',
-        'Can I have some _____?',
+        'I need some $emoji _____.',
+        'This is a $emoji _____.',
+        'I like $emoji _____.',
+        'Where is the $emoji _____?',
+        'Can I have some $emoji _____?',
+        'Look at the $emoji _____.',
+        'I see a $emoji _____.',
+        'The $emoji _____ is here.',
       ];
       final template = templates[Random().nextInt(templates.length)];
-      final sentence = template.replaceAll('_____', word['english']!);
+      final sentence = template.replaceAll('_____', englishWord);
       final options = [
         word['translation']!,
         ...shuffledWords.where((w) => w != word).take(3).map((w) => w['translation']!),
       ]..shuffle();
       
       return FillBlankQuestion(
-        sentence: sentence.replaceAll(word['english']!, '_____'),
+        sentence: sentence.replaceAll(englishWord, '_____'),
         correctAnswer: word['translation']!,
         options: options,
-        englishWord: word['english']!,
+        englishWord: englishWord,
+        emoji: emoji,
       );
     }).toList();
     
@@ -115,9 +156,17 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
+      // Points are already calculated: max 10 points for perfect game
+      // Formula: 10 * (correct_answers / total_questions)
+      // Update user points using the same pattern as quizzes/lessons
       final user = ref.read(userProvider);
       if (user != null) {
-        await ref.read(apiProvider.notifier).getProfileUser(user.id);
+        // Call accountUpdate which may trigger server-side point updates
+        await ref.read(apiProvider.notifier).accountUpdate();
+        
+        // Refresh user profile to get latest points (same as quizzes/lessons)
+        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+        ref.read(userProvider.notifier).overrideUser(updatedUser);
       }
     } catch (e) {
       debugPrint('Failed to update user points: $e');
@@ -206,7 +255,7 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
                 padding: EdgeInsets.all(DesignSystem.spacingM),
                 child: Column(
                   children: [
-                    // Illustration Area (placeholder for now)
+                    // Emoji/Illustration Area
                     Container(
                       width: double.infinity,
                       height: 200,
@@ -214,10 +263,11 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
                         color: AppColors.stitchPrimary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
                       ),
-                      child: Icon(
-                        Icons.image,
-                        size: 64,
-                        color: AppColors.stitchPrimary.withOpacity(0.3),
+                      child: Center(
+                        child: Text(
+                          question.emoji ?? '📝',
+                          style: TextStyle(fontSize: 80),
+                        ),
                       ),
                     ),
                     SizedBox(height: DesignSystem.spacingL),
@@ -439,12 +489,14 @@ class FillBlankQuestion {
   final String correctAnswer;
   final List<String> options;
   final String englishWord;
+  final String? emoji;
 
   FillBlankQuestion({
     required this.sentence,
     required this.correctAnswer,
     required this.options,
     required this.englishWord,
+    this.emoji,
   });
 }
 

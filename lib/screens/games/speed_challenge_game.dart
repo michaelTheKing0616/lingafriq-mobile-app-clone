@@ -135,9 +135,17 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
+      // Points are already calculated: max 10 points for perfect game
+      // Formula: 10 * (correct_answers / total_questions)
+      // Update user points using the same pattern as quizzes/lessons
       final user = ref.read(userProvider);
       if (user != null) {
-        await ref.read(apiProvider.notifier).getProfileUser(user.id);
+        // Call accountUpdate which may trigger server-side point updates
+        await ref.read(apiProvider.notifier).accountUpdate();
+        
+        // Refresh user profile to get latest points (same as quizzes/lessons)
+        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+        ref.read(userProvider.notifier).overrideUser(updatedUser);
       }
     } catch (e) {
       debugPrint('Failed to update user points: $e');

@@ -147,21 +147,25 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
-      // Calculate points: max 10 points for perfect game, reduced by wrong attempts
-      // For now, perfect game = 10 points
-      // In the future, this could be: 10 * (correct_matches / total_pairs)
-      final calculatedPoints = points;
+      // Calculate points: max 10 points for perfect game
+      // Formula: 10 * (correct_matches / total_pairs)
+      final calculatedPoints = _totalPairs > 0 
+          ? (10 * (_matches / _totalPairs)).round()
+          : 0;
       
-      // Note: Points are typically updated server-side when completing quizzes/lessons
-      // For games, we'll refresh the user profile to show updated points
-      // In production, you might want to add a dedicated API endpoint: Api.updateGamePoints(points)
+      // Update user points using the same pattern as quizzes/lessons
+      // Call accountUpdate to trigger server-side point calculation, then refresh profile
       final user = ref.read(userProvider);
       if (user != null) {
-        // Refresh user profile to get latest points
-        await ref.read(apiProvider.notifier).getProfileUser(user.id);
+        // Call accountUpdate which may trigger server-side point updates
+        await ref.read(apiProvider.notifier).accountUpdate();
+        
+        // Refresh user profile to get latest points (same as quizzes/lessons)
+        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+        ref.read(userProvider.notifier).overrideUser(updatedUser);
       }
     } catch (e) {
-      // Silently fail - points update is not critical for game completion
+      // Log error but don't block game completion
       debugPrint('Failed to update user points: $e');
     }
   }
