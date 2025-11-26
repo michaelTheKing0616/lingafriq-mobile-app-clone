@@ -98,12 +98,19 @@ class QuizAnswersScreen extends ConsumerWidget {
                         onTap: () async {
                           if (allCorrect) {
                             if (!isCompleted) {
-                              await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                            final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                            if (!success) {
+                              "Failed to mark quiz as complete".log("quiz_answers_screen");
                             }
+                          }
+                          if (mounted) {
                             Navigator.of(context).pop(true);
                           }
+                        }
+                        if (mounted) {
                           Navigator.of(context).pop(true);
-                        },
+                        }
+                      },
                         text: allCorrect ? "Continue" : "Try Again",
                       ).pOnly(bottom: 24, top: 16),
                     ],
