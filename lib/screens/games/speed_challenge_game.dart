@@ -151,7 +151,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
           final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
           if (updatedUser != null) {
             ref.read(userProvider.notifier).overrideUser(updatedUser);
-            debugPrint('Game points updated successfully. New total: ${updatedUser.completedPoint}');
+            debugPrint('Game points updated successfully. New total: ${updatedUser.completed_point}');
           }
         }
       }

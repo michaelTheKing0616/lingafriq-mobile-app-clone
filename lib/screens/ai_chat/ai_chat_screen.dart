@@ -129,36 +129,18 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     ),
                   ),
                 ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'AI Language Tutor',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            'Practice African languages',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 14.sp,
-                            ),
-                          ),
-                        ],
-                      ),
+                if (chatNotifier.hasMessages)
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 8,
+                      right: 8,
                     ),
-                    if (chatNotifier.hasMessages)
-                      IconButton(
-                        icon: const Icon(Icons.delete_outline, color: Colors.white),
-                        onPressed: _clearChat,
-                        tooltip: 'Clear chat',
-                      ),
-                  ],
-                ),
+                    child: IconButton(
+                      icon: const Icon(Icons.delete_outline, color: Colors.white),
+                      onPressed: _clearChat,
+                      tooltip: 'Clear chat',
+                    ),
+                  ),
               ],
             ),
           ),
