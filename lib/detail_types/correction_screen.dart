@@ -226,15 +226,22 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                           await Future.delayed(const Duration(milliseconds: 500));
                           showIndicator.value = {"isLoading": false, "isCorrect": true};
                           if (!widget.isCompleted) {
-                            await ref.read(apiProvider.notifier).markAsComplete(widget.endpointToHit);
+                            final success = await ref.read(apiProvider.notifier).markAsComplete(widget.endpointToHit);
+                            if (!success) {
+                              "Failed to mark correction as complete".log("correction_screen");
+                            }
                           }
-                          Navigator.of(context).pop(true);
+                          if (mounted) {
+                            Navigator.of(context).pop(true);
+                          }
                         } else {
                           showIndicator.value = {"isLoading": true, "isCorrect": false};
                           await Future.delayed(const Duration(milliseconds: 500));
                           showIndicator.value = {"isLoading": false, "isCorrect": false};
                           if (widget.isTakeQuiz) {
-                            Navigator.of(context).pop(false);
+                            if (mounted) {
+                              Navigator.of(context).pop(false);
+                            }
                             return;
                           }
                           showResults.value = true;

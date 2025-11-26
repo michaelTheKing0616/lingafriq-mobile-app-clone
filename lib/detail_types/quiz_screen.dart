@@ -168,12 +168,19 @@ class QuizScreen extends HookConsumerWidget {
                               ref.read(quizIndexProvider.notifier).setIndex(0);
                               if (correct) {
                                 if (!isCompleted) {
-                                  await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  if (!success) {
+                                    "Failed to mark quiz as complete".log("quiz_screen");
+                                  }
                                 }
-                                Navigator.of(context).pop(true);
+                                if (mounted) {
+                                  Navigator.of(context).pop(true);
+                                }
                               }
                               if (!correct && isTakeQuiz) {
-                                Navigator.of(context).pop(false);
+                                if (mounted) {
+                                  Navigator.of(context).pop(false);
+                                }
                               }
                               return;
                             }
