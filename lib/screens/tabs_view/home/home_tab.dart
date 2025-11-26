@@ -78,11 +78,22 @@ class HomeTab extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () {
-                    ref.read(scaffoldKeyProvider).currentState!.openDrawer();
-                  },
-                  icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                SafeArea(
+                  bottom: false,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 8,
+                      left: 8,
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        ref.read(scaffoldKeyProvider).currentState!.openDrawer();
+                      },
+                      icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ),
                 ),
                 // const PointsAndProfileImageBuilder(),
                 Consumer(

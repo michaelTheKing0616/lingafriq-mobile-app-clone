@@ -161,12 +161,20 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
       // Update user points using the same pattern as quizzes/lessons
       final user = ref.read(userProvider);
       if (user != null) {
-        // Call accountUpdate which may trigger server-side point updates
-        await ref.read(apiProvider.notifier).accountUpdate();
+        // First, call accountUpdate which may trigger server-side point updates
+        final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
         
-        // Refresh user profile to get latest points (same as quizzes/lessons)
-        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-        ref.read(userProvider.notifier).overrideUser(updatedUser);
+        if (updateSuccess) {
+          // Wait a bit for server to process
+          await Future.delayed(const Duration(milliseconds: 500));
+          
+          // Refresh user profile to get latest points (same as quizzes/lessons)
+          final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+          if (updatedUser != null) {
+            ref.read(userProvider.notifier).overrideUser(updatedUser);
+            debugPrint('Game points updated successfully. New total: ${updatedUser.completedPoint}');
+          }
+        }
       }
     } catch (e) {
       debugPrint('Failed to update user points: $e');
@@ -469,12 +477,33 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
                 ),
               ),
               SizedBox(height: 24.sp),
-              PrimaryButton(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                text: 'Back to Games',
-                color: AppColors.accentGold,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PrimaryButton(
+                    onTap: () {
+                      // Restart the game
+                      setState(() {
+                        _gameComplete = false;
+                        _currentIndex = 0;
+                        _correctAnswers = 0;
+                        _selectedAnswer = null;
+                        _score = 0;
+                      });
+                      _initializeGame();
+                    },
+                    text: 'Play Again',
+                    color: AppColors.accentGold,
+                  ),
+                  SizedBox(width: 16),
+                  PrimaryButton(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Back to Games',
+                    color: AppColors.accentGold.withOpacity(0.5),
+                  ),
+                ],
               ),
             ],
           ),

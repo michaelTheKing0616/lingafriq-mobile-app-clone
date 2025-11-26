@@ -30,20 +30,35 @@ class ChangePasswordScreen extends HookConsumerWidget {
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Text('Change Password'),
+        ),
         body: Form(
           key: formKey,
-          child: Column(
-            children: [
-              ProfileImageBuilder(
-                showEditIcon: false,
-                onTap: () {},
-              ).centered(),
-              24.heightBox,
-              const ProfileDetailsBuilder(
-                crossAxisAlignment: CrossAxisAlignment.center,
-              ).centered(),
-              32.heightBox,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.sp,
+              vertical: 24.sp,
+            ),
+            child: Column(
+              children: [
+                Center(
+                  child: ProfileImageBuilder(
+                    showEditIcon: false,
+                    onTap: () {},
+                  ),
+                ),
+                24.heightBox,
+                const Center(
+                  child: ProfileDetailsBuilder(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  ),
+                ),
+                32.heightBox,
               PrimaryTextField(
                 controller: currentPasswordController,
                 title: "Current Password",
@@ -77,32 +92,36 @@ class ChangePasswordScreen extends HookConsumerWidget {
                 maxLines: 1,
               ),
               24.heightBox,
-              PrimaryButton(
-                width: 0.6.sw,
-                onTap: () async {
-                  if (!formKey.currentState!.validate()) return;
-                  // final currentPassword =
-                  //     ref.read(sharedPreferencesProvider).emailAndPassword.password;
-                  final result = await ref.read(apiProvider.notifier).changePassword(
-                        // currentPassword: currentPassword,
-                        currentPassword: currentPasswordController.text.trim(),
-                        newPassword: passwordController.text.trim(),
-                      );
-                  if (result == true) {
-                    // await ref
-                    //     .read(dialogProvider(''))
-                    //     .showPlatformDialogue(title: "Your password has been changed");
-                    ref.read(sharedPreferencesProvider).removeEmailAndPassword();
+              Center(
+                child: PrimaryButton(
+                  width: 0.6.sw,
+                  onTap: () async {
+                    if (!formKey.currentState!.validate()) return;
+                    // final currentPassword =
+                    //     ref.read(sharedPreferencesProvider).emailAndPassword.password;
+                    final result = await ref.read(apiProvider.notifier).changePassword(
+                          // currentPassword: currentPassword,
+                          currentPassword: currentPasswordController.text.trim(),
+                          newPassword: passwordController.text.trim(),
+                        );
+                    if (result == true) {
+                      // await ref
+                      //     .read(dialogProvider(''))
+                      //     .showPlatformDialogue(title: "Your password has been changed");
+                      ref.read(sharedPreferencesProvider).removeEmailAndPassword();
 
-                    ref.read(navigationProvider).pop();
-                    HapticFeedback.lightImpact();
-                    VxToast.show(context, msg: 'Password Changed');
-                  }
-                },
-                text: "Change Password",
-              )
+                      ref.read(navigationProvider).pop();
+                      HapticFeedback.lightImpact();
+                      VxToast.show(context, msg: 'Password Changed');
+                    }
+                  },
+                  text: "Change Password",
+                ),
+              ),
+              32.heightBox,
             ],
-          ).p16().scrollVertical(),
+          ),
+        ),
         ),
       ),
     );

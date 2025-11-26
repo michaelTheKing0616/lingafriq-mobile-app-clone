@@ -54,22 +54,34 @@ class TakeQuizScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                          onPressed: () {
-                            ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                          },
+                    SafeArea(
+                      bottom: false,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top + 8,
                         ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                          onPressed: () {
-                            ref.read(navigationProvider).pop();
-                          },
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                              onPressed: () {
+                                ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                            const Spacer(),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                              onPressed: () {
+                                ref.read(navigationProvider).pop();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                   GreetingsBuilder(
@@ -114,6 +126,7 @@ class TakeQuizScreen extends ConsumerWidget {
                                           final randomQuizes = await ref
                                               .read(apiProvider.notifier)
                                               .getRandomQuizLessons(language.id);
+                                          
                                           // randomQuizes.shuffle();
                                           if (randomQuizes.isEmpty) {
                                             // Show message - dialog provider handles context validation
@@ -136,8 +149,8 @@ class TakeQuizScreen extends ConsumerWidget {
                                             }
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e) {
-                                          // Ensure loading state is cleared on error
                                           // Show error dialog - context is checked by dialog provider
+                                          // The API provider already handles loading state clearing
                                           ref.read(dialogProvider(e.toString())).showExceptionDialog();
                                         }
                                       },

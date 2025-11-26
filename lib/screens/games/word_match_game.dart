@@ -157,12 +157,20 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
       // Call accountUpdate to trigger server-side point calculation, then refresh profile
       final user = ref.read(userProvider);
       if (user != null) {
-        // Call accountUpdate which may trigger server-side point updates
-        await ref.read(apiProvider.notifier).accountUpdate();
+        // First, call accountUpdate which may trigger server-side point updates
+        final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
         
-        // Refresh user profile to get latest points (same as quizzes/lessons)
-        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-        ref.read(userProvider.notifier).overrideUser(updatedUser);
+        if (updateSuccess) {
+          // Wait a bit for server to process
+          await Future.delayed(const Duration(milliseconds: 500));
+          
+          // Refresh user profile to get latest points (same as quizzes/lessons)
+          final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+          if (updatedUser != null) {
+            ref.read(userProvider.notifier).overrideUser(updatedUser);
+            debugPrint('Game points updated successfully. New total: ${updatedUser.completedPoint}');
+          }
+        }
       }
     } catch (e) {
       // Log error but don't block game completion
@@ -509,7 +517,15 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 ),
                 child: PrimaryButton(
                   onTap: () {
-                    Navigator.pop(context);
+                    // Restart the game instead of going back
+                    setState(() {
+                      _gameComplete = false;
+                      _score = 0;
+                      _matches = 0;
+                      _selectedLeft = null;
+                      _selectedRight = null;
+                    });
+                    _initializeGame();
                   },
                   text: 'Play Again',
                 ),

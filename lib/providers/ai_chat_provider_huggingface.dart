@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
@@ -133,39 +134,68 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
         // 1. List of maps: [{"generated_text": "..."}]
         // 2. Single map: {"generated_text": "..."}
         // 3. Direct string in some cases
+        // 4. Error response: {"error": "..."}
         String? generatedText;
         
-        if (response.data is List) {
-          // Handle list response
-          final listData = response.data as List;
-          if (listData.isNotEmpty) {
-            final firstItem = listData[0];
-            if (firstItem is Map) {
-              generatedText = firstItem['generated_text'] as String?;
-            } else if (firstItem is String) {
-              generatedText = firstItem;
-            }
-          }
-        } else if (response.data is Map) {
-          // Handle map response
-          final mapData = response.data as Map;
-          generatedText = mapData['generated_text'] as String?;
-          // Sometimes the response is nested
-          if (generatedText == null && mapData.containsKey('output')) {
-            final output = mapData['output'];
-            if (output is List && output.isNotEmpty) {
-              final firstOutput = output[0];
-              if (firstOutput is Map) {
-                generatedText = firstOutput['generated_text'] as String?;
+        try {
+          if (response.data is List) {
+            // Handle list response
+            final listData = response.data as List;
+            if (listData.isNotEmpty) {
+              final firstItem = listData[0];
+              if (firstItem is Map) {
+                // Check for error first
+                if (firstItem.containsKey('error')) {
+                  throw Exception(firstItem['error'].toString());
+                }
+                generatedText = firstItem['generated_text'] as String?;
+              } else if (firstItem is String) {
+                generatedText = firstItem;
               }
             }
+          } else if (response.data is Map) {
+            // Handle map response
+            final mapData = response.data as Map;
+            // Check for error first
+            if (mapData.containsKey('error')) {
+              throw Exception(mapData['error'].toString());
+            }
+            generatedText = mapData['generated_text'] as String?;
+            // Sometimes the response is nested
+            if (generatedText == null && mapData.containsKey('output')) {
+              final output = mapData['output'];
+              if (output is List && output.isNotEmpty) {
+                final firstOutput = output[0];
+                if (firstOutput is Map) {
+                  generatedText = firstOutput['generated_text'] as String?;
+                } else if (firstOutput is String) {
+                  generatedText = firstOutput;
+                }
+              } else if (output is String) {
+                generatedText = output;
+              }
+            }
+            // Check for text field directly
+            if (generatedText == null && mapData.containsKey('text')) {
+              generatedText = mapData['text'] as String?;
+            }
+          } else if (response.data is String) {
+            generatedText = response.data as String;
           }
-        } else if (response.data is String) {
-          generatedText = response.data as String;
-        }
-        
-        if (generatedText == null || generatedText.isEmpty) {
-          throw Exception('Empty response from AI. Response format: ${response.data.runtimeType}');
+          
+          if (generatedText == null || generatedText.isEmpty) {
+            // Log the actual response for debugging
+            debugPrint('AI Response data type: ${response.data.runtimeType}');
+            debugPrint('AI Response data: ${response.data}');
+            throw Exception('Empty response from AI. Please try again.');
+          }
+        } catch (e) {
+          // If it's already an Exception, rethrow it
+          if (e is Exception) {
+            rethrow;
+          }
+          // Otherwise wrap it
+          throw Exception('Failed to parse AI response: ${e.toString()}');
         }
         
         // Clean up the response (remove context if included)

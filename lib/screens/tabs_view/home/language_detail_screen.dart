@@ -42,16 +42,34 @@ class LanguageDetailScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                        onPressed: () {
-                          ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                        },
+                  SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 8,
                       ),
-                      const BackButton(color: Colors.white),
-                    ],
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                            onPressed: () {
+                              ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                          const Spacer(),
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                            onPressed: () {
+                              ref.read(navigationProvider).pop();
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 // const PointsAndProfileImageBuilder(),
                 // 0.05.sh.heightBox,
