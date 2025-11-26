@@ -496,11 +496,20 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               ),
             ),
             const SizedBox(height: 32),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              text: 'Play Again',
+            SafeArea(
+              top: false,
+              minimum: EdgeInsets.zero,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewPadding.bottom,
+                ),
+                child: PrimaryButton(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  text: 'Play Again',
+                ),
+              ),
             ),
           ],
         ),

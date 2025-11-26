@@ -314,7 +314,12 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
             
             // Footer with Action Button (Stitch style)
             Container(
-              padding: EdgeInsets.all(DesignSystem.spacingM),
+              padding: EdgeInsets.only(
+                left: DesignSystem.spacingM,
+                right: DesignSystem.spacingM,
+                top: DesignSystem.spacingM,
+                bottom: DesignSystem.spacingM + MediaQuery.of(context).viewPadding.bottom,
+              ),
               decoration: BoxDecoration(
                 color: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
                 border: Border(
@@ -326,6 +331,7 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
               ),
               child: SafeArea(
                 top: false,
+                minimum: EdgeInsets.zero,
                 child: SizedBox(
                   width: double.infinity,
                   child: PrimaryButton(

@@ -184,10 +184,19 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 32.sp),
-                PrimaryButton(
-                  onTap: _startGame,
-                  text: 'Start Game',
-                  color: AppColors.oceanBlue,
+                SafeArea(
+                  top: false,
+                  minimum: EdgeInsets.zero,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewPadding.bottom,
+                    ),
+                    child: PrimaryButton(
+                      onTap: _startGame,
+                      text: 'Start Game',
+                      color: AppColors.oceanBlue,
+                    ),
+                  ),
                 ),
               ],
             ),

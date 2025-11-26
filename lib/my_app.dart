@@ -40,11 +40,13 @@ class _MyAppState extends ConsumerState<MyApp> {
               ),
               child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
+                  // Removed deprecated properties:
+                  // - statusBarColor (deprecated in Android 15)
+                  // - systemNavigationBarColor (deprecated in Android 15)
+                  // - systemNavigationBarDividerColor (deprecated in Android 15)
+                  // These are now handled automatically by the system in edge-to-edge mode
                   statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
-                  systemNavigationBarColor: Colors.transparent,
                   systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
-                  systemNavigationBarDividerColor: Colors.transparent,
                 ),
                 child: _Unfocus(child: child),
               ),

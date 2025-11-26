@@ -59,7 +59,10 @@ class _TabsViewState extends ConsumerState<TabsView> {
           ProfileTab(),
         ],
       ),
-      bottomNavigationBar: const _BottomNavigationBar(),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: const _BottomNavigationBar(),
+      ),
     );
   }
 }

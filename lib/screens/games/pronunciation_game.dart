@@ -316,12 +316,21 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                 ),
               ),
               
-              // Submit button
-              PrimaryButton(
-                onTap: _submitAnswer,
-                enabled: _selectedAnswer != null,
-                text: _currentIndex < _questions.length - 1 ? 'Next' : 'Finish',
-                color: AppColors.accentOrange,
+              // Submit button with safe bottom padding
+              SafeArea(
+                top: false,
+                minimum: EdgeInsets.zero,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewPadding.bottom,
+                  ),
+                  child: PrimaryButton(
+                    onTap: _submitAnswer,
+                    enabled: _selectedAnswer != null,
+                    text: _currentIndex < _questions.length - 1 ? 'Next' : 'Finish',
+                    color: AppColors.accentOrange,
+                  ),
+                ),
               ),
             ],
           ),
