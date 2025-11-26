@@ -23,10 +23,18 @@ class HuggingFaceChatProvider extends Notifier<BaseProviderState> with BaseProvi
   
   // Hugging Face Configuration
   // Get your FREE token at: https://huggingface.co/settings/tokens
-  static const String _apiKey = 'YOUR_HUGGINGFACE_TOKEN_HERE'; // Replace with your token from GitHub Secrets or environment
-  static const String _modelName = 'meta-llama/Llama-2-7b-chat-hf'; // Free model
+  // IMPORTANT: Set this from environment variable or GitHub Secrets
+  static String get _apiKey {
+    // Try to get from environment, fallback to placeholder
+    const envKey = String.fromEnvironment('HUGGINGFACE_API_KEY', defaultValue: 'YOUR_HUGGINGFACE_TOKEN_HERE');
+    return envKey;
+  }
   
-  String get _apiUrl => 'https://router.huggingface.co/models/$_modelName';
+  // Using a text generation model that's reliable
+  // Options: 'gpt2', 'distilgpt2', 'microsoft/DialoGPT-small'
+  static const String _modelName = 'distilgpt2'; // Smaller, faster, more reliable
+  
+  String get _apiUrl => 'https://api-inference.huggingface.co/models/$_modelName';
   
   String _selectedLanguage = 'English';
   String? _systemPrompt;
@@ -98,14 +106,25 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
 
     try {
       // Format conversation for Hugging Face
-      // Build the full conversation context
+      // For text generation models, we need to build a prompt
       String conversationContext = _systemPrompt ?? '';
       conversationContext += '\n\nConversation:\n';
       
-      for (var msg in _messages) {
+      // Only use the last few messages to avoid token limits
+      final recentMessages = _messages.length > 6 
+          ? _messages.sublist(_messages.length - 6)
+          : _messages;
+      
+      for (var msg in recentMessages) {
         conversationContext += '${msg.role == 'user' ? 'User' : 'Assistant'}: ${msg.content}\n';
       }
       conversationContext += 'Assistant:';
+
+      // Check if API key is set
+      if (_apiKey == 'YOUR_HUGGINGFACE_TOKEN_HERE' || _apiKey.isEmpty) {
+        debugPrint('⚠️ Hugging Face API token not configured');
+        throw Exception('AI Chat is not configured. Please contact support or check app settings.');
+      }
 
       // Call Hugging Face Inference API
       final response = await _dio.post(
@@ -116,13 +135,18 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
             'Authorization': 'Bearer $_apiKey',
           },
           validateStatus: (status) => status! < 500,
+          receiveTimeout: const Duration(seconds: 60),
+          sendTimeout: const Duration(seconds: 30),
         ),
         data: {
           'inputs': conversationContext,
           'parameters': {
-            'max_new_tokens': 500,
+            'max_new_tokens': 200,
             'temperature': 0.7,
             'return_full_text': false,
+            'do_sample': true,
+            'top_p': 0.9,
+            'repetition_penalty': 1.2,
           },
         },
       );
@@ -289,10 +313,26 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
       
       // Re-throw with more context
       final errorMessage = e.toString();
+      debugPrint('AI Chat error details: $errorMessage');
+      
       if (errorMessage.contains('type') && errorMessage.contains('subtype')) {
-        throw Exception('Failed to send message: API response format error. Please try again.');
+        throw Exception('API response format error. The AI service may be experiencing issues. Please try again in a moment.');
       }
-      throw Exception('Failed to send message: ${e.toString()}');
+      
+      if (errorMessage.contains('401') || errorMessage.contains('Unauthorized')) {
+        throw Exception('API authentication failed. Please check your Hugging Face token configuration.');
+      }
+      
+      if (errorMessage.contains('503') || errorMessage.contains('loading')) {
+        throw Exception('AI model is loading. Please wait 10-20 seconds and try again.');
+      }
+      
+      if (errorMessage.contains('429') || errorMessage.contains('rate limit')) {
+        throw Exception('Rate limit exceeded. Please try again later.');
+      }
+      
+      // Provide user-friendly error message
+      throw Exception('Failed to send message. ${errorMessage.length > 100 ? errorMessage.substring(0, 100) + "..." : errorMessage}');
     }
   }
 

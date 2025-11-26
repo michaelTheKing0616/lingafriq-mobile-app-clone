@@ -210,11 +210,19 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
         final oldPoints = user.completed_point;
         debugPrint('User points before update: $oldPoints');
         
+        // Submit game completion
+        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
+          gameType: 'fill_blank',
+          languageId: widget.language.id,
+          points: points,
+          score: _correctAnswers,
+        );
+        
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
         debugPrint('Account update success: $updateSuccess');
         
         if (updateSuccess) {
-          await Future.delayed(const Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 1500));
           
           try {
             final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
@@ -226,7 +234,7 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
               if (newPoints > oldPoints) {
                 debugPrint('✅ Game points successfully added!');
               } else {
-                debugPrint('⚠️ Points may not have been added. Server may need game completion endpoint.');
+                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
               }
             }
           } catch (e) {
@@ -250,18 +258,72 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
     final isDark = context.isDarkMode;
     final progress = (_currentIndex + 1) / _questions.length;
     
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop && !_gameComplete) {
+          final shouldPop = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Exit Game?'),
+              content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Exit'),
+                ),
+              ],
+            ),
+          );
+          if (shouldPop == true && context.mounted) {
+            Navigator.pop(context);
+          }
+        }
+      },
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+              ),
+              onPressed: () async {
+                if (!_gameComplete) {
+                  final shouldPop = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Exit Game?'),
+                      content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Exit'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (shouldPop == true && context.mounted) {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  Navigator.pop(context);
+                }
+              },
+            ),
           ),
-          onPressed: () => Navigator.pop(context),
-        ),
         title: Text(
           'Fill in the Blank',
           style: TextStyle(
@@ -321,19 +383,43 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
                 padding: EdgeInsets.all(DesignSystem.spacingM),
                 child: Column(
                   children: [
-                    // Emoji/Illustration Area
+                    // Enhanced Visual Context Area
                     Container(
                       width: double.infinity,
-                      height: 200,
+                      padding: EdgeInsets.all(DesignSystem.spacingL),
                       decoration: BoxDecoration(
-                        color: AppColors.stitchPrimary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      ),
-                      child: Center(
-                        child: Text(
-                          question.emoji ?? '📝',
-                          style: TextStyle(fontSize: 80),
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.stitchPrimary.withOpacity(0.2),
+                            AppColors.stitchSecondary.withOpacity(0.1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
+                        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                        border: Border.all(
+                          color: AppColors.stitchPrimary.withOpacity(0.3),
+                          width: 2,
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            question.emoji ?? '📝',
+                            style: TextStyle(fontSize: 100),
+                          ),
+                          SizedBox(height: DesignSystem.spacingM),
+                          Text(
+                            question.englishWord,
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
                     ),
                     SizedBox(height: DesignSystem.spacingL),
@@ -461,6 +547,7 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

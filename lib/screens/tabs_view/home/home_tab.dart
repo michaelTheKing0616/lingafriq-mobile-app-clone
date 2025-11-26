@@ -83,30 +83,38 @@ class HomeTab extends HookConsumerWidget {
                   child: Padding(
                     padding: EdgeInsets.only(
                       top: MediaQuery.of(context).padding.top + 8,
-                      left: 8,
+                      left: 16,
+                      right: 16,
+                      bottom: 8,
                     ),
-                    child: IconButton(
-                      onPressed: () {
-                        ref.read(scaffoldKeyProvider).currentState!.openDrawer();
-                      },
-                      icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            ref.read(scaffoldKeyProvider).currentState!.openDrawer();
+                          },
+                          icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              final title = ref.watch(_titleProvider);
+                              return GreetingsBuilder(
+                                // pageTitle: "Welcome Back",
+                                pageTitle: "$title, ${ref.watch(userProvider)?.username}",
+                                showGreeting: ref.watch(userProvider) != null,
+                                greetingTitle: "",
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                // const PointsAndProfileImageBuilder(),
-                Consumer(
-                  builder: (context, ref, child) {
-                    final title = ref.watch(_titleProvider);
-                    return GreetingsBuilder(
-                      // pageTitle: "Welcome Back",
-                      pageTitle: "$title, ${ref.watch(userProvider)?.username}",
-                      showGreeting: ref.watch(userProvider) != null,
-                      greetingTitle: "",
-                    );
-                  },
-                )
               ],
             ),
           ),

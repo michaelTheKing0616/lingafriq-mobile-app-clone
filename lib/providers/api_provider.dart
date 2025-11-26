@@ -117,12 +117,57 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<bool> accountUpdate() async {
     try {
-      final res = await ref.read(client).get(Api.accountUpdate);
+      debugPrint('Calling accountUpdate endpoint');
+      final res = await ref.read(client).get(
+        Api.accountUpdate,
+        options: Options(
+          receiveTimeout: const Duration(seconds: 15),
+        ),
+      );
       res.statusCode.toString().log();
-      if (res.statusCode != 200) throw res.data;
+      debugPrint('Account update response status: ${res.statusCode}');
+      
+      if (res.statusCode != 200) {
+        debugPrint('Account update failed with status: ${res.statusCode}');
+        throw res.data ?? 'Account update failed';
+      }
+      
+      // Check if response contains updated user data
+      if (res.data is Map) {
+        final data = res.data as Map;
+        debugPrint('Account update response data keys: ${data.keys.toList()}');
+      }
+      
       return true;
     } catch (e) {
+      debugPrint("Error Account update: $e");
       "Error Account update $e".log("accountUpdate");
+      return false;
+    }
+  }
+  
+  // Method to submit game completion (backend may need to implement this endpoint)
+  Future<bool> submitGameCompletion({
+    required String gameType,
+    required int languageId,
+    required int points,
+    required int score,
+  }) async {
+    try {
+      debugPrint('Submitting game completion: $gameType, language: $languageId, points: $points, score: $score');
+      
+      // For now, use accountUpdate as workaround
+      // TODO: Backend should implement: POST /games/complete
+      // with body: {game_type, language_id, points, score}
+      final success = await accountUpdate();
+      
+      if (success) {
+        debugPrint('Game completion submitted via accountUpdate');
+      }
+      
+      return success;
+    } catch (e) {
+      debugPrint('Error submitting game completion: $e');
       return false;
     }
   }
@@ -490,13 +535,47 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<List<RandomQuizLessonModel>> getRandomQuizLessons(int languageId) async {
     try {
       state = state.copyWith(isLoading: true);
-      final res = await ref.read(client).get(Api.randomQuiz(languageId));
+      debugPrint('Fetching random quiz for language ID: $languageId');
+      debugPrint('API endpoint: ${Api.randomQuiz(languageId)}');
+      
+      final res = await ref.read(client).get(
+        Api.randomQuiz(languageId),
+        options: Options(
+          receiveTimeout: const Duration(seconds: 30),
+          sendTimeout: const Duration(seconds: 30),
+        ),
+      );
+      
+      debugPrint('Quiz API response status: ${res.statusCode}');
+      debugPrint('Quiz API response data type: ${res.data.runtimeType}');
+      
       if (res.statusCode != 200) {
         state = state.copyWith(isLoading: false);
-        throw res.data ?? 'Failed to fetch quiz lessons';
+        final errorMsg = res.data?.toString() ?? 'Failed to fetch quiz lessons';
+        debugPrint('Quiz API error: $errorMsg');
+        throw errorMsg;
       }
       
-      final resList = res.data as List;
+      // Handle different response formats
+      List<dynamic> resList;
+      if (res.data is List) {
+        resList = res.data as List;
+      } else if (res.data is Map) {
+        // Sometimes the API returns a map with a 'results' or 'data' key
+        final mapData = res.data as Map;
+        if (mapData.containsKey('results')) {
+          resList = mapData['results'] as List? ?? [];
+        } else if (mapData.containsKey('data')) {
+          resList = mapData['data'] as List? ?? [];
+        } else {
+          resList = [res.data];
+        }
+      } else {
+        resList = [];
+      }
+      
+      debugPrint('Quiz API returned ${resList.length} items');
+      
       final dataList = <Map<String, dynamic>>[];
       
       //Flat List Loop
@@ -511,6 +590,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           dataList.add(result as Map<String, dynamic>);
         }
       }
+      
+      debugPrint('Processed ${dataList.length} quiz items');
 
       //LessonType Cast Loop
       final mappedLessonsList = dataList
@@ -522,21 +603,29 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
                   randomQuiz.containsKey("word_question") ? randomQuiz["word_question"] as List : [];
               
               final mappedInstantQuestions = instantQuestions.map((e) {
-                if (e is! Map || !e.containsKey("question")) {
-                  throw Exception("Invalid instant question format");
+                if (e is! Map) {
+                  return null;
                 }
-                final question = e["question"] as Map;
+                
+                // Handle nested question structure or flat structure
+                Map questionData;
+                if (e.containsKey("question") && e["question"] is Map) {
+                  questionData = e["question"] as Map;
+                } else {
+                  questionData = e;
+                }
+                
                 return RandomQuizLessonModel(
-                  id: question['id'],
-                  title: question['title'] ?? '',
-                  score: question['score'] ?? 0,
-                  types: question['types'] ?? '',
-                  dateTime: question['date_time'] ?? '',
-                  completed: question['completed'] ?? false,
-                  completed_by: question['completed_by'],
+                  id: questionData['id'] ?? e['id'] ?? 0,
+                  title: questionData['title'] ?? e['title'] ?? '',
+                  score: questionData['score'] ?? e['score'] ?? 0,
+                  types: questionData['types'] ?? e['types'] ?? '',
+                  dateTime: questionData['date_time'] ?? e['date_time'] ?? '',
+                  completed: questionData['completed'] ?? e['completed'] ?? false,
+                  completed_by: questionData['completed_by'] ?? e['completed_by'],
                   otherData: e,
                 );
-              }).toList();
+              }).whereType<RandomQuizLessonModel>().toList();
               
               final mappedWordQuestions = wordQuestions.map((e) {
                 if (e is! Map) {

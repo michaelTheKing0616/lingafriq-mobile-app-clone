@@ -149,19 +149,34 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
     try {
       debugPrint('Updating user points: $points (matches: $_matches, total: $_totalPairs)');
       
+      // Calculate points: max 10 points for perfect game
+      final calculatedPoints = _totalPairs > 0 
+          ? (10 * (_matches / _totalPairs)).round()
+          : 0;
+      
       // Update user points using the same pattern as quizzes/lessons
       final user = ref.read(userProvider);
       if (user != null) {
         final oldPoints = user.completed_point;
         debugPrint('User points before update: $oldPoints');
         
-        // Call accountUpdate which should refresh user profile with latest points
+        // Submit game completion to backend
+        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
+          gameType: 'word_match',
+          languageId: widget.language.id,
+          points: calculatedPoints,
+          score: _matches,
+        );
+        
+        debugPrint('Game completion submission: $gameSuccess');
+        
+        // Also call accountUpdate to refresh profile
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
         debugPrint('Account update success: $updateSuccess');
         
         if (updateSuccess) {
           // Wait for server to process
-          await Future.delayed(const Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 1500));
           
           // Refresh user profile to get latest points
           try {
@@ -174,7 +189,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               if (newPoints > oldPoints) {
                 debugPrint('✅ Game points successfully added!');
               } else {
-                debugPrint('⚠️ Points may not have been added. Server may need game completion endpoint.');
+                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
               }
             }
           } catch (e) {
@@ -196,18 +211,72 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmall = screenWidth < 360;
     
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop && !_gameComplete) {
+          final shouldPop = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Exit Game?'),
+              content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Exit'),
+                ),
+              ],
+            ),
+          );
+          if (shouldPop == true && context.mounted) {
+            Navigator.pop(context);
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+              ),
+              onPressed: () async {
+                if (!_gameComplete) {
+                  final shouldPop = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Exit Game?'),
+                      content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Exit'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (shouldPop == true && context.mounted) {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  Navigator.pop(context);
+                }
+              },
+            ),
           ),
-          onPressed: () => Navigator.pop(context),
         ),
-      ),
       body: SafeArea(
         child: _gameComplete
             ? _buildGameComplete()
@@ -567,6 +636,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

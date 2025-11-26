@@ -142,11 +142,19 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
         final oldPoints = user.completed_point;
         debugPrint('User points before update: $oldPoints');
         
+        // Submit game completion
+        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
+          gameType: 'speed_challenge',
+          languageId: widget.language.id,
+          points: points,
+          score: _correctAnswers,
+        );
+        
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
         debugPrint('Account update success: $updateSuccess');
         
         if (updateSuccess) {
-          await Future.delayed(const Duration(milliseconds: 1000));
+          await Future.delayed(const Duration(milliseconds: 1500));
           
           try {
             final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
@@ -158,7 +166,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               if (newPoints > oldPoints) {
                 debugPrint('✅ Game points successfully added!');
               } else {
-                debugPrint('⚠️ Points may not have been added. Server may need game completion endpoint.');
+                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
               }
             }
           } catch (e) {
@@ -174,12 +182,66 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
   @override
   Widget build(BuildContext context) {
     if (!_gameStarted) {
-      return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pop(context),
-          ),
+      return PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (!didPop && !_gameComplete && _gameStarted) {
+            final shouldPop = await showDialog<bool>(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Exit Game?'),
+                content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: const Text('Exit'),
+                  ),
+                ],
+              ),
+            );
+            if (shouldPop == true && context.mounted) {
+              Navigator.pop(context);
+            }
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () async {
+                  if (!_gameComplete && _gameStarted) {
+                    final shouldPop = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Exit Game?'),
+                        content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text('Exit'),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (shouldPop == true && context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  } else {
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ),
           title: Text('Speed Challenge - ${widget.language.name}'),
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -382,6 +444,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             ],
           ),
         ),
+      ),
       ),
     );
   }
