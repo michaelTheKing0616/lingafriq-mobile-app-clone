@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
@@ -163,7 +164,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Conversational turn-taking
   ConversationTurn _turn = ConversationTurn.user;
   bool _userInterrupt = false;
-  CancelToken? _currentStreamCancel;
+  VoidCallback? _currentStreamCancel;
 
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
@@ -234,7 +235,7 @@ When the user is practicing, end your responses with a question or task to keep 
       throw Exception('Message cannot be empty');
     }
 
-    _currentStreamCancel?.cancel();
+    _currentStreamCancel?.call();
     final cancelToken = CancelToken();
     _currentStreamCancel = () => cancelToken.cancel();
 
@@ -381,7 +382,7 @@ When the user is practicing, end your responses with a question or task to keep 
 
         return;
       } catch (e) {
-        if (CancelToken.isCancel(e)) {
+        if (e is DioException && CancelToken.isCancel(e)) {
           state = state.copyWith(isLoading: false);
           return;
         }

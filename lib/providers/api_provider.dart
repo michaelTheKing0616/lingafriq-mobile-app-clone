@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history/models/history_response.dart';
 import 'package:lingafriq/history/models/section_history_model.dart';

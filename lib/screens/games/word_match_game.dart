@@ -637,7 +637,6 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           ],
         ),
       ),
-      ),
     );
   }
 }
