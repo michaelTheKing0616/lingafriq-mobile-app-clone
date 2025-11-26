@@ -103,11 +103,11 @@ class QuizAnswersScreen extends ConsumerWidget {
                               "Failed to mark quiz as complete".log("quiz_answers_screen");
                             }
                           }
-                          if (mounted) {
+                          if (context.mounted) {
                             Navigator.of(context).pop(true);
                           }
                         }
-                        if (mounted) {
+                        if (context.mounted) {
                           Navigator.of(context).pop(true);
                         }
                       },

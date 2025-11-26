@@ -231,7 +231,7 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                               "Failed to mark correction as complete".log("correction_screen");
                             }
                           }
-                          if (mounted) {
+                          if (context.mounted) {
                             Navigator.of(context).pop(true);
                           }
                         } else {
@@ -239,7 +239,7 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                           await Future.delayed(const Duration(milliseconds: 500));
                           showIndicator.value = {"isLoading": false, "isCorrect": false};
                           if (widget.isTakeQuiz) {
-                            if (mounted) {
+                            if (context.mounted) {
                               Navigator.of(context).pop(false);
                             }
                             return;

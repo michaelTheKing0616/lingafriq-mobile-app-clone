@@ -138,9 +138,8 @@ class TakeQuizScreen extends ConsumerWidget {
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e) {
                                           // Ensure loading state is cleared on error
-                                          if (mounted) {
-                                            ref.read(dialogProvider(e.toString())).showExceptionDialog();
-                                          }
+                                          // Show error dialog - context is checked by dialog provider
+                                          ref.read(dialogProvider(e.toString())).showExceptionDialog();
                                         }
                                       },
                                     ).animate(effects: kGradientTextEffects),
