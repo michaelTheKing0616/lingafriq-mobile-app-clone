@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/ai_chat_provider_huggingface.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -19,12 +19,18 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
+  String _streamingText = '';
+  bool _isStreaming = false;
 
   @override
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
+    // Interrupt AI if streaming
+    if (_isStreaming) {
+      ref.read(groqChatProvider.notifier).interruptAI();
+    }
     super.dispose();
   }
 
@@ -44,19 +50,43 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     final message = _messageController.text.trim();
     if (message.isEmpty) return;
 
+    // Interrupt AI if currently streaming
+    if (_isStreaming) {
+      ref.read(groqChatProvider.notifier).interruptAI();
+    }
+
     _messageController.clear();
     _focusNode.unfocus();
 
+    setState(() {
+      _streamingText = '';
+      _isStreaming = true;
+    });
+
     try {
-      await ref.read(huggingFaceChatProvider.notifier).sendMessage(message);
-      _scrollToBottom();
+      final provider = ref.read(groqChatProvider.notifier);
+      await for (final chunk in provider.sendMessageStream(message)) {
+        if (mounted) {
+          setState(() {
+            _streamingText += chunk;
+          });
+          _scrollToBottom();
+        }
+      }
     } catch (e) {
       if (mounted) {
         ref.read(dialogProvider('')).showPlatformDialogue(
               title: 'Error',
-              content: Text(e.toString()),
+              content: Text(e.toString().replaceAll('Exception: ', '')),
               action1Text: 'OK',
             );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _streamingText = '';
+          _isStreaming = false;
+        });
       }
     }
   }
@@ -72,14 +102,18 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         );
 
     if (result == true) {
-      await ref.read(huggingFaceChatProvider.notifier).clearChat();
+      await ref.read(groqChatProvider.notifier).clearChat();
+      setState(() {
+        _streamingText = '';
+        _isStreaming = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final chatNotifier = ref.read(huggingFaceChatProvider.notifier);
-    final chatState = ref.watch(huggingFaceChatProvider);
+    final chatNotifier = ref.read(groqChatProvider.notifier);
+    final chatState = ref.watch(groqChatProvider);
     final isDark = context.isDarkMode;
 
     return Scaffold(
@@ -241,15 +275,103 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildChatMessages(BuildContext context, HuggingFaceChatProvider chatProvider) {
+  Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider) {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount: chatProvider.messages.length,
+      itemCount: chatProvider.messages.length + (_isStreaming ? 1 : 0),
       itemBuilder: (context, index) {
+        if (index == chatProvider.messages.length && _isStreaming) {
+          // Show streaming message
+          return _buildStreamingBubble(context);
+        }
         final message = chatProvider.messages[index];
         return _buildMessageBubble(context, message);
       },
+    );
+  }
+
+  Widget _buildStreamingBubble(BuildContext context) {
+    final isDark = context.isDarkMode;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 32,
+            height: 32,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.primaryGreen,
+                  AppColors.accentGold,
+                ],
+              ),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.smart_toy,
+              color: Colors.white,
+              size: 18,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.grey[800] : Colors.grey[100],
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                  bottomLeft: Radius.circular(4),
+                  bottomRight: Radius.circular(20),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _streamingText.isEmpty ? '...' : _streamingText,
+                    style: TextStyle(
+                      color: isDark ? Colors.white : Colors.black87,
+                      fontSize: 15.sp,
+                      height: 1.4,
+                    ),
+                  ),
+                  if (_streamingText.isNotEmpty)
+                    const SizedBox(height: 4),
+                  if (_streamingText.isNotEmpty)
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 12,
+                          height: 12,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppColors.primaryGreen,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          'AI is typing...',
+                          style: TextStyle(
+                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -349,9 +471,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(BuildContext context, HuggingFaceChatProvider chatProvider) {
+  Widget _buildMessageInput(BuildContext context, GroqChatProvider chatProvider) {
     final isDark = context.isDarkMode;
-    final isLoading = chatProvider.isBusy;
+    final isLoading = chatProvider.isBusy || _isStreaming;
 
     return Container(
       decoration: BoxDecoration(
@@ -384,6 +506,16 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   maxLines: null,
                   textInputAction: TextInputAction.send,
                   onSubmitted: (_) => _sendMessage(),
+                  onChanged: (_) {
+                    // Interrupt AI when user starts typing
+                    if (_isStreaming) {
+                      ref.read(groqChatProvider.notifier).interruptAI();
+                      setState(() {
+                        _isStreaming = false;
+                        _streamingText = '';
+                      });
+                    }
+                  },
                   decoration: InputDecoration(
                     hintText: 'Type your message...',
                     hintStyle: TextStyle(
