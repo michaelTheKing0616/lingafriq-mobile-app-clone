@@ -433,6 +433,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
           ),
         ),
       ),
+      ),
     );
   }
 
