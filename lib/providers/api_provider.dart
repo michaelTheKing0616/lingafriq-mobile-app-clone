@@ -491,14 +491,21 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       state = state.copyWith(isLoading: true);
       final res = await ref.read(client).get(Api.randomQuiz(languageId));
-      if (res.statusCode != 200) throw res.data;
+      if (res.statusCode != 200) {
+        state = state.copyWith(isLoading: false);
+        throw res.data ?? 'Failed to fetch quiz lessons';
+      }
+      
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
+      
       //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
-            dataList.add(element);
+            if (element is Map) {
+              dataList.add(element as Map<String, dynamic>);
+            }
           }
         } else if (result is Map) {
           dataList.add(result as Map<String, dynamic>);
@@ -508,45 +515,61 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       //LessonType Cast Loop
       final mappedLessonsList = dataList
           .map<List<RandomQuizLessonModel>>((randomQuiz) {
-            final instantQuestions =
-                randomQuiz.containsKey("inst_question") ? randomQuiz["inst_question"] as List : [];
-            final wordQuestions =
-                randomQuiz.containsKey("word_question") ? randomQuiz["word_question"] as List : [];
-            final mappedInstantQuestions = instantQuestions.map((e) {
-              final question = e["question"];
-              return RandomQuizLessonModel(
-                id: question['id'],
-                title: question['title'],
-                score: question['score'],
-                types: question['types'],
-                dateTime: question['date_time'],
-                completed: question['completed'],
-                completed_by: question['completed_by'],
-                otherData: e,
-              );
-            }).toList();
-            final mappedWordQuestions = wordQuestions.map((e) {
-              return RandomQuizLessonModel(
-                id: e['id'],
-                title: e['title'],
-                score: e['score'] ?? 0,
-                types: e['types'],
-                dateTime: e['date_time'],
-                completed: e['completed'],
-                completed_by: e['completed_by'],
-                otherData: e,
-              );
-            }).toList();
-            final merged = [...mappedInstantQuestions, ...mappedWordQuestions];
-            return merged;
+            try {
+              final instantQuestions =
+                  randomQuiz.containsKey("inst_question") ? randomQuiz["inst_question"] as List : [];
+              final wordQuestions =
+                  randomQuiz.containsKey("word_question") ? randomQuiz["word_question"] as List : [];
+              
+              final mappedInstantQuestions = instantQuestions.map((e) {
+                if (e is! Map || !e.containsKey("question")) {
+                  throw Exception("Invalid instant question format");
+                }
+                final question = e["question"] as Map;
+                return RandomQuizLessonModel(
+                  id: question['id'],
+                  title: question['title'] ?? '',
+                  score: question['score'] ?? 0,
+                  types: question['types'] ?? '',
+                  dateTime: question['date_time'] ?? '',
+                  completed: question['completed'] ?? false,
+                  completed_by: question['completed_by'],
+                  otherData: e,
+                );
+              }).toList();
+              
+              final mappedWordQuestions = wordQuestions.map((e) {
+                if (e is! Map) {
+                  throw Exception("Invalid word question format");
+                }
+                return RandomQuizLessonModel(
+                  id: e['id'],
+                  title: e['title'] ?? '',
+                  score: e['score'] ?? 0,
+                  types: e['types'] ?? '',
+                  dateTime: e['date_time'] ?? '',
+                  completed: e['completed'] ?? false,
+                  completed_by: e['completed_by'],
+                  otherData: e,
+                );
+              }).toList();
+              
+              final merged = [...mappedInstantQuestions, ...mappedWordQuestions];
+              return merged;
+            } catch (e) {
+              "Error parsing quiz data: $e".log("getRandomQuizLessons");
+              return <RandomQuizLessonModel>[];
+            }
           })
           .toList()
           .expand((e) => e)
           .toList();
+      
       state = state.copyWith(isLoading: false);
       return mappedLessonsList;
     } catch (e) {
       state = state.copyWith(isLoading: false);
+      "Error in getRandomQuizLessons: $e".log("getRandomQuizLessons");
       rethrow;
     }
   }

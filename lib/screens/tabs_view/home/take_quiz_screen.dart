@@ -110,28 +110,38 @@ class TakeQuizScreen extends ConsumerWidget {
                                     top: constraints.maxHeight * 0.075,
                                     child: _RandomTextBuilder(
                                       onTap: () async {
-                                        final randomQuizes = await ref
-                                            .read(apiProvider.notifier)
-                                            .getRandomQuizLessons(language.id);
-                                        // randomQuizes.shuffle();
-                                        if (randomQuizes.isEmpty) {
-                                          ref
-                                              .read(dialogProvider(
-                                                  "We're working to add random quiz!"))
-                                              .showSuccessSnackBar();
-                                          return;
-                                        }
-                                        final random = Random();
-                                        do {
-                                          final indexToOpen =
-                                              random.randomUpto(randomQuizes.length);
-                                          final quiz = randomQuizes[indexToOpen];
-                                          final result = await openQuizDetail(quiz, ref);
-                                          if (result == null) break;
-                                          if (result == true) {
-                                            randomQuizes.removeAt(indexToOpen);
+                                        try {
+                                          final randomQuizes = await ref
+                                              .read(apiProvider.notifier)
+                                              .getRandomQuizLessons(language.id);
+                                          // randomQuizes.shuffle();
+                                          if (randomQuizes.isEmpty) {
+                                            if (mounted) {
+                                              ref
+                                                  .read(dialogProvider(
+                                                      "We're working to add random quiz!"))
+                                                  .showSuccessSnackBar();
+                                            }
+                                            return;
                                           }
-                                        } while (randomQuizes.isNotEmpty);
+                                          final random = Random();
+                                          do {
+                                            if (randomQuizes.isEmpty) break;
+                                            final indexToOpen =
+                                                random.randomUpto(randomQuizes.length);
+                                            final quiz = randomQuizes[indexToOpen];
+                                            final result = await openQuizDetail(quiz, ref);
+                                            if (result == null) break;
+                                            if (result == true) {
+                                              randomQuizes.removeAt(indexToOpen);
+                                            }
+                                          } while (randomQuizes.isNotEmpty);
+                                        } catch (e) {
+                                          // Ensure loading state is cleared on error
+                                          if (mounted) {
+                                            ref.read(dialogProvider(e.toString())).showExceptionDialog();
+                                          }
+                                        }
                                       },
                                     ).animate(effects: kGradientTextEffects),
                                   ),
