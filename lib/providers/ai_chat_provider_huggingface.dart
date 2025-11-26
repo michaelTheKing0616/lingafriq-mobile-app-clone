@@ -16,7 +16,7 @@ final huggingFaceChatProvider = NotifierProvider<HuggingFaceChatProvider, BasePr
   return HuggingFaceChatProvider();
 });
 
-class HuggingFaceChatProvider extends BaseProvider {
+class HuggingFaceChatProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<ChatMessage> _messages = [];
   final Dio _dio = Dio();
   
@@ -35,9 +35,15 @@ class HuggingFaceChatProvider extends BaseProvider {
   bool get hasMessages => _messages.isNotEmpty;
   bool get isBusy => state.isLoading;
 
-  HuggingFaceChatProvider() {
+  @override
+  BaseProviderState build() {
     _loadChatHistory();
     _initializeSystemPrompt();
+    return BaseProviderState();
+  }
+
+  HuggingFaceChatProvider() {
+    // Initialization moved to build()
   }
 
   void _initializeSystemPrompt() {
@@ -87,7 +93,7 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
     state = state.copyWith();
     await _saveChatHistory();
 
-    setBusy();
+    state = state.copyWith(isLoading: true);
 
     try {
       // Format conversation for Hugging Face
@@ -120,20 +126,58 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
         },
       );
 
-      setIdle();
+      state = state.copyWith(isLoading: false);
 
       if (response.statusCode == 200) {
-        // Hugging Face returns array of generated text
-        final generatedText = response.data is List
-            ? response.data[0]['generated_text'] as String
-            : response.data['generated_text'] as String?;
+        // Hugging Face API response format can vary:
+        // 1. List of maps: [{"generated_text": "..."}]
+        // 2. Single map: {"generated_text": "..."}
+        // 3. Direct string in some cases
+        String? generatedText;
+        
+        if (response.data is List) {
+          // Handle list response
+          final listData = response.data as List;
+          if (listData.isNotEmpty) {
+            final firstItem = listData[0];
+            if (firstItem is Map) {
+              generatedText = firstItem['generated_text'] as String?;
+            } else if (firstItem is String) {
+              generatedText = firstItem;
+            }
+          }
+        } else if (response.data is Map) {
+          // Handle map response
+          final mapData = response.data as Map;
+          generatedText = mapData['generated_text'] as String?;
+          // Sometimes the response is nested
+          if (generatedText == null && mapData.containsKey('output')) {
+            final output = mapData['output'];
+            if (output is List && output.isNotEmpty) {
+              final firstOutput = output[0];
+              if (firstOutput is Map) {
+                generatedText = firstOutput['generated_text'] as String?;
+              }
+            }
+          }
+        } else if (response.data is String) {
+          generatedText = response.data as String;
+        }
         
         if (generatedText == null || generatedText.isEmpty) {
-          throw Exception('Empty response from AI');
+          throw Exception('Empty response from AI. Response format: ${response.data.runtimeType}');
         }
         
         // Clean up the response (remove context if included)
         String assistantMessage = generatedText.trim();
+        
+        // Remove the conversation context prefix if it was included
+        if (assistantMessage.contains('Assistant:')) {
+          final parts = assistantMessage.split('Assistant:');
+          if (parts.length > 1) {
+            assistantMessage = parts.last.trim();
+          }
+        }
         
         // Add assistant response to chat
         final assistantMsg = ChatMessage(
@@ -155,12 +199,13 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
         throw Exception(errorMessage.toString());
       }
     } catch (e) {
-      setIdle();
+      state = state.copyWith(isLoading: false);
       
       // Remove the user message if API call failed
       if (_messages.isNotEmpty && _messages.last.role == 'user') {
         _messages.removeLast();
         state = state.copyWith();
+        await _saveChatHistory();
       }
       
       if (e is DioException) {
@@ -173,9 +218,24 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
         } else if (e.type == DioExceptionType.connectionTimeout ||
             e.type == DioExceptionType.receiveTimeout) {
           throw Exception('Connection timeout. Please check your internet connection.');
+        } else if (e.response != null) {
+          // Try to extract error message from response
+          final errorData = e.response?.data;
+          String errorMsg = 'Failed to send message';
+          if (errorData is Map && errorData.containsKey('error')) {
+            errorMsg = errorData['error'].toString();
+          } else if (errorData is String) {
+            errorMsg = errorData;
+          }
+          throw Exception('Failed to send message: $errorMsg');
         }
       }
       
+      // Re-throw with more context
+      final errorMessage = e.toString();
+      if (errorMessage.contains('type') && errorMessage.contains('subtype')) {
+        throw Exception('Failed to send message: API response format error. Please try again.');
+      }
       throw Exception('Failed to send message: ${e.toString()}');
     }
   }
