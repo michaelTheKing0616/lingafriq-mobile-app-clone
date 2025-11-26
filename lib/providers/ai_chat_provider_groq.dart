@@ -226,7 +226,7 @@ When the user is practicing, end your responses with a question or task to keep 
 
   void interruptAI() {
     _userInterrupt = true;
-    _currentStreamCancel?.cancel();
+    _currentStreamCancel?.call();
   }
 
   // ----- Streaming Chat Message -----

@@ -295,6 +295,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             ),
           ),
         ),
+        ),
       );
     }
     
