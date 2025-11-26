@@ -11,16 +11,14 @@ import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity: FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Enable edge-to-edge display for Android 15+ (API 35+)
-        // This is the modern, non-deprecated way
+        // Enable edge-to-edge display for all Android versions
+        // This is the modern, non-deprecated way (works on all API levels)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         
-        // For Android 15+ (API 35+), use the new EdgeToEdge API
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-            // Android 15+ automatically handles edge-to-edge, but we ensure it's enabled
-            // The deprecated APIs (setStatusBarColor, setNavigationBarColor, etc.) 
-            // are automatically handled by the system
-        }
+        // For Android 15+ (API 35+), edge-to-edge is enabled by default when targeting SDK 35
+        // The deprecated APIs (setStatusBarColor, setNavigationBarColor, etc.) 
+        // are automatically handled by the system in edge-to-edge mode
+        // We've removed those deprecated calls from Flutter code
         
         // Enable immersive mode for navigation bar (hide by default, swipe up to show)
         // This prevents buttons from being hidden by the navigation bar
