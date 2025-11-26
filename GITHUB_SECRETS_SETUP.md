@@ -1,47 +1,125 @@
-# GitHub Secrets Setup Instructions
+# Setting Up GitHub Secrets for API Keys
 
-## ⚠️ IMPORTANT: Security Best Practice
+## Current Code Status
 
-**DO NOT commit the keystore file to the repository.** Instead, use GitHub Secrets to store it securely.
+✅ **The code IS set up** to use GitHub secrets via `String.fromEnvironment('GROQ_API_KEY')`
 
-## Step 1: Get the Base64 Encoded Keystore
+The Groq provider reads the API key from compile-time environment variables, which can be passed via `--dart-define` during the Flutter build process.
 
-The keystore has been encoded to `keystore_base64.txt`. Copy the entire contents of this file.
+## Step-by-Step Setup
 
-## Step 2: Add GitHub Secrets
+### Step 1: Add GitHub Secret
 
-Go to your repository: https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+1. Go to your GitHub repository: `https://github.com/lingafriq/mobile-app` (or your clone repo)
+2. Navigate to **Settings** → **Secrets and variables** → **Actions**
+3. Click **New repository secret**
+4. Add:
+   - **Name**: `GROQ_API_KEY`
+   - **Value**: Your Groq API key (get it from https://console.groq.com/)
+   - Click **Add secret**
 
-1. Navigate to: **Settings** → **Secrets and variables** → **Actions**
-2. Click **"New repository secret"** and add these 4 secrets:
+### Step 2: GitHub Actions Workflow (Already Updated!)
 
-### Secret 1: KEYSTORE_BASE64
-- **Name**: `KEYSTORE_BASE64`
-- **Value**: Paste the entire contents of `keystore_base64.txt` (the base64 encoded keystore)
+The workflow has been updated to automatically use the secret. It will:
+- Pass `GROQ_API_KEY` to the Flutter build via `--dart-define`
+- Build will work even if the secret is not set (with a warning)
 
-### Secret 2: KEYSTORE_PASSWORD
-- **Name**: `KEYSTORE_PASSWORD`
-- **Value**: `MyStorePass123!`
+### Step 3: Verify It Works
 
-### Secret 3: KEY_PASSWORD
-- **Name**: `KEY_PASSWORD`
-- **Value**: `MyStorePass123!`
+1. Push a commit to trigger the workflow
+2. Check the build logs - you should see the API key being passed (it won't be visible in logs for security)
+3. The app will be built with the API key embedded
 
-### Secret 4: KEY_ALIAS
-- **Name**: `KEY_ALIAS`
-- **Value**: `upload`
+## Local Development
 
-## Step 3: Verify Workflow
+For local development, you can set the environment variable:
 
-Once secrets are added, the GitHub Actions workflow will:
-1. Decode the keystore from `KEYSTORE_BASE64`
-2. Create `android/key.properties` with your credentials
-3. Build a signed AAB automatically
+### Windows PowerShell:
+```powershell
+$env:GROQ_API_KEY="your_groq_api_key_here"
+flutter run
+```
 
-## Security Notes
+### Windows CMD:
+```cmd
+set GROQ_API_KEY=your_groq_api_key_here
+flutter run
+```
 
-- ✅ Keystore is stored securely in GitHub Secrets (encrypted)
-- ✅ Keystore file is NOT in the repository
-- ✅ Only authorized users with repository access can use the secrets
-- ✅ Secrets are never exposed in logs or build outputs
+### Linux/Mac:
+```bash
+export GROQ_API_KEY="your_groq_api_key_here"
+flutter run
+```
 
+### Or use --dart-define directly:
+```bash
+flutter run --dart-define=GROQ_API_KEY=your_groq_api_key_here
+```
+
+## How It Works
+
+1. **GitHub Secret** → Stored securely in GitHub
+2. **Workflow** → Passes secret as environment variable
+3. **Flutter Build** → `--dart-define=GROQ_API_KEY=...` passes it to Dart
+4. **Code** → `String.fromEnvironment('GROQ_API_KEY')` reads it at compile time
+
+## Security Considerations
+
+⚠️ **Important**: API keys embedded in the app binary can be extracted by reverse engineering the APK/IPA.
+
+### For Production Apps, Consider:
+
+1. **Backend Proxy** (Recommended)
+   - Store API key on your backend server
+   - App calls your backend, backend calls Groq
+   - Key never leaves your server
+
+2. **Key Restrictions**
+   - In Groq console, set IP whitelist
+   - Set rate limits
+   - Monitor usage
+
+3. **Key Rotation**
+   - Rotate keys periodically
+   - If a key is exposed, revoke it immediately
+
+## Current Implementation
+
+The code in `lib/providers/ai_chat_provider_groq.dart`:
+
+```dart
+static String get _groqApiKey {
+  const envKey = String.fromEnvironment('GROQ_API_KEY', defaultValue: 'YOUR_GROQ_API_KEY');
+  return envKey;
+}
+```
+
+This reads the key at compile time. If not provided, it uses the placeholder `'YOUR_GROQ_API_KEY'`.
+
+## Testing
+
+After setting up the secret:
+
+1. **In CI/CD**: The workflow will automatically use it
+2. **Locally**: Set the environment variable or use `--dart-define`
+3. **Verify**: The app should be able to make API calls to Groq
+
+## Troubleshooting
+
+### "AI Chat is not configured" error
+- Check that `GROQ_API_KEY` secret is set in GitHub
+- Verify the secret name matches exactly: `GROQ_API_KEY`
+- For local dev, ensure environment variable is set
+
+### Build succeeds but API calls fail
+- Verify the API key is valid in Groq console
+- Check API key permissions
+- Ensure the key hasn't been revoked
+
+## Next Steps
+
+1. ✅ Add `GROQ_API_KEY` secret to GitHub
+2. ✅ Workflow is already updated
+3. ✅ Code is ready to use it
+4. 🚀 Push a commit to test!

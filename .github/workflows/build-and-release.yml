@@ -179,7 +179,17 @@ jobs:
         run: flutter clean
 
       - name: 🏗️ Build AAB (Release)
-        run: flutter build appbundle --release --split-debug-info=build/symbols
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: |
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "⚠️ Warning: GROQ_API_KEY secret not set. Building without API key."
+            flutter build appbundle --release --split-debug-info=build/symbols
+          else
+            flutter build appbundle --release \
+              --dart-define=GROQ_API_KEY="$GROQ_API_KEY" \
+              --split-debug-info=build/symbols
+          fi
 
       - name: 🚚 Package AAB and mapping file
         run: |
@@ -303,16 +313,24 @@ jobs:
       - name: 🏗️ Build iOS Archive (Release)
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
         run: |
+          build_args="--release --split-debug-info=build/symbols"
+          if [ -n "$GROQ_API_KEY" ]; then
+            build_args="$build_args --dart-define=GROQ_API_KEY=$GROQ_API_KEY"
+          else
+            echo "⚠️ Warning: GROQ_API_KEY secret not set. Building without API key."
+          fi
+          
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
             # Build signed IPA
             echo "🔐 Building signed IPA..."
-            flutter build ipa --release --split-debug-info=build/symbols
+            flutter build ipa $build_args
           else
             # Build archive without signing (for manual signing later)
             echo "⚠️ No signing credentials found. Building archive without signing..."
             echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols
+            flutter build ios --no-codesign $build_args
           fi
 
       - name: 🚚 Package iOS build with version
