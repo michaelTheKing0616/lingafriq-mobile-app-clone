@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'base_provider.dart';
 
 final dailyGoalsProvider = NotifierProvider<DailyGoalsProvider, BaseProviderState>(() {
@@ -22,7 +23,25 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
     _loadGoals();
     _loadStreak();
     _initializeDailyGoals();
+    _syncWithBackend();
     return BaseProviderState();
+  }
+
+  Future<void> _syncWithBackend() async {
+    try {
+      final backendGoals = await ref.read(apiProvider.notifier).getDailyGoals();
+      if (backendGoals.containsKey('goals') && backendGoals.containsKey('streak')) {
+        final backendStreak = backendGoals['streak'] as int? ?? 0;
+        if (backendStreak > _currentStreak) {
+          _currentStreak = backendStreak;
+          await _saveStreak();
+        }
+        // TODO: Sync individual goals if needed
+      }
+    } catch (e) {
+      debugPrint('Error syncing daily goals with backend: $e');
+      // Silently fail - local state is primary
+    }
   }
 
   void _initializeDailyGoals() {

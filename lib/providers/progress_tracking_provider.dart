@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/progress_metrics_model.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'base_provider.dart';
 
 final progressTrackingProvider = NotifierProvider<ProgressTrackingProvider, BaseProviderState>(() {
@@ -29,7 +30,22 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
   BaseProviderState build() {
     _loadMetrics();
     _loadHistory();
+    _syncWithBackend();
     return BaseProviderState();
+  }
+
+  Future<void> _syncWithBackend() async {
+    try {
+      final backendMetrics = await ref.read(apiProvider.notifier).getProgressMetrics();
+      if (backendMetrics.isNotEmpty) {
+        _metrics = ProgressMetrics.fromMap(backendMetrics);
+        await _saveMetrics();
+        state = state.copyWith();
+      }
+    } catch (e) {
+      debugPrint('Error syncing progress metrics with backend: $e');
+      // Silently fail - local state is primary
+    }
   }
 
   void recordWordsLearned(int count, {String? language}) {

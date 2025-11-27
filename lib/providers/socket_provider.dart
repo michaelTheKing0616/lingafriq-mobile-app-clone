@@ -25,11 +25,15 @@ class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin 
 
   Future<void> connect(String userId, String username) async {
     try {
-      // Replace with your actual Socket.io server URL
-      final serverUrl = Api.baseurl.replaceFirst('http://', '').replaceFirst('https://', '');
+      // Extract base URL and convert to WebSocket URL
+      final baseUrl = Api.baseurl;
+      final wsUrl = baseUrl
+          .replaceFirst('http://', 'ws://')
+          .replaceFirst('https://', 'wss://')
+          .replaceAll(RegExp(r'/$'), ''); // Remove trailing slash
       
       _socket = IO.io(
-        'https://$serverUrl', // or your Socket.io server URL
+        wsUrl,
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .enableAutoConnect()

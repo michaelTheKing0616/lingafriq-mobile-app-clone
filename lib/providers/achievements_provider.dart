@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/achievement_model.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'base_provider.dart';
 
 final achievementsProvider = NotifierProvider<AchievementsProvider, BaseProviderState>(() {
@@ -25,7 +26,29 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
     _loadAchievements();
     _loadXP();
     _initializeAchievements();
+    _syncWithBackend();
     return BaseProviderState();
+  }
+
+  Future<void> _syncWithBackend() async {
+    try {
+      final backendAchievements = await ref.read(apiProvider.notifier).getAchievements();
+      if (backendAchievements.isNotEmpty) {
+        // Update local achievements with backend data
+        for (final backendAchievement in backendAchievements) {
+          final id = backendAchievement['id'] as String;
+          final index = _achievements.indexWhere((a) => a.id == id);
+          if (index >= 0 && (backendAchievement['isUnlocked'] as bool? ?? false)) {
+            _achievements[index] = Achievement.fromMap(backendAchievement);
+          }
+        }
+        await _saveAchievements();
+        state = state.copyWith();
+      }
+    } catch (e) {
+      debugPrint('Error syncing achievements with backend: $e');
+      // Silently fail - local state is primary
+    }
   }
 
   void _initializeAchievements() {

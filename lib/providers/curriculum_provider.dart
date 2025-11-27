@@ -39,14 +39,23 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
         throw Exception('Curriculum bundle not found');
       }
 
-      // Find the main curriculum JSON file
-      final files = await curriculumDir.list().toList();
-      final jsonFile = files.firstWhere(
-        (file) => file.path.endsWith('.json'),
-        orElse: () => throw Exception('No JSON file found'),
-      );
+      // Try to load the main compact curriculum file first
+      final mainFile = File('$bundleName/curriculum/curriculum_compact_A1_B1_all_languages.json');
+      File jsonFile;
+      
+      if (await mainFile.exists()) {
+        jsonFile = mainFile;
+      } else {
+        // Fallback: find any JSON file in the directory
+        final files = await curriculumDir.list().toList();
+        final foundFile = files.firstWhere(
+          (file) => file.path.endsWith('.json'),
+          orElse: () => throw Exception('No JSON file found'),
+        );
+        jsonFile = foundFile as File;
+      }
 
-      final jsonString = await File(jsonFile.path).readAsString();
+      final jsonString = await jsonFile.readAsString();
       _curriculum = Curriculum.fromJson(jsonString);
       
       await _saveCurriculum();
