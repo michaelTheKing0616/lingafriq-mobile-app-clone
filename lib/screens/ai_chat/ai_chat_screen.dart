@@ -225,6 +225,116 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     }
   }
 
+  void _showLanguageDirectionDialog(BuildContext context, bool isDark) {
+    final chatNotifier = ref.read(groqChatProvider.notifier);
+    final sourceLanguage = chatNotifier.sourceLanguage;
+    final targetLanguage = chatNotifier.targetLanguage;
+    
+    final languages = [
+      'English', 'Yoruba', 'Hausa', 'Igbo', 'Swahili', 'Zulu', 
+      'Xhosa', 'Amharic', 'Pidgin', 'Twi', 'Afrikaans', 'French', 'Arabic'
+    ];
+
+    String? selectedSource = sourceLanguage;
+    String? selectedTarget = targetLanguage;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
+        title: Text(
+          'Language Direction',
+          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'I speak:',
+              style: TextStyle(
+                color: isDark ? Colors.grey[300] : Colors.grey[700],
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              value: selectedSource,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                filled: true,
+                fillColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[100],
+              ),
+              dropdownColor: isDark ? const Color(0xFF1F3527) : Colors.white,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+              items: languages.map((lang) => DropdownMenuItem(
+                value: lang,
+                child: Text(lang),
+              )).toList(),
+              onChanged: (value) {
+                selectedSource = value;
+              },
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'I want to learn:',
+              style: TextStyle(
+                color: isDark ? Colors.grey[300] : Colors.grey[700],
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(height: 8),
+            DropdownButtonFormField<String>(
+              value: selectedTarget,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                filled: true,
+                fillColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[100],
+              ),
+              dropdownColor: isDark ? const Color(0xFF1F3527) : Colors.white,
+              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+              items: languages.map((lang) => DropdownMenuItem(
+                value: lang,
+                child: Text(lang),
+              )).toList(),
+              onChanged: (value) {
+                selectedTarget = value;
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (selectedSource != null && selectedTarget != null) {
+                chatNotifier.setLanguageDirection(selectedSource!, selectedTarget!);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Language direction set: $selectedSource → $selectedTarget'),
+                    backgroundColor: AppColors.primaryGreen,
+                  ),
+                );
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryGreen,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Set'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final chatNotifier = ref.read(groqChatProvider.notifier);
@@ -312,6 +422,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     ),
                 ],
               ),
+            ),
+            IconButton(
+              icon: Icon(Icons.language, color: isDark ? Colors.white70 : Colors.grey[700]),
+              onPressed: () => _showLanguageDirectionDialog(context, isDark),
+              tooltip: 'Language direction',
             ),
             if (chatNotifier.hasMessages)
               IconButton(

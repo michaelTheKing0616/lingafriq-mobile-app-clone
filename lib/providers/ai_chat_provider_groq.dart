@@ -147,6 +147,8 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
 
   // Language and System Prompt
   String _selectedLanguage = 'Yoruba';
+  String _sourceLanguage = 'English'; // Language user speaks
+  String _targetLanguage = 'Yoruba'; // Language user wants to learn
   String? _systemPrompt;
 
   // Tutor & Adaptive Fields
@@ -208,24 +210,42 @@ You help users learn and practice various African languages including:
 - Afrikaans
 - And many other African languages
 
+The user's native language is: $_sourceLanguage
+The user wants to learn: $_targetLanguage
+
 You can:
 - Help users practice conversations
 - Explain grammar and vocabulary
-- Provide translations
+- Provide context-aware translations between $_sourceLanguage and $_targetLanguage
 - Create learning exercises
 - Answer questions about African cultures and languages
-- Engage in natural conversations in the selected language
+- Engage in natural conversations in the target language ($_targetLanguage)
 
-Always be encouraging, patient, and culturally sensitive. Respond naturally in the language the user is learning, or in the language they're using to communicate with you.
+Always be encouraging, patient, and culturally sensitive. 
+- When teaching, use $_targetLanguage primarily but explain in $_sourceLanguage when needed
+- Provide context-aware translations that consider cultural nuances
+- Respond naturally in the language the user is learning, or in the language they're using to communicate with you
 
 When the user is practicing, end your responses with a question or task to keep the conversation engaging and educational.''';
   }
 
   Future<void> setLanguage(String language) async {
     _selectedLanguage = language;
+    _targetLanguage = language;
     _initializeSystemPrompt();
     state = state.copyWith();
   }
+
+  Future<void> setLanguageDirection(String sourceLanguage, String targetLanguage) async {
+    _sourceLanguage = sourceLanguage;
+    _targetLanguage = targetLanguage;
+    _selectedLanguage = targetLanguage;
+    _initializeSystemPrompt();
+    state = state.copyWith();
+  }
+
+  String get sourceLanguage => _sourceLanguage;
+  String get targetLanguage => _targetLanguage;
 
   void setTutorMode(bool enabled) {
     _tutorMode = enabled;
