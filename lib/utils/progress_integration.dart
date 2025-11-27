@@ -2,17 +2,33 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 
 /// Helper class to integrate progress tracking into activities
 class ProgressIntegration {
   /// Call this when a lesson is completed
   static Future<void> onLessonCompleted(WidgetRef ref, {String? language}) async {
-    // Update daily goals
+    // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('lessons', 1);
+    
+    // Sync with backend
+    try {
+      await ref.read(apiProvider.notifier).updateDailyGoal('lessons', 1);
+    } catch (e) {
+      // Silently fail - local state is updated
+    }
     
     // Track progress (estimate 5 words learned per lesson)
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(5, language: language);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('lessons', 5.0); // 5 minutes
+    
+    // Sync progress metrics with backend
+    try {
+      final metrics = ref.read(progressTrackingProvider.notifier).metrics;
+      await ref.read(apiProvider.notifier).updateProgressMetrics(metrics.toMap());
+    } catch (e) {
+      // Silently fail - local state is updated
+    }
     
     // Check achievements
     final metrics = ref.read(progressTrackingProvider.notifier).metrics;
@@ -24,12 +40,27 @@ class ProgressIntegration {
 
   /// Call this when a quiz is completed
   static Future<void> onQuizCompleted(WidgetRef ref, {int? wordsLearned}) async {
-    // Update daily goals
+    // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('quizzes', 1);
+    
+    // Sync with backend
+    try {
+      await ref.read(apiProvider.notifier).updateDailyGoal('quizzes', 1);
+    } catch (e) {
+      // Silently fail
+    }
     
     // Track progress
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(wordsLearned ?? 3);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('quizzes', 3.0); // 3 minutes
+    
+    // Sync with backend
+    try {
+      final metrics = ref.read(progressTrackingProvider.notifier).metrics;
+      await ref.read(apiProvider.notifier).updateProgressMetrics(metrics.toMap());
+    } catch (e) {
+      // Silently fail
+    }
     
     // Check achievements
     final metrics = ref.read(progressTrackingProvider.notifier).metrics;
@@ -41,12 +72,27 @@ class ProgressIntegration {
 
   /// Call this when a game is completed
   static Future<void> onGameCompleted(WidgetRef ref, {int? wordsLearned}) async {
-    // Update daily goals
+    // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('games', 1);
+    
+    // Sync with backend
+    try {
+      await ref.read(apiProvider.notifier).updateDailyGoal('games', 1);
+    } catch (e) {
+      // Silently fail
+    }
     
     // Track progress
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(wordsLearned ?? 2);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('games', 2.0); // 2 minutes
+    
+    // Sync with backend
+    try {
+      final metrics = ref.read(progressTrackingProvider.notifier).metrics;
+      await ref.read(apiProvider.notifier).updateProgressMetrics(metrics.toMap());
+    } catch (e) {
+      // Silently fail
+    }
     
     // Check achievements
     final metrics = ref.read(progressTrackingProvider.notifier).metrics;

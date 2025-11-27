@@ -1,0 +1,2099 @@
+{
+  "meta": {
+    "language": "Yoruba",
+    "code": "yoruba",
+    "level": "A2",
+    "generated_at": "2025-11-27T00:52:06.758447Z",
+    "format": "modular-full-academic-sample"
+  },
+  "level_definitions": {
+    "can_do": "Skills targets for A2",
+    "target_vocab_estimate": 1000
+  },
+  "units": [
+    {
+      "unit": 1,
+      "title": "Unit 1 - Topic 1 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 1",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u1-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u1-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u1-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u1-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u1-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u1-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 1."
+    },
+    {
+      "unit": 2,
+      "title": "Unit 2 - Topic 2 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 2",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u2-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u2-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u2-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u2-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u2-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u2-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 2."
+    },
+    {
+      "unit": 3,
+      "title": "Unit 3 - Topic 3 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 3",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u3-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u3-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u3-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u3-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u3-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u3-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 3."
+    },
+    {
+      "unit": 4,
+      "title": "Unit 4 - Topic 4 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 4",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u4-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u4-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u4-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u4-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u4-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u4-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 4."
+    },
+    {
+      "unit": 5,
+      "title": "Unit 5 - Topic 5 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 5",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u5-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u5-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u5-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u5-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u5-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u5-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 5."
+    },
+    {
+      "unit": 6,
+      "title": "Unit 6 - Topic 6 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 6",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u6-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u6-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u6-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u6-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u6-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u6-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 6."
+    },
+    {
+      "unit": 7,
+      "title": "Unit 7 - Topic 7 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 7",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u7-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u7-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u7-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u7-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u7-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u7-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 7."
+    },
+    {
+      "unit": 8,
+      "title": "Unit 8 - Topic 8 (A2)",
+      "duration_minutes": 48,
+      "objectives": [
+        "Understand basic phrases in Yoruba unit 8",
+        "Produce simple sentences relevant to the unit topic"
+      ],
+      "vocab": [
+        {
+          "word": "word1a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word2a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word3a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        },
+        {
+          "word": "word4a",
+          "meaning": "example meaning",
+          "pos": "noun"
+        }
+      ],
+      "lessons": [
+        {
+          "id": "Yoruba-A2-u8-l1",
+          "title": "Lesson 1: Core topic 1",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word1a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word1b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 1 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word1a - example meaning",
+                "word1b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u8-l2",
+          "title": "Lesson 2: Core topic 2",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word2a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word2b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 2 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word2a - example meaning",
+                "word2b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u8-l3",
+          "title": "Lesson 3: Core topic 3",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word3a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word3b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 3 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word3a - example meaning",
+                "word3b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Yoruba-A2-u8-l4",
+          "title": "Lesson 4: Core topic 4",
+          "duration_min": 10,
+          "vocab": [
+            {
+              "word": "word4a",
+              "meaning": "example meaning",
+              "pos": "noun"
+            },
+            {
+              "word": "word4b",
+              "meaning": "example meaning",
+              "pos": "verb"
+            }
+          ],
+          "grammar": [
+            "Grammar point 4 for A2"
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello in Yoruba - example."
+              },
+              {
+                "speaker": "B",
+                "text": "Reply in Yoruba."
+              }
+            ],
+            "notes": "Short dialogue for practice."
+          },
+          "exercises": [
+            {
+              "type": "flashcards",
+              "items": [
+                "word4a - example meaning",
+                "word4b - example meaning"
+              ]
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Yoruba",
+              "answer": [
+                "asante",
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "yoruba-A2-u8-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "yoruba-A2-u8-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher notes for Yoruba unit 8."
+    }
+  ],
+  "srs_settings": {
+    "intervals": [
+      "6h",
+      "24h",
+      "72h",
+      "168h",
+      "720h",
+      "2160h"
+    ],
+    "initial_strength": 0
+  },
+  "assessments": {
+    "rubrics": {
+      "speaking": {
+        "0": "unintelligible",
+        "3": "understandable with errors",
+        "5": "accurate and fluent"
+      }
+    }
+  }
+}

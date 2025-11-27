@@ -872,4 +872,158 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
+
+  // Progress Tracking & Daily Goals API Methods
+  Future<Map<String, dynamic>> getDailyGoals() async {
+    try {
+      final res = await ref.read(client).get(Api.dailyGoals);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateDailyGoal(String type, int increment) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.updateDailyGoal,
+        data: {'type': type, 'increment': increment},
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating daily goal: $e');
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>> getProgressMetrics() async {
+    try {
+      final res = await ref.read(client).get(Api.progressMetrics);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> updateProgressMetrics(Map<String, dynamic> metrics) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.updateProgressMetrics,
+        data: metrics,
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating progress metrics: $e');
+      return false;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getAchievements() async {
+    try {
+      final res = await ref.read(client).get(Api.achievements);
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> unlockAchievement(String achievementId) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.unlockAchievement,
+        data: {'achievement_id': achievementId},
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error unlocking achievement: $e');
+      return false;
+    }
+  }
+
+  // Global Rankings & Statistics API Methods
+  Future<Map<String, dynamic>> getGlobalStats() async {
+    try {
+      final res = await ref.read(client).get(Api.globalStats);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getGlobalLeaderboard({int limit = 100}) async {
+    try {
+      final res = await ref.read(client).get('${Api.globalLeaderboard}?limit=$limit');
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getTopLanguages() async {
+    try {
+      final res = await ref.read(client).get(Api.topLanguages);
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Culture Content API Methods
+  Future<List<Map<String, dynamic>>> getCultureContent({String? type}) async {
+    try {
+      final url = type != null ? Api.cultureContentByType(type) : Api.cultureContent;
+      final res = await ref.read(client).get(url);
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> getCultureContentById(String id) async {
+    try {
+      final res = await ref.read(client).get(Api.cultureContentById(id));
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  // Chat & Social API Methods
+  Future<List<Map<String, dynamic>>> getChatRooms() async {
+    try {
+      final res = await ref.read(client).get(Api.chatRooms);
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getChatMessages(String room, {int limit = 50}) async {
+    try {
+      final res = await ref.read(client).get('${Api.chatMessages(room)}?limit=$limit');
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getOnlineUsers() async {
+    try {
+      final res = await ref.read(client).get(Api.onlineUsers);
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
