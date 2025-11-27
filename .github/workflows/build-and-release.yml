@@ -312,7 +312,7 @@ jobs:
             # Build archive without signing (for manual signing later)
             echo "⚠️ No signing credentials found. Building archive without signing..."
             echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols
+            flutter build ipa --release --no-codesign --split-debug-info=build/symbols
           fi
 
       - name: 🚚 Package iOS build with version
