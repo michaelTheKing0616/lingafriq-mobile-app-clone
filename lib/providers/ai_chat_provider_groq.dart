@@ -135,7 +135,15 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   }
 
   static const String _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
-  static const String _modelName = 'aya-8b';
+  // Groq model names to try in order
+  // Note: If Aya 8B is not available on Groq, it will try alternatives
+  static const List<String> _modelNames = [
+    'aya-8b',                    // Primary: Aya 8B model (if available)
+    'cohere/aya-8b',             // Alternative format
+    'llama-3.1-8b-instant',      // Fallback: Fast Llama model
+    'llama-3.1-70b-versatile',  // Fallback: More capable model
+  ];
+  static String _modelName = _modelNames[0];
 
   // Language and System Prompt
   String _selectedLanguage = 'Yoruba';
@@ -186,7 +194,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   }
 
   void _initializeSystemPrompt() {
-    _systemPrompt = '''You are a helpful AI language learning tutor specializing in African languages. 
+    _systemPrompt = '''You are LingAfriq Polyglot, an expert AI language learning tutor specializing in African languages. 
 You help users learn and practice various African languages including:
 - Swahili (Kiswahili)
 - Yoruba
@@ -251,6 +259,7 @@ When the user is practicing, end your responses with a question or task to keep 
     state = state.copyWith(isLoading: true);
 
     int retryCount = 0;
+    int modelIndex = 0;
 
     while (true) {
       try {
@@ -260,6 +269,9 @@ When the user is practicing, end your responses with a question or task to keep 
         if (_groqApiKey == 'YOUR_GROQ_API_KEY' || _groqApiKey.isEmpty) {
           throw Exception('AI Chat is not configured. Please set your Groq API key.');
         }
+
+        // Try different model names if previous one failed
+        final currentModel = _modelNames[modelIndex];
 
         final response = await _dio.post(
           _groqUrl,
@@ -272,7 +284,7 @@ When the user is practicing, end your responses with a question or task to keep 
             responseType: ResponseType.stream,
           ),
           data: {
-            "model": _modelName,
+            "model": currentModel,
             "messages": [
               {"role": "system", "content": _systemPrompt ?? ''},
               ..._messages.map((m) => {
@@ -387,6 +399,18 @@ When the user is practicing, end your responses with a question or task to keep 
           return;
         }
 
+        // Try next model name if we get a 404 (model not found)
+        if (e is DioException && e.response?.statusCode == 404) {
+          if (modelIndex < _modelNames.length - 1) {
+            modelIndex++;
+            _modelName = _modelNames[modelIndex];
+            if (kDebugMode) {
+              debugPrint('Model ${_modelNames[modelIndex - 1]} not found, trying ${_modelName}');
+            }
+            continue; // Try with next model
+          }
+        }
+
         if (retryCount < 1) {
           retryCount++;
           continue;
@@ -397,6 +421,8 @@ When the user is practicing, end your responses with a question or task to keep 
         if (e is DioException) {
           if (e.response?.statusCode == 401) {
             throw Exception('Invalid API key. Please check your Groq API key.');
+          } else if (e.response?.statusCode == 404) {
+            throw Exception('Model not found. Tried: ${_modelNames.join(", ")}. Please check Groq API documentation for available models.');
           } else if (e.response?.statusCode == 429) {
             throw Exception('Rate limit exceeded. Please try again later.');
           }

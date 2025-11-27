@@ -150,7 +150,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              'AI Language Chat',
+                              'LingAfriq Polyglot - AI Language Chat',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 24.sp,
@@ -235,7 +235,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Chat with our AI tutor to practice African languages.\nAsk questions, have conversations, or get help with translations.',
+              'Chat with LingAfriq Polyglot, your AI language tutor.\nPractice African languages, ask questions, have conversations, or get help with translations.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16.sp,
