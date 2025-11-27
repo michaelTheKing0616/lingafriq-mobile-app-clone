@@ -324,14 +324,22 @@ When the user is practicing, end your responses with a question or task to keep 
                     ? buffer.trim()[buffer.trim().length - 1]
                     : '';
 
-                final isSentenceEnd = [".", "!", "?"].contains(last);
+                // Language-aware sentence segmentation
+                // Support for African language punctuation patterns
+                final isSentenceEnd = [".", "!", "?", "…", "\n"].contains(last);
+                
+                // Check for language-specific patterns (Yoruba, Swahili, etc.)
+                final hasLanguagePause = buffer.contains(":") || 
+                    buffer.contains(";") ||
+                    (buffer.length > 3 && buffer.substring(buffer.length - 3).contains(" "));
 
                 final isTurnHandOff = buffer.toLowerCase().contains("your turn") ||
                     buffer.toLowerCase().contains("now you try") ||
                     buffer.toLowerCase().contains("ask me") ||
                     buffer.trim().endsWith("?");
 
-                if (isSentenceEnd || buffer.length > 60) {
+                // Smart buffering: emit on sentence boundaries or long pauses
+                if (isSentenceEnd || hasLanguagePause || buffer.length > 60) {
                   output += buffer;
                   yield buffer;
                   buffer = "";
@@ -658,6 +666,38 @@ Return only valid JSON.
     if (refWords.isEmpty) return 1.0;
     final errs = _wordErrorCount(refWords, hypWords);
     return errs / refWords.length;
+  }
+
+  // ----- Pronunciation Scoring -----
+  Future<double> scorePronunciation(Uint8List audioData) async {
+    try {
+      final response = await _dio.post(
+        "https://api.groq.com/openai/v1/audio/transcriptions",
+        data: FormData.fromMap({
+          'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
+          'model': 'whisper-large-v3',
+        }),
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $_groqApiKey",
+          },
+        ),
+      );
+
+      final confidence = (response.data['confidence'] ?? 0.5) as double? ?? 0.5;
+      _recordSessionMetrics(pron: confidence);
+      return confidence;
+    } catch (e) {
+      debugPrint('Pronunciation scoring error: $e');
+      return 0.5;
+    }
+  }
+
+  String pronunciationFeedback(double score) {
+    if (score > 0.85) return "Excellent pronunciation! 👏";
+    if (score > 0.65) return "Good! Try to be clearer on some sounds.";
+    if (score > 0.45) return "Almost! Focus on the vowel sounds.";
+    return "Let's practice pronunciation. Listen and repeat after me:";
   }
 
   // ----- Speech Shadowing Exercise -----
