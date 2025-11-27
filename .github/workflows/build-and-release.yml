@@ -266,7 +266,7 @@ jobs:
             mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
             cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
           else
-            echo "⚠️ No iOS signing credentials found. Building without signing (will need manual signing for App Store)"
+            echo "⚠️ No iOS signing credentials found. Building without signing (manual signing required)"
           fi
 
       - name: 🔢 Update iOS version info
@@ -282,10 +282,10 @@ jobs:
             sed -i '' "s/^version: .*/version: $version/" pubspec.yaml
           fi
           
-          # Update iOS project.pbxproj file
-          # Update MARKETING_VERSION (version name)
+          # Update MARKETING_VERSION
           sed -i '' "s/MARKETING_VERSION = [^;]*/MARKETING_VERSION = $version_name/g" ios/Runner.xcodeproj/project.pbxproj
-          # Update CURRENT_PROJECT_VERSION (build number)
+          
+          # Update CURRENT_PROJECT_VERSION
           sed -i '' "s/CURRENT_PROJECT_VERSION = [^;]*/CURRENT_PROJECT_VERSION = $build_number/g" ios/Runner.xcodeproj/project.pbxproj
           
           echo "📦 Updated iOS version: $version (build number: $build_number)"
@@ -293,9 +293,7 @@ jobs:
       - name: 🍎 Install CocoaPods dependencies
         run: |
           cd ios
-          # Remove Podfile.lock to force regeneration with correct Firebase versions
           rm -f Podfile.lock
-          # Update CocoaPods repo and install dependencies
           pod repo update
           pod install --repo-update
           cd ..
@@ -305,70 +303,54 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
         run: |
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            # Build signed IPA
             echo "🔐 Building signed IPA..."
             flutter build ipa --release --split-debug-info=build/symbols
           else
-            # Build archive without signing (for manual signing later)
-            echo "⚠️ No signing credentials found. Building archive without signing..."
-            echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
+            echo "⚠️ Building *unsigned* archive (no signing credentials provided)"
             flutter build ipa --release --no-codesign --split-debug-info=build/symbols
           fi
 
-            - name: 🚚 Package iOS build with version
+      - name: 🚚 Package iOS build with version
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
         run: |
           version="${{ needs.increment-version.outputs.version }}"
 
-          # Ensure output folder exists
           mkdir -p build/release/ios
 
           echo "🔎 Searching for iOS build artifacts..."
-          echo "Checking build/ios/ipa/..."
+          echo "Checking build/ios/ipa..."
           ls -la build/ios/ipa/ 2>/dev/null || echo "No ipa directory"
-          echo "Checking build/ios/archive/..."
+          
+          echo "Checking build/ios/archive..."
           ls -la build/ios/archive/ 2>/dev/null || echo "No archive directory"
 
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            # Signed IPA exists
+            # Signed IPA
             ipa_file=$(ls build/ios/ipa/*.ipa 2>/dev/null | head -n 1)
-            if [ -n "$ipa_file" ] && [ -f "$ipa_file" ]; then
+
+            if [ -n "$ipa_file" ]; then
               cp "$ipa_file" "build/release/ios/LingAfriq-$version.ipa"
               echo "✅ Signed IPA copied: build/release/ios/LingAfriq-$version.ipa"
             else
-              echo "⚠️ IPA file not found in build/ios/ipa/, searching..."
-              ipa_found=$(find build -name "*.ipa" -type f 2>/dev/null | head -n 1)
-              if [ -n "$ipa_found" ] && [ -f "$ipa_found" ]; then
-                cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
-                echo "✅ IPA found and copied: $ipa_found"
-              else
-                echo "❌ No IPA file found anywhere"
-              fi
+              echo "❌ No IPA found after signed build"
             fi
           else
-            # Unsigned: package the xcarchive
+            # Unsigned archive → zip xcarchive
             if [ -d build/ios/archive/Runner.xcarchive ]; then
-              echo "📦 Packaging unsigned xcarchive..."
+              echo "📦 Creating unsigned XCArchive ZIP..."
               cd build/ios/archive
               zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive
               cd ../../..
               echo "✅ Unsigned archive created: build/release/ios/LingAfriq-$version-unsigned.xcarchive.zip"
-            elif [ -d build/ios/archive ]; then
-              echo "📦 Packaging entire archive folder..."
-              cd build/ios/archive
-              zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .
-              cd ../../..
-              echo "✅ Archive packaged: build/release/ios/LingAfriq-$version-unsigned.zip"
             else
-              echo "⚠️ Archive not found. Checking build directory..."
-              find build -name "*.xcarchive" -type d || echo "No xcarchive found"
-              find build -name "*.ipa" -type f || echo "No IPA found"
+              echo "❌ XCArchive not found"
+              find build -name "*.xcarchive" -type d
             fi
           fi
 
-          echo "📦 Final iOS artifacts in build/release/ios/:"
-          ls -lh build/release/ios/ || echo "No files found"
+          echo "📦 Final iOS artifacts:"
+          ls -lh build/release/ios/
 
       - name: 📤 Upload iOS build artifact
         continue-on-error: true
