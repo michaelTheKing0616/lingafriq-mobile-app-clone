@@ -11,6 +11,7 @@ import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/achievements/achievements_screen.dart';
 import 'package:lingafriq/screens/media/import_media_screen.dart';
 import 'package:lingafriq/screens/global/global_progress_screen.dart';
+import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -130,6 +131,17 @@ class AppDrawer extends ConsumerWidget {
                   onTap: () {
                     Navigator.pop(context);
                     ref.read(navigationProvider).naviateTo(const ImportMediaScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.menu_book_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Culture Magazine'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const CultureMagazineScreen());
                   },
                 ),
                 ListTile(
