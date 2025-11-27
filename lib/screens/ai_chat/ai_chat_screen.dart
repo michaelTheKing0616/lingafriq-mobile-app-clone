@@ -1,12 +1,17 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
+import 'package:record/record.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AiChatScreen extends ConsumerStatefulWidget {
   const AiChatScreen({Key? key}) : super(key: key);
@@ -19,19 +24,45 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
+  final AudioRecorder _audioRecorder = AudioRecorder();
   String _streamingText = '';
   bool _isStreaming = false;
+  bool _isRecording = false;
+  bool _voiceInputEnabled = true; // Default to voice input enabled
+  bool _voiceOutputEnabled = true; // Default to voice output enabled
+  String? _lastAssistantMessage; // Store last assistant message for TTS
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPreferences();
+  }
 
   @override
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
     _focusNode.dispose();
+    _audioRecorder.dispose();
     // Interrupt AI if streaming
     if (_isStreaming) {
       ref.read(groqChatProvider.notifier).interruptAI();
     }
     super.dispose();
+  }
+
+  Future<void> _loadPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _voiceInputEnabled = prefs.getBool('ai_chat_voice_input') ?? true;
+      _voiceOutputEnabled = prefs.getBool('ai_chat_voice_output') ?? true;
+    });
+  }
+
+  Future<void> _savePreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('ai_chat_voice_input', _voiceInputEnabled);
+    await prefs.setBool('ai_chat_voice_output', _voiceOutputEnabled);
   }
 
   void _scrollToBottom() {
@@ -46,8 +77,8 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     });
   }
 
-  Future<void> _sendMessage() async {
-    final message = _messageController.text.trim();
+  Future<void> _sendMessage({String? voiceMessage}) async {
+    final message = voiceMessage ?? _messageController.text.trim();
     if (message.isEmpty) return;
 
     // Interrupt AI if currently streaming
@@ -61,17 +92,30 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     setState(() {
       _streamingText = '';
       _isStreaming = true;
+      _lastAssistantMessage = null;
     });
 
     try {
       final provider = ref.read(groqChatProvider.notifier);
+      String fullResponse = '';
       await for (final chunk in provider.sendMessageStream(message)) {
         if (mounted) {
           setState(() {
             _streamingText += chunk;
+            fullResponse += chunk;
+            _lastAssistantMessage = fullResponse;
           });
           _scrollToBottom();
         }
+      }
+
+      // Speak the response if voice output is enabled
+      if (mounted && _voiceOutputEnabled && fullResponse.isNotEmpty) {
+        final tts = ref.read(ttsProvider.notifier);
+        final selectedLanguage = provider.selectedLanguage;
+        // Use English for TTS if the language doesn't have TTS support
+        // The AI response might be in the target language, but TTS works better with English
+        await tts.speak(fullResponse, languageName: 'English');
       }
     } catch (e) {
       if (mounted) {
@@ -88,6 +132,72 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
           _isStreaming = false;
         });
       }
+    }
+  }
+
+  Future<void> _startVoiceRecording() async {
+    try {
+      if (await _audioRecorder.hasPermission()) {
+        await _audioRecorder.start(
+          const RecordConfig(
+            encoder: AudioEncoder.wav,
+            sampleRate: 16000,
+            numChannels: 1,
+          ),
+        );
+        setState(() {
+          _isRecording = true;
+        });
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Microphone permission denied')),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error starting recording: $e')),
+        );
+      }
+    }
+  }
+
+  Future<void> _stopVoiceRecording() async {
+    try {
+      final path = await _audioRecorder.stop();
+      setState(() {
+        _isRecording = false;
+      });
+
+      if (path != null) {
+        // Transcribe audio using Groq
+        final file = await File(path).readAsBytes();
+        final audioData = Uint8List.fromList(file);
+        
+        final provider = ref.read(groqChatProvider.notifier);
+        final transcribedText = await provider.transcribeAudio(audioData);
+        
+        if (transcribedText.isNotEmpty) {
+          await _sendMessage(voiceMessage: transcribedText);
+        } else {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Could not transcribe audio. Please try again.')),
+            );
+          }
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error stopping recording: $e')),
+        );
+      }
+      setState(() {
+        _isRecording = false;
+      });
     }
   }
 
@@ -150,7 +260,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(
-                              'LingAfriq Polyglot - AI Language Chat',
+                              'LingAfriq Polyglot (Polie)',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 24.sp,
@@ -555,6 +665,33 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 ),
               ),
               const SizedBox(width: 8),
+              // Voice input button
+              if (_voiceInputEnabled && !_isRecording)
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.accentGold.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.mic, color: AppColors.accentGold),
+                    onPressed: isLoading ? null : _startVoiceRecording,
+                    tooltip: 'Voice input',
+                  ),
+                ),
+              if (_isRecording)
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.2),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.stop, color: Colors.red),
+                    onPressed: _stopVoiceRecording,
+                    tooltip: 'Stop recording',
+                  ),
+                ),
+              const SizedBox(width: 4),
+              // Send button
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -580,6 +717,56 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                       : const Icon(Icons.send, color: Colors.white),
                   onPressed: isLoading ? null : _sendMessage,
                 ),
+              ),
+              const SizedBox(width: 4),
+              // Voice output toggle
+              PopupMenuButton<String>(
+                icon: Icon(
+                  _voiceOutputEnabled ? Icons.volume_up : Icons.volume_off,
+                  color: _voiceOutputEnabled ? AppColors.primaryGreen : context.adaptive54,
+                ),
+                tooltip: 'Voice settings',
+                onSelected: (value) {
+                  if (value == 'toggle_voice_output') {
+                    setState(() {
+                      _voiceOutputEnabled = !_voiceOutputEnabled;
+                    });
+                    _savePreferences();
+                  } else if (value == 'toggle_voice_input') {
+                    setState(() {
+                      _voiceInputEnabled = !_voiceInputEnabled;
+                    });
+                    _savePreferences();
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'toggle_voice_output',
+                    child: Row(
+                      children: [
+                        Icon(
+                          _voiceOutputEnabled ? Icons.volume_up : Icons.volume_off,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(_voiceOutputEnabled ? 'Disable Voice Output' : 'Enable Voice Output'),
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'toggle_voice_input',
+                    child: Row(
+                      children: [
+                        Icon(
+                          _voiceInputEnabled ? Icons.mic : Icons.mic_off,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(_voiceInputEnabled ? 'Disable Voice Input' : 'Enable Voice Input'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

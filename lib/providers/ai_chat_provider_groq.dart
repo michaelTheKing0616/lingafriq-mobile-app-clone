@@ -668,6 +668,30 @@ Return only valid JSON.
     return errs / refWords.length;
   }
 
+  // ----- Audio Transcription -----
+  Future<String> transcribeAudio(Uint8List audioData) async {
+    try {
+      final response = await _dio.post(
+        "https://api.groq.com/openai/v1/audio/transcriptions",
+        data: FormData.fromMap({
+          'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
+          'model': 'whisper-large-v3',
+        }),
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $_groqApiKey",
+          },
+        ),
+      );
+
+      final text = response.data['text']?.toString() ?? '';
+      return text.trim();
+    } catch (e) {
+      debugPrint('Audio transcription error: $e');
+      return '';
+    }
+  }
+
   // ----- Pronunciation Scoring -----
   Future<double> scorePronunciation(Uint8List audioData) async {
     try {
