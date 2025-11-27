@@ -6,6 +6,9 @@ import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
+import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
+import 'package:lingafriq/screens/achievements/achievements_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -70,6 +73,39 @@ class AppDrawer extends ConsumerWidget {
                   onTap: () {
                     Navigator.pop(context);
                     ref.read(navigationProvider).naviateTo(const GamesScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.track_changes_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Daily Goals'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const DailyGoalsScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.analytics_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Progress Dashboard'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const ProgressDashboardScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.emoji_events_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Achievements'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const AchievementsScreen());
                   },
                 ),
                 ListTile(
