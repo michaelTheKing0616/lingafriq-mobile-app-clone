@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/design_system.dart';
@@ -217,6 +218,9 @@ class _FillBlankGameState extends ConsumerState<FillBlankGame> {
           points: points,
           score: _correctAnswers,
         );
+        if (gameSuccess) {
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+        }
         
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
         debugPrint('Account update success: $updateSuccess');

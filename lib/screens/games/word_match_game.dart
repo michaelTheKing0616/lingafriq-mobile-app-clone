@@ -6,6 +6,7 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
@@ -167,6 +168,10 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           points: calculatedPoints,
           score: _matches,
         );
+        if (gameSuccess) {
+          // Track progress
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _matches);
+        }
         
         debugPrint('Game completion submission: $gameSuccess');
         
