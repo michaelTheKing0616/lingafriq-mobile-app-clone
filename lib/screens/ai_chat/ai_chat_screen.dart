@@ -28,9 +28,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   String _streamingText = '';
   bool _isStreaming = false;
   bool _isRecording = false;
-  bool _voiceInputEnabled = true; // Default to voice input enabled
-  bool _voiceOutputEnabled = true; // Default to voice output enabled
-  String? _lastAssistantMessage; // Store last assistant message for TTS
+  bool _voiceInputEnabled = true;
+  bool _voiceOutputEnabled = true;
+  String? _lastAssistantMessage;
 
   @override
   void initState() {
@@ -44,7 +44,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     _scrollController.dispose();
     _focusNode.dispose();
     _audioRecorder.dispose();
-    // Interrupt AI if streaming
     if (_isStreaming) {
       ref.read(groqChatProvider.notifier).interruptAI();
     }
@@ -81,7 +80,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     final message = voiceMessage ?? _messageController.text.trim();
     if (message.isEmpty) return;
 
-    // Interrupt AI if currently streaming
     if (_isStreaming) {
       ref.read(groqChatProvider.notifier).interruptAI();
     }
@@ -109,12 +107,8 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         }
       }
 
-      // Speak the response if voice output is enabled
       if (mounted && _voiceOutputEnabled && fullResponse.isNotEmpty) {
         final tts = ref.read(ttsProvider.notifier);
-        final selectedLanguage = provider.selectedLanguage;
-        // Use English for TTS if the language doesn't have TTS support
-        // The AI response might be in the target language, but TTS works better with English
         await tts.speak(fullResponse, languageName: 'English');
       }
     } catch (e) {
@@ -172,7 +166,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       });
 
       if (path != null) {
-        // Transcribe audio using Groq
         final file = await File(path).readAsBytes();
         final audioData = Uint8List.fromList(file);
         
@@ -225,144 +218,98 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     final chatNotifier = ref.read(groqChatProvider.notifier);
     final chatState = ref.watch(groqChatProvider);
     final isDark = context.isDarkMode;
+    final theme = Theme.of(context);
 
-    return Scaffold(
-      drawer: const AppDrawer(),
-      body: Column(
-        children: [
-          TopGradientBox(
-            borderRadius: 0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top + 8,
-                    ),
-                    child: Row(
-                      children: [
-                        Builder(
-                          builder: (context) => Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                            child: IconButton(
-                              icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'LingAfriq Polyglot (Polie)',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            padding: EdgeInsets.zero,
-                            constraints: const BoxConstraints(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (chatNotifier.hasMessages)
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 8,
-                      right: 8,
-                    ),
-                    child: IconButton(
-                      icon: const Icon(Icons.delete_outline, color: Colors.white),
-                      onPressed: _clearChat,
-                      tooltip: 'Clear chat',
-                    ),
-                  ),
-              ],
-            ),
+    return Theme(
+      data: theme.copyWith(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppColors.primaryGreen,
+          brightness: isDark ? Brightness.dark : Brightness.light,
+        ),
+      ),
+      child: Scaffold(
+        drawer: const AppDrawer(),
+        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Material 3 App Bar
+              _buildMaterial3AppBar(context, chatNotifier, isDark),
+              
+              // Chat Messages
+              Expanded(
+                child: chatNotifier.messages.isEmpty
+                    ? _buildEmptyState(context, isDark)
+                    : _buildChatMessages(context, chatNotifier, isDark),
+              ),
+              
+              // Material 3 Input Area
+              _buildMaterial3Input(context, chatNotifier, isDark),
+            ],
           ),
-          Expanded(
-            child: chatNotifier.messages.isEmpty
-                ? _buildEmptyState(context)
-                : _buildChatMessages(context, chatNotifier),
-          ),
-          _buildMessageInput(context, chatNotifier),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildEmptyState(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildMaterial3AppBar(BuildContext context, GroqChatProvider chatNotifier, bool isDark) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        border: Border(
+          bottom: BorderSide(
+            color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+            width: 1,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primaryGreen.withOpacity(0.2),
-                    AppColors.accentGold.withOpacity(0.2),
-                  ],
+            Builder(
+              builder: (context) => IconButton(
+                icon: Icon(Icons.menu_rounded, color: isDark ? Colors.white : Colors.black87),
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                style: IconButton.styleFrom(
+                  backgroundColor: isDark ? Colors.transparent : Colors.grey[100],
                 ),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.chat_bubble_outline,
-                size: 80.sp,
-                color: AppColors.primaryGreen,
               ),
             ),
-            const SizedBox(height: 24),
-            Text(
-              'Start Learning',
-              style: TextStyle(
-                fontSize: 28.sp,
-                fontWeight: FontWeight.bold,
-                color: context.adaptive,
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'LingAfriq Polyglot (Polie)',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
+                  ),
+                  if (chatNotifier.hasMessages)
+                    Text(
+                      '${chatNotifier.messages.length} messages',
+                      style: TextStyle(
+                        fontSize: 12.sp,
+                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                      ),
+                    ),
+                ],
               ),
             ),
-            const SizedBox(height: 12),
-            Text(
-              'Chat with LingAfriq Polyglot, your AI language tutor.\nPractice African languages, ask questions, have conversations, or get help with translations.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: context.adaptive54,
+            if (chatNotifier.hasMessages)
+              IconButton(
+                icon: Icon(Icons.delete_outline, color: isDark ? Colors.white70 : Colors.grey[700]),
+                onPressed: _clearChat,
+                tooltip: 'Clear chat',
               ),
-            ),
-            const SizedBox(height: 32),
-            Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              alignment: WrapAlignment.center,
-              children: [
-                _buildSuggestionChip('How do I say hello in Swahili?'),
-                _buildSuggestionChip('Translate "thank you" to Yoruba'),
-                _buildSuggestionChip('Practice Pidgin English conversation'),
-                _buildSuggestionChip('Explain Igbo grammar'),
-              ],
+            IconButton(
+              icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white70 : Colors.grey[700]),
+              onPressed: () => Navigator.pop(context),
             ),
           ],
         ),
@@ -370,113 +317,175 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildSuggestionChip(String text) {
-    return ActionChip(
-      label: Text(text),
+  Widget _buildEmptyState(BuildContext context, bool isDark) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SizedBox(height: 40),
+          // Material 3 Card with gradient
+          Card(
+            elevation: 0,
+            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+              side: BorderSide(
+                color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+              ),
+            ),
+            child: Container(
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.primaryGreen.withOpacity(0.1),
+                    AppColors.accentGold.withOpacity(0.1),
+                  ],
+                ),
+              ),
+              child: Icon(
+                Icons.psychology_rounded,
+                size: 80.sp,
+                color: AppColors.primaryGreen,
+              ),
+            ),
+          ),
+          const SizedBox(height: 32),
+          Text(
+            'Start Learning with Polie',
+            style: TextStyle(
+              fontSize: 28.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'Chat with LingAfriq Polyglot, your AI language tutor.\nPractice African languages, ask questions, have conversations, or get help with translations.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: isDark ? Colors.grey[400] : Colors.grey[600],
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 40),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            alignment: WrapAlignment.center,
+            children: [
+              _buildSuggestionChip('How do I say hello in Swahili?', isDark),
+              _buildSuggestionChip('Translate "thank you" to Yoruba', isDark),
+              _buildSuggestionChip('Practice Pidgin English conversation', isDark),
+              _buildSuggestionChip('Explain Igbo grammar', isDark),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSuggestionChip(String text, bool isDark) {
+    return FilledButton.tonal(
       onPressed: () {
         _messageController.text = text;
         _sendMessage();
       },
-      backgroundColor: AppColors.primaryGreen.withOpacity(0.1),
-      labelStyle: TextStyle(
-        color: AppColors.primaryGreen,
-        fontSize: 14.sp,
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.primaryGreen.withOpacity(0.1),
+        foregroundColor: AppColors.primaryGreen,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 14.sp),
       ),
     );
   }
 
-  Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider) {
+  Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider, bool isDark) {
     return ListView.builder(
       controller: _scrollController,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       itemCount: chatProvider.messages.length + (_isStreaming ? 1 : 0),
       itemBuilder: (context, index) {
         if (index == chatProvider.messages.length && _isStreaming) {
-          // Show streaming message
-          return _buildStreamingBubble(context);
+          return _buildStreamingBubble(context, isDark);
         }
         final message = chatProvider.messages[index];
-        return _buildMessageBubble(context, message);
+        return _buildMessageBubble(context, message, isDark);
       },
     );
   }
 
-  Widget _buildStreamingBubble(BuildContext context) {
-    final isDark = context.isDarkMode;
+  Widget _buildStreamingBubble(BuildContext context, bool isDark) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.primaryGreen,
-                  AppColors.accentGold,
-                ],
-              ),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.smart_toy,
-              color: Colors.white,
-              size: 18,
-            ),
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: AppColors.primaryGreen,
+            child: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 20),
           ),
-          const SizedBox(width: 8),
-          Flexible(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: isDark ? Colors.grey[800] : Colors.grey[100],
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                  bottomLeft: Radius.circular(4),
-                  bottomRight: Radius.circular(20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Card(
+              elevation: 0,
+              color: isDark ? const Color(0xFF1F3527) : Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(
+                  color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _streamingText.isEmpty ? '...' : _streamingText,
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                      fontSize: 15.sp,
-                      height: 1.4,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _streamingText.isEmpty ? '...' : _streamingText,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : Colors.black87,
+                        fontSize: 15.sp,
+                        height: 1.5,
+                      ),
                     ),
-                  ),
-                  if (_streamingText.isNotEmpty)
-                    const SizedBox(height: 4),
-                  if (_streamingText.isNotEmpty)
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 12,
-                          height: 12,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              AppColors.primaryGreen,
+                    if (_streamingText.isNotEmpty) const SizedBox(height: 8),
+                    if (_streamingText.isNotEmpty)
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'AI is typing...',
-                          style: TextStyle(
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
-                            fontSize: 11.sp,
+                          const SizedBox(width: 8),
+                          Text(
+                            'Polie is typing...',
+                            style: TextStyle(
+                              color: isDark ? Colors.grey[400] : Colors.grey[600],
+                              fontSize: 11.sp,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                ],
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -485,94 +494,74 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildMessageBubble(BuildContext context, ChatMessage message) {
+  Widget _buildMessageBubble(BuildContext context, ChatMessage message, bool isDark) {
     final isUser = message.role == 'user';
-    final isDark = context.isDarkMode;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.only(bottom: 12),
       child: Row(
-        mainAxisAlignment:
-            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.primaryGreen,
-                    AppColors.accentGold,
-                  ],
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.smart_toy,
-                color: Colors.white,
-                size: 18,
-              ),
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColors.primaryGreen,
+              child: const Icon(Icons.smart_toy_rounded, color: Colors.white, size: 20),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 12),
           ],
           Flexible(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: isUser
-                    ? AppColors.primaryGreen
-                    : (isDark
-                        ? Colors.grey[800]
-                        : Colors.grey[100]),
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(20),
-                  topRight: const Radius.circular(20),
-                  bottomLeft: Radius.circular(isUser ? 20 : 4),
-                  bottomRight: Radius.circular(isUser ? 4 : 20),
-                ),
+            child: Card(
+              elevation: 0,
+              color: isUser
+                  ? AppColors.primaryGreen
+                  : (isDark ? const Color(0xFF1F3527) : Colors.white),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: isUser
+                    ? BorderSide.none
+                    : BorderSide(
+                        color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+                      ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    message.content,
-                    style: TextStyle(
-                      color: isUser
-                          ? Colors.white
-                          : (isDark ? Colors.white : Colors.black87),
-                      fontSize: 15.sp,
-                      height: 1.4,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      message.content,
+                      style: TextStyle(
+                        color: isUser ? Colors.white : (isDark ? Colors.white : Colors.black87),
+                        fontSize: 15.sp,
+                        height: 1.5,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _formatTime(message.timestamp),
-                    style: TextStyle(
-                      color: isUser
-                          ? Colors.white70
-                          : (isDark ? Colors.grey[400] : Colors.grey[600]),
-                      fontSize: 11.sp,
+                    const SizedBox(height: 6),
+                    Text(
+                      _formatTime(message.timestamp),
+                      style: TextStyle(
+                        color: isUser
+                            ? Colors.white70
+                            : (isDark ? Colors.grey[400] : Colors.grey[600]),
+                        fontSize: 11.sp,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
           if (isUser) ...[
-            const SizedBox(width: 8),
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                color: AppColors.accentGold.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
+            const SizedBox(width: 12),
+            CircleAvatar(
+              radius: 20,
+              backgroundColor: AppColors.accentGold.withOpacity(0.2),
               child: Icon(
-                Icons.person,
+                Icons.person_rounded,
                 color: AppColors.accentGold,
-                size: 18,
+                size: 20,
               ),
             ),
           ],
@@ -581,33 +570,58 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(BuildContext context, GroqChatProvider chatProvider) {
-    final isDark = context.isDarkMode;
+  Widget _buildMaterial3Input(BuildContext context, GroqChatProvider chatProvider, bool isDark) {
     final isLoading = chatProvider.isBusy || _isStreaming;
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey[900] : Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 4,
-            offset: const Offset(0, -2),
+        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         top: false,
-        minimum: EdgeInsets.zero,
         child: Padding(
           padding: EdgeInsets.only(
             left: 16,
             right: 16,
-            top: 8,
-            bottom: 8 + MediaQuery.of(context).viewPadding.bottom,
+            top: 12,
+            bottom: 12 + MediaQuery.of(context).viewPadding.bottom,
           ),
           child: Row(
             children: [
+              // Voice input button
+              if (_voiceInputEnabled && !_isRecording)
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.accentGold.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.mic_rounded, color: AppColors.accentGold),
+                    onPressed: isLoading ? null : _startVoiceRecording,
+                    tooltip: 'Voice input',
+                  ),
+                ),
+              if (_isRecording)
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.stop_rounded, color: Colors.red),
+                    onPressed: _stopVoiceRecording,
+                    tooltip: 'Stop recording',
+                  ),
+                ),
+              if (_voiceInputEnabled) const SizedBox(width: 8),
+              
+              // Text input
               Expanded(
                 child: TextField(
                   controller: _messageController,
@@ -617,7 +631,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   textInputAction: TextInputAction.send,
                   onSubmitted: (_) => _sendMessage(),
                   onChanged: (_) {
-                    // Interrupt AI when user starts typing
                     if (_isStreaming) {
                       ref.read(groqChatProvider.notifier).interruptAI();
                       setState(() {
@@ -629,101 +642,56 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   decoration: InputDecoration(
                     hintText: 'Type your message...',
                     hintStyle: TextStyle(
-                      color: context.adaptive54,
+                      color: isDark ? Colors.grey[500] : Colors.grey[500],
                       fontSize: 15.sp,
                     ),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF102216) : Colors.grey[50],
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(24),
-                      borderSide: BorderSide(
-                        color: AppColors.primaryGreen.withOpacity(0.3),
-                      ),
+                      borderSide: BorderSide.none,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
-                      borderSide: BorderSide(
-                        color: AppColors.primaryGreen.withOpacity(0.3),
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(24),
-                      borderSide: BorderSide(
-                        color: AppColors.primaryGreen,
-                        width: 2,
-                      ),
-                    ),
-                    filled: true,
-                    fillColor: isDark ? Colors.grey[800] : Colors.grey[50],
                     contentPadding: const EdgeInsets.symmetric(
                       horizontal: 20,
-                      vertical: 12,
+                      vertical: 14,
                     ),
                   ),
                   style: TextStyle(
-                    color: context.adaptive,
+                    color: isDark ? Colors.white : Colors.black87,
                     fontSize: 15.sp,
                   ),
                 ),
               ),
               const SizedBox(width: 8),
-              // Voice input button
-              if (_voiceInputEnabled && !_isRecording)
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.accentGold.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.mic, color: AppColors.accentGold),
-                    onPressed: isLoading ? null : _startVoiceRecording,
-                    tooltip: 'Voice input',
-                  ),
-                ),
-              if (_isRecording)
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.2),
-                    shape: BoxShape.circle,
-                  ),
-                  child: IconButton(
-                    icon: const Icon(Icons.stop, color: Colors.red),
-                    onPressed: _stopVoiceRecording,
-                    tooltip: 'Stop recording',
-                  ),
-                ),
-              const SizedBox(width: 4),
+              
               // Send button
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.primaryGreen,
-                      AppColors.accentGold,
-                    ],
-                  ),
-                  shape: BoxShape.circle,
+              FilledButton(
+                onPressed: isLoading ? null : _sendMessage,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primaryGreen,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(16),
+                  shape: const CircleBorder(),
+                  minimumSize: const Size(48, 48),
                 ),
-                child: IconButton(
-                  icon: isLoading
-                      ? SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          ),
-                        )
-                      : const Icon(Icons.send, color: Colors.white),
-                  onPressed: isLoading ? null : _sendMessage,
-                ),
+                child: isLoading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                    : const Icon(Icons.send_rounded, size: 20),
               ),
-              const SizedBox(width: 4),
+              const SizedBox(width: 8),
+              
               // Voice output toggle
               PopupMenuButton<String>(
                 icon: Icon(
-                  _voiceOutputEnabled ? Icons.volume_up : Icons.volume_off,
-                  color: _voiceOutputEnabled ? AppColors.primaryGreen : context.adaptive54,
+                  _voiceOutputEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+                  color: _voiceOutputEnabled ? AppColors.primaryGreen : (isDark ? Colors.grey[500] : Colors.grey[500]),
                 ),
                 tooltip: 'Voice settings',
                 onSelected: (value) {
@@ -745,10 +713,10 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     child: Row(
                       children: [
                         Icon(
-                          _voiceOutputEnabled ? Icons.volume_up : Icons.volume_off,
+                          _voiceOutputEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
                           size: 20,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Text(_voiceOutputEnabled ? 'Disable Voice Output' : 'Enable Voice Output'),
                       ],
                     ),
@@ -758,10 +726,10 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     child: Row(
                       children: [
                         Icon(
-                          _voiceInputEnabled ? Icons.mic : Icons.mic_off,
+                          _voiceInputEnabled ? Icons.mic_rounded : Icons.mic_off_rounded,
                           size: 20,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Text(_voiceInputEnabled ? 'Disable Voice Input' : 'Enable Voice Input'),
                       ],
                     ),
@@ -790,4 +758,3 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     }
   }
 }
-
