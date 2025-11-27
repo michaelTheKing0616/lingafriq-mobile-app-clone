@@ -10,6 +10,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,6 +26,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   final ScrollController _scrollController = ScrollController();
   final FocusNode _focusNode = FocusNode();
   final AudioRecorder _audioRecorder = AudioRecorder();
+  String? _currentRecordingPath;
   String _streamingText = '';
   bool _isStreaming = false;
   bool _isRecording = false;
@@ -132,15 +134,21 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   Future<void> _startVoiceRecording() async {
     try {
       if (await _audioRecorder.hasPermission()) {
+        final tempDir = await getTemporaryDirectory();
+        final filePath =
+            '${tempDir.path}/polie_voice_${DateTime.now().millisecondsSinceEpoch}.wav';
+
         await _audioRecorder.start(
           const RecordConfig(
             encoder: AudioEncoder.wav,
             sampleRate: 16000,
             numChannels: 1,
           ),
+          path: filePath,
         );
         setState(() {
           _isRecording = true;
+          _currentRecordingPath = filePath;
         });
       } else {
         if (mounted) {
@@ -165,8 +173,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         _isRecording = false;
       });
 
-      if (path != null) {
-        final file = await File(path).readAsBytes();
+      final recordingPath = path ?? _currentRecordingPath;
+      _currentRecordingPath = null;
+
+      if (recordingPath != null) {
+        final file = await File(recordingPath).readAsBytes();
         final audioData = Uint8List.fromList(file);
         
         final provider = ref.read(groqChatProvider.notifier);
@@ -191,6 +202,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       setState(() {
         _isRecording = false;
       });
+      _currentRecordingPath = null;
     }
   }
 
