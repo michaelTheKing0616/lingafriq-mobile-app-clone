@@ -315,19 +315,21 @@ jobs:
             flutter build ipa --release --no-codesign --split-debug-info=build/symbols
           fi
 
-      - name: 🚚 Package iOS build with version
+            - name: 🚚 Package iOS build with version
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
         run: |
           version="${{ needs.increment-version.outputs.version }}"
+
+          # Ensure output folder exists
           mkdir -p build/release/ios
-          
+
           echo "🔎 Searching for iOS build artifacts..."
           echo "Checking build/ios/ipa/..."
           ls -la build/ios/ipa/ 2>/dev/null || echo "No ipa directory"
           echo "Checking build/ios/archive/..."
           ls -la build/ios/archive/ 2>/dev/null || echo "No archive directory"
-          
+
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
             # Signed IPA exists
             ipa_file=$(ls build/ios/ipa/*.ipa 2>/dev/null | head -n 1)
@@ -345,13 +347,15 @@ jobs:
               fi
             fi
           else
-            # Archive without signing - create xcarchive zip
+            # Unsigned: package the xcarchive
             if [ -d build/ios/archive/Runner.xcarchive ]; then
+              echo "📦 Packaging unsigned xcarchive..."
               cd build/ios/archive
               zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive
               cd ../../..
               echo "✅ Unsigned archive created: build/release/ios/LingAfriq-$version-unsigned.xcarchive.zip"
             elif [ -d build/ios/archive ]; then
+              echo "📦 Packaging entire archive folder..."
               cd build/ios/archive
               zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .
               cd ../../..
@@ -362,7 +366,7 @@ jobs:
               find build -name "*.ipa" -type f || echo "No IPA found"
             fi
           fi
-          
+
           echo "📦 Final iOS artifacts in build/release/ios/:"
           ls -lh build/release/ios/ || echo "No files found"
 
