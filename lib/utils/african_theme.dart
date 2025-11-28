@@ -12,6 +12,8 @@ class AfricanTheme {
   static const Color skyBlue = Color(0xFF1CB0F6); // African sky
   static const Color deepRed = Color(0xFFC4413A); // African red
   static const Color vibrantPurple = Color(0xFFA733EC); // African purple
+  static const Color stitchCardDark = Color(0xFF1F3527);
+  static const Color stitchBorderDark = Color(0xFF2A4A35);
   
   // Background Colors
   static const Color backgroundLight = Color(0xFFF6F8F6);

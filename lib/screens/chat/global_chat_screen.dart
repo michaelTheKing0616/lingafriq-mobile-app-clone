@@ -181,48 +181,48 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                   ),
                   // Online Users Bar
                   if (isConnected && onlineUsers.isNotEmpty)
-            Container(
-              height: 60.sp,
-              color: isDark ? const Color(0xFF1F3527) : Colors.white,
-              padding: EdgeInsets.symmetric(horizontal: 16.sp),
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: onlineUsers.length,
-                itemBuilder: (context, index) {
-                  final onlineUser = onlineUsers[index];
-                  return Container(
-                    margin: EdgeInsets.only(right: 8.sp),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 18.sp,
-                          backgroundColor: AppColors.primaryGreen,
-                          child: Text(
-                            (onlineUser['username'] as String? ?? 'U')[0].toUpperCase(),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
+                    Container(
+                      height: 60.sp,
+                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 16.sp),
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: onlineUsers.length,
+                        itemBuilder: (context, index) {
+                          final onlineUser = onlineUsers[index];
+                          return Container(
+                            margin: EdgeInsets.only(right: 8.sp),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                CircleAvatar(
+                                  radius: 18.sp,
+                                  backgroundColor: AppColors.primaryGreen,
+                                  child: Text(
+                                    (onlineUser['username'] as String? ?? 'U')[0].toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 4.sp),
+                                Container(
+                                  width: 8.sp,
+                                  height: 8.sp,
+                                  decoration: const BoxDecoration(
+                                    color: Colors.green,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ),
-                        SizedBox(height: 4.sp),
-                        Container(
-                          width: 8.sp,
-                          height: 8.sp,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ],
+                          );
+                        },
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-          
+
                   // Messages
                   Expanded(
                     child: messages.isEmpty

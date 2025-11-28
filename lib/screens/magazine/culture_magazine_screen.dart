@@ -196,24 +196,6 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     );
   }
 
-  // Keep old methods for backward compatibility but they won't be used in new design
-  Widget _buildAllContent(
-    BuildContext context,
-    List<CultureContent> featured,
-    List<CultureContent> all,
-    bool isDark,
-  ) {
-    return const SizedBox();
-  }
-
-  Widget _buildCategoryContent(
-    BuildContext context,
-    ContentType type,
-    bool isDark,
-  ) {
-    return const SizedBox();
-  }
-
   Widget _buildAllContent(
     BuildContext context,
     List<CultureContent> featured,

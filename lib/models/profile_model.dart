@@ -150,10 +150,16 @@ class ProfileModel {
 
   //Support for old server urls
   String get avatarUrl {
-    if (avater!.contains('http://34.121.156.251:8000/')) {
+    if (avater != null && avater!.contains('http://34.121.156.251:8000/')) {
       return avater!.replaceAll('http://34.121.156.251:8000/', Api.baseurl);
     }
 
-    return avater!;
+    return avater ?? '';
   }
+
+  String? get avatar => avater;
+
+  int get level => (completed_point ~/ 100) + 1;
+
+  int get streak => 0;
 }

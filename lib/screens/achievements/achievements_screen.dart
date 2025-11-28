@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -137,43 +138,6 @@ class AchievementsScreen extends ConsumerWidget {
             ),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // XP and Level Card
-            _buildXPLevelCard(context, totalXP, level, unlockedCount, achievements.length, isDark),
-            SizedBox(height: 24.sp),
-            
-            // Achievements Grid
-            Text(
-              'All Achievements',
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 16.sp),
-            
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 12.sp,
-                mainAxisSpacing: 12.sp,
-                childAspectRatio: 0.85,
-              ),
-              itemCount: achievements.length,
-              itemBuilder: (context, index) {
-                return _buildAchievementCard(context, achievements[index], isDark);
-              },
-            ),
-          ],
-        ),
       ),
     );
   }
