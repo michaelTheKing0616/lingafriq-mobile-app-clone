@@ -3,8 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/culture_content_model.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:sizer/sizer.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
   const CultureMagazineScreen({Key? key}) : super(key: key);
@@ -40,26 +42,178 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      appBar: AppBar(
-        title: const Text('African Culture'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
-        elevation: 0,
-        bottom: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          indicatorColor: AppColors.primaryGreen,
-          labelColor: AppColors.primaryGreen,
-          unselectedLabelColor: isDark ? Colors.grey[400] : Colors.grey[600],
-          tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'Stories'),
-            Tab(text: 'Music'),
-            Tab(text: 'Festivals'),
-            Tab(text: 'Lore'),
-          ],
-        ),
+      body: Stack(
+        children: [
+          // Gradient Header
+          Container(
+            height: 25.h,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFFF6B35), // Orange
+                  Color(0xFF7B2CBF), // Purple
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(4.w),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: const CircleBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    const Icon(
+                      Icons.newspaper_rounded,
+                      color: Colors.white,
+                      size: 64,
+                    ),
+                    SizedBox(height: 1.h),
+                    Text(
+                      'Cultural Magazines',
+                      style: TextStyle(
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 0.5.h),
+                    Text(
+                      'Explore African culture & heritage',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Content
+          Positioned(
+            top: 22.h,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Column(
+              children: [
+                // Category Cards
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.all(4.w),
+                    child: Column(
+                      children: [
+                        _CategoryCard(
+                          id: 'music',
+                          name: 'Music',
+                          icon: Icons.music_note_rounded,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
+                          ),
+                          articles: 24,
+                          onTap: () {},
+                          isDark: isDark,
+                        ),
+                        SizedBox(height: 2.h),
+                        _CategoryCard(
+                          id: 'stories',
+                          name: 'Stories',
+                          icon: Icons.menu_book_rounded,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
+                          ),
+                          articles: 18,
+                          onTap: () {},
+                          isDark: isDark,
+                        ),
+                        SizedBox(height: 2.h),
+                        _CategoryCard(
+                          id: 'news',
+                          name: 'News',
+                          icon: Icons.newspaper_rounded,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFFCD116), Color(0xFFFF6B35)],
+                          ),
+                          articles: 32,
+                          onTap: () {},
+                          isDark: isDark,
+                        ),
+                        SizedBox(height: 2.h),
+                        _CategoryCard(
+                          id: 'history',
+                          name: 'History',
+                          icon: Icons.public_rounded,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF7B2CBF), Color(0xFFCE1126)],
+                          ),
+                          articles: 15,
+                          onTap: () {},
+                          isDark: isDark,
+                        ),
+                        SizedBox(height: 2.h),
+                        _CategoryCard(
+                          id: 'art',
+                          name: 'Art',
+                          icon: Icons.palette_rounded,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFFF6B35), Color(0xFF7B2CBF)],
+                          ),
+                          articles: 21,
+                          onTap: () {},
+                          isDark: isDark,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  // Keep old methods for backward compatibility but they won't be used in new design
+  Widget _buildAllContent(
+    BuildContext context,
+    List<CultureContent> featured,
+    List<CultureContent> all,
+    bool isDark,
+  ) {
+    return const SizedBox();
+  }
+
+  Widget _buildCategoryContent(
+    BuildContext context,
+    ContentType type,
+    bool isDark,
+  ) {
+    return const SizedBox();
+  }
       body: TabBarView(
         controller: _tabController,
         children: [
@@ -490,6 +644,98 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
         publishDate: DateTime.now().subtract(Duration(days: 5)),
       ),
     ];
+  }
+}
+
+class _CategoryCard extends StatelessWidget {
+  final String id;
+  final String name;
+  final IconData icon;
+  final Gradient gradient;
+  final int articles;
+  final VoidCallback onTap;
+  final bool isDark;
+  
+  const _CategoryCard({
+    required this.id,
+    required this.name,
+    required this.icon,
+    required this.gradient,
+    required this.articles,
+    required this.onTap,
+    required this.isDark,
+  });
+  
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        child: Container(
+          padding: EdgeInsets.all(5.w),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+            boxShadow: DesignSystem.shadowLarge,
+            border: Border.all(
+              color: isDark ? const Color(0xFF2A4A35) : Colors.transparent,
+            ),
+          ),
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: gradient,
+                    borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                  ),
+                  opacity: 0.05,
+                ),
+              ),
+              Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(4.w),
+                    decoration: BoxDecoration(
+                      gradient: gradient,
+                      borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                      boxShadow: DesignSystem.shadowMedium,
+                    ),
+                    child: Icon(icon, color: Colors.white, size: 32),
+                  ),
+                  SizedBox(width: 4.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        SizedBox(height: 0.5.h),
+                        Text(
+                          '$articles articles',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white70 : Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
 

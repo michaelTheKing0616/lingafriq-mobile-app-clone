@@ -34,11 +34,182 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      appBar: AppBar(
-        title: const Text('Import Media'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
-        elevation: 0,
+      body: Stack(
+        children: [
+          // Gradient Header
+          Container(
+            height: 25.h,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF007A3D), // Green
+                  Color(0xFF00A8E8), // Blue
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(4.w),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: const CircleBorder(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 2.h),
+                    const Icon(
+                      Icons.upload_rounded,
+                      color: Colors.white,
+                      size: 64,
+                    ),
+                    SizedBox(height: 1.h),
+                    Text(
+                      'Media Import',
+                      style: TextStyle(
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 0.5.h),
+                    Text(
+                      'Share your content with the community',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Content
+          Positioned(
+            top: 22.h,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(4.w),
+              child: Column(
+                children: [
+                  // Upload Card
+                  Container(
+                    padding: EdgeInsets.all(8.w),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                      border: Border.all(
+                        color: AppColors.primaryGreen.withOpacity(0.3),
+                        width: 2,
+                        style: BorderStyle.solid,
+                      ),
+                      boxShadow: DesignSystem.shadowLarge,
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.image_rounded,
+                          size: 64,
+                          color: AppColors.primaryGreen,
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          'Upload Media',
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        SizedBox(height: 1.h),
+                        Text(
+                          'Drag and drop or click to browse',
+                          style: TextStyle(
+                            fontSize: 14.sp,
+                            color: isDark ? Colors.white70 : Colors.black54,
+                          ),
+                        ),
+                        SizedBox(height: 3.h),
+                        ElevatedButton(
+                          onPressed: () => _importFromFile(),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryGreen,
+                            foregroundColor: Colors.white,
+                            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                            ),
+                          ),
+                          child: const Text('Select Files'),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 3.h),
+                  // Supported Formats
+                  Text(
+                    'Supported Formats',
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _FormatCard(
+                          title: 'Images',
+                          formats: 'JPG, PNG',
+                          isDark: isDark,
+                        ),
+                      ),
+                      SizedBox(width: 2.w),
+                      Expanded(
+                        child: _FormatCard(
+                          title: 'Videos',
+                          formats: 'MP4, MOV',
+                          isDark: isDark,
+                        ),
+                      ),
+                      SizedBox(width: 2.w),
+                      Expanded(
+                        child: _FormatCard(
+                          title: 'Audio',
+                          formats: 'MP3, WAV',
+                          isDark: isDark,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.sp),
@@ -420,6 +591,51 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
       SnackBar(
         content: Text('Lesson creation feature coming soon!'),
         backgroundColor: AppColors.primaryGreen,
+      ),
+    );
+  }
+}
+
+class _FormatCard extends StatelessWidget {
+  final String title;
+  final String formats;
+  final bool isDark;
+  
+  const _FormatCard({
+    required this.title,
+    required this.formats,
+    required this.isDark,
+  });
+  
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+        boxShadow: DesignSystem.shadowSmall,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black87,
+            ),
+          ),
+          SizedBox(height: 0.5.h),
+          Text(
+            formats,
+            style: TextStyle(
+              fontSize: 11.sp,
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+          ),
+        ],
       ),
     );
   }

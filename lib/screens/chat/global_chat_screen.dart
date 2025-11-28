@@ -61,55 +61,125 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _selectedRoom == 'general' ? 'Global Chat' : '${_selectedRoom.toUpperCase()} Chat',
-              style: TextStyle(fontSize: 18.sp),
-            ),
-            if (isConnected)
-              Text(
-                '${onlineUsers.length} online',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  color: Colors.green,
-                ),
-              ),
-          ],
-        ),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
-        elevation: 0,
-        actions: [
-          PopupMenuButton<String>(
-            icon: Icon(Icons.language, color: isDark ? Colors.white : Colors.black87),
-            onSelected: (room) {
-              if (_selectedRoom == room) return;
-              final socket = ref.read(socketProvider.notifier);
-              socket.leaveRoom(_selectedRoom);
-              setState(() {
-                _selectedRoom = room;
-              });
-              socket.joinRoom(room);
-              socket.setActiveRoom(room);
-              _scrollToBottom();
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'general', child: Text('General')),
-              const PopupMenuItem(value: 'yoruba', child: Text('Yoruba')),
-              const PopupMenuItem(value: 'hausa', child: Text('Hausa')),
-              const PopupMenuItem(value: 'swahili', child: Text('Swahili')),
-              const PopupMenuItem(value: 'igbo', child: Text('Igbo')),
-            ],
-          ),
-        ],
-      ),
       body: Column(
         children: [
-          // Online Users Bar
-          if (isConnected && onlineUsers.isNotEmpty)
+          // Gradient Header
+          Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF007A3D), // Green
+                  Color(0xFF00A8E8), // Blue
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: EdgeInsets.all(4.w),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        shape: const CircleBorder(),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Community Chat',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          if (isConnected)
+                            Text(
+                              '${onlineUsers.length} learners online',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.white.withOpacity(0.8),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.people_rounded, color: Colors.white, size: 16),
+                          SizedBox(width: 1.w),
+                          Text(
+                            '${onlineUsers.length}',
+                            style: TextStyle(color: Colors.white, fontSize: 12.sp),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Messages Area
+          Expanded(
+            child: Container(
+              color: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+              child: Column(
+                children: [
+                  // Room selector
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                    color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                    child: Row(
+                      children: [
+                        PopupMenuButton<String>(
+                          icon: Icon(Icons.language, color: isDark ? Colors.white : Colors.black87),
+                          onSelected: (room) {
+                            if (_selectedRoom == room) return;
+                            final socket = ref.read(socketProvider.notifier);
+                            socket.leaveRoom(_selectedRoom);
+                            setState(() {
+                              _selectedRoom = room;
+                            });
+                            socket.joinRoom(room);
+                            socket.setActiveRoom(room);
+                            _scrollToBottom();
+                          },
+                          itemBuilder: (context) => [
+                            const PopupMenuItem(value: 'general', child: Text('General')),
+                            const PopupMenuItem(value: 'yoruba', child: Text('Yoruba')),
+                            const PopupMenuItem(value: 'hausa', child: Text('Hausa')),
+                            const PopupMenuItem(value: 'swahili', child: Text('Swahili')),
+                            const PopupMenuItem(value: 'igbo', child: Text('Igbo')),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Online Users Bar
+                  if (isConnected && onlineUsers.isNotEmpty)
             Container(
               height: 60.sp,
               color: isDark ? const Color(0xFF1F3527) : Colors.white,
@@ -152,112 +222,120 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
               ),
             ),
           
-          // Messages
-          Expanded(
-            child: messages.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  // Messages
+                  Expanded(
+                    child: messages.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.chat_bubble_outline,
+                                  size: 64.sp,
+                                  color: isDark ? Colors.grey[600] : Colors.grey[400],
+                                ),
+                                SizedBox(height: 16.sp),
+                                Text(
+                                  isConnected
+                                      ? 'No messages yet. Start the conversation!'
+                                      : 'Connecting...',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.all(16.sp),
+                            itemCount: messages.length,
+                            itemBuilder: (context, index) {
+                              final message = messages[index];
+                              final isMe = message['userId'] == user?.id.toString();
+                              return _buildMessageBubble(context, message, isMe, isDark);
+                            },
+                          ),
+                  ),
+                  
+                  // Input Area - Figma Make Style
+                  Container(
+                    padding: EdgeInsets.all(4.w),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          (isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6)).withOpacity(0),
+                          (isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6)),
+                        ],
+                      ),
+                    ),
+                    child: Row(
                       children: [
-                        Icon(
-                          Icons.chat_bubble_outline,
-                          size: 64.sp,
-                          color: isDark ? Colors.grey[600] : Colors.grey[400],
-                        ),
-                        SizedBox(height: 16.sp),
-                        Text(
-                          isConnected
-                              ? 'No messages yet. Start the conversation!'
-                              : 'Connecting...',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                              borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                              boxShadow: DesignSystem.shadowMedium,
+                            ),
+                            child: TextField(
+                              controller: _messageController,
+                              decoration: InputDecoration(
+                                hintText: 'Type a message...',
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                                filled: false,
+                              ),
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black87,
+                              ),
+                              maxLines: null,
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    controller: _scrollController,
-                    padding: EdgeInsets.all(16.sp),
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      final isMe = message['userId'] == user?.id.toString();
-                      return _buildMessageBubble(context, message, isMe, isDark);
-                    },
-                  ),
-          ),
-          
-          // Input Area
-          Container(
-            padding: EdgeInsets.all(16.sp),
-            decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1F3527) : Colors.white,
-              border: Border(
-                top: BorderSide(
-                  color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
-                ),
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(24),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[100],
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 20.sp,
-                        vertical: 12.sp,
-                      ),
-                    ),
-                    style: TextStyle(
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
-                    maxLines: null,
-                  ),
-                ),
-                SizedBox(width: 8.sp),
-                IconButton(
-                  onPressed: isConnected && _messageController.text.isNotEmpty
-                      ? () {
-                          ref.read(socketProvider.notifier).sendMessage(
-                            _selectedRoom,
-                            _messageController.text,
-                            user?.id.toString() ?? '',
-                            user?.username ?? 'Anonymous',
-                          );
-                          _messageController.clear();
-                          Future.delayed(Duration(milliseconds: 100), () {
-                            if (_scrollController.hasClients) {
-                              _scrollController.animateTo(
-                                _scrollController.position.maxScrollExtent,
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeOut,
-                              );
-                            }
-                          });
-                        }
-                      : null,
-                  icon: Icon(
-                    Icons.send_rounded,
-                    color: isConnected && _messageController.text.isNotEmpty
-                        ? AppColors.primaryGreen
-                        : (isDark ? Colors.grey[600] : Colors.grey[400]),
-                  ),
-                  style: IconButton.styleFrom(
-                    backgroundColor: isConnected && _messageController.text.isNotEmpty
-                        ? AppColors.primaryGreen.withOpacity(0.1)
-                        : Colors.transparent,
-                  ),
-                ),
+                        SizedBox(width: 2.w),
+                        Container(
+                          width: 12.w,
+                          height: 12.w,
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
+                            ),
+                            shape: BoxShape.circle,
+                            boxShadow: DesignSystem.shadowMedium,
+                          ),
+                          child: IconButton(
+                            onPressed: isConnected && _messageController.text.isNotEmpty
+                                ? () {
+                                    ref.read(socketProvider.notifier).sendMessage(
+                                      _selectedRoom,
+                                      _messageController.text,
+                                      user?.id.toString() ?? '',
+                                      user?.username ?? 'Anonymous',
+                                    );
+                                    _messageController.clear();
+                                    Future.delayed(const Duration(milliseconds: 100), () {
+                                      if (_scrollController.hasClients) {
+                                        _scrollController.animateTo(
+                                          _scrollController.position.maxScrollExtent,
+                                          duration: const Duration(milliseconds: 300),
+                                          curve: Curves.easeOut,
+                                        );
+                                      }
+                                    });
+                                  }
+                                : null,
+                            icon: const Icon(
+                              Icons.send_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
               ],
             ),
           ),
