@@ -6,6 +6,9 @@ import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/settings/settings_screen.dart';
+import 'package:lingafriq/screens/profile/user_profile_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_select_screen.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/achievements/achievements_screen.dart';
@@ -56,8 +59,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Profile'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    ref.read(tabIndexProvider.notifier).setIndex(3);
                     Navigator.pop(context);
+                    ref.read(navigationProvider).naviateTo(const UserProfileScreen());
                   },
                 ),
                 ListTile(
@@ -68,7 +71,7 @@ class AppDrawer extends ConsumerWidget {
                   title: 'AI Chat'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
                     Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const AiChatScreen());
+                    ref.read(navigationProvider).naviateTo(const AiChatSelectScreen());
                   },
                 ),
                 ListTile(
@@ -202,7 +205,7 @@ class AppDrawer extends ConsumerWidget {
                   title: 'Settings'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
                     Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const ProfileEditScreen());
+                    ref.read(navigationProvider).naviateTo(const SettingsScreen());
                   },
                 ),
                 ListTile(

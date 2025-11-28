@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:sizer/sizer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -126,6 +127,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
                     badge: 'Quick & Easy',
                     onTap: () {
                       // Set translator mode and navigate
+                      ref.read(groqChatProvider.notifier).setMode(PolieMode.translation);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -147,6 +149,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
                     badge: 'Interactive Learning',
                     onTap: () {
                       // Set tutor mode and navigate
+                      ref.read(groqChatProvider.notifier).setMode(PolieMode.tutor);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
