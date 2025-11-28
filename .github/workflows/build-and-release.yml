@@ -181,15 +181,26 @@ jobs:
       - name: 🏗️ Build AAB (Release)
         env:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          STABILITY_AI_KEY: ${{ secrets.STABILITY_AI_KEY }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
         run: |
-          if [ -z "$GROQ_API_KEY" ]; then
-            echo "⚠️ Warning: GROQ_API_KEY secret not set. Building without API key."
-            flutter build appbundle --release --split-debug-info=build/symbols
+          build_args="--release --split-debug-info=build/symbols"
+          
+          if [ -n "$GROQ_API_KEY" ]; then
+            build_args="$build_args --dart-define=GROQ_API_KEY=$GROQ_API_KEY"
           else
-            flutter build appbundle --release \
-              --dart-define=GROQ_API_KEY="$GROQ_API_KEY" \
-              --split-debug-info=build/symbols
+            echo "⚠️ Warning: GROQ_API_KEY secret not set. Building without API key."
           fi
+          
+          if [ -n "$STABILITY_AI_KEY" ]; then
+            build_args="$build_args --dart-define=STABILITY_AI_KEY=$STABILITY_AI_KEY"
+          fi
+          
+          if [ -n "$HUGGINGFACE_TOKEN" ]; then
+            build_args="$build_args --dart-define=HUGGINGFACE_TOKEN=$HUGGINGFACE_TOKEN"
+          fi
+          
+          flutter build appbundle $build_args
 
       - name: 🚚 Package AAB and mapping file
         run: |
@@ -314,12 +325,23 @@ jobs:
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          STABILITY_AI_KEY: ${{ secrets.STABILITY_AI_KEY }}
+          HUGGINGFACE_TOKEN: ${{ secrets.HUGGINGFACE_TOKEN }}
         run: |
           build_args="--release --split-debug-info=build/symbols"
+          
           if [ -n "$GROQ_API_KEY" ]; then
             build_args="$build_args --dart-define=GROQ_API_KEY=$GROQ_API_KEY"
           else
             echo "⚠️ Warning: GROQ_API_KEY secret not set. Building without API key."
+          fi
+          
+          if [ -n "$STABILITY_AI_KEY" ]; then
+            build_args="$build_args --dart-define=STABILITY_AI_KEY=$STABILITY_AI_KEY"
+          fi
+          
+          if [ -n "$HUGGINGFACE_TOKEN" ]; then
+            build_args="$build_args --dart-define=HUGGINGFACE_TOKEN=$HUGGINGFACE_TOKEN"
           fi
           
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
