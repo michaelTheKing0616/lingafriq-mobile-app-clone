@@ -5,6 +5,9 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
+import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
+import 'package:lingafriq/screens/chat/private_chat_screen.dart';
+import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserConnectionsScreen extends ConsumerStatefulWidget {
@@ -23,12 +26,6 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeSocket();
     });
-  }
-
-  @override
-  void dispose() {
-    ref.read(socketProvider.notifier).disconnect();
-    super.dispose();
   }
 
   void _initializeSocket() {
@@ -61,6 +58,20 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
         foregroundColor: isDark ? Colors.white : Colors.black87,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.lock_outline),
+            tooltip: 'Private chats',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const PrivateChatListScreen(),
+                ),
+              );
+            },
+          )
+        ],
       ),
       body: Column(
         children: [
@@ -224,13 +235,21 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
           ),
         ),
         trailing: IconButton(
-          icon: Icon(Icons.chat_bubble_outline, color: AppColors.primaryGreen),
+          icon: Icon(Icons.lock_outline, color: AppColors.primaryGreen),
           onPressed: () {
-            // Navigate to chat with this user
+            final contact = PrivateChatContact.fromOnlineMap(userData);
+            if (contact.id < 0) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('This user is not ready for private chats yet.'),
+                ),
+              );
+              return;
+            }
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => GlobalChatScreen(language: null),
+                builder: (_) => PrivateChatScreen(contact: contact),
               ),
             );
           },

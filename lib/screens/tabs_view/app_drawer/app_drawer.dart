@@ -13,6 +13,7 @@ import 'package:lingafriq/screens/media/import_media_screen.dart';
 import 'package:lingafriq/screens/global/global_progress_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
+import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/social/user_connections_screen.dart';
 import 'package:lingafriq/screens/curriculum/curriculum_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
@@ -167,6 +168,19 @@ class AppDrawer extends ConsumerWidget {
                   onTap: () {
                     Navigator.pop(context);
                     ref.read(navigationProvider).naviateTo(const GlobalChatScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.lock_outline_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Private Chats'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    ref
+                        .read(navigationProvider)
+                        .naviateTo(const PrivateChatListScreen());
                   },
                 ),
                 ListTile(

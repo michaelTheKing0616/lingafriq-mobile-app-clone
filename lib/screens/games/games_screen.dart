@@ -11,7 +11,6 @@ import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
-import 'package:lingafriq/screens/games/fill_blank_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 import 'package:lingafriq/screens/games/pronunciation_game.dart';
 
@@ -266,21 +265,6 @@ class GameTypesScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (_) => WordMatchGame(language: language),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 12),
-            _GameTypeCard(
-              icon: Icons.edit_rounded,
-              title: 'Fill in the Blank',
-              description: 'Complete sentences with missing words',
-              color: AppColors.accentGold,
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => FillBlankGame(language: language),
                   ),
                 );
               },

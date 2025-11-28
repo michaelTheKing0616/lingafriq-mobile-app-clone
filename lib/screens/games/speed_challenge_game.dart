@@ -152,6 +152,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
         );
         if (gameSuccess) {
           await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+          ref.read(userProvider.notifier).addPoints(points);
         }
         
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
@@ -189,27 +190,8 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
       return PopScope(
         canPop: false,
         onPopInvoked: (didPop) async {
-          if (!didPop && !_gameComplete && _gameStarted) {
-            final shouldPop = await showDialog<bool>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Exit Game?'),
-                content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, false),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, true),
-                    child: const Text('Exit'),
-                  ),
-                ],
-              ),
-            );
-            if (shouldPop == true && context.mounted) {
-              Navigator.pop(context);
-            }
+          if (!didPop) {
+            await _handleExitRequest();
           }
         },
         child: Scaffold(
@@ -218,32 +200,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
                 icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () async {
-                  if (!_gameComplete && _gameStarted) {
-                    final shouldPop = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Exit Game?'),
-                        content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, true),
-                            child: const Text('Exit'),
-                          ),
-                        ],
-                      ),
-                    );
-                    if (shouldPop == true && context.mounted) {
-                      Navigator.pop(context);
-                    }
-                  } else {
-                    Navigator.pop(context);
-                  }
-                },
+                onPressed: _handleExitRequest,
               ),
             ),
           title: Text('Speed Challenge - ${widget.language.name}'),
@@ -312,6 +269,10 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Speed Challenge'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: _handleExitRequest,
+        ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -327,45 +288,52 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             children: [
               // Timer and score
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: _timeRemaining <= 10 
-                          ? AppColors.red.withOpacity(0.2)
-                          : AppColors.oceanBlue.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: _timeRemaining <= 10 
-                            ? AppColors.red
-                            : AppColors.oceanBlue,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.timer,
-                          color: _timeRemaining <= 10 
+                  IconButton(
+                    icon: Icon(Icons.close, color: context.adaptive),
+                    onPressed: _handleExitRequest,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: _timeRemaining <= 10
+                            ? AppColors.red.withOpacity(0.2)
+                            : AppColors.oceanBlue.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: _timeRemaining <= 10
                               ? AppColors.red
                               : AppColors.oceanBlue,
-                          size: 20.sp,
+                          width: 2,
                         ),
-                        SizedBox(width: 8),
-                        Text(
-                          '$_timeRemaining',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: _timeRemaining <= 10 
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            color: _timeRemaining <= 10
                                 ? AppColors.red
                                 : AppColors.oceanBlue,
+                            size: 20.sp,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 8),
+                          Text(
+                            '$_timeRemaining',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: _timeRemaining <= 10
+                                  ? AppColors.red
+                                  : AppColors.oceanBlue,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  SizedBox(width: 12),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
@@ -559,6 +527,33 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleExitRequest() async {
+    if (!_gameStarted || _gameComplete) {
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Exit Game?'),
+        content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Exit'),
+          ),
+        ],
+      ),
+    );
+    if (shouldPop == true && mounted) {
+      Navigator.pop(context);
+    }
   }
 }
 

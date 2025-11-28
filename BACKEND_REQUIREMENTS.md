@@ -379,3 +379,4 @@ Test all endpoints with:
 3. Set up WebSocket support for Socket.io
 4. Configure environment variables for database connections
 
+

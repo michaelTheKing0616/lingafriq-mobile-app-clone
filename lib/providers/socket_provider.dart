@@ -1,3 +1,9 @@
+import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
+
+import 'package:crypto/crypto.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -12,32 +18,42 @@ class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin 
   IO.Socket? _socket;
   bool _isConnected = false;
   final List<Map<String, dynamic>> _onlineUsers = [];
-  final List<Map<String, dynamic>> _messages = [];
+  final Map<String, List<Map<String, dynamic>>> _messagesByRoom = {};
+  String _activeRoom = 'general';
+  final Random _secureRandom = Random.secure();
 
   bool get isConnected => _isConnected;
   List<Map<String, dynamic>> get onlineUsers => List.unmodifiable(_onlineUsers);
-  List<Map<String, dynamic>> get messages => List.unmodifiable(_messages);
+  List<Map<String, dynamic>> get messages =>
+      List.unmodifiable(_messagesByRoom[_activeRoom] ?? const []);
 
   @override
   BaseProviderState build() {
     return BaseProviderState();
   }
 
+  void setActiveRoom(String room) {
+    _activeRoom = room;
+    _messagesByRoom.putIfAbsent(room, () => []);
+    state = state.copyWith();
+  }
+
+  List<Map<String, dynamic>> messagesForRoom(String room) {
+    return List.unmodifiable(_messagesByRoom[room] ?? const []);
+  }
+
   Future<void> connect(String userId, String username) async {
     try {
-      // Extract base URL and convert to WebSocket URL
-      final baseUrl = Api.baseurl;
-      final wsUrl = baseUrl
-          .replaceFirst('http://', 'ws://')
-          .replaceFirst('https://', 'wss://')
-          .replaceAll(RegExp(r'/$'), ''); // Remove trailing slash
+      final baseUrl = Api.baseurl.replaceAll(RegExp(r'/+$'), '');
+      _messagesByRoom.putIfAbsent('general', () => []);
+      _activeRoom = 'general';
       
       _socket = IO.io(
-        wsUrl,
+        baseUrl,
         IO.OptionBuilder()
             .setTransports(['websocket'])
             .enableAutoConnect()
-            .setExtraHeaders({'userId': userId})
+            .setExtraHeaders({'userId': userId, 'username': username})
             .build(),
       );
 
@@ -67,8 +83,11 @@ class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin 
 
       _socket!.on('new_message', (data) {
         if (data is Map) {
-          _messages.add(Map<String, dynamic>.from(data));
-          state = state.copyWith();
+          final parsed = Map<String, dynamic>.from(data);
+          final room = parsed['room']?.toString() ?? 'general';
+          final text = parsed['message']?.toString() ?? '';
+          parsed['message'] = _decryptIfNeeded(room, text);
+          _appendMessage(room, parsed);
         }
       });
 
@@ -95,9 +114,12 @@ class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin 
 
   void sendMessage(String room, String message, String userId, String username) {
     if (_socket != null && _isConnected) {
+      final payload = room.startsWith('private_')
+          ? _encryptPayload(room, message)
+          : message;
       _socket!.emit('send_message', {
         'room': room,
-        'message': message,
+        'message': payload,
         'userId': userId,
         'username': username,
         'timestamp': DateTime.now().toIso8601String(),
@@ -124,9 +146,51 @@ class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin 
       _socket = null;
       _isConnected = false;
       _onlineUsers.clear();
-      _messages.clear();
+      _messagesByRoom.clear();
+      _activeRoom = 'general';
       state = state.copyWith();
     }
+  }
+
+  void _appendMessage(String room, Map<String, dynamic> message) {
+    final bucket = _messagesByRoom.putIfAbsent(room, () => []);
+    bucket.add(message);
+    if (room == _activeRoom) {
+      state = state.copyWith();
+    }
+  }
+
+  String _encryptPayload(String room, String text) {
+    final ivBytes = List<int>.generate(16, (_) => _secureRandom.nextInt(256));
+    final key = encrypt.Key(Uint8List.fromList(_deriveKey(room)));
+    final iv = encrypt.IV(Uint8List.fromList(ivBytes));
+    final encrypter =
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'));
+    final encrypted = encrypter.encrypt(text, iv: iv);
+    return 'e2e::${base64Encode(ivBytes)}::${encrypted.base64}';
+  }
+
+  String _decryptIfNeeded(String room, String message) {
+    if (!message.startsWith('e2e::')) return message;
+    final parts = message.split('::');
+    if (parts.length != 3) return message;
+    try {
+      final ivBytes = base64Decode(parts[1]);
+      final cipher = parts[2];
+      final key = encrypt.Key(Uint8List.fromList(_deriveKey(room)));
+      final iv = encrypt.IV(ivBytes);
+      final encrypter =
+          encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'));
+      return encrypter.decrypt64(cipher, iv: iv);
+    } catch (_) {
+      return '[Unable to decrypt message]';
+    }
+  }
+
+  List<int> _deriveKey(String room) {
+    final seed = 'polie-secure-room::$room';
+    final digest = sha256.convert(utf8.encode(seed));
+    return digest.bytes;
   }
 }
 

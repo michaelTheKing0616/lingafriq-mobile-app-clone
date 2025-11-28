@@ -32,27 +32,30 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
-    ref.read(socketProvider.notifier).disconnect();
+    ref.read(socketProvider.notifier).leaveRoom(_selectedRoom);
     super.dispose();
   }
 
   void _initializeSocket() {
     final user = ref.read(userProvider);
     if (user != null) {
-      ref.read(socketProvider.notifier).connect(
+      final socket = ref.read(socketProvider.notifier);
+      socket.connect(
         user.id.toString(),
         user.username,
       );
-      ref.read(socketProvider.notifier).joinRoom(_selectedRoom);
+      socket.joinRoom(_selectedRoom);
+      socket.setActiveRoom(_selectedRoom);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final socketNotifier = ref.watch(socketProvider.notifier);
-    final messages = ref.watch(socketProvider.notifier).messages;
-    final onlineUsers = ref.watch(socketProvider.notifier).onlineUsers;
-    final isConnected = ref.watch(socketProvider.notifier).isConnected;
+    ref.watch(socketProvider);
+    final socketNotifier = ref.read(socketProvider.notifier);
+    final messages = socketNotifier.messages;
+    final onlineUsers = socketNotifier.onlineUsers;
+    final isConnected = socketNotifier.isConnected;
     final user = ref.watch(userProvider);
     final isDark = context.isDarkMode;
 
@@ -83,11 +86,15 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
           PopupMenuButton<String>(
             icon: Icon(Icons.language, color: isDark ? Colors.white : Colors.black87),
             onSelected: (room) {
+              if (_selectedRoom == room) return;
+              final socket = ref.read(socketProvider.notifier);
+              socket.leaveRoom(_selectedRoom);
               setState(() {
                 _selectedRoom = room;
               });
-              ref.read(socketProvider.notifier).leaveRoom(_selectedRoom);
-              ref.read(socketProvider.notifier).joinRoom(room);
+              socket.joinRoom(room);
+              socket.setActiveRoom(room);
+              _scrollToBottom();
             },
             itemBuilder: (context) => [
               const PopupMenuItem(value: 'general', child: Text('General')),
@@ -335,6 +342,18 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
     } catch (e) {
       return '';
     }
+  }
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 }
 

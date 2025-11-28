@@ -386,3 +386,4 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
   }
 }
 
+

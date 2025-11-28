@@ -18,4 +18,11 @@ class UserProvider extends Notifier<ProfileModel?> {
   void resetUser() {
     state = null;
   }
+
+  void addPoints(int points) {
+    if (state == null) return;
+    final newTotal =
+        (state!.completed_point + points).clamp(0, 1 << 31).toInt();
+    state = state!.copyWith(completed_point: newTotal);
+  }
 }

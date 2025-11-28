@@ -171,6 +171,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
         if (gameSuccess) {
           // Track progress
           await ProgressIntegration.onGameCompleted(ref, wordsLearned: _matches);
+          ref.read(userProvider.notifier).addPoints(calculatedPoints);
         }
         
         debugPrint('Game completion submission: $gameSuccess');

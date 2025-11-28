@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,9 +111,17 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         }
       }
 
+      if (mounted && fullResponse.isNotEmpty) {
+        await ProgressIntegration.onChatActivity(
+          ref,
+          minutes: _estimateChatMinutes(fullResponse),
+          wordsLearned: _estimateWordsLearned(fullResponse),
+        );
+      }
+
       if (mounted && _voiceOutputEnabled && fullResponse.isNotEmpty) {
         final tts = ref.read(ttsProvider.notifier);
-        await tts.speak(fullResponse, languageName: 'English');
+        await tts.speak(fullResponse, languageName: provider.targetLanguage);
       }
     } catch (e) {
       if (mounted) {
@@ -388,55 +398,85 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Builder(
-              builder: (context) => IconButton(
-                icon: Icon(Icons.menu_rounded, color: isDark ? Colors.white : Colors.black87),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                style: IconButton.styleFrom(
-                  backgroundColor: isDark ? Colors.transparent : Colors.grey[100],
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'LingAfriq Polyglot (Polie)',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
+            Row(
+              children: [
+                Builder(
+                  builder: (context) => IconButton(
+                    icon: Icon(Icons.menu_rounded, color: isDark ? Colors.white : Colors.black87),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                    style: IconButton.styleFrom(
+                      backgroundColor: isDark ? Colors.transparent : Colors.grey[100],
                     ),
                   ),
-                  if (chatNotifier.hasMessages)
-                    Text(
-                      '${chatNotifier.messages.length} messages',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'LingAfriq Polyglot (Polie)',
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
                       ),
-                    ),
-                ],
-              ),
+                      if (chatNotifier.hasMessages)
+                        Text(
+                          '${chatNotifier.messages.length} messages',
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.language, color: isDark ? Colors.white70 : Colors.grey[700]),
+                  onPressed: () => _showLanguageDirectionDialog(context, isDark),
+                  tooltip: 'Language direction',
+                ),
+                if (chatNotifier.hasMessages)
+                  IconButton(
+                    icon: Icon(Icons.delete_outline, color: isDark ? Colors.white70 : Colors.grey[700]),
+                    onPressed: _clearChat,
+                    tooltip: 'Clear chat',
+                  ),
+                IconButton(
+                  icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white70 : Colors.grey[700]),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.language, color: isDark ? Colors.white70 : Colors.grey[700]),
-              onPressed: () => _showLanguageDirectionDialog(context, isDark),
-              tooltip: 'Language direction',
-            ),
-            if (chatNotifier.hasMessages)
-              IconButton(
-                icon: Icon(Icons.delete_outline, color: isDark ? Colors.white70 : Colors.grey[700]),
-                onPressed: _clearChat,
-                tooltip: 'Clear chat',
+            const SizedBox(height: 12),
+            SegmentedButton<PolieMode>(
+              segments: const [
+                ButtonSegment(
+                  value: PolieMode.translation,
+                  label: Text('Translation'),
+                  icon: Icon(Icons.translate_rounded, size: 16),
+                ),
+                ButtonSegment(
+                  value: PolieMode.tutor,
+                  label: Text('Tutor'),
+                  icon: Icon(Icons.school_rounded, size: 16),
+                ),
+              ],
+              selected: {chatNotifier.mode},
+              onSelectionChanged: (selection) {
+                if (selection.isEmpty) return;
+                chatNotifier.setMode(selection.first);
+              },
+              style: ButtonStyle(
+                visualDensity: VisualDensity.compact,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
               ),
-            IconButton(
-              icon: Icon(Icons.arrow_back_ios_new, color: isDark ? Colors.white70 : Colors.grey[700]),
-              onPressed: () => Navigator.pop(context),
             ),
           ],
         ),
@@ -767,7 +807,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     }
                   },
                   decoration: InputDecoration(
-                    hintText: 'Type your message...',
+                    hintText: chatNotifier.isTranslationMode
+                        ? 'Enter text for Polie to translate...'
+                        : 'Type your message...',
                     hintStyle: TextStyle(
                       color: isDark ? Colors.grey[500] : Colors.grey[500],
                       fontSize: 15.sp,
@@ -868,6 +910,24 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         ),
       ),
     );
+  }
+
+  double _estimateChatMinutes(String text) {
+    final words = _countWords(text);
+    if (words == 0) return 0;
+    final minutes = words / 110;
+    return minutes.clamp(0.25, 8.0);
+  }
+
+  int _estimateWordsLearned(String text) {
+    final words = _countWords(text);
+    if (words == 0) return 0;
+    return max(1, (words / 14).floor());
+  }
+
+  int _countWords(String text) {
+    if (text.trim().isEmpty) return 0;
+    return text.trim().split(RegExp(r'\s+')).length;
   }
 
   String _formatTime(DateTime timestamp) {

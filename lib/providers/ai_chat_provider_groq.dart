@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -124,6 +125,9 @@ class GrammarFeedback {
 // Conversation Turn
 enum ConversationTurn { user, ai }
 
+// Polie chat modes
+enum PolieMode { translation, tutor }
+
 class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<ChatMessage> _messages = [];
   final Dio _dio = Dio();
@@ -150,6 +154,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   String _sourceLanguage = 'English'; // Language user speaks
   String _targetLanguage = 'Yoruba'; // Language user wants to learn
   String? _systemPrompt;
+  PolieMode _mode = PolieMode.tutor;
 
   // Tutor & Adaptive Fields
   bool _tutorMode = true;
@@ -185,6 +190,8 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   ConversationTurn get turn => _turn;
   bool get tutorMode => _tutorMode;
   int get difficulty => _difficulty;
+  PolieMode get mode => _mode;
+  bool get isTranslationMode => _mode == PolieMode.translation;
 
   @override
   BaseProviderState build() {
@@ -196,7 +203,28 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   }
 
   void _initializeSystemPrompt() {
-    _systemPrompt = '''You are LingAfriq Polyglot, an expert AI language learning tutor specializing in African languages. 
+    if (_mode == PolieMode.translation) {
+      _systemPrompt = '''You are LingAfriq Polyglot (Polie), a context-aware translation expert specializing in African languages.
+You help users translate naturally between $_sourceLanguage (source) and $_targetLanguage (target) while preserving tone, intent, cultural nuance, and register.
+
+Always respond using the following template:
+Translation (${_targetLanguage}):
+<natural translation>
+
+Pronunciation/Transliteration (if helpful):
+<romanization or IPA>
+
+Back to ${_sourceLanguage}:
+<short plain-language explanation of meaning>
+
+Cultural/Usage Tip:
+<brief tip about politeness, dialect, or context>
+
+If the user provides speech or a sentence fragment, infer missing context before translating. If they ask questions outside of translation, answer succinctly using both languages when helpful.''';
+      return;
+    }
+
+    _systemPrompt = '''You are LingAfriq Polyglot (Polie), an expert AI language learning tutor specializing in African languages. 
 You help users learn and practice various African languages including:
 - Swahili (Kiswahili)
 - Yoruba
@@ -247,9 +275,16 @@ When the user is practicing, end your responses with a question or task to keep 
   String get sourceLanguage => _sourceLanguage;
   String get targetLanguage => _targetLanguage;
 
-  void setTutorMode(bool enabled) {
-    _tutorMode = enabled;
+  void setMode(PolieMode mode) {
+    if (_mode == mode) return;
+    _mode = mode;
+    _tutorMode = mode == PolieMode.tutor;
+    _initializeSystemPrompt();
     state = state.copyWith();
+  }
+
+  void setTutorMode(bool enabled) {
+    setMode(enabled ? PolieMode.tutor : PolieMode.translation);
   }
 
   void interruptAI() {
@@ -312,7 +347,7 @@ When the user is practicing, end your responses with a question or task to keep 
                     "content": m.content,
                   }),
             ],
-            "temperature": 0.7,
+            "temperature": _mode == PolieMode.translation ? 0.2 : 0.7,
             "max_tokens": 500,
             "stream": true,
           },
@@ -321,8 +356,15 @@ When the user is practicing, end your responses with a question or task to keep 
         String buffer = "";
         String output = "";
 
-        await for (final chunk in response.data.stream
-            .transform(const Utf8Decoder())
+        final responseBody = response.data;
+        if (responseBody is! ResponseBody) {
+          throw Exception('Unexpected response from Groq (missing stream body).');
+        }
+
+        final byteStream = responseBody.stream.cast<List<int>>();
+
+        await for (final chunk in byteStream
+            .transform(utf8.decoder)
             .transform(const LineSplitter())) {
           if (_userInterrupt) {
             state = state.copyWith(isLoading: false);

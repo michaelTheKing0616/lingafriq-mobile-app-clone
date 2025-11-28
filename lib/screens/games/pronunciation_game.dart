@@ -164,6 +164,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
         );
         if (gameSuccess) {
           await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+          ref.read(userProvider.notifier).addPoints(points);
         }
         
         final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
@@ -206,27 +207,8 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
-        if (!didPop && !_gameComplete) {
-          final shouldPop = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Exit Game?'),
-              content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Exit'),
-                ),
-              ],
-            ),
-          );
-          if (shouldPop == true && context.mounted) {
-            Navigator.pop(context);
-          }
+        if (!didPop) {
+          await _handleExitRequest();
         }
       },
       child: Scaffold(
@@ -235,32 +217,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               icon: const Icon(Icons.arrow_back_ios),
-              onPressed: () async {
-                if (!_gameComplete) {
-                  final shouldPop = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Exit Game?'),
-                      content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('Exit'),
-                        ),
-                      ],
-                    ),
-                  );
-                  if (shouldPop == true && context.mounted) {
-                    Navigator.pop(context);
-                  }
-                } else {
-                  Navigator.pop(context);
-                }
-              },
+              onPressed: _handleExitRequest,
             ),
           ),
         title: Text('Pronunciation Practice - ${widget.language.name}'),
@@ -279,11 +236,16 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
             children: [
               // Progress indicator
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Question ${_currentIndex + 1}/${_questions.length}',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  IconButton(
+                    icon: Icon(Icons.close, color: context.adaptive),
+                    onPressed: _handleExitRequest,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Question ${_currentIndex + 1}/${_questions.length}',
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Text(
                     'Score: $_score',
@@ -544,6 +506,33 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleExitRequest() async {
+    if (_gameComplete) {
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Exit Game?'),
+        content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Exit'),
+          ),
+        ],
+      ),
+    );
+    if (shouldPop == true && mounted) {
+      Navigator.pop(context);
+    }
   }
 }
 
