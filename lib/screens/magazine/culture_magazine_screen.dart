@@ -6,7 +6,6 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:sizer/sizer.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
   const CultureMagazineScreen({Key? key}) : super(key: key);
@@ -213,18 +212,6 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     bool isDark,
   ) {
     return const SizedBox();
-  }
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildAllContent(context, featuredContent, allContent, isDark),
-          _buildCategoryContent(context, ContentType.story, isDark),
-          _buildCategoryContent(context, ContentType.music, isDark),
-          _buildCategoryContent(context, ContentType.festival, isDark),
-          _buildCategoryContent(context, ContentType.lore, isDark),
-        ],
-      ),
-    );
   }
 
   Widget _buildAllContent(
