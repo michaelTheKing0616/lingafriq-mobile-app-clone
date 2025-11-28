@@ -24,6 +24,9 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> navigateBasedOnCondition() async {
+    // Check if user is already logged in (has valid credentials and user data)
+    final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
+    
     // Check if user has seen onboarding
     final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
     if (!hasSeenOnboarding) {
@@ -31,25 +34,21 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return;
     }
     
-    final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
-    if (emailAndPassword == null) {
-      ref.read(navigationProvider).naviateOffAll(const LoginScreen());
-      return;
+    // If saved credentials exist, perform a silent login to refresh JWT token
+    if (emailAndPassword != null) {
+      final email = emailAndPassword['email']!;
+      final password = emailAndPassword['password']!;
+      final user = await login(email: email, password: password);
+
+      if (user is ProfileModel) {
+        ref.read(userProvider.notifier).overrideUser(user);
+        await ref.read(apiProvider.notifier).regiserDevice();
+        ref.read(navigationProvider).naviateOffAll(const TabsView());
+        return;
+      }
     }
-
-    final email = emailAndPassword['email']!;
-    final password = emailAndPassword['password']!;
-
-    final user = await login(email: email, password: password);
-
-    //Login suceess, login can fail is user has changed the password in the web
-    if (user is ProfileModel) {
-      ref.read(userProvider.notifier).overrideUser(user);
-      await ref.read(apiProvider.notifier).regiserDevice();
-      ref.read(navigationProvider).naviateOffAll(const TabsView());
-      return;
-    }
-
+    
+    // If no saved credentials or silent login failed, show login screen
     ref.read(navigationProvider).naviateOffAll(const LoginScreen());
   }
 

@@ -70,4 +70,31 @@ class Api {
   // static String completeRandomWordQuiz(languageId, questionId) =>
   //     "/random_quiz/$languageId/questions/$questionId/word_ques_detail";
   //History Quiz End
+
+  // Progress Tracking & Daily Goals Start
+  static const String dailyGoals = "progress/daily_goals/";
+  static const String updateDailyGoal = "progress/daily_goals/update/";
+  static const String progressMetrics = "progress/metrics/";
+  static const String updateProgressMetrics = "progress/metrics/update/";
+  static const String achievements = "progress/achievements/";
+  static const String unlockAchievement = "progress/achievements/unlock/";
+  // Progress Tracking & Daily Goals End
+
+  // Global Rankings & Statistics Start
+  static const String globalStats = "global/stats/";
+  static const String globalLeaderboard = "global/leaderboard/";
+  static const String topLanguages = "global/top_languages/";
+  // Global Rankings & Statistics End
+
+  // Culture Content Start
+  static const String cultureContent = "culture/content/";
+  static String cultureContentByType(String type) => "culture/content/?type=$type";
+  static String cultureContentById(String id) => "culture/content/$id/";
+  // Culture Content End
+
+  // Chat & Social Start
+  static const String chatRooms = "chat/rooms/";
+  static String chatMessages(String room) => "chat/rooms/$room/messages/";
+  static const String onlineUsers = "chat/online_users/";
+  // Chat & Social End
 }

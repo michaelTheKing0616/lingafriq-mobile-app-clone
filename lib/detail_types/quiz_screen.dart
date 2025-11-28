@@ -6,6 +6,7 @@ import 'package:lingafriq/models/quiz_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -143,6 +144,9 @@ class QuizScreen extends HookConsumerWidget {
                                   final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
                                   if (!success) {
                                     "Failed to mark quiz as complete".log("quiz_screen");
+                                  } else {
+                                    // Track progress
+                                    await ProgressIntegration.onQuizCompleted(ref);
                                   }
                                 }
                                 if (context.mounted) {
@@ -178,6 +182,9 @@ class QuizScreen extends HookConsumerWidget {
                                   final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
                                   if (!success) {
                                     "Failed to mark quiz as complete".log("quiz_screen");
+                                  } else {
+                                    // Track progress
+                                    await ProgressIntegration.onQuizCompleted(ref);
                                   }
                                 }
                                 if (context.mounted) {

@@ -74,9 +74,9 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                 }
               },
             ),
-            // Page Indicator
+            // Page Indicator at bottom
             Positioned(
-              top: MediaQuery.of(context).padding.top + 20,
+              bottom: MediaQuery.of(context).padding.bottom + 40,
               left: 0,
               right: 0,
               child: Consumer(

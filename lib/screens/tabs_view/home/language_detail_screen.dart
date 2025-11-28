@@ -42,23 +42,55 @@ class LanguageDetailScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                        onPressed: () {
-                          ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                        },
+                  SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 8,
                       ),
-                      const BackButton(color: Colors.white),
-                    ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                              onPressed: () {
+                                ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                language.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                              onPressed: () {
+                                ref.read(navigationProvider).pop();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                // const PointsAndProfileImageBuilder(),
-                // 0.05.sh.heightBox,
+                const SizedBox(height: 16),
                 GreetingsBuilder(
                   greetingTitle: '',
                   pageTitle: language.name,
-                )
+                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),

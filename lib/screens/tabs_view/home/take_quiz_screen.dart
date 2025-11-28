@@ -54,22 +54,48 @@ class TakeQuizScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                          onPressed: () {
-                            ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                          },
+                    SafeArea(
+                      bottom: false,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top + 8,
                         ),
-                        const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                          onPressed: () {
-                            ref.read(navigationProvider).pop();
-                          },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                                onPressed: () {
+                                  ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Text(
+                                  'Take Quiz',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              IconButton(
+                                icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                                onPressed: () {
+                                  ref.read(navigationProvider).pop();
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                      ),
                     ),
                   // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                   GreetingsBuilder(
@@ -111,18 +137,22 @@ class TakeQuizScreen extends ConsumerWidget {
                                     child: _RandomTextBuilder(
                                       onTap: () async {
                                         try {
+                                          debugPrint('Fetching random quizzes for language: ${language.id}');
+                                          
                                           final randomQuizes = await ref
                                               .read(apiProvider.notifier)
                                               .getRandomQuizLessons(language.id);
-                                          // randomQuizes.shuffle();
+                                          
+                                          debugPrint('Received ${randomQuizes.length} quizzes');
+                                          
                                           if (randomQuizes.isEmpty) {
-                                            // Show message - dialog provider handles context validation
                                             ref
                                                 .read(dialogProvider(
-                                                    "We're working to add random quiz!"))
+                                                    "No quizzes available for this language yet. We're working to add more!"))
                                                 .showSuccessSnackBar();
                                             return;
                                           }
+                                          
                                           final random = Random();
                                           do {
                                             if (randomQuizes.isEmpty) break;
@@ -136,9 +166,10 @@ class TakeQuizScreen extends ConsumerWidget {
                                             }
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e) {
-                                          // Ensure loading state is cleared on error
-                                          // Show error dialog - context is checked by dialog provider
-                                          ref.read(dialogProvider(e.toString())).showExceptionDialog();
+                                          debugPrint('Error in Take Quiz: $e');
+                                          ref.read(dialogProvider(
+                                            'Failed to load quiz. ${e.toString()}'
+                                          )).showExceptionDialog();
                                         }
                                       },
                                     ).animate(effects: kGradientTextEffects),

@@ -6,6 +6,7 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
@@ -147,26 +148,67 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
+      debugPrint('Updating user points: $points (matches: $_matches, total: $_totalPairs)');
+      
       // Calculate points: max 10 points for perfect game
-      // Formula: 10 * (correct_matches / total_pairs)
       final calculatedPoints = _totalPairs > 0 
           ? (10 * (_matches / _totalPairs)).round()
           : 0;
       
       // Update user points using the same pattern as quizzes/lessons
-      // Call accountUpdate to trigger server-side point calculation, then refresh profile
       final user = ref.read(userProvider);
       if (user != null) {
-        // Call accountUpdate which may trigger server-side point updates
-        await ref.read(apiProvider.notifier).accountUpdate();
+        final oldPoints = user.completed_point;
+        debugPrint('User points before update: $oldPoints');
         
-        // Refresh user profile to get latest points (same as quizzes/lessons)
-        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-        ref.read(userProvider.notifier).overrideUser(updatedUser);
+        // Submit game completion to backend
+        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
+          gameType: 'word_match',
+          languageId: widget.language.id,
+          points: calculatedPoints,
+          score: _matches,
+        );
+        if (gameSuccess) {
+          // Track progress
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _matches);
+          ref.read(userProvider.notifier).addPoints(calculatedPoints);
+        }
+        
+        debugPrint('Game completion submission: $gameSuccess');
+        
+        // Also call accountUpdate to refresh profile
+        final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
+        debugPrint('Account update success: $updateSuccess');
+        
+        if (updateSuccess) {
+          // Wait for server to process
+          await Future.delayed(const Duration(milliseconds: 1500));
+          
+          // Refresh user profile to get latest points
+          try {
+            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+            if (updatedUser != null) {
+              final newPoints = updatedUser.completed_point;
+              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+              ref.read(userProvider.notifier).overrideUser(updatedUser);
+              
+              if (newPoints > oldPoints) {
+                debugPrint('✅ Game points successfully added!');
+              } else {
+                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
+              }
+            }
+          } catch (e) {
+            debugPrint('Error refreshing user profile: $e');
+          }
+        } else {
+          debugPrint('⚠️ Account update failed');
+        }
+      } else {
+        debugPrint('⚠️ No user logged in, cannot update points');
       }
     } catch (e) {
-      // Log error but don't block game completion
-      debugPrint('Failed to update user points: $e');
+      debugPrint('❌ Failed to update user points: $e');
     }
   }
 
@@ -175,12 +217,72 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isSmall = screenWidth < 360;
     
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-      ),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop && !_gameComplete) {
+          final shouldPop = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Exit Game?'),
+              content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Exit'),
+                ),
+              ],
+            ),
+          );
+          if (shouldPop == true && context.mounted) {
+            Navigator.pop(context);
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios,
+                color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+              ),
+              onPressed: () async {
+                if (!_gameComplete) {
+                  final shouldPop = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Exit Game?'),
+                      content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true),
+                          child: const Text('Exit'),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (shouldPop == true && context.mounted) {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ),
+        ),
       body: SafeArea(
         child: _gameComplete
             ? _buildGameComplete()
@@ -232,6 +334,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                   ),
                 ],
               ),
+        ),
       ),
     );
   }
@@ -506,12 +609,35 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               child: Padding(
                 padding: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewPadding.bottom,
+                  left: 16,
+                  right: 16,
                 ),
-                child: PrimaryButton(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  text: 'Play Again',
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    PrimaryButton(
+                      onTap: () {
+                        // Restart the game
+                        setState(() {
+                          _gameComplete = false;
+                          _score = 0;
+                          _matches = 0;
+                          _selectedLeft = null;
+                          _selectedRight = null;
+                        });
+                        _initializeGame();
+                      },
+                      text: 'Play Again',
+                    ),
+                    const SizedBox(height: 12),
+                    PrimaryButton(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      text: 'Return to Games',
+                      color: AppColors.primaryGreen.withOpacity(0.7),
+                    ),
+                  ],
                 ),
               ),
             ),

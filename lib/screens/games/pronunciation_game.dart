@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
@@ -147,20 +148,51 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
-      // Points are already calculated: max 10 points for perfect game
-      // Formula: 10 * (correct_answers / total_questions)
-      // Update user points using the same pattern as quizzes/lessons
+      debugPrint('Updating user points: $points (correct: $_correctAnswers, total: ${_questions.length})');
+      
       final user = ref.read(userProvider);
       if (user != null) {
-        // Call accountUpdate which may trigger server-side point updates
-        await ref.read(apiProvider.notifier).accountUpdate();
+        final oldPoints = user.completed_point;
+        debugPrint('User points before update: $oldPoints');
         
-        // Refresh user profile to get latest points (same as quizzes/lessons)
-        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-        ref.read(userProvider.notifier).overrideUser(updatedUser);
+        // Submit game completion
+        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
+          gameType: 'pronunciation',
+          languageId: widget.language.id,
+          points: points,
+          score: _correctAnswers,
+        );
+        if (gameSuccess) {
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+          ref.read(userProvider.notifier).addPoints(points);
+        }
+        
+        final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
+        debugPrint('Account update success: $updateSuccess');
+        
+        if (updateSuccess) {
+          await Future.delayed(const Duration(milliseconds: 1500));
+          
+          try {
+            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+            if (updatedUser != null) {
+              final newPoints = updatedUser.completed_point;
+              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+              ref.read(userProvider.notifier).overrideUser(updatedUser);
+              
+              if (newPoints > oldPoints) {
+                debugPrint('✅ Game points successfully added!');
+              } else {
+                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
+              }
+            }
+          } catch (e) {
+            debugPrint('Error refreshing user profile: $e');
+          }
+        }
       }
     } catch (e) {
-      debugPrint('Failed to update user points: $e');
+      debugPrint('❌ Failed to update user points: $e');
     }
   }
 
@@ -172,8 +204,22 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
     
     final question = _questions[_currentIndex];
     
-    return Scaffold(
-      appBar: AppBar(
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          await _handleExitRequest();
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back_ios),
+              onPressed: _handleExitRequest,
+            ),
+          ),
         title: Text('Pronunciation Practice - ${widget.language.name}'),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -190,11 +236,16 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
             children: [
               // Progress indicator
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Question ${_currentIndex + 1}/${_questions.length}',
-                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  IconButton(
+                    icon: Icon(Icons.close, color: context.adaptive),
+                    onPressed: _handleExitRequest,
+                  ),
+                  Expanded(
+                    child: Text(
+                      'Question ${_currentIndex + 1}/${_questions.length}',
+                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   Text(
                     'Score: $_score',
@@ -348,6 +399,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
           ),
         ),
       ),
+      ),
     );
   }
 
@@ -421,18 +473,66 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
                 ),
               ),
               SizedBox(height: 24.sp),
-              PrimaryButton(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                text: 'Back to Games',
-                color: AppColors.accentOrange,
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PrimaryButton(
+                    onTap: () {
+                      // Restart the game
+                      setState(() {
+                        _gameComplete = false;
+                        _currentIndex = 0;
+                        _correctAnswers = 0;
+                        _selectedAnswer = null;
+                        _score = 0;
+                      });
+                      _initializeGame();
+                    },
+                    text: 'Play Again',
+                    color: AppColors.accentOrange,
+                  ),
+                  const SizedBox(height: 12),
+                  PrimaryButton(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Return to Games',
+                    color: AppColors.accentOrange.withOpacity(0.7),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _handleExitRequest() async {
+    if (_gameComplete) {
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Exit Game?'),
+        content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Exit'),
+          ),
+        ],
+      ),
+    );
+    if (shouldPop == true && mounted) {
+      Navigator.pop(context);
+    }
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -135,28 +136,73 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
 
   Future<void> _updateUserPoints(int points) async {
     try {
-      // Points are already calculated: max 10 points for perfect game
-      // Formula: 10 * (correct_answers / total_questions)
-      // Update user points using the same pattern as quizzes/lessons
+      debugPrint('Updating user points: $points (correct: $_correctAnswers, total: ${_questions.length})');
+      
       final user = ref.read(userProvider);
       if (user != null) {
-        // Call accountUpdate which may trigger server-side point updates
-        await ref.read(apiProvider.notifier).accountUpdate();
+        final oldPoints = user.completed_point;
+        debugPrint('User points before update: $oldPoints');
         
-        // Refresh user profile to get latest points (same as quizzes/lessons)
-        final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-        ref.read(userProvider.notifier).overrideUser(updatedUser);
+        // Submit game completion
+        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
+          gameType: 'speed_challenge',
+          languageId: widget.language.id,
+          points: points,
+          score: _correctAnswers,
+        );
+        if (gameSuccess) {
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+          ref.read(userProvider.notifier).addPoints(points);
+        }
+        
+        final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
+        debugPrint('Account update success: $updateSuccess');
+        
+        if (updateSuccess) {
+          await Future.delayed(const Duration(milliseconds: 1500));
+          
+          try {
+            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
+            if (updatedUser != null) {
+              final newPoints = updatedUser.completed_point;
+              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+              ref.read(userProvider.notifier).overrideUser(updatedUser);
+              
+              if (newPoints > oldPoints) {
+                debugPrint('✅ Game points successfully added!');
+              } else {
+                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
+              }
+            }
+          } catch (e) {
+            debugPrint('Error refreshing user profile: $e');
+          }
+        }
       }
     } catch (e) {
-      debugPrint('Failed to update user points: $e');
+      debugPrint('❌ Failed to update user points: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (!_gameStarted) {
-      return Scaffold(
-        appBar: AppBar(
+      return PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          if (!didPop) {
+            await _handleExitRequest();
+          }
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: _handleExitRequest,
+              ),
+            ),
           title: Text('Speed Challenge - ${widget.language.name}'),
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -210,6 +256,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             ),
           ),
         ),
+        ),
       );
     }
     
@@ -222,6 +269,10 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Speed Challenge'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: _handleExitRequest,
+        ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -237,45 +288,52 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             children: [
               // Timer and score
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: _timeRemaining <= 10 
-                          ? AppColors.red.withOpacity(0.2)
-                          : AppColors.oceanBlue.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: _timeRemaining <= 10 
-                            ? AppColors.red
-                            : AppColors.oceanBlue,
-                        width: 2,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.timer,
-                          color: _timeRemaining <= 10 
+                  IconButton(
+                    icon: Icon(Icons.close, color: context.adaptive),
+                    onPressed: _handleExitRequest,
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: _timeRemaining <= 10
+                            ? AppColors.red.withOpacity(0.2)
+                            : AppColors.oceanBlue.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: _timeRemaining <= 10
                               ? AppColors.red
                               : AppColors.oceanBlue,
-                          size: 20.sp,
+                          width: 2,
                         ),
-                        SizedBox(width: 8),
-                        Text(
-                          '$_timeRemaining',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: _timeRemaining <= 10 
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.timer,
+                            color: _timeRemaining <= 10
                                 ? AppColors.red
                                 : AppColors.oceanBlue,
+                            size: 20.sp,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 8),
+                          Text(
+                            '$_timeRemaining',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: _timeRemaining <= 10
+                                  ? AppColors.red
+                                  : AppColors.oceanBlue,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  SizedBox(width: 12),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
@@ -434,18 +492,68 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                 ),
               ),
               SizedBox(height: 24.sp),
-              PrimaryButton(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                text: 'Back to Games',
-                color: AppColors.oceanBlue,
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  PrimaryButton(
+                    onTap: () {
+                      // Restart the game
+                      setState(() {
+                        _gameComplete = false;
+                        _gameStarted = false;
+                        _currentIndex = 0;
+                        _correctAnswers = 0;
+                        _selectedAnswer = null;
+                        _score = 0;
+                        _timeRemaining = 30;
+                      });
+                      _initializeGame();
+                    },
+                    text: 'Play Again',
+                    color: AppColors.oceanBlue,
+                  ),
+                  const SizedBox(height: 12),
+                  PrimaryButton(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    text: 'Return to Games',
+                    color: AppColors.oceanBlue.withOpacity(0.7),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> _handleExitRequest() async {
+    if (!_gameStarted || _gameComplete) {
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    final shouldPop = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Exit Game?'),
+        content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Exit'),
+          ),
+        ],
+      ),
+    );
+    if (shouldPop == true && mounted) {
+      Navigator.pop(context);
+    }
   }
 }
 

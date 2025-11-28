@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -107,6 +108,10 @@ class TutorialDetailScreen extends ConsumerWidget {
                 bool result = true;
                 if (!isCompleted) {
                   result = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                  if (result) {
+                    // Track progress
+                    await ProgressIntegration.onLessonCompleted(ref);
+                  }
                 }
                 if (result) {
                   Navigator.of(context).pop(true);
