@@ -30,38 +30,110 @@ class GlobalProgressScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      appBar: AppBar(
-        title: const Text('Global Progress'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Global Stats Cards
-            _buildGlobalStats(context, globalStats, isDark),
-            SizedBox(height: 24.sp),
-            
-            // Top Languages Chart
-            _buildTopLanguagesChart(context, topLanguages, isDark),
-            SizedBox(height: 24.sp),
-            
-            // Leaderboard Section
-            Text(
-              'Top Learners',
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
+      body: Stack(
+        children: [
+          // Gradient Header - Figma Make Style
+          Container(
+            height: 200,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFFFCD116), // Gold
+                  Color(0xFFFF6B35), // Orange
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(40),
+                bottomRight: Radius.circular(40),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 20,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.all(16.sp),
+                child: Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: const CircleBorder(),
+                        ),
+                      ),
+                    ),
+                    const Icon(
+                      Icons.workspace_premium_rounded,
+                      color: Colors.white,
+                      size: 64,
+                    ),
+                    SizedBox(height: 8.sp),
+                    Text(
+                      'Global Ranking',
+                      style: TextStyle(
+                        fontSize: 28.sp,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 4.sp),
+                    Text(
+                      'Top learners worldwide',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            SizedBox(height: 16.sp),
-            _buildLeaderboard(context, isDark),
-          ],
-        ),
+          ),
+          // Content
+          Positioned(
+            top: 180,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(16.sp),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Global Stats Cards
+                  _buildGlobalStats(context, globalStats, isDark),
+                  SizedBox(height: 24.sp),
+                  
+                  // Top Languages Chart
+                  _buildTopLanguagesChart(context, topLanguages, isDark),
+                  SizedBox(height: 24.sp),
+                  
+                  // Leaderboard Section
+                  Text(
+                    'Top Learners',
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
+                  ),
+                  SizedBox(height: 16.sp),
+                  _buildLeaderboard(context, isDark),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
