@@ -97,4 +97,10 @@ class Api {
   static String chatMessages(String room) => "chat/rooms/$room/messages/";
   static const String onlineUsers = "chat/online_users/";
   // Chat & Social End
+
+  // Loading Screen Start
+  static const String loadingScreen = "loading-screen";
+  static String loadingScreenByCountry(String country) => "loading-screen/country/$country";
+  static String loadingScreenByLanguage(String language) => "loading-screen/language/$language";
+  // Loading Screen End
 }
