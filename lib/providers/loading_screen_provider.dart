@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
