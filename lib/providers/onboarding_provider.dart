@@ -1,12 +1,16 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 
-class OnboardingNotifier extends StateNotifier<OnboardingData> {
-  final SharedPreferencesProvider _prefs;
+class OnboardingNotifier extends Notifier<OnboardingData> {
+  SharedPreferencesProvider get _prefs => ref.read(sharedPreferencesProvider);
   
-  OnboardingNotifier(this._prefs) : super(OnboardingData());
+  @override
+  OnboardingData build() {
+    // Load saved data asynchronously after initial build
+    Future.microtask(() => _loadOnboardingData());
+    return OnboardingData();
+  }
   
   void updateAgeCategory(String category) {
     state = OnboardingData(
@@ -426,7 +430,7 @@ class OnboardingNotifier extends StateNotifier<OnboardingData> {
     await _prefs.prefs.setString('onboarding_data', state.toJson());
   }
   
-  Future<void> loadOnboardingData() async {
+  Future<void> _loadOnboardingData() async {
     final data = _prefs.prefs.getString('onboarding_data');
     if (data != null) {
       try {
@@ -439,7 +443,6 @@ class OnboardingNotifier extends StateNotifier<OnboardingData> {
   }
 }
 
-final onboardingProvider = StateNotifierProvider<OnboardingNotifier, OnboardingData>((ref) {
-  return OnboardingNotifier(ref.read(sharedPreferencesProvider));
+final onboardingProvider = NotifierProvider<OnboardingNotifier, OnboardingData>(() {
+  return OnboardingNotifier();
 });
-

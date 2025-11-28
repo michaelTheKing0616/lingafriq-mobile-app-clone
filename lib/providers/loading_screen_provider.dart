@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -9,21 +8,23 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Provider for managing loading screen content
 /// Supports both client-side (local) and backend (API) content
 final loadingScreenProvider =
-    StateNotifierProvider<LoadingScreenNotifier, LoadingScreenContent>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return LoadingScreenNotifier(ref, prefs.prefs);
+    NotifierProvider<LoadingScreenNotifier, LoadingScreenContent>(() {
+  return LoadingScreenNotifier();
 });
 
-class LoadingScreenNotifier extends StateNotifier<LoadingScreenContent> {
-  final Ref _ref;
-  final SharedPreferences _prefs;
+class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
   static const String _lastContentKey = 'last_loading_content_id';
   static const String _viewedContentKey = 'viewed_loading_content_ids';
   static const String _useBackendKey = 'use_backend_loading_content'; // Feature flag
 
-  LoadingScreenNotifier(this._ref, this._prefs) 
-      : super(LoadingScreenContentData.defaultContent.first) {
-    _loadContent();
+  SharedPreferences get _prefs => ref.read(sharedPreferencesProvider).prefs;
+
+  @override
+  LoadingScreenContent build() {
+    final initialState = LoadingScreenContentData.defaultContent.first;
+    // Load content asynchronously after initial build
+    Future.microtask(() => _loadContent());
+    return initialState;
   }
 
   /// Load content, ensuring variety by avoiding recently shown content
@@ -36,7 +37,7 @@ class LoadingScreenNotifier extends StateNotifier<LoadingScreenContent> {
     if (useBackend) {
       try {
         // Try to load from backend
-        final contentData = await _ref.read(apiProvider.notifier).getLoadingScreenContent();
+        final contentData = await ref.read(apiProvider.notifier).getLoadingScreenContent();
         final content = LoadingScreenContent.fromJson(contentData);
         state = content;
         
@@ -134,4 +135,3 @@ class LoadingScreenNotifier extends StateNotifier<LoadingScreenContent> {
     return 'assets/images/loading/placeholder.png';
   }
 }
-
