@@ -95,7 +95,7 @@ class GlobalProgressScreen extends ConsumerWidget {
               child: _buildStatCard(
                 context,
                 'Words Learned',
-                '${(stats['totalWordsLearned'] as int / 1000000).toStringAsFixed(1)}M',
+                '${((stats['totalWordsLearned'] as int) / 1000000).toStringAsFixed(1)}M',
                 '📚',
                 isDark,
               ),
@@ -109,7 +109,7 @@ class GlobalProgressScreen extends ConsumerWidget {
               child: _buildStatCard(
                 context,
                 'Learning Hours',
-                '${(stats['totalHours'] as int / 1000).toStringAsFixed(1)}K',
+                '${((stats['totalHours'] as int) / 1000).toStringAsFixed(1)}K',
                 '⏰',
                 isDark,
               ),

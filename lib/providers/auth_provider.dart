@@ -6,7 +6,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
-import '../screens/onboarding/modern_onboarding_screen.dart';
+import '../screens/onboarding/kijiji_onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
@@ -30,7 +30,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // Check if user has seen onboarding
     final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
     if (!hasSeenOnboarding) {
-      ref.read(navigationProvider).naviateOffAll(const ModernOnboardingScreen());
+      ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
       return;
     }
     

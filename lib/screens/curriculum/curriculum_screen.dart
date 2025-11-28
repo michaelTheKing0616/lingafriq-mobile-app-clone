@@ -264,7 +264,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         color: isDark ? const Color(0xFF2A4A35) : Colors.grey[50],
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? const Color(0xFF3A5A45) : Colors.grey[200],
+          color: isDark ? const Color(0xFF3A5A45) : Colors.grey[200]!,
         ),
       ),
       child: Column(

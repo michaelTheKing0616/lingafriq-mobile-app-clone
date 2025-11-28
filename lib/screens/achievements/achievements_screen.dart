@@ -303,7 +303,7 @@ class AchievementsScreen extends ConsumerWidget {
     );
   }
 
-  Color _getRarityColor(rarity, bool isDark) {
+  Color _getRarityColor(AchievementRarity rarity, bool isDark) {
     switch (rarity) {
       case AchievementRarity.common:
         return isDark ? Colors.grey[400]! : Colors.grey[600]!;
