@@ -1,13 +1,17 @@
 /// Service for AI-generated image pipeline
 /// This service can be integrated with various AI image generation APIs:
-/// - DALL-E (OpenAI)
-/// - Midjourney API
-/// - Stable Diffusion
-/// - Custom AI service
+/// - Stability AI (Stable Diffusion) - RECOMMENDED: 25 free images/month
+/// - Hugging Face Inference API - FREE with rate limits
+/// - Replicate API - $5 free credit
+/// - Leonardo.ai - 150 free images/day
+/// 
+/// See FREE_AI_IMAGE_API_GUIDE.md for detailed setup instructions
 class AIImageService {
-  // TODO: Add API keys and configuration
-  static const String? _apiKey = null; // Set your API key
-  static const String _baseUrl = 'https://api.example.com/generate'; // Replace with actual API
+  // TODO: Add your API key here
+  // Get free API key from: https://platform.stability.ai/ (recommended)
+  // See FREE_AI_IMAGE_API_GUIDE.md for complete guide
+  static const String? _apiKey = null; // Set your API key (e.g., 'sk-...' for Stability AI)
+  static const String _baseUrl = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image';
 
   /// Generate an AI image of an African person from a specific country
   /// 

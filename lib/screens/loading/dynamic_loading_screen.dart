@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/loading_screen_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/images.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -146,34 +147,11 @@ class _DynamicLoadingScreenState
   }
 
   Widget _buildLogo() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        // Logo icon (using a placeholder - replace with actual logo)
-        Container(
-          width: 48.sp,
-          height: 48.sp,
-          decoration: BoxDecoration(
-            color: AppColors.accentGold,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            Icons.language_rounded,
-            color: Colors.white,
-            size: 32.sp,
-          ),
-        ),
-        SizedBox(width: 12.sp),
-        Text(
-          'LingoAfrica',
-          style: TextStyle(
-            fontSize: 28.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-            letterSpacing: 1.2,
-          ),
-        ),
-      ],
+    return Image.asset(
+      Images.logo,
+      width: 200.sp,
+      height: 80.sp,
+      fit: BoxFit.contain,
     );
   }
 
