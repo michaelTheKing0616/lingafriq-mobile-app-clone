@@ -60,9 +60,9 @@ dependencies:
   fl_chart: ^0.69.0
   file_picker: ^8.1.4
   webview_flutter: ^4.9.0
-  socket_io_client: ^2.0.3+1
+  socket_io_client: ^3.1.2
   encrypt: ^5.0.3
-  crypto: ^3.0.3
+  crypto: ^3.0.5
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1

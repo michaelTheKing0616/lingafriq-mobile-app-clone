@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:lingafriq/utils/api.dart';
 import 'base_provider.dart';
 
@@ -15,7 +14,7 @@ final socketProvider = NotifierProvider<SocketProvider, BaseProviderState>(() {
 });
 
 class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
-  IO.Socket? _socket;
+  io.Socket? _socket;
   bool _isConnected = false;
   final List<Map<String, dynamic>> _onlineUsers = [];
   final Map<String, List<Map<String, dynamic>>> _messagesByRoom = {};
@@ -48,9 +47,9 @@ class SocketProvider extends Notifier<BaseProviderState> with BaseProviderMixin 
       _messagesByRoom.putIfAbsent('general', () => []);
       _activeRoom = 'general';
       
-      _socket = IO.io(
+      _socket = io.io(
         baseUrl,
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(['websocket'])
             .enableAutoConnect()
             .setExtraHeaders({'userId': userId, 'username': username})
