@@ -92,7 +92,6 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/images/loading/
     - assets/alphabets/
     - assets/fonts/
 
