@@ -4,6 +4,7 @@ import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GlobalChatScreen extends ConsumerStatefulWidget {

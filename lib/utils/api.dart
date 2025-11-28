@@ -99,8 +99,8 @@ class Api {
   // Chat & Social End
 
   // Loading Screen Start
-  static const String loadingScreen = "loading-screen";
-  static String loadingScreenByCountry(String country) => "loading-screen/country/$country";
-  static String loadingScreenByLanguage(String language) => "loading-screen/language/$language";
+  static const String loadingScreen = "api/loading-screen";
+  static String loadingScreenByCountry(String country) => "api/loading-screen/country/$country";
+  static String loadingScreenByLanguage(String language) => "api/loading-screen/language/$language";
   // Loading Screen End
 }

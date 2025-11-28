@@ -6,7 +6,7 @@ import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/pronunciation_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Modern Language Games Screen - Based on Figma Make Design
 class LanguageGamesScreen extends HookConsumerWidget {

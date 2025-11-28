@@ -10,7 +10,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:sizer/sizer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Comprehensive 10-Step Story-Driven Onboarding
 /// "Kijiji cha Lugha" - The Language Village
