@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AchievementsScreen extends ConsumerWidget {

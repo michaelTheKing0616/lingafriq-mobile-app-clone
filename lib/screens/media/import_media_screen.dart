@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
@@ -210,108 +211,6 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             ),
           ),
         ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Import Options
-            Text(
-              'Import Options',
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 16.sp),
-            
-            // File Import Card
-            _buildImportCard(
-              context,
-              '📄 Import from File',
-              'Import text from a file on your device',
-              Icons.insert_drive_file_rounded,
-              () => _importFromFile(),
-              isDark,
-            ),
-            SizedBox(height: 12.sp),
-            
-            // URL Import Card
-            _buildImportCard(
-              context,
-              '🌐 Import from URL',
-              'Import content from a web article',
-              Icons.language_rounded,
-              () => _showUrlImportDialog(context, isDark),
-              isDark,
-            ),
-            SizedBox(height: 12.sp),
-            
-            // Manual Text Input Card
-            _buildImportCard(
-              context,
-              '✍️ Enter Text Manually',
-              'Paste or type text to create a lesson',
-              Icons.edit_rounded,
-              () => _showManualInputDialog(context, isDark),
-              isDark,
-            ),
-            
-            if (_importedText != null) ...[
-              SizedBox(height: 24.sp),
-              // Language Selection
-              Text(
-                'Select Language',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
-              ),
-              SizedBox(height: 12.sp),
-              _buildLanguageSelector(context, isDark),
-              SizedBox(height: 24.sp),
-              
-              // Preview Section
-              Text(
-                'Preview',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
-              ),
-              SizedBox(height: 12.sp),
-              _buildPreviewCard(context, _importedText!, isDark),
-              SizedBox(height: 24.sp),
-              
-              // Create Lesson Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _selectedLanguage != null ? () => _createLesson(context) : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryGreen,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: 16.sp),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    'Create Lesson',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
       ),
     );
   }

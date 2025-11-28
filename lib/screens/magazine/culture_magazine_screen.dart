@@ -673,12 +673,14 @@ class _CategoryCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: gradient,
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                  ),
+                child: Opacity(
                   opacity: 0.05,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: gradient,
+                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                    ),
+                  ),
                 ),
               ),
               Row(
