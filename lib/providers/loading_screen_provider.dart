@@ -29,7 +29,8 @@ class LoadingScreenNotifier extends StateNotifier<LoadingScreenContent> {
   /// Tries backend first, falls back to local content if backend fails
   Future<void> _loadContent() async {
     // Check if backend should be used (feature flag)
-    final useBackend = _prefs.getBool(_useBackendKey) ?? false;
+    // Default to true since backend is running and we have fallback
+    final useBackend = _prefs.getBool(_useBackendKey) ?? true;
     
     if (useBackend) {
       try {
