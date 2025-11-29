@@ -8,6 +8,8 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/african_theme.dart';
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -49,118 +51,258 @@ class _PrivateChatListScreenState
     final contacts = state.filteredContacts
         .where((contact) => contact.id != currentUser?.id)
         .toList();
+    final isDark = context.isDarkMode;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Private Chats'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () =>
-                ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
-          ),
-        ],
-      ),
-      body: Column(
+      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      body: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: TextField(
-              controller: _searchController,
-              onChanged: (value) =>
-                  ref.read(privateChatProvider.notifier).search(value),
-              decoration: InputDecoration(
-                hintText: 'Search by name, email, or language...',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: context.isDarkMode
-                    ? const Color(0xFF1F3527)
-                    : Colors.grey[100],
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  borderSide: BorderSide.none,
+          // Gradient Header
+          Container(
+            height: 15.h,
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xFF7B2CBF), // Purple
+                  Color(0xFFCE1126), // Red
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: EdgeInsets.all(4.w),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        shape: const CircleBorder(),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    Expanded(
+                      child: Text(
+                        'Messages',
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.chat_bubble_rounded, color: Colors.white),
+                      onPressed: () {},
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        shape: const CircleBorder(),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          if (state.isLoading)
-            const LinearProgressIndicator(minHeight: 2),
-          if (state.error != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.red),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      state.error!,
-                      style: TextStyle(
-                        color: Colors.red.shade300,
-                        fontWeight: FontWeight.w600,
+          // Content
+          Positioned(
+            top: 13.h,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Column(
+              children: [
+                // Search Bar
+                Padding(
+                  padding: EdgeInsets.all(4.w),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                      boxShadow: DesignSystem.shadowMedium,
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) =>
+                          ref.read(privateChatProvider.notifier).search(value),
+                      decoration: InputDecoration(
+                        hintText: 'Search by name, email, or language...',
+                        prefixIcon: const Icon(Icons.search),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-          Expanded(
-            child: RefreshIndicator(
-              onRefresh: () => ref
-                  .read(privateChatProvider.notifier)
-                  .loadContacts(forceRefresh: true),
-              child: contacts.isEmpty && !state.isLoading
-                  ? ListView(
-                      children: [
-                        SizedBox(height: 80.sp),
-                        Icon(Icons.chat_bubble_outline,
-                            size: 64.sp, color: context.adaptive26),
-                        const SizedBox(height: 12),
-                        Text(
-                          state.query.isEmpty
-                              ? 'No contacts found. Pull to refresh.'
-                              : 'No matches for "${state.query}".',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: context.adaptive54,
-                            fontSize: 16.sp,
-                          ),
-                        ),
-                      ],
-                    )
-                  : ListView.separated(
-                      padding: const EdgeInsets.all(16),
-                      itemCount: contacts.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final contact = contacts[index];
-                        final isOnline =
-                            onlineIds.contains(contact.id.toString());
-                        return _ContactTile(
-                          contact: contact,
-                          isOnline: isOnline,
-                          onTap: () {
-                            if (contact.id < 0) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('This user cannot chat yet.')),
-                              );
-                              return;
-                            }
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    PrivateChatScreen(contact: contact),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
+                ),
+                // Contacts List
+                Expanded(
+                  child: Container(
+                    color: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+                    child: _buildContactsList(context, state, contacts, onlineIds, isDark),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildContactsList(
+    BuildContext context,
+    state,
+    List contacts,
+    Set<String> onlineIds,
+    bool isDark,
+  ) {
+    if (state.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    
+    if (state.error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
+            SizedBox(height: 2.h),
+            Text(
+              state.error!,
+              style: TextStyle(color: Colors.red.shade300, fontSize: 16.sp),
+            ),
+            SizedBox(height: 2.h),
+            ElevatedButton(
+              onPressed: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+    
+    if (contacts.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.chat_bubble_outline, size: 64.sp, color: isDark ? Colors.grey[600] : Colors.grey[400]),
+            SizedBox(height: 2.h),
+            Text(
+              'No contacts found',
+              style: TextStyle(fontSize: 18.sp, color: isDark ? Colors.white70 : Colors.black54),
+            ),
+          ],
+        ),
+      );
+    }
+    
+    return ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      itemCount: contacts.length,
+      itemBuilder: (context, index) {
+        final contact = contacts[index];
+        final isOnline = onlineIds.contains(contact.id.toString());
+        final unreadCount = 0; // TODO: Get from contact model
+        
+        return Container(
+          margin: EdgeInsets.only(bottom: 2.h),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+            boxShadow: DesignSystem.shadowMedium,
+          ),
+          child: ListTile(
+            contentPadding: EdgeInsets.all(4.w),
+            leading: Stack(
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundColor: AfricanTheme.primaryGreen,
+                  child: Text(
+                    contact.name[0].toUpperCase(),
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                if (isOnline)
+                  Positioned(
+                    right: 0,
+                    bottom: 0,
+                    child: Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: isDark ? const Color(0xFF1F3527) : Colors.white, width: 2),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            title: Text(
+              contact.name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+            subtitle: Text(
+              contact.lastMessage ?? 'No messages yet',
+              style: TextStyle(
+                color: isDark ? Colors.white70 : Colors.black54,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '2m ago', // TODO: Format from timestamp
+                  style: TextStyle(
+                    fontSize: 11.sp,
+                    color: isDark ? Colors.white70 : Colors.black54,
+                  ),
+                ),
+                if (unreadCount > 0)
+                  Container(
+                    margin: EdgeInsets.only(top: 0.5.h),
+                    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    decoration: BoxDecoration(
+                      color: AfricanTheme.primaryGreen,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      unreadCount.toString(),
+                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                    ),
+                  ),
+              ],
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PrivateChatScreen(contact: contact),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

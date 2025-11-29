@@ -247,6 +247,18 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Get loading screen content from backend
+  /// Returns random content excluding user's recently viewed items
+  Future<Map<String, dynamic>> getLoadingScreenContent() async {
+    try {
+      final res = await ref.read(client).get(Api.loadingScreen);
+      if (res.statusCode != 200) throw res.data;
+      return res.data['result'] as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // Future<List<ProfileModel>> getProfiles() async {
   //   try {
   //     final res = await ref.read(client).get(Api.profiles);

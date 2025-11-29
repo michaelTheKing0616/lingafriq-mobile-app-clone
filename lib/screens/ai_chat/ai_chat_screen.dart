@@ -807,7 +807,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     }
                   },
                   decoration: InputDecoration(
-                    hintText: chatNotifier.isTranslationMode
+                    hintText: chatProvider.isTranslationMode
                         ? 'Enter text for Polie to translate...'
                         : 'Type your message...',
                     hintStyle: TextStyle(
