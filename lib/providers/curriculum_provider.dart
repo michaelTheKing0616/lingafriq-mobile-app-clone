@@ -32,27 +32,74 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
     try {
       state = state.copyWith(isLoading: true);
       
-      final bundleName = useExpanded ? 'curriculum_expanded_bundle' : 'curriculum_bundle';
-      final curriculumDir = Directory('$bundleName/curriculum');
+      // First, try to load from saved preferences (cached)
+      final prefs = await SharedPreferences.getInstance();
+      final cachedCurriculum = prefs.getString('curriculum_data');
+      if (cachedCurriculum != null && cachedCurriculum.isNotEmpty) {
+        try {
+          _curriculum = Curriculum.fromJson(cachedCurriculum);
+          state = state.copyWith(isLoading: false);
+          state = state.copyWith(); // Trigger rebuild
+          return;
+        } catch (e) {
+          debugPrint('Error loading cached curriculum: $e');
+          // Continue to try loading from bundle
+        }
+      }
       
-      if (!await curriculumDir.exists()) {
-        throw Exception('Curriculum bundle not found');
+      // Try to load from bundle directory
+      final bundleName = useExpanded ? 'curriculum_expanded_bundle' : 'curriculum_bundle';
+      
+      // Try multiple possible paths
+      final possiblePaths = [
+        '$bundleName/curriculum',
+        '../$bundleName/curriculum',
+        '../../$bundleName/curriculum',
+      ];
+      
+      Directory? curriculumDir;
+      for (final path in possiblePaths) {
+        final dir = Directory(path);
+        if (await dir.exists()) {
+          curriculumDir = dir;
+          break;
+        }
+      }
+      
+      if (curriculumDir == null) {
+        // Try loading from assets
+        try {
+          // Note: Assets need to be declared in pubspec.yaml
+          // For now, show a helpful error message
+          throw Exception('Curriculum bundle not found. Please ensure curriculum files are available in the app bundle or contact support.');
+        } catch (e) {
+          state = state.copyWith(isLoading: false);
+          rethrow;
+        }
       }
 
       // Try to load the main compact curriculum file first
-      final mainFile = File('$bundleName/curriculum/curriculum_compact_A1_B1_all_languages.json');
-      File jsonFile;
+      final mainFile = File('${curriculumDir.path}/curriculum_compact_A1_B1_all_languages.json');
+      File? jsonFile;
       
       if (await mainFile.exists()) {
         jsonFile = mainFile;
       } else {
         // Fallback: find any JSON file in the directory
-        final files = await curriculumDir.list().toList();
-        final foundFile = files.firstWhere(
-          (file) => file.path.endsWith('.json'),
-          orElse: () => throw Exception('No JSON file found'),
-        );
-        jsonFile = foundFile as File;
+        try {
+          final files = await curriculumDir.list().toList();
+          final foundFile = files.firstWhere(
+            (file) => file.path.endsWith('.json'),
+            orElse: () => throw Exception('No JSON file found in curriculum bundle'),
+          );
+          jsonFile = foundFile as File;
+        } catch (e) {
+          throw Exception('No curriculum JSON files found. Please ensure curriculum bundle is properly installed.');
+        }
+      }
+
+      if (jsonFile == null || !await jsonFile.exists()) {
+        throw Exception('Curriculum file not found. Please contact support.');
       }
 
       final jsonString = await jsonFile.readAsString();
@@ -64,7 +111,8 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
     } catch (e) {
       debugPrint('Error loading curriculum: $e');
       state = state.copyWith(isLoading: false);
-      rethrow;
+      // Don't rethrow - show user-friendly error in UI
+      // The UI will handle showing the error message
     }
   }
 

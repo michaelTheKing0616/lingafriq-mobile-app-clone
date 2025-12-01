@@ -48,6 +48,10 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
         foregroundColor: isDark ? Colors.white : Colors.black87,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.refresh, color: isDark ? Colors.white : Colors.black87),
@@ -66,32 +70,60 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
 
   Widget _buildEmptyState(BuildContext context, bool isDark) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.menu_book_outlined,
-            size: 64.sp,
-            color: isDark ? Colors.grey[600] : Colors.grey[400],
-          ),
-          SizedBox(height: 16.sp),
-          Text(
-            'No curriculum loaded',
-            style: TextStyle(
-              fontSize: 18.sp,
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+      child: Padding(
+        padding: EdgeInsets.all(24.sp),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.menu_book_outlined,
+              size: 64.sp,
+              color: isDark ? Colors.grey[600] : Colors.grey[400],
             ),
-          ),
-          SizedBox(height: 8.sp),
-          ElevatedButton(
-            onPressed: _loadCurriculum,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
-              foregroundColor: Colors.white,
+            SizedBox(height: 16.sp),
+            Text(
+              'No curriculum loaded',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
             ),
-            child: const Text('Load Curriculum'),
-          ),
-        ],
+            SizedBox(height: 8.sp),
+            Text(
+              'The curriculum bundle may not be available. Please try reloading or contact support if the issue persists.',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 24.sp),
+            ElevatedButton.icon(
+              onPressed: _loadCurriculum,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryGreen,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),
+              ),
+              icon: const Icon(Icons.refresh),
+              label: const Text('Load Curriculum'),
+            ),
+            SizedBox(height: 16.sp),
+            TextButton(
+              onPressed: () {
+                // Try expanded bundle
+                ref.read(curriculumProvider.notifier).loadCurriculumFromBundle(useExpanded: true);
+              },
+              child: Text(
+                'Try Expanded Bundle',
+                style: TextStyle(
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

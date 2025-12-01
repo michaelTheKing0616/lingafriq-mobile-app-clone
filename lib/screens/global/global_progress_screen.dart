@@ -1,22 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/screens/tabs_view/standings/leader_board_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class GlobalProgressScreen extends ConsumerWidget {
+class GlobalProgressScreen extends ConsumerStatefulWidget {
   const GlobalProgressScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GlobalProgressScreen> createState() => _GlobalProgressScreenState();
+}
+
+class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Refresh leaderboard data when screen appears
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(leaderboardProvider.notifier).getProfiles();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Global Progress data is temporarily unavailable',
+      onRetry: () {
+        ref.read(leaderboardProvider.notifier).getProfiles();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
+    final leaderboardState = ref.watch(leaderboardProvider);
+    final profiles = leaderboardState.profiles.value ?? [];
     
-    // Mock data - replace with actual API calls
+    // Calculate stats from actual leaderboard data
+    final totalUsers = profiles.length;
+    final totalWordsLearned = profiles.fold<int>(0, (sum, p) => sum + (p.totalWordsLearned ?? 0));
+    final totalHours = profiles.fold<double>(0.0, (sum, p) => sum + (p.totalHours ?? 0.0));
+    
+    // Use actual data or fallback to mock if no data
     final globalStats = {
-      'totalUsers': 12500,
-      'totalWordsLearned': 2500000,
-      'totalHours': 45000,
+      'totalUsers': totalUsers > 0 ? totalUsers : 12500,
+      'totalWordsLearned': totalWordsLearned > 0 ? totalWordsLearned : 2500000,
+      'totalHours': totalHours > 0 ? totalHours : 45000.0,
       'activeLanguages': 12,
     };
 
@@ -128,7 +162,15 @@ class GlobalProgressScreen extends ConsumerWidget {
                     ),
                   ),
                   SizedBox(height: 16.sp),
-                  _buildLeaderboard(context, isDark),
+                  leaderboardState.profiles.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryGreen,
+                          ),
+                        )
+                      : leaderboardState.profiles.hasError
+                          ? _buildErrorState(context, isDark)
+                          : _buildLeaderboard(context, profiles, isDark),
                 ],
               ),
             ),
@@ -347,15 +389,81 @@ class GlobalProgressScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildLeaderboard(BuildContext context, bool isDark) {
-    // Mock leaderboard data
-    final leaders = [
-      {'rank': 1, 'name': 'Amina K.', 'points': 12500, 'country': '🇳🇬'},
-      {'rank': 2, 'name': 'Kwame M.', 'points': 11800, 'country': '🇬🇭'},
-      {'rank': 3, 'name': 'Fatou D.', 'points': 11200, 'country': '🇸🇳'},
-      {'rank': 4, 'name': 'Thabo S.', 'points': 10800, 'country': '🇿🇦'},
-      {'rank': 5, 'name': 'Aisha H.', 'points': 10200, 'country': '🇰🇪'},
-    ];
+  Widget _buildErrorState(BuildContext context, bool isDark) {
+    return Container(
+      padding: EdgeInsets.all(24.sp),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Center(
+        child: Column(
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 48.sp,
+              color: Colors.red,
+            ),
+            SizedBox(height: 16.sp),
+            Text(
+              'Failed to load leaderboard',
+              style: TextStyle(
+                fontSize: 16.sp,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+            SizedBox(height: 8.sp),
+            ElevatedButton(
+              onPressed: () {
+                ref.read(leaderboardProvider.notifier).getProfiles();
+              },
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLeaderboard(BuildContext context, List profiles, bool isDark) {
+    // Use actual profiles or fallback to mock data
+    final leaders = profiles.isNotEmpty
+        ? profiles.take(10).toList().asMap().entries.map((entry) {
+            final index = entry.key;
+            final profile = entry.value;
+            return {
+              'rank': profile.rank ?? (index + 1),
+              'name': profile.username.isNotEmpty ? profile.username : '${profile.first_name} ${profile.last_name}'.trim(),
+              'points': profile.completed_point,
+              'country': profile.nationality.isNotEmpty ? profile.nationality : '🌍',
+            };
+          }).toList()
+        : [
+            {'rank': 1, 'name': 'Amina K.', 'points': 12500, 'country': '🇳🇬'},
+            {'rank': 2, 'name': 'Kwame M.', 'points': 11800, 'country': '🇬🇭'},
+            {'rank': 3, 'name': 'Fatou D.', 'points': 11200, 'country': '🇸🇳'},
+            {'rank': 4, 'name': 'Thabo S.', 'points': 10800, 'country': '🇿🇦'},
+            {'rank': 5, 'name': 'Aisha H.', 'points': 10200, 'country': '🇰🇪'},
+          ];
+    
+    if (leaders.isEmpty) {
+      return Container(
+        padding: EdgeInsets.all(24.sp),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1F3527) : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Center(
+          child: Text(
+            'No leaderboard data available',
+            style: TextStyle(
+              fontSize: 16.sp,
+              color: isDark ? Colors.grey[400] : Colors.grey[600],
+            ),
+          ),
+        ),
+      );
+    }
 
     return Container(
       decoration: BoxDecoration(

@@ -4,6 +4,7 @@ import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
@@ -40,6 +41,17 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'User connections are temporarily unavailable',
+      onRetry: () {
+        setState(() {});
+        _initializeSocket();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final onlineUsers = ref.watch(socketProvider.notifier).onlineUsers;
     final isConnected = ref.watch(socketProvider.notifier).isConnected;
     final currentUser = ref.watch(userProvider);
@@ -48,7 +60,12 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
     final filteredUsers = onlineUsers.where((user) {
       if (_searchQuery.isEmpty) return true;
       final username = (user['username'] ?? '').toString().toLowerCase();
-      return username.contains(_searchQuery.toLowerCase());
+      final userId = (user['id'] ?? '').toString().toLowerCase();
+      final displayName = (user['displayName'] ?? '').toString().toLowerCase();
+      final query = _searchQuery.toLowerCase();
+      return username.contains(query) || 
+             userId.contains(query) || 
+             displayName.contains(query);
     }).toList();
 
     return Scaffold(
@@ -58,6 +75,10 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
         foregroundColor: isDark ? Colors.white : Colors.black87,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.lock_outline),

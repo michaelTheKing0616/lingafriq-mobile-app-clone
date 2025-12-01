@@ -10,6 +10,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../../../detail_types/correction_screen.dart';
@@ -35,6 +36,16 @@ class TakeQuizScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'Quiz module is temporarily unavailable',
+      onRetry: () {
+        // Retry by rebuilding
+      },
+      child: _buildQuizContent(context, ref),
+    );
+  }
+
+  Widget _buildQuizContent(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
     return PopScope(
       canPop: true,

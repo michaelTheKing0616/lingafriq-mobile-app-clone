@@ -4,6 +4,7 @@ import 'package:lingafriq/models/culture_content_model.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -33,6 +34,16 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Cultural Magazine is temporarily unavailable',
+      onRetry: () {
+        setState(() {});
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
     
     // Mock data - replace with actual API calls

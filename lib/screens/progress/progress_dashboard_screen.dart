@@ -22,6 +22,10 @@ class ProgressDashboardScreen extends ConsumerWidget {
         backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
         foregroundColor: isDark ? Colors.white : Colors.black87,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.sp),
