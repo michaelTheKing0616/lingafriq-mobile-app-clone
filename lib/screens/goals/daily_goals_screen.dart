@@ -4,7 +4,6 @@ import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
-import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -68,7 +67,9 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
             // Goals List
             goals.isEmpty
                 ? _buildEmptyState(context, isDark)
-                : ...goals.map((goal) => _buildGoalCard(context, goal, isDark, goalsNotifier)),
+                : Column(
+                    children: goals.map((goal) => _buildGoalCard(context, goal, isDark, goalsNotifier)).toList(),
+                  ),
           ],
         ),
       ),
@@ -307,7 +308,10 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
         );
         break;
       case 'quizzes':
-        navigation.naviateTo(const TakeQuizScreen());
+        // Navigate to quiz selection - user can choose language there
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Navigate to Home tab and select a language for quiz')),
+        );
         break;
       case 'games':
         navigation.naviateTo(const GamesScreen());

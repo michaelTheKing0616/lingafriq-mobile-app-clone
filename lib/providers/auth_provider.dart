@@ -100,7 +100,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       // Store user profile for pre-filling
-      await secureStorage.storeUserProfile(email, displayName: user.name);
+      final displayName = user.username.isNotEmpty ? user.username : '${user.first_name} ${user.last_name}'.trim();
+      await secureStorage.storeUserProfile(email, displayName: displayName);
       
       if (storeCredentials) {
         await ref.read(sharedPreferencesProvider).storeEmailAndPassword(email, password);

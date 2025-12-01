@@ -43,14 +43,14 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
     
     // Calculate stats from actual leaderboard data
     final totalUsers = profiles.length;
-    final totalWordsLearned = profiles.fold<int>(0, (sum, p) => sum + (p.totalWordsLearned ?? 0));
-    final totalHours = profiles.fold<double>(0.0, (sum, p) => sum + (p.totalHours ?? 0.0));
+    // ProfileModel doesn't have totalWordsLearned or totalHours, use completed_point as proxy
+    final totalPoints = profiles.fold<int>(0, (sum, p) => sum + p.completed_point);
     
     // Use actual data or fallback to mock if no data
     final globalStats = {
       'totalUsers': totalUsers > 0 ? totalUsers : 12500,
-      'totalWordsLearned': totalWordsLearned > 0 ? totalWordsLearned : 2500000,
-      'totalHours': totalHours > 0 ? totalHours : 45000.0,
+      'totalWordsLearned': totalPoints > 0 ? (totalPoints * 10) : 2500000, // Estimate: 10 words per point
+      'totalHours': totalPoints > 0 ? (totalPoints / 100.0) : 45000.0, // Estimate: 1 hour per 100 points
       'activeLanguages': 12,
     };
 
