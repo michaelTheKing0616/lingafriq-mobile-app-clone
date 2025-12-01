@@ -12,6 +12,7 @@ import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/utils/progress_integration.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -347,6 +348,17 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'AI Chat is temporarily unavailable',
+      onRetry: () {
+        // Retry by rebuilding
+        setState(() {});
+      },
+      child: _buildChatContent(context),
+    );
+  }
+
+  Widget _buildChatContent(BuildContext context) {
     final chatNotifier = ref.read(groqChatProvider.notifier);
     final chatState = ref.watch(groqChatProvider);
     final isDark = context.isDarkMode;

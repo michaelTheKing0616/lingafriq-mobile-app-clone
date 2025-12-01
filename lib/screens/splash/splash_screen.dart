@@ -21,16 +21,43 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Show dynamic loading screen for 3 seconds, then navigate
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        setState(() {
-          _showDynamicLoading = false;
-        });
-        // Navigate after loading screen completes
-        ref.read(authProvider.notifier).navigateBasedOnCondition();
-      }
-    });
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    final startTime = DateTime.now();
+    
+    // Initialize app (any async setup)
+    await Future.wait([
+      // Add any initialization tasks here
+      Future.delayed(const Duration(milliseconds: 100)), // Placeholder
+    ]);
+
+    // Ensure minimum 3 seconds, maximum 4 seconds
+    final elapsed = DateTime.now().difference(startTime);
+    final minDelay = const Duration(seconds: 3);
+    final maxDelay = const Duration(seconds: 4);
+    
+    Duration remainingDelay;
+    if (elapsed < minDelay) {
+      remainingDelay = minDelay - elapsed;
+    } else if (elapsed > maxDelay) {
+      remainingDelay = Duration.zero;
+    } else {
+      remainingDelay = Duration.zero;
+    }
+
+    if (remainingDelay > Duration.zero) {
+      await Future.delayed(remainingDelay);
+    }
+
+    if (mounted) {
+      setState(() {
+        _showDynamicLoading = false;
+      });
+      // Navigate after loading screen completes
+      ref.read(authProvider.notifier).navigateBasedOnCondition();
+    }
   }
 
   @override

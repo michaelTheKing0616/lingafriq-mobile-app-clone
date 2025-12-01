@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "../../../../../Downloads/node-backend-main"
+		},
+		{
+			"path": "../../../../MusicRepairApp"
 		}
 	],
 	"settings": {}

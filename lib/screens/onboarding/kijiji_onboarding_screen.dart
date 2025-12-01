@@ -50,7 +50,10 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
               itemBuilder: (context, index) {
                 switch (index) {
                   case 0:
-                    return _WelcomeScreen(animationController: animationController);
+                    return _WelcomeScreen(
+                      animationController: animationController,
+                      onNext: () => _goToNext(pageController),
+                    );
                   case 1:
                     return _ElderScreen(
                       animationController: animationController,
@@ -190,8 +193,12 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
 // Step 1: Welcome Screen
 class _WelcomeScreen extends StatelessWidget {
   final AnimationController animationController;
+  final VoidCallback onNext;
   
-  const _WelcomeScreen({required this.animationController});
+  const _WelcomeScreen({
+    required this.animationController,
+    required this.onNext,
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -276,9 +283,8 @@ class _WelcomeScreen extends StatelessWidget {
               child: FadeTransition(
                 opacity: animationController,
                 child: ElevatedButton(
-                  onPressed: () {
-                    // Navigation handled by parent
-                  },
+                  onPressed: onNext,
+                  key: const Key('begin_journey_button'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AfricanTheme.primaryGreen,

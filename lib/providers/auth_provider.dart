@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/services/secure_storage_service.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
@@ -24,8 +25,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> navigateBasedOnCondition() async {
-    // Check if user is already logged in (has valid credentials and user data)
-    final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
+    final secureStorage = SecureStorageService();
     
     // Check if user has seen onboarding
     final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
@@ -34,21 +34,43 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return;
     }
     
-    // If saved credentials exist, perform a silent login to refresh JWT token
-    if (emailAndPassword != null) {
-      final email = emailAndPassword['email']!;
-      final password = emailAndPassword['password']!;
-      final user = await login(email: email, password: password);
-
-      if (user is ProfileModel) {
-        ref.read(userProvider.notifier).overrideUser(user);
-        await ref.read(apiProvider.notifier).regiserDevice();
-        ref.read(navigationProvider).naviateOffAll(const TabsView());
-        return;
+    // Check for valid session token first (1 hour TTL)
+    final hasValidSession = await secureStorage.hasValidSession();
+    if (hasValidSession) {
+      // Session is valid, navigate to main app
+      // Try to get user from stored data
+      final email = await secureStorage.getUserEmail();
+      if (email != null) {
+        final user = await ref.read(sharedPreferencesProvider).getUser(email);
+        if (user != null) {
+          ref.read(userProvider.notifier).overrideUser(user);
+          await ref.read(apiProvider.notifier).regiserDevice();
+          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          return;
+        }
       }
     }
     
-    // If no saved credentials or silent login failed, show login screen
+    // Check for valid refresh token (30 days TTL)
+    final hasValidRefresh = await secureStorage.hasValidRefreshToken();
+    if (hasValidRefresh) {
+      // Try to refresh session using stored credentials
+      final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
+      if (emailAndPassword != null) {
+        final email = emailAndPassword['email']!;
+        final password = emailAndPassword['password']!;
+        final user = await login(email: email, password: password, silentRefresh: true);
+
+        if (user is ProfileModel) {
+          ref.read(userProvider.notifier).overrideUser(user);
+          await ref.read(apiProvider.notifier).regiserDevice();
+          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          return;
+        }
+      }
+    }
+    
+    // If no valid tokens, show login screen
     ref.read(navigationProvider).naviateOffAll(const LoginScreen());
   }
 
@@ -58,27 +80,48 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     bool storeCredentials = false,
     bool splashlogin = false,
     bool updateProfile = false,
+    bool silentRefresh = false,
   }) async {
     try {
-      if (storeCredentials) {
+      if (storeCredentials && !silentRefresh) {
         state = state.copyWith(isLoading: true);
       }
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
+      
+      // Store tokens in secure storage
+      final secureStorage = SecureStorageService();
+      final apiProviderInstance = ref.read(apiProvider.notifier);
+      if (apiProviderInstance.token != null) {
+        await secureStorage.storeSessionToken(apiProviderInstance.token!);
+        // If backend provides refresh token, store it too
+        // For now, we'll use the same token as refresh (backend may need to be updated)
+        await secureStorage.storeRefreshToken(apiProviderInstance.token!);
+      }
+      
+      // Store user profile for pre-filling
+      await secureStorage.storeUserProfile(email, displayName: user.name);
+      
       if (storeCredentials) {
         await ref.read(sharedPreferencesProvider).storeEmailAndPassword(email, password);
         ref.read(apiProvider.notifier).accountUpdate();
-        await Future.delayed(const Duration(seconds: 3));
+        if (!silentRefresh) {
+          await Future.delayed(const Duration(seconds: 3));
+        }
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        ref.read(navigationProvider).naviateOffAll(const TabsView());
+        if (!silentRefresh) {
+          ref.read(navigationProvider).naviateOffAll(const TabsView());
+        }
         return user;
       }
       return user;
     } catch (e) {
       state = state.copyWith(isLoading: false);
-      await ref.read(dialogProvider(e)).showExceptionDialog();
+      if (!silentRefresh) {
+        await ref.read(dialogProvider(e)).showExceptionDialog();
+      }
       return null;
     }
   }
@@ -153,6 +196,12 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   // }
 
   Future<void> signOut({bool deleteAccount = false}) async {
+    final secureStorage = SecureStorageService();
+    
+    // Clear all tokens
+    await secureStorage.clearAllTokens();
+    await secureStorage.clearUserProfile();
+    
     await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
     "Delete Account $deleteAccount".log('signout');
     if (deleteAccount == false) {
