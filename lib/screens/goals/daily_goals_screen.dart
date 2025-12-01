@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/games/games_screen.dart';
+import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DailyGoalsScreen extends ConsumerWidget {
+class DailyGoalsScreen extends ConsumerStatefulWidget {
   const DailyGoalsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<DailyGoalsScreen> createState() => _DailyGoalsScreenState();
+}
+
+class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Refresh goals when screen appears
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(dailyGoalsProvider.notifier).refreshGoals();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final goalsNotifier = ref.watch(dailyGoalsProvider.notifier);
     final goals = ref.watch(dailyGoalsProvider.notifier).goals;
     final streak = ref.watch(dailyGoalsProvider.notifier).currentStreak;
@@ -22,6 +40,10 @@ class DailyGoalsScreen extends ConsumerWidget {
         backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
         foregroundColor: isDark ? Colors.white : Colors.black87,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.sp),
@@ -44,7 +66,9 @@ class DailyGoalsScreen extends ConsumerWidget {
             SizedBox(height: 16.sp),
             
             // Goals List
-            ...goals.map((goal) => _buildGoalCard(context, goal, isDark)),
+            goals.isEmpty
+                ? _buildEmptyState(context, isDark)
+                : ...goals.map((goal) => _buildGoalCard(context, goal, isDark, goalsNotifier)),
           ],
         ),
       ),
@@ -119,30 +143,68 @@ class DailyGoalsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildGoalCard(BuildContext context, goal, bool isDark) {
+  Widget _buildEmptyState(BuildContext context, bool isDark) {
+    return Container(
+      padding: EdgeInsets.all(32.sp),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.flag_outlined,
+              size: 64.sp,
+              color: isDark ? Colors.grey[600] : Colors.grey[400],
+            ),
+            SizedBox(height: 16.sp),
+            Text(
+              'No goals available',
+              style: TextStyle(
+                fontSize: 18.sp,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
+              ),
+            ),
+            SizedBox(height: 8.sp),
+            Text(
+              'Check back later for your daily goals',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? Colors.grey[500] : Colors.grey[500],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGoalCard(BuildContext context, goal, bool isDark, goalsNotifier) {
     final icon = _getGoalIcon(goal.type);
     final title = _getGoalTitle(goal.type);
     final progress = goal.progress;
     final isCompleted = goal.completed;
 
-    return Container(
-      margin: EdgeInsets.only(bottom: 16.sp),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+    return InkWell(
+      onTap: () => _navigateToGoalModule(context, goal.type),
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16.sp),
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1F3527) : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+            width: 1,
           ),
-        ],
-      ),
-      child: Padding(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Padding(
         padding: EdgeInsets.all(20.sp),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,7 +291,41 @@ class DailyGoalsScreen extends ConsumerWidget {
           ],
         ),
       ),
+      ),
     );
+  }
+
+  void _navigateToGoalModule(BuildContext context, String goalType) {
+    final navigation = ref.read(navigationProvider);
+    // Navigate to the appropriate module based on goal type
+    switch (goalType) {
+      case 'lessons':
+        // Navigate to courses tab (lessons are there)
+        // For now, show a message - can be enhanced later
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Navigate to Courses tab for lessons')),
+        );
+        break;
+      case 'quizzes':
+        navigation.naviateTo(const TakeQuizScreen());
+        break;
+      case 'games':
+        navigation.naviateTo(const GamesScreen());
+        break;
+      case 'chat_minutes':
+        navigation.naviateTo(const AiChatScreen());
+        break;
+      case 'words_learned':
+        // Navigate to vocabulary/words screen
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Vocabulary feature coming soon')),
+        );
+        break;
+      default:
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Navigating to $goalType...')),
+        );
+    }
   }
 
   String _getGoalIcon(String type) {

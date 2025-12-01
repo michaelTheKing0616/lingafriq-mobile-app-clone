@@ -106,15 +106,22 @@ class AchievementsScreen extends ConsumerWidget {
                     length: 3,
                     child: Column(
                       children: [
-                        TabBar(
-                          tabs: const [
-                            Tab(text: 'Badges'),
-                            Tab(text: 'Streaks'),
-                            Tab(text: 'XP'),
-                          ],
-                          labelColor: isDark ? Colors.white : Colors.black87,
-                          unselectedLabelColor: isDark ? Colors.white70 : Colors.black54,
-                          indicatorColor: const Color(0xFFFCD116),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: TabBar(
+                            tabs: const [
+                              Tab(text: 'Badges'),
+                              Tab(text: 'Streaks'),
+                              Tab(text: 'XP'),
+                            ],
+                            labelColor: isDark ? Colors.white : Colors.black87,
+                            unselectedLabelColor: isDark ? Colors.grey[400] : Colors.grey[600],
+                            indicatorColor: const Color(0xFFFCD116),
+                            indicatorSize: TabBarIndicatorSize.tab,
+                          ),
                         ),
                         SizedBox(height: 2.h),
                         SizedBox(
@@ -415,6 +422,39 @@ class AchievementsScreen extends ConsumerWidget {
   }
 
   Widget _buildBadgesTab(BuildContext context, List achievements, bool isDark) {
+    if (achievements.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.emoji_events_outlined,
+              size: 64.sp,
+              color: isDark ? Colors.grey[600] : Colors.grey[400],
+            ),
+            SizedBox(height: 16.sp),
+            Text(
+              'No achievements yet',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+            SizedBox(height: 8.sp),
+            Text(
+              'Complete goals to unlock achievements!',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+    
     return GridView.builder(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -433,7 +473,10 @@ class AchievementsScreen extends ConsumerWidget {
             boxShadow: achievement.isUnlocked ? DesignSystem.shadowMedium : [],
             border: achievement.isUnlocked
                 ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withOpacity(0.2), width: 2)
-                : null,
+                : Border.all(
+                    color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+                    width: 1,
+                  ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -452,7 +495,9 @@ class AchievementsScreen extends ConsumerWidget {
                 style: TextStyle(
                   fontSize: 11.sp,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
+                  color: achievement.isUnlocked
+                      ? (isDark ? Colors.white : Colors.black87)
+                      : (isDark ? Colors.grey[600] : Colors.grey[500]),
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
@@ -462,7 +507,7 @@ class AchievementsScreen extends ConsumerWidget {
                   '${achievement.unlockedAt!.month}/${achievement.unlockedAt!.day}',
                   style: TextStyle(
                     fontSize: 9.sp,
-                    color: isDark ? Colors.white70 : Colors.black54,
+                    color: isDark ? Colors.grey[400] : Colors.grey[600],
                   ),
                 ),
             ],

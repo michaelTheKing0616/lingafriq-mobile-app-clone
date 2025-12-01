@@ -221,5 +221,14 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
       debugPrint('Error loading streak: $e');
     }
   }
+
+  /// Refresh goals - reload from storage and sync with backend
+  Future<void> refreshGoals() async {
+    await _loadGoals();
+    await _loadStreak();
+    _initializeDailyGoals();
+    await _syncWithBackend();
+    state = state.copyWith();
+  }
 }
 
