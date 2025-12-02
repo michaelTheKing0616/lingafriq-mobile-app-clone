@@ -37,6 +37,12 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // Check for valid session token first (1 hour TTL)
     final hasValidSession = await secureStorage.hasValidSession();
     if (hasValidSession) {
+      // Get and set token in API provider for all subsequent requests
+      final sessionToken = await secureStorage.readSessionToken();
+      if (sessionToken != null) {
+        ref.read(apiProvider.notifier).token = sessionToken;
+      }
+      
       // Session is valid, navigate to main app
       // Try to get user from stored data
       final email = await secureStorage.getUserEmail();

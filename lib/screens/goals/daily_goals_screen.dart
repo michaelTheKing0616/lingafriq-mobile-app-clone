@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
+import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -301,17 +304,13 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
     // Navigate to the appropriate module based on goal type
     switch (goalType) {
       case 'lessons':
-        // Navigate to courses tab (lessons are there)
-        // For now, show a message - can be enhanced later
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Navigate to Courses tab for lessons')),
-        );
+        // Switch to courses tab where lessons are displayed
+        ref.read(tabIndexProvider.notifier).setIndex(1);
+        Navigator.pop(context); // Close daily goals screen
         break;
       case 'quizzes':
-        // Navigate to quiz selection - user can choose language there
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Navigate to Home tab and select a language for quiz')),
-        );
+        // Show language selector, then navigate to quiz
+        _showLanguageSelectorForQuiz(context);
         break;
       case 'games':
         navigation.naviateTo(const GamesScreen());
@@ -363,6 +362,64 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
         return 'Learn Words';
       default:
         return 'Goal';
+    }
+  }
+
+  void _showLanguageSelectorForQuiz(BuildContext context) async {
+    try {
+      // Fetch languages
+      final languages = await ref.read(apiProvider.notifier).getLanguages();
+      if (!mounted) return;
+
+      // Show bottom sheet to select language
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => Container(
+          decoration: BoxDecoration(
+            color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Select Language for Quiz',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: context.adaptive,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ...languages.results.take(5).map((language) => ListTile(
+                leading: Icon(Icons.language, color: AppColors.primaryGreen),
+                title: Text(
+                  language.name,
+                  style: TextStyle(color: context.adaptive),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context); // Close daily goals
+                  ref.read(navigationProvider).naviateTo(
+                    TakeQuizScreen(language: language),
+                  );
+                },
+              )),
+              const SizedBox(height: 8),
+            ],
+          ),
+        ),
+      );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load languages: $e')),
+        );
+      }
     }
   }
 }
