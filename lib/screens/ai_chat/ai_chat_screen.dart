@@ -453,6 +453,39 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   onPressed: () => _showLanguageDirectionDialog(context, isDark),
                   tooltip: 'Language direction',
                 ),
+                // Mute/Unmute button for Polie's voice
+                IconButton(
+                  icon: Icon(
+                    _voiceOutputEnabled ? Icons.volume_up : Icons.volume_off,
+                    color: _voiceOutputEnabled 
+                        ? (isDark ? Colors.white70 : Colors.grey[700])
+                        : Colors.red[400],
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _voiceOutputEnabled = !_voiceOutputEnabled;
+                    });
+                    _savePreferences();
+                    // Stop any ongoing TTS
+                    if (!_voiceOutputEnabled) {
+                      ref.read(ttsProvider.notifier).stop();
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          _voiceOutputEnabled 
+                              ? 'Polie voice enabled' 
+                              : 'Polie voice muted',
+                        ),
+                        duration: const Duration(seconds: 1),
+                        backgroundColor: _voiceOutputEnabled 
+                            ? AppColors.primaryGreen 
+                            : Colors.grey[700],
+                      ),
+                    );
+                  },
+                  tooltip: _voiceOutputEnabled ? 'Mute Polie' : 'Unmute Polie',
+                ),
                 if (chatNotifier.hasMessages)
                   IconButton(
                     icon: Icon(Icons.delete_outline, color: isDark ? Colors.white70 : Colors.grey[700]),
