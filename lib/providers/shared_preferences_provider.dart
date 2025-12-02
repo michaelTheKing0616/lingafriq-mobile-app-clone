@@ -80,6 +80,25 @@ class SharedPreferencesProvider {
   Future<void> setOnboardingSeen() async {
     await prefs.setBool("has_seen_onboarding", true);
   }
+
+  // Cache languages for offline access and stability
+  Future<void> cacheLanguages(String languagesJson) async {
+    await prefs.setString("cached_languages", languagesJson);
+    await prefs.setInt("cached_languages_timestamp", DateTime.now().millisecondsSinceEpoch);
+  }
+
+  String? getCachedLanguages() {
+    // Check if cache is less than 24 hours old
+    final timestamp = prefs.getInt("cached_languages_timestamp");
+    if (timestamp != null) {
+      final cacheAge = DateTime.now().millisecondsSinceEpoch - timestamp;
+      // Cache valid for 24 hours
+      if (cacheAge < 24 * 60 * 60 * 1000) {
+        return prefs.getString("cached_languages");
+      }
+    }
+    return null;
+  }
 }
 
 class _EmailAndPassword {

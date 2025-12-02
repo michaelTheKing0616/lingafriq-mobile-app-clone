@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/utils.dart' show debugPrint;
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -26,8 +27,22 @@ import '../../../widgets/primary_button.dart';
 import 'language_detail_screen.dart';
 import 'take_quiz_screen.dart';
 
-final languagesProvider = FutureProvider.autoDispose((ref) {
-  return ref.read(apiProvider.notifier).getLanguages();
+// Remove autoDispose to prevent data loss on tab changes
+// Cache data to improve stability and offline experience
+final languagesProvider = FutureProvider((ref) async {
+  try {
+    final languages = await ref.read(apiProvider.notifier).getLanguages();
+    // Cache the result in shared preferences
+    ref.read(sharedPreferencesProvider).cacheLanguages(languages.toJson());
+    return languages;
+  } catch (e) {
+    // Try to load from cache if API fails
+    final cachedData = ref.read(sharedPreferencesProvider).getCachedLanguages();
+    if (cachedData != null) {
+      return LanguageResponse.fromJson(cachedData);
+    }
+    rethrow;
+  }
 });
 
 final _timerProvider = Provider((ref) {

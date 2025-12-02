@@ -277,8 +277,12 @@ When the user is practicing, end your responses with a question or task to keep 
 
   void setMode(PolieMode mode) {
     if (_mode == mode) return;
+    // Save current chat history before switching
+    _saveChatHistory();
     _mode = mode;
     _tutorMode = mode == PolieMode.tutor;
+    // Load chat history for new mode
+    _loadChatHistory();
     _initializeSystemPrompt();
     state = state.copyWith();
   }
@@ -966,11 +970,18 @@ Return only JSON.
   }
 
   // ----- Persistence -----
+  // Separate chat histories for translation and tutor modes
+  String get _chatHistoryKey {
+    return _mode == PolieMode.translation
+        ? 'ai_chat_history_groq_translation'
+        : 'ai_chat_history_groq_tutor';
+  }
+
   Future<void> _saveChatHistory() async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final messagesJson = _messages.map((msg) => msg.toJson()).toList();
-      await prefs.setString('ai_chat_history_groq', jsonEncode(messagesJson));
+      await prefs.setString(_chatHistoryKey, jsonEncode(messagesJson));
     } catch (e) {
       debugPrint('Error saving chat history: $e');
     }
@@ -979,7 +990,7 @@ Return only JSON.
   Future<void> _loadChatHistory() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final historyJson = prefs.getString('ai_chat_history_groq');
+      final historyJson = prefs.getString(_chatHistoryKey);
       if (historyJson != null) {
         final List<dynamic> messagesList = jsonDecode(historyJson);
         _messages.clear();

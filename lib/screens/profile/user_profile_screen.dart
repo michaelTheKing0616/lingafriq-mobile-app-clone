@@ -62,18 +62,18 @@ class UserProfileScreen extends ConsumerWidget {
                     padding: EdgeInsets.all(4.w),
                     child: Column(
                       children: [
-                        if (onBack != null)
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                              icon: const Icon(Icons.arrow_back, color: Colors.white),
-                              onPressed: onBack,
-                              style: IconButton.styleFrom(
-                                backgroundColor: Colors.white.withOpacity(0.2),
-                                shape: const CircleBorder(),
-                              ),
+                        // Always show back button
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: onBack ?? () => Navigator.pop(context),
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.white.withOpacity(0.2),
+                              shape: const CircleBorder(),
                             ),
                           ),
+                        ),
                         SizedBox(height: 2.h),
                         // Avatar
                         Container(
