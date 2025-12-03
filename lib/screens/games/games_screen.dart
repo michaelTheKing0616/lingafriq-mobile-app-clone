@@ -45,6 +45,13 @@ class GamesScreen extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Row(
                         children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: () => Navigator.of(context).pop(),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                          const SizedBox(width: 8),
                           Builder(
                             builder: (context) => IconButton(
                               icon: const Icon(Icons.menu_rounded, color: Colors.white),

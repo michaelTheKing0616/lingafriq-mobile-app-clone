@@ -51,13 +51,13 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       await Future.delayed(remainingDelay);
     }
 
-    if (mounted) {
-      setState(() {
-        _showDynamicLoading = false;
-      });
-      // Navigate after loading screen completes
-      ref.read(authProvider.notifier).navigateBasedOnCondition();
-    }
+      if (mounted) {
+        setState(() {
+          _showDynamicLoading = false;
+        });
+        // Navigate after loading screen completes
+        ref.read(authProvider.notifier).navigateBasedOnCondition();
+      }
   }
 
   @override

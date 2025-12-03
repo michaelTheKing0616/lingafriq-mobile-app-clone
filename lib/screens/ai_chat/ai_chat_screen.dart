@@ -122,6 +122,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
 
       if (mounted && _voiceOutputEnabled && fullResponse.isNotEmpty) {
         final tts = ref.read(ttsProvider.notifier);
+        // Ensure TTS is initialized
+        await tts.init();
+        // Use target language for authentic African accent
         await tts.speak(fullResponse, languageName: provider.targetLanguage);
       }
     } catch (e) {
