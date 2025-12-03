@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProgressDashboardScreen extends ConsumerWidget {
@@ -11,6 +12,16 @@ class ProgressDashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'Progress Dashboard is temporarily unavailable',
+      onRetry: () {
+        // Rebuild
+      },
+      child: _buildDashboard(context, ref),
+    );
+  }
+
+  Widget _buildDashboard(BuildContext context, WidgetRef ref) {
     final metrics = ref.watch(progressTrackingProvider.notifier).metrics;
     final history = ref.watch(progressTrackingProvider.notifier).history;
     final isDark = context.isDarkMode;

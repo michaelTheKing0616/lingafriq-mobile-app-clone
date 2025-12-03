@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -149,10 +150,19 @@ class TakeQuizScreen extends ConsumerWidget {
                                       onTap: () async {
                                         try {
                                           debugPrint('Fetching random quizzes for language: ${language.id}');
+                                          debugPrint('Current token: ${ref.read(apiProvider.notifier).token != null ? "EXISTS" : "NULL"}');
                                           
+                                          // Add timeout to prevent endless loading
                                           final randomQuizes = await ref
                                               .read(apiProvider.notifier)
-                                              .getRandomQuizLessons(language.id);
+                                              .getRandomQuizLessons(language.id)
+                                              .timeout(
+                                                const Duration(seconds: 15),
+                                                onTimeout: () {
+                                                  debugPrint('Quiz fetch timed out');
+                                                  throw TimeoutException('Quiz loading timed out. Please check your connection.');
+                                                },
+                                              );
                                           
                                           debugPrint('Received ${randomQuizes.length} quizzes');
                                           

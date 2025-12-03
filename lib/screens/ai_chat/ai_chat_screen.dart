@@ -366,18 +366,28 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     final chatState = ref.watch(groqChatProvider);
     final isDark = context.isDarkMode;
     final theme = Theme.of(context);
+    final isTranslationMode = chatNotifier.isTranslationMode;
+
+    // Different colors for different modes
+    final modeColor = isTranslationMode 
+        ? const Color(0xFF007A3D) // Green for translation
+        : const Color(0xFFCE1126); // Red for tutor
+    
+    final backgroundColor = isDark 
+        ? const Color(0xFF102216) 
+        : (isTranslationMode ? const Color(0xFFF0FFF4) : const Color(0xFFFFF0F0)); // Subtle tint
 
     return Theme(
       data: theme.copyWith(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.primaryGreen,
+          seedColor: modeColor,
           brightness: isDark ? Brightness.dark : Brightness.light,
         ),
       ),
       child: Scaffold(
         drawer: const AppDrawer(),
-        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        backgroundColor: backgroundColor,
         body: SafeArea(
           child: Column(
             children: [

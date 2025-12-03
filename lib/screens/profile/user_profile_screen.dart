@@ -4,6 +4,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -16,6 +17,13 @@ class UserProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'Profile temporarily unavailable',
+      child: _buildProfile(context, ref),
+    );
+  }
+
+  Widget _buildProfile(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     

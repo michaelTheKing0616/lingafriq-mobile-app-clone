@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: #007A3D;
+  --color-secondary: #FF6B35;
+  --color-gold: #FCD116;
+  --color-purple: #7B2CBF;
+  --color-red: #CE1126;
+  --color-bg: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-text-muted: #6B7280;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1A1A1A;
+  --color-text: #FFFFFF;
+  --color-text-muted: #9CA3AF;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Dosis', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1 {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+h2 {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+p {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+button {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 600;
+}
+
+input, textarea {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 400;
+}

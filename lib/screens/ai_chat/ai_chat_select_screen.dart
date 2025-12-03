@@ -15,6 +15,148 @@ class AiChatSelectScreen extends HookConsumerWidget {
   
   const AiChatSelectScreen({Key? key, this.onBack}) : super(key: key);
 
+  void _showLanguageSelector(BuildContext context, WidgetRef ref, PolieMode mode) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    // Supported African languages for AI chat
+    final languages = [
+      {'name': 'Yoruba', 'flag': '🇳🇬', 'code': 'yo'},
+      {'name': 'Hausa', 'flag': '🇳🇬', 'code': 'ha'},
+      {'name': 'Igbo', 'flag': '🇳🇬', 'code': 'ig'},
+      {'name': 'Swahili', 'flag': '🇰🇪', 'code': 'sw'},
+      {'name': 'Zulu', 'flag': '🇿🇦', 'code': 'zu'},
+      {'name': 'Xhosa', 'flag': '🇿🇦', 'code': 'xh'},
+      {'name': 'Amharic', 'flag': '🇪🇹', 'code': 'am'},
+      {'name': 'Twi', 'flag': '🇬🇭', 'code': 'tw'},
+      {'name': 'Afrikaans', 'flag': '🇿🇦', 'code': 'af'},
+      {'name': 'Nigerian Pidgin', 'flag': '🇳🇬', 'code': 'pcm'},
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        height: 70.h,
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF1F3527) : Colors.white,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          children: [
+            // Header
+            Container(
+              padding: EdgeInsets.all(4.w),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF7B2CBF), Color(0xFFCE1126)],
+                ),
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: SafeArea(
+                bottom: false,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        Expanded(
+                          child: Text(
+                            mode == PolieMode.translation 
+                                ? 'Select Language to Translate'
+                                : 'Select Language to Learn',
+                            style: TextStyle(
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(width: 48), // Balance the back button
+                      ],
+                    ),
+                    SizedBox(height: 1.h),
+                    Text(
+                      mode == PolieMode.translation
+                          ? 'Choose the language you want to translate to/from'
+                          : 'Choose the language you want to practice',
+                      style: TextStyle(
+                        fontSize: 13.sp,
+                        color: Colors.white.withOpacity(0.9),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // Language List
+            Expanded(
+              child: ListView.builder(
+                padding: EdgeInsets.all(4.w),
+                itemCount: languages.length,
+                itemBuilder: (context, index) {
+                  final lang = languages[index];
+                  return Card(
+                    margin: EdgeInsets.only(bottom: 2.h),
+                    color: isDark ? const Color(0xFF2A4034) : Colors.white,
+                    elevation: 2,
+                    child: ListTile(
+                      leading: Text(
+                        lang['flag']!,
+                        style: TextStyle(fontSize: 32.sp),
+                      ),
+                      title: Text(
+                        lang['name']!,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                      subtitle: Text(
+                        mode == PolieMode.translation
+                            ? 'English ↔ ${lang['name']}'
+                            : 'Learn ${lang['name']} with Polie',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: isDark ? Colors.white70 : Colors.black54,
+                        ),
+                      ),
+                      trailing: Icon(
+                        Icons.arrow_forward_ios,
+                        color: isDark ? Colors.white54 : Colors.black45,
+                        size: 16,
+                      ),
+                      onTap: () {
+                        // Set language and navigate to chat
+                        ref.read(groqChatProvider.notifier).setLanguageDirection(
+                          'English',
+                          lang['name']!,
+                        );
+                        Navigator.pop(context); // Close language selector
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AiChatScreen(),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -126,14 +268,9 @@ class AiChatSelectScreen extends HookConsumerWidget {
                     ),
                     badge: 'Quick & Easy',
                     onTap: () {
-                      // Set translator mode and navigate
+                      // Set translator mode and show language selector
                       ref.read(groqChatProvider.notifier).setMode(PolieMode.translation);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const AiChatScreen(),
-                        ),
-                      );
+                      _showLanguageSelector(context, ref, PolieMode.translation);
                     },
                     isDark: isDark,
                   ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
@@ -148,14 +285,9 @@ class AiChatSelectScreen extends HookConsumerWidget {
                     ),
                     badge: 'Interactive Learning',
                     onTap: () {
-                      // Set tutor mode and navigate
+                      // Set tutor mode and show language selector
                       ref.read(groqChatProvider.notifier).setMode(PolieMode.tutor);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const AiChatScreen(),
-                        ),
-                      );
+                      _showLanguageSelector(context, ref, PolieMode.tutor);
                     },
                     isDark: isDark,
                   ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
