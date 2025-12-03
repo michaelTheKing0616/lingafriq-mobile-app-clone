@@ -96,56 +96,6 @@ class _PrivateChatListScreenState
               ),
             ),
           ),
-          // Content with AppBar
-          Positioned.fill(
-            top: 15.h,
-            child: Scaffold(
-              backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-              appBar: AppBar(
-                automaticallyImplyLeading: false,
-                title: const Text('Private Chats'),
-                backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-                foregroundColor: isDark ? Colors.white : Colors.black87,
-                elevation: 0,
-              ),
-              body: SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.of(context).pop(),
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
-                        shape: const CircleBorder(),
-                      ),
-                    ),
-                    SizedBox(width: 2.w),
-                    Expanded(
-                      child: Text(
-                        'Messages',
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.chat_bubble_rounded, color: Colors.white),
-                      onPressed: () {},
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
-                        shape: const CircleBorder(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
           // Content
           Positioned(
             top: 13.h,

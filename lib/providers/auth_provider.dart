@@ -38,7 +38,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final hasValidSession = await secureStorage.hasValidSession();
     if (hasValidSession) {
       // Get and set token in API provider for all subsequent requests
-      final sessionToken = await secureStorage.readSessionToken();
+      final sessionToken = await secureStorage.getSessionToken();
       if (sessionToken != null) {
         ref.read(apiProvider.notifier).token = sessionToken;
       }
