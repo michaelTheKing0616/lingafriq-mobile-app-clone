@@ -1,237 +1,230 @@
-# Setting Up GitHub Secrets for API Keys
+# GitHub Secrets Setup - What You Need
 
-## Current Code Status
+## ✅ GOOD NEWS!
 
-✅ **The code IS set up** to use GitHub secrets via `String.fromEnvironment()` for:
-- `GROQ_API_KEY` - For AI chat functionality
-- `STABILITY_AI_KEY` - For AI image generation (recommended)
-- `HUGGINGFACE_API_KEY` - Alternative for AI images
-- `REPLICATE_API_KEY` - Alternative for AI images
-- `LEONARDO_API_KEY` - Alternative for AI images
+Your backend **already has a MongoDB database connected**. All the new features I added (Culture Magazine, Media Processing, Chat, User Connections) will automatically use your **existing database** - everything stays consistent!
 
-All providers read API keys from compile-time environment variables, which can be passed via `--dart-define` during the Flutter build process.
+---
 
-## Step-by-Step Setup
+## 🔐 REQUIRED SECRETS (Only 2!)
 
-### Step 1: Add GitHub Secrets
+You need to add **only 2 secrets** to GitHub Actions for the workflows to run:
 
-1. Go to your GitHub repository: `https://github.com/lingafriq/mobile-app` (or your clone repo)
-2. Navigate to **Settings** → **Secrets and variables** → **Actions**
-3. Click **New repository secret** for each API key you need:
+### 1. **MONGODB_URI** (Your existing database)
+This is the MongoDB connection string your backend is already using.
 
-#### Required: GROQ_API_KEY (for AI Chat)
-- **Name**: `GROQ_API_KEY`
-- **Value**: Your Groq API key (get it from https://console.groq.com/)
-- **Purpose**: Powers the AI chat/tutor functionality
-- Click **Add secret**
+**Where to find it:**
+- Check your current backend deployment
+- Or look in your local `.env` file if you have one
+- It looks like: `mongodb+srv://username:password@cluster.mongodb.net/lingafriq?retryWrites=true`
 
-#### Optional: STABILITY_AI_KEY (for AI Image Generation - Recommended)
-- **Name**: `STABILITY_AI_KEY`
-- **Value**: Your Stability AI API key (get it from https://platform.stability.ai/account/keys)
-- **Purpose**: Generates dynamic African person portraits for loading screen
-- **Free Tier**: 25 images/month
-- **Placeholder**: `YOUR_STABILITY_AI_KEY` (if not set, will use fallback)
-- Click **Add secret**
+**If you don't have it:**
+- Check with your team who set up the backend
+- Or check your hosting provider (Heroku, Railway, Render, etc.)
+- Or check MongoDB Atlas if that's what you're using
 
-#### Optional: HUGGINGFACE_TOKEN (for AI Image Generation - Fallback)
-- **Name**: `HUGGINGFACE_TOKEN`
-- **Value**: Your existing Hugging Face token (from previous setup)
-- **Purpose**: Fallback for AI image generation if Stability AI is not available
-- **Note**: This is the existing token you already have configured
-- Click **Add secret** (if not already added)
+---
 
-#### Alternative Image APIs (optional):
-- **REPLICATE_API_KEY**: For Replicate API ($5 free credit)
-- **LEONARDO_API_KEY**: For Leonardo.ai (150 free images/day)
+### 2. **JWT_SECRET** (Your existing secret key)
+This is the secret key your backend uses for authentication tokens.
 
-**Note**: The code will automatically use whichever key is available. Priority: Stability AI → Hugging Face → Replicate → Leonardo
+**Where to find it:**
+- Check your current backend deployment environment variables
+- Or look in your local `.env` file
+- It's a long random string (32+ characters)
 
-### Step 2: GitHub Actions Workflow
+**If you don't have it:**
+- Check with your team who set up the backend
+- Or check your hosting provider's environment variables
+- **IMPORTANT**: If you change this, all existing user sessions will be invalidated (users will need to log in again)
 
-The workflow should be updated to pass all API keys to the Flutter build. It will:
-- Pass `GROQ_API_KEY` to the Flutter build via `--dart-define`
-- Pass `STABILITY_AI_KEY` (or other image API key) via `--dart-define`
-- Build will work even if secrets are not set (with a warning)
+---
 
-**Example workflow configuration:**
-```yaml
-- name: Build APK
-  run: |
-    flutter build apk --release \
-      --dart-define=GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
-      --dart-define=STABILITY_AI_KEY=${{ secrets.STABILITY_AI_KEY }}
+## 🎯 HOW TO ADD THESE TO GITHUB
+
+**Step 1:** Go to your backend repo
+```
+https://github.com/lingafriq/node-backend
 ```
 
-**Note**: If you don't have a workflow yet, see the "GitHub Actions Workflow Setup" section below.
+**Step 2:** Navigate to Secrets
+- Click **"Settings"** tab (top menu)
+- Scroll down left sidebar → **"Secrets and variables"** → **"Actions"**
 
-### Step 3: Verify It Works
+**Step 3:** Add MONGODB_URI
+- Click **"New repository secret"**
+- Name: `MONGODB_URI` (exactly this, case-sensitive!)
+- Secret: Paste your MongoDB connection string
+- Click **"Add secret"**
 
-1. Push a commit to trigger the workflow
-2. Check the build logs - you should see the API key being passed (it won't be visible in logs for security)
-3. The app will be built with the API key embedded
+**Step 4:** Add JWT_SECRET
+- Click **"New repository secret"** again
+- Name: `JWT_SECRET` (exactly this!)
+- Secret: Paste your JWT secret key
+- Click **"Add secret"**
 
-## Local Development
+---
 
-For local development, you can set the environment variables:
+## 📊 OPTIONAL SECRETS (For Enhanced Features)
 
-### Windows PowerShell:
-```powershell
-$env:GROQ_API_KEY="your_groq_api_key_here"
-$env:STABILITY_AI_KEY="your_stability_ai_key_here"
-$env:HUGGINGFACE_TOKEN="your_huggingface_token_here"
-flutter run
+These are **optional** but recommended for full functionality:
+
+### 3. **NEWS_API_KEY** (For Culture Magazine auto-scraper)
+- Get free: https://newsapi.org (100 requests/day free)
+- Enables automatic African news/culture content gathering
+- **If not provided**: Scraper will only use web scraping (slower but still works)
+
+### 4. **OPENAI_API_KEY** (For future AI features)
+- Get from: https://platform.openai.com/api-keys
+- Currently not used, but ready for future AI content generation
+- **If not provided**: No problem, not needed yet
+
+### 5. **HOSTNAME** (Your API URL)
+- Example: `https://api.lingafriq.com` or `https://your-backend.herokuapp.com`
+- Used for generating full media URLs
+- **If not provided**: Backend uses relative paths (still works)
+
+### 6. **NODE_ENV** (Environment)
+- Value: `production`
+- **If not provided**: Defaults to development mode
+
+---
+
+## ✅ WHAT SECRETS YOU DEFINITELY NEED
+
+### Minimum to get workflows running:
+```
+✅ MONGODB_URI (your existing database)
+✅ JWT_SECRET (your existing auth key)
 ```
 
-### Windows CMD:
-```cmd
-set GROQ_API_KEY=your_groq_api_key_here
-set STABILITY_AI_KEY=your_stability_ai_key_here
-set HUGGINGFACE_TOKEN=your_huggingface_token_here
-flutter run
+### Recommended for full features:
+```
+✅ MONGODB_URI
+✅ JWT_SECRET  
+✅ NEWS_API_KEY (free from newsapi.org)
+✅ HOSTNAME (your backend URL)
 ```
 
-### Linux/Mac:
+---
+
+## 🔍 HOW TO FIND YOUR EXISTING CREDENTIALS
+
+### Option 1: Check Current Deployment
+If your backend is already deployed somewhere:
+
+**Heroku:**
 ```bash
-export GROQ_API_KEY="your_groq_api_key_here"
-export STABILITY_AI_KEY="your_stability_ai_key_here"
-export HUGGINGFACE_TOKEN="your_huggingface_token_here"
-flutter run
+heroku config -a your-app-name
 ```
 
-### Or use --dart-define directly:
+**Railway:**
+- Go to your project → Variables tab
+- Copy MONGODB_URI and JWT_SECRET
+
+**Render:**
+- Go to your service → Environment tab
+- Copy MONGODB_URI and JWT_SECRET
+
+---
+
+### Option 2: Check Local Files
+If you have the backend running locally:
+
+**Look for `.env` file:**
 ```bash
-flutter run \
-  --dart-define=GROQ_API_KEY=your_groq_api_key_here \
-  --dart-define=STABILITY_AI_KEY=your_stability_ai_key_here \
-  --dart-define=HUGGINGFACE_TOKEN=your_huggingface_token_here
+cd node-backend
+cat .env
 ```
 
-## How It Works
-
-1. **GitHub Secret** → Stored securely in GitHub
-2. **Workflow** → Passes secret as environment variable
-3. **Flutter Build** → `--dart-define=GROQ_API_KEY=...` passes it to Dart
-4. **Code** → `String.fromEnvironment('GROQ_API_KEY')` reads it at compile time
-
-## Security Considerations
-
-⚠️ **Important**: API keys embedded in the app binary can be extracted by reverse engineering the APK/IPA.
-
-### For Production Apps, Consider:
-
-1. **Backend Proxy** (Recommended)
-   - Store API key on your backend server
-   - App calls your backend, backend calls Groq
-   - Key never leaves your server
-
-2. **Key Restrictions**
-   - In Groq console, set IP whitelist
-   - Set rate limits
-   - Monitor usage
-
-3. **Key Rotation**
-   - Rotate keys periodically
-   - If a key is exposed, revoke it immediately
-
-## Current Implementation
-
-### Groq API Key (AI Chat)
-The code in `lib/providers/ai_chat_provider_groq.dart`:
-
-```dart
-static String get _groqApiKey {
-  const envKey = String.fromEnvironment('GROQ_API_KEY', defaultValue: 'YOUR_GROQ_API_KEY');
-  return envKey;
-}
+You should see something like:
+```bash
+MONGODB_URI=mongodb+srv://...
+JWT_SECRET=abc123xyz...
 ```
 
-### AI Image API Keys
-The code in `lib/services/ai_image_service.dart`:
+---
 
-```dart
-static String? get _apiKey {
-  // Tries multiple providers in order of preference
-  const stabilityKey = String.fromEnvironment('STABILITY_AI_KEY', defaultValue: '');
-  if (stabilityKey.isNotEmpty && stabilityKey != 'YOUR_STABILITY_AI_KEY') {
-    return stabilityKey;
-  }
-  // ... tries other providers
-  return null;
-}
+### Option 3: Check with Your Team
+Ask whoever set up the backend for:
+- MongoDB connection string (MONGODB_URI)
+- JWT secret key (JWT_SECRET)
+
+---
+
+## ⚠️ IMPORTANT NOTES
+
+### About MONGODB_URI:
+- ✅ Uses your **existing database**
+- ✅ All new collections (articles, media, messages, connections) will be added automatically
+- ✅ Your existing data (users, lessons, progress) stays unchanged
+- ✅ No data migration needed - it just works!
+
+### About JWT_SECRET:
+- ⚠️ Must be the **same value** your backend is currently using
+- ⚠️ If you change it, all users will need to log in again
+- ✅ If you don't know it, don't guess - find the actual value
+
+### Database Structure:
+Your MongoDB will now have these collections:
+```
+Existing:
+- users
+- languages
+- lessons
+- quizzes
+- progress
+- etc.
+
+New (auto-created):
+- articles (Culture Magazine)
+- media (Media uploads)
+- chatmessages (Chat history)
+- userconnections (Social graph)
 ```
 
-This reads keys at compile time. If not provided, it returns `null` and falls back to placeholder images.
+All in the **same database** - perfectly integrated! ✅
 
-## Testing
+---
 
-After setting up the secret:
+## 🚀 AFTER ADDING SECRETS
 
-1. **In CI/CD**: The workflow will automatically use it
-2. **Locally**: Set the environment variable or use `--dart-define`
-3. **Verify**: The app should be able to make API calls to Groq
+### Check if they're correct:
 
-## Troubleshooting
+1. **Go to Actions tab**
+2. **Click "Deploy Backend"**
+3. **Click "Run workflow"**
+4. **Watch the run**
 
-### "AI Chat is not configured" error
-- Check that `GROQ_API_KEY` secret is set in GitHub
-- Verify the secret name matches exactly: `GROQ_API_KEY`
-- For local dev, ensure environment variable is set
+**If it succeeds (green ✅):**
+- Secrets are correct!
+- Backend builds successfully
+- Download artifacts or deploy
 
-### Build succeeds but API calls fail
-- Verify the API key is valid in Groq console
-- Check API key permissions
-- Ensure the key hasn't been revoked
+**If it fails (red ❌):**
+- Click on the failed run
+- Look for error message
+- Common issues:
+  - `MONGODB_URI is not defined` → Add the secret
+  - `Cannot connect to MongoDB` → Check connection string format
+  - `JWT_SECRET is not defined` → Add the secret
 
-## GitHub Actions Workflow Setup
+---
 
-If you don't have a workflow file yet, create `.github/workflows/build.yml`:
+## 🎉 SUMMARY
 
-```yaml
-name: Build and Release
+**What you need to do:**
+1. ✅ Find your existing MONGODB_URI (from deployment or team)
+2. ✅ Find your existing JWT_SECRET (from deployment or team)
+3. ✅ Add both to GitHub Secrets
+4. ✅ Re-run the workflow
+5. ✅ Success! 🚀
 
-on:
-  push:
-    branches: [ fresh-main, main ]
-  pull_request:
-    branches: [ fresh-main, main ]
+**What I did:**
+- ✅ Fixed the workflow hanging issue
+- ✅ All new features use your existing database
+- ✅ No database migration needed
+- ✅ Everything stays consistent
+- ✅ Ready to deploy!
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.24.0'
-          channel: 'stable'
-      
-      - name: Install dependencies
-        run: flutter pub get
-      
-      - name: Build APK
-        run: |
-          flutter build apk --release \
-            --dart-define=GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
-            --dart-define=STABILITY_AI_KEY=${{ secrets.STABILITY_AI_KEY }} \
-            --dart-define=HUGGINGFACE_API_KEY=${{ secrets.HUGGINGFACE_API_KEY }} \
-            --dart-define=REPLICATE_API_KEY=${{ secrets.REPLICATE_API_KEY }} \
-            --dart-define=LEONARDO_API_KEY=${{ secrets.LEONARDO_API_KEY }}
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
-```
-
-**Note**: The workflow will work even if some secrets are not set. Only set the secrets you're actually using.
-
-## Next Steps
-
-1. ✅ Add `GROQ_API_KEY` secret to GitHub (required for AI chat)
-2. ✅ Add `STABILITY_AI_KEY` secret to GitHub (optional, for image generation)
-3. ✅ Create/update GitHub Actions workflow (if not exists)
-4. ✅ Code is ready to use secrets
-5. 🚀 Push a commit to test!
+**Next step:** Just add those 2 secrets and you're good to go! 🎯
