@@ -5,6 +5,7 @@ import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -159,6 +160,16 @@ class AiChatSelectScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'AI Chat selection is temporarily unavailable',
+      onRetry: () {
+        // Retry by rebuilding
+      },
+      child: _buildContent(context, ref),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GlobalChatScreen extends ConsumerStatefulWidget {
@@ -38,20 +40,35 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
   }
 
   void _initializeSocket() {
-    final user = ref.read(userProvider);
-    if (user != null) {
-      final socket = ref.read(socketProvider.notifier);
-      socket.connect(
-        user.id.toString(),
-        user.username,
-      );
-      socket.joinRoom(_selectedRoom);
-      socket.setActiveRoom(_selectedRoom);
+    try {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        final socket = ref.read(socketProvider.notifier);
+        socket.connect(
+          user.id.toString(),
+          user.username,
+        );
+        socket.joinRoom(_selectedRoom);
+        socket.setActiveRoom(_selectedRoom);
+      }
+    } catch (e) {
+      debugPrint('Error initializing socket: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Global Chat is temporarily unavailable',
+      onRetry: () {
+        setState(() {});
+        _initializeSocket();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     ref.watch(socketProvider);
     final socketNotifier = ref.read(socketProvider.notifier);
     final messages = socketNotifier.messages;
@@ -59,6 +76,13 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
     final isConnected = socketNotifier.isConnected;
     final user = ref.watch(userProvider);
     final isDark = context.isDarkMode;
+
+    // Ensure socket is initialized if user is available
+    if (user != null && !isConnected) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _initializeSocket();
+      });
+    }
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -225,21 +249,19 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
 
                   // Messages
                   Expanded(
-                    child: messages.isEmpty
+                    child: user == null
                         ? Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Icon(
-                                  Icons.chat_bubble_outline,
+                                  Icons.person_off,
                                   size: 64.sp,
                                   color: isDark ? Colors.grey[600] : Colors.grey[400],
                                 ),
                                 SizedBox(height: 16.sp),
                                 Text(
-                                  isConnected
-                                      ? 'No messages yet. Start the conversation!'
-                                      : 'Connecting...',
+                                  'Please log in to use chat',
                                   style: TextStyle(
                                     fontSize: 16.sp,
                                     color: isDark ? Colors.grey[400] : Colors.grey[600],
@@ -248,16 +270,39 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                               ],
                             ),
                           )
-                        : ListView.builder(
-                            controller: _scrollController,
-                            padding: EdgeInsets.all(16.sp),
-                            itemCount: messages.length,
-                            itemBuilder: (context, index) {
-                              final message = messages[index];
-                              final isMe = message['userId'] == user?.id.toString();
-                              return _buildMessageBubble(context, message, isMe, isDark);
-                            },
-                          ),
+                        : messages.isEmpty
+                            ? Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.chat_bubble_outline,
+                                      size: 64.sp,
+                                      color: isDark ? Colors.grey[600] : Colors.grey[400],
+                                    ),
+                                    SizedBox(height: 16.sp),
+                                    Text(
+                                      isConnected
+                                          ? 'No messages yet. Start the conversation!'
+                                          : 'Connecting...',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: isDark ? Colors.grey[400] : Colors.grey[600],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : ListView.builder(
+                                controller: _scrollController,
+                                padding: EdgeInsets.all(16.sp),
+                                itemCount: messages.length,
+                                itemBuilder: (context, index) {
+                                  final message = messages[index];
+                                  final isMe = message['userId'] == user.id.toString();
+                                  return _buildMessageBubble(context, message, isMe, isDark);
+                                },
+                              ),
                   ),
                   
                   // Input Area - Figma Make Style
@@ -309,13 +354,13 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                             boxShadow: DesignSystem.shadowMedium,
                           ),
                           child: IconButton(
-                            onPressed: isConnected && _messageController.text.isNotEmpty
+                            onPressed: user != null && isConnected && _messageController.text.isNotEmpty
                                 ? () {
                                     ref.read(socketProvider.notifier).sendMessage(
                                       _selectedRoom,
                                       _messageController.text,
-                                      user?.id.toString() ?? '',
-                                      user?.username ?? 'Anonymous',
+                                      user.id.toString(),
+                                      user.username,
                                     );
                                     _messageController.clear();
                                     Future.delayed(const Duration(milliseconds: 100), () {

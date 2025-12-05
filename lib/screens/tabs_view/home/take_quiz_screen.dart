@@ -12,7 +12,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:loading_overlay_pro/loading_overlay_pro.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 import '../../../detail_types/correction_screen.dart';
 import '../../../detail_types/quiz_screen.dart';
@@ -28,7 +28,7 @@ import '../../../utils/api.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/greegins_builder.dart';
 
-class TakeQuizScreen extends ConsumerWidget {
+class TakeQuizScreen extends ConsumerStatefulWidget {
   final Language language;
   const TakeQuizScreen({
     Key? key,
@@ -36,18 +36,31 @@ class TakeQuizScreen extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TakeQuizScreen> createState() => _TakeQuizScreenState();
+}
+
+class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
+  bool _isLoadingQuiz = false;
+
+  @override
+  Widget build(BuildContext context) {
     return ErrorBoundary(
       errorMessage: 'Quiz module is temporarily unavailable',
       onRetry: () {
-        // Retry by rebuilding
+        setState(() {
+          _isLoadingQuiz = false;
+        });
       },
       child: _buildQuizContent(context, ref),
     );
   }
 
   Widget _buildQuizContent(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
+    // Show new loading screen when loading quiz
+    if (_isLoadingQuiz) {
+      return const DynamicLoadingScreen();
+    }
+    
     return PopScope(
       canPop: true,
       onPopInvoked: (didPop) {
@@ -55,9 +68,7 @@ class TakeQuizScreen extends ConsumerWidget {
           ref.read(navigationProvider).pop();
         }
       },
-      child: LoadingOverlayPro(
-        isLoading: isLoading,
-        child: Scaffold(
+      child: Scaffold(
           drawer: const AppDrawer(),
           body: Column(
             children: [
@@ -149,13 +160,17 @@ class TakeQuizScreen extends ConsumerWidget {
                                     child: _RandomTextBuilder(
                                       onTap: () async {
                                         try {
-                                          debugPrint('Fetching random quizzes for language: ${language.id}');
+                                          setState(() {
+                                            _isLoadingQuiz = true;
+                                          });
+                                          
+                                          debugPrint('Fetching random quizzes for language: ${widget.language.id}');
                                           debugPrint('Current token: ${ref.read(apiProvider.notifier).token != null ? "EXISTS" : "NULL"}');
                                           
                                           // Add timeout to prevent endless loading
                                           final randomQuizes = await ref
                                               .read(apiProvider.notifier)
-                                              .getRandomQuizLessons(language.id)
+                                              .getRandomQuizLessons(widget.language.id)
                                               .timeout(
                                                 const Duration(seconds: 15),
                                                 onTimeout: () {
@@ -163,6 +178,12 @@ class TakeQuizScreen extends ConsumerWidget {
                                                   throw TimeoutException('Quiz loading timed out. Please check your connection.');
                                                 },
                                               );
+                                          
+                                          if (!mounted) return;
+                                          
+                                          setState(() {
+                                            _isLoadingQuiz = false;
+                                          });
                                           
                                           debugPrint('Received ${randomQuizes.length} quizzes');
                                           
@@ -187,6 +208,11 @@ class TakeQuizScreen extends ConsumerWidget {
                                             }
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e) {
+                                          if (mounted) {
+                                            setState(() {
+                                              _isLoadingQuiz = false;
+                                            });
+                                          }
                                           debugPrint('Error in Take Quiz: $e');
                                           ref.read(dialogProvider(
                                             'Failed to load quiz. ${e.toString()}'
@@ -201,7 +227,7 @@ class TakeQuizScreen extends ConsumerWidget {
                                     child: _LanguageTextBuilder(
                                       onTap: () {
                                         ref.read(navigationProvider).naviateTo(
-                                              LanguageQuizSectionsListScreen(language: language),
+                                              LanguageQuizSectionsListScreen(language: widget.language),
                                             );
                                       },
                                     ).animate(effects: kGradientTextEffects),
@@ -213,7 +239,7 @@ class TakeQuizScreen extends ConsumerWidget {
                                       size: Size(18.sp, 18.sp),
                                       onTap: () {
                                         ref.read(navigationProvider).naviateTo(
-                                              HistoryQuizSectionsListScreen(language: language),
+                                              HistoryQuizSectionsListScreen(language: widget.language),
                                             );
                                       },
                                     ).animate(effects: kGradientTextEffects),
@@ -237,7 +263,6 @@ class TakeQuizScreen extends ConsumerWidget {
               ],
             ).expand()
           ],
-        ),
         ),
       ),
     );
@@ -274,7 +299,7 @@ class TakeQuizScreen extends ConsumerWidget {
             title: randomQuiz.title,
             quiz: quiz,
             isTakeQuiz: true,
-            endpointToHit: Api.completeRandomInstantQuiz(language.id, randomQuiz.id),
+            endpointToHit: Api.completeRandomInstantQuiz(widget.language.id, randomQuiz.id),
           ));
       "$result".log("openChoiceQuizScreen");
       return result;
@@ -320,7 +345,7 @@ class TakeQuizScreen extends ConsumerWidget {
               score: randomQuiz.score,
               wordCorrections: wordCorrections,
               isTakeQuiz: true,
-              endpointToHit: Api.completeRandomWordQuiz(language.id, randomQuiz.id),
+              endpointToHit: Api.completeRandomWordQuiz(widget.language.id, randomQuiz.id),
             ),
           );
       "$result".log("openWordQuizScreen");

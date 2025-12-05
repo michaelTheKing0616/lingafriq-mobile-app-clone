@@ -18,6 +18,7 @@ import '../../providers/navigation_provider.dart';
 import '../../utils/api.dart';
 import '../../widgets/adaptive_progress_indicator.dart';
 import '../../widgets/error_widet.dart';
+import '../../screens/loading/dynamic_loading_screen.dart';
 import '../../widgets/greegins_builder.dart';
 import '../../widgets/info_widget.dart';
 import '../../widgets/top_gradient_box_builder.dart';
@@ -153,7 +154,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
           },
         );
       },
-      loading: () => const AdaptiveProgressIndicator(),
+      loading: () => const DynamicLoadingScreen(),
     );
   }
 

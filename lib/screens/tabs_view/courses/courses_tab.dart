@@ -87,9 +87,7 @@ class CoursesTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const AdaptiveProgressIndicator(
-                    message: "Loading Courses ...",
-                  ),
+                  loading: () => const DynamicLoadingScreen(),
                 ),
               ),
             ],

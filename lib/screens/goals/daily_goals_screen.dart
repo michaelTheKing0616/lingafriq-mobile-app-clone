@@ -10,6 +10,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DailyGoalsScreen extends ConsumerStatefulWidget {
@@ -31,6 +32,16 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Daily Goals are temporarily unavailable',
+      onRetry: () {
+        ref.read(dailyGoalsProvider.notifier).refreshGoals();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final goalsNotifier = ref.watch(dailyGoalsProvider.notifier);
     final goals = ref.watch(dailyGoalsProvider.notifier).goals;
     final streak = ref.watch(dailyGoalsProvider.notifier).currentStreak;

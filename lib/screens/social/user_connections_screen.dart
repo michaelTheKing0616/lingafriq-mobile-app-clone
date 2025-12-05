@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -30,12 +31,16 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
   }
 
   void _initializeSocket() {
-    final user = ref.read(userProvider);
-    if (user != null) {
-      ref.read(socketProvider.notifier).connect(
-        user.id.toString(),
-        user.username,
-      );
+    try {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        ref.read(socketProvider.notifier).connect(
+          user.id.toString(),
+          user.username,
+        );
+      }
+    } catch (e) {
+      debugPrint('Error initializing socket: $e');
     }
   }
 
@@ -56,6 +61,13 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
     final isConnected = ref.watch(socketProvider.notifier).isConnected;
     final currentUser = ref.watch(userProvider);
     final isDark = context.isDarkMode;
+
+    // Ensure socket is initialized if user is available
+    if (currentUser != null && !isConnected) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _initializeSocket();
+      });
+    }
 
     final filteredUsers = onlineUsers.where((user) {
       if (_searchQuery.isEmpty) return true;
@@ -151,21 +163,19 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
           
           // Users List
           Expanded(
-            child: isConnected && filteredUsers.isEmpty
+            child: currentUser == null
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.people_outline,
+                          Icons.person_off,
                           size: 64.sp,
                           color: isDark ? Colors.grey[600] : Colors.grey[400],
                         ),
                         SizedBox(height: 16.sp),
                         Text(
-                          _searchQuery.isEmpty
-                              ? 'No users online'
-                              : 'No users found',
+                          'Please log in to connect with users',
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: isDark ? Colors.grey[400] : Colors.grey[600],
@@ -174,16 +184,60 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                       ],
                     ),
                   )
-                : ListView.builder(
-                    padding: EdgeInsets.all(16.sp),
-                    itemCount: filteredUsers.length,
-                    itemBuilder: (context, index) {
-                      final user = filteredUsers[index];
-                      final isCurrentUser = user['userId'] == currentUser?.id.toString();
-                      if (isCurrentUser) return SizedBox.shrink();
-                      return _buildUserCard(context, user, isDark);
-                    },
-                  ),
+                : !isConnected
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.wifi_off,
+                              size: 64.sp,
+                              color: isDark ? Colors.grey[600] : Colors.grey[400],
+                            ),
+                            SizedBox(height: 16.sp),
+                            Text(
+                              'Connecting...',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: isDark ? Colors.grey[400] : Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : filteredUsers.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.people_outline,
+                                  size: 64.sp,
+                                  color: isDark ? Colors.grey[600] : Colors.grey[400],
+                                ),
+                                SizedBox(height: 16.sp),
+                                Text(
+                                  _searchQuery.isEmpty
+                                      ? 'No users online'
+                                      : 'No users found',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            padding: EdgeInsets.all(16.sp),
+                            itemCount: filteredUsers.length,
+                            itemBuilder: (context, index) {
+                              final user = filteredUsers[index];
+                              final isCurrentUser = user['userId'] == currentUser.id.toString();
+                              if (isCurrentUser) return const SizedBox.shrink();
+                              return _buildUserCard(context, user, isDark);
+                            },
+                          ),
           ),
         ],
       ),

@@ -124,6 +124,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
 
     _checkStreak();
     _saveGoals();
+    _syncStreakToBackend(); // Sync streak to backend
     state = state.copyWith();
   }
 
@@ -229,6 +230,15 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
     _initializeDailyGoals();
     await _syncWithBackend();
     state = state.copyWith();
+  }
+
+  /// Sync streak to backend
+  Future<void> _syncStreakToBackend() async {
+    try {
+      await ref.read(apiProvider.notifier).updateDailyStreak(_currentStreak);
+    } catch (e) {
+      debugPrint('Error syncing streak to backend: $e');
+    }
   }
 }
 

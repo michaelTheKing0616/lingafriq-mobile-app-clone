@@ -156,18 +156,31 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       debugPrint('Submitting game completion: $gameType, language: $languageId, points: $points, score: $score');
       
-      // For now, use accountUpdate as workaround
-      // TODO: Backend should implement: POST /games/complete
-      // with body: {game_type, language_id, points, score}
-      final success = await accountUpdate();
-      
-      if (success) {
-        debugPrint('Game completion submitted via accountUpdate');
+      // Update points on backend
+      final pointsSuccess = await updateUserPoints(points);
+      if (pointsSuccess) {
+        debugPrint('Points updated successfully: $points');
       }
       
-      return success;
+      // Also call accountUpdate to refresh user profile
+      await accountUpdate();
+      
+      return pointsSuccess;
     } catch (e) {
       debugPrint('Error submitting game completion: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateUserPoints(int points) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.updateUserPoints,
+        data: {'points': points},
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating user points: $e');
       return false;
     }
   }
@@ -951,6 +964,82 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return res.statusCode == 200;
     } catch (e) {
       debugPrint('Error unlocking achievement: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateXP(int totalXP, int level) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.updateXP,
+        data: {'total_xp': totalXP, 'level': level},
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating XP: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateDailyStreak(int streak) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.updateDailyStreak,
+        data: {'streak': streak},
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating daily streak: $e');
+      return false;
+    }
+  }
+
+  Future<bool> syncAiChatHistory(String mode, List<Map<String, dynamic>> messages) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.syncAiChatHistory,
+        data: {
+          'mode': mode, // 'translation' or 'tutor'
+          'messages': messages,
+        },
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error syncing AI chat history: $e');
+      return false;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getAiChatHistory(String mode) async {
+    try {
+      final res = await ref.read(client).get('${Api.aiChatHistory}?mode=$mode');
+      if (res.statusCode != 200) throw res.data;
+      return List<Map<String, dynamic>>.from(res.data['messages'] ?? []);
+    } catch (e) {
+      debugPrint('Error getting AI chat history: $e');
+      return [];
+    }
+  }
+
+  Future<bool> trackArticleView(String articleId) async {
+    try {
+      final res = await ref.read(client).post(Api.cultureMagazineTrackView(articleId));
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error tracking article view: $e');
+      return false;
+    }
+  }
+
+  Future<bool> toggleArticleFavorite(String articleId, bool isFavorite) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.cultureMagazineToggleFavorite(articleId),
+        data: {'favorite': isFavorite},
+      );
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error toggling article favorite: $e');
       return false;
     }
   }

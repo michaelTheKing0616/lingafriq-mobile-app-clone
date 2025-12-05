@@ -1,0 +1,503 @@
+﻿2025-12-05T12:16:59.0420215Z Current runner version: '2.329.0'
+2025-12-05T12:16:59.0474971Z ##[group]Runner Image Provisioner
+2025-12-05T12:16:59.0476286Z Hosted Compute Agent
+2025-12-05T12:16:59.0497654Z Version: 20251124.448
+2025-12-05T12:16:59.0498949Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-05T12:16:59.0500339Z Build Date: 2025-11-24T21:16:26Z
+2025-12-05T12:16:59.0501404Z ##[endgroup]
+2025-12-05T12:16:59.0502798Z ##[group]Operating System
+2025-12-05T12:16:59.0503933Z Ubuntu
+2025-12-05T12:16:59.0504866Z 24.04.3
+2025-12-05T12:16:59.0505643Z LTS
+2025-12-05T12:16:59.0506468Z ##[endgroup]
+2025-12-05T12:16:59.0507697Z ##[group]Runner Image
+2025-12-05T12:16:59.0508736Z Image: ubuntu-24.04
+2025-12-05T12:16:59.0509869Z Version: 20251126.144.1
+2025-12-05T12:16:59.0511763Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-05T12:16:59.0514661Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-05T12:16:59.0516389Z ##[endgroup]
+2025-12-05T12:16:59.0539054Z ##[group]GITHUB_TOKEN Permissions
+2025-12-05T12:16:59.0541900Z Contents: read
+2025-12-05T12:16:59.0542840Z Metadata: read
+2025-12-05T12:16:59.0543713Z Packages: read
+2025-12-05T12:16:59.0544562Z ##[endgroup]
+2025-12-05T12:16:59.0548726Z Secret source: Actions
+2025-12-05T12:16:59.0550086Z Prepare workflow directory
+2025-12-05T12:16:59.1737949Z Prepare all required actions
+2025-12-05T12:16:59.1809123Z Getting action download info
+2025-12-05T12:16:59.5120000Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-05T12:16:59.9384728Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-12-05T12:17:00.1117731Z Complete job name: Build & Prime Database
+2025-12-05T12:17:00.1771179Z ##[group]Run actions/checkout@v4
+2025-12-05T12:17:00.1772387Z with:
+2025-12-05T12:17:00.1772833Z   repository: LingAfrika/node-backend
+2025-12-05T12:17:00.1773518Z   token: ***
+2025-12-05T12:17:00.1773929Z   ssh-strict: true
+2025-12-05T12:17:00.1774327Z   ssh-user: git
+2025-12-05T12:17:00.1774738Z   persist-credentials: true
+2025-12-05T12:17:00.1775192Z   clean: true
+2025-12-05T12:17:00.1775646Z   sparse-checkout-cone-mode: true
+2025-12-05T12:17:00.1776133Z   fetch-depth: 1
+2025-12-05T12:17:00.1776536Z   fetch-tags: false
+2025-12-05T12:17:00.1777081Z   show-progress: true
+2025-12-05T12:17:00.1777508Z   lfs: false
+2025-12-05T12:17:00.1777880Z   submodules: false
+2025-12-05T12:17:00.1778300Z   set-safe-directory: true
+2025-12-05T12:17:00.1779067Z env:
+2025-12-05T12:17:00.1779449Z   NODE_VERSION: 18.x
+2025-12-05T12:17:00.1779858Z ##[endgroup]
+2025-12-05T12:17:00.2906348Z Syncing repository: LingAfrika/node-backend
+2025-12-05T12:17:00.2908894Z ##[group]Getting Git version info
+2025-12-05T12:17:00.2910449Z Working directory is '/home/runner/work/node-backend/node-backend'
+2025-12-05T12:17:00.2912520Z [command]/usr/bin/git version
+2025-12-05T12:17:00.2976500Z git version 2.52.0
+2025-12-05T12:17:00.3006263Z ##[endgroup]
+2025-12-05T12:17:00.3021382Z Temporarily overriding HOME='/home/runner/work/_temp/853c2f18-6fb5-42b0-877d-401bd961cb62' before making global git config changes
+2025-12-05T12:17:00.3024897Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-05T12:17:00.3038882Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-05T12:17:00.3080159Z Deleting the contents of '/home/runner/work/node-backend/node-backend'
+2025-12-05T12:17:00.3084562Z ##[group]Initializing the repository
+2025-12-05T12:17:00.3089622Z [command]/usr/bin/git init /home/runner/work/node-backend/node-backend
+2025-12-05T12:17:00.3199554Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-05T12:17:00.3202366Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-05T12:17:00.3204159Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-05T12:17:00.3205633Z hint: call:
+2025-12-05T12:17:00.3207041Z hint:
+2025-12-05T12:17:00.3208101Z hint: 	git config --global init.defaultBranch <name>
+2025-12-05T12:17:00.3209189Z hint:
+2025-12-05T12:17:00.3210210Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-05T12:17:00.3211866Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-05T12:17:00.3213190Z hint:
+2025-12-05T12:17:00.3213871Z hint: 	git branch -m <name>
+2025-12-05T12:17:00.3214640Z hint:
+2025-12-05T12:17:00.3215661Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-05T12:17:00.3218504Z Initialized empty Git repository in /home/runner/work/node-backend/node-backend/.git/
+2025-12-05T12:17:00.3222241Z [command]/usr/bin/git remote add origin https://github.com/LingAfrika/node-backend
+2025-12-05T12:17:00.3257963Z ##[endgroup]
+2025-12-05T12:17:00.3259199Z ##[group]Disabling automatic garbage collection
+2025-12-05T12:17:00.3262037Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-05T12:17:00.3294167Z ##[endgroup]
+2025-12-05T12:17:00.3295401Z ##[group]Setting up auth
+2025-12-05T12:17:00.3301487Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-05T12:17:00.3333905Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-05T12:17:00.3667816Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-05T12:17:00.3701448Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-05T12:17:00.3935689Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-05T12:17:00.3969559Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-05T12:17:00.4220448Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-05T12:17:00.4257385Z ##[endgroup]
+2025-12-05T12:17:00.4259868Z ##[group]Fetching the repository
+2025-12-05T12:17:00.4267835Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b8c2ca6db391f2a6eef0169d016890ed65b15f0e:refs/remotes/origin/main
+2025-12-05T12:17:00.8112941Z From https://github.com/LingAfrika/node-backend
+2025-12-05T12:17:00.8116004Z  * [new ref]         b8c2ca6db391f2a6eef0169d016890ed65b15f0e -> origin/main
+2025-12-05T12:17:00.8135010Z ##[endgroup]
+2025-12-05T12:17:00.8136726Z ##[group]Determining the checkout info
+2025-12-05T12:17:00.8140304Z ##[endgroup]
+2025-12-05T12:17:00.8150151Z [command]/usr/bin/git sparse-checkout disable
+2025-12-05T12:17:00.8187018Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-05T12:17:00.8217806Z ##[group]Checking out the ref
+2025-12-05T12:17:00.8220239Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-05T12:17:00.8529310Z Switched to a new branch 'main'
+2025-12-05T12:17:00.8534427Z branch 'main' set up to track 'origin/main'.
+2025-12-05T12:17:00.8543697Z ##[endgroup]
+2025-12-05T12:17:00.8583483Z [command]/usr/bin/git log -1 --format=%H
+2025-12-05T12:17:00.8607627Z b8c2ca6db391f2a6eef0169d016890ed65b15f0e
+2025-12-05T12:17:00.8897700Z ##[group]Run actions/setup-node@v4
+2025-12-05T12:17:00.8898808Z with:
+2025-12-05T12:17:00.8899539Z   node-version: 18.x
+2025-12-05T12:17:00.8900371Z   cache: npm
+2025-12-05T12:17:00.8901137Z   always-auth: false
+2025-12-05T12:17:00.8901977Z   check-latest: false
+2025-12-05T12:17:00.8903060Z   token: ***
+2025-12-05T12:17:00.8903798Z env:
+2025-12-05T12:17:00.8904510Z   NODE_VERSION: 18.x
+2025-12-05T12:17:00.8905316Z ##[endgroup]
+2025-12-05T12:17:01.0855892Z Attempting to download 18.x...
+2025-12-05T12:17:01.6134202Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-05T12:17:02.1131152Z Extracting ...
+2025-12-05T12:17:02.1213785Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/ac4e6020-aa88-4577-8f5d-0f63633e9d52 -f /home/runner/work/_temp/cd42851e-252a-4f03-9851-03fc1035a115
+2025-12-05T12:17:03.2114139Z Adding to the cache ...
+2025-12-05T12:17:05.3154221Z ##[group]Environment details
+2025-12-05T12:17:05.6165749Z node: v18.20.8
+2025-12-05T12:17:05.6170833Z npm: 10.8.2
+2025-12-05T12:17:05.6171608Z yarn: 1.22.22
+2025-12-05T12:17:05.6173117Z ##[endgroup]
+2025-12-05T12:17:05.6196421Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-05T12:17:05.7456644Z /home/runner/.npm
+2025-12-05T12:17:05.9159168Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T12:17:06.9320416Z Received 64730011 of 64730011 (100.0%), 71.2 MBs/sec
+2025-12-05T12:17:06.9322834Z Cache Size: ~62 MB (64730011 B)
+2025-12-05T12:17:06.9364720Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d2f37806-9303-42ad-bbf1-98c469ace05f/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-05T12:17:07.3335184Z Cache restored successfully
+2025-12-05T12:17:07.3484163Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T12:17:07.3760308Z ##[group]Run echo "📦 Installing dependencies..."
+2025-12-05T12:17:07.3761004Z [36;1mecho "📦 Installing dependencies..."[0m
+2025-12-05T12:17:07.3761486Z [36;1mnpm ci[0m
+2025-12-05T12:17:07.3761847Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-05T12:17:07.3872534Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:17:07.3873007Z env:
+2025-12-05T12:17:07.3873327Z   NODE_VERSION: 18.x
+2025-12-05T12:17:07.3873680Z ##[endgroup]
+2025-12-05T12:17:07.4344671Z 📦 Installing dependencies...
+2025-12-05T12:17:14.0727158Z npm warn deprecated @types/moment@2.13.0: This is a stub types definition for Moment (https://github.com/moment/moment). Moment provides its own type definitions, so you don't need @types/moment installed!
+2025-12-05T12:17:14.2363445Z npm warn deprecated @types/nanoid@3.0.0: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
+2025-12-05T12:17:14.2369998Z npm warn deprecated @types/mongoose-paginate-v2@1.6.5: This is a stub types definition. mongoose-paginate-v2 provides its own type definitions, so you do not need this installed.
+2025-12-05T12:17:14.2383288Z npm warn deprecated @types/mongoose@5.11.97: Mongoose publishes its own types, so you do not need to install this package.
+2025-12-05T12:17:14.3332350Z npm warn deprecated is-data-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-05T12:17:14.3333594Z npm warn deprecated is-accessor-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-05T12:17:14.3335812Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-12-05T12:17:14.3868754Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:17:14.3870163Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:17:14.3871483Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:17:14.3872761Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:17:14.3909588Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:17:14.3911292Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:17:14.4028133Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:17:14.4030025Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:17:14.4059501Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:17:14.4061434Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:17:14.4184489Z npm warn deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+2025-12-05T12:17:14.4766040Z npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+2025-12-05T12:17:14.4991947Z npm warn deprecated csurf@1.11.0: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-05T12:17:14.5337435Z npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+2025-12-05T12:17:14.5341495Z npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
+2025-12-05T12:17:14.5345699Z npm warn deprecated @babel/plugin-proposal-optional-catch-binding@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
+2025-12-05T12:17:14.5350959Z npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+2025-12-05T12:17:14.5354365Z npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+2025-12-05T12:17:14.5357861Z npm warn deprecated @babel/plugin-proposal-json-strings@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
+2025-12-05T12:17:14.5360974Z npm warn deprecated @babel/plugin-proposal-export-namespace-from@7.18.9: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-export-namespace-from instead.
+2025-12-05T12:17:14.5364166Z npm warn deprecated @babel/plugin-proposal-dynamic-import@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
+2025-12-05T12:17:14.5370827Z npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+2025-12-05T12:17:14.6563825Z npm warn deprecated @babel/plugin-proposal-logical-assignment-operators@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-logical-assignment-operators instead.
+2025-12-05T12:17:14.6569498Z npm warn deprecated @babel/plugin-proposal-class-static-block@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-static-block instead.
+2025-12-05T12:17:14.6811675Z npm warn deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+2025-12-05T12:17:14.6847076Z npm warn deprecated supertest@6.3.3: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-05T12:17:14.7029418Z npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2025-12-05T12:17:14.7787764Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-12-05T12:17:14.8370458Z npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
+2025-12-05T12:17:14.8374637Z npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+2025-12-05T12:17:14.8378958Z npm warn deprecated @babel/plugin-proposal-async-generator-functions@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
+2025-12-05T12:17:14.9111403Z npm warn deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+2025-12-05T12:17:14.9929823Z npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.0117305Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.0155638Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.0160540Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.0172299Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.0209692Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.0264942Z npm warn deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+2025-12-05T12:17:15.0677138Z npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+2025-12-05T12:17:15.0702992Z npm warn deprecated glob@7.1.6: Glob versions prior to v9 are no longer supported
+2025-12-05T12:17:15.1386492Z npm warn deprecated formidable@1.2.6: Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau
+2025-12-05T12:17:15.2867910Z npm warn deprecated sane@4.1.0: some dependency vulnerabilities fixed, support for node < 10 dropped, and newer ECMAScript syntax/features added
+2025-12-05T12:17:15.2949815Z npm warn deprecated multer@1.4.5-lts.1: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-12-05T12:17:15.3391303Z npm warn deprecated google-p12-pem@4.0.1: Package is no longer maintained
+2025-12-05T12:17:16.1658611Z npm warn deprecated babel-merge@3.0.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2025-12-05T12:17:16.1710872Z npm warn deprecated formidable@2.1.2: ACTION REQUIRED: SWITCH TO v3 - v1 and v2 are VULNERABLE! v1 is DEPRECATED FOR OVER 2 YEARS! Use formidable@latest or try formidable-mini for fresh projects
+2025-12-05T12:17:16.4366759Z npm warn deprecated superagent@8.0.9: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-05T12:17:16.9182112Z npm warn deprecated z-schema@5.0.6: has issues with node 14
+2025-12-05T12:17:26.6045348Z 
+2025-12-05T12:17:26.6046434Z added 1399 packages, and audited 1400 packages in 19s
+2025-12-05T12:17:26.6047533Z 
+2025-12-05T12:17:26.6048013Z 116 packages are looking for funding
+2025-12-05T12:17:26.6054698Z   run `npm fund` for details
+2025-12-05T12:17:26.6780390Z 
+2025-12-05T12:17:26.6785452Z 53 vulnerabilities (11 low, 18 moderate, 17 high, 7 critical)
+2025-12-05T12:17:26.6793211Z 
+2025-12-05T12:17:26.6794244Z To address issues that do not require attention, run:
+2025-12-05T12:17:26.6794825Z   npm audit fix
+2025-12-05T12:17:26.6795050Z 
+2025-12-05T12:17:26.6795384Z To address all issues (including breaking changes), run:
+2025-12-05T12:17:26.6795944Z   npm audit fix --force
+2025-12-05T12:17:26.6796176Z 
+2025-12-05T12:17:26.6796376Z Run `npm audit` for details.
+2025-12-05T12:17:26.7342807Z ✅ Dependencies installed
+2025-12-05T12:17:26.7380972Z ##[group]Run echo "🔨 Building TypeScript..."
+2025-12-05T12:17:26.7381360Z [36;1mecho "🔨 Building TypeScript..."[0m
+2025-12-05T12:17:26.7381644Z [36;1mnpm run build[0m
+2025-12-05T12:17:26.7381878Z [36;1mecho "✅ Build complete"[0m
+2025-12-05T12:17:26.7382126Z [36;1mls -la dist/[0m
+2025-12-05T12:17:26.7419446Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:17:26.7419697Z env:
+2025-12-05T12:17:26.7419875Z   NODE_VERSION: 18.x
+2025-12-05T12:17:26.7420085Z ##[endgroup]
+2025-12-05T12:17:26.7480217Z 🔨 Building TypeScript...
+2025-12-05T12:17:26.8800975Z 
+2025-12-05T12:17:26.8801831Z > lingafriq_backend@1.0.0 build
+2025-12-05T12:17:26.8803601Z > tsc
+2025-12-05T12:17:26.8803806Z 
+2025-12-05T12:17:36.8959135Z ✅ Build complete
+2025-12-05T12:17:36.8976781Z total 68
+2025-12-05T12:17:36.8979055Z drwxr-xr-x 11 runner runner 4096 Dec  5 12:17 .
+2025-12-05T12:17:36.8981197Z drwxr-xr-x 10 runner runner 4096 Dec  5 12:17 ..
+2025-12-05T12:17:36.8983245Z drwxr-xr-x  2 runner runner 4096 Dec  5 12:17 __test__
+2025-12-05T12:17:36.8984151Z -rw-r--r--  1 runner runner 1637 Dec  5 12:17 app.js
+2025-12-05T12:17:36.8984831Z -rw-r--r--  1 runner runner 1774 Dec  5 12:17 app.js.map
+2025-12-05T12:17:36.8985524Z drwxr-xr-x  3 runner runner 4096 Dec  5 12:17 controllers
+2025-12-05T12:17:36.8986205Z drwxr-xr-x  3 runner runner 4096 Dec  5 12:17 data_files
+2025-12-05T12:17:36.8987350Z drwxr-xr-x  2 runner runner 4096 Dec  5 12:17 middleware
+2025-12-05T12:17:36.8988048Z drwxr-xr-x  3 runner runner 4096 Dec  5 12:17 models
+2025-12-05T12:17:36.8988586Z drwxr-xr-x  3 runner runner 4096 Dec  5 12:17 routes
+2025-12-05T12:17:36.8989019Z -rw-r--r--  1 runner runner  761 Dec  5 12:17 server.js
+2025-12-05T12:17:36.8989422Z -rw-r--r--  1 runner runner  966 Dec  5 12:17 server.js.map
+2025-12-05T12:17:36.8989824Z drwxr-xr-x  2 runner runner 4096 Dec  5 12:17 services
+2025-12-05T12:17:36.8990220Z -rw-r--r--  1 runner runner 1895 Dec  5 12:17 setupAdmin.js
+2025-12-05T12:17:36.8990645Z -rw-r--r--  1 runner runner 1544 Dec  5 12:17 setupAdmin.js.map
+2025-12-05T12:17:36.8991040Z drwxr-xr-x  2 runner runner 4096 Dec  5 12:17 types
+2025-12-05T12:17:36.8991407Z drwxr-xr-x  3 runner runner 4096 Dec  5 12:17 utils
+2025-12-05T12:17:36.9019027Z ##[group]Run echo "🧪 Running tests..."
+2025-12-05T12:17:36.9019372Z [36;1mecho "🧪 Running tests..."[0m
+2025-12-05T12:17:36.9019735Z [36;1mnpm test || echo "⚠️ Tests failed or not configured, continuing..."[0m
+2025-12-05T12:17:36.9053655Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:17:36.9053900Z env:
+2025-12-05T12:17:36.9054084Z   NODE_VERSION: 18.x
+2025-12-05T12:17:36.9054302Z ##[endgroup]
+2025-12-05T12:17:36.9113220Z 🧪 Running tests...
+2025-12-05T12:17:37.0449179Z 
+2025-12-05T12:17:37.0450949Z > lingafriq_backend@1.0.0 test
+2025-12-05T12:17:37.0451449Z > jest --detectOpenHandles
+2025-12-05T12:17:37.0451721Z 
+2025-12-05T12:17:47.0219721Z FAIL dist/__test__/index.test.js
+2025-12-05T12:17:47.0238168Z   ● Test suite failed to run
+2025-12-05T12:17:47.0239813Z 
+2025-12-05T12:17:47.0240694Z     RangeError: express-jwt: `secret` is a required option
+2025-12-05T12:17:47.0241128Z 
+2025-12-05T12:17:47.0241140Z 
+2025-12-05T12:17:47.0241148Z 
+2025-12-05T12:17:47.0241632Z       at expressjwt (node_modules/express-jwt/dist/index.js:117:11)
+2025-12-05T12:17:47.0242512Z       at Object.<anonymous> (dist/middleware/auth.middleware.js:42:57)
+2025-12-05T12:17:47.0243270Z       at Object.<anonymous> (dist/routes/language.route.js:34:30)
+2025-12-05T12:17:47.0243948Z       at Object.<anonymous> (dist/routes/index.route.js:34:37)
+2025-12-05T12:17:47.0244559Z       at Object.<anonymous> (src/app.ts:46:30)
+2025-12-05T12:17:47.0245851Z       at Object.<anonymous> (src/__test__/index.test.ts:29:16)
+2025-12-05T12:17:47.0246259Z 
+2025-12-05T12:17:47.0270802Z Test Suites: 1 failed, 1 total
+2025-12-05T12:17:47.0272339Z Tests:       0 total
+2025-12-05T12:17:47.0272740Z Snapshots:   0 total
+2025-12-05T12:17:47.0273112Z Time:        9.445 s
+2025-12-05T12:17:47.0273500Z Ran all test suites.
+2025-12-05T12:17:47.1869337Z ⚠️ Tests failed or not configured, continuing...
+2025-12-05T12:17:47.1901969Z ##[group]Run echo "=========================================="
+2025-12-05T12:17:47.1902422Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:47.1902778Z [36;1mecho "🚀 Starting Wikipedia Scraper (API Mode)"[0m
+2025-12-05T12:17:47.1903125Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:47.1903410Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1903737Z [36;1mecho "This will scrape Wikipedia and POST articles to your backend API."[0m
+2025-12-05T12:17:47.1904193Z [36;1mecho "Your backend will save them to MongoDB securely."[0m
+2025-12-05T12:17:47.1904534Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1904798Z [36;1mecho "  • 40+ African culture articles from Wikipedia"[0m
+2025-12-05T12:17:47.1905213Z [36;1mecho "  • Categories: tradition, cuisine, music, history, etc."[0m
+2025-12-05T12:17:47.1905667Z [36;1mecho "  • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc."[0m
+2025-12-05T12:17:47.1906051Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1906241Z [36;1m[0m
+2025-12-05T12:17:47.1906461Z [36;1mif [ -z "$BACKEND_URL" ]; then[0m
+2025-12-05T12:17:47.1906774Z [36;1m  echo "❌ ERROR: BACKEND_URL secret is not set!"[0m
+2025-12-05T12:17:47.1907505Z [36;1m  echo "Please add BACKEND_URL to repository secrets"[0m
+2025-12-05T12:17:47.1907974Z [36;1m  echo "Example: https://api.lingafriq.com or https://your-backend.com"[0m
+2025-12-05T12:17:47.1908369Z [36;1m  exit 1[0m
+2025-12-05T12:17:47.1908558Z [36;1mfi[0m
+2025-12-05T12:17:47.1908732Z [36;1m[0m
+2025-12-05T12:17:47.1908935Z [36;1mif [ -z "$SCRAPER_TOKEN" ]; then[0m
+2025-12-05T12:17:47.1909252Z [36;1m  echo "❌ ERROR: SCRAPER_TOKEN secret is not set!"[0m
+2025-12-05T12:17:47.1909617Z [36;1m  echo "Please add SCRAPER_TOKEN to repository secrets"[0m
+2025-12-05T12:17:47.1910003Z [36;1m  echo "See documentation for how to generate this token"[0m
+2025-12-05T12:17:47.1910322Z [36;1m  exit 1[0m
+2025-12-05T12:17:47.1910507Z [36;1mfi[0m
+2025-12-05T12:17:47.1910685Z [36;1m[0m
+2025-12-05T12:17:47.1910875Z [36;1mecho "✅ Secrets configured"[0m
+2025-12-05T12:17:47.1911141Z [36;1mecho "✅ Backend URL: $BACKEND_URL"[0m
+2025-12-05T12:17:47.1911558Z [36;1mecho "✅ Scraper token: ${SCRAPER_TOKEN:0:20}... (truncated for security)"[0m
+2025-12-05T12:17:47.1911913Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1912116Z [36;1mecho "Running scraper..."[0m
+2025-12-05T12:17:47.1912344Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1912528Z [36;1m[0m
+2025-12-05T12:17:47.1912702Z [36;1mnode -e "[0m
+2025-12-05T12:17:47.1912970Z [36;1m  import('./dist/services/scraperClient.service.js')[0m
+2025-12-05T12:17:47.1913321Z [36;1m    .then(m => m.runScraperViaAPI())[0m
+2025-12-05T12:17:47.1913586Z [36;1m    .then(() => {[0m
+2025-12-05T12:17:47.1913809Z [36;1m      console.log('');[0m
+2025-12-05T12:17:47.1914108Z [36;1m      console.log('Backend API successfully populated!');[0m
+2025-12-05T12:17:47.1914422Z [36;1m      console.log('');[0m
+2025-12-05T12:17:47.1914673Z [36;1m      console.log('Test it:');[0m
+2025-12-05T12:17:47.1915011Z [36;1m      console.log('  curl ${BACKEND_URL}/culture-magazine/articles');[0m
+2025-12-05T12:17:47.1915344Z [36;1m      console.log('');[0m
+2025-12-05T12:17:47.1915577Z [36;1m      process.exit(0);[0m
+2025-12-05T12:17:47.1915796Z [36;1m    })[0m
+2025-12-05T12:17:47.1915985Z [36;1m    .catch(err => {[0m
+2025-12-05T12:17:47.1916214Z [36;1m      console.error('');[0m
+2025-12-05T12:17:47.1916508Z [36;1m      console.error('==========================================');[0m
+2025-12-05T12:17:47.1917341Z [36;1m      console.error('❌ SCRAPER ERROR:');[0m
+2025-12-05T12:17:47.1917720Z [36;1m      console.error('==========================================');[0m
+2025-12-05T12:17:47.1918094Z [36;1m      console.error(err);[0m
+2025-12-05T12:17:47.1918342Z [36;1m      console.error('');[0m
+2025-12-05T12:17:47.1918602Z [36;1m      console.error('Common issues:');[0m
+2025-12-05T12:17:47.1918916Z [36;1m      console.error('  1. Backend not running');[0m
+2025-12-05T12:17:47.1919510Z [36;1m      console.error('     → Check that your backend server is accessible');[0m
+2025-12-05T12:17:47.1919939Z [36;1m      console.error('     → Verify BACKEND_URL is correct');[0m
+2025-12-05T12:17:47.1920294Z [36;1m      console.error('  2. Invalid SCRAPER_TOKEN');[0m
+2025-12-05T12:17:47.1920669Z [36;1m      console.error('     → Regenerate token and update GitHub secret');[0m
+2025-12-05T12:17:47.1921042Z [36;1m      console.error('  3. Network timeout');[0m
+2025-12-05T12:17:47.1921418Z [36;1m      console.error('     → Check firewall rules on your backend server');[0m
+2025-12-05T12:17:47.1921783Z [36;1m      console.error('');[0m
+2025-12-05T12:17:47.1922036Z [36;1m      process.exit(0);[0m
+2025-12-05T12:17:47.1922274Z [36;1m    });[0m
+2025-12-05T12:17:47.1922554Z [36;1m" || echo "⚠️ Scraper encountered issues but workflow continues"[0m
+2025-12-05T12:17:47.1956553Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:17:47.1956801Z env:
+2025-12-05T12:17:47.1957281Z   NODE_VERSION: 18.x
+2025-12-05T12:17:47.1957747Z   BACKEND_URL: ***
+2025-12-05T12:17:47.1959250Z   SCRAPER_TOKEN: ***
+2025-12-05T12:17:47.1959512Z   NEWS_API_KEY: ***
+2025-12-05T12:17:47.1959715Z   NODE_ENV: production
+2025-12-05T12:17:47.1959931Z ##[endgroup]
+2025-12-05T12:17:47.2020818Z ==========================================
+2025-12-05T12:17:47.2023290Z 🚀 Starting Wikipedia Scraper (API Mode)
+2025-12-05T12:17:47.2023863Z ==========================================
+2025-12-05T12:17:47.2024160Z 
+2025-12-05T12:17:47.2024595Z This will scrape Wikipedia and POST articles to your backend API.
+2025-12-05T12:17:47.2025377Z Your backend will save them to MongoDB securely.
+2025-12-05T12:17:47.2025735Z 
+2025-12-05T12:17:47.2026119Z   • 40+ African culture articles from Wikipedia
+2025-12-05T12:17:47.2030072Z   • Categories: tradition, cuisine, music, history, etc.
+2025-12-05T12:17:47.2031087Z   • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc.
+2025-12-05T12:17:47.2031533Z 
+2025-12-05T12:17:47.2031808Z ✅ Secrets configured
+2025-12-05T12:17:47.2032579Z ✅ Backend URL: ***
+2025-12-05T12:17:47.2033449Z ✅ Scraper token: *** (truncated for security)
+2025-12-05T12:17:47.2033802Z 
+2025-12-05T12:17:47.2033977Z Running scraper...
+2025-12-05T12:17:47.2034202Z 
+2025-12-05T12:17:47.4795414Z Starting culture content scraper (API mode)...
+2025-12-05T12:17:47.4800157Z 
+2025-12-05T12:17:47.4801923Z Testing API connection...
+2025-12-05T12:17:47.4803724Z Backend URL: ***
+2025-12-05T12:17:47.8472305Z ✓ API connection successful
+2025-12-05T12:17:47.8472806Z 
+2025-12-05T12:17:47.8473584Z Scraping Wikipedia articles...
+2025-12-05T12:17:49.7744187Z ✓ Scraped 29 articles from Wikipedia
+2025-12-05T12:17:49.7745777Z 
+2025-12-05T12:17:49.7746595Z Posting 29 articles to backend API...
+2025-12-05T12:17:49.7748010Z Posting to: ***/scraper/articles/bulk
+2025-12-05T12:17:49.7749143Z Articles count: 29
+2025-12-05T12:17:50.0794565Z Response status: 200 OK
+2025-12-05T12:17:50.0796172Z 
+2025-12-05T12:17:50.0796606Z ==========================================
+2025-12-05T12:17:50.0802963Z ✅ SCRAPER COMPLETED SUCCESSFULLY!
+2025-12-05T12:17:50.0803579Z ==========================================
+2025-12-05T12:17:50.0803915Z 
+2025-12-05T12:17:50.0804059Z Results:
+2025-12-05T12:17:50.0804520Z   • Total articles: 29
+2025-12-05T12:17:50.0804977Z   • Saved: 0
+2025-12-05T12:17:50.0805390Z   • Skipped: 0
+2025-12-05T12:17:50.0805783Z   • Errors: 29
+2025-12-05T12:17:50.0805969Z 
+2025-12-05T12:17:50.0806151Z Errors encountered:
+2025-12-05T12:17:50.0806742Z   ❌ Yoruba people: there are no users authenticated
+2025-12-05T12:17:50.0808300Z   ❌ Igbo people: there are no users authenticated
+2025-12-05T12:17:50.0809693Z   ❌ Hausa people: there are no users authenticated
+2025-12-05T12:17:50.0810637Z   ❌ Nigerian cuisine: there are no users authenticated
+2025-12-05T12:17:50.0811531Z   ❌ Nollywood: there are no users authenticated
+2025-12-05T12:17:50.0815911Z   ❌ Afrobeat: there are no users authenticated
+2025-12-05T12:17:50.0818300Z   ❌ Jollof rice: there are no users authenticated
+2025-12-05T12:17:50.0819015Z   ❌ Zulu people: there are no users authenticated
+2025-12-05T12:17:50.0819718Z   ❌ Xhosa people: there are no users authenticated
+2025-12-05T12:17:50.0820508Z   ❌ South African cuisine: there are no users authenticated
+2025-12-05T12:17:50.0821236Z   ❌ Kwaito: there are no users authenticated
+2025-12-05T12:17:50.0825745Z   ❌ Ubuntu philosophy: there are no users authenticated
+2025-12-05T12:17:50.0826750Z   ❌ Regional variations of barbecue: there are no users authenticated
+2025-12-05T12:17:50.0827824Z   ❌ Swahili culture: there are no users authenticated
+2025-12-05T12:17:50.0828269Z   ❌ Maasai people: there are no users authenticated
+2025-12-05T12:17:50.0828763Z   ❌ Culture of Kenya: there are no users authenticated
+2025-12-05T12:17:50.0829160Z   ❌ Benga music: there are no users authenticated
+2025-12-05T12:17:50.0829552Z   ❌ Asante people: there are no users authenticated
+2025-12-05T12:17:50.0829945Z   ❌ Ghanaian cuisine: there are no users authenticated
+2025-12-05T12:17:50.0830333Z   ❌ Highlife: there are no users authenticated
+2025-12-05T12:17:50.0830703Z   ❌ Kente cloth: there are no users authenticated
+2025-12-05T12:17:50.0831113Z   ❌ Ethiopian cuisine: there are no users authenticated
+2025-12-05T12:17:50.0831618Z   ❌ Ethiopian Orthodox Tewahedo Church: there are no users authenticated
+2025-12-05T12:17:50.0832491Z   ❌ Geʽez: there are no users authenticated
+2025-12-05T12:17:50.0833012Z   ❌ Coffee ceremony of Ethiopia and Eritrea: there are no users authenticated
+2025-12-05T12:17:50.0833471Z   ❌ African art: there are no users authenticated
+2025-12-05T12:17:50.0833887Z   ❌ African literature: there are no users authenticated
+2025-12-05T12:17:50.0834306Z   ❌ Pan-Africanism: there are no users authenticated
+2025-12-05T12:17:50.0834686Z   ❌ Kwanzaa: there are no users authenticated
+2025-12-05T12:17:50.0834875Z 
+2025-12-05T12:17:50.0834993Z Scraping news articles...
+2025-12-05T12:17:50.4793512Z Culture content scraper completed.
+2025-12-05T12:17:50.4795926Z 
+2025-12-05T12:17:50.4797213Z Backend API successfully populated!
+2025-12-05T12:17:50.4797547Z 
+2025-12-05T12:17:50.4797720Z Test it:
+2025-12-05T12:17:50.4798451Z   curl ***/culture-magazine/articles
+2025-12-05T12:17:50.4798747Z 
+2025-12-05T12:17:50.4910292Z ##[group]Run echo ""
+2025-12-05T12:17:50.4910762Z [36;1mecho ""[0m
+2025-12-05T12:17:50.4911153Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:50.4911654Z [36;1mecho "📊 BUILD SUMMARY"[0m
+2025-12-05T12:17:50.4912114Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:50.4912611Z [36;1mecho ""[0m
+2025-12-05T12:17:50.4912947Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-05T12:17:50.4913402Z [36;1mecho "✅ TypeScript compiled"[0m
+2025-12-05T12:17:50.4913848Z [36;1mecho "✅ Tests run (or skipped)"[0m
+2025-12-05T12:17:50.4914337Z [36;1mecho "✅ Database priming attempted"[0m
+2025-12-05T12:17:50.4914793Z [36;1mecho ""[0m
+2025-12-05T12:17:50.4915179Z [36;1mecho "📥 Built files are in: ./dist/"[0m
+2025-12-05T12:17:50.4915785Z [36;1mecho "📚 You can deploy these files to any Node.js hosting"[0m
+2025-12-05T12:17:50.4916337Z [36;1mecho ""[0m
+2025-12-05T12:17:50.4916666Z [36;1mecho "Next steps:"[0m
+2025-12-05T12:17:50.4917441Z [36;1mecho "  1. Deploy the ./dist/ folder to your server"[0m
+2025-12-05T12:17:50.4918115Z [36;1mecho "  2. Set environment variables (MONGODB_URI, JWT_SECRET)"[0m
+2025-12-05T12:17:50.4918733Z [36;1mecho "  3. Run: node dist/server.js"[0m
+2025-12-05T12:17:50.4919310Z [36;1mecho "  4. Test: curl http://your-server/healthcheck"[0m
+2025-12-05T12:17:50.4920102Z [36;1mecho ""[0m
+2025-12-05T12:17:50.4920526Z [36;1mecho "Culture Magazine API will be available at:"[0m
+2025-12-05T12:17:50.4921107Z [36;1mecho "  GET /culture-magazine/articles"[0m
+2025-12-05T12:17:50.4921571Z [36;1mecho ""[0m
+2025-12-05T12:17:50.4921945Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:50.4922443Z [36;1mecho "✅ WORKFLOW COMPLETE!"[0m
+2025-12-05T12:17:50.4922939Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:50.4976039Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:17:50.4976435Z env:
+2025-12-05T12:17:50.4976727Z   NODE_VERSION: 18.x
+2025-12-05T12:17:50.4977336Z ##[endgroup]
+2025-12-05T12:17:50.5055115Z 
+2025-12-05T12:17:50.5059289Z ==========================================
+2025-12-05T12:17:50.5062650Z 📊 BUILD SUMMARY
+2025-12-05T12:17:50.5065387Z ==========================================
+2025-12-05T12:17:50.5074722Z 
+2025-12-05T12:17:50.5075093Z ✅ Dependencies installed
+2025-12-05T12:17:50.5075655Z ✅ TypeScript compiled
+2025-12-05T12:17:50.5076102Z ✅ Tests run (or skipped)
+2025-12-05T12:17:50.5077172Z ✅ Database priming attempted
+2025-12-05T12:17:50.5077484Z 
+2025-12-05T12:17:50.5077808Z 📥 Built files are in: ./dist/
+2025-12-05T12:17:50.5078494Z 📚 You can deploy these files to any Node.js hosting
+2025-12-05T12:17:50.5078845Z 
+2025-12-05T12:17:50.5078986Z Next steps:
+2025-12-05T12:17:50.5079399Z   1. Deploy the ./dist/ folder to your server
+2025-12-05T12:17:50.5079996Z   2. Set environment variables (MONGODB_URI, JWT_SECRET)
+2025-12-05T12:17:50.5080510Z   3. Run: node dist/server.js
+2025-12-05T12:17:50.5081015Z   4. Test: curl http://your-server/healthcheck
+2025-12-05T12:17:50.5081333Z 
+2025-12-05T12:17:50.5081508Z Culture Magazine API will be available at:
+2025-12-05T12:17:50.5081818Z   GET /culture-magazine/articles
+2025-12-05T12:17:50.5081986Z 
+2025-12-05T12:17:50.5082124Z ==========================================
+2025-12-05T12:17:50.5082433Z ✅ WORKFLOW COMPLETE!
+2025-12-05T12:17:50.5082714Z ==========================================
+2025-12-05T12:17:50.5140838Z Post job cleanup.
+2025-12-05T12:17:50.6794166Z Cache hit occurred on the primary key node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d, not saving cache.
+2025-12-05T12:17:50.6924494Z Post job cleanup.
+2025-12-05T12:17:50.7937306Z [command]/usr/bin/git version
+2025-12-05T12:17:50.7979931Z git version 2.52.0
+2025-12-05T12:17:50.8029320Z Temporarily overriding HOME='/home/runner/work/_temp/469d4448-7cc9-4794-be1f-dfe96d75b6f7' before making global git config changes
+2025-12-05T12:17:50.8031695Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-05T12:17:50.8036653Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-05T12:17:50.8091007Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-05T12:17:50.8153440Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-05T12:17:50.8556717Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-05T12:17:50.8600865Z http.https://github.com/.extraheader
+2025-12-05T12:17:50.8626572Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-05T12:17:50.8685296Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-05T12:17:50.9059629Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-05T12:17:50.9111476Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-05T12:17:50.9623803Z Cleaning up orphan processes

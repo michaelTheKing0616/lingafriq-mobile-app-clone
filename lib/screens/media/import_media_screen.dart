@@ -7,6 +7,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
@@ -43,6 +44,11 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
   Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
+
+    // Show loading screen when importing
+    if (_isLoading) {
+      return const DynamicLoadingScreen();
+    }
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),

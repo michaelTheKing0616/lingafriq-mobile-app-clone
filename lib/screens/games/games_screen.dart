@@ -10,6 +10,8 @@ import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
 import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 import 'package:lingafriq/screens/games/pronunciation_game.dart';
@@ -23,6 +25,17 @@ class GamesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'Language Games are temporarily unavailable',
+      onRetry: () {
+        // Retry by invalidating provider
+        ref.invalidate(languagesForGamesProvider);
+      },
+      child: _buildContent(context, ref),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
     final languagesAsync = ref.watch(languagesForGamesProvider);
     final isDark = context.isDarkMode;
 
@@ -152,9 +165,7 @@ class GamesScreen extends ConsumerWidget {
                   ref.invalidate(languagesForGamesProvider);
                 },
               ),
-              loading: () => const AdaptiveProgressIndicator(
-                message: 'Loading languages...',
-              ),
+              loading: () => const DynamicLoadingScreen(),
             ),
           ),
         ],

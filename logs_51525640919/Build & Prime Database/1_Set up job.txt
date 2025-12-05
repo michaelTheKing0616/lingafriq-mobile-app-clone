@@ -1,0 +1,30 @@
+﻿2025-12-05T12:29:35.0004633Z Current runner version: '2.329.0'
+2025-12-05T12:29:35.0060564Z ##[group]Runner Image Provisioner
+2025-12-05T12:29:35.0061872Z Hosted Compute Agent
+2025-12-05T12:29:35.0073274Z Version: 20251124.448
+2025-12-05T12:29:35.0074557Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-05T12:29:35.0075777Z Build Date: 2025-11-24T21:16:26Z
+2025-12-05T12:29:35.0076812Z ##[endgroup]
+2025-12-05T12:29:35.0077860Z ##[group]Operating System
+2025-12-05T12:29:35.0078872Z Ubuntu
+2025-12-05T12:29:35.0079660Z 24.04.3
+2025-12-05T12:29:35.0080722Z LTS
+2025-12-05T12:29:35.0081531Z ##[endgroup]
+2025-12-05T12:29:35.0082656Z ##[group]Runner Image
+2025-12-05T12:29:35.0083809Z Image: ubuntu-24.04
+2025-12-05T12:29:35.0084773Z Version: 20251126.144.1
+2025-12-05T12:29:35.0086798Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-05T12:29:35.0089370Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-05T12:29:35.0091558Z ##[endgroup]
+2025-12-05T12:29:35.0113921Z ##[group]GITHUB_TOKEN Permissions
+2025-12-05T12:29:35.0116703Z Contents: read
+2025-12-05T12:29:35.0117642Z Metadata: read
+2025-12-05T12:29:35.0119077Z Packages: read
+2025-12-05T12:29:35.0120028Z ##[endgroup]
+2025-12-05T12:29:35.0123860Z Secret source: Actions
+2025-12-05T12:29:35.0125425Z Prepare workflow directory
+2025-12-05T12:29:35.0837339Z Prepare all required actions
+2025-12-05T12:29:35.0893598Z Getting action download info
+2025-12-05T12:29:35.3783131Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-05T12:29:35.7868972Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-12-05T12:29:35.9627640Z Complete job name: Build & Prime Database

@@ -151,7 +151,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
           score: _correctAnswers,
         );
         if (gameSuccess) {
-          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers, pointsEarned: points);
           ref.read(userProvider.notifier).addPoints(points);
         }
         

@@ -193,11 +193,17 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   PolieMode get mode => _mode;
   bool get isTranslationMode => _mode == PolieMode.translation;
 
+  bool _historyLoaded = false;
+
   @override
   BaseProviderState build() {
-    _loadChatHistory();
-    _loadSRSMemory();
-    _loadCEFRInfo();
+    // Only load history once on first build
+    if (!_historyLoaded) {
+      _loadChatHistory();
+      _loadSRSMemory();
+      _loadCEFRInfo();
+      _historyLoaded = true;
+    }
     _initializeSystemPrompt();
     return BaseProviderState();
   }
@@ -289,14 +295,23 @@ When the user is practicing, end your responses with a question or task to keep 
 
   void setMode(PolieMode mode) {
     if (_mode == mode) return;
-    // Save current chat history before switching
+    
+    // Save current chat history before switching modes
     _saveChatHistory();
+    
+    // Switch to new mode
     _mode = mode;
     _tutorMode = mode == PolieMode.tutor;
-    // Load chat history for new mode
+    
+    // Clear current messages and load history for new mode
+    _messages.clear();
     _loadChatHistory();
     _initializeSystemPrompt();
+    
+    // Notify listeners of the change
     state = state.copyWith();
+    
+    debugPrint('Switched to ${mode == PolieMode.translation ? "Translation" : "Tutor"} mode. Loaded ${_messages.length} messages.');
   }
 
   void setTutorMode(bool enabled) {
@@ -978,7 +993,8 @@ Return only JSON.
   Future<void> clearChat() async {
     _messages.clear();
     state = state.copyWith();
-    await _saveChatHistory();
+    await _saveChatHistory(); // Save empty history to clear this mode's history
+    debugPrint('Cleared chat history for ${_mode == PolieMode.translation ? "Translation" : "Tutor"} mode');
   }
 
   // ----- Persistence -----
@@ -994,8 +1010,34 @@ Return only JSON.
       final prefs = await SharedPreferences.getInstance();
       final messagesJson = _messages.map((msg) => msg.toJson()).toList();
       await prefs.setString(_chatHistoryKey, jsonEncode(messagesJson));
+      
+      // Sync to backend (debounced to avoid too many calls)
+      _syncChatHistoryToBackend();
     } catch (e) {
       debugPrint('Error saving chat history: $e');
+    }
+  }
+
+  DateTime? _lastChatHistorySync;
+  
+  /// Sync chat history to backend (debounced to avoid too many calls)
+  Future<void> _syncChatHistoryToBackend() async {
+    try {
+      // Debounce: only sync if last sync was more than 10 seconds ago
+      final now = DateTime.now();
+      if (_lastChatHistorySync != null && now.difference(_lastChatHistorySync!).inSeconds < 10) {
+        return; // Skip if synced recently
+      }
+      _lastChatHistorySync = now;
+      
+      final mode = _mode == PolieMode.translation ? 'translation' : 'tutor';
+      final messagesJson = _messages.map((msg) => msg.toJson()).toList();
+      final success = await ref.read(apiProvider.notifier).syncAiChatHistory(mode, messagesJson);
+      if (success) {
+        debugPrint('AI chat history synced to backend for $mode mode');
+      }
+    } catch (e) {
+      debugPrint('Error syncing chat history to backend: $e');
     }
   }
 
@@ -1003,16 +1045,25 @@ Return only JSON.
     try {
       final prefs = await SharedPreferences.getInstance();
       final historyJson = prefs.getString(_chatHistoryKey);
-      if (historyJson != null) {
+      if (historyJson != null && historyJson.isNotEmpty) {
         final List<dynamic> messagesList = jsonDecode(historyJson);
         _messages.clear();
         _messages.addAll(
-          messagesList.map((json) => ChatMessage.fromJson(json)),
+          messagesList.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
         );
+        debugPrint('Loaded ${_messages.length} messages for ${_mode == PolieMode.translation ? "Translation" : "Tutor"} mode');
+        state = state.copyWith();
+      } else {
+        // No history for this mode, ensure messages are cleared
+        _messages.clear();
+        debugPrint('No chat history found for ${_mode == PolieMode.translation ? "Translation" : "Tutor"} mode');
         state = state.copyWith();
       }
     } catch (e) {
       debugPrint('Error loading chat history: $e');
+      // On error, clear messages to prevent showing wrong mode's history
+      _messages.clear();
+      state = state.copyWith();
     }
   }
 

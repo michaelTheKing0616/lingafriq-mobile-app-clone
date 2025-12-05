@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/greegins_builder.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
@@ -223,9 +224,7 @@ class HomeTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const AdaptiveProgressIndicator(
-                    message: "Loading Languages ...",
-                  ),
+                  loading: () => const DynamicLoadingScreen(),
                 ),
               ),
             ],

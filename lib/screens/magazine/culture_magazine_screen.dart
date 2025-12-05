@@ -6,8 +6,10 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/services/culture_magazine_service.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
   const CultureMagazineScreen({Key? key}) : super(key: key);
@@ -85,14 +87,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     
     // Show loading indicator
     if (_isLoading) {
-      return Scaffold(
-        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-        body: Center(
-          child: CircularProgressIndicator(
-            color: AppColors.primaryGreen,
-          ),
-        ),
-      );
+      return const DynamicLoadingScreen();
     }
     
     // Show error message
@@ -418,7 +413,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
                   color: isDark ? const Color(0xFF1F3527) : Colors.grey[200],
-                  child: Center(child: CircularProgressIndicator()),
+                  child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
                 ),
                 errorWidget: (context, url, error) => Container(
                   color: isDark ? const Color(0xFF1F3527) : Colors.grey[200],
@@ -538,8 +533,8 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                     ? CachedNetworkImage(
                         imageUrl: content.imageUrl!,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => Center(
-                          child: CircularProgressIndicator(),
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         ),
                       )
                     : Center(

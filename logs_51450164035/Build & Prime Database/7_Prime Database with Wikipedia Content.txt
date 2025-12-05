@@ -1,0 +1,126 @@
+﻿2025-12-04T15:58:09.1614886Z ##[group]Run echo "=========================================="
+2025-12-04T15:58:09.1615334Z [36;1mecho "=========================================="[0m
+2025-12-04T15:58:09.1615665Z [36;1mecho "🚀 Starting Wikipedia Scraper"[0m
+2025-12-04T15:58:09.1615965Z [36;1mecho "=========================================="[0m
+2025-12-04T15:58:09.1616237Z [36;1mecho ""[0m
+2025-12-04T15:58:09.1616502Z [36;1mecho "This will populate your MongoDB database with:"[0m
+2025-12-04T15:58:09.1616883Z [36;1mecho "  • 40+ African culture articles from Wikipedia"[0m
+2025-12-04T15:58:09.1617299Z [36;1mecho "  • Categories: tradition, cuisine, music, history, etc."[0m
+2025-12-04T15:58:09.1617747Z [36;1mecho "  • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc."[0m
+2025-12-04T15:58:09.1618105Z [36;1mecho ""[0m
+2025-12-04T15:58:09.1618316Z [36;1mecho "Connecting to MongoDB..."[0m
+2025-12-04T15:58:09.1618555Z [36;1m[0m
+2025-12-04T15:58:09.1618752Z [36;1mif [ -z "$MONGODB_URI" ]; then[0m
+2025-12-04T15:58:09.1619094Z [36;1m  echo "❌ ERROR: MONGODB_URI secret is not set!"[0m
+2025-12-04T15:58:09.1619445Z [36;1m  echo "Please add MONGODB_URI to repository secrets"[0m
+2025-12-04T15:58:09.1619755Z [36;1m  exit 1[0m
+2025-12-04T15:58:09.1619949Z [36;1mfi[0m
+2025-12-04T15:58:09.1620488Z [36;1m[0m
+2025-12-04T15:58:09.1620698Z [36;1mif [ -z "$JWT_SECRET" ]; then[0m
+2025-12-04T15:58:09.1620994Z [36;1m  echo "❌ ERROR: JWT_SECRET secret is not set!"[0m
+2025-12-04T15:58:09.1621345Z [36;1m  echo "Please add JWT_SECRET to repository secrets"[0m
+2025-12-04T15:58:09.1621660Z [36;1m  exit 1[0m
+2025-12-04T15:58:09.1621845Z [36;1mfi[0m
+2025-12-04T15:58:09.1622015Z [36;1m[0m
+2025-12-04T15:58:09.1622197Z [36;1mecho "✅ Secrets configured"[0m
+2025-12-04T15:58:09.1622540Z [36;1mecho "✅ MongoDB URI: ${MONGODB_URI:0:20}... (truncated for security)"[0m
+2025-12-04T15:58:09.1622879Z [36;1mecho ""[0m
+2025-12-04T15:58:09.1623078Z [36;1mecho "Running scraper..."[0m
+2025-12-04T15:58:09.1623307Z [36;1mecho ""[0m
+2025-12-04T15:58:09.1623483Z [36;1m[0m
+2025-12-04T15:58:09.1623655Z [36;1mnode -e "[0m
+2025-12-04T15:58:09.1623923Z [36;1m  import('./dist/services/cultureScraper.service.js')[0m
+2025-12-04T15:58:09.1624253Z [36;1m    .then(m => m.runScraperJob())[0m
+2025-12-04T15:58:09.1624507Z [36;1m    .then(() => {[0m
+2025-12-04T15:58:09.1624726Z [36;1m      console.log('');[0m
+2025-12-04T15:58:09.1625012Z [36;1m      console.log('==========================================');[0m
+2025-12-04T15:58:09.1625392Z [36;1m      console.log('✅ SCRAPER COMPLETED SUCCESSFULLY!');[0m
+2025-12-04T15:58:09.1625756Z [36;1m      console.log('==========================================');[0m
+2025-12-04T15:58:09.1626054Z [36;1m      console.log('');[0m
+2025-12-04T15:58:09.1626335Z [36;1m      console.log('Your database should now contain:');[0m
+2025-12-04T15:58:09.1626667Z [36;1m      console.log('  • Collection: articles');[0m
+2025-12-04T15:58:09.1627015Z [36;1m      console.log('  • Documents: 40+ African culture articles');[0m
+2025-12-04T15:58:09.1627430Z [36;1m      console.log('  • Source: Wikipedia (with proper attribution)');[0m
+2025-12-04T15:58:09.1627765Z [36;1m      console.log('');[0m
+2025-12-04T15:58:09.1628001Z [36;1m      console.log('Test it:');[0m
+2025-12-04T15:58:09.1628388Z [36;1m      console.log('  curl https://your-backend-url/culture-magazine/articles');[0m
+2025-12-04T15:58:09.1628769Z [36;1m      console.log('');[0m
+2025-12-04T15:58:09.1628999Z [36;1m      process.exit(0);[0m
+2025-12-04T15:58:09.1629399Z [36;1m    })[0m
+2025-12-04T15:58:09.1629586Z [36;1m    .catch(err => {[0m
+2025-12-04T15:58:09.1629810Z [36;1m      console.error('');[0m
+2025-12-04T15:58:09.1630378Z [36;1m      console.error('==========================================');[0m
+2025-12-04T15:58:09.1630731Z [36;1m      console.error('❌ SCRAPER ERROR:');[0m
+2025-12-04T15:58:09.1631055Z [36;1m      console.error('==========================================');[0m
+2025-12-04T15:58:09.1631367Z [36;1m      console.error(err);[0m
+2025-12-04T15:58:09.1631803Z [36;1m      console.error('');[0m
+2025-12-04T15:58:09.1632063Z [36;1m      console.error('Common issues:');[0m
+2025-12-04T15:58:09.1632383Z [36;1m      console.error('  1. Cannot connect to MongoDB');[0m
+2025-12-04T15:58:09.1632784Z [36;1m      console.error('     → Check MongoDB Atlas network access (0.0.0.0/0)');[0m
+2025-12-04T15:58:09.1633230Z [36;1m      console.error('     → Verify connection string format');[0m
+2025-12-04T15:58:09.1633589Z [36;1m      console.error('  2. Authentication failed');[0m
+2025-12-04T15:58:09.1633981Z [36;1m      console.error('     → Check username/password in MONGODB_URI');[0m
+2025-12-04T15:58:09.1634344Z [36;1m      console.error('  3. Network timeout');[0m
+2025-12-04T15:58:09.1634712Z [36;1m      console.error('     → Wikipedia might be temporarily unreachable');[0m
+2025-12-04T15:58:09.1635079Z [36;1m      console.error('');[0m
+2025-12-04T15:58:09.1635366Z [36;1m      process.exit(0);[0m
+2025-12-04T15:58:09.1635599Z [36;1m    });[0m
+2025-12-04T15:58:09.1635867Z [36;1m" || echo "⚠️ Scraper encountered issues but workflow continues"[0m
+2025-12-04T15:58:09.1668817Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:58:09.1669062Z env:
+2025-12-04T15:58:09.1669239Z   NODE_VERSION: 18.x
+2025-12-04T15:58:09.1669742Z   MONGODB_URI: ***
+2025-12-04T15:58:09.1669960Z   JWT_SECRET: ***
+2025-12-04T15:58:09.1670522Z   NEWS_API_KEY: ***
+2025-12-04T15:58:09.1670729Z   NODE_ENV: production
+2025-12-04T15:58:09.1670928Z ##[endgroup]
+2025-12-04T15:58:09.1723165Z ==========================================
+2025-12-04T15:58:09.1724221Z 🚀 Starting Wikipedia Scraper
+2025-12-04T15:58:09.1726063Z ==========================================
+2025-12-04T15:58:09.1726680Z 
+2025-12-04T15:58:09.1729037Z This will populate your MongoDB database with:
+2025-12-04T15:58:09.1729809Z   • 40+ African culture articles from Wikipedia
+2025-12-04T15:58:09.1730772Z   • Categories: tradition, cuisine, music, history, etc.
+2025-12-04T15:58:09.1731645Z   • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc.
+2025-12-04T15:58:09.1732123Z 
+2025-12-04T15:58:09.1732348Z Connecting to MongoDB...
+2025-12-04T15:58:09.1732911Z ✅ Secrets configured
+2025-12-04T15:58:09.1733751Z ✅ MongoDB URI: mongodb://lingafriqa... (truncated for security)
+2025-12-04T15:58:09.1734215Z 
+2025-12-04T15:58:09.1734398Z Running scraper...
+2025-12-04T15:58:09.1734613Z 
+2025-12-04T15:58:09.4353005Z Starting culture content scraper...
+2025-12-04T15:58:09.4353842Z Connecting to MongoDB...
+2025-12-04T15:58:39.4489005Z 
+2025-12-04T15:58:39.4490564Z ==========================================
+2025-12-04T15:58:39.4492360Z ❌ SCRAPER ERROR:
+2025-12-04T15:58:39.4492847Z ==========================================
+2025-12-04T15:58:39.4511665Z MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+2025-12-04T15:58:39.4514354Z     at _handleConnectionErrors (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:755:11)
+2025-12-04T15:58:39.4515993Z     at NativeConnection.openUri (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:730:11)
+2025-12-04T15:58:39.4517629Z     at async Module.runScraperJob (file:///home/runner/work/node-backend/node-backend/dist/services/cultureScraper.service.js:187:9) {
+2025-12-04T15:58:39.4518691Z   reason: TopologyDescription {
+2025-12-04T15:58:39.4519101Z     type: 'Unknown',
+2025-12-04T15:58:39.4519629Z     servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-04T15:58:39.4520360Z     stale: false,
+2025-12-04T15:58:39.4521165Z     compatible: true,
+2025-12-04T15:58:39.4521586Z     heartbeatFrequencyMS: 10000,
+2025-12-04T15:58:39.4522004Z     localThresholdMS: 15,
+2025-12-04T15:58:39.4522360Z     setName: null,
+2025-12-04T15:58:39.4522701Z     maxElectionId: null,
+2025-12-04T15:58:39.4523029Z     maxSetVersion: null,
+2025-12-04T15:58:39.4523347Z     commonWireVersion: 0,
+2025-12-04T15:58:39.4523760Z     logicalSessionTimeoutMinutes: null
+2025-12-04T15:58:39.4524171Z   },
+2025-12-04T15:58:39.4524673Z   code: undefined
+2025-12-04T15:58:39.4524973Z }
+2025-12-04T15:58:39.4525126Z 
+2025-12-04T15:58:39.4525253Z Common issues:
+2025-12-04T15:58:39.4525564Z   1. Cannot connect to MongoDB
+2025-12-04T15:58:39.4526161Z      → Check MongoDB Atlas network access (0.0.0.0/0)
+2025-12-04T15:58:39.4526734Z      → Verify connection string format
+2025-12-04T15:58:39.4527676Z   2. Authentication failed
+2025-12-04T15:58:39.4537460Z      → Check username/password in MONGODB_URI
+2025-12-04T15:58:39.4538640Z   3. Network timeout
+2025-12-04T15:58:39.4539222Z      → Wikipedia might be temporarily unreachable
+2025-12-04T15:58:39.4539592Z 

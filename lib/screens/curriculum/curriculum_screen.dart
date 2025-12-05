@@ -4,6 +4,8 @@ import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
@@ -36,6 +38,16 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Comprehensive Curriculum is temporarily unavailable',
+      onRetry: () {
+        _loadCurriculum();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
     final selectedLanguage = ref.watch(curriculumProvider.notifier).selectedLanguage;
     final isLoading = ref.watch(curriculumProvider.select((state) => state.isLoading));
@@ -61,7 +73,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator(color: AppColors.primaryGreen))
+          ? const DynamicLoadingScreen()
           : curriculum == null
               ? _buildEmptyState(context, isDark)
               : _buildCurriculumContent(context, curriculum, selectedLanguage, isDark),

@@ -145,8 +145,10 @@ class QuizScreen extends HookConsumerWidget {
                                   if (!success) {
                                     "Failed to mark quiz as complete".log("quiz_screen");
                                   } else {
+                                    // Calculate points earned (estimate: 10 points per correct answer)
+                                    final pointsEarned = quiz.length * 10;
                                     // Track progress
-                                    await ProgressIntegration.onQuizCompleted(ref);
+                                    await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
                                   }
                                 }
                                 if (context.mounted) {
@@ -183,8 +185,10 @@ class QuizScreen extends HookConsumerWidget {
                                   if (!success) {
                                     "Failed to mark quiz as complete".log("quiz_screen");
                                   } else {
+                                    // Calculate points earned (estimate: 10 points per correct answer)
+                                    final pointsEarned = quiz.length * 10;
                                     // Track progress
-                                    await ProgressIntegration.onQuizCompleted(ref);
+                                    await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
                                   }
                                 }
                                 if (context.mounted) {

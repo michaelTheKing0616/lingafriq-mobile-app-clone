@@ -61,6 +61,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
+    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -76,6 +77,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
+    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -91,6 +93,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
+    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -106,6 +109,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
+    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -121,6 +125,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
+    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -135,8 +140,30 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
+    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
+
+  /// Sync progress metrics to backend (debounced to avoid too many calls)
+  Future<void> _syncToBackend() async {
+    try {
+      // Debounce: only sync if last sync was more than 5 seconds ago
+      final now = DateTime.now();
+      if (_lastBackendSync != null && now.difference(_lastBackendSync!).inSeconds < 5) {
+        return; // Skip if synced recently
+      }
+      _lastBackendSync = now;
+      
+      final success = await ref.read(apiProvider.notifier).updateProgressMetrics(_metrics.toMap());
+      if (success) {
+        debugPrint('Progress metrics synced to backend');
+      }
+    } catch (e) {
+      debugPrint('Error syncing progress metrics to backend: $e');
+    }
+  }
+
+  DateTime? _lastBackendSync;
 
   void _updateDailyHistory() {
     final today = DateTime.now();

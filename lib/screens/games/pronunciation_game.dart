@@ -163,7 +163,7 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
           score: _correctAnswers,
         );
         if (gameSuccess) {
-          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers, pointsEarned: points);
           ref.read(userProvider.notifier).addPoints(points);
         }
         

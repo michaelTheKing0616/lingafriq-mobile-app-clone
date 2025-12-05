@@ -1,0 +1,153 @@
+﻿2025-12-05T12:17:47.1901956Z ##[group]Run echo "=========================================="
+2025-12-05T12:17:47.1902419Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:47.1902774Z [36;1mecho "🚀 Starting Wikipedia Scraper (API Mode)"[0m
+2025-12-05T12:17:47.1903122Z [36;1mecho "=========================================="[0m
+2025-12-05T12:17:47.1903407Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1903734Z [36;1mecho "This will scrape Wikipedia and POST articles to your backend API."[0m
+2025-12-05T12:17:47.1904190Z [36;1mecho "Your backend will save them to MongoDB securely."[0m
+2025-12-05T12:17:47.1904532Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1904795Z [36;1mecho "  • 40+ African culture articles from Wikipedia"[0m
+2025-12-05T12:17:47.1905210Z [36;1mecho "  • Categories: tradition, cuisine, music, history, etc."[0m
+2025-12-05T12:17:47.1905665Z [36;1mecho "  • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc."[0m
+2025-12-05T12:17:47.1906022Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1906239Z [36;1m[0m
+2025-12-05T12:17:47.1906458Z [36;1mif [ -z "$BACKEND_URL" ]; then[0m
+2025-12-05T12:17:47.1906771Z [36;1m  echo "❌ ERROR: BACKEND_URL secret is not set!"[0m
+2025-12-05T12:17:47.1907500Z [36;1m  echo "Please add BACKEND_URL to repository secrets"[0m
+2025-12-05T12:17:47.1907971Z [36;1m  echo "Example: https://api.lingafriq.com or https://your-backend.com"[0m
+2025-12-05T12:17:47.1908366Z [36;1m  exit 1[0m
+2025-12-05T12:17:47.1908556Z [36;1mfi[0m
+2025-12-05T12:17:47.1908730Z [36;1m[0m
+2025-12-05T12:17:47.1908933Z [36;1mif [ -z "$SCRAPER_TOKEN" ]; then[0m
+2025-12-05T12:17:47.1909243Z [36;1m  echo "❌ ERROR: SCRAPER_TOKEN secret is not set!"[0m
+2025-12-05T12:17:47.1909614Z [36;1m  echo "Please add SCRAPER_TOKEN to repository secrets"[0m
+2025-12-05T12:17:47.1910000Z [36;1m  echo "See documentation for how to generate this token"[0m
+2025-12-05T12:17:47.1910320Z [36;1m  exit 1[0m
+2025-12-05T12:17:47.1910505Z [36;1mfi[0m
+2025-12-05T12:17:47.1910676Z [36;1m[0m
+2025-12-05T12:17:47.1910872Z [36;1mecho "✅ Secrets configured"[0m
+2025-12-05T12:17:47.1911138Z [36;1mecho "✅ Backend URL: $BACKEND_URL"[0m
+2025-12-05T12:17:47.1911554Z [36;1mecho "✅ Scraper token: ${SCRAPER_TOKEN:0:20}... (truncated for security)"[0m
+2025-12-05T12:17:47.1911911Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1912113Z [36;1mecho "Running scraper..."[0m
+2025-12-05T12:17:47.1912342Z [36;1mecho ""[0m
+2025-12-05T12:17:47.1912526Z [36;1m[0m
+2025-12-05T12:17:47.1912700Z [36;1mnode -e "[0m
+2025-12-05T12:17:47.1912967Z [36;1m  import('./dist/services/scraperClient.service.js')[0m
+2025-12-05T12:17:47.1913319Z [36;1m    .then(m => m.runScraperViaAPI())[0m
+2025-12-05T12:17:47.1913583Z [36;1m    .then(() => {[0m
+2025-12-05T12:17:47.1913807Z [36;1m      console.log('');[0m
+2025-12-05T12:17:47.1914106Z [36;1m      console.log('Backend API successfully populated!');[0m
+2025-12-05T12:17:47.1914420Z [36;1m      console.log('');[0m
+2025-12-05T12:17:47.1914664Z [36;1m      console.log('Test it:');[0m
+2025-12-05T12:17:47.1915002Z [36;1m      console.log('  curl ${BACKEND_URL}/culture-magazine/articles');[0m
+2025-12-05T12:17:47.1915343Z [36;1m      console.log('');[0m
+2025-12-05T12:17:47.1915575Z [36;1m      process.exit(0);[0m
+2025-12-05T12:17:47.1915794Z [36;1m    })[0m
+2025-12-05T12:17:47.1915983Z [36;1m    .catch(err => {[0m
+2025-12-05T12:17:47.1916212Z [36;1m      console.error('');[0m
+2025-12-05T12:17:47.1916505Z [36;1m      console.error('==========================================');[0m
+2025-12-05T12:17:47.1917334Z [36;1m      console.error('❌ SCRAPER ERROR:');[0m
+2025-12-05T12:17:47.1917717Z [36;1m      console.error('==========================================');[0m
+2025-12-05T12:17:47.1918092Z [36;1m      console.error(err);[0m
+2025-12-05T12:17:47.1918340Z [36;1m      console.error('');[0m
+2025-12-05T12:17:47.1918600Z [36;1m      console.error('Common issues:');[0m
+2025-12-05T12:17:47.1918913Z [36;1m      console.error('  1. Backend not running');[0m
+2025-12-05T12:17:47.1919310Z [36;1m      console.error('     → Check that your backend server is accessible');[0m
+2025-12-05T12:17:47.1919936Z [36;1m      console.error('     → Verify BACKEND_URL is correct');[0m
+2025-12-05T12:17:47.1920286Z [36;1m      console.error('  2. Invalid SCRAPER_TOKEN');[0m
+2025-12-05T12:17:47.1920667Z [36;1m      console.error('     → Regenerate token and update GitHub secret');[0m
+2025-12-05T12:17:47.1921040Z [36;1m      console.error('  3. Network timeout');[0m
+2025-12-05T12:17:47.1921415Z [36;1m      console.error('     → Check firewall rules on your backend server');[0m
+2025-12-05T12:17:47.1921781Z [36;1m      console.error('');[0m
+2025-12-05T12:17:47.1922034Z [36;1m      process.exit(0);[0m
+2025-12-05T12:17:47.1922272Z [36;1m    });[0m
+2025-12-05T12:17:47.1922551Z [36;1m" || echo "⚠️ Scraper encountered issues but workflow continues"[0m
+2025-12-05T12:17:47.1956544Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:17:47.1956799Z env:
+2025-12-05T12:17:47.1957261Z   NODE_VERSION: 18.x
+2025-12-05T12:17:47.1957744Z   BACKEND_URL: ***
+2025-12-05T12:17:47.1959247Z   SCRAPER_TOKEN: ***
+2025-12-05T12:17:47.1959510Z   NEWS_API_KEY: ***
+2025-12-05T12:17:47.1959713Z   NODE_ENV: production
+2025-12-05T12:17:47.1959929Z ##[endgroup]
+2025-12-05T12:17:47.2020796Z ==========================================
+2025-12-05T12:17:47.2023276Z 🚀 Starting Wikipedia Scraper (API Mode)
+2025-12-05T12:17:47.2023856Z ==========================================
+2025-12-05T12:17:47.2024155Z 
+2025-12-05T12:17:47.2024591Z This will scrape Wikipedia and POST articles to your backend API.
+2025-12-05T12:17:47.2025372Z Your backend will save them to MongoDB securely.
+2025-12-05T12:17:47.2025732Z 
+2025-12-05T12:17:47.2026114Z   • 40+ African culture articles from Wikipedia
+2025-12-05T12:17:47.2030053Z   • Categories: tradition, cuisine, music, history, etc.
+2025-12-05T12:17:47.2031078Z   • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc.
+2025-12-05T12:17:47.2031526Z 
+2025-12-05T12:17:47.2031777Z ✅ Secrets configured
+2025-12-05T12:17:47.2032571Z ✅ Backend URL: ***
+2025-12-05T12:17:47.2033443Z ✅ Scraper token: *** (truncated for security)
+2025-12-05T12:17:47.2033796Z 
+2025-12-05T12:17:47.2033973Z Running scraper...
+2025-12-05T12:17:47.2034198Z 
+2025-12-05T12:17:47.4795367Z Starting culture content scraper (API mode)...
+2025-12-05T12:17:47.4800136Z 
+2025-12-05T12:17:47.4801906Z Testing API connection...
+2025-12-05T12:17:47.4803713Z Backend URL: ***
+2025-12-05T12:17:47.8472268Z ✓ API connection successful
+2025-12-05T12:17:47.8472799Z 
+2025-12-05T12:17:47.8473578Z Scraping Wikipedia articles...
+2025-12-05T12:17:49.7744138Z ✓ Scraped 29 articles from Wikipedia
+2025-12-05T12:17:49.7745767Z 
+2025-12-05T12:17:49.7746588Z Posting 29 articles to backend API...
+2025-12-05T12:17:49.7748004Z Posting to: ***/scraper/articles/bulk
+2025-12-05T12:17:49.7749135Z Articles count: 29
+2025-12-05T12:17:50.0794519Z Response status: 200 OK
+2025-12-05T12:17:50.0796159Z 
+2025-12-05T12:17:50.0796561Z ==========================================
+2025-12-05T12:17:50.0802949Z ✅ SCRAPER COMPLETED SUCCESSFULLY!
+2025-12-05T12:17:50.0803571Z ==========================================
+2025-12-05T12:17:50.0803909Z 
+2025-12-05T12:17:50.0804053Z Results:
+2025-12-05T12:17:50.0804514Z   • Total articles: 29
+2025-12-05T12:17:50.0804971Z   • Saved: 0
+2025-12-05T12:17:50.0805383Z   • Skipped: 0
+2025-12-05T12:17:50.0805777Z   • Errors: 29
+2025-12-05T12:17:50.0805966Z 
+2025-12-05T12:17:50.0806147Z Errors encountered:
+2025-12-05T12:17:50.0806736Z   ❌ Yoruba people: there are no users authenticated
+2025-12-05T12:17:50.0808286Z   ❌ Igbo people: there are no users authenticated
+2025-12-05T12:17:50.0809680Z   ❌ Hausa people: there are no users authenticated
+2025-12-05T12:17:50.0810627Z   ❌ Nigerian cuisine: there are no users authenticated
+2025-12-05T12:17:50.0811520Z   ❌ Nollywood: there are no users authenticated
+2025-12-05T12:17:50.0815898Z   ❌ Afrobeat: there are no users authenticated
+2025-12-05T12:17:50.0818031Z   ❌ Jollof rice: there are no users authenticated
+2025-12-05T12:17:50.0819005Z   ❌ Zulu people: there are no users authenticated
+2025-12-05T12:17:50.0819712Z   ❌ Xhosa people: there are no users authenticated
+2025-12-05T12:17:50.0820501Z   ❌ South African cuisine: there are no users authenticated
+2025-12-05T12:17:50.0821229Z   ❌ Kwaito: there are no users authenticated
+2025-12-05T12:17:50.0825726Z   ❌ Ubuntu philosophy: there are no users authenticated
+2025-12-05T12:17:50.0826739Z   ❌ Regional variations of barbecue: there are no users authenticated
+2025-12-05T12:17:50.0827815Z   ❌ Swahili culture: there are no users authenticated
+2025-12-05T12:17:50.0828266Z   ❌ Maasai people: there are no users authenticated
+2025-12-05T12:17:50.0828760Z   ❌ Culture of Kenya: there are no users authenticated
+2025-12-05T12:17:50.0829158Z   ❌ Benga music: there are no users authenticated
+2025-12-05T12:17:50.0829549Z   ❌ Asante people: there are no users authenticated
+2025-12-05T12:17:50.0829942Z   ❌ Ghanaian cuisine: there are no users authenticated
+2025-12-05T12:17:50.0830319Z   ❌ Highlife: there are no users authenticated
+2025-12-05T12:17:50.0830700Z   ❌ Kente cloth: there are no users authenticated
+2025-12-05T12:17:50.0831111Z   ❌ Ethiopian cuisine: there are no users authenticated
+2025-12-05T12:17:50.0831615Z   ❌ Ethiopian Orthodox Tewahedo Church: there are no users authenticated
+2025-12-05T12:17:50.0832485Z   ❌ Geʽez: there are no users authenticated
+2025-12-05T12:17:50.0833009Z   ❌ Coffee ceremony of Ethiopia and Eritrea: there are no users authenticated
+2025-12-05T12:17:50.0833469Z   ❌ African art: there are no users authenticated
+2025-12-05T12:17:50.0833885Z   ❌ African literature: there are no users authenticated
+2025-12-05T12:17:50.0834304Z   ❌ Pan-Africanism: there are no users authenticated
+2025-12-05T12:17:50.0834683Z   ❌ Kwanzaa: there are no users authenticated
+2025-12-05T12:17:50.0834871Z 
+2025-12-05T12:17:50.0834991Z Scraping news articles...
+2025-12-05T12:17:50.4793463Z Culture content scraper completed.
+2025-12-05T12:17:50.4795915Z 
+2025-12-05T12:17:50.4797154Z Backend API successfully populated!
+2025-12-05T12:17:50.4797542Z 
+2025-12-05T12:17:50.4797716Z Test it:
+2025-12-05T12:17:50.4798446Z   curl ***/culture-magazine/articles
+2025-12-05T12:17:50.4798743Z 

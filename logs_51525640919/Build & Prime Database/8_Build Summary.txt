@@ -1,0 +1,55 @@
+﻿2025-12-05T12:30:25.3543059Z ##[group]Run echo ""
+2025-12-05T12:30:25.3543492Z [36;1mecho ""[0m
+2025-12-05T12:30:25.3543877Z [36;1mecho "=========================================="[0m
+2025-12-05T12:30:25.3544227Z [36;1mecho "📊 BUILD SUMMARY"[0m
+2025-12-05T12:30:25.3544501Z [36;1mecho "=========================================="[0m
+2025-12-05T12:30:25.3544792Z [36;1mecho ""[0m
+2025-12-05T12:30:25.3545013Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-05T12:30:25.3545300Z [36;1mecho "✅ TypeScript compiled"[0m
+2025-12-05T12:30:25.3545565Z [36;1mecho "✅ Tests run (or skipped)"[0m
+2025-12-05T12:30:25.3545842Z [36;1mecho "✅ Database priming attempted"[0m
+2025-12-05T12:30:25.3546111Z [36;1mecho ""[0m
+2025-12-05T12:30:25.3546332Z [36;1mecho "📥 Built files are in: ./dist/"[0m
+2025-12-05T12:30:25.3546677Z [36;1mecho "📚 You can deploy these files to any Node.js hosting"[0m
+2025-12-05T12:30:25.3546990Z [36;1mecho ""[0m
+2025-12-05T12:30:25.3547179Z [36;1mecho "Next steps:"[0m
+2025-12-05T12:30:25.3547466Z [36;1mecho "  1. Deploy the ./dist/ folder to your server"[0m
+2025-12-05T12:30:25.3547890Z [36;1mecho "  2. Set environment variables (MONGODB_URI, JWT_SECRET)"[0m
+2025-12-05T12:30:25.3548245Z [36;1mecho "  3. Run: node dist/server.js"[0m
+2025-12-05T12:30:25.3548578Z [36;1mecho "  4. Test: curl http://your-server/healthcheck"[0m
+2025-12-05T12:30:25.3549060Z [36;1mecho ""[0m
+2025-12-05T12:30:25.3549306Z [36;1mecho "Culture Magazine API will be available at:"[0m
+2025-12-05T12:30:25.3549636Z [36;1mecho "  GET /culture-magazine/articles"[0m
+2025-12-05T12:30:25.3549905Z [36;1mecho ""[0m
+2025-12-05T12:30:25.3550128Z [36;1mecho "=========================================="[0m
+2025-12-05T12:30:25.3550411Z [36;1mecho "✅ WORKFLOW COMPLETE!"[0m
+2025-12-05T12:30:25.3550680Z [36;1mecho "=========================================="[0m
+2025-12-05T12:30:25.3583505Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:30:25.3583752Z env:
+2025-12-05T12:30:25.3583930Z   NODE_VERSION: 18.x
+2025-12-05T12:30:25.3584137Z ##[endgroup]
+2025-12-05T12:30:25.3638854Z 
+2025-12-05T12:30:25.3639367Z ==========================================
+2025-12-05T12:30:25.3641543Z 📊 BUILD SUMMARY
+2025-12-05T12:30:25.3642692Z ==========================================
+2025-12-05T12:30:25.3643604Z 
+2025-12-05T12:30:25.3643922Z ✅ Dependencies installed
+2025-12-05T12:30:25.3644445Z ✅ TypeScript compiled
+2025-12-05T12:30:25.3644895Z ✅ Tests run (or skipped)
+2025-12-05T12:30:25.3645370Z ✅ Database priming attempted
+2025-12-05T12:30:25.3645650Z 
+2025-12-05T12:30:25.3645955Z 📥 Built files are in: ./dist/
+2025-12-05T12:30:25.3646644Z 📚 You can deploy these files to any Node.js hosting
+2025-12-05T12:30:25.3647013Z 
+2025-12-05T12:30:25.3647148Z Next steps:
+2025-12-05T12:30:25.3647571Z   1. Deploy the ./dist/ folder to your server
+2025-12-05T12:30:25.3648188Z   2. Set environment variables (MONGODB_URI, JWT_SECRET)
+2025-12-05T12:30:25.3648715Z   3. Run: node dist/server.js
+2025-12-05T12:30:25.3649218Z   4. Test: curl http://your-server/healthcheck
+2025-12-05T12:30:25.3649586Z 
+2025-12-05T12:30:25.3649863Z Culture Magazine API will be available at:
+2025-12-05T12:30:25.3650385Z   GET /culture-magazine/articles
+2025-12-05T12:30:25.3650568Z 
+2025-12-05T12:30:25.3650714Z ==========================================
+2025-12-05T12:30:25.3651030Z ✅ WORKFLOW COMPLETE!
+2025-12-05T12:30:25.3651307Z ==========================================

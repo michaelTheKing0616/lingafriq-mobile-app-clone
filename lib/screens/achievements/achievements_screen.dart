@@ -5,6 +5,7 @@ import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AchievementsScreen extends ConsumerWidget {
@@ -12,6 +13,16 @@ class AchievementsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'Achievements are temporarily unavailable',
+      onRetry: () {
+        // Retry by rebuilding
+      },
+      child: _buildContent(context, ref),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
     final achievementsNotifier = ref.watch(achievementsProvider.notifier);
     final achievements = ref.watch(achievementsProvider.notifier).achievements;
     final totalXP = ref.watch(achievementsProvider.notifier).totalXP;

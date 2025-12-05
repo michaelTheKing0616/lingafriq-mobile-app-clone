@@ -10,6 +10,8 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -26,9 +28,7 @@ class _PrivateChatListScreenState
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(privateChatProvider.notifier).loadContacts();
-    });
+    // Load contacts will be triggered in build method
   }
 
   @override
@@ -39,6 +39,17 @@ class _PrivateChatListScreenState
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Private Chats are temporarily unavailable',
+      onRetry: () {
+        setState(() {});
+        ref.read(privateChatProvider.notifier).loadContacts();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final state = ref.watch(privateChatProvider);
     ref.watch(socketProvider);
     final socket = ref.read(socketProvider.notifier);
@@ -47,11 +58,18 @@ class _PrivateChatListScreenState
         .whereType<String>()
         .toSet();
     final currentUser = ref.watch(userProvider);
+    final isDark = context.isDarkMode;
+
+    // Load contacts if not already loaded
+    if (state.contacts.isEmpty && !state.isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(privateChatProvider.notifier).loadContacts();
+      });
+    }
 
     final contacts = state.filteredContacts
         .where((contact) => contact.id != currentUser?.id)
         .toList();
-    final isDark = context.isDarkMode;
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -149,7 +167,7 @@ class _PrivateChatListScreenState
     bool isDark,
   ) {
     if (state.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const DynamicLoadingScreen();
     }
     
     if (state.error != null) {

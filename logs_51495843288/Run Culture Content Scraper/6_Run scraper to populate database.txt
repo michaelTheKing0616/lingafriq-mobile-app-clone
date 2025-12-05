@@ -1,0 +1,34 @@
+﻿2025-12-05T11:31:50.8303376Z ##[group]Run echo "🚀 Starting daily content scraper..."
+2025-12-05T11:31:50.8303827Z [36;1mecho "🚀 Starting daily content scraper..."[0m
+2025-12-05T11:31:50.8304540Z [36;1mnode -e "import('./dist/services/cultureScraper.service.js').then(m => m.runScraperJob()).catch(err => { console.error('Scraper error:', err); process.exit(1); })"[0m
+2025-12-05T11:31:50.8305215Z [36;1mecho "✅ Daily scraping complete!"[0m
+2025-12-05T11:31:50.8338204Z shell: /usr/bin/bash -e {0}
+2025-12-05T11:31:50.8338444Z env:
+2025-12-05T11:31:50.8338965Z   MONGODB_URI: ***
+2025-12-05T11:31:50.8339442Z   JWT_SECRET: ***
+2025-12-05T11:31:50.8339701Z   NEWS_API_KEY: ***
+2025-12-05T11:31:50.8339903Z   NODE_ENV: production
+2025-12-05T11:31:50.8340130Z ##[endgroup]
+2025-12-05T11:31:50.8394811Z 🚀 Starting daily content scraper...
+2025-12-05T11:31:51.1276453Z Starting culture content scraper...
+2025-12-05T11:31:51.1285391Z Connecting to MongoDB...
+2025-12-05T11:32:21.1420395Z Scraper error: MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+2025-12-05T11:32:21.1422185Z     at _handleConnectionErrors (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:755:11)
+2025-12-05T11:32:21.1423721Z     at NativeConnection.openUri (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:730:11)
+2025-12-05T11:32:21.1425544Z     at async Module.runScraperJob (file:///home/runner/work/node-backend/node-backend/dist/services/cultureScraper.service.js:192:9) {
+2025-12-05T11:32:21.1426577Z   reason: TopologyDescription {
+2025-12-05T11:32:21.1426989Z     type: 'Unknown',
+2025-12-05T11:32:21.1427508Z     servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-05T11:32:21.1428034Z     stale: false,
+2025-12-05T11:32:21.1428369Z     compatible: true,
+2025-12-05T11:32:21.1428770Z     heartbeatFrequencyMS: 10000,
+2025-12-05T11:32:21.1429358Z     localThresholdMS: 15,
+2025-12-05T11:32:21.1429733Z     setName: null,
+2025-12-05T11:32:21.1430061Z     maxElectionId: null,
+2025-12-05T11:32:21.1430495Z     maxSetVersion: null,
+2025-12-05T11:32:21.1430878Z     commonWireVersion: 0,
+2025-12-05T11:32:21.1431330Z     logicalSessionTimeoutMinutes: null
+2025-12-05T11:32:21.1431704Z   },
+2025-12-05T11:32:21.1431947Z   code: undefined
+2025-12-05T11:32:21.1432223Z }
+2025-12-05T11:32:21.1492195Z ##[error]Process completed with exit code 1.

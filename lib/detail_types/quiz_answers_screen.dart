@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/quiz_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -98,19 +99,25 @@ class QuizAnswersScreen extends ConsumerWidget {
                         onTap: () async {
                           if (allCorrect) {
                             if (!isCompleted) {
-                            final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
-                            if (!success) {
-                              "Failed to mark quiz as complete".log("quiz_answers_screen");
+                              final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                              if (!success) {
+                                "Failed to mark quiz as complete".log("quiz_answers_screen");
+                              } else {
+                                // Calculate points earned (estimate: 10 points per correct answer)
+                                final pointsEarned = correctAnswers.length * 10;
+                                // Track progress when quiz is completed
+                                await ProgressIntegration.onQuizCompleted(ref, wordsLearned: quiz.length, pointsEarned: pointsEarned);
+                              }
+                            }
+                            if (context.mounted) {
+                              Navigator.of(context).pop(true);
+                            }
+                          } else {
+                            if (context.mounted) {
+                              Navigator.of(context).pop(true);
                             }
                           }
-                          if (context.mounted) {
-                            Navigator.of(context).pop(true);
-                          }
-                        }
-                        if (context.mounted) {
-                          Navigator.of(context).pop(true);
-                        }
-                      },
+                        },
                         text: allCorrect ? "Continue" : "Try Again",
                       ).pOnly(bottom: 24, top: 16),
                     ],

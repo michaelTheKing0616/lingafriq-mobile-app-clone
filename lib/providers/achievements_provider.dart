@@ -226,7 +226,34 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
     if (anyUnlocked) {
       _saveAchievements();
       _saveXP();
+      // Sync unlocked achievements to backend
+      _syncUnlockedAchievements();
+      // Sync XP/Level to backend
+      _syncXPToBackend();
       state = state.copyWith();
+    }
+  }
+
+  Future<void> _syncUnlockedAchievements() async {
+    try {
+      final unlocked = _achievements.where((a) => a.isUnlocked).toList();
+      for (final achievement in unlocked) {
+        // Only sync if recently unlocked (within last minute) to avoid duplicate calls
+        if (achievement.unlockedAt != null &&
+            DateTime.now().difference(achievement.unlockedAt!).inMinutes < 1) {
+          await ref.read(apiProvider.notifier).unlockAchievement(achievement.id);
+        }
+      }
+    } catch (e) {
+      debugPrint('Error syncing unlocked achievements: $e');
+    }
+  }
+
+  Future<void> _syncXPToBackend() async {
+    try {
+      await ref.read(apiProvider.notifier).updateXP(_totalXP, _level);
+    } catch (e) {
+      debugPrint('Error syncing XP to backend: $e');
     }
   }
 

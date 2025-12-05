@@ -6,6 +6,7 @@ import 'package:lingafriq/screens/tabs_view/standings/leader_board_provider.dart
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GlobalProgressScreen extends ConsumerStatefulWidget {
@@ -163,11 +164,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                   ),
                   SizedBox(height: 16.sp),
                   leaderboardState.profiles.isLoading
-                      ? Center(
-                          child: CircularProgressIndicator(
-                            color: AppColors.primaryGreen,
-                          ),
-                        )
+                      ? const DynamicLoadingScreen()
                       : leaderboardState.profiles.hasError
                           ? _buildErrorState(context, isDark)
                           : _buildLeaderboard(context, profiles, isDark),

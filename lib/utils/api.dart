@@ -12,6 +12,7 @@ class Api {
 
   static String updateProfile(int id) => "accounts/auth/users/$id/";
   static const String accountUpdate = "account/update/";
+  static const String updateUserPoints = "account/update_points/";
   // static String deleteUser(int id) => "accounts/auth/users/$id/";
   static String deleteUser(int id) => "/account/user_delete/$id";
   static const String resetPassword = "accounts/auth/users/reset_password/";
@@ -74,10 +75,12 @@ class Api {
   // Progress Tracking & Daily Goals Start
   static const String dailyGoals = "progress/daily_goals/";
   static const String updateDailyGoal = "progress/daily_goals/update/";
+  static const String updateDailyStreak = "progress/daily_goals/update_streak/";
   static const String progressMetrics = "progress/metrics/";
   static const String updateProgressMetrics = "progress/metrics/update/";
   static const String achievements = "progress/achievements/";
   static const String unlockAchievement = "progress/achievements/unlock/";
+  static const String updateXP = "progress/achievements/update_xp/";
   // Progress Tracking & Daily Goals End
 
   // Global Rankings & Statistics Start
@@ -91,12 +94,16 @@ class Api {
   static String cultureMagazineArticlesByCategory(String category) => "culture-magazine/articles?category=$category&published=true";
   static String cultureMagazineFeaturedArticles = "culture-magazine/articles/featured";
   static String cultureMagazineArticleBySlug(String slug) => "culture-magazine/articles/$slug";
+  static String cultureMagazineTrackView(String articleId) => "culture-magazine/articles/$articleId/view";
+  static String cultureMagazineToggleFavorite(String articleId) => "culture-magazine/articles/$articleId/favorite";
   // Culture Magazine End
 
   // Chat & Social Start
   static const String chatRooms = "chat/rooms/";
   static String chatMessages(String room) => "chat/rooms/$room/messages/";
   static const String onlineUsers = "chat/online_users/";
+  static const String aiChatHistory = "chat/ai/history/";
+  static const String syncAiChatHistory = "chat/ai/history/sync/";
   // Chat & Social End
 
   // Loading Screen Start

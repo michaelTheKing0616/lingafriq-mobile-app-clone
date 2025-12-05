@@ -1,0 +1,29 @@
+﻿2025-12-05T11:28:16.1490635Z ##[group]Run actions/setup-node@v4
+2025-12-05T11:28:16.1491863Z with:
+2025-12-05T11:28:16.1492627Z   node-version: 18.x
+2025-12-05T11:28:16.1493481Z   cache: npm
+2025-12-05T11:28:16.1494270Z   always-auth: false
+2025-12-05T11:28:16.1495166Z   check-latest: false
+2025-12-05T11:28:16.1496561Z   token: ***
+2025-12-05T11:28:16.1497353Z env:
+2025-12-05T11:28:16.1498095Z   NODE_VERSION: 18.x
+2025-12-05T11:28:16.1498961Z ##[endgroup]
+2025-12-05T11:28:16.3422936Z Attempting to download 18.x...
+2025-12-05T11:28:17.1473463Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-05T11:28:17.7621421Z Extracting ...
+2025-12-05T11:28:17.7751907Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/6b37e98b-6aaa-42c7-ac66-e71c7b14e543 -f /home/runner/work/_temp/ff4d98e8-90c9-4c27-87db-aa734064d63e
+2025-12-05T11:28:18.8587997Z Adding to the cache ...
+2025-12-05T11:28:20.9271884Z ##[group]Environment details
+2025-12-05T11:28:21.2218608Z node: v18.20.8
+2025-12-05T11:28:21.2221011Z npm: 10.8.2
+2025-12-05T11:28:21.2223439Z yarn: 1.22.22
+2025-12-05T11:28:21.2226399Z ##[endgroup]
+2025-12-05T11:28:21.2249867Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-05T11:28:21.3455287Z /home/runner/.npm
+2025-12-05T11:28:21.6609228Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T11:28:22.9776062Z Received 4194304 of 64730011 (6.5%), 4.0 MBs/sec
+2025-12-05T11:28:23.6412443Z Received 64730011 of 64730011 (100.0%), 37.1 MBs/sec
+2025-12-05T11:28:23.6413786Z Cache Size: ~62 MB (64730011 B)
+2025-12-05T11:28:23.6593769Z [command]/usr/bin/tar -xf /home/runner/work/_temp/83ff2ad6-4846-44d2-9cd6-60d8732ed4fe/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-05T11:28:24.0476673Z Cache restored successfully
+2025-12-05T11:28:24.0613085Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d

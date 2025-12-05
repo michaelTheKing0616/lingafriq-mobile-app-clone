@@ -7,7 +7,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 /// Helper class to integrate progress tracking into activities
 class ProgressIntegration {
   /// Call this when a lesson is completed
-  static Future<void> onLessonCompleted(WidgetRef ref, {String? language}) async {
+  static Future<void> onLessonCompleted(WidgetRef ref, {String? language, int? pointsEarned}) async {
     // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('lessons', 1);
     
@@ -21,6 +21,15 @@ class ProgressIntegration {
     // Track progress (estimate 5 words learned per lesson)
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(5, language: language);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('lessons', 5.0); // 5 minutes
+    
+    // Update points if earned
+    if (pointsEarned != null && pointsEarned > 0) {
+      try {
+        await ref.read(apiProvider.notifier).updateUserPoints(pointsEarned);
+      } catch (e) {
+        // Silently fail
+      }
+    }
     
     // Sync progress metrics with backend
     try {
@@ -39,7 +48,7 @@ class ProgressIntegration {
   }
 
   /// Call this when a quiz is completed
-  static Future<void> onQuizCompleted(WidgetRef ref, {int? wordsLearned}) async {
+  static Future<void> onQuizCompleted(WidgetRef ref, {int? wordsLearned, int? pointsEarned}) async {
     // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('quizzes', 1);
     
@@ -53,6 +62,15 @@ class ProgressIntegration {
     // Track progress
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(wordsLearned ?? 3);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('quizzes', 3.0); // 3 minutes
+    
+    // Update points if earned
+    if (pointsEarned != null && pointsEarned > 0) {
+      try {
+        await ref.read(apiProvider.notifier).updateUserPoints(pointsEarned);
+      } catch (e) {
+        // Silently fail
+      }
+    }
     
     // Sync with backend
     try {
@@ -71,7 +89,7 @@ class ProgressIntegration {
   }
 
   /// Call this when a game is completed
-  static Future<void> onGameCompleted(WidgetRef ref, {int? wordsLearned}) async {
+  static Future<void> onGameCompleted(WidgetRef ref, {int? wordsLearned, int? pointsEarned}) async {
     // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('games', 1);
     
@@ -85,6 +103,15 @@ class ProgressIntegration {
     // Track progress
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(wordsLearned ?? 2);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('games', 2.0); // 2 minutes
+    
+    // Update points if earned
+    if (pointsEarned != null && pointsEarned > 0) {
+      try {
+        await ref.read(apiProvider.notifier).updateUserPoints(pointsEarned);
+      } catch (e) {
+        // Silently fail
+      }
+    }
     
     // Sync with backend
     try {
