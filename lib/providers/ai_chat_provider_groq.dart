@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
+import 'api_provider.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -1032,7 +1033,9 @@ Return only JSON.
       
       final mode = _mode == PolieMode.translation ? 'translation' : 'tutor';
       final messagesJson = _messages.map((msg) => msg.toJson()).toList();
-      final success = await ref.read(apiProvider.notifier).syncAiChatHistory(mode, messagesJson);
+      // Access apiProvider through ref - need to import it
+      final api = ref.read(apiProvider.notifier);
+      final success = await api.syncAiChatHistory(mode, messagesJson);
       if (success) {
         debugPrint('AI chat history synced to backend for $mode mode');
       }

@@ -87,7 +87,7 @@ class CoursesTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const DynamicLoadingScreen(),
+                  loading: () => DynamicLoadingScreen(),
                 ),
               ),
             ],

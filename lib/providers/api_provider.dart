@@ -1075,13 +1075,22 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  // Culture Content API Methods
+  // Culture Content API Methods (deprecated - use CultureMagazineService instead)
   Future<List<Map<String, dynamic>>> getCultureContent({String? type}) async {
     try {
-      final url = type != null ? Api.cultureContentByType(type) : Api.cultureContent;
+      // Use Culture Magazine API endpoint
+      String url = Api.cultureMagazineArticles;
+      if (type != null) {
+        url = Api.cultureMagazineArticlesByCategory(type);
+      }
       final res = await ref.read(client).get(url);
       if (res.statusCode != 200) throw res.data;
-      return List<Map<String, dynamic>>.from(res.data);
+      final data = res.data;
+      // Handle paginated response
+      if (data is Map && data.containsKey('data') && data['data'] is Map && data['data'].containsKey('docs')) {
+        return List<Map<String, dynamic>>.from(data['data']['docs']);
+      }
+      return List<Map<String, dynamic>>.from(data);
     } catch (e) {
       rethrow;
     }
@@ -1089,9 +1098,14 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<Map<String, dynamic>> getCultureContentById(String id) async {
     try {
-      final res = await ref.read(client).get(Api.cultureContentById(id));
+      // Use slug-based endpoint - if id is not a slug, this might need adjustment
+      final res = await ref.read(client).get(Api.cultureMagazineArticleBySlug(id));
       if (res.statusCode != 200) throw res.data;
-      return res.data as Map<String, dynamic>;
+      final data = res.data;
+      if (data is Map && data.containsKey('data')) {
+        return data['data'] as Map<String, dynamic>;
+      }
+      return data as Map<String, dynamic>;
     } catch (e) {
       rethrow;
     }
