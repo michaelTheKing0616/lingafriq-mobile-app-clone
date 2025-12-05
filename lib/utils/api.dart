@@ -86,11 +86,12 @@ class Api {
   static const String topLanguages = "global/top_languages/";
   // Global Rankings & Statistics End
 
-  // Culture Content Start
-  static const String cultureContent = "culture/content/";
-  static String cultureContentByType(String type) => "culture/content/?type=$type";
-  static String cultureContentById(String id) => "culture/content/$id/";
-  // Culture Content End
+  // Culture Magazine Start
+  static const String cultureMagazineArticles = "culture-magazine/articles";
+  static String cultureMagazineArticlesByCategory(String category) => "culture-magazine/articles?category=$category&published=true";
+  static String cultureMagazineFeaturedArticles = "culture-magazine/articles/featured";
+  static String cultureMagazineArticleBySlug(String slug) => "culture-magazine/articles/$slug";
+  // Culture Magazine End
 
   // Chat & Social Start
   static const String chatRooms = "chat/rooms/";

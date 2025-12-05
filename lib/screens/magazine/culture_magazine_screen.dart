@@ -5,6 +5,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/services/culture_magazine_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -19,11 +20,47 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   String _selectedCategory = 'All';
+  
+  // API state
+  List<CultureContent> _allArticles = [];
+  List<CultureContent> _featuredArticles = [];
+  bool _isLoading = true;
+  String? _errorMessage;
+  late CultureMagazineService _cultureService;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this);
+    _tabController = TabController(length: 6, vsync: this); // Updated for 6 categories
+    _cultureService = CultureMagazineService(ref);
+    _loadArticles();
+  }
+  
+  Future<void> _loadArticles() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+    
+    try {
+      // Load all articles and featured articles in parallel
+      final results = await Future.wait([
+        _cultureService.getArticles(limit: 100),
+        _cultureService.getFeaturedArticles(),
+      ]);
+      
+      setState(() {
+        _allArticles = results[0];
+        _featuredArticles = results[1];
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load articles. Please try again.';
+        _isLoading = false;
+      });
+      debugPrint('Error loading articles: $e');
+    }
   }
 
   @override
@@ -46,9 +83,48 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
   Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
     
-    // Mock data - replace with actual API calls
-    final featuredContent = _getMockFeaturedContent();
-    final allContent = _getMockContent();
+    // Show loading indicator
+    if (_isLoading) {
+      return Scaffold(
+        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        body: Center(
+          child: CircularProgressIndicator(
+            color: AppColors.primaryGreen,
+          ),
+        ),
+      );
+    }
+    
+    // Show error message
+    if (_errorMessage != null) {
+      return Scaffold(
+        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                _errorMessage!,
+                style: TextStyle(
+                  color: isDark ? Colors.white : Colors.black87,
+                  fontSize: 16.sp,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 16.h),
+              ElevatedButton(
+                onPressed: _loadArticles,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    
+    // Use API data
+    final featuredContent = _featuredArticles;
+    final allContent = _allArticles;
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -143,8 +219,13 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           gradient: const LinearGradient(
                             colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
                           ),
-                          articles: 24,
-                          onTap: () {},
+                          articles: _allArticles.where((a) => a.type == ContentType.music).length,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = 'Music';
+                              _tabController.animateTo(1);
+                            });
+                          },
                           isDark: isDark,
                         ),
                         SizedBox(height: 2.h),
@@ -155,20 +236,30 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           gradient: const LinearGradient(
                             colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
                           ),
-                          articles: 18,
-                          onTap: () {},
+                          articles: _allArticles.where((a) => a.type == ContentType.story || a.type == ContentType.lore).length,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = 'Stories';
+                              _tabController.animateTo(2);
+                            });
+                          },
                           isDark: isDark,
                         ),
                         SizedBox(height: 2.h),
                         _CategoryCard(
-                          id: 'news',
-                          name: 'News',
+                          id: 'articles',
+                          name: 'Articles',
                           icon: Icons.newspaper_rounded,
                           gradient: const LinearGradient(
                             colors: [Color(0xFFFCD116), Color(0xFFFF6B35)],
                           ),
-                          articles: 32,
-                          onTap: () {},
+                          articles: _allArticles.where((a) => a.type == ContentType.article).length,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = 'Articles';
+                              _tabController.animateTo(3);
+                            });
+                          },
                           isDark: isDark,
                         ),
                         SizedBox(height: 2.h),
@@ -179,20 +270,47 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                           gradient: const LinearGradient(
                             colors: [Color(0xFF7B2CBF), Color(0xFFCE1126)],
                           ),
-                          articles: 15,
-                          onTap: () {},
+                          articles: _allArticles.where((a) => a.type == ContentType.lore).length,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = 'History';
+                              _tabController.animateTo(4);
+                            });
+                          },
                           isDark: isDark,
                         ),
                         SizedBox(height: 2.h),
                         _CategoryCard(
-                          id: 'art',
-                          name: 'Art',
-                          icon: Icons.palette_rounded,
+                          id: 'festivals',
+                          name: 'Festivals',
+                          icon: Icons.celebration_rounded,
                           gradient: const LinearGradient(
                             colors: [Color(0xFFFF6B35), Color(0xFF7B2CBF)],
                           ),
-                          articles: 21,
-                          onTap: () {},
+                          articles: _allArticles.where((a) => a.type == ContentType.festival).length,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = 'Festivals';
+                              _tabController.animateTo(5);
+                            });
+                          },
+                          isDark: isDark,
+                        ),
+                        SizedBox(height: 2.h),
+                        _CategoryCard(
+                          id: 'recipes',
+                          name: 'Recipes',
+                          icon: Icons.restaurant_rounded,
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF00A8E8), Color(0xFF007A3D)],
+                          ),
+                          articles: _allArticles.where((a) => a.type == ContentType.recipe).length,
+                          onTap: () {
+                            setState(() {
+                              _selectedCategory = 'Recipes';
+                              _tabController.animateTo(6);
+                            });
+                          },
                           isDark: isDark,
                         ),
                       ],
