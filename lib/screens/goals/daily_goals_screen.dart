@@ -3,7 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
@@ -327,7 +328,9 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
         navigation.naviateTo(const GamesScreen());
         break;
       case 'chat_minutes':
-        navigation.naviateTo(const AiChatScreen());
+        navigation.naviateTo(const AiChatLanguageSetupScreen(
+          initialMode: PolieMode.translation,
+        ));
         break;
       case 'words_learned':
         // Navigate to vocabulary/words screen

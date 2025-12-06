@@ -7,7 +7,8 @@ import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
 import 'package:lingafriq/screens/games/language_games_screen.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/global/global_progress_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
@@ -316,7 +317,11 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const AiChatScreen()),
+                            MaterialPageRoute(
+                              builder: (_) => const AiChatLanguageSetupScreen(
+                                initialMode: PolieMode.translation,
+                              ),
+                            ),
                           );
                         },
                       ),

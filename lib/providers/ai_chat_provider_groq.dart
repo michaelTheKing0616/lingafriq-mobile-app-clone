@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
+import '../utils/diacritics_enforcer.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -503,9 +504,12 @@ When the user is practicing, end your responses with a question or task to keep 
         _turn = ConversationTurn.user;
         state = state.copyWith(isLoading: false);
 
+        final correctedOutput =
+            DiacriticsEnforcer.enforce(output.trim(), _selectedLanguage);
+
         final assistantMsg = ChatMessage(
           role: 'assistant',
-          content: output.trim(),
+          content: correctedOutput,
           timestamp: DateTime.now(),
         );
 
