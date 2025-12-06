@@ -278,9 +278,9 @@ class AiChatSelectScreen extends HookConsumerWidget {
                       colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
                     ),
                     badge: 'Quick & Easy',
-                    onTap: () {
+                    onTap: () async {
                       // Set translator mode and show language selector
-                      ref.read(groqChatProvider.notifier).setMode(PolieMode.translation);
+                      await ref.read(groqChatProvider.notifier).setMode(PolieMode.translation);
                       _showLanguageSelector(context, ref, PolieMode.translation);
                     },
                     isDark: isDark,
@@ -295,9 +295,9 @@ class AiChatSelectScreen extends HookConsumerWidget {
                       colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
                     ),
                     badge: 'Interactive Learning',
-                    onTap: () {
+                    onTap: () async {
                       // Set tutor mode and show language selector
-                      ref.read(groqChatProvider.notifier).setMode(PolieMode.tutor);
+                      await ref.read(groqChatProvider.notifier).setMode(PolieMode.tutor);
                       _showLanguageSelector(context, ref, PolieMode.tutor);
                     },
                     isDark: isDark,

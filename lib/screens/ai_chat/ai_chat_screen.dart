@@ -526,9 +526,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 ),
               ],
               selected: {chatNotifier.mode},
-              onSelectionChanged: (selection) {
+              onSelectionChanged: (selection) async {
                 if (selection.isEmpty) return;
-                chatNotifier.setMode(selection.first);
+                await chatNotifier.setMode(selection.first);
               },
               style: ButtonStyle(
                 visualDensity: VisualDensity.compact,

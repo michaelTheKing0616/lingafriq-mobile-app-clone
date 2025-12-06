@@ -7,7 +7,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
-import 'package:loading_overlay_pro/loading_overlay_pro.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 import '../models/word_correction_model.dart';
 import '../providers/navigation_provider.dart';
@@ -81,18 +81,7 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
 
     ref.watch(_choicesProvider);
 
-    return LoadingOverlayPro(
-      isLoading: isLoading,
-      child: LoadingOverlayPro(
-        isLoading: showIndicator.value['isLoading'] as bool,
-        progressIndicator: Material(
-          color: Colors.transparent,
-          child: Builder(builder: (context) {
-            final isCorrect = showIndicator.value['isCorrect'] as bool;
-            return singleQuizIndicatorBuilder(isCorrect);
-          }),
-        ),
-        child: PopScope(
+    final content = PopScope(
           canPop: true,
           onPopInvoked: (didPop) {
             if (!didPop) {
@@ -258,6 +247,31 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
           ),
         ),
       ),
+    );
+
+    return Stack(
+      children: [
+        content,
+        if (isLoading)
+          const Positioned.fill(
+            child: IgnorePointer(child: DynamicLoadingScreen()),
+          ),
+        if (showIndicator.value['isLoading'] as bool)
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Container(
+                color: Colors.black.withOpacity(0.35),
+                alignment: Alignment.center,
+                child: Material(
+                  color: Colors.transparent,
+                  child: singleQuizIndicatorBuilder(
+                    showIndicator.value['isCorrect'] as bool,
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

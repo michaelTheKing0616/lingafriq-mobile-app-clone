@@ -140,15 +140,30 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   }
 
   static const String _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
-  // Groq model names to try in order
-  // Note: If Aya 8B is not available on Groq, it will try alternatives
+  // Groq model names to try in order (favor accuracy for African languages)
+  // Note: Aya 8B can be less reliable for some translations (e.g., Yoruba),
+  // so we prefer the larger Llama model first for quality, then fall back.
   static const List<String> _modelNames = [
-    'aya-8b',                    // Primary: Aya 8B model (if available)
-    'cohere/aya-8b',             // Alternative format
-    'llama-3.1-8b-instant',      // Fallback: Fast Llama model
-    'llama-3.1-70b-versatile',  // Fallback: More capable model
+    'llama-3.1-70b-versatile',   // Highest quality, multilingual, free on Groq
+    'llama-3.1-8b-instant',      // Faster fallback
+    'aya-8b',                    // Cohere Aya 8B (if available)
+    'cohere/aya-8b',             // Alternate naming
   ];
   static String _modelName = _modelNames[0];
+
+  // Supported African languages list (text + speech-friendly where possible)
+  static const List<Map<String, String>> _supportedLanguageOptions = [
+    {'name': 'Yoruba', 'flag': '🇳🇬', 'code': 'yo'},
+    {'name': 'Hausa', 'flag': '🇳🇬', 'code': 'ha'},
+    {'name': 'Igbo', 'flag': '🇳🇬', 'code': 'ig'},
+    {'name': 'Swahili', 'flag': '🇰🇪', 'code': 'sw'},
+    {'name': 'Zulu', 'flag': '🇿🇦', 'code': 'zu'},
+    {'name': 'Xhosa', 'flag': '🇿🇦', 'code': 'xh'},
+    {'name': 'Amharic', 'flag': '🇪🇹', 'code': 'am'},
+    {'name': 'Twi', 'flag': '🇬🇭', 'code': 'tw'},
+    {'name': 'Afrikaans', 'flag': '🇿🇦', 'code': 'af'},
+    {'name': 'Nigerian Pidgin', 'flag': '🇳🇬', 'code': 'pcm'},
+  ];
 
   // Language and System Prompt
   String _selectedLanguage = 'Yoruba';
@@ -185,6 +200,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
   String get selectedLanguage => _selectedLanguage;
+  List<Map<String, String>> get supportedLanguageOptions => List.unmodifiable(_supportedLanguageOptions);
+  List<String> get supportedLanguages =>
+      _supportedLanguageOptions.map((e) => e['name'] ?? '').where((e) => e.isNotEmpty).toList();
   bool get hasMessages => _messages.isNotEmpty;
   bool get isBusy => state.isLoading;
   CEFRInfo get cefrInfo => _cefrInfo;
@@ -218,6 +236,7 @@ CRITICAL RULES FOR TRANSLATION MODE:
 2. If user says "How do you say X", immediately provide the $_targetLanguage translation
 3. If user gives a phrase/sentence, immediately translate it
 4. Be direct and instant - don't ask questions unless the input is genuinely ambiguous
+5. For Yoruba and other tonal languages, include correct tone marks/diacritics. If meaning is ambiguous, briefly offer the most likely option first, then 1 short alternative on the next line.
 5. Format your response clearly:
    
    $_targetLanguage: [translation]
@@ -294,11 +313,11 @@ When the user is practicing, end your responses with a question or task to keep 
   String get sourceLanguage => _sourceLanguage;
   String get targetLanguage => _targetLanguage;
 
-  void setMode(PolieMode mode) {
+  Future<void> setMode(PolieMode mode) async {
     if (_mode == mode) return;
     
     // Save current chat history before switching modes
-    _saveChatHistory();
+    await _saveChatHistory();
     
     // Switch to new mode
     _mode = mode;
@@ -306,7 +325,7 @@ When the user is practicing, end your responses with a question or task to keep 
     
     // Clear current messages and load history for new mode
     _messages.clear();
-    _loadChatHistory();
+    await _loadChatHistory();
     _initializeSystemPrompt();
     
     // Notify listeners of the change
@@ -315,8 +334,8 @@ When the user is practicing, end your responses with a question or task to keep 
     debugPrint('Switched to ${mode == PolieMode.translation ? "Translation" : "Tutor"} mode. Loaded ${_messages.length} messages.');
   }
 
-  void setTutorMode(bool enabled) {
-    setMode(enabled ? PolieMode.tutor : PolieMode.translation);
+  Future<void> setTutorMode(bool enabled) async {
+    await setMode(enabled ? PolieMode.tutor : PolieMode.translation);
   }
 
   void interruptAI() {
