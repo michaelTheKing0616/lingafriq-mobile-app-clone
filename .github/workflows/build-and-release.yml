@@ -379,10 +379,10 @@ jobs:
             echo "🔐 Building signed IPA..."
             flutter build ipa $build_args
           else
-            # Build archive without signing (for manual signing later)
-            echo "⚠️ No signing credentials found. Building archive without signing..."
+            # Build unsigned IPA so artifact exists for manual signing
+            echo "⚠️ No signing credentials found. Building unsigned IPA..."
             echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
-            flutter build ios --no-codesign $build_args
+            flutter build ipa --no-codesign $build_args
           fi
 
       - name: 🚚 Package iOS build with version
