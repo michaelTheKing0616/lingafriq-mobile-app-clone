@@ -82,169 +82,156 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
     ref.watch(_choicesProvider);
 
     final content = PopScope(
-          canPop: true,
-          onPopInvoked: (didPop) {
-            if (!didPop) {
-              ref.read(navigationProvider).pop();
-            }
-          },
-          child: Scaffold(
-            body: Column(
-              children: [
-                TopGradientBox(
-                  borderRadius: 0,
-                  child: Row(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          ref.read(navigationProvider).pop();
+        }
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            TopGradientBox(
+              borderRadius: 0,
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const BackButton(color: Colors.white),
-                        widget.title.text.xl2.semiBold
-                            .maxLines(2)
-                            .ellipsis
-                            .color(Colors.white)
-                            .make()
-                            .p16(),
-                      ],
-                    ).expand(),
-                    PointsAndProfileImageBuilder(
-                      size: Size(0.07.sh, 0.07.sh),
-                    ),
-                    16.widthBox,
-                  ],
-                ),
+                      const BackButton(color: Colors.white),
+                      widget.title.text.xl2.semiBold
+                          .maxLines(2)
+                          .ellipsis
+                          .color(Colors.white)
+                          .make()
+                          .p16(),
+                    ],
+                  ).expand(),
+                  PointsAndProfileImageBuilder(
+                    size: Size(0.07.sh, 0.07.sh),
+                  ),
+                  16.widthBox,
+                ],
               ),
-              SafeArea(
-                top: false,
-                child: Column(
-                  children: [
-                    Card(
-                      color: context.isDarkMode ? context.cardColor : Colors.white,
-                      elevation: 12,
-                      shadowColor: Colors.black38,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // description.text.xl.make(),
-                          // 8.heightBox,
-                          Container(
-                            color: context.adaptive5,
-                            padding: const EdgeInsets.all(12),
-                            child: RichText(
-                              textAlign: TextAlign.left,
-                              text: TextSpan(
-                                style: TextStyle(fontSize: 19.sp, height: 1.5),
-                                children: jsonStructure.asMap().entries.map((value) {
-                                  final e = value.value;
-                                  // final choices = e.choices;
-                                  final question = e.question;
-                                  final description = e.description;
-                                  final answer = e.answer;
-                                  final selected = selectedAnswers[value.key].value[question];
-                                  const orangeColor = Color(0xffE26C23);
+            ),
+            SafeArea(
+              top: false,
+              child: Column(
+                children: [
+                  Card(
+                    color: context.isDarkMode ? context.cardColor : Colors.white,
+                    elevation: 12,
+                    shadowColor: Colors.black38,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          color: context.adaptive5,
+                          padding: const EdgeInsets.all(12),
+                          child: RichText(
+                            textAlign: TextAlign.left,
+                            text: TextSpan(
+                              style: TextStyle(fontSize: 19.sp, height: 1.5),
+                              children: jsonStructure.asMap().entries.map((value) {
+                                final e = value.value;
+                                final question = e.question;
+                                final description = e.description;
+                                final answer = e.answer;
+                                final selected = selectedAnswers[value.key].value[question];
+                                const orangeColor = Color(0xffE26C23);
 
-                                  final color = (() {
-                                    if (showResults.value) {
-                                      return selected == answer
-                                          ? const Color(0XFF009245)
-                                          : const Color(0XFFFF0000);
-                                    }
-                                    return selected != null ? const Color(0XFF009245) : orangeColor;
-                                  }).call();
+                                final color = (() {
+                                  if (showResults.value) {
+                                    return selected == answer
+                                        ? const Color(0XFF009245)
+                                        : const Color(0XFFFF0000);
+                                  }
+                                  return selected != null ? const Color(0XFF009245) : orangeColor;
+                                }).call();
 
-                                  return TextSpan(
-                                    children: [
-                                      description.textSpan.color(context.adaptive75).make(),
-                                      "${selected ?? question} "
-                                          .textSpan
-                                          .medium
-                                          .tap(() async {
-                                            final answer = await _ChoicesSheet.showChoicesSheet(
-                                              context,
-                                              selectedAnswers.map((e) => e.value).toList(),
-                                            );
-                                            if (answer != null) {
-                                              showResults.value = false;
-                                            }
-                                            selectedAnswers[jsonStructure.indexOf(e)].value = {
-                                              question: answer
-                                            };
-                                          })
-                                          .color(color)
-                                          .make(),
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
+                                return TextSpan(
+                                  children: [
+                                    description.textSpan.color(context.adaptive75).make(),
+                                    "${selected ?? question} "
+                                        .textSpan
+                                        .medium
+                                        .tap(() async {
+                                          final answer = await _ChoicesSheet.showChoicesSheet(
+                                            context,
+                                            selectedAnswers.map((e) => e.value).toList(),
+                                          );
+                                          if (answer != null) {
+                                            showResults.value = false;
+                                          }
+                                          selectedAnswers[jsonStructure.indexOf(e)].value = {
+                                            question: answer
+                                          };
+                                        })
+                                        .color(color)
+                                        .make(),
+                                  ],
+                                );
+                              }).toList(),
                             ),
                           ),
-                        ],
-                      ).p12(),
-                    ).p16().scrollVertical().expand(),
-                    12.heightBox,
-                    PrimaryButton(
-                      width: 0.6.sw,
-                      onTap: () async {
-                        final incorrectAnswers = <String>[];
-                        // ref
-                        //     .read(_choicesProvider.notifier)
-                        //     .setChoices(List<String>.from(widget.wordCorrections.first.choices));
-                        bool allCorrect = true;
-                        for (var i = 0; i < selectedAnswers.length; i++) {
-                          final selected = selectedAnswers[i].value;
-                          selected.log("Selected");
-                          final correct = correctAnswers[i].value;
-                          final equals = mapEquals(selected, correct);
-                          if (!equals) {
-                            incorrectAnswers.add(correct.values.last);
-                            allCorrect = false;
-                            // selectedAnswers[i].value = null;
-                            selectedAnswers[i].value = {
-                              selectedAnswers[i].value.keys.first: null,
-                            };
-                            // break;
+                        ),
+                      ],
+                    ).p12(),
+                  ).p16().scrollVertical().expand(),
+                  12.heightBox,
+                  PrimaryButton(
+                    width: 0.6.sw,
+                    onTap: () async {
+                      final incorrectAnswers = <String>[];
+                      bool allCorrect = true;
+                      for (var i = 0; i < selectedAnswers.length; i++) {
+                        final selected = selectedAnswers[i].value;
+                        selected.log("Selected");
+                        final correct = correctAnswers[i].value;
+                        final equals = mapEquals(selected, correct);
+                        if (!equals) {
+                          incorrectAnswers.add(correct.values.last);
+                          allCorrect = false;
+                          selectedAnswers[i].value = {
+                            selectedAnswers[i].value.keys.first: null,
+                          };
+                        }
+                      }
+                      if (allCorrect) {
+                        hasSubmitted.value = false;
+                        showResults.value = true;
+                        showIndicator.value = {"isLoading": true, "isCorrect": true};
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        showIndicator.value = {"isLoading": false, "isCorrect": true};
+                        if (!widget.isCompleted) {
+                          final success = await ref.read(apiProvider.notifier).markAsComplete(widget.endpointToHit);
+                          if (!success) {
+                            "Failed to mark correction as complete".log("correction_screen");
                           }
                         }
-                        // ref
-                        //     .read(_choicesProvider.notifier)
-                        //     .setChoices(List<String>.from(incorrectAnswers));
-                        if (allCorrect) {
-                          hasSubmitted.value = false;
-                          showResults.value = true;
-                          showIndicator.value = {"isLoading": true, "isCorrect": true};
-                          await Future.delayed(const Duration(milliseconds: 500));
-                          showIndicator.value = {"isLoading": false, "isCorrect": true};
-                          if (!widget.isCompleted) {
-                            final success = await ref.read(apiProvider.notifier).markAsComplete(widget.endpointToHit);
-                            if (!success) {
-                              "Failed to mark correction as complete".log("correction_screen");
-                            }
-                          }
+                        if (context.mounted) {
+                          Navigator.of(context).pop(true);
+                        }
+                      } else {
+                        showIndicator.value = {"isLoading": true, "isCorrect": false};
+                        await Future.delayed(const Duration(milliseconds: 500));
+                        showIndicator.value = {"isLoading": false, "isCorrect": false};
+                        if (widget.isTakeQuiz) {
                           if (context.mounted) {
-                            Navigator.of(context).pop(true);
+                            Navigator.of(context).pop(false);
                           }
-                        } else {
-                          showIndicator.value = {"isLoading": true, "isCorrect": false};
-                          await Future.delayed(const Duration(milliseconds: 500));
-                          showIndicator.value = {"isLoading": false, "isCorrect": false};
-                          if (widget.isTakeQuiz) {
-                            if (context.mounted) {
-                              Navigator.of(context).pop(false);
-                            }
-                            return;
-                          }
-                          showResults.value = true;
-                          hasSubmitted.value = true;
+                          return;
                         }
-                      },
-                      text: (hasSubmitted.value) ? "Try Again" : "Continue",
-                    ),
-                  ],
-                ),
-              ).expand()
-            ],
-          ),
-          ),
+                        showResults.value = true;
+                        hasSubmitted.value = true;
+                      }
+                    },
+                    text: (hasSubmitted.value) ? "Try Again" : "Continue",
+                  ),
+                ],
+              ),
+            ).p16(),
+          ],
         ),
       ),
     );
