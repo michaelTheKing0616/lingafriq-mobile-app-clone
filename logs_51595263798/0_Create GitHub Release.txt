@@ -1,0 +1,209 @@
+﻿2025-12-06T14:09:41.0658317Z Current runner version: '2.329.0'
+2025-12-06T14:09:41.0683559Z ##[group]Runner Image Provisioner
+2025-12-06T14:09:41.0684435Z Hosted Compute Agent
+2025-12-06T14:09:41.0684951Z Version: 20251124.448
+2025-12-06T14:09:41.0685629Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-06T14:09:41.0686292Z Build Date: 2025-11-24T21:16:26Z
+2025-12-06T14:09:41.0686879Z ##[endgroup]
+2025-12-06T14:09:41.0687429Z ##[group]Operating System
+2025-12-06T14:09:41.0688001Z Ubuntu
+2025-12-06T14:09:41.0688434Z 24.04.3
+2025-12-06T14:09:41.0688921Z LTS
+2025-12-06T14:09:41.0689350Z ##[endgroup]
+2025-12-06T14:09:41.0689832Z ##[group]Runner Image
+2025-12-06T14:09:41.0690441Z Image: ubuntu-24.04
+2025-12-06T14:09:41.0690932Z Version: 20251126.144.1
+2025-12-06T14:09:41.0692158Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-06T14:09:41.0693729Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-06T14:09:41.0694693Z ##[endgroup]
+2025-12-06T14:09:41.0695858Z ##[group]GITHUB_TOKEN Permissions
+2025-12-06T14:09:41.0697651Z Contents: write
+2025-12-06T14:09:41.0698193Z Metadata: read
+2025-12-06T14:09:41.0698774Z PullRequests: write
+2025-12-06T14:09:41.0699290Z ##[endgroup]
+2025-12-06T14:09:41.0701582Z Secret source: Actions
+2025-12-06T14:09:41.0702458Z Prepare workflow directory
+2025-12-06T14:09:41.1094264Z Prepare all required actions
+2025-12-06T14:09:41.1133240Z Getting action download info
+2025-12-06T14:09:41.5612902Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-06T14:09:42.1905850Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2025-12-06T14:09:42.8269222Z Download action repository 'softprops/action-gh-release@v2' (SHA:a06a81a03ee405af7f2048a818ed3f03bbf83c7b)
+2025-12-06T14:09:43.4296035Z Complete job name: Create GitHub Release
+2025-12-06T14:09:43.5029470Z ##[group]Run actions/checkout@v4
+2025-12-06T14:09:43.5030211Z with:
+2025-12-06T14:09:43.5030942Z   token: ***
+2025-12-06T14:09:43.5031478Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.5031948Z   ssh-strict: true
+2025-12-06T14:09:43.5032241Z   ssh-user: git
+2025-12-06T14:09:43.5032546Z   persist-credentials: true
+2025-12-06T14:09:43.5032884Z   clean: true
+2025-12-06T14:09:43.5033190Z   sparse-checkout-cone-mode: true
+2025-12-06T14:09:43.5033536Z   fetch-depth: 1
+2025-12-06T14:09:43.5033825Z   fetch-tags: false
+2025-12-06T14:09:43.5034109Z   show-progress: true
+2025-12-06T14:09:43.5034427Z   lfs: false
+2025-12-06T14:09:43.5034717Z   submodules: false
+2025-12-06T14:09:43.5035013Z   set-safe-directory: true
+2025-12-06T14:09:43.5035610Z ##[endgroup]
+2025-12-06T14:09:43.6213908Z Syncing repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6216876Z ##[group]Getting Git version info
+2025-12-06T14:09:43.6218210Z Working directory is '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-06T14:09:43.6219899Z [command]/usr/bin/git version
+2025-12-06T14:09:43.6291760Z git version 2.52.0
+2025-12-06T14:09:43.6320737Z ##[endgroup]
+2025-12-06T14:09:43.6337753Z Temporarily overriding HOME='/home/runner/work/_temp/a12f9b83-add7-4b9b-921d-f1dafa45d1f5' before making global git config changes
+2025-12-06T14:09:43.6339469Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-06T14:09:43.6353218Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6398251Z Deleting the contents of '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-06T14:09:43.6402531Z ##[group]Initializing the repository
+2025-12-06T14:09:43.6407820Z [command]/usr/bin/git init /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6539555Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-06T14:09:43.6541217Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-06T14:09:43.6542488Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-06T14:09:43.6543309Z hint: call:
+2025-12-06T14:09:43.6543723Z hint:
+2025-12-06T14:09:43.6544332Z hint: 	git config --global init.defaultBranch <name>
+2025-12-06T14:09:43.6544948Z hint:
+2025-12-06T14:09:43.6545595Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-06T14:09:43.6546516Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-06T14:09:43.6547022Z hint:
+2025-12-06T14:09:43.6547324Z hint: 	git branch -m <name>
+2025-12-06T14:09:43.6547653Z hint:
+2025-12-06T14:09:43.6548075Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-06T14:09:43.6549015Z Initialized empty Git repository in /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/.git/
+2025-12-06T14:09:43.6557855Z [command]/usr/bin/git remote add origin https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6598164Z ##[endgroup]
+2025-12-06T14:09:43.6598756Z ##[group]Disabling automatic garbage collection
+2025-12-06T14:09:43.6603321Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-06T14:09:43.6635376Z ##[endgroup]
+2025-12-06T14:09:43.6636226Z ##[group]Setting up auth
+2025-12-06T14:09:43.6642993Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-06T14:09:43.6677462Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-06T14:09:43.7046613Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-06T14:09:43.7082075Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-06T14:09:43.7330334Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-06T14:09:43.7366521Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-06T14:09:43.7623894Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-06T14:09:43.7664820Z ##[endgroup]
+2025-12-06T14:09:43.7665507Z ##[group]Fetching the repository
+2025-12-06T14:09:43.7675042Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +bc214c742e4d2447d4b340fb26b6c1656fcdf774:refs/remotes/origin/main
+2025-12-06T14:09:48.8819499Z From https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:48.8820688Z  * [new ref]         bc214c742e4d2447d4b340fb26b6c1656fcdf774 -> origin/main
+2025-12-06T14:09:48.8852883Z ##[endgroup]
+2025-12-06T14:09:48.8853431Z ##[group]Determining the checkout info
+2025-12-06T14:09:48.8855372Z ##[endgroup]
+2025-12-06T14:09:48.8860517Z [command]/usr/bin/git sparse-checkout disable
+2025-12-06T14:09:48.9079893Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-06T14:09:48.9112403Z ##[group]Checking out the ref
+2025-12-06T14:09:48.9117557Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-06T14:09:49.5879099Z Switched to a new branch 'main'
+2025-12-06T14:09:49.5879961Z branch 'main' set up to track 'origin/main'.
+2025-12-06T14:09:49.5967225Z ##[endgroup]
+2025-12-06T14:09:49.6013713Z [command]/usr/bin/git log -1 --format=%H
+2025-12-06T14:09:49.6039510Z bc214c742e4d2447d4b340fb26b6c1656fcdf774
+2025-12-06T14:09:49.6264309Z ##[group]Run actions/download-artifact@v4
+2025-12-06T14:09:49.6264641Z with:
+2025-12-06T14:09:49.6264828Z   name: android-aab-1.6.0+108
+2025-12-06T14:09:49.6265054Z   path: build/release/android
+2025-12-06T14:09:49.6265546Z   merge-multiple: false
+2025-12-06T14:09:49.6265819Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:49.6266130Z   run-id: 19989453995
+2025-12-06T14:09:49.6266317Z ##[endgroup]
+2025-12-06T14:09:49.8343605Z Downloading single artifact
+2025-12-06T14:09:50.0572577Z Preparing to download the following artifacts:
+2025-12-06T14:09:50.0573915Z - android-aab-1.6.0+108 (ID: 4785865760, Size: 66994147, Expected Digest: sha256:e36447a1c3cdc5e9ca092fe4cacc793246029589e1ee908b1762cdd59ac0b00d)
+2025-12-06T14:09:50.1966557Z Redirecting to blob download url: https://productionresultssa10.blob.core.windows.net/actions-results/71ed843b-8d68-46b7-bafa-7d8a59c72e58/workflow-job-run-027ea6f3-9cdc-5775-b688-ae2840a1d9d7/artifacts/ecab38f00f310e539be021e83cfdf8adc81dd0da54eb14e3b63ebc3b70bb51be.zip
+2025-12-06T14:09:50.1968943Z Starting download of artifact to: /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/build/release/android
+2025-12-06T14:09:50.4704134Z (node:2164) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2025-12-06T14:09:50.4705813Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-12-06T14:09:53.0863492Z SHA256 digest of downloaded artifact is e36447a1c3cdc5e9ca092fe4cacc793246029589e1ee908b1762cdd59ac0b00d
+2025-12-06T14:09:53.0864564Z Artifact download completed successfully.
+2025-12-06T14:09:53.0865077Z Total of 1 artifact(s) downloaded
+2025-12-06T14:09:53.0872125Z Download artifact has finished successfully
+2025-12-06T14:09:53.1020426Z ##[group]Run actions/download-artifact@v4
+2025-12-06T14:09:53.1020711Z with:
+2025-12-06T14:09:53.1020895Z   name: ios-build-1.6.0+108
+2025-12-06T14:09:53.1021115Z   path: build/release/ios
+2025-12-06T14:09:53.1021763Z   merge-multiple: false
+2025-12-06T14:09:53.1022207Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:53.1022600Z   run-id: 19989453995
+2025-12-06T14:09:53.1022818Z ##[endgroup]
+2025-12-06T14:09:53.3036563Z Downloading single artifact
+2025-12-06T14:09:53.5273381Z ##[error]Unable to download artifact(s): Artifact not found for name: ios-build-1.6.0+108
+        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.
+        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md
+2025-12-06T14:09:53.5443231Z ##[group]Run version="1.6.0+108"
+2025-12-06T14:09:53.5443560Z [36;1mversion="1.6.0+108"[0m
+2025-12-06T14:09:53.5443793Z [36;1mversion_name="1.6.0"[0m
+2025-12-06T14:09:53.5444013Z [36;1mbuild_number="108"[0m
+2025-12-06T14:09:53.5444275Z [36;1mecho "version=$version" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5444618Z [36;1mecho "version_name=$version_name" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5444954Z [36;1mecho "build_number=$build_number" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5481263Z shell: /usr/bin/bash -e {0}
+2025-12-06T14:09:53.5481717Z ##[endgroup]
+2025-12-06T14:09:53.5602691Z ##[group]Run mkdir -p build/release/android build/release/ios
+2025-12-06T14:09:53.5603151Z [36;1mmkdir -p build/release/android build/release/ios[0m
+2025-12-06T14:09:53.5603457Z [36;1mecho "Checking for Android AAB..."[0m
+2025-12-06T14:09:53.5603765Z [36;1mif ls build/release/android/*.aab 2>/dev/null; then[0m
+2025-12-06T14:09:53.5604093Z [36;1m  echo "android_exists=true" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5604377Z [36;1m  ls -lh build/release/android/[0m
+2025-12-06T14:09:53.5604614Z [36;1melse[0m
+2025-12-06T14:09:53.5604833Z [36;1m  echo "android_exists=false" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5605126Z [36;1m  echo "⚠️ Android AAB not found"[0m
+2025-12-06T14:09:53.5605367Z [36;1mfi[0m
+2025-12-06T14:09:53.5605528Z [36;1m[0m
+2025-12-06T14:09:53.5605718Z [36;1mecho "Checking for iOS artifacts..."[0m
+2025-12-06T14:09:53.5606084Z [36;1mif ls build/release/ios/*.ipa build/release/ios/*.zip 2>/dev/null; then[0m
+2025-12-06T14:09:53.5606695Z [36;1m  echo "ios_exists=true" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5606964Z [36;1m  ls -lh build/release/ios/[0m
+2025-12-06T14:09:53.5607192Z [36;1melse[0m
+2025-12-06T14:09:53.5607398Z [36;1m  echo "ios_exists=false" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5607682Z [36;1m  echo "⚠️ iOS artifacts not found"[0m
+2025-12-06T14:09:53.5607914Z [36;1mfi[0m
+2025-12-06T14:09:53.5640200Z shell: /usr/bin/bash -e {0}
+2025-12-06T14:09:53.5640441Z ##[endgroup]
+2025-12-06T14:09:53.5708172Z Checking for Android AAB...
+2025-12-06T14:09:53.5720983Z build/release/android/LingAfriq-1.6.0+108.aab
+2025-12-06T14:09:53.5736059Z total 96M
+2025-12-06T14:09:53.5736497Z -rw-r--r-- 1 runner runner 62M Dec  6 14:09 LingAfriq-1.6.0+108.aab
+2025-12-06T14:09:53.5737037Z -rw-r--r-- 1 runner runner 35M Dec  6 14:09 mapping.txt
+2025-12-06T14:09:53.5738302Z Checking for iOS artifacts...
+2025-12-06T14:09:53.5752827Z ⚠️ iOS artifacts not found
+2025-12-06T14:09:53.5829558Z ##[group]Run softprops/action-gh-release@v2
+2025-12-06T14:09:53.5829848Z with:
+2025-12-06T14:09:53.5830020Z   name: LingAfriq v1.6.0+108
+2025-12-06T14:09:53.5830237Z   tag_name: v1.6.0+108
+2025-12-06T14:09:53.5830547Z   files: build/release/android/*.aab
+build/release/android/mapping.txt
+
+2025-12-06T14:09:53.5830892Z   generate_release_notes: true
+2025-12-06T14:09:53.5831104Z   draft: false
+2025-12-06T14:09:53.5831488Z   prerelease: false
+2025-12-06T14:09:53.5831703Z   fail_on_unmatched_files: false
+2025-12-06T14:09:53.5831926Z   overwrite_files: true
+2025-12-06T14:09:53.5832276Z   token: ***
+2025-12-06T14:09:53.5832446Z env:
+2025-12-06T14:09:53.5832697Z   GITHUB_TOKEN: ***
+2025-12-06T14:09:53.5832873Z ##[endgroup]
+2025-12-06T14:09:54.1184789Z 👩‍🏭 Creating new GitHub release for tag v1.6.0+108...
+2025-12-06T14:09:55.2261938Z ⬆️ Uploading LingAfriq-1.6.0+108.aab...
+2025-12-06T14:09:55.2267166Z ⬆️ Uploading mapping.txt...
+2025-12-06T14:09:57.0025376Z ✅ Uploaded mapping.txt
+2025-12-06T14:09:58.2492636Z ✅ Uploaded LingAfriq-1.6.0+108.aab
+2025-12-06T14:09:58.2502029Z Finalizing release...
+2025-12-06T14:09:58.8178335Z 🎉 Release ready at https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/releases/tag/v1.6.0%2B108
+2025-12-06T14:09:58.8318611Z Post job cleanup.
+2025-12-06T14:09:58.9300710Z [command]/usr/bin/git version
+2025-12-06T14:09:58.9338705Z git version 2.52.0
+2025-12-06T14:09:58.9384519Z Temporarily overriding HOME='/home/runner/work/_temp/68a1f052-1f0e-469c-b255-b2038eb62b5e' before making global git config changes
+2025-12-06T14:09:58.9385789Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-06T14:09:58.9391584Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T14:09:58.9440066Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-06T14:09:58.9475533Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-06T14:09:58.9714154Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-06T14:09:58.9736983Z http.https://github.com/.extraheader
+2025-12-06T14:09:58.9749673Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-06T14:09:58.9781865Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-06T14:09:59.0017333Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-06T14:09:59.0051108Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-06T14:09:59.0397658Z Cleaning up orphan processes

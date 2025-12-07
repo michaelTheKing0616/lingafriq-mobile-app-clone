@@ -3,9 +3,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
-import 'package:lingafriq/screens/games/word_match_game.dart';
-import 'package:lingafriq/screens/games/pronunciation_game.dart';
-import 'package:lingafriq/screens/games/speed_challenge_game.dart';
+import 'package:lingafriq/screens/games/word_match_audio_game.dart';
+import 'package:lingafriq/models/game/game_session_model.dart';
+import 'package:lingafriq/providers/user_provider.dart';
+import 'language_games_screen_components.dart';
+import 'game_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Modern Language Games Screen - Based on Figma Make Design
@@ -16,17 +18,19 @@ class LanguageGamesScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedGame = useState<String?>(null);
+    final selectedGame = useState<GameType?>(null);
+    final selectedLanguage = useState<String>('yoruba');
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final user = ref.watch(userProvider);
     
-    if (selectedGame.value == 'word-match') {
-      return WordMatchGame(onBack: () => selectedGame.value = null);
-    }
-    if (selectedGame.value == 'pronunciation') {
-      return PronunciationGame(onBack: () => selectedGame.value = null);
-    }
-    if (selectedGame.value == 'speed-quiz') {
-      return SpeedChallengeGame(onBack: () => selectedGame.value = null);
+    if (selectedGame.value != null) {
+      return buildGameScreen(
+        gameType: selectedGame.value!,
+        language: selectedLanguage.value,
+        level: user?.level?.toString() ?? 'A0',
+        onBack: () => selectedGame.value = null,
+        ref: ref,
+      );
     }
     
     return Scaffold(
@@ -124,34 +128,61 @@ class LanguageGamesScreen extends HookConsumerWidget {
               padding: EdgeInsets.all(4.w),
               child: Column(
                 children: [
-                  _GameCard(
-                    title: 'Word Match',
-                    description: 'Match English words with their Swahili translations',
-                    icon: Icons.track_changes_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
-                    ),
-                    onTap: () => selectedGame.value = 'word-match',
+                  // Language selector
+                  _LanguageSelector(
+                    selectedLanguage: selectedLanguage.value,
+                    onLanguageChanged: (lang) => selectedLanguage.value = lang,
                   ),
                   SizedBox(height: 2.h),
-                  _GameCard(
-                    title: 'Pronunciation Practice',
-                    description: 'Listen and repeat words correctly',
-                    icon: Icons.volume_up_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
-                    ),
-                    onTap: () => selectedGame.value = 'pronunciation',
+                  // Core Games Section
+                  _GameSection(
+                    title: 'Core Games',
+                    games: [
+                      GameType.wordMatchAudio,
+                      GameType.pronunciationDuel,
+                      GameType.speedRoundRemix,
+                      GameType.toneTrainer,
+                      GameType.storyBuilder,
+                      GameType.roleplayAdventure,
+                      GameType.grammarDetective,
+                      GameType.listenAndSketch,
+                      GameType.pictureWordAssociation,
+                      GameType.memoryMap,
+                      GameType.conversationRelay,
+                      GameType.grammarJam,
+                      GameType.pronunciationKaraoke,
+                      GameType.quizChef,
+                    ],
+                    onGameSelected: (game) => selectedGame.value = game,
                   ),
                   SizedBox(height: 2.h),
-                  _GameCard(
-                    title: 'Speed Quiz',
-                    description: 'Answer as many questions as possible in 60 seconds',
-                    icon: Icons.bolt_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFFCD116), Color(0xFFFF6B35)],
-                    ),
-                    onTap: () => selectedGame.value = 'speed-quiz',
+                  // Cultural Games Section
+                  _GameSection(
+                    title: 'Cultural Games',
+                    games: [
+                      GameType.proverbUnlocker,
+                      GameType.drumRhythmShadowing,
+                      GameType.clanLineageStoryBuilder,
+                      GameType.marketBargainingSimulator,
+                      GameType.taxiBusStopSurvival,
+                      GameType.foodQuest,
+                      GameType.callAndResponse,
+                      GameType.greetingDiplomacyChallenge,
+                      GameType.folktaleReconstruction,
+                      GameType.phraseSniper,
+                      GameType.liarLiar,
+                      GameType.villageQuest,
+                      GameType.accentDecodingPuzzle,
+                      GameType.flashcardSafari,
+                      GameType.rapidTongueTwisterRace,
+                      GameType.emojiTranslator,
+                      GameType.rhythmTyping,
+                      GameType.eldersBlessingsChallenge,
+                      GameType.multilingualRelayRace,
+                      GameType.culturalEtiquetteScenarios,
+                      GameType.drumToWordMatching,
+                    ],
+                    onGameSelected: (game) => selectedGame.value = game,
                   ),
                 ],
               ),

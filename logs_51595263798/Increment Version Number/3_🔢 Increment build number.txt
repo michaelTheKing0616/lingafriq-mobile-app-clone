@@ -1,0 +1,50 @@
+﻿2025-12-06T13:54:15.0769499Z ##[group]Run # Extract current version from pubspec.yaml
+2025-12-06T13:54:15.0770121Z [36;1m# Extract current version from pubspec.yaml[0m
+2025-12-06T13:54:15.0770626Z [36;1mcurrent_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')[0m
+2025-12-06T13:54:15.0771314Z [36;1mversion_name=$(echo $current_version | cut -d'+' -f1)[0m
+2025-12-06T13:54:15.0771721Z [36;1mbuild_number=$(echo $current_version | cut -d'+' -f2)[0m
+2025-12-06T13:54:15.0772284Z [36;1m[0m
+2025-12-06T13:54:15.0772539Z [36;1mecho "📦 Current version: $current_version"[0m
+2025-12-06T13:54:15.0772872Z [36;1mecho "📦 Version name: $version_name"[0m
+2025-12-06T13:54:15.0773202Z [36;1mecho "📦 Current build number: $build_number"[0m
+2025-12-06T13:54:15.0773497Z [36;1m[0m
+2025-12-06T13:54:15.0773859Z [36;1m# Always increment build number (Play Console last used 90, so we need at least 91)[0m
+2025-12-06T13:54:15.0774347Z [36;1mif [ -z "$build_number" ] || [ "$build_number" -le 90 ]; then[0m
+2025-12-06T13:54:15.0774800Z [36;1m  echo "⚠️ Build number $build_number is <= 90. Setting to 91."[0m
+2025-12-06T13:54:15.0775151Z [36;1m  build_number=91[0m
+2025-12-06T13:54:15.0775391Z [36;1melse[0m
+2025-12-06T13:54:15.0775626Z [36;1m  # Increment build number[0m
+2025-12-06T13:54:15.0775930Z [36;1m  build_number=$((build_number + 1))[0m
+2025-12-06T13:54:15.0776276Z [36;1m  echo "📦 Incrementing build number to: $build_number"[0m
+2025-12-06T13:54:15.0776592Z [36;1mfi[0m
+2025-12-06T13:54:15.0776803Z [36;1m[0m
+2025-12-06T13:54:15.0777041Z [36;1mnew_version="${version_name}+${build_number}"[0m
+2025-12-06T13:54:15.0777339Z [36;1m[0m
+2025-12-06T13:54:15.0777578Z [36;1m# Update pubspec.yaml with the new version[0m
+2025-12-06T13:54:15.0777894Z [36;1mif [[ "$OSTYPE" == "darwin"* ]]; then[0m
+2025-12-06T13:54:15.0778252Z [36;1m  sed -i '' "s/^version:.*/version: $new_version/" pubspec.yaml[0m
+2025-12-06T13:54:15.0778581Z [36;1melse[0m
+2025-12-06T13:54:15.0778860Z [36;1m  sed -i "s/^version:.*/version: $new_version/" pubspec.yaml[0m
+2025-12-06T13:54:15.0779202Z [36;1mfi[0m
+2025-12-06T13:54:15.0779400Z [36;1m[0m
+2025-12-06T13:54:15.0779602Z [36;1m# Verify the update[0m
+2025-12-06T13:54:15.0780005Z [36;1mupdated_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')[0m
+2025-12-06T13:54:15.0780508Z [36;1mecho "✅ Updated pubspec.yaml version to: $updated_version"[0m
+2025-12-06T13:54:15.0781072Z [36;1m[0m
+2025-12-06T13:54:15.0781372Z [36;1mif [ "$updated_version" != "$new_version" ]; then[0m
+2025-12-06T13:54:15.0781847Z [36;1m  echo "❌ ERROR: Version update failed! Expected $new_version but got $updated_version"[0m
+2025-12-06T13:54:15.0782264Z [36;1m  exit 1[0m
+2025-12-06T13:54:15.0782472Z [36;1mfi[0m
+2025-12-06T13:54:15.0782661Z [36;1m[0m
+2025-12-06T13:54:15.0782907Z [36;1mecho "version=$new_version" >> $GITHUB_OUTPUT[0m
+2025-12-06T13:54:15.0783264Z [36;1mecho "version_name=$version_name" >> $GITHUB_OUTPUT[0m
+2025-12-06T13:54:15.0783641Z [36;1mecho "build_number=$build_number" >> $GITHUB_OUTPUT[0m
+2025-12-06T13:54:15.0784054Z [36;1mecho "📦 Final version: $new_version (build number: $build_number)"[0m
+2025-12-06T13:54:15.0820113Z shell: /usr/bin/bash -e {0}
+2025-12-06T13:54:15.0820440Z ##[endgroup]
+2025-12-06T13:54:15.0943231Z 📦 Current version: 1.6.0+107
+2025-12-06T13:54:15.0943653Z 📦 Version name: 1.6.0
+2025-12-06T13:54:15.0944196Z 📦 Current build number: 107
+2025-12-06T13:54:15.0944684Z 📦 Incrementing build number to: 108
+2025-12-06T13:54:15.0980251Z ✅ Updated pubspec.yaml version to: 1.6.0+108
+2025-12-06T13:54:15.0981243Z 📦 Final version: 1.6.0+108 (build number: 108)

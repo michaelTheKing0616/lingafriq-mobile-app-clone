@@ -41,14 +41,18 @@ class TakeQuizScreen extends ConsumerStatefulWidget {
 
 class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
   bool _isLoadingQuiz = false;
+  bool _hasError = false;
+  String? _errorMessage;
 
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Quiz module is temporarily unavailable',
+      errorMessage: _errorMessage ?? 'Quiz module is temporarily unavailable',
       onRetry: () {
         setState(() {
           _isLoadingQuiz = false;
+          _hasError = false;
+          _errorMessage = null;
         });
       },
       child: _buildQuizContent(context, ref),
@@ -172,7 +176,7 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                               .read(apiProvider.notifier)
                                               .getRandomQuizLessons(widget.language.id)
                                               .timeout(
-                                                const Duration(seconds: 15),
+                                                const Duration(seconds: 20),
                                                 onTimeout: () {
                                                   debugPrint('Quiz fetch timed out');
                                                   throw TimeoutException('Quiz loading timed out. Please check your connection.');
@@ -188,10 +192,10 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           debugPrint('Received ${randomQuizes.length} quizzes');
                                           
                                           if (randomQuizes.isEmpty) {
-                                            ref
-                                                .read(dialogProvider(
-                                                    "No quizzes available for this language yet. We're working to add more!"))
-                                                .showSuccessSnackBar();
+                                            setState(() {
+                                              _hasError = true;
+                                              _errorMessage = "No quizzes available for this language yet. We're working to add more!";
+                                            });
                                             return;
                                           }
                                           
@@ -211,6 +215,8 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           if (mounted) {
                                             setState(() {
                                               _isLoadingQuiz = false;
+                                              _hasError = true;
+                                              _errorMessage = 'Failed to load quiz. ${e.toString()}';
                                             });
                                           }
                                           debugPrint('Error in Take Quiz: $e');

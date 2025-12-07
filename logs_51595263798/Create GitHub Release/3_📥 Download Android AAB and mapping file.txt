@@ -1,0 +1,19 @@
+﻿2025-12-06T14:09:49.6264269Z ##[group]Run actions/download-artifact@v4
+2025-12-06T14:09:49.6264635Z with:
+2025-12-06T14:09:49.6264824Z   name: android-aab-1.6.0+108
+2025-12-06T14:09:49.6265051Z   path: build/release/android
+2025-12-06T14:09:49.6265540Z   merge-multiple: false
+2025-12-06T14:09:49.6265815Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:49.6266126Z   run-id: 19989453995
+2025-12-06T14:09:49.6266313Z ##[endgroup]
+2025-12-06T14:09:49.8343556Z Downloading single artifact
+2025-12-06T14:09:50.0572537Z Preparing to download the following artifacts:
+2025-12-06T14:09:50.0573898Z - android-aab-1.6.0+108 (ID: 4785865760, Size: 66994147, Expected Digest: sha256:e36447a1c3cdc5e9ca092fe4cacc793246029589e1ee908b1762cdd59ac0b00d)
+2025-12-06T14:09:50.1966461Z Redirecting to blob download url: https://productionresultssa10.blob.core.windows.net/actions-results/71ed843b-8d68-46b7-bafa-7d8a59c72e58/workflow-job-run-027ea6f3-9cdc-5775-b688-ae2840a1d9d7/artifacts/ecab38f00f310e539be021e83cfdf8adc81dd0da54eb14e3b63ebc3b70bb51be.zip
+2025-12-06T14:09:50.1968919Z Starting download of artifact to: /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/build/release/android
+2025-12-06T14:09:50.4704090Z (node:2164) [DEP0005] DeprecationWarning: Buffer() is deprecated due to security and usability issues. Please use the Buffer.alloc(), Buffer.allocUnsafe(), or Buffer.from() methods instead.
+2025-12-06T14:09:50.4705798Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2025-12-06T14:09:53.0863449Z SHA256 digest of downloaded artifact is e36447a1c3cdc5e9ca092fe4cacc793246029589e1ee908b1762cdd59ac0b00d
+2025-12-06T14:09:53.0864549Z Artifact download completed successfully.
+2025-12-06T14:09:53.0865068Z Total of 1 artifact(s) downloaded
+2025-12-06T14:09:53.0872108Z Download artifact has finished successfully

@@ -1,0 +1,72 @@
+﻿2025-12-06T14:09:43.5029418Z ##[group]Run actions/checkout@v4
+2025-12-06T14:09:43.5030201Z with:
+2025-12-06T14:09:43.5030929Z   token: ***
+2025-12-06T14:09:43.5031472Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.5031944Z   ssh-strict: true
+2025-12-06T14:09:43.5032238Z   ssh-user: git
+2025-12-06T14:09:43.5032541Z   persist-credentials: true
+2025-12-06T14:09:43.5032880Z   clean: true
+2025-12-06T14:09:43.5033185Z   sparse-checkout-cone-mode: true
+2025-12-06T14:09:43.5033532Z   fetch-depth: 1
+2025-12-06T14:09:43.5033821Z   fetch-tags: false
+2025-12-06T14:09:43.5034105Z   show-progress: true
+2025-12-06T14:09:43.5034414Z   lfs: false
+2025-12-06T14:09:43.5034707Z   submodules: false
+2025-12-06T14:09:43.5035008Z   set-safe-directory: true
+2025-12-06T14:09:43.5035601Z ##[endgroup]
+2025-12-06T14:09:43.6213818Z Syncing repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6216823Z ##[group]Getting Git version info
+2025-12-06T14:09:43.6218066Z Working directory is '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-06T14:09:43.6219876Z [command]/usr/bin/git version
+2025-12-06T14:09:43.6291703Z git version 2.52.0
+2025-12-06T14:09:43.6320692Z ##[endgroup]
+2025-12-06T14:09:43.6337709Z Temporarily overriding HOME='/home/runner/work/_temp/a12f9b83-add7-4b9b-921d-f1dafa45d1f5' before making global git config changes
+2025-12-06T14:09:43.6339451Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-06T14:09:43.6353173Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6398184Z Deleting the contents of '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-06T14:09:43.6402493Z ##[group]Initializing the repository
+2025-12-06T14:09:43.6407780Z [command]/usr/bin/git init /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6539386Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-06T14:09:43.6541184Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-06T14:09:43.6542477Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-06T14:09:43.6543301Z hint: call:
+2025-12-06T14:09:43.6543717Z hint:
+2025-12-06T14:09:43.6544324Z hint: 	git config --global init.defaultBranch <name>
+2025-12-06T14:09:43.6544939Z hint:
+2025-12-06T14:09:43.6545583Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-06T14:09:43.6546509Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-06T14:09:43.6547018Z hint:
+2025-12-06T14:09:43.6547312Z hint: 	git branch -m <name>
+2025-12-06T14:09:43.6547649Z hint:
+2025-12-06T14:09:43.6548071Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-06T14:09:43.6548975Z Initialized empty Git repository in /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/.git/
+2025-12-06T14:09:43.6557831Z [command]/usr/bin/git remote add origin https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:43.6598123Z ##[endgroup]
+2025-12-06T14:09:43.6598750Z ##[group]Disabling automatic garbage collection
+2025-12-06T14:09:43.6603300Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-06T14:09:43.6635339Z ##[endgroup]
+2025-12-06T14:09:43.6636217Z ##[group]Setting up auth
+2025-12-06T14:09:43.6642973Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-06T14:09:43.6677424Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-06T14:09:43.7046531Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-06T14:09:43.7081236Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-06T14:09:43.7330255Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-06T14:09:43.7366444Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-06T14:09:43.7623817Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-06T14:09:43.7664757Z ##[endgroup]
+2025-12-06T14:09:43.7665500Z ##[group]Fetching the repository
+2025-12-06T14:09:43.7674980Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +bc214c742e4d2447d4b340fb26b6c1656fcdf774:refs/remotes/origin/main
+2025-12-06T14:09:48.8819421Z From https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:48.8820645Z  * [new ref]         bc214c742e4d2447d4b340fb26b6c1656fcdf774 -> origin/main
+2025-12-06T14:09:48.8852834Z ##[endgroup]
+2025-12-06T14:09:48.8853425Z ##[group]Determining the checkout info
+2025-12-06T14:09:48.8855361Z ##[endgroup]
+2025-12-06T14:09:48.8860502Z [command]/usr/bin/git sparse-checkout disable
+2025-12-06T14:09:48.9079800Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-06T14:09:48.9112352Z ##[group]Checking out the ref
+2025-12-06T14:09:48.9117519Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-06T14:09:49.5879030Z Switched to a new branch 'main'
+2025-12-06T14:09:49.5879948Z branch 'main' set up to track 'origin/main'.
+2025-12-06T14:09:49.5967177Z ##[endgroup]
+2025-12-06T14:09:49.6013644Z [command]/usr/bin/git log -1 --format=%H
+2025-12-06T14:09:49.6039440Z bc214c742e4d2447d4b340fb26b6c1656fcdf774

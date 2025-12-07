@@ -1141,4 +1141,115 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
+
+  // Backend Sync Methods
+  Future<bool> syncGamification(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.syncGamification, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing gamification: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncGameSession(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.gameSessionStart, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing game session: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
+    try {
+      final userId = ref.read(userProvider)?.id;
+      if (userId == null) return false;
+      final res = await ref.read(client).put(Api.updateGameSRS(userId.toString()), data: data);
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error syncing game SRS: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.aiChatHistorySync, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat history: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.aiChatSRSSync, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat SRS: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncProgress(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.progressActivity, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing progress: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncOnboarding(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.onboardingSave, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing onboarding: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> syncTelemetry(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.gameTelemetry, data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing telemetry: $e');
+      rethrow;
+    }
+  }
+
+  /// Get gamification data from backend
+  Future<Map<String, dynamic>?> getGamification(String userId) async {
+    try {
+      final res = await ref.read(client).get(Api.getGamification(userId));
+      if (res.statusCode == 200) {
+        return res.data as Map<String, dynamic>?;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting gamification: $e');
+      return null;
+    }
+  }
+
+  /// Sync AI chat history (legacy method for backward compatibility)
+  Future<bool> syncAiChatHistory(String mode, List<Map<String, dynamic>> messages) async {
+    try {
+      final res = await ref.read(client).post(Api.aiChatHistorySync, data: {
+        'mode': mode,
+        'messages': messages,
+      });
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat history: $e');
+      return false;
+    }
+  }
 }

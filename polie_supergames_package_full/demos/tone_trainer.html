@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Tone Trainer — Polie</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Roboto, sans-serif; margin:20px; }
+    #canvas { width:100%; height:200px; border:1px solid #ddd; }
+    #controls { margin-top:10px; }
+    button { padding:8px 12px; margin-right:8px; }
+    #pitchDisplay { font-weight:600; }
+  </style>
+</head>
+<body>
+  <h1>Tone Trainer (Pitch Visualization)</h1>
+  <p>Sing or speak a target phrase. The pitch contour will be displayed in real-time.</p>
+  <canvas id="canvas" width="800" height="200"></canvas>
+  <div id="controls">
+    <button id="startBtn">Start</button>
+    <button id="stopBtn" disabled>Stop</button>
+    <span id="pitchDisplay">Pitch: — Hz</span>
+  </div>
+<script>
+(async function(){
+  const startBtn = document.getElementById('startBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const pitchDisplay = document.getElementById('pitchDisplay');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let audioCtx, analyser, source, rafId, stream, processor;
+  function drawGrid(){ ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.strokeStyle='#eee'; for(let i=0;i<10;i++){ const y= i*(canvas.height/10); ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); } }
+  function autoCorrelate(buf, sr){
+    // A robust autocorrelation pitch estimator adapted for demo use
+    const SIZE = buf.length;
+    let rms = 0;
+    for(let i=0;i<SIZE;i++){ const val = buf[i]; rms += val*val; }
+    if(rms < 0.0009) return -1;
+    let r1=0, r2=SIZE-1, thres=0.2;
+    for(let i=0;i<SIZE/2;i++){ if(Math.abs(buf[i])<thres){ r1=i; break; } }
+    for(let i=1;i<SIZE/2;i++){ if(Math.abs(buf[SIZE-i])<thres){ r2=SIZE-i; break; } }
+    const newBuf = buf.slice(r1, r2);
+    const newSize = newBuf.length;
+    const c = new Array(newSize).fill(0);
+    for(let i=0;i<newSize;i++){
+      for(let j=0;j<newSize-i;j++){
+        c[i] = c[i] + newBuf[j]*newBuf[j+i];
+      }
+    }
+    let d=0; while(c[d] > c[d+1]) d++;
+    let maxval=-1, maxpos=-1;
+    for(let i=d;i<newSize;i++){ if(c[i] > maxval){ maxval = c[i]; maxpos = i; } }
+    const T0 = maxpos;
+    if(!T0) return -1;
+    const freq = sr / T0;
+    if(freq > 1200 || freq < 50) return -1;
+    return freq;
+  }
+  function start(){ navigator.mediaDevices.getUserMedia({audio:true}).then(s=>{
+      stream = s;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      source = audioCtx.createMediaStreamSource(stream);
+      analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048;
+      source.connect(analyser);
+      const bufferLength = analyser.fftSize;
+      const data = new Float32Array(bufferLength);
+      let pitchHistory = [];
+      let x=0;
+      function loop(){
+        analyser.getFloatTimeDomainData(data);
+        const pitch = autoCorrelate(data, audioCtx.sampleRate);
+        if(pitch>0){ pitchHistory.push(pitch); if(pitchHistory.length>canvas.width) pitchHistory.shift(); pitchDisplay.textContent = 'Pitch: '+Math.round(pitch)+' Hz'; }
+        drawGrid();
+        // draw pitch line
+        ctx.beginPath(); ctx.strokeStyle='steelblue'; ctx.lineWidth=2;
+        for(let i=0;i<pitchHistory.length;i++){ const py = canvas.height - Math.min(canvas.height, (Math.log(pitchHistory[i])/Math.log(2000))*canvas.height); const px = i; if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py); }
+        ctx.stroke();
+        rafId = requestAnimationFrame(loop);
+      }
+      loop();
+      startBtn.disabled=true; stopBtn.disabled=false;
+  }).catch(e=>{ alert('Microphone access required: '+e.message); }); }
+  function stop(){ if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; } if(rafId) cancelAnimationFrame(rafId); startBtn.disabled=false; stopBtn.disabled=true; pitchDisplay.textContent='Pitch: — Hz'; drawGrid(); }
+  startBtn.addEventListener('click', start); stopBtn.addEventListener('click', stop);
+  drawGrid();
+})();
+</script>
+</body>
+</html>

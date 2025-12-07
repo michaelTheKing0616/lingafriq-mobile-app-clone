@@ -1,0 +1,15 @@
+﻿2025-12-06T13:56:10.6597367Z ##[group]Run flutter clean
+2025-12-06T13:56:10.6597645Z [36;1mflutter clean[0m
+2025-12-06T13:56:10.6627213Z shell: /usr/bin/bash -e {0}
+2025-12-06T13:56:10.6627460Z env:
+2025-12-06T13:56:10.6627759Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T13:56:10.6628241Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T13:56:10.6628670Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-06T13:56:10.6628998Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-06T13:56:10.6629261Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-06T13:56:10.6629510Z ##[endgroup]
+2025-12-06T13:56:10.8331802Z Deleting .dart_tool...                                               0ms
+2025-12-06T13:56:10.8339897Z Deleting ephemeral...                                                0ms
+2025-12-06T13:56:10.8345066Z Deleting Generated.xcconfig...                                       0ms
+2025-12-06T13:56:10.8348509Z Deleting flutter_export_environment.sh...                            0ms
+2025-12-06T13:56:10.8363111Z Deleting .flutter-plugins-dependencies...                            0ms

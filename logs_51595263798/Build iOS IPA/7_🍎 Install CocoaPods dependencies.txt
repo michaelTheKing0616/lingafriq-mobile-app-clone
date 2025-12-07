@@ -1,0 +1,62 @@
+﻿2025-12-06T13:56:01.6534170Z ##[group]Run cd ios
+2025-12-06T13:56:01.6534390Z [36;1mcd ios[0m
+2025-12-06T13:56:01.6534620Z [36;1m# Remove Podfile.lock to force regeneration with correct Firebase versions[0m
+2025-12-06T13:56:01.6534930Z [36;1mrm -f Podfile.lock[0m
+2025-12-06T13:56:01.6535150Z [36;1m# Update CocoaPods repo and install dependencies[0m
+2025-12-06T13:56:01.6535370Z [36;1mpod repo update[0m
+2025-12-06T13:56:01.6535530Z [36;1mpod install --repo-update[0m
+2025-12-06T13:56:01.6535700Z [36;1mcd ..[0m
+2025-12-06T13:56:01.6562410Z shell: /bin/bash -e {0}
+2025-12-06T13:56:01.6562550Z env:
+2025-12-06T13:56:01.6562750Z   FLUTTER_ROOT: /Users/runner/hostedtoolcache/flutter/stable-3.35.0-arm64
+2025-12-06T13:56:01.6563010Z   PUB_CACHE: /Users/runner/.pub-cache
+2025-12-06T13:56:01.6563170Z ##[endgroup]
+2025-12-06T13:56:05.1233080Z Updating local specs repositories
+2025-12-06T13:56:05.1233790Z Adding spec repo `trunk` with CDN `https://cdn.cocoapods.org/`
+2025-12-06T13:56:05.1680580Z Analyzing dependencies
+2025-12-06T13:56:05.1744090Z firebase_core: Using Firebase SDK version '12.4.0' defined in 'firebase_core'
+2025-12-06T13:56:05.1752770Z firebase_messaging: Using Firebase SDK version '12.4.0' defined in 'firebase_core'
+2025-12-06T13:56:17.6124480Z Downloading dependencies
+2025-12-06T13:56:17.6125020Z Installing Cache (6.0.0)
+2025-12-06T13:56:18.7672880Z Installing DKImagePickerController (4.3.9)
+2025-12-06T13:56:20.0753380Z Installing DKPhotoGallery (0.0.19)
+2025-12-06T13:56:21.6343180Z Installing Firebase (12.4.0)
+2025-12-06T13:56:27.0463240Z Installing FirebaseCore (12.4.0)
+2025-12-06T13:56:31.3856380Z Installing FirebaseCoreInternal (12.4.0)
+2025-12-06T13:56:35.3886410Z Installing FirebaseInstallations (12.4.0)
+2025-12-06T13:56:39.5666300Z Installing FirebaseMessaging (12.4.0)
+2025-12-06T13:56:44.0925070Z Installing Flutter (1.0.0)
+2025-12-06T13:56:44.0925710Z Installing GCDWebServer (3.5.4)
+2025-12-06T13:56:45.8366280Z Installing GoogleDataTransport (10.1.0)
+2025-12-06T13:56:47.0373850Z Installing GoogleUtilities (8.1.0)
+2025-12-06T13:56:47.9786210Z Installing HLSCachingReverseProxyServer (0.1.0)
+2025-12-06T13:56:48.6802380Z Installing OrderedSet (6.0.3)
+2025-12-06T13:56:49.4985350Z Installing PINCache (3.0.4)
+2025-12-06T13:56:50.7428940Z Installing PINOperation (1.2.3)
+2025-12-06T13:56:51.6561050Z Installing PromisesObjC (2.4.0)
+2025-12-06T13:56:52.6993000Z Installing SDWebImage (5.21.5)
+2025-12-06T13:56:54.6661100Z Installing SwiftyGif (5.4.5)
+2025-12-06T13:56:56.0692510Z Installing audio_session (0.0.1)
+2025-12-06T13:56:56.0692990Z Installing better_player_plus (1.1.2)
+2025-12-06T13:56:56.0693230Z Installing file_picker (0.0.1)
+2025-12-06T13:56:56.0693430Z Installing firebase_core (4.2.1)
+2025-12-06T13:56:56.0693650Z Installing firebase_messaging (16.0.4)
+2025-12-06T13:56:56.0693900Z Installing flutter_inappwebview_ios (0.0.1)
+2025-12-06T13:56:56.0694210Z Installing flutter_local_notifications (0.0.1)
+2025-12-06T13:56:56.0694490Z Installing flutter_secure_storage (6.0.0)
+2025-12-06T13:56:56.0694720Z Installing flutter_tts (0.0.1)
+2025-12-06T13:56:56.0694950Z Installing just_audio (0.0.1)
+2025-12-06T13:56:56.0695170Z Installing nanopb (3.30910.0)
+2025-12-06T13:56:58.5554400Z 
+2025-12-06T13:56:58.5554840Z Installing package_info_plus (0.4.5)
+2025-12-06T13:56:58.5556730Z [!] CocoaPods did not set the base configuration of your project because your project already has a custom config set. In order for CocoaPods integration to work at all, please either set the base configurations of the target `Runner` to `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` or include the `Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig` in your build configuration (`Flutter/Release.xcconfig`).
+2025-12-06T13:56:58.5562230Z Installing path_provider_foundation (0.0.1)
+2025-12-06T13:56:58.5562610Z Installing record_ios (1.1.0)
+2025-12-06T13:56:58.5563450Z Installing shared_preferences_foundation (0.0.1)
+2025-12-06T13:56:58.5563910Z Installing sqflite (0.0.3)
+2025-12-06T13:56:58.5564240Z Installing url_launcher_ios (0.0.1)
+2025-12-06T13:56:58.5565340Z Installing wakelock_plus (0.0.1)
+2025-12-06T13:56:58.5565870Z Installing webview_flutter_wkwebview (0.0.1)
+2025-12-06T13:56:58.5567040Z Generating Pods project
+2025-12-06T13:56:58.5567790Z Integrating client project
+2025-12-06T13:56:58.5568200Z Pod installation complete! There are 19 dependencies from the Podfile and 38 total pods installed.

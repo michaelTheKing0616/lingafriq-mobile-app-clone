@@ -1,0 +1,37 @@
+﻿2025-12-06T14:09:33.2328657Z ##[group]Run actions/***-artifact@v4
+2025-12-06T14:09:33.2329020Z with:
+2025-12-06T14:09:33.2329223Z   name: android-aab-1.6.0+108
+2025-12-06T14:09:33.2329665Z   path: build/release/LingAfriq-1.6.0+108.aab
+build/release/mapping.txt
+
+2025-12-06T14:09:33.2330058Z   if-no-files-found: warn
+2025-12-06T14:09:33.2330296Z   compression-level: 6
+2025-12-06T14:09:33.2330512Z   overwrite: false
+2025-12-06T14:09:33.2330727Z   include-hidden-files: false
+2025-12-06T14:09:33.2330960Z env:
+2025-12-06T14:09:33.2331258Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T14:09:33.2332038Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T14:09:33.2332498Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-06T14:09:33.2332832Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-06T14:09:33.2333124Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-06T14:09:33.2333383Z ##[endgroup]
+2025-12-06T14:09:33.4524622Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2025-12-06T14:09:33.4529294Z The least common ancestor is /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/build/release. This will be the root directory of the artifact
+2025-12-06T14:09:33.4530831Z With the provided path, there will be 2 files ***ed
+2025-12-06T14:09:33.4536382Z Artifact name is valid!
+2025-12-06T14:09:33.4537665Z Root directory input is valid!
+2025-12-06T14:09:33.5379579Z Beginning *** of artifact content to blob storage
+2025-12-06T14:09:33.9944004Z Uploaded bytes 8388608
+2025-12-06T14:09:34.2567159Z Uploaded bytes 16777216
+2025-12-06T14:09:34.4740297Z Uploaded bytes 25165824
+2025-12-06T14:09:34.7571207Z Uploaded bytes 33554432
+2025-12-06T14:09:35.0030108Z Uploaded bytes 41943040
+2025-12-06T14:09:35.2925014Z Uploaded bytes 50331648
+2025-12-06T14:09:35.4993965Z Uploaded bytes 58720256
+2025-12-06T14:09:36.1995782Z Uploaded bytes 66994147
+2025-12-06T14:09:36.2197257Z Finished ***ing artifact content to blob storage!
+2025-12-06T14:09:36.2200543Z SHA256 digest of ***ed artifact zip is e36447a1c3cdc5e9ca092fe4cacc793246029589e1ee908b1762cdd59ac0b00d
+2025-12-06T14:09:36.2202669Z Finalizing artifact ***
+2025-12-06T14:09:36.2941883Z Artifact android-aab-1.6.0+108.zip successfully finalized. Artifact ID 4785865760
+2025-12-06T14:09:36.2943519Z Artifact android-aab-1.6.0+108 has been successfully ***ed! Final size is 66994147 bytes. Artifact ID is 4785865760
+2025-12-06T14:09:36.2950370Z Artifact download URL: https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/actions/runs/19989453995/artifacts/4785865760

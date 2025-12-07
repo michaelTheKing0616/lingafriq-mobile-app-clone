@@ -111,4 +111,32 @@ class Api {
   static String loadingScreenByCountry(String country) => "api/loading-screen/country/$country";
   static String loadingScreenByLanguage(String language) => "api/loading-screen/language/$language";
   // Loading Screen End
+
+  // Backend Sync Endpoints Start
+  static const String syncGamification = "api/gamification/sync/";
+  static String getGamification(String userId) => "api/gamification/user/$userId/";
+  static String updateGamification(String userId) => "api/gamification/user/$userId/";
+  static const String unlockBadge = "api/gamification/badges/unlock/";
+  static const String leaderboard = "api/gamification/leaderboard/";
+  
+  static const String gameSessionStart = "api/games/session/start/";
+  static String gameSessionTurn(String sessionId) => "api/games/session/$sessionId/turn/";
+  static String gameSessionComplete(String sessionId) => "api/games/session/$sessionId/complete/";
+  static String getGameSRS(String userId) => "api/games/srs/user/$userId/";
+  static String updateGameSRS(String userId) => "api/games/srs/user/$userId/";
+  static const String gameTelemetry = "api/games/telemetry/";
+  
+  static const String aiChatHistorySync = "api/ai/chat/history/sync/";
+  static String getAIChatHistory(String mode) => "api/ai/chat/history/$mode/";
+  static const String aiChatSRSSync = "api/ai/chat/srs/sync/";
+  static String getAIChatCEFR(String userId) => "api/ai/chat/cefr/$userId/";
+  
+  static const String progressActivity = "api/progress/activity/";
+  static String getProgress(String userId) => "api/progress/user/$userId/";
+  static const String progressLessonComplete = "api/progress/lesson/complete/";
+  static const String progressQuizComplete = "api/progress/quiz/complete/";
+  
+  static const String onboardingSave = "api/onboarding/save/";
+  static String getOnboarding(String userId) => "api/onboarding/user/$userId/";
+  // Backend Sync Endpoints End
 }

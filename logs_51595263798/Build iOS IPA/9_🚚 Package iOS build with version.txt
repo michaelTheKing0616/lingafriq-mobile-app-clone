@@ -1,0 +1,61 @@
+﻿2025-12-06T14:00:29.4461680Z ##[group]Run version="1.6.0+108"
+2025-12-06T14:00:29.4462390Z [36;1mversion="1.6.0+108"[0m
+2025-12-06T14:00:29.4463040Z [36;1mmkdir -p build/release/ios[0m
+2025-12-06T14:00:29.4463660Z [36;1m[0m
+2025-12-06T14:00:29.4463970Z [36;1mecho "🔎 Searching for iOS build artifacts..."[0m
+2025-12-06T14:00:29.4464290Z [36;1mecho "Checking build/ios/ipa/..."[0m
+2025-12-06T14:00:29.4464850Z [36;1mls -la build/ios/ipa/ 2>/dev/null || echo "No ipa directory"[0m
+2025-12-06T14:00:29.4465320Z [36;1mecho "Checking build/ios/archive/..."[0m
+2025-12-06T14:00:29.4466040Z [36;1mls -la build/ios/archive/ 2>/dev/null || echo "No archive directory"[0m
+2025-12-06T14:00:29.4466370Z [36;1m[0m
+2025-12-06T14:00:29.4466650Z [36;1mif [ -n "$BUILD_CERTIFICATE_BASE64" ]; then[0m
+2025-12-06T14:00:29.4467020Z [36;1m  # Signed IPA exists[0m
+2025-12-06T14:00:29.4467380Z [36;1m  ipa_file=$(ls build/ios/ipa/*.ipa 2>/dev/null | head -n 1)[0m
+2025-12-06T14:00:29.4467890Z [36;1m  if [ -n "$ipa_file" ] && [ -f "$ipa_file" ]; then[0m
+2025-12-06T14:00:29.4468630Z [36;1m    cp "$ipa_file" "build/release/ios/LingAfriq-$version.ipa"[0m
+2025-12-06T14:00:29.4469070Z [36;1m    echo "✅ Signed IPA copied: build/release/ios/LingAfriq-$version.ipa"[0m
+2025-12-06T14:00:29.4469480Z [36;1m  else[0m
+2025-12-06T14:00:29.4469730Z [36;1m    echo "⚠️ IPA file not found in build/ios/ipa/, searching..."[0m
+2025-12-06T14:00:29.4470180Z [36;1m    ipa_found=$(find build -name "*.ipa" -type f 2>/dev/null | head -n 1)[0m
+2025-12-06T14:00:29.4470670Z [36;1m    if [ -n "$ipa_found" ] && [ -f "$ipa_found" ]; then[0m
+2025-12-06T14:00:29.4479640Z [36;1m      cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"[0m
+2025-12-06T14:00:29.4480430Z [36;1m      echo "✅ IPA found and copied: $ipa_found"[0m
+2025-12-06T14:00:29.4480710Z [36;1m    else[0m
+2025-12-06T14:00:29.4480910Z [36;1m      echo "❌ No IPA file found anywhere"[0m
+2025-12-06T14:00:29.4481240Z [36;1m    fi[0m
+2025-12-06T14:00:29.4481650Z [36;1m  fi[0m
+2025-12-06T14:00:29.4481860Z [36;1melse[0m
+2025-12-06T14:00:29.4482160Z [36;1m  # Archive without signing - create xcarchive zip[0m
+2025-12-06T14:00:29.4482570Z [36;1m  if [ -d build/ios/archive/Runner.xcarchive ]; then[0m
+2025-12-06T14:00:29.4482930Z [36;1m    cd build/ios/archive[0m
+2025-12-06T14:00:29.4483380Z [36;1m    zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive[0m
+2025-12-06T14:00:29.4483830Z [36;1m    cd ../../..[0m
+2025-12-06T14:00:29.4484330Z [36;1m    echo "✅ Unsigned archive created: build/release/ios/LingAfriq-$version-unsigned.xcarchive.zip"[0m
+2025-12-06T14:00:29.4484860Z [36;1m  elif [ -d build/ios/archive ]; then[0m
+2025-12-06T14:00:29.4485140Z [36;1m    cd build/ios/archive[0m
+2025-12-06T14:00:29.4485450Z [36;1m    zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .[0m
+2025-12-06T14:00:29.4486290Z [36;1m    cd ../../..[0m
+2025-12-06T14:00:29.4486690Z [36;1m    echo "✅ Archive packaged: build/release/ios/LingAfriq-$version-unsigned.zip"[0m
+2025-12-06T14:00:29.4487120Z [36;1m  else[0m
+2025-12-06T14:00:29.4487370Z [36;1m    echo "⚠️ Archive not found. Checking build directory..."[0m
+2025-12-06T14:00:29.4487760Z [36;1m    find build -name "*.xcarchive" -type d || echo "No xcarchive found"[0m
+2025-12-06T14:00:29.4488280Z [36;1m    find build -name "*.ipa" -type f || echo "No IPA found"[0m
+2025-12-06T14:00:29.4488630Z [36;1m  fi[0m
+2025-12-06T14:00:29.4489200Z [36;1mfi[0m
+2025-12-06T14:00:29.4489390Z [36;1m[0m
+2025-12-06T14:00:29.4489630Z [36;1mecho "📦 Final iOS artifacts in build/release/ios/:"[0m
+2025-12-06T14:00:29.4490170Z [36;1mls -lh build/release/ios/ || echo "No files found"[0m
+2025-12-06T14:00:29.6268340Z shell: /bin/bash -e {0}
+2025-12-06T14:00:29.6268650Z env:
+2025-12-06T14:00:29.6269590Z   FLUTTER_ROOT: /Users/runner/hostedtoolcache/flutter/stable-3.35.0-arm64
+2025-12-06T14:00:29.6271030Z   PUB_CACHE: /Users/runner/.pub-cache
+2025-12-06T14:00:29.6271480Z   BUILD_CERTIFICATE_BASE64: 
+2025-12-06T14:00:29.6271920Z ##[endgroup]
+2025-12-06T14:00:29.7105460Z 🔎 Searching for iOS build artifacts...
+2025-12-06T14:00:29.7222410Z Checking build/ios/ipa/...
+2025-12-06T14:00:29.7406270Z No ipa directory
+2025-12-06T14:00:29.7631000Z Checking build/ios/archive/...
+2025-12-06T14:00:29.7868850Z No archive directory
+2025-12-06T14:00:29.7979160Z ⚠️ Archive not found. Checking build directory...
+2025-12-06T14:00:29.8482180Z 📦 Final iOS artifacts in build/release/ios/:
+2025-12-06T14:00:29.8608000Z total 0

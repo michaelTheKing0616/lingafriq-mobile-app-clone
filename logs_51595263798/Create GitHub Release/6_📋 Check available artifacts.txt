@@ -1,0 +1,28 @@
+﻿2025-12-06T14:09:53.5602674Z ##[group]Run mkdir -p build/release/android build/release/ios
+2025-12-06T14:09:53.5603148Z [36;1mmkdir -p build/release/android build/release/ios[0m
+2025-12-06T14:09:53.5603454Z [36;1mecho "Checking for Android AAB..."[0m
+2025-12-06T14:09:53.5603762Z [36;1mif ls build/release/android/*.aab 2>/dev/null; then[0m
+2025-12-06T14:09:53.5604091Z [36;1m  echo "android_exists=true" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5604374Z [36;1m  ls -lh build/release/android/[0m
+2025-12-06T14:09:53.5604611Z [36;1melse[0m
+2025-12-06T14:09:53.5604830Z [36;1m  echo "android_exists=false" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5605122Z [36;1m  echo "⚠️ Android AAB not found"[0m
+2025-12-06T14:09:53.5605364Z [36;1mfi[0m
+2025-12-06T14:09:53.5605525Z [36;1m[0m
+2025-12-06T14:09:53.5605715Z [36;1mecho "Checking for iOS artifacts..."[0m
+2025-12-06T14:09:53.5606081Z [36;1mif ls build/release/ios/*.ipa build/release/ios/*.zip 2>/dev/null; then[0m
+2025-12-06T14:09:53.5606661Z [36;1m  echo "ios_exists=true" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5606962Z [36;1m  ls -lh build/release/ios/[0m
+2025-12-06T14:09:53.5607189Z [36;1melse[0m
+2025-12-06T14:09:53.5607396Z [36;1m  echo "ios_exists=false" >> $GITHUB_OUTPUT[0m
+2025-12-06T14:09:53.5607679Z [36;1m  echo "⚠️ iOS artifacts not found"[0m
+2025-12-06T14:09:53.5607911Z [36;1mfi[0m
+2025-12-06T14:09:53.5640193Z shell: /usr/bin/bash -e {0}
+2025-12-06T14:09:53.5640438Z ##[endgroup]
+2025-12-06T14:09:53.5708158Z Checking for Android AAB...
+2025-12-06T14:09:53.5720968Z build/release/android/LingAfriq-1.6.0+108.aab
+2025-12-06T14:09:53.5736044Z total 96M
+2025-12-06T14:09:53.5736492Z -rw-r--r-- 1 runner runner 62M Dec  6 14:09 LingAfriq-1.6.0+108.aab
+2025-12-06T14:09:53.5737033Z -rw-r--r-- 1 runner runner 35M Dec  6 14:09 mapping.txt
+2025-12-06T14:09:53.5738287Z Checking for iOS artifacts...
+2025-12-06T14:09:53.5752814Z ⚠️ iOS artifacts not found

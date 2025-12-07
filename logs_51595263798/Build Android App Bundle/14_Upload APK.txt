@@ -1,0 +1,31 @@
+﻿2025-12-06T14:09:30.0935749Z ##[group]Run actions/***-artifact@v4
+2025-12-06T14:09:30.0936211Z with:
+2025-12-06T14:09:30.0936507Z   name: android-apk
+2025-12-06T14:09:30.0936940Z   path: build/app/outputs/flutter-apk/app-release.apk
+2025-12-06T14:09:30.0937461Z   if-no-files-found: warn
+2025-12-06T14:09:30.0937843Z   compression-level: 6
+2025-12-06T14:09:30.0938202Z   overwrite: false
+2025-12-06T14:09:30.0938547Z   include-hidden-files: false
+2025-12-06T14:09:30.0938925Z env:
+2025-12-06T14:09:30.0939406Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T14:09:30.0940247Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T14:09:30.0941078Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-06T14:09:30.0941832Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-06T14:09:30.0942300Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-06T14:09:30.0942741Z ##[endgroup]
+2025-12-06T14:09:30.4334859Z With the provided path, there will be 1 file ***ed
+2025-12-06T14:09:30.4342901Z Artifact name is valid!
+2025-12-06T14:09:30.4344342Z Root directory input is valid!
+2025-12-06T14:09:30.5590804Z Beginning *** of artifact content to blob storage
+2025-12-06T14:09:31.3562322Z Uploaded bytes 8388608
+2025-12-06T14:09:31.8302684Z Uploaded bytes 16777216
+2025-12-06T14:09:32.3607772Z Uploaded bytes 25165824
+2025-12-06T14:09:32.7418695Z Uploaded bytes 33554432
+2025-12-06T14:09:32.9726117Z Uploaded bytes 41943040
+2025-12-06T14:09:33.0169298Z Uploaded bytes 42791778
+2025-12-06T14:09:33.0365941Z Finished ***ing artifact content to blob storage!
+2025-12-06T14:09:33.0369046Z SHA256 digest of ***ed artifact zip is 1ce42774de6dbb99a45efdeaf4b70e8eadb2a633966eb8c923d906a727929a63
+2025-12-06T14:09:33.0370917Z Finalizing artifact ***
+2025-12-06T14:09:33.1215429Z Artifact android-apk.zip successfully finalized. Artifact ID 4785865610
+2025-12-06T14:09:33.1216873Z Artifact android-apk has been successfully ***ed! Final size is 42791778 bytes. Artifact ID is 4785865610
+2025-12-06T14:09:33.1225072Z Artifact download URL: https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/actions/runs/19989453995/artifacts/4785865610

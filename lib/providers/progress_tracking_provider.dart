@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/progress_metrics_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/backend_sync_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'base_provider.dart';
 
 final progressTrackingProvider = NotifierProvider<ProgressTrackingProvider, BaseProviderState>(() {
@@ -147,6 +149,9 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
   /// Sync progress metrics to backend (debounced to avoid too many calls)
   Future<void> _syncToBackend() async {
     try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
       // Debounce: only sync if last sync was more than 5 seconds ago
       final now = DateTime.now();
       if (_lastBackendSync != null && now.difference(_lastBackendSync!).inSeconds < 5) {
@@ -154,12 +159,17 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
       }
       _lastBackendSync = now;
       
-      final success = await ref.read(apiProvider.notifier).updateProgressMetrics(_metrics.toMap());
-      if (success) {
-        debugPrint('Progress metrics synced to backend');
-      }
+      final syncProvider = ref.read(backendSyncProvider.notifier);
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.progress,
+        data: {
+          'user_id': user.id.toString(),
+          'metrics': _metrics.toMap(),
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
     } catch (e) {
-      debugPrint('Error syncing progress metrics to backend: $e');
+      debugPrint('Error queuing progress sync: $e');
     }
   }
 

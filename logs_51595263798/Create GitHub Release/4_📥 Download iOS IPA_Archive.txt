@@ -1,0 +1,12 @@
+﻿2025-12-06T14:09:53.1020411Z ##[group]Run actions/download-artifact@v4
+2025-12-06T14:09:53.1020708Z with:
+2025-12-06T14:09:53.1020892Z   name: ios-build-1.6.0+108
+2025-12-06T14:09:53.1021112Z   path: build/release/ios
+2025-12-06T14:09:53.1021757Z   merge-multiple: false
+2025-12-06T14:09:53.1022203Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T14:09:53.1022597Z   run-id: 19989453995
+2025-12-06T14:09:53.1022815Z ##[endgroup]
+2025-12-06T14:09:53.3036515Z Downloading single artifact
+2025-12-06T14:09:53.5273334Z ##[error]Unable to download artifact(s): Artifact not found for name: ios-build-1.6.0+108
+        Please ensure that your artifact is not expired and the artifact was uploaded using a compatible version of toolkit/upload-artifact.
+        For more information, visit the GitHub Artifacts FAQ: https://github.com/actions/toolkit/blob/main/packages/artifact/docs/faq.md

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/gamification/level_display_widget.dart';
+import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
+import 'package:lingafriq/widgets/gamification/streak_display_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -134,25 +138,30 @@ class UserProfileScreen extends ConsumerWidget {
                           ),
                         ),
                         SizedBox(height: 3.h),
-                        // Stats
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            _StatItem(
-                              value: 'Lvl ${user?.level ?? 1}',
-                              label: 'Level',
-                            ),
-                            SizedBox(width: 4.w),
-                            _StatItem(
-                              value: '${user?.completed_point ?? 0}',
-                              label: 'XP',
-                            ),
-                            SizedBox(width: 4.w),
-                            _StatItem(
-                              value: '${user?.streak ?? 0}',
-                              label: 'Day Streak',
-                            ),
-                          ],
+                        // Gamification Stats
+                        Consumer(
+                          builder: (context, ref, _) {
+                            final gamification = ref.watch(gamificationProvider.notifier).gamification;
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                _StatItem(
+                                  value: 'Lv. ${gamification.level}',
+                                  label: gamification.levelTitle,
+                                ),
+                                SizedBox(width: 4.w),
+                                _StatItem(
+                                  value: '${gamification.xp}',
+                                  label: 'XP',
+                                ),
+                                SizedBox(width: 4.w),
+                                _StatItem(
+                                  value: '${gamification.dailyStreak}',
+                                  label: 'Day Streak',
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -249,6 +258,21 @@ class UserProfileScreen extends ConsumerWidget {
                       ],
                     ),
                   ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
+                  SizedBox(height: 3.h),
+                  // Gamification Widgets
+                  Consumer(
+                    builder: (context, ref, _) {
+                      return Column(
+                        children: [
+                          LevelDisplayWidget(showXP: true),
+                          SizedBox(height: 2.h),
+                          CurrencyDisplayWidget(compact: false, showLabels: true),
+                          SizedBox(height: 2.h),
+                          StreakDisplayWidget(showFreeze: true),
+                        ],
+                      );
+                    },
+                  ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
                   SizedBox(height: 3.h),
                   // Action Buttons
                   _ActionButton(

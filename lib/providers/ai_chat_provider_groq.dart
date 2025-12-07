@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dio/dio.dart';
@@ -9,7 +10,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
+import 'backend_sync_provider.dart';
+import 'user_provider.dart';
 import '../utils/diacritics_enforcer.dart';
+import '../data/roleplay_dataset.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -57,21 +61,64 @@ class ChatMessage {
       );
 }
 
-// Word Memory for SRS
+// Word Memory for SRS (SM-2 variant)
 class WordMemory {
-  int strength = 0; // 0-5
+  double ease = 2.5; // Ease factor (SM-2 algorithm)
+  int repetitions = 0; // Number of successful reviews
+  int intervalDays = 1; // Days until next review
   DateTime nextReview = DateTime.now();
   int attempts = 0;
   int successes = 0;
+  int strength = 0; // Legacy: 0-5 (mapped from repetitions)
 
   WordMemory({
-    this.strength = 0,
+    this.ease = 2.5,
+    this.repetitions = 0,
+    this.intervalDays = 1,
     DateTime? nextReview,
     this.attempts = 0,
     this.successes = 0,
-  }) : nextReview = nextReview ?? DateTime.now();
+  }) : nextReview = nextReview ?? DateTime.now() {
+    // Map repetitions to legacy strength for backward compatibility
+    strength = repetitions.clamp(0, 5);
+  }
+
+  /// Update SRS using SM-2 variant algorithm
+  /// Quality: 0-5 (0=complete blackout, 5=perfect recall)
+  void updateWithSM2(int quality) {
+    if (quality < 3) {
+      // Failed: reset
+      repetitions = 0;
+      intervalDays = 1;
+    } else {
+      // Passed: update
+      if (repetitions == 0) {
+        intervalDays = 1;
+      } else if (repetitions == 1) {
+        intervalDays = 6;
+      } else {
+        intervalDays = (intervalDays * ease).round();
+      }
+      repetitions++;
+    }
+    
+    // Update ease factor (SM-2 formula)
+    ease = (ease + 0.1 - (5 - quality) * 0.08).clamp(1.3, double.infinity);
+    
+    // Update next review date
+    nextReview = DateTime.now().add(Duration(days: intervalDays));
+    
+    // Update legacy strength
+    strength = repetitions.clamp(0, 5);
+    
+    attempts++;
+    if (quality >= 3) successes++;
+  }
 
   Map<String, dynamic> toJson() => {
+        'ease': ease,
+        'repetitions': repetitions,
+        'intervalDays': intervalDays,
         'strength': strength,
         'nextReview': nextReview.toIso8601String(),
         'attempts': attempts,
@@ -79,7 +126,9 @@ class WordMemory {
       };
 
   factory WordMemory.fromJson(Map<String, dynamic> json) => WordMemory(
-        strength: json['strength'] ?? 0,
+        ease: (json['ease'] ?? 2.5).toDouble(),
+        repetitions: json['repetitions'] ?? 0,
+        intervalDays: json['intervalDays'] ?? 1,
         nextReview: DateTime.parse(json['nextReview']),
         attempts: json['attempts'] ?? 0,
         successes: json['successes'] ?? 0,
@@ -127,8 +176,8 @@ class GrammarFeedback {
 // Conversation Turn
 enum ConversationTurn { user, ai }
 
-// Polie chat modes
-enum PolieMode { translation, tutor }
+// Polie chat modes - Premium version with all modes
+enum PolieMode { translation, tutor, roleplay, conversation, vocab, review }
 
 class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<ChatMessage> _messages = [];
@@ -222,71 +271,135 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
       _loadChatHistory();
       _loadSRSMemory();
       _loadCEFRInfo();
+      _initializeRoleplayDataset();
       _historyLoaded = true;
     }
     _initializeSystemPrompt();
     return BaseProviderState();
   }
+  
+  /// Initialize roleplay dataset on first build
+  void _initializeRoleplayDataset() {
+    if (RoleplayDataset.count == 0) {
+      RoleplayDatasetLoader.loadBlock1();
+      debugPrint('Loaded ${RoleplayDataset.count} roleplay entries');
+    }
+  }
 
   void _initializeSystemPrompt() {
+    // Polie Premium: Enhanced system prompts for all modes
     if (_mode == PolieMode.translation) {
-      _systemPrompt = '''You are Polie, an expert African language translator. You translate between $_sourceLanguage and $_targetLanguage accurately and precisely.
+      _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for translation. You follow these inviolable rules:
 
-CRITICAL RULES FOR TRANSLATION MODE:
-1. ALWAYS translate what the user asks - no refusals, no clarifications, no interruptions
-2. If user says "How do you say X", immediately provide the $_targetLanguage translation
-3. If user gives a phrase/sentence, immediately translate it
-4. Be direct and instant - don't ask questions unless the input is genuinely ambiguous
-5. For Yoruba and other tonal languages, include correct tone marks/diacritics. If meaning is ambiguous, briefly offer the most likely option first, then 1 short alternative on the next line.
-5. Format your response clearly:
-   
-   $_targetLanguage: [translation]
-   Pronunciation: [if needed]
-   Meaning: [brief explanation]
+MODE: TRANSLATE
+
+You are Polie in TRANSLATE MODE.
+
+Steps:
+1. Confirm source/target languages if missing. If target or source is missing, ask: "Which language would you like to use?"
+2. Output translation FIRST (canonical diacritics). ALWAYS translate what the user asks - no refusals, no clarifications, no interruptions.
+3. If user says "How do you say X", immediately provide the $_targetLanguage translation.
+4. If user gives a phrase/sentence, immediately translate it.
+5. Provide optional ASCII fallback ONLY IF helpful or requested (in parentheses).
+6. Provide: 
+   - Usage (formal/informal)
+   - Notes (brief, 1-2 lines)
+7. Never begin lessons. Never introduce other languages unless explicitly requested.
+
+FORMAT:
+Translation: <with diacritics>
+ASCII: (<fallback>)
+Usage: <register>
+Notes: <1–2 lines>
+
+TRANSLATION ACCURACY:
+- Always output **correct orthography + diacritics** for languages that require them.
+- Example for Yoruba: "Báwo", "Báwo ní?", "Ẹ n lẹ", "Ẹ káàrọ̀."
+- For Yoruba and other tonal languages, include correct tone marks/diacritics. If meaning is ambiguous, briefly offer the most likely option first, then 1 short alternative on the next line.
 
 SUPPORTED AFRICAN LANGUAGES (verify accuracy):
-- Yoruba (Nigeria)
+- Yoruba (Nigeria) - requires diacritics
 - Hausa (Nigeria, Niger)
-- Igbo (Nigeria) 
+- Igbo (Nigeria) - requires diacritics
 - Swahili (Kenya, Tanzania - use standard Swahili)
 - Zulu (South Africa)
 - Xhosa (South Africa)
 - Amharic (Ethiopia)
-- Twi (Ghana)
+- Twi (Ghana) - requires diacritics
 - Afrikaans (South Africa)
 - Pidgin English (Nigerian Pidgin)
 
 User's native language: $_sourceLanguage
 Target language: $_targetLanguage
 
+AVOIDING WRONG-LANGUAGE RESPONSES:
+- Never begin Yoruba when asked about Swahili (or vice-versa).
+- Respect the language the user selected or confirmed.
+
+CULTURAL ACCURACY:
+- Use correct forms: formal/informal, social hierarchy, gendered terms, etc.
+- Point out polite alternatives where appropriate.
+
 Be accurate, culturally appropriate, and instant. No denials, no interruptions in translation mode.''';
       return;
     }
 
-    _systemPrompt = '''You are LingAfriq Polyglot (Polie), an expert AI language learning tutor specializing in African languages. 
-You help users learn and practice various African languages including:
+    _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for tutoring. You follow these inviolable rules:
+
+MODE: TUTOR
+
+You are Polie in TUTOR MODE.
+
+Steps:
+1. Confirm the target language and proficiency level if needed.
+2. For "How to say X in Y":
+   - Canonical phrase with diacritics
+   - Phonetic / IPA transcription
+   - Word-by-word breakdown (short)
+   - One example practice sentence
+   - Micro comprehension check
+3. Never introduce other languages unless the learner explicitly asks for a comparison.
+
+TUTOR MODE BEHAVIOR:
+- Teach the selected language ONLY ($_targetLanguage).
+- Provide pronunciation, grammar breakdown, usage, and one practice sentence.
+- Ask a comprehension check after each micro-lesson.
+- Never teach an unrelated language unless requested explicitly.
+
+SUPPORTED AFRICAN LANGUAGES:
 - Swahili (Kiswahili)
-- Yoruba
-- Igbo
+- Yoruba (requires diacritics)
+- Igbo (requires diacritics)
 - Hausa
 - Zulu (IsiZulu)
 - Xhosa
 - Amharic
 - Pidgin English (Nigerian Pidgin)
-- Twi
+- Twi (requires diacritics)
 - Afrikaans
 - And many other African languages
 
 The user's native language is: $_sourceLanguage
 The user wants to learn: $_targetLanguage
 
-You can:
-- Help users practice conversations
-- Explain grammar and vocabulary
-- Provide context-aware translations between $_sourceLanguage and $_targetLanguage
-- Create learning exercises
-- Answer questions about African cultures and languages
-- Engage in natural conversations in the target language ($_targetLanguage)
+TRANSLATION ACCURACY:
+- Always output **correct orthography + diacritics** for languages that require them.
+- Example for Yoruba: "Báwo", "Báwo ní?", "Ẹ n lẹ", "Ẹ káàrọ̀."
+
+AVOIDING WRONG-LANGUAGE RESPONSES:
+- Never begin Yoruba when asked about Swahili (or vice-versa).
+- Respect the language the user selected or confirmed.
+
+CULTURAL ACCURACY:
+- Use correct forms: formal/informal, social hierarchy, gendered terms, etc.
+- Point out polite alternatives where appropriate.
+
+SUB-ROLES:
+When helpful, briefly invoke internal roles:
+- Grammar Buddy
+- Pronunciation Coach
+- Roleplay Partner
+Keep responses concise.
 
 Always be encouraging, patient, and culturally sensitive. 
 - When teaching, use $_targetLanguage primarily but explain in $_sourceLanguage when needed
@@ -294,6 +407,127 @@ Always be encouraging, patient, and culturally sensitive.
 - Respond naturally in the language the user is learning, or in the language they're using to communicate with you
 
 When the user is practicing, end your responses with a question or task to keep the conversation engaging and educational.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.roleplay) {
+      // Get few-shot examples for the target language to enhance prompts
+      final examples = RoleplayDataset.getFewShotExamples(_selectedLanguage, count: 3);
+      String examplesText = '';
+      if (examples.isNotEmpty) {
+        examplesText = '\n\nFEW-SHOT EXAMPLES:\n';
+        for (final example in examples) {
+          examplesText += 'Scenario: ${example.scenario}\n';
+          examplesText += 'User: ${example.userUtterance}\n';
+          examplesText += 'Assistant: ${example.assistantResponse}\n';
+          examplesText += 'Notes: ${example.notes}\n\n';
+        }
+      }
+      
+      _systemPrompt = '''You are Polie Premium in ROLEPLAY MODE.
+
+MODE: ROLEPLAY
+
+Setup: Create engaging scenarios with roles, tone, and target vocab/grammar goals.
+
+Steps:
+1. Setup: Present scenario, roles, tone, target vocab/grammar goals.
+2. Run a multi-turn simulation (3-6 turns) with branching options.
+3. After each user turn: provide gentle correction, immediate feedback, and one improvement suggestion.
+4. Provide a "replay" button suggestion (play audio + show corrections).
+
+ROLEPLAY BEHAVIOR:
+- Create realistic scenarios: ordering food, greeting elders, shopping, asking directions, etc.
+- Use appropriate register (formal/informal) based on scenario.
+- Provide immediate feedback after each user response.
+- Offer corrections gently and constructively.
+- Include cultural context in scenarios.
+- Use canonical diacritics for all target language responses.
+- Reference the examples below for authentic phrasing and cultural context.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage$examplesText
+
+Always be encouraging and make roleplay fun and educational.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.conversation) {
+      _systemPrompt = '''You are Polie Premium in CONVERSATION MODE.
+
+MODE: CONVERSATION
+
+Steps:
+1. Mirror the user's selected level and adjust complexity adaptively.
+2. Offer corrections only when asked or when user enables auto-correct mode.
+3. Provide inline translations on request.
+4. Keep conversation natural and flowing.
+
+CONVERSATION BEHAVIOR:
+- Adapt to user's proficiency level automatically.
+- Use $_targetLanguage primarily, but explain in $_sourceLanguage when needed.
+- Only correct errors when explicitly requested or in auto-correct mode.
+- Provide translations on demand with a simple format: "Translation: [text]"
+- Keep responses natural and conversational.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage
+
+Be warm, natural, and encouraging. Make conversation feel authentic.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.vocab) {
+      _systemPrompt = '''You are Polie Premium in VOCAB MODE.
+
+MODE: VOCAB
+
+Steps:
+1. Present vocabulary words with diacritics, pronunciation, and usage.
+2. Provide example sentences and context.
+3. Track vocabulary progress and suggest spaced repetition.
+4. Create vocabulary quizzes and exercises.
+
+VOCAB BEHAVIOR:
+- Present words with canonical diacritics.
+- Include pronunciation (IPA or simple phonetics).
+- Provide example sentences in context.
+- Track user progress and suggest review timing (SRS).
+- Create engaging vocabulary exercises.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage
+
+Make vocabulary learning engaging and memorable.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.review) {
+      _systemPrompt = '''You are Polie Premium in REVIEW MODE.
+
+MODE: REVIEW
+
+Steps:
+1. Present words/phrases due for review based on spaced repetition.
+2. Test user's recall and provide feedback.
+3. Adjust difficulty based on performance.
+4. Update SRS intervals based on quality of recall.
+
+REVIEW BEHAVIOR:
+- Present review items based on SRS schedule.
+- Test recall with various question types.
+- Provide immediate feedback on correctness.
+- Adjust intervals based on performance (SM-2 algorithm).
+- Track progress and celebrate improvements.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage
+
+Make reviews efficient and rewarding.''';
+      return;
+    }
+
+    // Default: Tutor mode (already set above)
   }
 
   Future<void> setLanguage(String language) async {
@@ -332,7 +566,13 @@ When the user is practicing, end your responses with a question or task to keep 
     // Notify listeners of the change
     state = state.copyWith();
     
-    debugPrint('Switched to ${mode == PolieMode.translation ? "Translation" : "Tutor"} mode. Loaded ${_messages.length} messages.');
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
   }
 
   Future<void> setTutorMode(bool enabled) async {
@@ -504,8 +744,28 @@ When the user is practicing, end your responses with a question or task to keep 
         _turn = ConversationTurn.user;
         state = state.copyWith(isLoading: false);
 
-        final correctedOutput =
-            DiacriticsEnforcer.enforce(output.trim(), _selectedLanguage);
+        // Enhanced diacritics enforcement with metadata and audit logging
+        final diacriticsResult = DiacriticsEnforcer.enforceWithMetadata(
+          output.trim(),
+          _selectedLanguage,
+          enableFuzzy: true,
+          fuzzyThreshold: 0.75,
+        );
+        
+        final correctedOutput = diacriticsResult['text'] as String;
+        final wasChanged = diacriticsResult['changed'] as bool;
+        final metadata = diacriticsResult['metadata'] as Map<String, dynamic>;
+        
+        // Log telemetry event if diacritics were corrected
+        if (wasChanged) {
+          debugPrint('Diacritics corrected: ${metadata['method']} method for $_selectedLanguage');
+          // Telemetry event could be sent here
+          // telemetry.trackEvent('diacritics_corrected', {
+          //   'lang': _selectedLanguage,
+          //   'method': metadata['method'],
+          //   'score': metadata['score'] ?? 1.0,
+          // });
+        }
 
         final assistantMsg = ChatMessage(
           role: 'assistant',
@@ -567,8 +827,19 @@ When the user is practicing, end your responses with a question or task to keep 
     return fullResponse;
   }
 
+  // Random number generator for roleplay scenarios
+  final Random _random = Random();
+  
   // ----- Tutor Turn & Adaptive Prompt -----
   String _adaptiveTutorPrompt(String language) {
+    // Use roleplay dataset to suggest scenarios (30% chance)
+    if (_random.nextDouble() < 0.3) {
+      final roleplayEntry = RoleplayDataset.getRandomForLanguage(language);
+      if (roleplayEntry != null) {
+        return "Roleplay: ${roleplayEntry.scenario}. ${roleplayEntry.userUtterance}";
+      }
+    }
+    
     final stages = [
       "Translate to $language:",
       "Say this in $language:",
@@ -607,30 +878,20 @@ When the user is practicing, end your responses with a question or task to keep 
     }
   }
 
-  // ----- Word Memory (SRS) -----
-  void _updateSRS(String word, bool correct) {
+  // ----- Word Memory (SRS) - Enhanced with SM-2 variant -----
+  /// Update SRS using SM-2 algorithm
+  /// quality: 0-5 (0=complete blackout, 5=perfect recall)
+  void _updateSRS(String word, int quality) {
     final entry = _memory[word] ?? WordMemory();
-    entry.attempts++;
-
-    if (correct) {
-      entry.successes++;
-      entry.strength = (entry.strength + 1).clamp(0, 5);
-    } else {
-      entry.strength = (entry.strength - 1).clamp(0, 5);
-    }
-
-    final intervals = [
-      const Duration(hours: 6),
-      const Duration(days: 1),
-      const Duration(days: 3),
-      const Duration(days: 7),
-      const Duration(days: 30),
-      const Duration(days: 90),
-    ];
-
-    entry.nextReview = DateTime.now().add(intervals[entry.strength.clamp(0, 5)]);
+    entry.updateWithSM2(quality);
     _memory[word] = entry;
     _saveSRSMemory();
+  }
+  
+  /// Legacy method for backward compatibility
+  void _updateSRSLegacy(String word, bool correct) {
+    final quality = correct ? 4 : 2; // Map bool to quality scale
+    _updateSRS(word, quality);
   }
 
   String? _dueReview() {
@@ -1018,15 +1279,32 @@ Return only JSON.
     _messages.clear();
     state = state.copyWith();
     await _saveChatHistory(); // Save empty history to clear this mode's history
-    debugPrint('Cleared chat history for ${_mode == PolieMode.translation ? "Translation" : "Tutor"} mode');
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('Cleared chat history for $modeName mode');
   }
 
   // ----- Persistence -----
-  // Separate chat histories for translation and tutor modes
+  // Separate chat histories for each mode
   String get _chatHistoryKey {
-    return _mode == PolieMode.translation
-        ? 'ai_chat_history_groq_translation'
-        : 'ai_chat_history_groq_tutor';
+    switch (_mode) {
+      case PolieMode.translation:
+        return 'ai_chat_history_groq_translation';
+      case PolieMode.tutor:
+        return 'ai_chat_history_groq_tutor';
+      case PolieMode.roleplay:
+        return 'ai_chat_history_groq_roleplay';
+      case PolieMode.conversation:
+        return 'ai_chat_history_groq_conversation';
+      case PolieMode.vocab:
+        return 'ai_chat_history_groq_vocab';
+      case PolieMode.review:
+        return 'ai_chat_history_groq_review';
+    }
   }
 
   Future<void> _saveChatHistory() async {
@@ -1047,6 +1325,34 @@ Return only JSON.
   /// Sync chat history to backend (debounced to avoid too many calls)
   Future<void> _syncChatHistoryToBackend() async {
     try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      // Debounce: only sync if last sync was more than 3 seconds ago
+      final now = DateTime.now();
+      if (_lastBackendSync != null && now.difference(_lastBackendSync!).inSeconds < 3) {
+        return;
+      }
+      _lastBackendSync = now;
+
+      final syncProvider = ref.read(backendSyncProvider.notifier);
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.aiChatHistory,
+        data: {
+          'user_id': user.id.toString(),
+          'mode': _mode.name,
+          'messages': _messages.map((m) => m.toJson()).toList(),
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
+    } catch (e) {
+      debugPrint('Error queuing chat history sync: $e');
+    }
+  }
+
+  /// Legacy sync method (kept for backward compatibility)
+  Future<void> _syncChatHistoryToBackendLegacy() async {
+    try {
       // Debounce: only sync if last sync was more than 10 seconds ago
       final now = DateTime.now();
       if (_lastChatHistorySync != null && now.difference(_lastChatHistorySync!).inSeconds < 10) {
@@ -1054,16 +1360,45 @@ Return only JSON.
       }
       _lastChatHistorySync = now;
       
-      final mode = _mode == PolieMode.translation ? 'translation' : 'tutor';
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final mode = _mode == PolieMode.translation ? 'translation' 
+          : _mode == PolieMode.tutor ? 'tutor'
+          : _mode == PolieMode.roleplay ? 'roleplay'
+          : _mode == PolieMode.conversation ? 'conversation'
+          : _mode == PolieMode.vocab ? 'vocab'
+          : 'review';
       final messagesJson = _messages.map((msg) => msg.toJson()).toList();
-      // Access apiProvider through ref - need to import it
-      final api = ref.read(apiProvider.notifier);
-      final success = await api.syncAiChatHistory(mode, messagesJson);
-      if (success) {
-        debugPrint('AI chat history synced to backend for $mode mode');
-      }
+      
+      final syncProvider = ref.read(backendSyncProvider.notifier);
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.aiChatHistory,
+        data: {
+          'user_id': user.id.toString(),
+          'mode': mode,
+          'messages': messagesJson,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
+      
+      // Also sync SRS memory
+      final memoryJson = <String, dynamic>{};
+      _memory.forEach((key, value) {
+        memoryJson[key] = value.toJson();
+      });
+      
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.aiChatSRS,
+        data: {
+          'user_id': user.id.toString(),
+          'memory': memoryJson,
+          'cefr': _cefrInfo.toJson(),
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
     } catch (e) {
-      debugPrint('Error syncing chat history to backend: $e');
+      debugPrint('Error queuing chat sync: $e');
     }
   }
 
@@ -1077,12 +1412,24 @@ Return only JSON.
         _messages.addAll(
           messagesList.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
         );
-        debugPrint('Loaded ${_messages.length} messages for ${_mode == PolieMode.translation ? "Translation" : "Tutor"} mode');
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('Loaded ${_messages.length} messages for $modeName mode');
         state = state.copyWith();
       } else {
         // No history for this mode, ensure messages are cleared
         _messages.clear();
-        debugPrint('No chat history found for ${_mode == PolieMode.translation ? "Translation" : "Tutor"} mode');
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('No chat history found for $modeName mode');
         state = state.copyWith();
       }
     } catch (e) {

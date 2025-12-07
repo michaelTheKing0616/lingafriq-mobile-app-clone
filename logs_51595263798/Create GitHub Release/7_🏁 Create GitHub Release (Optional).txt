@@ -1,0 +1,23 @@
+﻿2025-12-06T14:09:53.5829547Z ##[group]Run softprops/action-gh-release@v2
+2025-12-06T14:09:53.5829845Z with:
+2025-12-06T14:09:53.5830017Z   name: LingAfriq v1.6.0+108
+2025-12-06T14:09:53.5830235Z   tag_name: v1.6.0+108
+2025-12-06T14:09:53.5830542Z   files: build/release/android/*.aab
+build/release/android/mapping.txt
+
+2025-12-06T14:09:53.5830889Z   generate_release_notes: true
+2025-12-06T14:09:53.5831102Z   draft: false
+2025-12-06T14:09:53.5831485Z   prerelease: false
+2025-12-06T14:09:53.5831701Z   fail_on_unmatched_files: false
+2025-12-06T14:09:53.5831923Z   overwrite_files: true
+2025-12-06T14:09:53.5832274Z   token: ***
+2025-12-06T14:09:53.5832444Z env:
+2025-12-06T14:09:53.5832688Z   GITHUB_TOKEN: ***
+2025-12-06T14:09:53.5832871Z ##[endgroup]
+2025-12-06T14:09:54.1184739Z 👩‍🏭 Creating new GitHub release for tag v1.6.0+108...
+2025-12-06T14:09:55.2261889Z ⬆️ Uploading LingAfriq-1.6.0+108.aab...
+2025-12-06T14:09:55.2267152Z ⬆️ Uploading mapping.txt...
+2025-12-06T14:09:57.0025337Z ✅ Uploaded mapping.txt
+2025-12-06T14:09:58.2492417Z ✅ Uploaded LingAfriq-1.6.0+108.aab
+2025-12-06T14:09:58.2502010Z Finalizing release...
+2025-12-06T14:09:58.8178291Z 🎉 Release ready at https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/releases/tag/v1.6.0%2B108

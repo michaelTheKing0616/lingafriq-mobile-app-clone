@@ -1,0 +1,155 @@
+﻿2025-12-06T13:56:10.8515941Z ##[group]Run build_args="--release --split-debug-info=build/symbols"
+2025-12-06T13:56:10.8516447Z [36;1mbuild_args="--release --split-debug-info=build/symbols"[0m
+2025-12-06T13:56:10.8516762Z [36;1m[0m
+2025-12-06T13:56:10.8516956Z [36;1mif [ -n "$GROQ_API_KEY" ]; then[0m
+2025-12-06T13:56:10.8517305Z [36;1m  build_args="$build_args --dart-define=GROQ_API_KEY=$GROQ_API_KEY"[0m
+2025-12-06T13:56:10.8517642Z [36;1melse[0m
+2025-12-06T13:56:10.8517950Z [36;1m  echo "⚠️ Warning: GROQ_API_KEY secret not set. Building without API key."[0m
+2025-12-06T13:56:10.8518300Z [36;1mfi[0m
+2025-12-06T13:56:10.8518466Z [36;1m[0m
+2025-12-06T13:56:10.8518665Z [36;1mif [ -n "$STABILITY_AI_KEY" ]; then[0m
+2025-12-06T13:56:10.8519041Z [36;1m  build_args="$build_args --dart-define=STABILITY_AI_KEY=$STABILITY_AI_KEY"[0m
+2025-12-06T13:56:10.8519410Z [36;1mfi[0m
+2025-12-06T13:56:10.8519575Z [36;1m[0m
+2025-12-06T13:56:10.8519768Z [36;1mif [ -n "$HUGGINGFACE_TOKEN" ]; then[0m
+2025-12-06T13:56:10.8520147Z [36;1m  build_args="$build_args --dart-define=HUGGINGFACE_TOKEN=$HUGGINGFACE_TOKEN"[0m
+2025-12-06T13:56:10.8520532Z [36;1mfi[0m
+2025-12-06T13:56:10.8520694Z [36;1m[0m
+2025-12-06T13:56:10.8520889Z [36;1mflutter build appbundle $build_args[0m
+2025-12-06T13:56:10.8553433Z shell: /usr/bin/bash -e {0}
+2025-12-06T13:56:10.8553674Z env:
+2025-12-06T13:56:10.8553967Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T13:56:10.8554427Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-06T13:56:10.8554856Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-06T13:56:10.8555200Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-06T13:56:10.8555470Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-06T13:56:10.8555871Z   GROQ_API_KEY: ***
+2025-12-06T13:56:10.8556198Z   STABILITY_AI_KEY: ***
+2025-12-06T13:56:10.8556510Z   HUGGINGFACE_TOKEN: ***
+2025-12-06T13:56:10.8556721Z ##[endgroup]
+2025-12-06T13:56:11.1906224Z Resolving dependencies...
+2025-12-06T13:56:11.9044830Z Downloading packages...
+2025-12-06T13:56:12.1100708Z   _fe_analyzer_shared 85.0.0 (92.0.0 available)
+2025-12-06T13:56:12.1101346Z   analyzer 7.7.1 (9.0.0 available)
+2025-12-06T13:56:12.1101992Z   archive 3.6.1 (4.0.7 available)
+2025-12-06T13:56:12.1102417Z   args 2.5.0 (2.7.0 available)
+2025-12-06T13:56:12.1102848Z   boolean_selector 2.1.1 (2.1.2 available)
+2025-12-06T13:56:12.1103349Z   characters 1.4.0 (1.4.1 available)
+2025-12-06T13:56:12.1103805Z   checked_yaml 2.0.3 (2.0.4 available)
+2025-12-06T13:56:12.1104249Z   cli_util 0.4.1 (0.4.2 available)
+2025-12-06T13:56:12.1104668Z   coverage 1.14.0 (1.15.0 available)
+2025-12-06T13:56:12.1105096Z   crypto 3.0.5 (3.0.7 available)
+2025-12-06T13:56:12.1105515Z   csslib 1.0.0 (1.0.2 available)
+2025-12-06T13:56:12.1106319Z   dio_web_adapter 2.0.0 (2.1.1 available)
+2025-12-06T13:56:12.1106795Z   ffi 2.1.3 (2.1.4 available)
+2025-12-06T13:56:12.1107210Z   file_picker 8.3.7 (10.3.7 available)
+2025-12-06T13:56:12.1107652Z   fixnum 1.1.0 (1.1.1 available)
+2025-12-06T13:56:12.1108073Z   fl_chart 0.69.2 (1.1.1 available)
+2025-12-06T13:56:12.1108657Z   flutter_inappwebview_internal_annotations 1.1.1 (1.2.0 available)
+2025-12-06T13:56:12.1109415Z   flutter_inappwebview_platform_interface 1.3.0 (1.3.0+1 available)
+2025-12-06T13:56:12.1110050Z   flutter_lints 5.0.0 (6.0.0 available)
+2025-12-06T13:56:12.1110568Z   flutter_secure_storage_linux 1.2.3 (2.0.1 available)
+2025-12-06T13:56:12.1111181Z   flutter_secure_storage_macos 3.1.3 (4.0.0 available)
+2025-12-06T13:56:12.1112052Z   flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
+2025-12-06T13:56:12.1112729Z   flutter_secure_storage_web 1.2.1 (2.0.0 available)
+2025-12-06T13:56:12.1113331Z   flutter_secure_storage_windows 3.1.2 (4.0.0 available)
+2025-12-06T13:56:12.1113885Z   html 0.15.4 (0.15.6 available)
+2025-12-06T13:56:12.1114316Z   http 1.2.2 (1.6.0 available)
+2025-12-06T13:56:12.1114741Z   http_parser 4.0.2 (4.1.2 available)
+2025-12-06T13:56:12.1115190Z   image 4.2.0 (4.5.4 available)
+2025-12-06T13:56:12.1116021Z   js 0.6.7 (0.7.2 available)
+2025-12-06T13:56:12.1116423Z   lints 5.0.0 (6.0.0 available)
+2025-12-06T13:56:12.1116830Z   logging 1.2.0 (1.3.0 available)
+2025-12-06T13:56:12.1117259Z   matcher 0.12.17 (0.12.18 available)
+2025-12-06T13:56:12.1117755Z   material_color_utilities 0.11.1 (0.13.0 available)
+2025-12-06T13:56:12.1118262Z   meta 1.16.0 (1.17.0 available)
+2025-12-06T13:56:12.1118716Z   path_provider_android 2.2.10 (2.2.22 available)
+2025-12-06T13:56:12.1119263Z   path_provider_foundation 2.4.0 (2.5.1 available)
+2025-12-06T13:56:12.1119769Z   petitparser 6.0.2 (7.0.1 available)
+2025-12-06T13:56:12.1120216Z   platform 3.1.5 (3.1.6 available)
+2025-12-06T13:56:12.1120652Z   pointycastle 3.9.1 (4.0.0 available)
+2025-12-06T13:56:12.1121161Z   shared_preferences_android 2.4.17 (2.4.18 available)
+2025-12-06T13:56:12.1121981Z   shared_preferences_foundation 2.5.2 (2.5.6 available)
+2025-12-06T13:56:12.1122559Z   shared_preferences_web 2.4.2 (2.4.3 available)
+2025-12-06T13:56:12.1123059Z   shelf 1.4.1 (1.4.2 available)
+2025-12-06T13:56:12.1123476Z   socket_io_client 3.1.2 (3.1.3 available)
+2025-12-06T13:56:12.1123943Z   source_span 1.10.0 (1.10.1 available)
+2025-12-06T13:56:12.1124379Z   sqflite 2.3.3+2 (2.4.2 available)
+2025-12-06T13:56:12.1124820Z   sqflite_common 2.5.4+4 (2.5.6 available)
+2025-12-06T13:56:12.1125267Z   string_scanner 1.2.0 (1.4.1 available)
+2025-12-06T13:56:12.1125722Z   synchronized 3.3.0+3 (3.4.0 available)
+2025-12-06T13:56:12.1126166Z   term_glyph 1.2.1 (1.2.2 available)
+2025-12-06T13:56:12.1126601Z   test 1.26.2 (1.28.0 available)
+2025-12-06T13:56:12.1127011Z   test_api 0.7.6 (0.7.8 available)
+2025-12-06T13:56:12.1127431Z   test_core 0.6.11 (0.6.14 available)
+2025-12-06T13:56:12.1127888Z   typed_data 1.3.2 (1.4.0 available)
+2025-12-06T13:56:12.1128377Z   url_launcher_android 6.3.10 (6.3.28 available)
+2025-12-06T13:56:12.1128904Z   url_launcher_ios 6.3.1 (6.3.6 available)
+2025-12-06T13:56:12.1129291Z   url_launcher_linux 3.2.0 (3.2.2 available)
+2025-12-06T13:56:12.1129572Z   url_launcher_macos 3.2.1 (3.2.5 available)
+2025-12-06T13:56:12.1129830Z   url_launcher_web 2.3.3 (2.4.1 available)
+2025-12-06T13:56:12.1130092Z   url_launcher_windows 3.1.2 (3.1.5 available)
+2025-12-06T13:56:12.1130348Z   uuid 4.5.1 (4.5.2 available)
+2025-12-06T13:56:12.1130578Z   vm_service 14.2.5 (15.0.2 available)
+2025-12-06T13:56:12.1130817Z   web 1.1.0 (1.1.1 available)
+2025-12-06T13:56:12.1131073Z   webview_flutter_android 4.10.9 (4.10.11 available)
+2025-12-06T13:56:12.1131387Z   webview_flutter_wkwebview 3.23.4 (3.23.5 available)
+2025-12-06T13:56:12.1131920Z   win32 5.13.0 (5.15.0 available)
+2025-12-06T13:56:12.1132179Z   xml 6.5.0 (6.6.1 available)
+2025-12-06T13:56:12.1132406Z   yaml 3.1.2 (3.1.3 available)
+2025-12-06T13:56:12.1132631Z Got dependencies!
+2025-12-06T13:56:12.1143815Z 68 packages have newer versions incompatible with dependency constraints.
+2025-12-06T13:56:12.1144510Z Try `flutter pub outdated` for more information.
+2025-12-06T13:58:50.4878576Z Running Gradle task 'bundleRelease'...                          
+2025-12-06T13:58:50.4886780Z ✅ Found keystore at relative path: /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/android/app/***-keystore.jks
+2025-12-06T13:58:50.4894560Z ✅ Keystore configured successfully: /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/android/app/***-keystore.jks
+2025-12-06T13:58:50.4898541Z ✅ Using local keystore for release signing
+2025-12-06T14:04:33.9864804Z WARNING: [Processor] Library '/home/runner/.gradle/caches/modules-2/files-2.1/androidx.media3/media3-session/1.8.0/e28b8a1b7941dd4c4da264d5e622274e7c8e6488/media3-session-1.8.0.aar' contains references to both AndroidX and old support library. This seems like the library is partially migrated. Jetifier will try to rewrite the library anyway.
+2025-12-06T14:04:33.9867916Z  Example of androidX reference: 'androidx/media3/session/legacy/LegacyParcelableUtil'
+2025-12-06T14:04:33.9869085Z  Example of support library reference: 'android/support/v4/media/MediaDescriptionCompat'
+2025-12-06T14:04:55.9760503Z Note: Some input files use or override a deprecated API.
+2025-12-06T14:04:55.9762567Z Note: Recompile with -Xlint:deprecation for details.
+2025-12-06T14:04:55.9763307Z Note: Some input files use unchecked or unsafe operations.
+2025-12-06T14:04:55.9765428Z Note: Recompile with -Xlint:unchecked for details.
+2025-12-06T14:05:53.7754951Z Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1076 bytes (99.6% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2025-12-06T14:05:53.7759721Z Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 17524 bytes (98.9% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+2025-12-06T14:06:42.8785356Z Caught exception: Already watching path: /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/android
+2025-12-06T14:06:55.5729673Z Checking the license for package CMake 3.22.1 in /usr/local/lib/android/sdk/licenses
+2025-12-06T14:06:55.5730573Z License for package CMake 3.22.1 accepted.
+2025-12-06T14:06:55.5733125Z Preparing "Install CMake 3.22.1 v.3.22.1".
+2025-12-06T14:06:56.6733075Z "Install CMake 3.22.1 v.3.22.1" ready.
+2025-12-06T14:06:56.6734549Z Installing CMake 3.22.1 in /usr/local/lib/android/sdk/cmake/3.22.1
+2025-12-06T14:06:56.6738670Z "Install CMake 3.22.1 v.3.22.1" complete.
+2025-12-06T14:06:56.8747740Z "Install CMake 3.22.1 v.3.22.1" finished.
+2025-12-06T14:08:43.2752312Z Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.concurrent.ConcurrentHashMap$TreeBin {
+2025-12-06T14:08:43.2753754Z   int lockState;
+2025-12-06T14:08:43.2754249Z }`
+2025-12-06T14:08:43.2755198Z Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.concurrent.ConcurrentHashMap {
+2025-12-06T14:08:43.2758958Z   int sizeCtl;
+2025-12-06T14:08:43.2759339Z   int transferIndex;
+2025-12-06T14:08:43.2759746Z   long baseCount;
+2025-12-06T14:08:43.2760085Z   int cellsBusy;
+2025-12-06T14:08:43.2760401Z }`
+2025-12-06T14:08:43.2761284Z Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.concurrent.ConcurrentHashMap$CounterCell {
+2025-12-06T14:08:43.2765617Z   long value;
+2025-12-06T14:08:43.2765943Z }`
+2025-12-06T14:08:43.2766704Z Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.IntSummaryStatistics {
+2025-12-06T14:08:43.2767593Z   long count;
+2025-12-06T14:08:43.2767902Z   long sum;
+2025-12-06T14:08:43.2768190Z   int min;
+2025-12-06T14:08:43.2768473Z   int max;
+2025-12-06T14:08:43.2768744Z }`
+2025-12-06T14:08:43.2769489Z Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.LongSummaryStatistics {
+2025-12-06T14:08:43.2770776Z   long count;
+2025-12-06T14:08:43.2771079Z   long sum;
+2025-12-06T14:08:43.2771365Z   long min;
+2025-12-06T14:08:43.2771854Z   long max;
+2025-12-06T14:08:43.2772142Z }`
+2025-12-06T14:08:43.2772921Z Info: Proguard configuration rule does not match anything: `-keepclassmembers class j$.util.DoubleSummaryStatistics {
+2025-12-06T14:08:43.2773812Z   long count;
+2025-12-06T14:08:43.2774117Z   double sum;
+2025-12-06T14:08:43.2774421Z   double min;
+2025-12-06T14:08:43.2774719Z   double max;
+2025-12-06T14:08:43.2775010Z }`
+2025-12-06T14:08:54.3993859Z Running Gradle task 'bundleRelease'...                            761.6s
+2025-12-06T14:08:56.8560832Z ✓ Built build/app/outputs/bundle/release/app-release.aab (64.3MB)

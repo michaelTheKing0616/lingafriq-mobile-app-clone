@@ -1,0 +1,183 @@
+﻿2025-12-06T13:54:08.6432818Z Current runner version: '2.329.0'
+2025-12-06T13:54:08.6455038Z ##[group]Runner Image Provisioner
+2025-12-06T13:54:08.6455836Z Hosted Compute Agent
+2025-12-06T13:54:08.6456414Z Version: 20251124.448
+2025-12-06T13:54:08.6457036Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-06T13:54:08.6457687Z Build Date: 2025-11-24T21:16:26Z
+2025-12-06T13:54:08.6458320Z ##[endgroup]
+2025-12-06T13:54:08.6458865Z ##[group]Operating System
+2025-12-06T13:54:08.6459419Z Ubuntu
+2025-12-06T13:54:08.6459855Z 24.04.3
+2025-12-06T13:54:08.6460395Z LTS
+2025-12-06T13:54:08.6461053Z ##[endgroup]
+2025-12-06T13:54:08.6461563Z ##[group]Runner Image
+2025-12-06T13:54:08.6462221Z Image: ubuntu-24.04
+2025-12-06T13:54:08.6462689Z Version: 20251126.144.1
+2025-12-06T13:54:08.6463698Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-06T13:54:08.6465246Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-06T13:54:08.6466175Z ##[endgroup]
+2025-12-06T13:54:08.6467312Z ##[group]GITHUB_TOKEN Permissions
+2025-12-06T13:54:08.6469070Z Contents: read
+2025-12-06T13:54:08.6469714Z Metadata: read
+2025-12-06T13:54:08.6470179Z Packages: read
+2025-12-06T13:54:08.6470676Z ##[endgroup]
+2025-12-06T13:54:08.6473033Z Secret source: Actions
+2025-12-06T13:54:08.6473785Z Prepare workflow directory
+2025-12-06T13:54:08.6799619Z Prepare all required actions
+2025-12-06T13:54:08.6837146Z Getting action download info
+2025-12-06T13:54:09.0057612Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-06T13:54:09.5468618Z Complete job name: Increment Version Number
+2025-12-06T13:54:09.6320941Z ##[group]Run actions/checkout@v4
+2025-12-06T13:54:09.6321850Z with:
+2025-12-06T13:54:09.6322404Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T13:54:09.6323169Z   token: ***
+2025-12-06T13:54:09.6323555Z   ssh-strict: true
+2025-12-06T13:54:09.6323948Z   ssh-user: git
+2025-12-06T13:54:09.6324373Z   persist-credentials: true
+2025-12-06T13:54:09.6324817Z   clean: true
+2025-12-06T13:54:09.6325218Z   sparse-checkout-cone-mode: true
+2025-12-06T13:54:09.6325708Z   fetch-depth: 1
+2025-12-06T13:54:09.6326106Z   fetch-tags: false
+2025-12-06T13:54:09.6326524Z   show-progress: true
+2025-12-06T13:54:09.6326937Z   lfs: false
+2025-12-06T13:54:09.6327307Z   submodules: false
+2025-12-06T13:54:09.6327709Z   set-safe-directory: true
+2025-12-06T13:54:09.6328349Z ##[endgroup]
+2025-12-06T13:54:09.7486034Z Syncing repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T13:54:09.7487850Z ##[group]Getting Git version info
+2025-12-06T13:54:09.7488796Z Working directory is '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-06T13:54:09.7489936Z [command]/usr/bin/git version
+2025-12-06T13:54:09.8971397Z git version 2.52.0
+2025-12-06T13:54:09.8998887Z ##[endgroup]
+2025-12-06T13:54:09.9012919Z Temporarily overriding HOME='/home/runner/work/_temp/d5f7302a-0d4f-47af-b1c5-cb52e9607019' before making global git config changes
+2025-12-06T13:54:09.9014273Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-06T13:54:09.9026207Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T13:54:09.9065501Z Deleting the contents of '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-06T13:54:09.9068729Z ##[group]Initializing the repository
+2025-12-06T13:54:09.9073146Z [command]/usr/bin/git init /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T13:54:09.9183267Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-06T13:54:09.9184398Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-06T13:54:09.9185317Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-06T13:54:09.9186044Z hint: call:
+2025-12-06T13:54:09.9186899Z hint:
+2025-12-06T13:54:09.9187653Z hint: 	git config --global init.defaultBranch <name>
+2025-12-06T13:54:09.9188395Z hint:
+2025-12-06T13:54:09.9188961Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-06T13:54:09.9189884Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-06T13:54:09.9190618Z hint:
+2025-12-06T13:54:09.9191146Z hint: 	git branch -m <name>
+2025-12-06T13:54:09.9191604Z hint:
+2025-12-06T13:54:09.9192380Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-06T13:54:09.9193765Z Initialized empty Git repository in /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/.git/
+2025-12-06T13:54:09.9198199Z [command]/usr/bin/git remote add origin https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T13:54:09.9230973Z ##[endgroup]
+2025-12-06T13:54:09.9231699Z ##[group]Disabling automatic garbage collection
+2025-12-06T13:54:09.9234629Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-06T13:54:09.9263475Z ##[endgroup]
+2025-12-06T13:54:09.9264649Z ##[group]Setting up auth
+2025-12-06T13:54:09.9270642Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-06T13:54:09.9301196Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-06T13:54:09.9668612Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-06T13:54:09.9698589Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-06T13:54:09.9916374Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-06T13:54:09.9945935Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-06T13:54:10.0174671Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-06T13:54:10.0207239Z ##[endgroup]
+2025-12-06T13:54:10.0208477Z ##[group]Fetching the repository
+2025-12-06T13:54:10.0218277Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +bc214c742e4d2447d4b340fb26b6c1656fcdf774:refs/remotes/origin/main
+2025-12-06T13:54:14.3361133Z From https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-06T13:54:14.3362387Z  * [new ref]         bc214c742e4d2447d4b340fb26b6c1656fcdf774 -> origin/main
+2025-12-06T13:54:14.3396004Z ##[endgroup]
+2025-12-06T13:54:14.3398710Z ##[group]Determining the checkout info
+2025-12-06T13:54:14.3400202Z ##[endgroup]
+2025-12-06T13:54:14.3404946Z [command]/usr/bin/git sparse-checkout disable
+2025-12-06T13:54:14.3766344Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-06T13:54:14.3793627Z ##[group]Checking out the ref
+2025-12-06T13:54:14.3796798Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-06T13:54:15.0445714Z Switched to a new branch 'main'
+2025-12-06T13:54:15.0446480Z branch 'main' set up to track 'origin/main'.
+2025-12-06T13:54:15.0530320Z ##[endgroup]
+2025-12-06T13:54:15.0568407Z [command]/usr/bin/git log -1 --format=%H
+2025-12-06T13:54:15.0591854Z bc214c742e4d2447d4b340fb26b6c1656fcdf774
+2025-12-06T13:54:15.0769529Z ##[group]Run # Extract current version from pubspec.yaml
+2025-12-06T13:54:15.0770128Z [36;1m# Extract current version from pubspec.yaml[0m
+2025-12-06T13:54:15.0770629Z [36;1mcurrent_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')[0m
+2025-12-06T13:54:15.0771319Z [36;1mversion_name=$(echo $current_version | cut -d'+' -f1)[0m
+2025-12-06T13:54:15.0771724Z [36;1mbuild_number=$(echo $current_version | cut -d'+' -f2)[0m
+2025-12-06T13:54:15.0772289Z [36;1m[0m
+2025-12-06T13:54:15.0772543Z [36;1mecho "📦 Current version: $current_version"[0m
+2025-12-06T13:54:15.0772876Z [36;1mecho "📦 Version name: $version_name"[0m
+2025-12-06T13:54:15.0773205Z [36;1mecho "📦 Current build number: $build_number"[0m
+2025-12-06T13:54:15.0773500Z [36;1m[0m
+2025-12-06T13:54:15.0773863Z [36;1m# Always increment build number (Play Console last used 90, so we need at least 91)[0m
+2025-12-06T13:54:15.0774385Z [36;1mif [ -z "$build_number" ] || [ "$build_number" -le 90 ]; then[0m
+2025-12-06T13:54:15.0774804Z [36;1m  echo "⚠️ Build number $build_number is <= 90. Setting to 91."[0m
+2025-12-06T13:54:15.0775154Z [36;1m  build_number=91[0m
+2025-12-06T13:54:15.0775395Z [36;1melse[0m
+2025-12-06T13:54:15.0775629Z [36;1m  # Increment build number[0m
+2025-12-06T13:54:15.0775933Z [36;1m  build_number=$((build_number + 1))[0m
+2025-12-06T13:54:15.0776280Z [36;1m  echo "📦 Incrementing build number to: $build_number"[0m
+2025-12-06T13:54:15.0776595Z [36;1mfi[0m
+2025-12-06T13:54:15.0776806Z [36;1m[0m
+2025-12-06T13:54:15.0777045Z [36;1mnew_version="${version_name}+${build_number}"[0m
+2025-12-06T13:54:15.0777342Z [36;1m[0m
+2025-12-06T13:54:15.0777581Z [36;1m# Update pubspec.yaml with the new version[0m
+2025-12-06T13:54:15.0777896Z [36;1mif [[ "$OSTYPE" == "darwin"* ]]; then[0m
+2025-12-06T13:54:15.0778255Z [36;1m  sed -i '' "s/^version:.*/version: $new_version/" pubspec.yaml[0m
+2025-12-06T13:54:15.0778584Z [36;1melse[0m
+2025-12-06T13:54:15.0778870Z [36;1m  sed -i "s/^version:.*/version: $new_version/" pubspec.yaml[0m
+2025-12-06T13:54:15.0779205Z [36;1mfi[0m
+2025-12-06T13:54:15.0779403Z [36;1m[0m
+2025-12-06T13:54:15.0779610Z [36;1m# Verify the update[0m
+2025-12-06T13:54:15.0780008Z [36;1mupdated_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')[0m
+2025-12-06T13:54:15.0780511Z [36;1mecho "✅ Updated pubspec.yaml version to: $updated_version"[0m
+2025-12-06T13:54:15.0781082Z [36;1m[0m
+2025-12-06T13:54:15.0781376Z [36;1mif [ "$updated_version" != "$new_version" ]; then[0m
+2025-12-06T13:54:15.0781851Z [36;1m  echo "❌ ERROR: Version update failed! Expected $new_version but got $updated_version"[0m
+2025-12-06T13:54:15.0782267Z [36;1m  exit 1[0m
+2025-12-06T13:54:15.0782474Z [36;1mfi[0m
+2025-12-06T13:54:15.0782664Z [36;1m[0m
+2025-12-06T13:54:15.0782910Z [36;1mecho "version=$new_version" >> $GITHUB_OUTPUT[0m
+2025-12-06T13:54:15.0783267Z [36;1mecho "version_name=$version_name" >> $GITHUB_OUTPUT[0m
+2025-12-06T13:54:15.0783651Z [36;1mecho "build_number=$build_number" >> $GITHUB_OUTPUT[0m
+2025-12-06T13:54:15.0784058Z [36;1mecho "📦 Final version: $new_version (build number: $build_number)"[0m
+2025-12-06T13:54:15.0820135Z shell: /usr/bin/bash -e {0}
+2025-12-06T13:54:15.0820444Z ##[endgroup]
+2025-12-06T13:54:15.0943260Z 📦 Current version: 1.6.0+107
+2025-12-06T13:54:15.0943662Z 📦 Version name: 1.6.0
+2025-12-06T13:54:15.0944209Z 📦 Current build number: 107
+2025-12-06T13:54:15.0944703Z 📦 Incrementing build number to: 108
+2025-12-06T13:54:15.0980285Z ✅ Updated pubspec.yaml version to: 1.6.0+108
+2025-12-06T13:54:15.0981258Z 📦 Final version: 1.6.0+108 (build number: 108)
+2025-12-06T13:54:15.1050065Z ##[group]Run git config --local user.email "action@github.com"
+2025-12-06T13:54:15.1050552Z [36;1mgit config --local user.email "action@github.com"[0m
+2025-12-06T13:54:15.1051224Z [36;1mgit config --local user.name "GitHub Action"[0m
+2025-12-06T13:54:15.1051560Z [36;1mgit add pubspec.yaml[0m
+2025-12-06T13:54:15.1052037Z [36;1mgit commit -m "chore: auto-increment build number to 1.6.0+108" || echo "No changes to commit"[0m
+2025-12-06T13:54:15.1052525Z [36;1mgit push || echo "Push failed or no changes"[0m
+2025-12-06T13:54:15.1083616Z shell: /usr/bin/bash -e {0}
+2025-12-06T13:54:15.1083891Z ##[endgroup]
+2025-12-06T13:54:15.3411343Z [main 0af6766] chore: auto-increment build number to 1.6.0+108
+2025-12-06T13:54:15.3411999Z  1 file changed, 1 insertion(+), 1 deletion(-)
+2025-12-06T13:54:15.5800572Z remote: Permission to michaelTheKing0616/lingafriq-mobile-app-clone.git denied to github-actions[bot].
+2025-12-06T13:54:15.5803795Z fatal: unable to access 'https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/': The requested URL returned error: 403
+2025-12-06T13:54:15.5817697Z Push failed or no changes
+2025-12-06T13:54:15.5901730Z Post job cleanup.
+2025-12-06T13:54:15.6835281Z [command]/usr/bin/git version
+2025-12-06T13:54:15.6874613Z git version 2.52.0
+2025-12-06T13:54:15.6920326Z Temporarily overriding HOME='/home/runner/work/_temp/0336c3eb-3a92-424d-9e72-e9b1c470e68d' before making global git config changes
+2025-12-06T13:54:15.6921326Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-06T13:54:15.6932769Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-06T13:54:15.7247737Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-06T13:54:15.7281658Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-06T13:54:15.8306800Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-06T13:54:15.8338280Z http.https://github.com/.extraheader
+2025-12-06T13:54:15.8355677Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-06T13:54:15.8801410Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-06T13:54:15.9051881Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-06T13:54:15.9086033Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-06T13:54:15.9449000Z Evaluate and set job outputs
+2025-12-06T13:54:15.9456576Z Set output 'version'
+2025-12-06T13:54:15.9458140Z Set output 'version_name'
+2025-12-06T13:54:15.9458726Z Set output 'build_number'
+2025-12-06T13:54:15.9459368Z Cleaning up orphan processes

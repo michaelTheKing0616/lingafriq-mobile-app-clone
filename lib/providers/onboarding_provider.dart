@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
+import 'package:lingafriq/providers/backend_sync_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingData> {
   SharedPreferencesProvider get _prefs => ref.read(sharedPreferencesProvider);
@@ -428,6 +431,24 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
   
   Future<void> saveOnboardingData() async {
     await _prefs.prefs.setString('onboarding_data', state.toJson());
+    
+    // Sync to backend
+    try {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        final syncProvider = ref.read(backendSyncProvider.notifier);
+        await syncProvider.queueSync(SyncTask(
+          type: SyncType.onboarding,
+          data: {
+            'user_id': user.id.toString(),
+            'onboarding_data': state.toJson(),
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        ));
+      }
+    } catch (e) {
+      debugPrint('Error queuing onboarding sync: $e');
+    }
   }
   
   Future<void> _loadOnboardingData() async {

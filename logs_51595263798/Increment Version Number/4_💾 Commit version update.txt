@@ -1,0 +1,13 @@
+﻿2025-12-06T13:54:15.1050043Z ##[group]Run git config --local user.email "action@github.com"
+2025-12-06T13:54:15.1050547Z [36;1mgit config --local user.email "action@github.com"[0m
+2025-12-06T13:54:15.1051217Z [36;1mgit config --local user.name "GitHub Action"[0m
+2025-12-06T13:54:15.1051556Z [36;1mgit add pubspec.yaml[0m
+2025-12-06T13:54:15.1052033Z [36;1mgit commit -m "chore: auto-increment build number to 1.6.0+108" || echo "No changes to commit"[0m
+2025-12-06T13:54:15.1052521Z [36;1mgit push || echo "Push failed or no changes"[0m
+2025-12-06T13:54:15.1083603Z shell: /usr/bin/bash -e {0}
+2025-12-06T13:54:15.1083888Z ##[endgroup]
+2025-12-06T13:54:15.3411199Z [main 0af6766] chore: auto-increment build number to 1.6.0+108
+2025-12-06T13:54:15.3411994Z  1 file changed, 1 insertion(+), 1 deletion(-)
+2025-12-06T13:54:15.5800521Z remote: Permission to michaelTheKing0616/lingafriq-mobile-app-clone.git denied to github-actions[bot].
+2025-12-06T13:54:15.5803713Z fatal: unable to access 'https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/': The requested URL returned error: 403
+2025-12-06T13:54:15.5817679Z Push failed or no changes

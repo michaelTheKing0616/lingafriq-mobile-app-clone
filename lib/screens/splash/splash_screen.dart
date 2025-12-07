@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
 
@@ -29,7 +30,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     
     // Initialize app (any async setup)
     await Future.wait([
-      // Add any initialization tasks here
+      // Daily check-in for gamification
+      ref.read(gamificationProvider.notifier).dailyCheckIn(),
+      // Add any other initialization tasks here
       Future.delayed(const Duration(milliseconds: 100)), // Placeholder
     ]);
 
