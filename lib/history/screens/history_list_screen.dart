@@ -131,7 +131,7 @@ class _HistoryItem extends ConsumerWidget {
       child: InkWell(
         onTap: enabled
             ? () {
-                ref.read(navigationProvider).naviateTo(HistorySectionsListScreen(history: history));
+                ref.read(navigationProvider).navigateTo(HistorySectionsListScreen(history: history));
               }
             : null,
         child: Column(

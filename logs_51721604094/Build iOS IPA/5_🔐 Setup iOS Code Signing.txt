@@ -1,0 +1,36 @@
+﻿2025-12-08T19:13:59.6562650Z ##[group]Run # Create variables
+2025-12-08T19:13:59.6566170Z [36;1m# Create variables[0m
+2025-12-08T19:13:59.6566730Z [36;1mCERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12[0m
+2025-12-08T19:13:59.6570570Z [36;1mPP_PATH=$RUNNER_TEMP/build_pp.mobileprovision[0m
+2025-12-08T19:13:59.6571880Z [36;1mKEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db[0m
+2025-12-08T19:13:59.6572840Z [36;1m[0m
+2025-12-08T19:13:59.6573750Z [36;1m# Decode certificate and provisioning profile from secrets[0m
+2025-12-08T19:13:59.6576380Z [36;1mif [ -n "$BUILD_CERTIFICATE_BASE64" ]; then[0m
+2025-12-08T19:13:59.6580690Z [36;1m  echo "$BUILD_CERTIFICATE_BASE64" | base64 --decode > $CERTIFICATE_PATH[0m
+2025-12-08T19:13:59.6583220Z [36;1m  echo "$PROVISIONING_PROFILE_BASE64" | base64 --decode > $PP_PATH[0m
+2025-12-08T19:13:59.6584950Z [36;1m  [0m
+2025-12-08T19:13:59.6585540Z [36;1m  # Create temporary keychain[0m
+2025-12-08T19:13:59.6587240Z [36;1m  security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH[0m
+2025-12-08T19:13:59.6589070Z [36;1m  security set-keychain-settings -lut 21600 $KEYCHAIN_PATH[0m
+2025-12-08T19:13:59.6590710Z [36;1m  security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH[0m
+2025-12-08T19:13:59.6592480Z [36;1m  [0m
+2025-12-08T19:13:59.6593440Z [36;1m  # Import certificate to keychain[0m
+2025-12-08T19:13:59.6596840Z [36;1m  security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH[0m
+2025-12-08T19:13:59.6597400Z [36;1m  security list-keychain -d user -s $KEYCHAIN_PATH[0m
+2025-12-08T19:13:59.6598550Z [36;1m  [0m
+2025-12-08T19:13:59.6599920Z [36;1m  # Apply provisioning profile[0m
+2025-12-08T19:13:59.6600440Z [36;1m  mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles[0m
+2025-12-08T19:13:59.6601820Z [36;1m  cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles[0m
+2025-12-08T19:13:59.6602770Z [36;1melse[0m
+2025-12-08T19:13:59.6604440Z [36;1m  echo "⚠️ No iOS signing credentials found. Building without signing (will need manual signing for App Store)"[0m
+2025-12-08T19:13:59.6609210Z [36;1mfi[0m
+2025-12-08T19:13:59.6723050Z shell: /bin/bash -e {0}
+2025-12-08T19:13:59.6723820Z env:
+2025-12-08T19:13:59.6725570Z   FLUTTER_ROOT: /Users/runner/hostedtoolcache/flutter/stable-3.35.0-arm64
+2025-12-08T19:13:59.6727740Z   PUB_CACHE: /Users/runner/.pub-cache
+2025-12-08T19:13:59.6730830Z   BUILD_CERTIFICATE_BASE64: 
+2025-12-08T19:13:59.6731240Z   P12_PASSWORD: 
+2025-12-08T19:13:59.6732260Z   KEYCHAIN_PASSWORD: 
+2025-12-08T19:13:59.6733450Z   PROVISIONING_PROFILE_BASE64: 
+2025-12-08T19:13:59.6734290Z ##[endgroup]
+2025-12-08T19:13:59.7760450Z ⚠️ No iOS signing credentials found. Building without signing (will need manual signing for App Store)

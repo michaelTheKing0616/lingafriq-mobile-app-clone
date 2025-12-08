@@ -1,0 +1,26 @@
+﻿2025-12-08T19:13:59.7852800Z ##[group]Run version="1.6.0+110"
+2025-12-08T19:13:59.7853060Z [36;1mversion="1.6.0+110"[0m
+2025-12-08T19:13:59.7853220Z [36;1mversion_name="1.6.0"[0m
+2025-12-08T19:13:59.7853390Z [36;1mbuild_number="110"[0m
+2025-12-08T19:13:59.7853540Z [36;1m[0m
+2025-12-08T19:13:59.7853700Z [36;1m# Verify pubspec.yaml has the updated version[0m
+2025-12-08T19:13:59.7854020Z [36;1mcurrent_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')[0m
+2025-12-08T19:13:59.7854330Z [36;1mif [ "$current_version" != "$version" ]; then[0m
+2025-12-08T19:13:59.7854600Z [36;1m  echo "⚠️ Version mismatch. Updating pubspec.yaml..."[0m
+2025-12-08T19:13:59.7855000Z [36;1m  sed -i '' "s/^version: .*/version: $version/" pubspec.yaml[0m
+2025-12-08T19:13:59.7855230Z [36;1mfi[0m
+2025-12-08T19:13:59.7855430Z [36;1m[0m
+2025-12-08T19:13:59.7855580Z [36;1m# Update iOS project.pbxproj file[0m
+2025-12-08T19:13:59.7855870Z [36;1m# Update MARKETING_VERSION (version name)[0m
+2025-12-08T19:13:59.7856270Z [36;1msed -i '' "s/MARKETING_VERSION = [^;]*/MARKETING_VERSION = $version_name/g" ios/Runner.xcodeproj/project.pbxproj[0m
+2025-12-08T19:13:59.7856910Z [36;1m# Update CURRENT_PROJECT_VERSION (build number)[0m
+2025-12-08T19:13:59.7857430Z [36;1msed -i '' "s/CURRENT_PROJECT_VERSION = [^;]*/CURRENT_PROJECT_VERSION = $build_number/g" ios/Runner.xcodeproj/project.pbxproj[0m
+2025-12-08T19:13:59.7857890Z [36;1m[0m
+2025-12-08T19:13:59.7858110Z [36;1mecho "📦 Updated iOS version: $version (build number: $build_number)"[0m
+2025-12-08T19:13:59.7888240Z shell: /bin/bash -e {0}
+2025-12-08T19:13:59.7888410Z env:
+2025-12-08T19:13:59.7888650Z   FLUTTER_ROOT: /Users/runner/hostedtoolcache/flutter/stable-3.35.0-arm64
+2025-12-08T19:13:59.7889080Z   PUB_CACHE: /Users/runner/.pub-cache
+2025-12-08T19:13:59.7889280Z ##[endgroup]
+2025-12-08T19:13:59.8430610Z ⚠️ Version mismatch. Updating pubspec.yaml...
+2025-12-08T19:13:59.8615290Z 📦 Updated iOS version: 1.6.0+110 (build number: 110)

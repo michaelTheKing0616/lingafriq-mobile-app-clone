@@ -60,8 +60,6 @@ class TranslationService {
         options: Options(
           headers: headers,
           contentType: 'application/json',
-        ),
-        options: Options(
           receiveTimeout: const Duration(seconds: 30),
         ),
       );

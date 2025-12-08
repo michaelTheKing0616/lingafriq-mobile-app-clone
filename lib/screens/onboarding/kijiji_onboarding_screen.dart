@@ -116,7 +116,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                         await onboardingNotifier.saveOnboardingData();
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         ref.read(apiProvider.notifier).regiserDevice();
-                        ref.read(navigationProvider).naviateOffAll(const TabsView());
+                        ref.read(navigationProvider).navigateOffAll(const TabsView());
                       },
                     );
                   default:

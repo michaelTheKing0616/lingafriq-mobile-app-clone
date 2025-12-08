@@ -162,7 +162,7 @@ class _SectionLessonsList extends ConsumerWidget {
       endpointToHit: Api.completeLessonTutorial(lesson.id, sectionLesson.id),
       isCompleted: sectionLesson.isCompleted(ref),
     );
-    return await ref.read(navigationProvider).naviateTo(tutorialScreen);
+    return await ref.read(navigationProvider).navigateTo(tutorialScreen);
   }
 
   Future<bool?> openChoiceQuizScreen(SectionLessonModel sectionLesson, WidgetRef ref) async {
@@ -182,7 +182,7 @@ class _SectionLessonsList extends ConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: sectionLesson.title,
             quiz: quiz,
             endpointToHit: Api.completeLessonQuiz(lesson.id, sectionLesson.id),
@@ -234,7 +234,7 @@ class _SectionLessonsList extends ConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: sectionLesson.title,
               score: sectionLesson.score,

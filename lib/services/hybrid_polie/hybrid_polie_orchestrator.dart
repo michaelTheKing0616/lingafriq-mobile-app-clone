@@ -4,7 +4,7 @@
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';
-import '../ai_chat_provider_groq.dart';
+import '../../providers/ai_chat_provider_groq.dart';
 import 'model_router.dart';
 import 'translation_service.dart';
 import 'canonical_phrase_service.dart';

@@ -191,10 +191,8 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
     await syncAll();
   }
 
-  @override
-  void dispose() {
+  void cleanup() {
     _syncTimer?.cancel();
-    super.dispose();
   }
 }
 

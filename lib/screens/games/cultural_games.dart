@@ -629,7 +629,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.village, size: 64),
+            const Icon(Icons.location_city, size: 64),
             SizedBox(height: 2.h),
             Text(
               'NPC conversation game',

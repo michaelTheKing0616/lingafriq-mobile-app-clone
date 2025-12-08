@@ -146,7 +146,7 @@ class _MannerismTutorials extends ConsumerWidget {
       endpointToHit: Api.completeMannerismLessons(mannerism.id, mannerismTutorial.id),
       isCompleted: mannerismTutorial.isCompleted(ref),
     );
-    return await ref.read(navigationProvider).naviateTo(tutorialScreen);
+    return await ref.read(navigationProvider).navigateTo(tutorialScreen);
   }
 }
 

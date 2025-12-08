@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
+import '../../models/user_gamification_model.dart';
 
 /// Tribe Selection Screen
 class TribeSelectionScreen extends ConsumerWidget {
@@ -10,7 +11,26 @@ class TribeSelectionScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final gamification = ref.watch(gamificationProvider.notifier);
     final currentTribe = gamification.gamification.tribe;
-    final tribes = TribeDefinitions.tribes;
+    final tribes = Tribes.allTribes;
+
+    // Map tribe names to emojis
+    final Map<String, String> tribeEmojis = {
+      'Zulu': '🇿🇦',
+      'Yoruba': '🇳🇬',
+      'Igbo': '🇳🇬',
+      'Hausa': '🇳🇬',
+      'Swahili': '🇰🇪',
+      'Amhara': '🇪🇹',
+      'Xhosa': '🇿🇦',
+      'Shona': '🇿🇼',
+      'Twi': '🇬🇭',
+      'Wolof': '🇸🇳',
+      'Somali': '🇸🇴',
+      'Luo': '🇰🇪',
+      'Kikuyu': '🇰🇪',
+      'Oromo': '🇪🇹',
+      'Mandinka': '🇬🇲',
+    };
 
     return Scaffold(
       appBar: AppBar(
@@ -42,35 +62,35 @@ class TribeSelectionScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 16),
-          ...tribes.map((tribe) => Card(
+          ...tribes.map((tribeName) => Card(
                 margin: const EdgeInsets.only(bottom: 12),
-                elevation: currentTribe == tribe.id ? 4 : 1,
+                elevation: currentTribe == tribeName ? 4 : 1,
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     child: Text(
-                      tribe.emoji,
+                      tribeEmojis[tribeName] ?? '🏛️',
                       style: const TextStyle(fontSize: 24),
                     ),
                   ),
                   title: Text(
-                    tribe.name,
+                    tribeName,
                     style: TextStyle(
-                      fontWeight: currentTribe == tribe.id
+                      fontWeight: currentTribe == tribeName
                           ? FontWeight.bold
                           : FontWeight.normal,
                     ),
                   ),
-                  subtitle: Text(tribe.description),
-                  trailing: currentTribe == tribe.id
+                  subtitle: Text('Join the $tribeName tribe and compete in leaderboards'),
+                  trailing: currentTribe == tribeName
                       ? const Icon(Icons.check_circle, color: Colors.green)
                       : const Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () async {
-                    await gamification.selectTribe(tribe.id);
+                    await gamification.selectTribe(tribeName);
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Joined ${tribe.name} tribe!'),
+                          content: Text('Joined $tribeName tribe!'),
                         ),
                       );
                     }

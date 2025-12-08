@@ -236,7 +236,7 @@ class _GameSection extends StatelessWidget {
       case GameType.liarLiar:
         return Icons.psychology_rounded;
       case GameType.villageQuest:
-        return Icons.village_rounded;
+        return Icons.location_city;
       case GameType.accentDecodingPuzzle:
         return Icons.language_rounded;
       case GameType.flashcardSafari:

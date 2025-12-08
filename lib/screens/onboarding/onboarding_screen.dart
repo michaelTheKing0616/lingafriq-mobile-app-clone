@@ -40,7 +40,7 @@ class OnboardingScreen extends HookConsumerWidget {
               onPageChanged: (value) {
                 HapticFeedback.lightImpact();
                 if (value == 4) {
-                  ref.read(navigationProvider).naviateOffAll(const TabsView());
+                  ref.read(navigationProvider).navigateOffAll(const TabsView());
                 } else {
                   ref.read(_indexProvider.notifier).setIndex(value);
                 }
@@ -129,7 +129,7 @@ You can do this by going to your profile tab, and selecting the “Feedback” o
                                     );
                                   } else {
                                     ref.read(apiProvider.notifier).regiserDevice();
-                                    ref.read(navigationProvider).naviateOffAll(const TabsView());
+                                    ref.read(navigationProvider).navigateOffAll(const TabsView());
                                   }
                                 },
                                 icon: Icon(

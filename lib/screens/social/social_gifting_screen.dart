@@ -178,7 +178,7 @@ class SocialGiftingScreen extends ConsumerWidget {
             onPressed: () async {
               // TODO: Implement gift sending
               final gamification = ref.read(gamificationProvider.notifier);
-              await gamification.awardCurrency('cowries', -50);
+              await gamification.awardCurrency(cowries: -50);
               await gamification.awardXP('send_gift');
 
               if (context.mounted) {

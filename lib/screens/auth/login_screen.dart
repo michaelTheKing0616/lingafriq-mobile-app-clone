@@ -80,7 +80,7 @@ class LoginScreen extends HookConsumerWidget {
                 children: [
                   const Spacer(),
                   "Forgot password?".text.make().p8().mdClick(() {
-                    ref.read(navigationProvider).naviateTo(const ForgotPasswordScreen());
+                    ref.read(navigationProvider).navigateTo(const ForgotPasswordScreen());
                   }).make(),
                 ],
               ),
@@ -111,7 +111,7 @@ class LoginScreen extends HookConsumerWidget {
                   .make()
                   .p8()
                   .mdClick(() {
-                    ref.read(navigationProvider).naviateTo(const SignupScreen());
+                    ref.read(navigationProvider).navigateTo(const SignupScreen());
                   })
                   .make(),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.1),

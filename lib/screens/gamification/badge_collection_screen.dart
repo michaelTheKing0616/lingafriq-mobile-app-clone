@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Badge;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
 import '../../models/badge_model.dart';

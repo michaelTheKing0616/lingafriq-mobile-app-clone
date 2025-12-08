@@ -1,0 +1,14 @@
+﻿2025-12-08T19:09:30.9343249Z ##[group]Run version="1.6.0+110"
+2025-12-08T19:09:30.9343737Z [36;1mversion="1.6.0+110"[0m
+2025-12-08T19:09:30.9344116Z [36;1mecho "📦 Using version: $version"[0m
+2025-12-08T19:09:30.9344641Z [36;1mgrep "version: $version" pubspec.yaml || echo "⚠️ Version mismatch in pubspec.yaml"[0m
+2025-12-08T19:09:30.9393993Z shell: /usr/bin/bash -e {0}
+2025-12-08T19:09:30.9394313Z env:
+2025-12-08T19:09:30.9394637Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-08T19:09:30.9395151Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-08T19:09:30.9395635Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-08T19:09:30.9395981Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-08T19:09:30.9396257Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-08T19:09:30.9396516Z ##[endgroup]
+2025-12-08T19:09:30.9454414Z 📦 Using version: 1.6.0+110
+2025-12-08T19:09:30.9467934Z version: 1.6.0+110

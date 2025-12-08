@@ -1,0 +1,20 @@
+﻿2025-12-08T19:09:30.9495604Z ##[group]Run echo "Decoding keystore..."
+2025-12-08T19:09:30.9496029Z [36;1mecho "Decoding keystore..."[0m
+2025-12-08T19:09:30.9496307Z [36;1mmkdir -p android/app[0m
+2025-12-08T19:09:30.9515233Z [36;1mecho "***" | base64 --decode > android/app/***-keystore.jks[0m
+2025-12-08T19:09:30.9515608Z [36;1mecho "Creating key.properties..."[0m
+2025-12-08T19:09:30.9515892Z [36;1mmkdir -p android[0m
+2025-12-08T19:09:30.9516248Z [36;1mecho "storePassword=***" > android/key.properties[0m
+2025-12-08T19:09:30.9516660Z [36;1mecho "keyPassword=***" >> android/key.properties[0m
+2025-12-08T19:09:30.9517027Z [36;1mecho "keyAlias=***" >> android/key.properties[0m
+2025-12-08T19:09:30.9517669Z [36;1mecho "storeFile=app/***-keystore.jks" >> android/key.properties[0m
+2025-12-08T19:09:30.9552008Z shell: /usr/bin/bash -e {0}
+2025-12-08T19:09:30.9552291Z env:
+2025-12-08T19:09:30.9552603Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-08T19:09:30.9553101Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-08T19:09:30.9553577Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-08T19:09:30.9553929Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-08T19:09:30.9554203Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-08T19:09:30.9554462Z ##[endgroup]
+2025-12-08T19:09:30.9608910Z Decoding keystore...
+2025-12-08T19:09:30.9645792Z Creating key.properties...

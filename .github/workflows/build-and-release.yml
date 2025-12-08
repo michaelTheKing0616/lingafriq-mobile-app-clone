@@ -69,9 +69,18 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          
+          # Check if we're on a branch or in detached HEAD state
+          current_branch=$(git rev-parse --abbrev-ref HEAD)
+          if [ "$current_branch" = "HEAD" ]; then
+            # We're in detached HEAD, checkout main branch
+            git checkout -b main || git checkout main
+            current_branch="main"
+          fi
+          
           git add pubspec.yaml
           git commit -m "chore: auto-increment build number to ${{ steps.increment.outputs.version }}" || echo "No changes to commit"
-          git push || echo "Push failed or no changes"
+          git push origin $current_branch || echo "Push failed or no changes"
 
   build-android:
     name: Build Android App Bundle
@@ -417,11 +426,15 @@ jobs:
           else
             # Archive without signing - create xcarchive zip
             if [ -d build/ios/archive/Runner.xcarchive ]; then
+              # Ensure the output directory exists
+              mkdir -p build/release/ios
               cd build/ios/archive
               zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive
               cd ../../..
               echo "✅ Unsigned archive created: build/release/ios/LingAfriq-$version-unsigned.xcarchive.zip"
             elif [ -d build/ios/archive ]; then
+              # Ensure the output directory exists
+              mkdir -p build/release/ios
               cd build/ios/archive
               zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .
               cd ../../..

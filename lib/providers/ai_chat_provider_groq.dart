@@ -346,7 +346,8 @@ Be accurate, culturally appropriate, and instant. No denials, no interruptions i
       return;
     }
 
-    _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for tutoring. You follow these inviolable rules:
+    if (_mode == PolieMode.tutor) {
+      _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for tutoring. You follow these inviolable rules:
 
 MODE: TUTOR
 

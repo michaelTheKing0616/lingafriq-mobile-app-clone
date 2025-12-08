@@ -182,7 +182,7 @@ class AppDrawer extends ConsumerWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.village_rounded,
+                    Icons.location_city,
                     color: context.primaryColor,
                   ),
                   title: 'Language Villages'.text.xl.make().offset(offset: const Offset(-16, 0)),

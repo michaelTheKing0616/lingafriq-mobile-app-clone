@@ -124,7 +124,9 @@ class Api {
   static String gameSessionComplete(String sessionId) => "api/games/session/$sessionId/complete/";
   static String getGameSRS(String userId) => "api/games/srs/user/$userId/";
   static String updateGameSRS(String userId) => "api/games/srs/user/$userId/";
+  static const String syncGameSRS = "api/games/srs/sync/";
   static const String gameTelemetry = "api/games/telemetry/";
+  static const String sendTelemetry = "api/telemetry/";
   
   static const String aiChatHistorySync = "api/ai/chat/history/sync/";
   static String getAIChatHistory(String mode) => "api/ai/chat/history/$mode/";

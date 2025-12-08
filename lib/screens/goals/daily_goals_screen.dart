@@ -325,10 +325,10 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
         _showLanguageSelectorForQuiz(context);
         break;
       case 'games':
-        navigation.naviateTo(const GamesScreen());
+        navigation.navigateTo(const GamesScreen());
         break;
       case 'chat_minutes':
-        navigation.naviateTo(const AiChatLanguageSetupScreen(
+        navigation.navigateTo(const AiChatLanguageSetupScreen(
           initialMode: PolieMode.translation,
         ));
         break;
@@ -418,7 +418,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pop(context); // Close daily goals
-                  ref.read(navigationProvider).naviateTo(
+                  ref.read(navigationProvider).navigateTo(
                     LessonsListScreen(language: language),
                   );
                 },
@@ -476,7 +476,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pop(context); // Close daily goals
-                  ref.read(navigationProvider).naviateTo(
+                  ref.read(navigationProvider).navigateTo(
                     TakeQuizScreen(language: language),
                   );
                 },

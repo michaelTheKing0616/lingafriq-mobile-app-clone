@@ -1246,4 +1246,40 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return false;
     }
   }
+
+  // Telemetry
+  Future<bool> sendTelemetry(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.sendTelemetry, data: data);
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error sending telemetry: $e');
+      return false;
+    }
+  }
+
+  // Sync Game SRS
+  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.syncGameSRS, data: data);
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error syncing game SRS: $e');
+      return false;
+    }
+  }
+
+  // Sync AI Chat SRS
+  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.syncAIChatSRS, data: data);
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error syncing AI chat SRS: $e');
+      return false;
+    }
+  }
 }

@@ -305,7 +305,7 @@ class _DropdownSetting extends StatelessWidget {
           ),
           MenuButtonTheme(
             data: MenuButtonThemeData(
-              style: MenuButtonStyle(
+              style: ButtonStyle(
                 padding: MaterialStateProperty.all(
                   EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 ),

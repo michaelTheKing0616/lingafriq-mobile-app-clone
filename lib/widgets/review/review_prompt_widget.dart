@@ -44,11 +44,12 @@ class _ReviewPromptWidgetState extends ConsumerState<ReviewPromptWidget> {
     if (user == null || gamification == null) return;
 
     // Get engagement metrics
-    final sessionCount = gamification.xp ~/ 100; // Approximate from XP
-    final streakDays = gamification.streak;
+    final gamificationModel = ref.read(gamificationProvider.notifier).gamification;
+    final sessionCount = gamificationModel.xp ~/ 100; // Approximate from XP
+    final streakDays = gamificationModel.dailyStreak;
     final lessonsCompleted = 0; // TODO: Get from lesson provider
     final gamesPlayed = 0; // TODO: Get from game provider
-    final lastActiveDate = gamification.lastLogin ?? DateTime.now();
+    final lastActiveDate = gamificationModel.lastLogin ?? DateTime.now();
 
     // Check if should show
     final shouldShow = await IntelligentReviewService.shouldShowReviewPrompt(

@@ -1,0 +1,88 @@
+﻿2025-12-08T19:07:43.8299787Z ##[group]Run actions/checkout@v4
+2025-12-08T19:07:43.8301466Z with:
+2025-12-08T19:07:43.8302599Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-08T19:07:43.8304305Z   token: ***
+2025-12-08T19:07:43.8305139Z   ssh-strict: true
+2025-12-08T19:07:43.8306019Z   ssh-user: git
+2025-12-08T19:07:43.8306901Z   persist-credentials: true
+2025-12-08T19:07:43.8307869Z   clean: true
+2025-12-08T19:07:43.8308783Z   sparse-checkout-cone-mode: true
+2025-12-08T19:07:43.8309842Z   fetch-depth: 1
+2025-12-08T19:07:43.8310701Z   fetch-tags: false
+2025-12-08T19:07:43.8311689Z   show-progress: true
+2025-12-08T19:07:43.8312594Z   lfs: false
+2025-12-08T19:07:43.8313411Z   submodules: false
+2025-12-08T19:07:43.8314328Z   set-safe-directory: true
+2025-12-08T19:07:43.8315604Z ##[endgroup]
+2025-12-08T19:07:43.9466526Z Syncing repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-08T19:07:43.9469534Z ##[group]Getting Git version info
+2025-12-08T19:07:43.9471624Z Working directory is '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-08T19:07:43.9474120Z [command]/usr/bin/git version
+2025-12-08T19:07:43.9519298Z git version 2.52.0
+2025-12-08T19:07:43.9546933Z ##[endgroup]
+2025-12-08T19:07:43.9563061Z Temporarily overriding HOME='/home/runner/work/_temp/f6ba6c83-8866-4324-a060-ab67b0bc3e14' before making global git config changes
+2025-12-08T19:07:43.9568070Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-08T19:07:43.9573001Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-08T19:07:43.9633624Z Deleting the contents of '/home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-08T19:07:43.9638128Z ##[group]Initializing the repository
+2025-12-08T19:07:43.9642595Z [command]/usr/bin/git init /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-08T19:07:43.9772514Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-08T19:07:43.9774871Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-08T19:07:43.9777582Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-08T19:07:43.9780178Z hint: call:
+2025-12-08T19:07:43.9781777Z hint:
+2025-12-08T19:07:43.9783554Z hint: 	git config --global init.defaultBranch <name>
+2025-12-08T19:07:43.9785606Z hint:
+2025-12-08T19:07:43.9787588Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-08T19:07:43.9791099Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-08T19:07:43.9793619Z hint:
+2025-12-08T19:07:43.9794940Z hint: 	git branch -m <name>
+2025-12-08T19:07:43.9796462Z hint:
+2025-12-08T19:07:43.9797930Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-08T19:07:43.9800357Z Initialized empty Git repository in /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/.git/
+2025-12-08T19:07:43.9806508Z [command]/usr/bin/git remote add origin https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-08T19:07:43.9827478Z ##[endgroup]
+2025-12-08T19:07:43.9830169Z ##[group]Disabling automatic garbage collection
+2025-12-08T19:07:43.9832708Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-08T19:07:43.9861922Z ##[endgroup]
+2025-12-08T19:07:43.9864399Z ##[group]Setting up auth
+2025-12-08T19:07:43.9869589Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-08T19:07:43.9902547Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-08T19:07:44.0279250Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-08T19:07:44.0312035Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-08T19:07:44.0540601Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-08T19:07:44.0583458Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-08T19:07:44.0819347Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-08T19:07:44.0856747Z ##[endgroup]
+2025-12-08T19:07:44.0858386Z ##[group]Fetching the repository
+2025-12-08T19:07:44.0867340Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e26d2a29474298b4f5635db231e174a2650cc24f:refs/remotes/pull/3/merge
+2025-12-08T19:07:48.3895697Z From https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-08T19:07:48.3896871Z  * [new ref]         e26d2a29474298b4f5635db231e174a2650cc24f -> pull/3/merge
+2025-12-08T19:07:48.3926725Z ##[endgroup]
+2025-12-08T19:07:48.3927478Z ##[group]Determining the checkout info
+2025-12-08T19:07:48.3929922Z ##[endgroup]
+2025-12-08T19:07:48.3936310Z [command]/usr/bin/git sparse-checkout disable
+2025-12-08T19:07:48.3980381Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-08T19:07:48.4009662Z ##[group]Checking out the ref
+2025-12-08T19:07:48.4015114Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/3/merge
+2025-12-08T19:07:49.0991588Z Note: switching to 'refs/remotes/pull/3/merge'.
+2025-12-08T19:07:49.0992844Z 
+2025-12-08T19:07:49.0993187Z You are in 'detached HEAD' state. You can look around, make experimental
+2025-12-08T19:07:49.0994017Z changes and commit them, and you can discard any commits you make in this
+2025-12-08T19:07:49.0995394Z state without impacting any branches by switching back to a branch.
+2025-12-08T19:07:49.0995891Z 
+2025-12-08T19:07:49.0996235Z If you want to create a new branch to retain commits you create, you may
+2025-12-08T19:07:49.0997242Z do so (now or later) by using -c with the switch command. Example:
+2025-12-08T19:07:49.0997674Z 
+2025-12-08T19:07:49.0997855Z   git switch -c <new-branch-name>
+2025-12-08T19:07:49.0998156Z 
+2025-12-08T19:07:49.0998337Z Or undo this operation with:
+2025-12-08T19:07:49.0998610Z 
+2025-12-08T19:07:49.0998753Z   git switch -
+2025-12-08T19:07:49.0998999Z 
+2025-12-08T19:07:49.0999339Z Turn off this advice by setting config variable advice.detachedHead to false
+2025-12-08T19:07:49.0999835Z 
+2025-12-08T19:07:49.1000377Z HEAD is now at e26d2a2 Merge 1451e367976418b402f177009aed04b88cb13c11 into de789c9c41bc6ac1322c84597ad7082b43c476ee
+2025-12-08T19:07:49.1080414Z ##[endgroup]
+2025-12-08T19:07:49.1119573Z [command]/usr/bin/git log -1 --format=%H
+2025-12-08T19:07:49.1143671Z e26d2a29474298b4f5635db231e174a2650cc24f

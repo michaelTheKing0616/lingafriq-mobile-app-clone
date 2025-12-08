@@ -1,0 +1,9 @@
+﻿2025-12-08T19:20:40.8028492Z ##[group]Run version="1.6.0+110"
+2025-12-08T19:20:40.8028822Z [36;1mversion="1.6.0+110"[0m
+2025-12-08T19:20:40.8029059Z [36;1mversion_name="1.6.0"[0m
+2025-12-08T19:20:40.8029511Z [36;1mbuild_number="110"[0m
+2025-12-08T19:20:40.8029933Z [36;1mecho "version=$version" >> $GITHUB_OUTPUT[0m
+2025-12-08T19:20:40.8030429Z [36;1mecho "version_name=$version_name" >> $GITHUB_OUTPUT[0m
+2025-12-08T19:20:40.8030789Z [36;1mecho "build_number=$build_number" >> $GITHUB_OUTPUT[0m
+2025-12-08T19:20:40.8067943Z shell: /usr/bin/bash -e {0}
+2025-12-08T19:20:40.8068195Z ##[endgroup]

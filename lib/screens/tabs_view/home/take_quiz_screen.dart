@@ -232,7 +232,7 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                     top: constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
                                     child: _LanguageTextBuilder(
                                       onTap: () {
-                                        ref.read(navigationProvider).naviateTo(
+                                        ref.read(navigationProvider).navigateTo(
                                               LanguageQuizSectionsListScreen(language: widget.language),
                                             );
                                       },
@@ -244,7 +244,7 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                     child: _HistoryTextBuilder(
                                       size: Size(18.sp, 18.sp),
                                       onTap: () {
-                                        ref.read(navigationProvider).naviateTo(
+                                        ref.read(navigationProvider).navigateTo(
                                               HistoryQuizSectionsListScreen(language: widget.language),
                                             );
                                       },
@@ -301,7 +301,7 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: randomQuiz.title,
             quiz: quiz,
             isTakeQuiz: true,
@@ -345,7 +345,7 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: randomQuiz.title,
               score: randomQuiz.score,

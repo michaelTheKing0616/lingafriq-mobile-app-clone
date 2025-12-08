@@ -30,7 +30,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // Check if user has seen onboarding
     final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
     if (!hasSeenOnboarding) {
-      ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
+      ref.read(navigationProvider).navigateOffAll(const KijijiOnboardingScreen());
       return;
     }
     
@@ -51,7 +51,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         if (user != null) {
           ref.read(userProvider.notifier).overrideUser(user);
           await ref.read(apiProvider.notifier).regiserDevice();
-          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          ref.read(navigationProvider).navigateOffAll(const TabsView());
           return;
         }
       }
@@ -70,14 +70,14 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         if (user is ProfileModel) {
           ref.read(userProvider.notifier).overrideUser(user);
           await ref.read(apiProvider.notifier).regiserDevice();
-          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          ref.read(navigationProvider).navigateOffAll(const TabsView());
           return;
         }
       }
     }
     
     // If no valid tokens, show login screen
-    ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+    ref.read(navigationProvider).navigateOffAll(const LoginScreen());
   }
 
   Future<ProfileModel?> login({
@@ -119,7 +119,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         ref.read(userProvider.notifier).overrideUser(user);
 
         if (!silentRefresh) {
-          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          ref.read(navigationProvider).navigateOffAll(const TabsView());
         }
         return user;
       }
@@ -149,7 +149,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       //           const Text("Please check your inbox to activate your account"),
       //     );
 
-      // ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+      // ref.read(navigationProvider).navigateOffAll(const LoginScreen());
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);

@@ -41,7 +41,7 @@ class _AiChatLanguageSetupScreenState
     await chat.setLanguageDirection('English', language);
     await chat.setLanguage(language);
     if (!mounted) return;
-    await ref.read(navigationProvider).naviateTo(const AiChatScreen());
+    await ref.read(navigationProvider).navigateTo(const AiChatScreen());
   }
 
   @override

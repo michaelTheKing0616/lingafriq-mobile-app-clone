@@ -9,8 +9,8 @@ class QuestScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final questProvider = ref.watch(questProvider.notifier);
-    final chapters = questProvider.chapters;
+    final questNotifier = ref.watch(questProvider.notifier);
+    final chapters = questNotifier.chapters;
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +45,7 @@ class QuestScreen extends ConsumerWidget {
         itemCount: chapters.length,
         itemBuilder: (context, index) {
           final chapter = chapters[index];
-          final progress = questProvider.getChapterProgress(chapter.id);
+          final progress = questNotifier.getChapterProgress(chapter.id);
 
           return _ChapterCard(
             chapter: chapter,

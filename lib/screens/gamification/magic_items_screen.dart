@@ -134,10 +134,10 @@ class MagicItemsScreen extends ConsumerWidget {
             onPressed: () async {
               // Deduct currency
               if (item.costCowries > 0) {
-                await gamification.awardCurrency('cowries', -item.costCowries);
+                await gamification.awardCurrency(cowries: -item.costCowries);
               }
               if (item.costBeads > 0) {
-                await gamification.awardCurrency('beads', -item.costBeads);
+                await gamification.awardCurrency(ancestralBeads: -item.costBeads);
               }
 
               // Activate item
@@ -200,7 +200,7 @@ class _MagicItemCard extends StatelessWidget {
                   const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.one_time, size: 14),
+                      Icon(Icons.access_time, size: 14),
                       SizedBox(width: 4),
                       Text('One-time'),
                     ],

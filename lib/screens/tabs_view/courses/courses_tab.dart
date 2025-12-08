@@ -114,7 +114,7 @@ class _ProgressItem extends ConsumerWidget {
       shadowColor: Colors.black38,
       child: InkWell(
         onTap: () {
-          ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
+          ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
         },
         child: Column(
           children: [

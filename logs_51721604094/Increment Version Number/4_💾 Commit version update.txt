@@ -1,0 +1,17 @@
+﻿2025-12-08T19:07:31.6550942Z ##[group]Run git config --local user.email "action@github.com"
+2025-12-08T19:07:31.6551382Z [36;1mgit config --local user.email "action@github.com"[0m
+2025-12-08T19:07:31.6551714Z [36;1mgit config --local user.name "GitHub Action"[0m
+2025-12-08T19:07:31.6551994Z [36;1mgit add pubspec.yaml[0m
+2025-12-08T19:07:31.6552389Z [36;1mgit commit -m "chore: auto-increment build number to 1.6.0+110" || echo "No changes to commit"[0m
+2025-12-08T19:07:31.6552851Z [36;1mgit push || echo "Push failed or no changes"[0m
+2025-12-08T19:07:31.6585920Z shell: /usr/bin/bash -e {0}
+2025-12-08T19:07:31.6586156Z ##[endgroup]
+2025-12-08T19:07:32.4216240Z [detached HEAD 6d26cc7] chore: auto-increment build number to 1.6.0+110
+2025-12-08T19:07:32.4216891Z  1 file changed, 1 insertion(+), 1 deletion(-)
+2025-12-08T19:07:32.4236475Z fatal: You are not currently on a branch.
+2025-12-08T19:07:32.4237095Z To push the history leading to the current (detached HEAD)
+2025-12-08T19:07:32.4238013Z state now, use
+2025-12-08T19:07:32.4238272Z 
+2025-12-08T19:07:32.4238461Z     git push origin HEAD:<name-of-remote-branch>
+2025-12-08T19:07:32.4238804Z 
+2025-12-08T19:07:32.4239490Z Push failed or no changes

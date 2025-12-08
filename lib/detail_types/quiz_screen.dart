@@ -189,7 +189,7 @@ class QuizScreen extends HookConsumerWidget {
                           }
 
                           if (index == quiz.length - 1) {
-                            ref.read(navigationProvider).naviateTo(QuizAnswersScreen(
+                            ref.read(navigationProvider).navigateTo(QuizAnswersScreen(
                                   quiz: quiz,
                                   title: title,
                                   selectedAnswers: selectedAnswer.map((e) => e.value).toList(),

@@ -16,7 +16,7 @@ final lightTheme = ThemeData(
   ),
   dividerColor: Colors.black,
   cardColor: AppColors.filledLight,
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     elevation: 4,
     shadowColor: Colors.black.withOpacity(0.1),
     shape: RoundedRectangleBorder(
@@ -30,7 +30,7 @@ final lightTheme = ThemeData(
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.black),
   ),
-  pageTransitionsTheme: const PageTransitionsTheme(
+  pageTransitionsTheme: PageTransitionsTheme(
     builders: {
       TargetPlatform.android: SharedAxisTransition(),
       TargetPlatform.iOS: SharedAxisTransition(),
@@ -47,7 +47,7 @@ final darkTheme = ThemeData(
     iconTheme: IconThemeData(color: Colors.white),
   ),
   cardColor: AppColors.filledDark,
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     elevation: 2,
     shadowColor: Colors.black.withOpacity(0.3),
     shape: RoundedRectangleBorder(
@@ -68,7 +68,7 @@ final darkTheme = ThemeData(
     secondary: primarySwatchDark.shade300,
   ),
   dividerColor: Colors.white,
-  pageTransitionsTheme: const PageTransitionsTheme(
+  pageTransitionsTheme: PageTransitionsTheme(
     builders: {
       TargetPlatform.android: SharedAxisTransition(),
       TargetPlatform.iOS: SharedAxisTransition(),

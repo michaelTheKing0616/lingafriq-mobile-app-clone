@@ -1,0 +1,55 @@
+﻿2025-12-08T19:08:45.9248055Z ##[group]Run expected_version="1.6.0+110"
+2025-12-08T19:08:45.9248443Z [36;1mexpected_version="1.6.0+110"[0m
+2025-12-08T19:08:45.9248715Z [36;1mexpected_build_number="110"[0m
+2025-12-08T19:08:45.9248966Z [36;1m[0m
+2025-12-08T19:08:45.9249203Z [36;1mecho "📦 Expected version: $expected_version"[0m
+2025-12-08T19:08:45.9249580Z [36;1mecho "📦 Expected build number: $expected_build_number"[0m
+2025-12-08T19:08:45.9249915Z [36;1m[0m
+2025-12-08T19:08:45.9250145Z [36;1m# Read current version from pubspec.yaml[0m
+2025-12-08T19:08:45.9250584Z [36;1mcurrent_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')[0m
+2025-12-08T19:08:45.9251279Z [36;1mcurrent_build_number=$(echo $current_version | cut -d'+' -f2)[0m
+2025-12-08T19:08:45.9251623Z [36;1m[0m
+2025-12-08T19:08:45.9251891Z [36;1mecho "📦 Current version in pubspec.yaml: $current_version"[0m
+2025-12-08T19:08:45.9252282Z [36;1mecho "📦 Current build number: $current_build_number"[0m
+2025-12-08T19:08:45.9252589Z [36;1m[0m
+2025-12-08T19:08:45.9252828Z [36;1m# If version doesn't match, update it[0m
+2025-12-08T19:08:45.9253158Z [36;1mif [ "$current_version" != "$expected_version" ]; then[0m
+2025-12-08T19:08:45.9253574Z [36;1m  echo "⚠️ Version mismatch! Updating pubspec.yaml to $expected_version"[0m
+2025-12-08T19:08:45.9253964Z [36;1m  if [[ "$OSTYPE" == "darwin"* ]]; then[0m
+2025-12-08T19:08:45.9254525Z [36;1m    sed -i '' "s/^version:.*/version: $expected_version/" pubspec.yaml[0m
+2025-12-08T19:08:45.9254854Z [36;1m  else[0m
+2025-12-08T19:08:45.9255132Z [36;1m    sed -i "s/^version:.*/version: $expected_version/" pubspec.yaml[0m
+2025-12-08T19:08:45.9255453Z [36;1m  fi[0m
+2025-12-08T19:08:45.9255633Z [36;1m  [0m
+2025-12-08T19:08:45.9255821Z [36;1m  # Verify update[0m
+2025-12-08T19:08:45.9256189Z [36;1m  updated_version=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ')[0m
+2025-12-08T19:08:45.9256630Z [36;1m  if [ "$updated_version" != "$expected_version" ]; then[0m
+2025-12-08T19:08:45.9256976Z [36;1m    echo "❌ ERROR: Failed to update version!"[0m
+2025-12-08T19:08:45.9257254Z [36;1m    exit 1[0m
+2025-12-08T19:08:45.9257446Z [36;1m  fi[0m
+2025-12-08T19:08:45.9257696Z [36;1m  echo "✅ Updated pubspec.yaml to $expected_version"[0m
+2025-12-08T19:08:45.9257992Z [36;1melse[0m
+2025-12-08T19:08:45.9258228Z [36;1m  echo "✅ Version already correct: $current_version"[0m
+2025-12-08T19:08:45.9258522Z [36;1mfi[0m
+2025-12-08T19:08:45.9258700Z [36;1m[0m
+2025-12-08T19:08:45.9258902Z [36;1m# Double-check the build number[0m
+2025-12-08T19:08:45.9259352Z [36;1mfinal_build_number=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d ' ' | cut -d'+' -f2)[0m
+2025-12-08T19:08:45.9259817Z [36;1mif [ "$final_build_number" -lt 91 ]; then[0m
+2025-12-08T19:08:45.9260177Z [36;1m  echo "❌ ERROR: Build number $final_build_number is less than 91!"[0m
+2025-12-08T19:08:45.9260507Z [36;1m  exit 1[0m
+2025-12-08T19:08:45.9260739Z [36;1mfi[0m
+2025-12-08T19:08:45.9261146Z [36;1mecho "✅ Build number verified: $final_build_number"[0m
+2025-12-08T19:08:45.9297861Z shell: /usr/bin/bash -e {0}
+2025-12-08T19:08:45.9298114Z env:
+2025-12-08T19:08:45.9298420Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-08T19:08:45.9298904Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-08T19:08:45.9299380Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-08T19:08:45.9299720Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-08T19:08:45.9299973Z ##[endgroup]
+2025-12-08T19:08:45.9355352Z 📦 Expected version: 1.6.0+110
+2025-12-08T19:08:45.9355827Z 📦 Expected build number: 110
+2025-12-08T19:08:45.9396177Z 📦 Current version in pubspec.yaml: 1.6.0+109
+2025-12-08T19:08:45.9396805Z 📦 Current build number: 109
+2025-12-08T19:08:45.9397416Z ⚠️ Version mismatch! Updating pubspec.yaml to 1.6.0+110
+2025-12-08T19:08:45.9433824Z ✅ Updated pubspec.yaml to 1.6.0+110
+2025-12-08T19:08:45.9456362Z ✅ Build number verified: 110

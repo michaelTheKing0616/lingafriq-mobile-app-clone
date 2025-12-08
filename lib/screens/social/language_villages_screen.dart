@@ -47,7 +47,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.village, size: 64, color: Colors.grey),
+            const Icon(Icons.location_city, size: 64, color: Colors.grey),
             const SizedBox(height: 16),
             Text(
               'No villages available',
@@ -292,7 +292,7 @@ class _VillageCard extends StatelessWidget {
       child: ListTile(
         leading: CircleAvatar(
           backgroundColor: Theme.of(context).colorScheme.primary,
-          child: const Icon(Icons.village, color: Colors.white),
+          child: const Icon(Icons.location_city, color: Colors.white),
         ),
         title: Text(village.name),
         subtitle: Column(
