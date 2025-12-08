@@ -1271,15 +1271,4 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  // Sync AI Chat SRS
-  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(Api.syncAIChatSRS, data: data);
-      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
-      return true;
-    } catch (e) {
-      debugPrint('Error syncing AI chat SRS: $e');
-      return false;
-    }
-  }
 }

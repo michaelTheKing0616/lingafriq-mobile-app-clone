@@ -248,6 +248,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   ConversationTurn _turn = ConversationTurn.user;
   bool _userInterrupt = false;
   VoidCallback? _currentStreamCancel;
+  
+  // Backend sync debouncing
+  DateTime? _lastBackendSync;
 
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
