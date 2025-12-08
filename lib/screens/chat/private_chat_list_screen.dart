@@ -182,7 +182,7 @@ class _PrivateChatListScreenState
               style: TextStyle(color: Colors.red.shade300, fontSize: 16.sp),
             ),
             SizedBox(height: 2.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
               child: const Text('Retry'),
             ),

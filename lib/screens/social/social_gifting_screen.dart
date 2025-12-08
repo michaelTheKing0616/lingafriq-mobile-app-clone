@@ -112,7 +112,7 @@ class SocialGiftingScreen extends ConsumerWidget {
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
+                    child: FilledButton(
                       onPressed: gamification.cowries >= 50
                           ? () {
                               _showGiftConfirmation(context, ref);
@@ -174,7 +174,7 @@ class SocialGiftingScreen extends ConsumerWidget {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () async {
               // TODO: Implement gift sending
               final gamification = ref.read(gamificationProvider.notifier);

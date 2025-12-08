@@ -410,7 +410,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
               ),
             ),
             SizedBox(height: 8.sp),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ref.read(leaderboardProvider.notifier).getProfiles();
               },

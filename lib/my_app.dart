@@ -6,6 +6,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'app_theme.dart';
 import 'providers/navigation_provider.dart';
 import 'screens/splash/splash_screen.dart';
+import 'widgets/review/review_prompt_widget.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -48,7 +49,9 @@ class _MyAppState extends ConsumerState<MyApp> {
                   statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
                   systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
                 ),
-                child: _Unfocus(child: child),
+                child: ReviewPromptWidget(
+                  child: _Unfocus(child: child),
+                ),
               ),
             );
           },

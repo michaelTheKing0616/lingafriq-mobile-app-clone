@@ -43,7 +43,7 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -97,7 +97,7 @@ class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -151,7 +151,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -205,7 +205,7 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -259,7 +259,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -313,7 +313,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -367,7 +367,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -421,7 +421,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -475,7 +475,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -529,7 +529,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -583,7 +583,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -637,7 +637,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -691,7 +691,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -745,7 +745,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -799,7 +799,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -853,7 +853,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -907,7 +907,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -961,7 +961,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -1015,7 +1015,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -1069,7 +1069,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -1123,7 +1123,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),

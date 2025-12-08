@@ -146,7 +146,7 @@ class TribeVsTribeScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   if (gamification.tribe != null)
-                    ElevatedButton(
+                    FilledButton(
                       onPressed: () {
                         // XP contribution happens automatically via gamification
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -158,7 +158,7 @@ class TribeVsTribeScreen extends ConsumerWidget {
                       child: const Text('Learn Now'),
                     )
                   else
-                    ElevatedButton(
+                    FilledButton(
                       onPressed: () {
                         // Navigate to tribe selection
                         Navigator.pushNamed(context, '/tribe-selection');

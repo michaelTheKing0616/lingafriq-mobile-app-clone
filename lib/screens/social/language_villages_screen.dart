@@ -56,7 +56,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
                   ),
             ),
             const SizedBox(height: 8),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 _showCreateVillageDialog(context, ref);
               },
@@ -250,7 +250,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () async {
               final success = await ref
                   .read(languageVillageProvider.notifier)
@@ -315,7 +315,7 @@ class _VillageCard extends StatelessWidget {
             ),
           ],
         ),
-        trailing: ElevatedButton(
+        trailing: FilledButton(
           onPressed: village.currentParticipants >= village.maxParticipants
               ? null
               : onJoin,

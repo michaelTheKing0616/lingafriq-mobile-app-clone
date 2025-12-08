@@ -253,6 +253,41 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
     );
   }
   
+  void updatePath(String path) {
+    state = OnboardingData(
+      ageCategory: state.ageCategory,
+      learningReasons: state.learningReasons,
+      selectedLanguage: state.selectedLanguage,
+      selectedDialect: state.selectedDialect,
+      proficiencyLevel: state.proficiencyLevel,
+      literacyPreference: state.literacyPreference,
+      learningStyle: state.learningStyle,
+      pacePreference: state.pacePreference,
+      appTone: state.appTone,
+      gamificationLevel: state.gamificationLevel,
+      culturalContentEnabled: state.culturalContentEnabled,
+      selectedPath: path,
+      primaryGoal: state.primaryGoal,
+      secondaryGoals: state.secondaryGoals,
+      motivationTriggers: state.motivationTriggers,
+      dailyDurationMinutes: state.dailyDurationMinutes,
+      preferredTimeOfDay: state.preferredTimeOfDay,
+      remindersEnabled: state.remindersEnabled,
+      largeTextEnabled: state.largeTextEnabled,
+      highContrastEnabled: state.highContrastEnabled,
+      dyslexiaModeEnabled: state.dyslexiaModeEnabled,
+      soundOffModeEnabled: state.soundOffModeEnabled,
+      motionReductionEnabled: state.motionReductionEnabled,
+      socialPreference: state.socialPreference,
+      competitionEnabled: state.competitionEnabled,
+      speakingComfortLevel: state.speakingComfortLevel,
+      username: state.username,
+      avatarPath: state.avatarPath,
+      location: state.location,
+      placementTestResults: state.placementTestResults,
+    );
+  }
+
   void updatePersonality(String tone, String gamification, {bool? culturalContent}) {
     state = OnboardingData(
       ageCategory: state.ageCategory,
@@ -266,6 +301,7 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
       appTone: tone,
       gamificationLevel: gamification,
       culturalContentEnabled: culturalContent ?? state.culturalContentEnabled,
+      selectedPath: state.selectedPath,
       primaryGoal: state.primaryGoal,
       secondaryGoals: state.secondaryGoals,
       motivationTriggers: state.motivationTriggers,

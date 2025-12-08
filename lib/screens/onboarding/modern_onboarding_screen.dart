@@ -616,6 +616,7 @@ class _GetStartedScreen extends StatelessWidget {
                     ...paths.asMap().entries.map((entry) {
                       final index = entry.key;
                       final path = entry.value;
+                      final pathKey = ['explore', 'career', 'academic'][index];
                       return SlideTransition(
                         position: Tween<Offset>(
                           begin: Offset(0, 0.3 + (index * 0.1)),
@@ -630,11 +631,19 @@ class _GetStartedScreen extends StatelessWidget {
                         )),
                         child: FadeTransition(
                           opacity: animationController,
-                          child: _PathCard(
-                            icon: path['icon'] as IconData,
-                            title: path['title'] as String,
-                            description: path['description'] as String,
-                            color: path['color'] as Color,
+                          child: Consumer(
+                            builder: (context, ref, child) {
+                              return _PathCard(
+                                icon: path['icon'] as IconData,
+                                title: path['title'] as String,
+                                description: path['description'] as String,
+                                color: path['color'] as Color,
+                                onTap: () {
+                                  // Track path selection
+                                  ref.read(onboardingProvider.notifier).updatePath(pathKey);
+                                },
+                              );
+                            },
                           ),
                         ),
                       );
@@ -653,9 +662,9 @@ class _GetStartedScreen extends StatelessWidget {
                         opacity: animationController,
                         child: SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(
+                          child: FilledButton(
                             onPressed: onGetStarted,
-                            style: ElevatedButton.styleFrom(
+                            style: FilledButton.styleFrom(
                               backgroundColor: AfricanTheme.primaryGreen,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -707,6 +716,7 @@ class _PathCard extends StatelessWidget {
   final String title;
   final String description;
   final Color color;
+  final VoidCallback? onTap;
   
   const _PathCard({
     Key? key,
@@ -714,25 +724,29 @@ class _PathCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.color,
+    this.onTap,
   }) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
-        border: Border(
-          bottom: BorderSide(
-            color: color,
-            width: 4,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+          boxShadow: DesignSystem.shadowMedium,
+          border: Border(
+            bottom: BorderSide(
+              color: color,
+              width: 4,
+            ),
           ),
         ),
-      ),
-      child: Row(
+        child: Row(
         children: [
           Container(
             width: 56,

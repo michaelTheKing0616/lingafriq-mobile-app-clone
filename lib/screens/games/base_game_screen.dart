@@ -176,10 +176,10 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
               const SizedBox(height: 16),
               Text('Error: $_error'),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _initializeGame,
-                child: const Text('Retry'),
-              ),
+                  FilledButton(
+                    onPressed: _initializeGame,
+                    child: const Text('Retry'),
+                  ),
             ],
           ),
         ),

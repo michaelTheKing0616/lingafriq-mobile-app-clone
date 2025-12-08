@@ -170,9 +170,9 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                           ),
                         ),
                         SizedBox(height: 3.h),
-                        ElevatedButton(
+                        FilledButton(
                           onPressed: () => _importFromFile(),
-                          style: ElevatedButton.styleFrom(
+                          style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryGreen,
                             foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
@@ -424,12 +424,12 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               Navigator.pop(context);
               _importFromUrl(_urlController.text);
             },
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),
@@ -470,7 +470,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               if (_textController.text.isNotEmpty) {
                 setState(() {
@@ -479,7 +479,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                 Navigator.pop(context);
               }
             },
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),

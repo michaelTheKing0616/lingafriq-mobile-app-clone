@@ -181,7 +181,7 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
               ),
             ),
             if (!_showResult)
-              ElevatedButton(
+              FilledButton(
                 onPressed: _selectedError == null ? null : _checkAnswer,
                 child: const Text('Check Answer'),
               )
@@ -201,7 +201,7 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                     ),
                   ),
                   SizedBox(height: 2.h),
-                  ElevatedButton(
+                  FilledButton(
                     onPressed: _nextQuestion,
                     child: Text(_currentIndex < _questions.length - 1
                         ? 'Next Question'

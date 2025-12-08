@@ -139,4 +139,41 @@ class Api {
   static const String onboardingSave = "api/onboarding/save/";
   static String getOnboarding(String userId) => "api/onboarding/user/$userId/";
   // Backend Sync Endpoints End
+
+  // Personalization Endpoints Start
+  static const String getPersonalization = "personalization/";
+  static const String updatePersonalization = "personalization/";
+  // Personalization Endpoints End
+
+  // Subscription Endpoints Start
+  static const String getSubscription = "subscription/";
+  static const String updateSubscription = "subscription/";
+  static const String cancelSubscription = "subscription/cancel";
+  // Subscription Endpoints End
+
+  // Offline Content Endpoints Start
+  static const String getOfflineContent = "offline-content/";
+  static const String updateOfflineContent = "offline-content/";
+  // Offline Content Endpoints End
+
+  // Learning Path Endpoints Start
+  static String getLearningPath(String language, String type) => "learning-path/?language=$language&type=$type";
+  static const String createLearningPath = "learning-path/";
+  static String updateLearningPath(String language, String type) => "learning-path/?language=$language&type=$type";
+  static const String completeModule = "learning-path/complete-module";
+  // Learning Path Endpoints End
+
+  // Grammar Endpoints Start
+  static String getGrammarExplanation(String language, String grammarPoint) => "grammar/explanation?language=$language&grammarPoint=$grammarPoint";
+  static String getGrammarByLanguage(String language, [String? difficulty]) => difficulty != null 
+      ? "grammar/language?language=$language&difficulty=$difficulty"
+      : "grammar/language?language=$language";
+  static const String createGrammarExplanation = "grammar/";
+  static String updateGrammarExplanation(String language, String grammarPoint) => "grammar/?language=$language&grammarPoint=$grammarPoint";
+  // Grammar Endpoints End
+
+  // Notification Endpoints Start
+  static const String getNotificationSettings = "notifications/";
+  static const String updateNotificationSettings = "notifications/";
+  // Notification Endpoints End
 }

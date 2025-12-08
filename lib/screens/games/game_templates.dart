@@ -56,7 +56,7 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 // TODO: Play audio and show drawing interface
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -111,7 +111,7 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -165,7 +165,7 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -219,7 +219,7 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -273,7 +273,7 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -327,7 +327,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),
@@ -381,7 +381,7 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 4.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Feature coming soon!')),

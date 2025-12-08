@@ -200,7 +200,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton.icon(
+                FilledButton.icon(
                   onPressed: _isPlaying ? null : _playNativeAudio,
                   icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
                   label: Text(_isPlaying ? 'Playing...' : 'Play Native'),
@@ -212,11 +212,11 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
             if (_pronunciationScore == null)
               Column(
                 children: [
-                  ElevatedButton.icon(
+                  FilledButton.icon(
                     onPressed: _isRecording ? _stopRecording : _startRecording,
                     icon: Icon(_isRecording ? Icons.stop : Icons.mic),
                     label: Text(_isRecording ? 'Stop Recording' : 'Record'),
-                    style: ElevatedButton.styleFrom(
+                    style: FilledButton.styleFrom(
                       backgroundColor: _isRecording ? Colors.red : Colors.blue,
                       foregroundColor: Colors.white,
                       padding: EdgeInsets.symmetric(
@@ -250,7 +250,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
                     ..._mistakes.map((m) => Text('- $m')),
                   ],
                   SizedBox(height: 2.h),
-                  ElevatedButton(
+                  FilledButton(
                     onPressed: _nextCard,
                     child: Text(_currentCardIndex < _cards.length - 1
                         ? 'Next Card'

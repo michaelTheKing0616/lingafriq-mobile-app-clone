@@ -176,6 +176,7 @@ class XPSources {
     'perfect_week': 100,
     'unlock_badge': 50,
     'complete_quest_chapter': 500,
+    'review': 30, // User submits app review
   };
 
   static int getXP(String source) {

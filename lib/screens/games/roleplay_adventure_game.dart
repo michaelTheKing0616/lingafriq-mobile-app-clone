@@ -181,9 +181,9 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
                   padding: EdgeInsets.only(bottom: 1.h),
                   child: SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
+                    child: FilledButton(
                       onPressed: () => _selectOption(option),
-                      style: ElevatedButton.styleFrom(
+                      style: FilledButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 2.h),
                       ),
                       child: Text(

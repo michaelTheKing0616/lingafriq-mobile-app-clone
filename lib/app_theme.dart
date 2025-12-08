@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/material3_motion.dart';
 
 final lightTheme = ThemeData(
-  useMaterial3: false,
+  useMaterial3: true,
   fontFamily: 'dosis',
   brightness: Brightness.light,
   canvasColor: Colors.white,
@@ -15,15 +16,30 @@ final lightTheme = ThemeData(
   ),
   dividerColor: Colors.black,
   cardColor: AppColors.filledLight,
+  cardTheme: CardTheme(
+    elevation: 4,
+    shadowColor: Colors.black.withOpacity(0.1),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    margin: const EdgeInsets.all(8),
+    clipBehavior: Clip.antiAlias,
+  ),
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.black),
   ),
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: SharedAxisTransition(),
+      TargetPlatform.iOS: SharedAxisTransition(),
+    },
+  ),
 );
 
 final darkTheme = ThemeData(
-  useMaterial3: false,
+  useMaterial3: true,
   fontFamily: 'dosis',
   appBarTheme: const AppBarTheme(
     backgroundColor: Colors.transparent,
@@ -31,6 +47,15 @@ final darkTheme = ThemeData(
     iconTheme: IconThemeData(color: Colors.white),
   ),
   cardColor: AppColors.filledDark,
+  cardTheme: CardTheme(
+    elevation: 2,
+    shadowColor: Colors.black.withOpacity(0.3),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    margin: const EdgeInsets.all(8),
+    clipBehavior: Clip.antiAlias,
+  ),
   brightness: Brightness.dark,
   canvasColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
@@ -43,6 +68,12 @@ final darkTheme = ThemeData(
     secondary: primarySwatchDark.shade300,
   ),
   dividerColor: Colors.white,
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: SharedAxisTransition(),
+      TargetPlatform.iOS: SharedAxisTransition(),
+    },
+  ),
 );
 
 const primarySwatchLight = MaterialColor(0XFF566A29, {

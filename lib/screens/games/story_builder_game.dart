@@ -121,7 +121,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
               onSubmitted: (_) => _addSentence(),
             ),
             SizedBox(height: 2.h),
-            ElevatedButton(
+            FilledButton(
               onPressed: _currentTurn >= _maxTurns ? null : _addSentence,
               child: Text(_currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence'),
             ),

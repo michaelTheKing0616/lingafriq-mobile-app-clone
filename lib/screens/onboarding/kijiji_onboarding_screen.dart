@@ -282,10 +282,10 @@ class _WelcomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(24.0),
               child: FadeTransition(
                 opacity: animationController,
-                child: ElevatedButton(
+                child: FilledButton(
                   onPressed: onNext,
                   key: const Key('begin_journey_button'),
-                  style: ElevatedButton.styleFrom(
+                  style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -476,11 +476,11 @@ class _ElderScreen extends HookConsumerWidget {
               const SizedBox(height: 48),
               FadeTransition(
                 opacity: animationController,
-                child: ElevatedButton(
+                child: FilledButton(
                   onPressed: selectedAge.value != null && selectedReasons.value.isNotEmpty
                       ? onNext
                       : null,
-                  style: ElevatedButton.styleFrom(
+                  style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -644,11 +644,11 @@ class _WeaverScreen extends HookConsumerWidget {
               const SizedBox(height: 48),
               FadeTransition(
                 opacity: animationController,
-                child: ElevatedButton(
+                child: FilledButton(
                   onPressed: selectedLanguage.value != null && selectedLevel.value != null
                       ? onNext
                       : null,
-                  style: ElevatedButton.styleFrom(
+                  style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -762,9 +762,9 @@ class _RhythmMasterScreen extends HookConsumerWidget {
               const SizedBox(height: 48),
               FadeTransition(
                 opacity: animationController,
-                child: ElevatedButton(
+                child: FilledButton(
                   onPressed: selected.value != null ? onNext : null,
-                  style: ElevatedButton.styleFrom(
+                  style: FilledButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -845,9 +845,9 @@ class _TimekeeperScreen extends HookConsumerWidget {
                 }).toList(),
               ),
               const SizedBox(height: 48),
-              ElevatedButton(
+              FilledButton(
                 onPressed: timeOfDay.value != null ? onNext : null,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -945,9 +945,9 @@ class _PathChooserScreen extends HookConsumerWidget {
                 },
               ),
               const SizedBox(height: 48),
-              ElevatedButton(
+              FilledButton(
                 onPressed: selectedGoal.value != null ? onNext : null,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -1036,9 +1036,9 @@ class _GriotScreen extends HookConsumerWidget {
                 }).toList(),
               ),
               const SizedBox(height: 48),
-              ElevatedButton(
+              FilledButton(
                 onPressed: selectedTone.value != null && selectedGamification.value != null ? onNext : null,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -1108,9 +1108,9 @@ class _HealerScreen extends HookConsumerWidget {
                 );
               }).toList(),
               const SizedBox(height: 48),
-              ElevatedButton(
+              FilledButton(
                 onPressed: onNext,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -1173,9 +1173,9 @@ class _SocialScreen extends HookConsumerWidget {
                 }).toList(),
               ),
               const SizedBox(height: 48),
-              ElevatedButton(
+              FilledButton(
                 onPressed: selectedPreference.value != null ? onNext : null,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -1247,9 +1247,9 @@ class _NamingScreen extends HookConsumerWidget {
                 },
               ),
               const SizedBox(height: 48),
-              ElevatedButton(
+              FilledButton(
                 onPressed: usernameController.text.isNotEmpty ? onNext : null,
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
@@ -1306,13 +1306,13 @@ class _PlacementTestScreen extends HookConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: ElevatedButton(
+              child: FilledButton(
                 onPressed: () {
                   // For now, skip placement test and complete onboarding
                   onboardingNotifier.updatePlacementTest({'skipped': true});
                   onComplete();
                 },
-                style: ElevatedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),

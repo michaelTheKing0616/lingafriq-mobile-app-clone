@@ -107,7 +107,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 16.h),
-              ElevatedButton(
+              FilledButton(
                 onPressed: _loadArticles,
                 child: const Text('Retry'),
               ),

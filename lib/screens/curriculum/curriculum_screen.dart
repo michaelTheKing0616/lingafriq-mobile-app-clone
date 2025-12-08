@@ -111,9 +111,9 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.sp),
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: _loadCurriculum,
-              style: ElevatedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 backgroundColor: AppColors.primaryGreen,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),

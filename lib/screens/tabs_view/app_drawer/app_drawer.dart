@@ -30,6 +30,7 @@ import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/screens/social/tribe_vs_tribe_screen.dart';
 import 'package:lingafriq/screens/social/social_gifting_screen.dart';
 import 'package:lingafriq/screens/social/ancestral_tree_screen.dart';
+import 'package:lingafriq/screens/help/features_guide_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -322,6 +323,18 @@ class AppDrawer extends ConsumerWidget {
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     ref.read(navigationProvider).navigateTo(const CurriculumScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.help_outline_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Features Guide'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  subtitle: 'Learn how to use all features'.text.sm.gray500.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const FeaturesGuideScreen());
                   },
                 ),
                 ListTile(

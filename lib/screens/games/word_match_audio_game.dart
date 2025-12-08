@@ -395,9 +395,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                     padding: EdgeInsets.only(top: 2.h),
                     child: SizedBox(
                       width: double.infinity,
-                      child: ElevatedButton(
+                      child: FilledButton(
                         onPressed: _finishGame,
-                        style: ElevatedButton.styleFrom(
+                        style: FilledButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 3.h),
                         ),
                         child: Text(

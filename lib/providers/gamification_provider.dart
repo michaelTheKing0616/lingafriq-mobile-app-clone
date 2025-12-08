@@ -260,6 +260,22 @@ class GamificationProvider extends Notifier<BaseProviderState>
     state = state.copyWith();
   }
 
+  /// Award currency directly
+  Future<void> awardCurrency({
+    int? cowries,
+    int? ngwenya,
+    int? ancestralBeads,
+  }) async {
+    _gamification = _gamification.copyWith(
+      cowries: _gamification.cowries + (cowries ?? 0),
+      ngwenya: _gamification.ngwenya + (ngwenya ?? 0),
+      ancestralBeads: _gamification.ancestralBeads + (ancestralBeads ?? 0),
+    );
+    await _saveGamification();
+    await _syncToBackend();
+    state = state.copyWith();
+  }
+
   /// Enable Ubuntu streak (never break - help others if you do)
   Future<void> enableUbuntuStreak() async {
     _gamification = _gamification.copyWith(ubuntuStreakActive: true);

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -21,7 +20,6 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/extensions.dart';
-
 import '../history_quiz/models/history_quiz_response.dart';
 import '../language_quiz/models/language_quiz_lesson_model.dart';
 import '../language_quiz/models/language_quiz_response.dart';
@@ -67,7 +65,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (user == null || user.email != email) {
         final userInfo = await getUserInfo();
         user = await getProfileUser(userInfo.id);
-
         await ref.read(sharedPreferencesProvider).storeUser(user, userInfo.email);
       }
 
@@ -132,7 +129,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         throw res.data ?? 'Account update failed';
       }
       
-      // Check if response contains updated user data
       if (res.data is Map) {
         final data = res.data as Map;
         debugPrint('Account update response data keys: ${data.keys.toList()}');
@@ -146,7 +142,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
   
-  // Method to submit game completion (backend may need to implement this endpoint)
   Future<bool> submitGameCompletion({
     required String gameType,
     required int languageId,
@@ -155,16 +150,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       debugPrint('Submitting game completion: $gameType, language: $languageId, points: $points, score: $score');
-      
-      // Update points on backend
       final pointsSuccess = await updateUserPoints(points);
       if (pointsSuccess) {
         debugPrint('Points updated successfully: $points');
       }
-      
-      // Also call accountUpdate to refresh user profile
       await accountUpdate();
-      
       return pointsSuccess;
     } catch (e) {
       debugPrint('Error submitting game completion: $e');
@@ -209,7 +199,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<ProfileModel> getProfileUser(int id) async {
     try {
       final res = await ref.read(client).get(Api.userProfile(id));
-
       if (res.statusCode != 200) throw res.data;
       res.data.toString().log('getProfileUser');
       return ProfileModel.fromMap(res.data.first);
@@ -260,8 +249,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Get loading screen content from backend
-  /// Returns random content excluding user's recently viewed items
   Future<Map<String, dynamic>> getLoadingScreenContent() async {
     try {
       final res = await ref.read(client).get(Api.loadingScreen);
@@ -271,24 +258,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
-
-  // Future<List<ProfileModel>> getProfiles() async {
-  //   try {
-  //     final res = await ref.read(client).get(Api.profiles);
-  //     jsonEncode(res.data).log();
-  //     if (res.statusCode != 200) throw res.data;
-  //     final profilesRes = res.data as Map;
-  //     if (!profilesRes.containsKey("result")) throw res.data;
-  //     final result = profilesRes["result"] as Map;
-  //     if (!result.containsKey("results")) throw res.data;
-  //     final profilesList = result["results"] as List;
-  //     final profiles = profilesList.map((e) => ProfileModel.fromMap(e)).toList();
-  //     profiles.sort((a, b) => b.completed_point.compareTo(a.completed_point));
-  //     return profiles;
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
 
   Future<ProfilesResponse> getProfilesResponse([String? url]) async {
     try {
@@ -301,12 +270,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * Lessons Section Start
-  * 
-  */
-
+  // Lessons Section
   Future<LessonResponse> getLessons(int? id) async {
     try {
       final params = {"lessons_language": id};
@@ -321,16 +285,12 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  ///section_lessons_screen
-  Future<List<SectionLessonModel>> getSectionLessons(
-    int lessonId,
-  ) async {
+  Future<List<SectionLessonModel>> getSectionLessons(int lessonId) async {
     try {
       final res = await ref.read(client).get(Api.sectionLessonsList(lessonId));
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
-      //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
@@ -340,8 +300,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           dataList.add(result as Map<String, dynamic>);
         }
       }
-
-      //LessonType Cast Loop
       final mappedLessonsList = dataList.map((lesson) {
         if (lesson.containsKey("types")) {
           return SectionLessonModel(
@@ -355,7 +313,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             otherData: lesson,
           );
         }
-        // if (lesson.containsKey("quiz")) {
         final quiz = lesson['quiz'].first;
         return SectionLessonModel(
           id: quiz['id'],
@@ -367,9 +324,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           completed_by: quiz['completed_by'],
           otherData: lesson,
         );
-        // }
       }).toList();
-      // final date = DateTime.parse("2022-06-21T02:59:57.623583Z");
       mappedLessonsList.sort((a, b) {
         return a.date.compareTo(b.date);
       });
@@ -379,25 +334,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * Lessons Section End
-  * 
-  */
-
-  /*
-  * 
-  * Mannerisms Section Start
-  * 
-  */
-
+  // Mannerisms Section
   Future<MannerismResponse> getMannerisms(int? id) async {
     try {
-      // final params = {"mannerism_language": id};
-      final res = await ref.read(client).get(
-            Api.mannerism,
-            // queryParameters: params,
-          );
+      final res = await ref.read(client).get(Api.mannerism);
       if (res.statusCode != 200) throw res.data;
       return MannerismResponse.fromMap(res.data['result'], res.data['total_score']);
     } catch (e) {
@@ -410,14 +350,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).get(Api.mannerismTutorialsList(mannerismId));
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
-
       resList.removeWhere((e) => e is Map && e.containsKey("mannerism"));
       final mannerismLessons =
           resList.map((e) => e['mannerism_lesson']).expand((element) => element).toList();
       final mappedMannerismsList =
           mannerismLessons.map((e) => MannerismTutorialModel.fromMap(e)).toList();
-
-      // final date = DateTime.parse("2022-06-21T02:59:57.623583Z");
       mappedMannerismsList.sort((a, b) {
         if (a.date_time == null || b.date_time == null) return 0;
         return a.date_time!.compareTo(b.date_time!);
@@ -428,25 +365,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * Mannerisms Section End
-  * 
-  */
-
-  /*
-  * 
-  * History Section Start
-  * 
-  */
-
+  // History Section
   Future<HistoryResponse> getHistory(int? id) async {
     try {
-      // final params = {"lessons_language": id};
-      final res = await ref.read(client).get(
-            Api.history,
-            // queryParameters: params,
-          );
+      final res = await ref.read(client).get(Api.history);
       if (res.statusCode != 200) throw res.data;
       return HistoryResponse.fromMap(res.data['result'], res.data['total_score']);
     } catch (e) {
@@ -454,14 +376,12 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  ///section_lessons_screen
   Future<List<SectionHistoryModel>> getSectionHistory(int historyId) async {
     try {
       final res = await ref.read(client).get(Api.sectionHistoryList(historyId));
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
-      //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
@@ -471,8 +391,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           dataList.add(result as Map<String, dynamic>);
         }
       }
-
-      //LessonType Cast Loop
       final mappedLessonsList = dataList.map((lesson) {
         if (lesson.containsKey("types")) {
           return SectionHistoryModel(
@@ -486,7 +404,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             otherData: lesson,
           );
         }
-
         final quiz = lesson['quiz'].first;
         late final int quizId;
         if (quiz['quiz_type'] == "Instant Quiz") {
@@ -494,9 +411,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         } else {
           quizId = lesson['word_question'].first.first['quize_history'];
         }
-        // quiz.toString().log();
-        // // final int quizId;
-        // final quizId = lesson['question'].first['question']['quize_history'];
         return SectionHistoryModel(
           id: quizId,
           title: quiz['quiz'],
@@ -507,7 +421,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           completed_by: quiz['completed_by'],
           otherData: lesson,
         );
-        // }
       }).toList();
       mappedLessonsList.sort((a, b) {
         return a.date.compareTo(b.date);
@@ -517,12 +430,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
-
-  /*
-  * 
-  * History Section End
-  * 
-  */
 
   Future<bool> markAsComplete(String endpointToHit) async {
     "Marking as complete $endpointToHit".log("endpointToHit");
@@ -541,7 +448,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }).catchError((e) {
         "Error Account update $e".log("accountUpdate");
       });
-
       state = state.copyWith(isLoading: false);
       return true;
     } catch (e) {
@@ -551,12 +457,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * Random Quiz Section Start
-  * 
-  */
-
+  // Random Quiz Section
   Future<List<RandomQuizLessonModel>> getRandomQuizLessons(int languageId) async {
     try {
       state = state.copyWith(isLoading: true);
@@ -581,12 +482,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         throw errorMsg;
       }
       
-      // Handle different response formats
       List<dynamic> resList;
       if (res.data is List) {
         resList = res.data as List;
       } else if (res.data is Map) {
-        // Sometimes the API returns a map with a 'results' or 'data' key
         final mapData = res.data as Map;
         if (mapData.containsKey('results')) {
           resList = mapData['results'] as List? ?? [];
@@ -600,10 +499,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       debugPrint('Quiz API returned ${resList.length} items');
-      
       final dataList = <Map<String, dynamic>>[];
       
-      //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
@@ -617,8 +514,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       debugPrint('Processed ${dataList.length} quiz items');
-
-      //LessonType Cast Loop
       final mappedLessonsList = dataList
           .map<List<RandomQuizLessonModel>>((randomQuiz) {
             try {
@@ -631,8 +526,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
                 if (e is! Map) {
                   return null;
                 }
-                
-                // Handle nested question structure or flat structure
                 Map questionData;
                 if (e.containsKey("question") && e["question"] is Map) {
                   questionData = e["question"] as Map;
@@ -688,18 +581,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * Random Quiz Section End
-  * 
-  */
-
-  /*
-  * 
-  * Language Quiz Section Start
-  * 
-  */
-
+  // Language Quiz Section
   Future<LanguageQuizResponse> getLanguageQuiz() async {
     try {
       final res = await ref.read(client).get(Api.languageQuiz);
@@ -717,20 +599,15 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
-      //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
             dataList.add(element);
           }
         } else if (result is Map) {
-          // if (result.containsKey('quiz') && result['quiz'].isNotEmpty) {
           dataList.add(result as Map<String, dynamic>);
-          // }
         }
       }
-
-      //LessonType Cast Loop
       final mappedLessonsList = dataList.map((lesson) {
         if (lesson.containsKey("types")) {
           return LanguageQuizLessonModel(
@@ -744,7 +621,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             otherData: lesson,
           );
         }
-        // if (lesson.containsKey("quiz")) {
         lesson.toString().log('language quiz');
         final quiz = lesson['quiz'].first;
         return LanguageQuizLessonModel(
@@ -757,9 +633,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           completed_by: quiz['completed_by'],
           otherData: lesson,
         );
-        // }
       }).toList();
-      // final date = DateTime.parse("2022-06-21T02:59:57.623583Z");
       mappedLessonsList.sort((a, b) {
         return a.date.compareTo(b.date);
       });
@@ -769,18 +643,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * Language Quiz Section End
-  * 
-  */
-
-  /*
-  * 
-  * History Quiz Section Start
-  * 
-  */
-
+  // History Quiz Section
   Future<HistoryQuizResponse> getHistoryQuiz() async {
     try {
       final res = await ref.read(client).get(Api.historyQuiz);
@@ -797,7 +660,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
-      //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
@@ -807,8 +669,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           dataList.add(result as Map<String, dynamic>);
         }
       }
-
-      //LessonType Cast Loop
       final mappedLessonsList = dataList.map((lesson) {
         if (lesson.containsKey("types")) {
           return HistoryQuizLessonModel(
@@ -823,7 +683,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           );
         }
         lesson.toString().log('history quiz');
-        // if (lesson.containsKey("quiz")) {
         final quiz = lesson['quiz'].first;
         return HistoryQuizLessonModel(
           id: quiz['id'],
@@ -835,9 +694,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           completed_by: quiz['completed_by'],
           otherData: lesson,
         );
-        // }
       }).toList();
-      // final date = DateTime.parse("2022-06-21T02:59:57.623583Z");
       mappedLessonsList.sort((a, b) {
         return a.date.compareTo(b.date);
       });
@@ -847,11 +704,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-  * 
-  * History Quiz Section End
-  * 
-  */
   Future<bool> regiserDevice() async {
     try {
       final token = await ref.read(firebaseMessagingProvider).getToken();
@@ -862,7 +714,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).post(Api.registerFcmDevice, data: data);
       res.statusCode.log();
       res.data.toString().log();
-
       if (res.statusCode == 201 || res.statusCode == 200) {
         return true;
       }
@@ -999,7 +850,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).post(
         Api.syncAiChatHistory,
         data: {
-          'mode': mode, // 'translation' or 'tutor'
+          'mode': mode,
           'messages': messages,
         },
       );
@@ -1075,10 +926,9 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  // Culture Content API Methods (deprecated - use CultureMagazineService instead)
+  // Culture Content API Methods
   Future<List<Map<String, dynamic>>> getCultureContent({String? type}) async {
     try {
-      // Use Culture Magazine API endpoint
       String url = Api.cultureMagazineArticles;
       if (type != null) {
         url = Api.cultureMagazineArticlesByCategory(type);
@@ -1086,7 +936,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).get(url);
       if (res.statusCode != 200) throw res.data;
       final data = res.data;
-      // Handle paginated response
       if (data is Map && data.containsKey('data') && data['data'] is Map && data['data'].containsKey('docs')) {
         return List<Map<String, dynamic>>.from(data['data']['docs']);
       }
@@ -1098,7 +947,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<Map<String, dynamic>> getCultureContentById(String id) async {
     try {
-      // Use slug-based endpoint - if id is not a slug, this might need adjustment
       final res = await ref.read(client).get(Api.cultureMagazineArticleBySlug(id));
       if (res.statusCode != 200) throw res.data;
       final data = res.data;
@@ -1142,7 +990,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  // Backend Sync Methods
+  // Backend Sync Endpoints
   Future<bool> syncGamification(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(Api.syncGamification, data: data);
@@ -1153,24 +1001,25 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  Future<Map<String, dynamic>?> getGamification(String userId) async {
+    try {
+      final res = await ref.read(client).get(Api.getGamification(userId));
+      if (res.statusCode == 200) {
+        return res.data as Map<String, dynamic>?;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting gamification: $e');
+      return null;
+    }
+  }
+
   Future<bool> syncGameSession(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(Api.gameSessionStart, data: data);
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
       debugPrint('Error syncing game session: $e');
-      rethrow;
-    }
-  }
-
-  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
-    try {
-      final userId = ref.read(userProvider)?.id;
-      if (userId == null) return false;
-      final res = await ref.read(client).put(Api.updateGameSRS(userId.toString()), data: data);
-      return res.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error syncing game SRS: $e');
       rethrow;
     }
   }
@@ -1225,30 +1074,175 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Get gamification data from backend
-  Future<Map<String, dynamic>?> getGamification(String userId) async {
+  // NEW API METHODS - Personalization, Subscription, Offline Content, Learning Path, Grammar, Notifications
+
+  // Personalization
+  Future<Map<String, dynamic>?> getPersonalization() async {
     try {
-      final res = await ref.read(client).get(Api.getGamification(userId));
-      if (res.statusCode == 200) {
-        return res.data as Map<String, dynamic>?;
-      }
-      return null;
+      final res = await ref.read(client).get(Api.getPersonalization);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('Error getting gamification: $e');
+      debugPrint('Error getting personalization: $e');
       return null;
     }
   }
 
-  /// Sync AI chat history (legacy method for backward compatibility)
-  Future<bool> syncAiChatHistory(String mode, List<Map<String, dynamic>> messages) async {
+  Future<bool> updatePersonalization(Map<String, dynamic> data) async {
     try {
-      final res = await ref.read(client).post(Api.aiChatHistorySync, data: {
-        'mode': mode,
-        'messages': messages,
-      });
-      return res.statusCode == 200 || res.statusCode == 201;
+      final res = await ref.read(client).put(Api.updatePersonalization, data: data);
+      if (res.statusCode != 200) throw res.data;
+      return true;
     } catch (e) {
-      debugPrint('Error syncing AI chat history: $e');
+      debugPrint('Error updating personalization: $e');
+      return false;
+    }
+  }
+
+  // Subscription
+  Future<Map<String, dynamic>?> getSubscription() async {
+    try {
+      final res = await ref.read(client).get(Api.getSubscription);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting subscription: $e');
+      return null;
+    }
+  }
+
+  Future<bool> updateSubscription(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).put(Api.updateSubscription, data: data);
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error updating subscription: $e');
+      return false;
+    }
+  }
+
+  Future<bool> cancelSubscription() async {
+    try {
+      final res = await ref.read(client).post(Api.cancelSubscription);
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error canceling subscription: $e');
+      return false;
+    }
+  }
+
+  // Offline Content
+  Future<Map<String, dynamic>?> getOfflineContent() async {
+    try {
+      final res = await ref.read(client).get(Api.getOfflineContent);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting offline content: $e');
+      return null;
+    }
+  }
+
+  Future<bool> updateOfflineContent(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).put(Api.updateOfflineContent, data: data);
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error updating offline content: $e');
+      return false;
+    }
+  }
+
+  // Learning Path
+  Future<Map<String, dynamic>?> getLearningPath(String language, String type) async {
+    try {
+      final res = await ref.read(client).get(Api.getLearningPath(language, type));
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting learning path: $e');
+      return null;
+    }
+  }
+
+  Future<bool> createLearningPath(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.createLearningPath, data: data);
+      if (res.statusCode != 201) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error creating learning path: $e');
+      return false;
+    }
+  }
+
+  Future<bool> updateLearningPath(String language, String type, Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).put(Api.updateLearningPath(language, type), data: data);
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error updating learning path: $e');
+      return false;
+    }
+  }
+
+  Future<bool> completeModule(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.completeModule, data: data);
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error completing module: $e');
+      return false;
+    }
+  }
+
+  // Grammar
+  Future<Map<String, dynamic>?> getGrammarExplanation(String language, String grammarPoint) async {
+    try {
+      final res = await ref.read(client).get(Api.getGrammarExplanation(language, grammarPoint));
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting grammar explanation: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getGrammarByLanguage(String language, {String? difficulty}) async {
+    try {
+      final res = await ref.read(client).get(Api.getGrammarByLanguage(language, difficulty));
+      if (res.statusCode != 200) throw res.data;
+      return (res.data as List).map((e) => e as Map<String, dynamic>).toList();
+    } catch (e) {
+      debugPrint('Error getting grammar by language: $e');
+      return [];
+    }
+  }
+
+  // Notifications
+  Future<Map<String, dynamic>?> getNotificationSettings() async {
+    try {
+      final res = await ref.read(client).get(Api.getNotificationSettings);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting notification settings: $e');
+      return null;
+    }
+  }
+
+  Future<bool> updateNotificationSettings(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).put(Api.updateNotificationSettings, data: data);
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error updating notification settings: $e');
       return false;
     }
   }

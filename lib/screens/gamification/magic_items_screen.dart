@@ -130,7 +130,7 @@ class MagicItemsScreen extends ConsumerWidget {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () async {
               // Deduct currency
               if (item.costCowries > 0) {
@@ -222,7 +222,7 @@ class _MagicItemCard extends StatelessWidget {
             ),
           ],
         ),
-        trailing: ElevatedButton(
+        trailing: FilledButton(
           onPressed: onPurchase,
           child: const Text('Buy'),
         ),

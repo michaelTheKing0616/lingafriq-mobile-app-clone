@@ -99,7 +99,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
                   ),
             ),
             const SizedBox(height: 8),
-            ElevatedButton(
+            FilledButton(
               onPressed: () {
                 ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type);
               },

@@ -192,7 +192,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
             ),
             SizedBox(height: 4.h),
             if (!_showResult)
-              ElevatedButton(
+              FilledButton(
                 onPressed: _checkAnswer,
                 child: const Text('Check Answer'),
               )
@@ -212,7 +212,7 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
                     ),
                   ),
                   SizedBox(height: 2.h),
-                  ElevatedButton(
+                  FilledButton(
                     onPressed: _nextCard,
                     child: Text(_currentCardIndex < _cards.length - 1
                         ? 'Next Card'

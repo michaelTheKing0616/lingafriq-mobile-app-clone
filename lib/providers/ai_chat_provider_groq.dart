@@ -14,6 +14,8 @@ import 'backend_sync_provider.dart';
 import 'user_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
+import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
+import '../utils/supported_languages.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -584,6 +586,18 @@ Make reviews efficient and rewarding.''';
     _currentStreamCancel?.call();
   }
 
+  // Hybrid Polie orchestrator (optional - can be enabled via feature flag)
+  bool _useHybridPolie = true; // Enable hybrid mode by default
+  HybridPolieOrchestrator? _hybridOrchestrator;
+  
+  /// Enable/disable hybrid Polie mode
+  void setHybridMode(bool enabled) {
+    _useHybridPolie = enabled;
+    if (enabled && _hybridOrchestrator == null) {
+      _hybridOrchestrator = HybridPolieOrchestrator();
+    }
+  }
+
   // ----- Streaming Chat Message -----
   Stream<String> sendMessageStream(String userMessage) async* {
     if (userMessage.trim().isEmpty) {
@@ -604,6 +618,78 @@ Make reviews efficient and rewarding.''';
     await _saveChatHistory();
 
     state = state.copyWith(isLoading: true);
+    
+    // Use Hybrid Polie if enabled and appropriate for the task
+    if (_useHybridPolie && _hybridOrchestrator != null) {
+      // Check if we should use hybrid routing
+      final shouldUseHybrid = _mode == PolieMode.translation || 
+                             _mode == PolieMode.tutor ||
+                             _mode == PolieMode.vocab;
+      
+      if (shouldUseHybrid) {
+        try {
+          final hybridResponse = await _hybridOrchestrator!.orchestrate(
+            userMessage: userMessage,
+            mode: _mode,
+            targetLanguage: _selectedLanguage,
+            sourceLanguage: _sourceLanguage,
+            groqProvider: this,
+            hfToken: null, // Can be set via environment
+          );
+          
+          // Stream the response word by word for natural feel
+          final words = hybridResponse.output.split(' ');
+          for (int i = 0; i < words.length; i++) {
+            if (_userInterrupt) {
+              state = state.copyWith(isLoading: false);
+              return;
+            }
+            
+            final chunk = i == 0 ? words[i] : ' ${words[i]}';
+            yield chunk;
+            await Future.delayed(const Duration(milliseconds: 30)); // Natural typing speed
+          }
+          
+          // Log telemetry if diacritics were corrected
+          if (hybridResponse.diacriticsCorrected) {
+            debugPrint('✅ Hybrid Polie: Diacritics corrected using ${hybridResponse.model}');
+          }
+          
+          // Add assistant message
+          final assistantMsg = ChatMessage(
+            role: 'assistant',
+            content: hybridResponse.output,
+            timestamp: DateTime.now(),
+          );
+          _messages.add(assistantMsg);
+          state = state.copyWith();
+          await _saveChatHistory();
+          
+          // Add tutor prompts if in tutor mode
+          if (_tutorMode && !_userInterrupt) {
+            final reviewWord = _dueReview();
+            if (reviewWord != null) {
+              final tutorCue = "Review time! Translate '$reviewWord' to $_selectedLanguage.";
+              yield "\n\n$tutorCue";
+            } else {
+              final tutorCue = _adaptiveTutorPrompt(_selectedLanguage);
+              if (!hybridResponse.output.trim().endsWith("?") &&
+                  !hybridResponse.output.toLowerCase().contains("your turn") &&
+                  !hybridResponse.output.toLowerCase().contains("now you try")) {
+                yield "\n\n$tutorCue";
+              }
+            }
+          }
+          
+          _turn = ConversationTurn.user;
+          state = state.copyWith(isLoading: false);
+          return;
+        } catch (e) {
+          debugPrint('⚠️ Hybrid Polie failed, falling back to standard mode: $e');
+          // Fall through to standard Groq implementation
+        }
+      }
+    }
 
     int retryCount = 0;
     int modelIndex = 0;

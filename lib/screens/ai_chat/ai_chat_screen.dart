@@ -325,7 +325,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               if (selectedSource != null && selectedTarget != null) {
                 chatNotifier.setLanguageDirection(selectedSource!, selectedTarget!);
@@ -338,7 +338,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 );
               }
             },
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),

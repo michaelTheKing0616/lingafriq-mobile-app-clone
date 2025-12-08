@@ -1,105 +1,156 @@
-/// Centralized list of all supported languages in the app
-/// Ensures consistency across AI chat, games, diacritics, and all features
+/// Supported Languages Utility
+/// Centralized management of all supported African languages
+
+import 'package:flutter/foundation.dart';
+
 class SupportedLanguages {
-  /// All supported languages with their codes and display names
-  static const List<LanguageInfo> all = [
-    LanguageInfo(name: 'Yoruba', code: 'yoruba', flag: '🇳🇬', isoCode: 'yo'),
-    LanguageInfo(name: 'Hausa', code: 'hausa', flag: '🇳🇬', isoCode: 'ha'),
-    LanguageInfo(name: 'Igbo', code: 'igbo', flag: '🇳🇬', isoCode: 'ig'),
-    LanguageInfo(name: 'Swahili', code: 'swahili', flag: '🇰🇪', isoCode: 'sw'),
-    LanguageInfo(name: 'Zulu', code: 'zulu', flag: '🇿🇦', isoCode: 'zu'),
-    LanguageInfo(name: 'Xhosa', code: 'xhosa', flag: '🇿🇦', isoCode: 'xh'),
-    LanguageInfo(name: 'Amharic', code: 'amharic', flag: '🇪🇹', isoCode: 'am'),
-    LanguageInfo(name: 'Twi', code: 'twi', flag: '🇬🇭', isoCode: 'tw'),
-    LanguageInfo(name: 'Afrikaans', code: 'afrikaans', flag: '🇿🇦', isoCode: 'af'),
-    LanguageInfo(name: 'Nigerian Pidgin', code: 'pidgin', flag: '🇳🇬', isoCode: 'pcm'),
-    LanguageInfo(name: 'Wolof', code: 'wolof', flag: '🇸🇳', isoCode: 'wo'),
-    LanguageInfo(name: 'Somali', code: 'somali', flag: '🇸🇴', isoCode: 'so'),
-  ];
-
-  /// Get language by code
-  static LanguageInfo? getByCode(String code) {
-    return all.firstWhere(
-      (lang) => lang.code.toLowerCase() == code.toLowerCase(),
-      orElse: () => all.first, // Default to Yoruba
-    );
+  static const Map<String, Map<String, dynamic>> _languages = {
+    'yoruba': {
+      'name': 'Yoruba',
+      'code': 'yo',
+      'flag': '🇳🇬',
+      'country': 'Nigeria',
+      'iso639_3': 'yor',
+      'requiresDiacritics': true,
+      'validChars': 'abcdefghijklmnopqrstuvwxyzàáâãäèéêëìíîïòóôõöùúûüỳýŷÿ',
+    },
+    'hausa': {
+      'name': 'Hausa',
+      'code': 'ha',
+      'flag': '🇳🇬',
+      'country': 'Nigeria',
+      'iso639_3': 'hau',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'igbo': {
+      'name': 'Igbo',
+      'code': 'ig',
+      'flag': '🇳🇬',
+      'country': 'Nigeria',
+      'iso639_3': 'ibo',
+      'requiresDiacritics': true,
+      'validChars': 'abcdefghijklmnopqrstuvwxyzàáâãäèéêëìíîïòóôõöùúûü',
+    },
+    'swahili': {
+      'name': 'Swahili',
+      'code': 'sw',
+      'flag': '🇰🇪',
+      'country': 'Kenya',
+      'iso639_3': 'swa',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'zulu': {
+      'name': 'Zulu',
+      'code': 'zu',
+      'flag': '🇿🇦',
+      'country': 'South Africa',
+      'iso639_3': 'zul',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'xhosa': {
+      'name': 'Xhosa',
+      'code': 'xh',
+      'flag': '🇿🇦',
+      'country': 'South Africa',
+      'iso639_3': 'xho',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'amharic': {
+      'name': 'Amharic',
+      'code': 'am',
+      'flag': '🇪🇹',
+      'country': 'Ethiopia',
+      'iso639_3': 'amh',
+      'requiresDiacritics': true,
+      'validChars': 'ሀሁሂሃሄህሆሇለሉሊላሌልሎሏሐሑሒሓሔሕሖሗመሙሚማሜምሞሟሠሡሢሣሤሥሦሧረሩሪራሬርሮሯሰሱሲሳሴስሶሷሸሹሺሻሼሽሾሿቀቁቂቃቄቅቆቇቈ቉ቊቋቌቍ቎቏ቐቑቒቓቔቕቖ቗ቘ቙ቚቛቜቝ቞቟በቡቢባቤብቦቧቨቩቪቫቬቭቮቯተቱቲታቴትቶቷቸቹቺቻቼችቾቿኀኁኂኃኄኅኆኇኈ኉ኊኋኌኍ኎኏ነኑኒናኔንኖኗኘኙኚኛኜኝኞኟአኡኢኣኤእኦኧከኩኪካኬክኮኯኰ኱ኲኳኴኵ኶኷ኸኹኺኻኼኽኾ኿ዀ዁ዂዃዄዅ዆዇ወዉዊዋዌውዎዏዐዑዒዓዔዕዖ዗ዘዙዚዛዜዝዞዟዠዡዢዣዤዥዦዧየዩዪያዬይዮዯደዱዲዳዴድዶዷዸዹዺዻዼዽዾዿጀጁጂጃጄጅጆጇገጉጊጋጌግጎጏጐ጑ጒጓጔጕ጖጗ጘጙጚጛጜጝጞጟጠጡጢጣጤጥጦጧጨጩጪጫጬጭጮጯጰጱጲጳጴጵጶጷጸጹጺጻጼጽጾጿፀፁፂፃፄፅፆፇፈፉፊፋፌፍፎፏፐፑፒፓፔፕፖፗ',
+    },
+    'twi': {
+      'name': 'Twi',
+      'code': 'tw',
+      'flag': '🇬🇭',
+      'country': 'Ghana',
+      'iso639_3': 'twi',
+      'requiresDiacritics': true,
+      'validChars': 'abcdefghijklmnopqrstuvwxyzàáâãäèéêëìíîïòóôõöùúûü',
+    },
+    'afrikaans': {
+      'name': 'Afrikaans',
+      'code': 'af',
+      'flag': '🇿🇦',
+      'country': 'South Africa',
+      'iso639_3': 'afr',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'pidgin': {
+      'name': 'Nigerian Pidgin',
+      'code': 'pcm',
+      'flag': '🇳🇬',
+      'country': 'Nigeria',
+      'iso639_3': 'pcm',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'wolof': {
+      'name': 'Wolof',
+      'code': 'wo',
+      'flag': '🇸🇳',
+      'country': 'Senegal',
+      'iso639_3': 'wol',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+    'somali': {
+      'name': 'Somali',
+      'code': 'so',
+      'flag': '🇸🇴',
+      'country': 'Somalia',
+      'iso639_3': 'som',
+      'requiresDiacritics': false,
+      'validChars': 'abcdefghijklmnopqrstuvwxyz',
+    },
+  };
+  
+  /// Get all supported languages
+  static List<String> get allLanguages => _languages.keys.toList();
+  
+  /// Get language info
+  static Map<String, dynamic> getLanguageInfo(String language) {
+    final key = language.toLowerCase();
+    return _languages[key] ?? {};
   }
-
-  /// Get language by ISO code
-  static LanguageInfo? getByISOCode(String isoCode) {
-    return all.firstWhere(
-      (lang) => lang.isoCode.toLowerCase() == isoCode.toLowerCase(),
-      orElse: () => all.first,
-    );
+  
+  /// Get valid characters for a language
+  static String getValidCharacters(String language) {
+    final info = getLanguageInfo(language);
+    return info['validChars'] ?? 'abcdefghijklmnopqrstuvwxyz';
   }
-
-  /// Get all language codes
-  static List<String> get codes => all.map((lang) => lang.code).toList();
-
-  /// Get all language names
-  static List<String> get names => all.map((lang) => lang.name).toList();
-
-  /// Get all ISO codes
-  static List<String> get isoCodes => all.map((lang) => lang.isoCode).toList();
-
-  /// Check if language is supported
-  static bool isSupported(String code) {
-    return all.any((lang) => lang.code.toLowerCase() == code.toLowerCase());
-  }
-
-  /// Languages that require diacritics
-  static const List<String> diacriticsRequired = [
-    'yoruba',
-    'igbo',
-    'twi',
-    'wolof',
-  ];
-
+  
   /// Check if language requires diacritics
-  static bool requiresDiacritics(String code) {
-    return diacriticsRequired.contains(code.toLowerCase());
+  static bool requiresDiacritics(String language) {
+    final info = getLanguageInfo(language);
+    return info['requiresDiacritics'] ?? false;
   }
-
-  /// Tonal languages
-  static const List<String> tonalLanguages = [
-    'yoruba',
-    'igbo',
-    'twi',
-    'xhosa',
-    'zulu',
-  ];
-
-  /// Check if language is tonal
-  static bool isTonal(String code) {
-    return tonalLanguages.contains(code.toLowerCase());
+  
+  /// Get language code
+  static String getLanguageCode(String language) {
+    final info = getLanguageInfo(language);
+    return info['code'] ?? language.toLowerCase();
   }
-}
-
-class LanguageInfo {
-  final String name;
-  final String code;
-  final String flag;
-  final String isoCode;
-
-  const LanguageInfo({
-    required this.name,
-    required this.code,
-    required this.flag,
-    required this.isoCode,
-  });
-
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'code': code,
-        'flag': flag,
-        'isoCode': isoCode,
+  
+  /// Get all language options for UI
+  static List<Map<String, String>> getLanguageOptions() {
+    return _languages.entries.map((entry) {
+      final info = entry.value;
+      return {
+        'name': info['name'] as String,
+        'code': info['code'] as String,
+        'flag': info['flag'] as String,
       };
-
-  factory LanguageInfo.fromJson(Map<String, dynamic> json) => LanguageInfo(
-        name: json['name'],
-        code: json['code'],
-        flag: json['flag'],
-        isoCode: json['isoCode'],
-      );
+    }).toList();
+  }
 }
-
