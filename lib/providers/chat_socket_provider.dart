@@ -3,25 +3,27 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/gamification/socket_service.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/socket_provider.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 /// Chat Socket Provider - Wraps socket service for chat functionality
-class ChatSocketNotifier extends StateNotifier<ChatSocketState> {
-  final GamificationSocketService _socketService;
+class ChatSocketNotifier extends Notifier<ChatSocketState> {
   final List<Map<String, dynamic>> _messages = [];
   final List<Map<String, dynamic>> _onlineUsers = [];
   String _activeRoom = 'general';
   bool _isConnected = false;
   final Map<String, List<Map<String, dynamic>>> _roomMessages = {};
   IO.Socket? _socket;
-  final Ref _ref;
 
-  ChatSocketNotifier(this._socketService, this._ref) : super(ChatSocketState.initial()) {
+  @override
+  ChatSocketState build() {
     _initializeSocket();
+    return ChatSocketState.initial();
   }
 
   void _initializeSocket() {
-    final token = _ref.read(apiProvider.notifier).token;
+    final token = ref.read(apiProvider.notifier).token;
     final apiBaseUrl = Api.baseurl.replaceFirst('http://', '').replaceFirst('https://', '');
     
     _socket = IO.io(
@@ -120,10 +122,8 @@ class ChatSocketNotifier extends StateNotifier<ChatSocketState> {
   List<Map<String, dynamic>> get onlineUsers => _onlineUsers;
   bool get isConnected => _isConnected;
 
-  @override
   void dispose() {
     _socket?.disconnect();
-    super.dispose();
   }
 }
 
@@ -158,8 +158,7 @@ class ChatSocketState {
 }
 
 /// Chat Socket Provider
-final socketProvider = StateNotifierProvider<ChatSocketNotifier, ChatSocketState>((ref) {
-  final socketService = ref.watch(socketServiceProvider);
-  return ChatSocketNotifier(socketService, ref);
+final socketProvider = NotifierProvider<ChatSocketNotifier, ChatSocketState>(() {
+  return ChatSocketNotifier();
 });
 

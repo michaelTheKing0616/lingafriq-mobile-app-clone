@@ -190,8 +190,8 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                 ),
           ),
           const SizedBox(height: 8),
-          _competitionResults.isNotEmpty
-              ? ..._competitionResults.asMap().entries.map((entry) {
+          ...(_competitionResults.isNotEmpty
+              ? _competitionResults.asMap().entries.map((entry) {
                   final index = entry.key;
                   final result = entry.value;
                   final tribeId = result['subject_id']?.toString() ?? '';
@@ -205,7 +205,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                     isUserTribe: isUserTribe,
                   );
                 })
-              : ...leaderboard.asMap().entries.map((entry) {
+              : leaderboard.asMap().entries.map((entry) {
                   final index = entry.key;
                   final tribeEntry = entry.value;
                   final isUserTribe = tribeEntry.key == gamification.tribe;
@@ -217,7 +217,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                     points: tribeEntry.value,
                     isUserTribe: isUserTribe,
                   );
-                }),
+                })),
           const SizedBox(height: 16),
           // Your contribution
           Card(
