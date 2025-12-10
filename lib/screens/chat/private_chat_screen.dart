@@ -84,6 +84,10 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         titleSpacing: 0,
         title: Row(
           children: [
