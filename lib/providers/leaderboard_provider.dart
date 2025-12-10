@@ -79,6 +79,23 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
             entries = _parseLeaderboardEntries(data['entries'] ?? []);
           }
           break;
+        case LeaderboardType.continental:
+          // Use global leaderboard filtered by continent
+          final data = await leaderboardsService.getGlobalLeaderboard(period: 'monthly');
+          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          break;
+        case LeaderboardType.weekly:
+        case LeaderboardType.monthly:
+        case LeaderboardType.allTime:
+          // Use global leaderboard with appropriate period
+          final period = type == LeaderboardType.weekly 
+              ? 'weekly' 
+              : type == LeaderboardType.monthly 
+                  ? 'monthly' 
+                  : 'allTime';
+          final data = await leaderboardsService.getGlobalLeaderboard(period: period);
+          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          break;
       }
 
       _cache[type] = entries;

@@ -179,10 +179,10 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           if (token == null || token.isEmpty) {
                                             debugPrint('No token found, attempting to refresh...');
                                             // Try to refresh token
-                                            final authProvider = ref.read(authProvider);
+                                            final authNotifier = ref.read(authProvider.notifier);
                                             final emailAndPass = ref.read(sharedPreferencesProvider).requestEmailAndPass;
                                             if (emailAndPass != null) {
-                                              await authProvider.login(
+                                              await authNotifier.login(
                                                 email: emailAndPass['email']!,
                                                 password: emailAndPass['password']!,
                                                 silentRefresh: true,

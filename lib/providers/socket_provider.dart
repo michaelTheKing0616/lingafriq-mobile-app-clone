@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/gamification/socket_service.dart';
 import 'package:lingafriq/providers/api_provider.dart';

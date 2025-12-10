@@ -161,27 +161,27 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          ...tribes.map((tribeName) => Card(
+          ...tribes.map((tribe) => Card(
                 margin: const EdgeInsets.only(bottom: 12),
-                elevation: currentTribe == tribeName ? 4 : 1,
+                elevation: currentTribe == tribe['name'] ? 4 : 1,
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     child: Text(
-                      tribeEmojis[tribeName] ?? '🏛️',
+                      tribeEmojis[tribe['name']] ?? '🏛️',
                       style: const TextStyle(fontSize: 24),
                     ),
                   ),
                   title: Text(
-                    tribeName,
+                    tribe['name'],
                     style: TextStyle(
-                      fontWeight: currentTribe == tribeName
+                      fontWeight: currentTribe == tribe['name']
                           ? FontWeight.bold
                           : FontWeight.normal,
                     ),
                   ),
-                  subtitle: Text('Join the $tribeName tribe and compete in leaderboards'),
-                  trailing: currentTribe == tribeName || _currentTribeId == tribe['id']
+                  subtitle: Text('Join the ${tribe['name']} tribe and compete in leaderboards'),
+                  trailing: currentTribe == tribe['name'] || _currentTribeId == tribe['id']
                       ? const Icon(Icons.check_circle, color: Colors.green)
                       : _isLoading
                           ? const SizedBox(

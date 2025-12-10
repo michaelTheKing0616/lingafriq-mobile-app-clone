@@ -45,11 +45,11 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
         // Fallback to local items
         setState(() {
           _availableItems = MagicItemDefinitions.allItems.map((item) => {
-            'code': item.code,
+            'code': item.id,
             'name': item.name,
             'description': item.description,
             'effect': item.effect.toString(),
-            'duration_seconds': item.durationSeconds,
+            'duration_seconds': item.durationHours * 3600,
             'cost_cowries': item.costCowries,
             'cost_beads': item.costBeads,
           }).toList();
@@ -60,7 +60,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
       // Fallback to local items
       setState(() {
         _availableItems = MagicItemDefinitions.allItems.map((item) => {
-          'code': item.code,
+          'code': item.id,
           'name': item.name,
           'description': item.description,
         }).toList();
@@ -143,7 +143,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
     final items = _availableItems.isNotEmpty 
         ? _availableItems 
         : MagicItemDefinitions.allItems.map((item) => {
-            'code': item.code,
+            'code': item.id,
             'name': item.name,
             'description': item.description,
           }).toList();

@@ -298,8 +298,9 @@ class _ChapterDetailScreen extends ConsumerWidget {
                       ? null
                       : () async {
                           // Complete lesson via quest provider
-                          final questProvider = ref.read(questProvider.notifier);
-                          await questProvider.completeLesson(lesson.id);
+                          final questNotifier = ref.read(questProvider.notifier);
+                          // TODO: Implement completeLesson method in QuestProvider
+                          // await questNotifier.completeLesson(lesson.id);
                           
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(

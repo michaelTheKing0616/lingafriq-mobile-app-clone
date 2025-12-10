@@ -218,46 +218,6 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                     isUserTribe: isUserTribe,
                   );
                 }),
-
-            return Card(
-              margin: const EdgeInsets.only(bottom: 8),
-              elevation: isUserTribe ? 4 : 1,
-              color: isUserTribe
-                  ? Theme.of(context).colorScheme.primaryContainer
-                  : null,
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: _getRankColor(index),
-                  child: Text(
-                    '${index + 1}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                title: Text(
-                  _getTribeName(tribeEntry.key),
-                  style: TextStyle(
-                    fontWeight: isUserTribe ? FontWeight.bold : FontWeight.normal,
-                  ),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.star, size: 16, color: Colors.amber),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${tribeEntry.value}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }),
           const SizedBox(height: 16),
           // Your contribution
           Card(
