@@ -217,12 +217,19 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
           ),
           const SizedBox(height: 16),
           // Items list
-          ...items.map((item) => _MagicItemCard(
-                item: item,
-                onPurchase: () {
-                  _purchaseItem(context, ref, item);
-                },
-              )),
+          ...items.map((itemData) {
+            // Find the MagicItem from definitions
+            final item = MagicItemDefinitions.allItems.firstWhere(
+              (i) => i.id == itemData['code'],
+              orElse: () => MagicItemDefinitions.allItems.first,
+            );
+            return _MagicItemCard(
+              item: item,
+              onPurchase: () {
+                _purchaseItem(context, ref, item);
+              },
+            );
+          }),
         ],
       ),
     );

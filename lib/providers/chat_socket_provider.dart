@@ -22,10 +22,10 @@ class ChatSocketNotifier extends StateNotifier<ChatSocketState> {
 
   void _initializeSocket() {
     final token = _ref.read(apiProvider.notifier).token;
-    final baseUrl = 'http://localhost:3000'; // TODO: Get from API config
+    final apiBaseUrl = Api.baseurl.replaceFirst('http://', '').replaceFirst('https://', '');
     
     _socket = IO.io(
-      baseUrl,
+      'http://$apiBaseUrl',
       IO.OptionBuilder()
           .setTransports(['websocket', 'polling'])
           .setAuth({'token': token})
