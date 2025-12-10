@@ -70,6 +70,13 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
             onPressed: _loadCurriculum,
             tooltip: 'Reload Curriculum',
           ),
+          IconButton(
+            icon: Icon(Icons.menu, color: isDark ? Colors.white : Colors.black87),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            tooltip: 'Menu',
+          ),
         ],
       ),
       body: isLoading

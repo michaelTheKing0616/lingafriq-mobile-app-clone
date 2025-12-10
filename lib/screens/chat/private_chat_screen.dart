@@ -129,11 +129,17 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
             ),
           ],
         ),
-        actions: const [
-          Padding(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+          const Padding(
             padding: EdgeInsets.only(right: 12),
             child: Icon(Icons.lock_outline, size: 20),
-          )
+          ),
         ],
       ),
       body: Column(

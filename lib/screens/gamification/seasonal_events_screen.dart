@@ -15,6 +15,18 @@ class SeasonalEventsScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seasonal Events'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

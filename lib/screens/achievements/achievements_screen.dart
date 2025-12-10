@@ -63,16 +63,28 @@ class AchievementsScreen extends ConsumerWidget {
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          shape: const CircleBorder(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            shape: const CircleBorder(),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            shape: const CircleBorder(),
+                          ),
+                        ),
+                      ],
                     ),
                     const Icon(
                       Icons.emoji_events_rounded,

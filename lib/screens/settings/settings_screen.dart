@@ -69,17 +69,29 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    // Always show back button
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: widget.onBack ?? () => Navigator.pop(context),
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          shape: const CircleBorder(),
+                    // Always show back button and menu
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: widget.onBack ?? () => Navigator.pop(context),
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            shape: const CircleBorder(),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            shape: const CircleBorder(),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 2.h),
                     const Icon(

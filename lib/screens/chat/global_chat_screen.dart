@@ -122,6 +122,17 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                       ),
                     ),
                     SizedBox(width: 2.w),
+                    IconButton(
+                      icon: const Icon(Icons.menu, color: Colors.white),
+                      onPressed: () {
+                        Scaffold.of(context).openDrawer();
+                      },
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        shape: const CircleBorder(),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

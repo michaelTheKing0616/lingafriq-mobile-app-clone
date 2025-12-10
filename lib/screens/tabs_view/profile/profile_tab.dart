@@ -27,6 +27,17 @@ class ProfileTab extends HookConsumerWidget {
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ),
+          ],
+        ),
         body: Column(
           children: [
             TopGradientBox(
