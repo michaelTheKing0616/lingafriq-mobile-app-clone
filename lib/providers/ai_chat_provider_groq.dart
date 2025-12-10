@@ -710,6 +710,42 @@ Make reviews efficient and rewarding.''';
         // Try different model names if previous one failed
         final currentModel = _modelNames[modelIndex];
 
+        // Ensure system prompt is not empty
+        final systemPrompt = _systemPrompt?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
+        
+        // Build messages array, ensuring all messages have valid content
+        final messagesList = <Map<String, String>>[];
+        
+        // Add system message if prompt exists
+        if (systemPrompt.isNotEmpty) {
+          messagesList.add({
+            "role": "system",
+            "content": systemPrompt,
+          });
+        }
+        
+        // Add conversation messages, filtering out empty ones
+        for (final msg in _messages) {
+          if (msg.content.trim().isNotEmpty) {
+            messagesList.add({
+              "role": msg.role,
+              "content": msg.content.trim(),
+            });
+          }
+        }
+        
+        // Validate we have at least one user message
+        if (messagesList.isEmpty || !messagesList.any((m) => m["role"] == "user")) {
+          throw Exception('No valid messages to send. Please enter a message.');
+        }
+        
+        // Validate model name
+        if (currentModel.isEmpty) {
+          throw Exception('Invalid model configuration. Please check your settings.');
+        }
+        
+        debugPrint('Sending to Groq: model=$currentModel, messages=${messagesList.length}');
+        
         final response = await _dio.post(
           _groqUrl,
           cancelToken: cancelToken,
@@ -719,31 +755,50 @@ Make reviews efficient and rewarding.''';
               'Authorization': 'Bearer $_groqApiKey',
             },
             responseType: ResponseType.stream,
+            validateStatus: (status) => status! < 500, // Don't throw on 4xx, handle manually
           ),
           data: {
             "model": currentModel,
-            "messages": [
-              {"role": "system", "content": _systemPrompt ?? ''},
-              ..._messages.map((m) => {
-                    "role": m.role,
-                    "content": m.content,
-                  }),
-            ],
+            "messages": messagesList,
             "temperature": _mode == PolieMode.translation ? 0.2 : 0.7,
             "max_tokens": 500,
             "stream": true,
           },
         );
+        
+        // Check for 4xx errors manually
+        if (response.statusCode != null && response.statusCode! >= 400 && response.statusCode! < 500) {
+          String errorDetail = 'Bad request';
+          try {
+            // Try to read error response if available
+            if (response.data != null) {
+              // For stream responses, we might not be able to read the body easily
+              errorDetail = 'Request validation failed. Please check your message format.';
+            }
+          } catch (_) {}
+          
+          if (response.statusCode == 400) {
+            throw Exception('Invalid request format. ${errorDetail}');
+          } else if (response.statusCode == 401) {
+            throw Exception('Invalid API key. Please check your Groq API key.');
+          } else if (response.statusCode == 429) {
+            throw Exception('Rate limit exceeded. Please try again later.');
+          } else {
+            throw Exception('Request failed with status ${response.statusCode}: ${errorDetail}');
+          }
+        }
 
         String buffer = "";
         String output = "";
 
         final responseBody = response.data;
-        if (responseBody is! ResponseBody) {
+        // Check if response is a stream
+        if (responseBody == null) {
           throw Exception('Unexpected response from Groq (missing stream body).');
         }
 
-        final byteStream = responseBody.stream.cast<List<int>>();
+        // Handle stream response - Dio returns ResponseBody for stream responses
+        final byteStream = (responseBody as dynamic).stream.cast<List<int>>();
 
         await for (final chunk in byteStream
             .transform(utf8.decoder)

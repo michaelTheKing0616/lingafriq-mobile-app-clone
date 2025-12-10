@@ -4,13 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-/// AI Chat Select Screen - Based on Figma Make Design
-/// Allows users to choose between Translator Mode and Tutor Mode
+/// AI Chat Select Screen - Entry point for Polie
+/// Navigates to mode selection screen with all 6 modes
 class AiChatSelectScreen extends HookConsumerWidget {
   final VoidCallback? onBack;
   
@@ -160,153 +161,23 @@ class AiChatSelectScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ErrorBoundary(
-      errorMessage: 'AI Chat selection is temporarily unavailable',
-      onRetry: () {
-        // Retry by rebuilding
-      },
-      child: _buildContent(context, ref),
-    );
-  }
-
-  Widget _buildContent(BuildContext context, WidgetRef ref) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Simply navigate to the mode selection screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PolieModeSelectionScreen(onBack: onBack),
+        ),
+      );
+    });
     
+    // Show loading while transitioning
     return Scaffold(
-      backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
-      body: Stack(
-        children: [
-          // Gradient Header
-          Container(
-            height: 30.h,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF7B2CBF), // Purple
-                  Color(0xFFCE1126), // Red
-                ],
-              ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                // Pattern overlay
-                Positioned.fill(
-                  child: CustomPaint(
-                    painter: _PatternPainter(
-                      color: Colors.white.withOpacity(0.1),
-                    ),
-                  ),
-                ),
-                SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.all(4.w),
-                    child: Column(
-                      children: [
-                        // Always show back button
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: onBack ?? () => Navigator.pop(context),
-                            style: IconButton.styleFrom(
-                              backgroundColor: Colors.white.withOpacity(0.2),
-                              shape: const CircleBorder(),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 2.h),
-                        const Icon(
-                          Icons.auto_awesome_rounded,
-                          color: Colors.white,
-                          size: 64,
-                        ),
-                        SizedBox(height: 1.h),
-                        Text(
-                          'AI Language Assistant',
-                          style: TextStyle(
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        SizedBox(height: 0.5.h),
-                        Text(
-                          'Choose how you\'d like to practice',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.white.withOpacity(0.9),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          // Mode Selection Cards
-          Positioned(
-            top: 25.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 2.h),
-                  // Translator Mode Card
-                  _ModeCard(
-                    title: 'Translator Mode',
-                    description: 'Instant translations between English and Swahili. Perfect for quick lookups and understanding phrases.',
-                    icon: Icons.translate_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
-                    ),
-                    badge: 'Quick & Easy',
-                    onTap: () async {
-                      // Set translator mode and show language selector
-                      await ref.read(groqChatProvider.notifier).setMode(PolieMode.translation);
-                      _showLanguageSelector(context, ref, PolieMode.translation);
-                    },
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
-                  // Tutor Mode Card
-                  _ModeCard(
-                    title: 'Tutor Mode',
-                    description: 'Practice conversations with your AI tutor. Get feedback, corrections, and explanations to improve your skills.',
-                    icon: Icons.school_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
-                    ),
-                    badge: 'Interactive Learning',
-                    onTap: () async {
-                      // Set tutor mode and show language selector
-                      await ref.read(groqChatProvider.notifier).setMode(PolieMode.tutor);
-                      _showLanguageSelector(context, ref, PolieMode.tutor);
-                    },
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
-                ],
-              ),
-            ),
-          ),
-        ],
+      backgroundColor: Theme.of(context).brightness == Brightness.dark 
+          ? AfricanTheme.backgroundDark 
+          : AfricanTheme.backgroundLight,
+      body: const Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

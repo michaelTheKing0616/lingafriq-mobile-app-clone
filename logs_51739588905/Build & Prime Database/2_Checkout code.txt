@@ -1,0 +1,74 @@
+﻿2025-12-08T23:07:26.9334414Z ##[group]Run actions/checkout@v4
+2025-12-08T23:07:26.9335800Z with:
+2025-12-08T23:07:26.9336791Z   repository: LingAfrika/node-backend
+2025-12-08T23:07:26.9338175Z   token: ***
+2025-12-08T23:07:26.9339043Z   ssh-strict: true
+2025-12-08T23:07:26.9339919Z   ssh-user: git
+2025-12-08T23:07:26.9340798Z   persist-credentials: true
+2025-12-08T23:07:26.9341923Z   clean: true
+2025-12-08T23:07:26.9342800Z   sparse-checkout-cone-mode: true
+2025-12-08T23:07:26.9343854Z   fetch-depth: 1
+2025-12-08T23:07:26.9344683Z   fetch-tags: false
+2025-12-08T23:07:26.9345543Z   show-progress: true
+2025-12-08T23:07:26.9346421Z   lfs: false
+2025-12-08T23:07:26.9347233Z   submodules: false
+2025-12-08T23:07:26.9348102Z   set-safe-directory: true
+2025-12-08T23:07:26.9349278Z env:
+2025-12-08T23:07:26.9350051Z   NODE_VERSION: 18.x
+2025-12-08T23:07:26.9350894Z ##[endgroup]
+2025-12-08T23:07:27.0517923Z Syncing repository: LingAfrika/node-backend
+2025-12-08T23:07:27.0520673Z ##[group]Getting Git version info
+2025-12-08T23:07:27.0523219Z Working directory is '/home/runner/work/node-backend/node-backend'
+2025-12-08T23:07:27.0527007Z [command]/usr/bin/git version
+2025-12-08T23:07:27.0604658Z git version 2.52.0
+2025-12-08T23:07:27.0639585Z ##[endgroup]
+2025-12-08T23:07:27.0659649Z Temporarily overriding HOME='/home/runner/work/_temp/76f66af5-1eef-4e54-9a7e-f487cf81d8fb' before making global git config changes
+2025-12-08T23:07:27.0665379Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-08T23:07:27.0691370Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-08T23:07:27.0732588Z Deleting the contents of '/home/runner/work/node-backend/node-backend'
+2025-12-08T23:07:27.0736901Z ##[group]Initializing the repository
+2025-12-08T23:07:27.0742920Z [command]/usr/bin/git init /home/runner/work/node-backend/node-backend
+2025-12-08T23:07:27.0862607Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-08T23:07:27.0866865Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-08T23:07:27.0870416Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-08T23:07:27.0873712Z hint: call:
+2025-12-08T23:07:27.0875038Z hint:
+2025-12-08T23:07:27.0876742Z hint: 	git config --global init.defaultBranch <name>
+2025-12-08T23:07:27.0878915Z hint:
+2025-12-08T23:07:27.0881020Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-08T23:07:27.0890894Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-08T23:07:27.0893742Z hint:
+2025-12-08T23:07:27.0894965Z hint: 	git branch -m <name>
+2025-12-08T23:07:27.0896526Z hint:
+2025-12-08T23:07:27.0898610Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-08T23:07:27.0902739Z Initialized empty Git repository in /home/runner/work/node-backend/node-backend/.git/
+2025-12-08T23:07:27.0909002Z [command]/usr/bin/git remote add origin https://github.com/LingAfrika/node-backend
+2025-12-08T23:07:27.0943211Z ##[endgroup]
+2025-12-08T23:07:27.0945741Z ##[group]Disabling automatic garbage collection
+2025-12-08T23:07:27.0947903Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-08T23:07:27.0983006Z ##[endgroup]
+2025-12-08T23:07:27.0986224Z ##[group]Setting up auth
+2025-12-08T23:07:27.0992558Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-08T23:07:27.1024979Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-08T23:07:27.1402488Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-08T23:07:27.1442413Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-08T23:07:27.1671398Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-08T23:07:27.1707449Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-08T23:07:27.1956521Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-08T23:07:27.1994106Z ##[endgroup]
+2025-12-08T23:07:27.1997518Z ##[group]Fetching the repository
+2025-12-08T23:07:27.2006270Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d6e643fc434edc64224ad346776af4555b27bc2c:refs/remotes/origin/main
+2025-12-08T23:07:27.6671374Z From https://github.com/LingAfrika/node-backend
+2025-12-08T23:07:27.6673735Z  * [new ref]         d6e643fc434edc64224ad346776af4555b27bc2c -> origin/main
+2025-12-08T23:07:27.6707407Z ##[endgroup]
+2025-12-08T23:07:27.6708212Z ##[group]Determining the checkout info
+2025-12-08T23:07:27.6709460Z ##[endgroup]
+2025-12-08T23:07:27.6715351Z [command]/usr/bin/git sparse-checkout disable
+2025-12-08T23:07:27.6759267Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-08T23:07:27.6787851Z ##[group]Checking out the ref
+2025-12-08T23:07:27.6792092Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-08T23:07:27.7469011Z Switched to a new branch 'main'
+2025-12-08T23:07:27.7470260Z branch 'main' set up to track 'origin/main'.
+2025-12-08T23:07:27.7474419Z ##[endgroup]
+2025-12-08T23:07:27.7476455Z [command]/usr/bin/git log -1 --format=%H
+2025-12-08T23:07:27.7477312Z d6e643fc434edc64224ad346776af4555b27bc2c

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart' hide Badge;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
+import '../../providers/gamification_services_provider.dart';
+import '../../providers/socket_provider.dart';
 import '../../models/badge_model.dart';
+import '../../services/gamification/badges_service.dart';
+import '../../widgets/error_boundary.dart';
+import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// Screen displaying all badges with unlock status
 class BadgeCollectionScreen extends ConsumerStatefulWidget {
@@ -33,6 +38,10 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Badge Collection'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         actions: [
           Text(
             '${unlockedBadges.length}/${allBadges.length}',
@@ -41,6 +50,12 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                 ),
           ),
           const SizedBox(width: 16),
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
         ],
       ),
       body: Column(

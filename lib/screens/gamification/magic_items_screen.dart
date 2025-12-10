@@ -2,19 +2,174 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/magic_item_model.dart';
 import '../../providers/gamification_provider.dart';
+import '../../providers/gamification_services_provider.dart';
+import '../../providers/user_provider.dart';
+import '../../services/gamification/items_service.dart';
+import '../../widgets/error_boundary.dart';
+import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// Magic Items & Boosters Screen
-class MagicItemsScreen extends ConsumerWidget {
+class MagicItemsScreen extends ConsumerStatefulWidget {
   const MagicItemsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final items = MagicItemDefinitions.allItems;
+  ConsumerState<MagicItemsScreen> createState() => _MagicItemsScreenState();
+}
+
+class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
+  bool _isLoading = false;
+  List<dynamic> _userInventory = [];
+  List<dynamic> _availableItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  Future<void> _loadItems() async {
+    setState(() => _isLoading = true);
+    try {
+      final itemsService = ref.read(itemsServiceProvider);
+      final user = ref.read(userProvider);
+      
+      if (user != null) {
+        final allItems = await itemsService.getAllItems();
+        final inventory = await itemsService.getUserInventory(user.id.toString());
+        
+        setState(() {
+          _availableItems = allItems;
+          _userInventory = inventory;
+        });
+      } else {
+        // Fallback to local items
+        setState(() {
+          _availableItems = MagicItemDefinitions.allItems.map((item) => {
+            'code': item.code,
+            'name': item.name,
+            'description': item.description,
+            'effect': item.effect.toString(),
+            'duration_seconds': item.durationSeconds,
+            'cost_cowries': item.costCowries,
+            'cost_beads': item.costBeads,
+          }).toList();
+        });
+      }
+    } catch (e) {
+      debugPrint('Error loading items: $e');
+      // Fallback to local items
+      setState(() {
+        _availableItems = MagicItemDefinitions.allItems.map((item) => {
+          'code': item.code,
+          'name': item.name,
+          'description': item.description,
+        }).toList();
+      });
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _claimItem(String itemCode) async {
+    setState(() => _isLoading = true);
+    try {
+      final itemsService = ref.read(itemsServiceProvider);
+      final user = ref.read(userProvider);
+      
+      if (user != null) {
+        await itemsService.claimItem(user.id.toString(), itemCode);
+        await _loadItems(); // Reload inventory
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Item claimed successfully!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error claiming item: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to claim item: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _useItem(String itemId) async {
+    setState(() => _isLoading = true);
+    try {
+      final itemsService = ref.read(itemsServiceProvider);
+      final user = ref.read(userProvider);
+      
+      if (user != null) {
+        final result = await itemsService.useItem(user.id.toString(), itemId);
+        await _loadItems(); // Reload inventory
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Item used! Effect: ${result['effect']}'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('Error using item: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to use item: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final items = _availableItems.isNotEmpty 
+        ? _availableItems 
+        : MagicItemDefinitions.allItems.map((item) => {
+            'code': item.code,
+            'name': item.name,
+            'description': item.description,
+          }).toList();
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
+    
+    if (_isLoading && _availableItems.isEmpty) {
+      return const Scaffold(
+        body: DynamicLoadingScreen(),
+      );
+    }
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Magic Items & Boosters'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

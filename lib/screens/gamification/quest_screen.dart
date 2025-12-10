@@ -1,14 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/quest_provider.dart';
+import '../../providers/gamification_services_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../models/quest_model.dart';
+import '../../services/gamification/journey_service.dart';
+import '../../widgets/error_boundary.dart';
+import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// "The Great Journey" Quest/Story Mode Screen
-class QuestScreen extends ConsumerWidget {
+class QuestScreen extends ConsumerStatefulWidget {
   const QuestScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<QuestScreen> createState() => _QuestScreenState();
+}
+
+class _QuestScreenState extends ConsumerState<QuestScreen> {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to journey updates via Socket.io (if available)
+    // Journey updates would come through user inbox notifications
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final questNotifier = ref.watch(questProvider.notifier);
     final chapters = questNotifier.chapters;
 
@@ -193,6 +210,18 @@ class _ChapterDetailScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(chapter.title),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -267,14 +296,20 @@ class _ChapterDetailScreen extends ConsumerWidget {
                   ),
                   onTap: lesson.isCompleted
                       ? null
-                      : () {
-                          // Start lesson
-                          // TODO: Navigate to lesson screen
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Starting: ${lesson.title}'),
-                            ),
-                          );
+                      : () async {
+                          // Complete lesson via quest provider
+                          final questProvider = ref.read(questProvider.notifier);
+                          await questProvider.completeLesson(lesson.id);
+                          
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Completed: ${lesson.title}! +${lesson.xpReward} XP'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                            Navigator.pop(context); // Return to chapter list
+                          }
                         },
                 ),
               )),

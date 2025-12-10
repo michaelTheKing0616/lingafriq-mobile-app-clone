@@ -1,17 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
+import '../../providers/gamification_services_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../models/user_gamification_model.dart';
+import '../../services/gamification/tribes_service.dart';
+import '../../widgets/error_boundary.dart';
+import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// Tribe Selection Screen
-class TribeSelectionScreen extends ConsumerWidget {
+class TribeSelectionScreen extends ConsumerStatefulWidget {
   const TribeSelectionScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TribeSelectionScreen> createState() => _TribeSelectionScreenState();
+}
+
+class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
+  bool _isLoading = false;
+  List<Map<String, dynamic>> _availableTribes = [];
+  String? _currentTribeId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTribes();
+  }
+
+  Future<void> _loadTribes() async {
+    setState(() => _isLoading = true);
+    try {
+      final tribesService = ref.read(tribesServiceProvider);
+      final user = ref.read(userProvider);
+      
+      // TODO: Implement get all tribes endpoint
+      // For now, use static list
+      _availableTribes = Tribes.allTribes.map((name) => {
+        'name': name,
+        'id': name.toLowerCase().replaceAll(' ', '_'),
+      }).toList();
+      
+      // Get user's current tribe if exists
+      if (user != null) {
+        // TODO: Get user's tribe from API
+      }
+    } catch (e) {
+      debugPrint('Error loading tribes: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _joinTribe(String tribeId, String tribeName) async {
+    setState(() => _isLoading = true);
+    try {
+      final tribesService = ref.read(tribesServiceProvider);
+      await tribesService.joinTribe(tribeId);
+      
+      final gamification = ref.read(gamificationProvider.notifier);
+      await gamification.selectTribe(tribeName);
+      
+      setState(() => _currentTribeId = tribeId);
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Joined $tribeName tribe!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('Error joining tribe: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to join tribe: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final gamification = ref.watch(gamificationProvider.notifier);
     final currentTribe = gamification.gamification.tribe;
-    final tribes = Tribes.allTribes;
+    
+    if (_isLoading && _availableTribes.isEmpty) {
+      return const Scaffold(
+        body: DynamicLoadingScreen(),
+      );
+    }
+    
+    final tribes = _availableTribes.isNotEmpty 
+        ? _availableTribes 
+        : Tribes.allTribes.map((name) => {'name': name, 'id': name.toLowerCase()}).toList();
 
     // Map tribe names to emojis
     final Map<String, String> tribeEmojis = {
@@ -35,6 +122,18 @@ class TribeSelectionScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Choose Your Tribe'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -82,19 +181,18 @@ class TribeSelectionScreen extends ConsumerWidget {
                     ),
                   ),
                   subtitle: Text('Join the $tribeName tribe and compete in leaderboards'),
-                  trailing: currentTribe == tribeName
+                  trailing: currentTribe == tribeName || _currentTribeId == tribe['id']
                       ? const Icon(Icons.check_circle, color: Colors.green)
-                      : const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: () async {
-                    await gamification.selectTribe(tribeName);
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Joined $tribeName tribe!'),
-                        ),
-                      );
-                    }
-                  },
+                      : _isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.arrow_forward_ios, size: 16),
+                  onTap: _isLoading
+                      ? null
+                      : () => _joinTribe(tribe['id'], tribe['name']),
                 ),
               )),
         ],

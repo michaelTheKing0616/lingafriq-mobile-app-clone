@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/leaderboard_provider.dart';
+import '../../providers/socket_provider.dart';
 import '../../models/leaderboard_entry_model.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
@@ -36,8 +37,27 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
             break;
         }
       });
-      ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: _currentType);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: _currentType);
+      });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Subscribe to leaderboard updates via Socket.io
+    final socketService = ref.read(socketServiceProvider);
+    final user = ref.read(userProvider);
+    if (user != null) {
+      socketService.subscribeToLeaderboard('global:weekly');
+      socketService.onLeaderboardUpdate((data) {
+        // Refresh leaderboard when update received
+        if (mounted) {
+          ref.read(leaderboardProvider.notifier).refresh();
+        }
+      });
+    }
   }
 
   @override
@@ -55,6 +75,18 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     return Scaffold(
       appBar: AppBar(
         title: const Text('Leaderboards'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
         bottom: TabBar(
           controller: _tabController,
           tabs: const [

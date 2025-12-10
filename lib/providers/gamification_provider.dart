@@ -8,6 +8,8 @@ import 'api_provider.dart';
 import 'backend_sync_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
+import 'gamification_services_provider.dart';
+import '../services/gamification/events_service.dart';
 
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
@@ -57,7 +59,22 @@ class GamificationProvider extends Notifier<BaseProviderState>
         cowries: _gamification.cowries + levelUpBonus,
       );
       debugPrint('Level up! New level: $newLevel - $newTitle');
+      
+      // Emit level up event
+      await _emitEvent('level_up', {
+        'old_level': _gamification.level,
+        'new_level': newLevel,
+        'bonus': levelUpBonus,
+      });
     }
+
+    // Emit XP gain event
+    await _emitEvent('xp_gained', {
+      'source': source,
+      'amount': xpGain,
+      'multiplier': multiplier,
+      'total_xp': newXP,
+    });
 
     await _saveGamification();
     await _checkBadges();
@@ -65,6 +82,24 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     state = state.copyWith();
     return xpGain;
+  }
+
+  /// Emit event to backend
+  Future<void> _emitEvent(String eventType, Map<String, dynamic> payload) async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final eventsService = ref.read(eventsServiceProvider);
+      await eventsService.ingestEvent(
+        eventType: eventType,
+        payload: payload,
+        userId: user.id.toString(),
+      );
+    } catch (e) {
+      debugPrint('Error emitting event: $e');
+      // Don't throw - event emission failure shouldn't break XP flow
+    }
   }
 
   /// Daily check-in with streak management

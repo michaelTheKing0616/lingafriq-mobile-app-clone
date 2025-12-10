@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
@@ -100,8 +101,21 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
 
     try {
       final provider = ref.read(groqChatProvider.notifier);
+      
+      // Note: API key check is done inside sendMessageStream
+      // We'll catch the exception if it's not configured
+      
       String fullResponse = '';
-      await for (final chunk in provider.sendMessageStream(message)) {
+      Stream<String> messageStream;
+      
+      try {
+        messageStream = provider.sendMessageStream(message);
+      } catch (e) {
+        // Handle immediate errors (e.g., empty message, configuration issues)
+        throw Exception('Failed to start chat: ${e.toString().replaceAll('Exception: ', '')}');
+      }
+      
+      await for (final chunk in messageStream) {
         if (mounted) {
           setState(() {
             _streamingText += chunk;
@@ -121,17 +135,41 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       }
 
       if (mounted && _voiceOutputEnabled && fullResponse.isNotEmpty) {
-        final tts = ref.read(ttsProvider.notifier);
-        // Ensure TTS is initialized
-        await tts.init();
-        // Use target language for authentic African accent
-        await tts.speak(fullResponse, languageName: provider.targetLanguage);
+        try {
+          final tts = ref.read(ttsProvider.notifier);
+          // Ensure TTS is initialized
+          await tts.init();
+          // Use target language for authentic African accent
+          await tts.speak(fullResponse, languageName: provider.targetLanguage);
+        } catch (ttsError) {
+          // TTS errors shouldn't block the chat
+          debugPrint('TTS error: $ttsError');
+        }
       }
     } catch (e) {
+      debugPrint('AI Chat error: $e');
       if (mounted) {
+        // Provide user-friendly error messages
+        String errorTitle = 'Chat Error';
+        String errorMessage = e.toString().replaceAll('Exception: ', '');
+        
+        if (errorMessage.contains('API key') || errorMessage.contains('not configured')) {
+          errorTitle = 'Configuration Required';
+          errorMessage = 'AI Chat needs to be configured. Please contact support or check app settings.';
+        } else if (errorMessage.contains('Rate limit') || errorMessage.contains('429')) {
+          errorTitle = 'Rate Limit Exceeded';
+          errorMessage = 'Too many requests. Please wait a moment and try again.';
+        } else if (errorMessage.contains('timeout') || errorMessage.contains('connection')) {
+          errorTitle = 'Connection Error';
+          errorMessage = 'Unable to connect to AI service. Please check your internet connection and try again.';
+        } else if (errorMessage.contains('401') || errorMessage.contains('Unauthorized')) {
+          errorTitle = 'Authentication Error';
+          errorMessage = 'Invalid API credentials. Please contact support.';
+        }
+        
         ref.read(dialogProvider('')).showPlatformDialogue(
-              title: 'Error',
-              content: Text(e.toString().replaceAll('Exception: ', '')),
+              title: errorTitle,
+              content: Text(errorMessage),
               action1Text: 'OK',
             );
       }

@@ -4,7 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../models/quest_model.dart';
 import 'gamification_provider.dart';
+import 'gamification_services_provider.dart';
+import 'user_provider.dart';
 import 'base_provider.dart';
+import '../services/gamification/journey_service.dart';
 
 final questProvider = NotifierProvider<QuestProvider, BaseProviderState>(() {
   return QuestProvider();
@@ -24,13 +27,49 @@ class QuestProvider extends Notifier<BaseProviderState> {
   @override
   BaseProviderState build() {
     _loadQuestProgress();
+    _loadJourneyFromAPI();
     _updateUnlockedChapters();
     return BaseProviderState();
+  }
+
+  /// Load journey progress from API
+  Future<void> _loadJourneyFromAPI() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final journeyService = ref.read(journeyServiceProvider);
+      final progress = await journeyService.getUserProgress(user.id.toString(), campaign: 'great_journey');
+      
+      // Update local progress from API
+      for (var progressEntry in progress) {
+        final nodeId = progressEntry['node_id']?['_id']?.toString() ?? '';
+        if (nodeId.isNotEmpty && progressEntry['status'] == 'completed') {
+          // Map node to lesson/chapter
+          // TODO: Implement proper mapping
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading journey from API: $e');
+      // Continue with local data
+    }
   }
 
   /// Complete a lesson
   Future<void> completeLesson(String lessonId) async {
     _lessonProgress[lessonId] = 1; // 1 = completed
+
+    // Try to complete journey node via API
+    try {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        final journeyService = ref.read(journeyServiceProvider);
+        // TODO: Map lessonId to nodeId
+        // For now, we'll complete locally and sync later
+      }
+    } catch (e) {
+      debugPrint('Error completing journey node: $e');
+    }
 
     // Check if chapter is completed
     for (var chapter in _chapters) {

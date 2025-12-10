@@ -8,6 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history_quiz/screens/history_quiz_sections_screen.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
@@ -166,9 +168,30 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                         try {
                                           setState(() {
                                             _isLoadingQuiz = true;
+                                            _hasError = false;
+                                            _errorMessage = null;
                                           });
                                           
                                           debugPrint('Fetching random quizzes for language: ${widget.language.id}');
+                                          
+                                          // Check token first
+                                          final token = ref.read(apiProvider.notifier).token;
+                                          if (token == null || token.isEmpty) {
+                                            debugPrint('No token found, attempting to refresh...');
+                                            // Try to refresh token
+                                            final authProvider = ref.read(authProvider);
+                                            final emailAndPass = ref.read(sharedPreferencesProvider).requestEmailAndPass;
+                                            if (emailAndPass != null) {
+                                              await authProvider.login(
+                                                email: emailAndPass['email']!,
+                                                password: emailAndPass['password']!,
+                                                silentRefresh: true,
+                                              );
+                                            } else {
+                                              throw Exception('Please log in again to continue');
+                                            }
+                                          }
+                                          
                                           debugPrint('Current token: ${ref.read(apiProvider.notifier).token != null ? "EXISTS" : "NULL"}');
                                           
                                           // Add timeout to prevent endless loading
@@ -176,10 +199,10 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                               .read(apiProvider.notifier)
                                               .getRandomQuizLessons(widget.language.id)
                                               .timeout(
-                                                const Duration(seconds: 20),
+                                                const Duration(seconds: 30),
                                                 onTimeout: () {
                                                   debugPrint('Quiz fetch timed out');
-                                                  throw TimeoutException('Quiz loading timed out. Please check your connection.');
+                                                  throw TimeoutException('Quiz loading timed out. Please check your connection and try again.');
                                                 },
                                               );
                                           
@@ -192,10 +215,13 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           debugPrint('Received ${randomQuizes.length} quizzes');
                                           
                                           if (randomQuizes.isEmpty) {
-                                            setState(() {
-                                              _hasError = true;
-                                              _errorMessage = "No quizzes available for this language yet. We're working to add more!";
-                                            });
+                                            if (mounted) {
+                                              await ref.read(dialogProvider('')).showPlatformDialogue(
+                                                title: 'No Quizzes Available',
+                                                content: const Text("No quizzes available for this language yet. We're working to add more!"),
+                                                action1Text: 'OK',
+                                              );
+                                            }
                                             return;
                                           }
                                           
@@ -212,17 +238,28 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                             }
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e) {
+                                          debugPrint('Error in Take Quiz: $e');
                                           if (mounted) {
                                             setState(() {
                                               _isLoadingQuiz = false;
                                               _hasError = true;
-                                              _errorMessage = 'Failed to load quiz. ${e.toString()}';
+                                              _errorMessage = e.toString().replaceAll('Exception: ', '');
                                             });
+                                            
+                                            // Show user-friendly error message
+                                            String errorMsg = 'Failed to load quiz. ';
+                                            if (e.toString().contains('timeout') || e.toString().contains('Timeout')) {
+                                              errorMsg += 'Please check your internet connection and try again.';
+                                            } else if (e.toString().contains('401') || e.toString().contains('Unauthorized')) {
+                                              errorMsg += 'Your session has expired. Please log in again.';
+                                            } else if (e.toString().contains('403') || e.toString().contains('Forbidden')) {
+                                              errorMsg += 'You don\'t have permission to access this content.';
+                                            } else {
+                                              errorMsg += e.toString().replaceAll('Exception: ', '');
+                                            }
+                                            
+                                            ref.read(dialogProvider(errorMsg)).showExceptionDialog();
                                           }
-                                          debugPrint('Error in Take Quiz: $e');
-                                          ref.read(dialogProvider(
-                                            'Failed to load quiz. ${e.toString()}'
-                                          )).showExceptionDialog();
                                         }
                                       },
                                     ).animate(effects: kGradientTextEffects),

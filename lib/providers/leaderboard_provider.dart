@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/leaderboard_entry_model.dart';
@@ -5,6 +6,8 @@ import 'api_provider.dart';
 import 'base_provider.dart';
 import 'gamification_provider.dart';
 import 'user_provider.dart';
+import 'gamification_services_provider.dart';
+import '../services/gamification/leaderboards_service.dart';
 
 final leaderboardProvider =
     NotifierProvider<LeaderboardProvider, BaseProviderState>(() {
@@ -53,23 +56,36 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     state = state.copyWith(isLoading: true);
 
     try {
-      // TODO: Implement backend API call
-      // final api = ref.read(apiProvider.notifier);
-      // final data = await api.getLeaderboard(
-      //   type: type,
-      //   tribe: tribe,
-      //   country: country,
-      //   continent: continent,
-      // );
-      // 
-      // final entries = (data as List)
-      //     .map((e) => LeaderboardEntry.fromJson(e))
-      //     .toList();
-      // 
-      // _cache[type] = entries;
-      // _lastFetch = DateTime.now();
+      final leaderboardsService = ref.read(leaderboardsServiceProvider);
+      final user = ref.read(userProvider);
 
-      // For now, generate mock data from current user's gamification
+      List<LeaderboardEntry> entries = [];
+
+      switch (type) {
+        case LeaderboardType.global:
+          final data = await leaderboardsService.getGlobalLeaderboard(period: 'weekly');
+          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          break;
+        case LeaderboardType.tribe:
+          if (tribe != null) {
+            final data = await leaderboardsService.getTribeLeaderboard(tribe, period: 'season');
+            entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          }
+          break;
+        case LeaderboardType.country:
+          // Use village leaderboard for country (language-based)
+          if (country != null) {
+            final data = await leaderboardsService.getVillageLeaderboard(country, period: 'monthly');
+            entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          }
+          break;
+      }
+
+      _cache[type] = entries;
+      _lastFetch = DateTime.now();
+    } catch (e) {
+      debugPrint('Error fetching leaderboards: $e');
+      // Fallback to mock data on error
       final gamification = ref.read(gamificationProvider.notifier).gamification;
       final user = ref.read(userProvider);
 
@@ -82,15 +98,34 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
           gamification.dailyStreak,
           gamification.tribe,
         );
-
         _cache[type] = mockEntries;
-        _lastFetch = DateTime.now();
       }
-    } catch (e) {
-      debugPrint('Error fetching leaderboards: $e');
     } finally {
       state = state.copyWith(isLoading: false);
     }
+  }
+
+  /// Parse API response to LeaderboardEntry list
+  List<LeaderboardEntry> _parseLeaderboardEntries(List<dynamic> entries) {
+    return entries.map((entry) {
+      final userData = entry['user_id'] ?? {};
+      return LeaderboardEntry(
+        userId: entry['user_id']?.toString() ?? '',
+        username: userData['username'] ?? 'Unknown',
+        xp: (entry['score'] ?? 0).toInt(),
+        level: _calculateLevelFromXP((entry['score'] ?? 0).toInt()),
+        levelTitle: 'Village Storyteller', // TODO: Get from user data
+        dailyStreak: 0, // TODO: Get from user data
+        tribe: null, // TODO: Get from user data
+        rank: entry['rank'] ?? 0,
+      );
+    }).toList();
+  }
+
+  /// Calculate level from XP (simplified)
+  int _calculateLevelFromXP(int xp) {
+    // Simple level calculation: level = sqrt(xp / 100)
+    return math.sqrt(xp / 100).floor().clamp(1, 999);
   }
 
   /// Generate mock leaderboard data (for testing)
