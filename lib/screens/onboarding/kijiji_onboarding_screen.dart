@@ -7,6 +7,7 @@ import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/auth/login_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -115,8 +116,9 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                       onComplete: () async {
                         await onboardingNotifier.saveOnboardingData();
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                        ref.read(apiProvider.notifier).regiserDevice();
-                        ref.read(navigationProvider).navigateOffAll(const TabsView());
+                        // Navigate to login screen (not TabsView) so user can log in
+                        // Login screen will pre-fill credentials if available
+                        ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                       },
                     );
                   default:
@@ -154,17 +156,17 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
               ),
             ),
             // Skip Button (only on first few screens)
+            // When skipped, mark onboarding as seen and navigate to login
             if (currentPage.value < 3)
               Positioned(
                 top: MediaQuery.of(context).padding.top + 16,
                 right: 20,
                 child: TextButton(
-                  onPressed: () {
-                    pageController.animateToPage(
-                      10,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
+                  onPressed: () async {
+                    // Mark onboarding as seen
+                    await ref.read(sharedPreferencesProvider).setOnboardingSeen();
+                    // Navigate directly to login screen (with pre-filled credentials if available)
+                    ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                   },
                   child: Text(
                     'Skip',
@@ -360,7 +362,7 @@ class _ElderScreen extends HookConsumerWidget {
               FadeTransition(
                 opacity: animationController,
                 child: Text(
-                  'Welcome, traveler. I am Mzee Kato,\nkeeper of the village memory.',
+                  'Welcome, traveler. I am Pa LingAfriq,\nkeeper of the village memory.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 24,

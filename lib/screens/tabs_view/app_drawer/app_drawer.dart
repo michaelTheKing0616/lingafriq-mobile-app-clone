@@ -30,6 +30,7 @@ import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/screens/social/tribe_vs_tribe_screen.dart';
 import 'package:lingafriq/screens/social/social_gifting_screen.dart';
 import 'package:lingafriq/screens/social/ancestral_tree_screen.dart';
+import 'package:lingafriq/screens/ugc/ugc_hub_screen.dart';
 import 'package:lingafriq/screens/help/features_guide_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -85,10 +86,9 @@ class AppDrawer extends ConsumerWidget {
                   title: 'AI Chat'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).pop();
+                    // Navigate to mode selection screen first (shows all 6 modes)
                     ref.read(navigationProvider).navigateTo(
-                          const AiChatLanguageSetupScreen(
-                            initialMode: PolieMode.translation,
-                          ),
+                          const AiChatSelectScreen(),
                         );
                   },
                 ),
@@ -266,6 +266,17 @@ class AppDrawer extends ConsumerWidget {
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     ref.read(navigationProvider).navigateTo(const ImportMediaScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.create_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Create Content'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const UGCHubScreen());
                   },
                 ),
                 ListTile(

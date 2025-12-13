@@ -220,10 +220,11 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
   }
 
   void _navigateToLanguageSelection(BuildContext context, WidgetRef ref, PolieMode mode) async {
-    // Set the mode first
+    // Set the mode first (this will save current chat history and load new mode's history)
     await ref.read(groqChatProvider.notifier).setMode(mode);
     
     // Navigate to language selection
+    // After language is selected, it will load the scoped chat history (mode × language)
     Navigator.push(
       context,
       MaterialPageRoute(

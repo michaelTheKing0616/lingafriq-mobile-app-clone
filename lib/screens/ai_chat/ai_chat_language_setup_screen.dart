@@ -37,10 +37,12 @@ class _AiChatLanguageSetupScreenState
   Future<void> _selectLanguage(String language) async {
     final chat = ref.read(groqChatProvider.notifier);
     // Prime mode and language before entering chat
+    // This will load the scoped chat history for this mode × language combination
     await chat.setMode(_mode);
     await chat.setLanguageDirection('English', language);
     await chat.setLanguage(language);
     if (!mounted) return;
+    // Navigate to chat screen with scoped history loaded
     await ref.read(navigationProvider).navigateTo(const AiChatScreen());
   }
 

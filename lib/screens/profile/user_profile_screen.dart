@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
+import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
@@ -290,7 +292,19 @@ class UserProfileScreen extends ConsumerWidget {
                   _ActionButton(
                     icon: Icons.logout_rounded,
                     label: 'Logout',
-                    onTap: onLogout ?? () {},
+                    onTap: onLogout ?? () async {
+                      final result = await ref.read(dialogProvider('')).showPlatformDialogue(
+                        title: "Logout",
+                        content: const Text("Are you sure you want to logout?"),
+                        action1OnTap: true,
+                        action2OnTap: false,
+                        action1Text: "Logout",
+                        action2Text: "Cancel",
+                      );
+                      if (result == true) {
+                        await ref.read(authProvider.notifier).signOut();
+                      }
+                    },
                     isDark: isDark,
                     isDestructive: true,
                   ),

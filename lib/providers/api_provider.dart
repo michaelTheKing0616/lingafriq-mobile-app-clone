@@ -463,23 +463,42 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: true);
       debugPrint('Fetching random quiz for language ID: $languageId');
       debugPrint('API endpoint: ${Api.randomQuiz(languageId)}');
+      debugPrint('Full URL: ${Api.baseurl}${Api.randomQuiz(languageId)}');
+      
+      // Ensure we have a valid token
+      final token = this.token;
+      if (token == null || token.isEmpty) {
+        state = state.copyWith(isLoading: false);
+        throw Exception('Authentication required. Please log in again.');
+      }
+      
+      debugPrint('Using token: ${token.substring(0, 20)}...');
       
       final res = await ref.read(client).get(
         Api.randomQuiz(languageId),
         options: Options(
           receiveTimeout: const Duration(seconds: 30),
           sendTimeout: const Duration(seconds: 30),
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+          validateStatus: (status) => status != null && status < 500, // Don't throw on 4xx
         ),
       );
       
       debugPrint('Quiz API response status: ${res.statusCode}');
       debugPrint('Quiz API response data type: ${res.data.runtimeType}');
       
+      if (res.statusCode == 401 || res.statusCode == 403) {
+        state = state.copyWith(isLoading: false);
+        throw Exception('Authentication failed. Please log in again.');
+      }
+      
       if (res.statusCode != 200) {
         state = state.copyWith(isLoading: false);
         final errorMsg = res.data?.toString() ?? 'Failed to fetch quiz lessons';
         debugPrint('Quiz API error: $errorMsg');
-        throw errorMsg;
+        throw Exception('Failed to load quizzes. ${res.statusCode == 404 ? "No quizzes available for this language." : errorMsg}');
       }
       
       List<dynamic> resList;
@@ -1248,9 +1267,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   // Telemetry
-  Future<bool> sendTelemetry(Map<String, dynamic> data) async {
+  Future<bool> sendTelemetry(dynamic data) async {
     try {
-      final res = await ref.read(client).post(Api.sendTelemetry, data: data);
+      // Accept both single event and batch of events
+      final payload = data is List ? {'events': data} : data;
+      final res = await ref.read(client).post(Api.sendTelemetry, data: payload);
       if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
       return true;
     } catch (e) {
@@ -1267,6 +1288,105 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return true;
     } catch (e) {
       debugPrint('Error syncing game SRS: $e');
+      return false;
+    }
+  }
+
+  // User-Generated Content APIs
+  Future<Map<String, dynamic>?> createUgcLesson(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.createUgcLesson, data: data);
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error creating UGC lesson: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> createUgcQuiz(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.createUgcQuiz, data: data);
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error creating UGC quiz: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> createUgcStory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(Api.createUgcStory, data: data);
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error creating UGC story: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getUserContent({
+    String? language,
+    String? contentType,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+      if (language != null) queryParams['language'] = language;
+      if (contentType != null) queryParams['content_type'] = contentType;
+      
+      final res = await ref.read(client).get(
+        Api.getUserContent,
+        queryParameters: queryParams.isEmpty ? null : queryParams,
+      );
+      if (res.statusCode != 200) throw res.data;
+      return (res.data as List).map((e) => e as Map<String, dynamic>).toList();
+    } catch (e) {
+      debugPrint('Error getting user content: $e');
+      return [];
+    }
+  }
+
+  Future<bool> shareUgcContent({
+    required String contentId,
+    required String contentType,
+    List<String>? userIds,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.shareUgcContent,
+        data: {
+          'content_id': contentId,
+          'content_type': contentType,
+          'shared_with': userIds,
+        },
+      );
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error sharing UGC content: $e');
+      return false;
+    }
+  }
+
+  Future<bool> rateUgcContent({
+    required String contentId,
+    required int rating,
+    String? review,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.rateUgcContent,
+        data: {
+          'content_id': contentId,
+          'rating': rating,
+          'review': review,
+        },
+      );
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error rating UGC content: $e');
       return false;
     }
   }

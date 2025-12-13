@@ -1,0 +1,215 @@
+{
+  "language": "afrikaans",
+  "levels": {
+    "A1": {
+      "weeks": [
+        {
+          "week": 1,
+          "lessons": [
+            {
+              "id": "afrikaans_A1_1_1",
+              "title": "Core Communication in Afrikaans (A1)",
+              "objectives": [
+                "Communicate in real-world situations",
+                "Use culturally appropriate expressions"
+              ],
+              "grammar": [
+                "Sentence structure",
+                "Verb tense usage"
+              ],
+              "vocab": [
+                {
+                  "word": "example",
+                  "meaning": "sample"
+                }
+              ],
+              "ai_flows": {
+                "lesson_generation": "Generate explanations, examples, and drills",
+                "listening": "Generate native-speaker dialogue + comprehension questions",
+                "speaking": "Evaluate pronunciation and fluency",
+                "quiz": "Adaptive quiz engine",
+                "correction": "Error correction feedback"
+              },
+              "unlock_rule": "previous_lesson_completed"
+            }
+          ]
+        }
+      ]
+    },
+    "A2": {
+      "weeks": [
+        {
+          "week": 1,
+          "lessons": [
+            {
+              "id": "afrikaans_A2_1_1",
+              "title": "Core Communication in Afrikaans (A2)",
+              "objectives": [
+                "Communicate in real-world situations",
+                "Use culturally appropriate expressions"
+              ],
+              "grammar": [
+                "Sentence structure",
+                "Verb tense usage"
+              ],
+              "vocab": [
+                {
+                  "word": "example",
+                  "meaning": "sample"
+                }
+              ],
+              "ai_flows": {
+                "lesson_generation": "Generate explanations, examples, and drills",
+                "listening": "Generate native-speaker dialogue + comprehension questions",
+                "speaking": "Evaluate pronunciation and fluency",
+                "quiz": "Adaptive quiz engine",
+                "correction": "Error correction feedback"
+              },
+              "unlock_rule": "previous_lesson_completed"
+            }
+          ]
+        }
+      ]
+    },
+    "B1": {
+      "weeks": [
+        {
+          "week": 1,
+          "lessons": [
+            {
+              "id": "afrikaans_B1_1_1",
+              "title": "Core Communication in Afrikaans (B1)",
+              "objectives": [
+                "Communicate in real-world situations",
+                "Use culturally appropriate expressions"
+              ],
+              "grammar": [
+                "Sentence structure",
+                "Verb tense usage"
+              ],
+              "vocab": [
+                {
+                  "word": "example",
+                  "meaning": "sample"
+                }
+              ],
+              "ai_flows": {
+                "lesson_generation": "Generate explanations, examples, and drills",
+                "listening": "Generate native-speaker dialogue + comprehension questions",
+                "speaking": "Evaluate pronunciation and fluency",
+                "quiz": "Adaptive quiz engine",
+                "correction": "Error correction feedback"
+              },
+              "unlock_rule": "previous_lesson_completed"
+            }
+          ]
+        }
+      ]
+    },
+    "B2": {
+      "weeks": [
+        {
+          "week": 1,
+          "lessons": [
+            {
+              "id": "afrikaans_B2_1_1",
+              "title": "Core Communication in Afrikaans (B2)",
+              "objectives": [
+                "Communicate in real-world situations",
+                "Use culturally appropriate expressions"
+              ],
+              "grammar": [
+                "Sentence structure",
+                "Verb tense usage"
+              ],
+              "vocab": [
+                {
+                  "word": "example",
+                  "meaning": "sample"
+                }
+              ],
+              "ai_flows": {
+                "lesson_generation": "Generate explanations, examples, and drills",
+                "listening": "Generate native-speaker dialogue + comprehension questions",
+                "speaking": "Evaluate pronunciation and fluency",
+                "quiz": "Adaptive quiz engine",
+                "correction": "Error correction feedback"
+              },
+              "unlock_rule": "previous_lesson_completed"
+            }
+          ]
+        }
+      ]
+    },
+    "C1": {
+      "weeks": [
+        {
+          "week": 1,
+          "lessons": [
+            {
+              "id": "afrikaans_C1_1_1",
+              "title": "Core Communication in Afrikaans (C1)",
+              "objectives": [
+                "Communicate in real-world situations",
+                "Use culturally appropriate expressions"
+              ],
+              "grammar": [
+                "Sentence structure",
+                "Verb tense usage"
+              ],
+              "vocab": [
+                {
+                  "word": "example",
+                  "meaning": "sample"
+                }
+              ],
+              "ai_flows": {
+                "lesson_generation": "Generate explanations, examples, and drills",
+                "listening": "Generate native-speaker dialogue + comprehension questions",
+                "speaking": "Evaluate pronunciation and fluency",
+                "quiz": "Adaptive quiz engine",
+                "correction": "Error correction feedback"
+              },
+              "unlock_rule": "previous_lesson_completed"
+            }
+          ]
+        }
+      ]
+    },
+    "C2": {
+      "weeks": [
+        {
+          "week": 1,
+          "lessons": [
+            {
+              "id": "afrikaans_C2_1_1",
+              "title": "Core Communication in Afrikaans (C2)",
+              "objectives": [
+                "Communicate in real-world situations",
+                "Use culturally appropriate expressions"
+              ],
+              "grammar": [
+                "Sentence structure",
+                "Verb tense usage"
+              ],
+              "vocab": [
+                {
+                  "word": "example",
+                  "meaning": "sample"
+                }
+              ],
+              "ai_flows": {
+                "lesson_generation": "Generate explanations, examples, and drills",
+                "listening": "Generate native-speaker dialogue + comprehension questions",
+                "speaking": "Evaluate pronunciation and fluency",
+                "quiz": "Adaptive quiz engine",
+                "correction": "Error correction feedback"
+              },
+              "unlock_rule": "previous_lesson_completed"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

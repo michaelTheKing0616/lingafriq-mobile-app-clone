@@ -178,4 +178,13 @@ class Api {
   static const String getNotificationSettings = "notifications/";
   static const String updateNotificationSettings = "notifications/";
   // Notification Endpoints End
+
+  // User-Generated Content Endpoints Start
+  static const String createUgcLesson = "api/user-content/lessons/";
+  static const String createUgcQuiz = "api/user-content/quizzes/";
+  static const String createUgcStory = "api/user-content/stories/";
+  static const String getUserContent = "api/user-content/";
+  static const String shareUgcContent = "api/user-content/share/";
+  static const String rateUgcContent = "api/user-content/rate/";
+  // User-Generated Content Endpoints End
 }

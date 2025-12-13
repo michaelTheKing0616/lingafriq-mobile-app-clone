@@ -6,6 +6,8 @@ import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/games/word_match_audio_game.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/services/lazy_game_loader.dart';
+import 'package:lingafriq/screens/games/lazy_game_list.dart';
 import 'language_games_screen_components.dart';
 import 'game_router.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -118,74 +120,16 @@ class LanguageGamesScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          // Games List
+          // Games List with Lazy Loading
           Positioned(
             top: 25.h,
             left: 0,
             right: 0,
             bottom: 0,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
-              child: Column(
-                children: [
-                  // Language selector
-                  _LanguageSelector(
-                    selectedLanguage: selectedLanguage.value,
-                    onLanguageChanged: (lang) => selectedLanguage.value = lang,
-                  ),
-                  SizedBox(height: 2.h),
-                  // Core Games Section
-                  _GameSection(
-                    title: 'Core Games',
-                    games: [
-                      GameType.wordMatchAudio,
-                      GameType.pronunciationDuel,
-                      GameType.speedRoundRemix,
-                      GameType.toneTrainer,
-                      GameType.storyBuilder,
-                      GameType.roleplayAdventure,
-                      GameType.grammarDetective,
-                      GameType.listenAndSketch,
-                      GameType.pictureWordAssociation,
-                      GameType.memoryMap,
-                      GameType.conversationRelay,
-                      GameType.grammarJam,
-                      GameType.pronunciationKaraoke,
-                      GameType.quizChef,
-                    ],
-                    onGameSelected: (game) => selectedGame.value = game,
-                  ),
-                  SizedBox(height: 2.h),
-                  // Cultural Games Section
-                  _GameSection(
-                    title: 'Cultural Games',
-                    games: [
-                      GameType.proverbUnlocker,
-                      GameType.drumRhythmShadowing,
-                      GameType.clanLineageStoryBuilder,
-                      GameType.marketBargainingSimulator,
-                      GameType.taxiBusStopSurvival,
-                      GameType.foodQuest,
-                      GameType.callAndResponse,
-                      GameType.greetingDiplomacyChallenge,
-                      GameType.folktaleReconstruction,
-                      GameType.phraseSniper,
-                      GameType.liarLiar,
-                      GameType.villageQuest,
-                      GameType.accentDecodingPuzzle,
-                      GameType.flashcardSafari,
-                      GameType.rapidTongueTwisterRace,
-                      GameType.emojiTranslator,
-                      GameType.rhythmTyping,
-                      GameType.eldersBlessingsChallenge,
-                      GameType.multilingualRelayRace,
-                      GameType.culturalEtiquetteScenarios,
-                      GameType.drumToWordMatching,
-                    ],
-                    onGameSelected: (game) => selectedGame.value = game,
-                  ),
-                ],
-              ),
+            child: LazyGameList(
+              selectedLanguage: selectedLanguage.value,
+              onLanguageChanged: (lang) => selectedLanguage.value = lang,
+              onGameSelected: (game) => selectedGame.value = game,
             ),
           ),
         ],

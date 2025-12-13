@@ -8,6 +8,8 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/services/polie_content_generator.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
@@ -504,23 +506,120 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
   Future<void> _importFromUrl(String url) async {
     setState(() => _isLoading = true);
-    // TODO: Implement web scraping or use WebView to extract text
-    // For now, show a placeholder
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _importedText = 'Content from URL would be extracted here. This feature requires web scraping implementation.';
-      _isLoading = false;
-    });
+    try {
+      // Use Polie to extract and summarize content from URL
+      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      
+      // Generate a summary/extraction prompt for Polie
+      final extractedContent = await polieGenerator.generateGameContent(
+        gameType: 'content_extraction',
+        language: _selectedLanguage ?? 'English',
+        additionalContext: 'Extract and summarize the main content from this URL: $url',
+      );
+      
+      setState(() {
+        _importedText = extractedContent['content']?.toString() ?? 
+                       'Content extracted from URL. You can now create a lesson from this text.';
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _importedText = 'Unable to extract content from URL. Please try pasting the text directly or check your connection.';
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error extracting content: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   void _createLesson(BuildContext context) {
-    // TODO: Implement lesson creation from imported text
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Lesson creation feature coming soon!'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
-    );
+    if (_importedText == null || _importedText!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please import some content first.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
+    if (_selectedLanguage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a target language first.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
+    // Use Polie to create a structured lesson from the imported text
+    _createLessonWithPolie(context);
+  }
+  
+  Future<void> _createLessonWithPolie(BuildContext context) async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      
+      // Generate a structured lesson from the imported text
+      final lessonContent = await polieGenerator.generateGameContent(
+        gameType: 'lesson_creation',
+        language: _selectedLanguage!,
+        additionalContext: 'Create a structured language lesson from this content:\n\n$_importedText',
+      );
+      
+      setState(() => _isLoading = false);
+      
+      if (mounted) {
+        // Show success message and offer to save/navigate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Lesson created successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+            action: SnackBarAction(
+              label: 'View',
+              onPressed: () {
+                // TODO: Navigate to lesson detail screen when available
+                // For now, show the generated content
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Generated Lesson'),
+                    content: SingleChildScrollView(
+                      child: Text(lessonContent['content']?.toString() ?? 'Lesson content generated.'),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating lesson: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }
 

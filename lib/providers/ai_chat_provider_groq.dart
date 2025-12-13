@@ -15,6 +15,7 @@ import 'user_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
+import '../services/telemetry_service.dart';
 import '../utils/supported_languages.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
@@ -543,11 +544,23 @@ Make reviews efficient and rewarding.''';
     state = state.copyWith();
   }
 
+  /// Set language direction and load scoped chat history (mode × language)
+  /// This ensures each mode × language combination has its own conversation history
   Future<void> setLanguageDirection(String sourceLanguage, String targetLanguage) async {
+    // Save current chat history before switching languages (if language changed)
+    if (_sourceLanguage != sourceLanguage || _targetLanguage != targetLanguage) {
+      await _saveChatHistory();
+    }
+    
     _sourceLanguage = sourceLanguage;
     _targetLanguage = targetLanguage;
     _selectedLanguage = targetLanguage;
     _initializeSystemPrompt();
+    
+    // Clear current messages and load history for new mode × language combination
+    _messages.clear();
+    await _loadChatHistory();
+    
     state = state.copyWith();
   }
 
@@ -557,14 +570,14 @@ Make reviews efficient and rewarding.''';
   Future<void> setMode(PolieMode mode) async {
     if (_mode == mode) return;
     
-    // Save current chat history before switching modes
+    // Save current chat history before switching modes (scoped by mode × language)
     await _saveChatHistory();
     
     // Switch to new mode
     _mode = mode;
     _tutorMode = mode == PolieMode.tutor;
     
-    // Clear current messages and load history for new mode
+    // Clear current messages and load history for new mode × language combination
     _messages.clear();
     await _loadChatHistory();
     _initializeSystemPrompt();
@@ -572,11 +585,11 @@ Make reviews efficient and rewarding.''';
     // Notify listeners of the change
     state = state.copyWith();
     
-        final modeName = _mode == PolieMode.translation ? "Translation" 
-            : _mode == PolieMode.tutor ? "Tutor"
-            : _mode == PolieMode.roleplay ? "Roleplay"
-            : _mode == PolieMode.conversation ? "Conversation"
-            : _mode == PolieMode.vocab ? "Vocab"
+    final modeName = _mode == PolieMode.translation ? "Translation" 
+        : _mode == PolieMode.tutor ? "Tutor"
+        : _mode == PolieMode.roleplay ? "Roleplay"
+        : _mode == PolieMode.conversation ? "Conversation"
+        : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
         debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
   }
@@ -603,9 +616,55 @@ Make reviews efficient and rewarding.''';
   }
 
   // ----- Streaming Chat Message -----
-  Stream<String> sendMessageStream(String userMessage) async* {
-    if (userMessage.trim().isEmpty) {
+  /// Sanitize and validate user input to prevent errors
+  String _sanitizeInput(String input) {
+    // Remove null bytes and control characters (except newlines and tabs)
+    String sanitized = input.replaceAll(RegExp(r'[\x00-\x08\x0B-\x0C\x0E-\x1F]'), '');
+    
+    // Normalize whitespace (collapse multiple spaces, preserve newlines)
+    sanitized = sanitized.replaceAll(RegExp(r'[ \t]+'), ' ');
+    
+    // Trim but preserve intentional spacing
+    sanitized = sanitized.trim();
+    
+    // Ensure proper encoding (handle any encoding issues)
+    try {
+      utf8.decode(utf8.encode(sanitized));
+    } catch (e) {
+      debugPrint('Encoding issue detected, fixing: $e');
+      sanitized = input.replaceAll(RegExp(r'[^\x20-\x7E\n\t]'), '');
+    }
+    
+    return sanitized;
+  }
+
+  /// Enhanced JSON parsing with fallback handling
+  Map<String, dynamic>? _parseJsonSafely(String jsonStr) {
+    try {
+      return jsonDecode(jsonStr) as Map<String, dynamic>?;
+    } catch (e) {
+      debugPrint('JSON parse error: $e for string: ${jsonStr.substring(0, jsonStr.length > 100 ? 100 : jsonStr.length)}');
+      // Try to extract partial data if possible
+      try {
+        // Remove problematic characters and try again
+        final cleaned = jsonStr.replaceAll(RegExp(r'[\x00-\x1F]'), '');
+        return jsonDecode(cleaned) as Map<String, dynamic>?;
+      } catch (_) {
+        return null;
+      }
+    }
+  }
+
+  Stream<String> sendMessageStream(String userMessage, {String? systemPromptOverride}) async* {
+    // Enhanced input validation and sanitization
+    final sanitizedMessage = _sanitizeInput(userMessage);
+    if (sanitizedMessage.trim().isEmpty) {
       throw Exception('Message cannot be empty');
+    }
+
+    // Validate message length (prevent extremely long messages)
+    if (sanitizedMessage.length > 2000) {
+      throw Exception('Message is too long. Please keep it under 2000 characters.');
     }
 
     _currentStreamCancel?.call();
@@ -614,7 +673,7 @@ Make reviews efficient and rewarding.''';
 
     final userMsg = ChatMessage(
       role: 'user',
-      content: userMessage,
+      content: sanitizedMessage,
       timestamp: DateTime.now(),
     );
     _messages.add(userMsg);
@@ -622,6 +681,9 @@ Make reviews efficient and rewarding.''';
     await _saveChatHistory();
 
     state = state.copyWith(isLoading: true);
+    
+    // Use system prompt override if provided (for content generation)
+    final effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
     
     // Use Hybrid Polie if enabled and appropriate for the task
     if (_useHybridPolie && _hybridOrchestrator != null) {
@@ -710,11 +772,12 @@ Make reviews efficient and rewarding.''';
         // Try different model names if previous one failed
         final currentModel = _modelNames[modelIndex];
 
-        // Ensure system prompt is not empty
-        final systemPrompt = _systemPrompt?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
+        // Ensure system prompt is not empty (use override if provided)
+        final systemPrompt = (systemPromptOverride ?? _systemPrompt)?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
         
         // Build messages array, ensuring all messages have valid content
-        final messagesList = <Map<String, String>>[];
+        // IMPORTANT: Scope messages by mode × language for separate chat bodies
+        final messagesList = <Map<String, dynamic>>[];
         
         // Add system message if prompt exists
         if (systemPrompt.isNotEmpty) {
@@ -724,19 +787,55 @@ Make reviews efficient and rewarding.''';
           });
         }
         
-        // Add conversation messages, filtering out empty ones
-        for (final msg in _messages) {
-          if (msg.content.trim().isNotEmpty) {
+        // Filter messages by current mode and language to create scoped chat bodies
+        // This ensures each mode × language combination has its own conversation history
+        final scopedMessages = _messages.where((msg) {
+          // For now, include all messages, but in future we can add metadata
+          // to track which mode/language each message belongs to
+          return msg.content.trim().isNotEmpty;
+        }).toList();
+        
+        // Add conversation messages, filtering out empty ones and ensuring valid roles
+        for (final msg in scopedMessages) {
+          final content = msg.content.trim();
+          if (content.isNotEmpty) {
+            // Ensure role is valid (user or assistant)
+            final role = (msg.role == 'user' || msg.role == 'assistant') 
+                ? msg.role 
+                : 'user';
+            
             messagesList.add({
-              "role": msg.role,
-              "content": msg.content.trim(),
+              "role": role,
+              "content": content,
             });
           }
         }
         
         // Validate we have at least one user message
-        if (messagesList.isEmpty || !messagesList.any((m) => m["role"] == "user")) {
+        final hasUserMessage = messagesList.any((m) => m["role"] == "user");
+        if (messagesList.isEmpty || !hasUserMessage) {
           throw Exception('No valid messages to send. Please enter a message.');
+        }
+        
+        // Ensure messages array is not too long (Groq has limits)
+        // Keep last 20 messages to avoid token limits
+        if (messagesList.length > 21) { // 1 system + 20 conversation
+          final systemMsg = messagesList.firstWhere(
+            (m) => m["role"] == "system",
+            orElse: () => null,
+          );
+          final conversationMsgs = messagesList
+              .where((m) => m["role"] != "system")
+              .toList();
+          
+          messagesList.clear();
+          if (systemMsg != null) {
+            messagesList.add(systemMsg);
+          }
+          // Keep last 20 conversation messages
+          messagesList.addAll(
+            conversationMsgs.skip(conversationMsgs.length - 20).toList(),
+          );
         }
         
         // Validate model name
@@ -746,6 +845,10 @@ Make reviews efficient and rewarding.''';
         
         debugPrint('Sending to Groq: model=$currentModel, messages=${messagesList.length}');
         
+        // Track request start time for performance metrics
+        final requestStartTime = DateTime.now();
+        
+        // Enhanced request with timeout and better error handling
         final response = await _dio.post(
           _groqUrl,
           cancelToken: cancelToken,
@@ -756,6 +859,8 @@ Make reviews efficient and rewarding.''';
             },
             responseType: ResponseType.stream,
             validateStatus: (status) => status! < 500, // Don't throw on 4xx, handle manually
+            receiveTimeout: const Duration(seconds: 60), // 60 second timeout for responses
+            sendTimeout: const Duration(seconds: 30), // 30 second timeout for sending
           ),
           data: {
             "model": currentModel,
@@ -763,6 +868,11 @@ Make reviews efficient and rewarding.''';
             "temperature": _mode == PolieMode.translation ? 0.2 : 0.7,
             "max_tokens": 500,
             "stream": true,
+          },
+        ).timeout(
+          const Duration(seconds: 90), // Overall timeout
+          onTimeout: () {
+            throw TimeoutException('Request timed out. Please check your connection and try again.');
           },
         );
         
@@ -813,10 +923,15 @@ Make reviews efficient and rewarding.''';
             if (jsonStr == "[DONE]") break;
 
             try {
-              final jsonData = jsonDecode(jsonStr);
+              // Use enhanced JSON parsing with fallback
+              final jsonData = _parseJsonSafely(jsonStr);
+              if (jsonData == null) {
+                continue; // Skip malformed JSON chunks
+              }
+              
               final delta = jsonData["choices"]?[0]?["delta"]?["content"];
 
-              if (delta != null) {
+              if (delta != null && delta is String) {
                 buffer += delta;
 
                 final last = buffer.trim().isNotEmpty
@@ -904,12 +1019,21 @@ Make reviews efficient and rewarding.''';
         // Log telemetry event if diacritics were corrected
         if (wasChanged) {
           debugPrint('Diacritics corrected: ${metadata['method']} method for $_selectedLanguage');
-          // Telemetry event could be sent here
-          // telemetry.trackEvent('diacritics_corrected', {
-          //   'lang': _selectedLanguage,
-          //   'method': metadata['method'],
-          //   'score': metadata['score'] ?? 1.0,
-          // });
+          // Track diacritics correction via telemetry service
+          try {
+            final telemetry = ref.read(telemetryServiceProvider);
+            await telemetry.trackPoliePerformance(
+              mode: _mode.name,
+              language: _selectedLanguage,
+              responseTimeMs: 0, // Would need to track start time
+              tokenCount: output.length,
+              diacriticsCorrected: true,
+              modelUsed: _modelName,
+              confidence: (metadata['score'] as num?)?.toDouble() ?? 1.0,
+            );
+          } catch (e) {
+            debugPrint('Error tracking diacritics correction: $e');
+          }
         }
 
         final assistantMsg = ChatMessage(
@@ -921,6 +1045,23 @@ Make reviews efficient and rewarding.''';
         _messages.add(assistantMsg);
         state = state.copyWith();
         await _saveChatHistory();
+
+        // Track Polie performance metrics
+        try {
+          final responseTime = DateTime.now().difference(requestStartTime);
+          final telemetry = ref.read(telemetryServiceProvider);
+          await telemetry.trackPoliePerformance(
+            mode: _mode.name,
+            language: _selectedLanguage,
+            responseTimeMs: responseTime.inMilliseconds,
+            tokenCount: correctedOutput.length, // Approximate token count
+            diacriticsCorrected: wasChanged,
+            modelUsed: _modelName,
+            confidence: (metadata['score'] as num?)?.toDouble(),
+          );
+        } catch (e) {
+          debugPrint('Error tracking Polie performance: $e');
+        }
 
         return;
       } catch (e) {
@@ -1435,21 +1576,14 @@ Return only JSON.
 
   // ----- Persistence -----
   // Separate chat histories for each mode
+  /// Chat history key scoped by mode × language (m × n chat bodies)
+  /// This ensures each mode × language combination has its own conversation history
   String get _chatHistoryKey {
-    switch (_mode) {
-      case PolieMode.translation:
-        return 'ai_chat_history_groq_translation';
-      case PolieMode.tutor:
-        return 'ai_chat_history_groq_tutor';
-      case PolieMode.roleplay:
-        return 'ai_chat_history_groq_roleplay';
-      case PolieMode.conversation:
-        return 'ai_chat_history_groq_conversation';
-      case PolieMode.vocab:
-        return 'ai_chat_history_groq_vocab';
-      case PolieMode.review:
-        return 'ai_chat_history_groq_review';
-    }
+    final modeName = _mode.toString().split('.').last;
+    final langCode = _targetLanguage.toLowerCase().replaceAll(' ', '_');
+    // Format: ai_chat_history_groq_{mode}_{language}
+    // Example: ai_chat_history_groq_translation_yoruba
+    return 'ai_chat_history_groq_${modeName}_$langCode';
   }
 
   Future<void> _saveChatHistory() async {

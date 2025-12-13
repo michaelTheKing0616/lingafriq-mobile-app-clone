@@ -1,0 +1,14 @@
+{
+  "models": {
+    "text_generation": "GPT-4.1 / local LLM",
+    "speech_to_text": "Whisper / Azure / Google",
+    "text_to_speech": "Coqui / Azure",
+    "evaluation": "LLM rubric-based"
+  },
+  "prompts": {
+    "lesson": "Generate lesson using vocab and grammar",
+    "dialogue": "Generate natural African dialogue",
+    "proverbs": "Teach proverb with context",
+    "dialect": "Explain dialectal variation"
+  }
+}

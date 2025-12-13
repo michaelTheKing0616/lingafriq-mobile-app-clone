@@ -144,5 +144,39 @@ class CultureContent {
 
   String toJson() => jsonEncode(toMap());
   factory CultureContent.fromJson(String json) => CultureContent.fromMap(jsonDecode(json));
+
+  CultureContent copyWith({
+    String? id,
+    String? title,
+    String? description,
+    ContentType? type,
+    String? imageUrl,
+    String? audioUrl,
+    String? videoUrl,
+    String? content,
+    String? language,
+    String? country,
+    DateTime? publishDate,
+    List<String>? tags,
+    int? views,
+    bool? isFeatured,
+  }) {
+    return CultureContent(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      imageUrl: imageUrl ?? this.imageUrl,
+      audioUrl: audioUrl ?? this.audioUrl,
+      videoUrl: videoUrl ?? this.videoUrl,
+      content: content ?? this.content,
+      language: language ?? this.language,
+      country: country ?? this.country,
+      publishDate: publishDate ?? this.publishDate,
+      tags: tags ?? this.tags,
+      views: views ?? this.views,
+      isFeatured: isFeatured ?? this.isFeatured,
+    );
+  }
 }
 

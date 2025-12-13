@@ -7,6 +7,7 @@ import 'app_theme.dart';
 import 'providers/navigation_provider.dart';
 import 'screens/splash/splash_screen.dart';
 import 'widgets/review/review_prompt_widget.dart';
+import 'core/errors/global_error_handler.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -19,12 +20,13 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final navigatorKey = ref.watch(navigationProvider).navigatorKey;
-    return ScreenUtilInit(
-      designSize: const Size(428, 926),
-      minTextAdapt: true,
-      child: const SplashScreen(),
-      builder: (context, child) {
-        return MaterialApp(
+    return GlobalErrorHandler(
+      child: ScreenUtilInit(
+        designSize: const Size(428, 926),
+        minTextAdapt: true,
+        child: const SplashScreen(),
+        builder: (context, child) {
+          return MaterialApp(
           debugShowCheckedModeBanner: false,
           navigatorKey: navigatorKey,
           theme: lightTheme,
@@ -57,8 +59,9 @@ class _MyAppState extends ConsumerState<MyApp> {
           },
           home: child,
           // home: const OnboardingScreen(),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

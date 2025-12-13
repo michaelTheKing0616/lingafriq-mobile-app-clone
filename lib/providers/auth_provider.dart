@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/services/secure_storage_service.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../screens/auth/login_screen.dart';
 import '../screens/onboarding/kijiji_onboarding_screen.dart';
@@ -24,17 +26,37 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return BaseProviderState();
   }
 
+  /// Navigate based on app state:
+  /// 1. Show onboarding first (with skip option) if not seen OR if fresh install/update
+  /// 2. Show login screen (with pre-filled credentials if available)
+  /// 3. Auto-login if valid session exists
   Future<void> navigateBasedOnCondition() async {
     final secureStorage = SecureStorageService();
     
-    // Check if user has seen onboarding
+    // STEP 1: Check if this is a fresh install or update
+    final isFreshInstall = await ref.read(sharedPreferencesProvider).isFreshInstallOrUpdate();
+    
+    // STEP 2: Check if user has seen onboarding
+    // For fresh installs, updates, or if onboarding not seen, show onboarding first
     final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
-    if (!hasSeenOnboarding) {
+    
+    // Show onboarding if:
+    // - User hasn't seen onboarding, OR
+    // - This is a fresh install/update (to show new features)
+    // Note: For updates, you can optionally force onboarding by uncommenting the reset line below
+    if (!hasSeenOnboarding || isFreshInstall) {
+      // For fresh installs/updates, optionally reset onboarding to show it again
+      // (Uncomment the next line if you want to force onboarding on every update)
+      // if (isFreshInstall && !hasSeenOnboarding) {
+      //   await ref.read(sharedPreferencesProvider).resetOnboarding();
+      // }
+      
+      // Show onboarding - it will navigate to login when completed/skipped
       ref.read(navigationProvider).navigateOffAll(const KijijiOnboardingScreen());
       return;
     }
     
-    // Check for valid session token first (1 hour TTL)
+    // STEP 3: Check for valid session token first (1 hour TTL)
     final hasValidSession = await secureStorage.hasValidSession();
     if (hasValidSession) {
       // Get and set token in API provider for all subsequent requests
@@ -57,7 +79,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
     }
     
-    // Check for valid refresh token (30 days TTL)
+    // STEP 3: Check for valid refresh token (30 days TTL)
     final hasValidRefresh = await secureStorage.hasValidRefreshToken();
     if (hasValidRefresh) {
       // Try to refresh session using stored credentials
@@ -76,7 +98,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
     }
     
-    // If no valid tokens, show login screen
+    // STEP 4: If no valid tokens, show login screen
+    // Login screen will automatically pre-fill credentials from SharedPreferences
     ref.read(navigationProvider).navigateOffAll(const LoginScreen());
   }
 
@@ -202,22 +225,67 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   //   }
   // }
 
+  /// Sign out user completely - clears all data and navigates to login
   Future<void> signOut({bool deleteAccount = false}) async {
-    final secureStorage = SecureStorageService();
-    
-    // Clear all tokens
-    await secureStorage.clearAllTokens();
-    await secureStorage.clearUserProfile();
-    
-    await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
-    "Delete Account $deleteAccount".log('signout');
-    if (deleteAccount == false) {
-      await ref.read(apiProvider.notifier).unregisterDevice();
+    try {
+      state = state.copyWith(isLoading: true);
+      
+      final secureStorage = SecureStorageService();
+      
+      // Clear all tokens first
+      await secureStorage.clearAllTokens();
+      await secureStorage.clearUserProfile();
+      
+      // Clear stored credentials
+      await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
+      
+      // Clear user data from SharedPreferences
+      final email = await secureStorage.getUserEmail();
+      if (email != null) {
+        await ref.read(sharedPreferencesProvider).removeUser(email);
+      }
+      
+      // Clear API provider token
+      ref.read(apiProvider.notifier).token = null;
+      
+      // Clear user provider
+      ref.read(userProvider.notifier).overrideUser(null);
+      
+      // Unregister device (unless deleting account)
+      if (deleteAccount == false) {
+        try {
+          await ref.read(apiProvider.notifier).unregisterDevice();
+        } catch (e) {
+          // Ignore errors during device unregistration
+          debugPrint('Error unregistering device: $e');
+        }
+      }
+      
+      // Clear chat history and other cached data
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        // Clear all Polie chat histories
+        final keys = prefs.getKeys();
+        for (final key in keys) {
+          if (key.startsWith('ai_chat_history_')) {
+            await prefs.remove(key);
+          }
+        }
+      } catch (e) {
+        debugPrint('Error clearing chat history: $e');
+      }
+      
+      state = state.copyWith(isLoading: false);
+      
+      // Navigate directly to login screen (don't use navigateBasedOnCondition)
+      ref.read(navigationProvider).navigateOffAll(const LoginScreen());
+      
+      "Logout successful".log('signout');
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
+      debugPrint('Error during logout: $e');
+      // Even if there's an error, try to navigate to login
+      ref.read(navigationProvider).navigateOffAll(const LoginScreen());
     }
-
-    // ref.read(tabIndexProvider.state).state = 0;
-    navigateBasedOnCondition();
-    await Future.delayed(const Duration(milliseconds: 500));
-    ref.read(userProvider.notifier).overrideUser(null);
   }
 }

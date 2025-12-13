@@ -36,11 +36,67 @@ class CurriculumExercise {
   );
 }
 
+class CurriculumVocab {
+  final String word;
+  final String meaning;
+  final String? pos; // part of speech
+  final String? example;
+  final String? pronunciation;
+
+  CurriculumVocab({
+    required this.word,
+    required this.meaning,
+    this.pos,
+    this.example,
+    this.pronunciation,
+  });
+
+  factory CurriculumVocab.fromMap(Map<String, dynamic> map) => CurriculumVocab(
+    word: map['word'] ?? '',
+    meaning: map['meaning'] ?? '',
+    pos: map['pos'],
+    example: map['example'],
+    pronunciation: map['pronunciation'],
+  );
+
+  Map<String, dynamic> toMap() => {
+    'word': word,
+    'meaning': meaning,
+    if (pos != null) 'pos': pos,
+    if (example != null) 'example': example,
+    if (pronunciation != null) 'pronunciation': pronunciation,
+  };
+}
+
+class CurriculumDialogue {
+  final List<Map<String, String>> script; // [{speaker: 'A', text: '...'}]
+  final String? notes;
+  final String? culturalContext;
+
+  CurriculumDialogue({
+    required this.script,
+    this.notes,
+    this.culturalContext,
+  });
+
+  factory CurriculumDialogue.fromMap(Map<String, dynamic> map) => CurriculumDialogue(
+    script: (map['script'] as List?)
+            ?.map((e) => Map<String, String>.from(e as Map))
+            .toList() ??
+        [],
+    notes: map['notes'],
+    culturalContext: map['cultural_context'] ?? map['culturalContext'],
+  );
+}
+
 class CurriculumLesson {
   final String id;
   final String title;
-  final List<String> vocab;
+  final List<dynamic> vocab; // Can be List<String> or List<CurriculumVocab>
   final List<CurriculumExercise> exercises;
+  final List<String>? grammar;
+  final CurriculumDialogue? dialogue;
+  final int? durationMin;
   final bool isCompleted;
   final double progress;
 
@@ -49,21 +105,58 @@ class CurriculumLesson {
     required this.title,
     required this.vocab,
     required this.exercises,
+    this.grammar,
+    this.dialogue,
+    this.durationMin,
     this.isCompleted = false,
     this.progress = 0.0,
   });
 
-  factory CurriculumLesson.fromMap(Map<String, dynamic> map) => CurriculumLesson(
-    id: map['id'] ?? '',
-    title: map['title'] ?? '',
-    vocab: List<String>.from(map['vocab'] ?? []),
-    exercises: (map['exercises'] as List?)
-            ?.map((e) => CurriculumExercise.fromMap(e as Map<String, dynamic>))
-            .toList() ??
-        [],
-    isCompleted: map['isCompleted'] ?? false,
-    progress: (map['progress'] ?? 0.0).toDouble(),
-  );
+  factory CurriculumLesson.fromMap(Map<String, dynamic> map) {
+    // Handle vocab - can be List<String> or List<Map>
+    final vocabList = map['vocab'] as List? ?? [];
+    final vocab = vocabList.map((v) {
+      if (v is String) return v;
+      if (v is Map) return CurriculumVocab.fromMap(v as Map<String, dynamic>);
+      return v;
+    }).toList();
+
+    return CurriculumLesson(
+      id: map['id'] ?? '',
+      title: map['title'] ?? '',
+      vocab: vocab,
+      exercises: (map['exercises'] as List?)
+              ?.map((e) => CurriculumExercise.fromMap(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+      grammar: map['grammar'] != null ? List<String>.from(map['grammar']) : null,
+      dialogue: map['dialogue'] != null 
+          ? CurriculumDialogue.fromMap(map['dialogue'] as Map<String, dynamic>)
+          : null,
+      durationMin: map['duration_min'] ?? map['durationMin'],
+      isCompleted: map['isCompleted'] ?? false,
+      progress: (map['progress'] ?? 0.0).toDouble(),
+    );
+  }
+
+  // Helper to get vocab as strings
+  List<String> get vocabStrings {
+    return vocab.map((v) {
+      if (v is String) return v;
+      if (v is CurriculumVocab) return v.word;
+      return v.toString();
+    }).toList();
+  }
+
+  // Helper to get vocab as objects
+  List<CurriculumVocab> get vocabObjects {
+    return vocab.map((v) {
+      if (v is CurriculumVocab) return v;
+      if (v is String) return CurriculumVocab(word: v, meaning: '');
+      if (v is Map) return CurriculumVocab.fromMap(v as Map<String, dynamic>);
+      return CurriculumVocab(word: v.toString(), meaning: '');
+    }).toList();
+  }
 }
 
 class CurriculumUnit {

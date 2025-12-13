@@ -4,6 +4,8 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/gamification_provider.dart';
+import '../../services/lazy_game_loader.dart';
+import '../../services/telemetry_service.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Base class for all game screens - handles common functionality
@@ -50,6 +52,10 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
         });
         return;
       }
+
+      // Optimize: Preload game if not already loaded
+      final lazyLoader = ref.read(lazyGameLoaderProvider);
+      await lazyLoader.loadGameOnDemand(widget.getGameType());
 
       final gameProvider = ref.read(gameProvider.notifier);
       _session = await gameProvider.startGame(

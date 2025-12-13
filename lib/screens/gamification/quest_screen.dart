@@ -3,8 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/quest_provider.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/ai_chat_provider_groq.dart';
 import '../../models/quest_model.dart';
 import '../../services/gamification/journey_service.dart';
+import '../../services/gamification/polie_story_generator.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 
@@ -200,16 +202,124 @@ class _ChapterCard extends StatelessWidget {
   }
 }
 
-class _ChapterDetailScreen extends ConsumerWidget {
+class _ChapterDetailScreen extends ConsumerStatefulWidget {
   final QuestChapter chapter;
 
   const _ChapterDetailScreen({required this.chapter});
 
   @override
+  ConsumerState<_ChapterDetailScreen> createState() => _ChapterDetailScreenState();
+}
+
+class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
+  bool _isGeneratingStory = false;
+  bool _isGeneratingLessons = false;
+  ChapterStory? _generatedStory;
+  List<QuestLesson> _generatedLessons = [];
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _generateStoryAndLessons();
+  }
+
+  Future<void> _generateStoryAndLessons() async {
+    setState(() {
+      _isGeneratingStory = true;
+      _isGeneratingLessons = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final polieProvider = ref.read(groqChatProvider.notifier);
+      final storyGenerator = PolieStoryGenerator(polieProvider);
+      
+      // Get target language from chapter metadata or default
+      final targetLanguage = widget.chapter.metadata?['language']?.toString() ?? 'Yoruba';
+      
+      // Get user progress
+      final questNotifier = ref.read(questProvider.notifier);
+      final completedChapters = questNotifier.completedChapters;
+      final progressText = completedChapters.map((c) => c.title).join(', ');
+      
+      // Generate story and lessons in parallel
+      final results = await Future.wait([
+        storyGenerator.generateChapterStory(
+          chapter: widget.chapter,
+          targetLanguage: targetLanguage,
+          userProgress: progressText.isNotEmpty ? progressText : null,
+        ),
+        storyGenerator.generateChapterLessons(
+          chapter: widget.chapter,
+          targetLanguage: targetLanguage,
+          lessonCount: widget.chapter.lessons.length,
+        ),
+      ]);
+
+      if (mounted) {
+        setState(() {
+          _generatedStory = results[0] as ChapterStory;
+          _generatedLessons = results[1] as List<QuestLesson>;
+          _isGeneratingStory = false;
+          _isGeneratingLessons = false;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error generating story/lessons: $e');
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Failed to generate story. Please try again.';
+          _isGeneratingStory = false;
+          _isGeneratingLessons = false;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (_isGeneratingStory || _isGeneratingLessons) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.chapter.title),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: const DynamicLoadingScreen(),
+      );
+    }
+
+    if (_errorMessage != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text(widget.chapter.title),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(_errorMessage!),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _generateStoryAndLessons,
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(chapter.title),
+        title: Text(widget.chapter.title),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -226,7 +336,7 @@ class _ChapterDetailScreen extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // Chapter header
+          // Chapter header with generated story
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -234,35 +344,78 @@ class _ChapterDetailScreen extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    chapter.icon,
+                    widget.chapter.icon,
                     style: const TextStyle(fontSize: 48),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    chapter.description,
+                    widget.chapter.description,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  if (chapter.metadata != null) ...[
+                  if (_generatedStory != null) ...[
                     const SizedBox(height: 16),
-                    ...chapter.metadata!.entries.map((e) => Padding(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          child: Row(
-                            children: [
-                              Text(
-                                '${e.key}: ',
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              Text(e.value.toString()),
-                            ],
+                    const Divider(),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Story',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
-                        )),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _generatedStory!.story,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    if (_generatedStory!.vocabulary.isNotEmpty) ...[
+                      const SizedBox(height: 16),
+                      const Divider(),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Key Vocabulary',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      ..._generatedStory!.vocabulary.map((vocab) => Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    '${vocab.word} - ${vocab.translation}',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                    ],
+                    if (_generatedStory!.culturalNotes.isNotEmpty) ...[
+                      const SizedBox(height: 16),
+                      const Divider(),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Cultural Notes',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        _generatedStory!.culturalNotes,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
                   ],
                 ],
               ),
             ),
           ),
           const SizedBox(height: 16),
-          // Lessons
+          // Lessons (use generated lessons if available, otherwise fallback to chapter lessons)
           Text(
             'Lessons',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -270,7 +423,7 @@ class _ChapterDetailScreen extends ConsumerWidget {
                 ),
           ),
           const SizedBox(height: 8),
-          ...chapter.lessons.map((lesson) => Card(
+          ...(_generatedLessons.isNotEmpty ? _generatedLessons : widget.chapter.lessons).map((lesson) => Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
                   leading: CircleAvatar(
@@ -297,10 +450,10 @@ class _ChapterDetailScreen extends ConsumerWidget {
                   onTap: lesson.isCompleted
                       ? null
                       : () async {
-                          // Complete lesson via quest provider
+                          // Navigate to lesson screen (to be implemented)
+                          // For now, complete lesson via quest provider
                           final questNotifier = ref.read(questProvider.notifier);
-                          // TODO: Implement completeLesson method in QuestProvider
-                          // await questNotifier.completeLesson(lesson.id);
+                          await questNotifier.completeLesson(lesson.id);
                           
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(

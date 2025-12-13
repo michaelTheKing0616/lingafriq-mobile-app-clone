@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
@@ -417,20 +419,26 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               : (isDark ? Colors.grey[400] : Colors.grey[600]),
         ),
         onPressed: () {
-          if (!lesson.isCompleted) {
-            ref.read(curriculumProvider.notifier).markLessonComplete(
-                  language,
-                  level,
-                  lesson.id,
-                );
-            // TODO: Navigate to lesson screen
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Starting lesson: ${lesson.title}'),
-                backgroundColor: AppColors.primaryGreen,
+          // Navigate to lesson detail screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonDetailScreen(
+                lesson: lesson,
+                language: language,
+                level: level,
               ),
-            );
-          }
+            ),
+          ).then((completed) {
+            // Mark lesson as complete if user completed it
+            if (completed == true && !lesson.isCompleted) {
+              ref.read(curriculumProvider.notifier).markLessonComplete(
+                    language,
+                    level,
+                    lesson.id,
+                  );
+            }
+          });
         },
       ),
     );

@@ -10,6 +10,7 @@ import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
+import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 
 final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
@@ -60,13 +61,25 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         },
       );
 
-      // Send telemetry
+      // Send telemetry (legacy method for backward compatibility)
       await _sendTelemetry('game_start', {
         'session_id': sessionId,
         'game': gameType.name,
         'language': language,
         'level': level,
       });
+      
+      // Enhanced telemetry tracking
+      final telemetry = ref.read(telemetryServiceProvider);
+      await telemetry.trackFeatureUsage(
+        featureName: 'games',
+        metadata: {
+          'action': 'game_start',
+          'game_type': gameType.name,
+          'language': language,
+          'level': level,
+        },
+      );
 
       // Award XP for starting game
       final gamification = ref.read(gamificationProvider.notifier);
@@ -145,7 +158,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       final endedSession = _currentSession!.copyWith(endTime: DateTime.now());
 
-      // Send telemetry
+      // Send telemetry (legacy method for backward compatibility)
       await _sendTelemetry('game_complete', {
         'session_id': endedSession.sessionId,
         'game': endedSession.gameType,
@@ -154,6 +167,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'correct_count': endedSession.correctCount,
         'total_turns': endedSession.totalTurns,
       });
+      
+      // Enhanced telemetry tracking
+      final telemetry = ref.read(telemetryServiceProvider);
+      await telemetry.trackGameSession(
+        gameType: endedSession.gameType,
+        language: endedSession.language,
+        durationMs: endedSession.durationMs,
+        accuracy: endedSession.accuracy,
+        score: endedSession.correctCount,
+        turns: endedSession.totalTurns,
+      );
 
       // Award XP for completion
       final gamification = ref.read(gamificationProvider.notifier);

@@ -1,0 +1,5 @@
+{
+  "riverpod_provider": "\nfinal curriculumProvider = FutureProvider((ref) async {\n  final data = await rootBundle.loadString('assets/curriculum/master_index.json');\n  return jsonDecode(data);\n});\n",
+  "offline_cache": "Use Hive or SharedPreferences for progress + lesson cache",
+  "unlock_logic": "Lesson unlocks when previous quiz >= 70%"
+}
