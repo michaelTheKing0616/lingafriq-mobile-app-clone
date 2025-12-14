@@ -45,7 +45,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _scenarioDescription = '';
 
   @override
@@ -324,6 +324,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
     );
   }
 }
+
 
 
 

@@ -45,7 +45,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _correctRegion = '';
 
   @override
@@ -183,7 +183,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -340,6 +340,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
     );
   }
 }
+
 
 
 

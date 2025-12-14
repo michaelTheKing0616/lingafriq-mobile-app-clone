@@ -45,7 +45,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _callPhrase = '';
 
   @override
@@ -196,7 +196,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -348,6 +348,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
     );
   }
 }
+
 
 
 

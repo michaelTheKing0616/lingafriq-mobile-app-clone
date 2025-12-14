@@ -43,7 +43,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   bool _isComplete = false;
 
   @override
@@ -311,6 +311,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
     );
   }
 }
+
 
 
 

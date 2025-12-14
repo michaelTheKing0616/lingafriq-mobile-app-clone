@@ -228,7 +228,7 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => AiChatLanguageSetupScreen(mode: mode),
+        builder: (_) => AiChatLanguageSetupScreen(initialMode: mode),
       ),
     );
   }

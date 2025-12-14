@@ -112,8 +112,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
   Future<void> _evaluateMatch(String leftId, String rightId) async {
     final correct = leftId == rightId;
-    final duration = startTime != null
-        ? DateTime.now().difference(startTime!).inMilliseconds
+    final duration = this.startTime != null
+        ? DateTime.now().difference(this.startTime!).inMilliseconds
         : 0;
 
     setState(() {

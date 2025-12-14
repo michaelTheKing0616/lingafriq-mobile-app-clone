@@ -45,7 +45,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _storyTitle = '';
 
   @override
@@ -163,7 +163,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -316,6 +316,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
     );
   }
 }
+
 
 
 

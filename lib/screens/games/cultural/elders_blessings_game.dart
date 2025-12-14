@@ -45,7 +45,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _blessingText = '';
   String _correctMeaning = '';
 
@@ -342,6 +342,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
     );
   }
 }
+
 
 
 

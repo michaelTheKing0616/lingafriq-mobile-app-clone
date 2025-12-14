@@ -42,7 +42,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   bool _hasCompleted = false;
   int _attempts = 0;
 
@@ -319,6 +319,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
     );
   }
 }
+
 
 
 

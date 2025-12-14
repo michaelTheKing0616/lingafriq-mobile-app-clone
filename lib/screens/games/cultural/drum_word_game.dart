@@ -45,7 +45,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _correctWord = '';
 
   @override
@@ -336,6 +336,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
     );
   }
 }
+
 
 
 

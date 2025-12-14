@@ -44,7 +44,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _npcName = '';
   String _npcMessage = '';
   String _scenarioDescription = '';
@@ -178,7 +178,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -353,6 +353,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
     );
   }
 }
+
 
 
 

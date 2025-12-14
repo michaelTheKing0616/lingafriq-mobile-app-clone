@@ -169,7 +169,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -322,6 +322,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     );
   }
 }
+
 
 
 

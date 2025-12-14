@@ -45,7 +45,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _scenarioText = '';
 
   @override
@@ -183,7 +183,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -330,6 +330,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
     );
   }
 }
+
 
 
 

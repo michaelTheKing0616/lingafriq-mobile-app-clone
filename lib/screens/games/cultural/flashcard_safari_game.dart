@@ -45,7 +45,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   String _word = '';
   bool _showWord = true;
 
@@ -358,6 +358,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
     );
   }
 }
+
 
 
 

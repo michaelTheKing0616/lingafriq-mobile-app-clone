@@ -43,7 +43,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
   bool _showResult = false;
   bool _userSelected = false;
 
@@ -182,7 +182,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
@@ -353,6 +353,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
     );
   }
 }
+
 
 
 

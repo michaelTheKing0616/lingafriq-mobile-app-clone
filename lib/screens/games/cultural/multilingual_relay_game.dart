@@ -46,7 +46,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  
 
   @override
   Future<void> onGameInitialized() async {
@@ -369,6 +369,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
     );
   }
 }
+
 
 
 
