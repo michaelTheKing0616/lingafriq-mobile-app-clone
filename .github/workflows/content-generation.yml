@@ -52,7 +52,7 @@ jobs:
           python backend_integration.py
       
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: generated-content
           path: tools/content_generation/generated_content/*.json
