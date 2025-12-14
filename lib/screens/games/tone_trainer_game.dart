@@ -200,13 +200,13 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
               Column(
                 children: [
                   Text(
-                    _userTones.every((t, i) => t == _targetTones[i])
+                    _userTones.asMap().entries.every((entry) => entry.value == _targetTones[entry.key])
                         ? 'Perfect! 🎉'
                         : 'Good try!',
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      color: _userTones.every((t, i) => t == _targetTones[i])
+                      color: _userTones.asMap().entries.every((entry) => entry.value == _targetTones[entry.key])
                           ? Colors.green
                           : Colors.orange,
                     ),

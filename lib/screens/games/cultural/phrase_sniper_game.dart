@@ -28,21 +28,13 @@ class PhraseSniperGame extends BaseGameScreen {
 class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentPhrase;
@@ -53,7 +45,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _targetPhrase = '';
 
   @override
@@ -68,7 +60,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedTranslation = null;
     });
@@ -88,12 +80,12 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
         _round++;
         _targetPhrase = _extractPhrase(content);
         _translationOptions = translations;
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading phrase: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _translationOptions = _getFallbackTranslations();
         _targetPhrase = _getFallbackPhrase();
       });
@@ -350,5 +342,8 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
     );
   }
 }
+
+
+
 
 

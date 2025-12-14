@@ -28,21 +28,13 @@ class EldersBlessingsGame extends BaseGameScreen {
 class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentBlessing;
@@ -53,7 +45,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _blessingText = '';
   String _correctMeaning = '';
 
@@ -69,7 +61,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedMeaning = null;
     });
@@ -87,12 +79,12 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
         _blessingText = parsed['blessing'];
         _correctMeaning = parsed['meaning'];
         _meaningOptions = parsed['options'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading blessing: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _blessingText = _getFallbackBlessing();
         _correctMeaning = 'May you have long life and prosperity';
         _meaningOptions = ['May you have long life and prosperity', 'Good luck', 'Stay safe', 'Be happy'];
@@ -350,5 +342,8 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
     );
   }
 }
+
+
+
 
 

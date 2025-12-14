@@ -28,21 +28,13 @@ class TongueTwisterGame extends BaseGameScreen {
 class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _currentTwister;
@@ -50,7 +42,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   bool _hasCompleted = false;
   int _attempts = 0;
 
@@ -66,7 +58,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _hasCompleted = false;
       _attempts = 0;
     });
@@ -82,12 +74,12 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
         _round++;
         _currentTwister = parsed['twister'];
         _pronunciationGuide = parsed['guide'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading tongue twister: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _currentTwister = _getFallbackTwister();
         _pronunciationGuide = 'Practice saying this quickly!';
       });
@@ -327,5 +319,8 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
     );
   }
 }
+
+
+
 
 

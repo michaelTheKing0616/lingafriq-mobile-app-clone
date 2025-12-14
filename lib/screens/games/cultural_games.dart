@@ -56,6 +56,10 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
   final int _maxRounds = 5;
   bool _isLoadingProverb = false;
 
+  Future<void> _initializeGame() async {
+    await _loadNewProverb();
+  }
+
   @override
   Future<void> onGameInitialized() async {
     await _loadNewProverb();
@@ -123,14 +127,16 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
     return themes[Random().nextInt(themes.length)];
   }
 
+  String? _correctMeaning;
+
   void _selectAnswer(String answer) {
     if (_showResult) return;
     
     setState(() {
       _selectedAnswer = answer;
-      final correctMeaning = _currentProverb?['meaning']?.toString() ?? 
+      _correctMeaning = _currentProverb?['meaning']?.toString() ?? 
                             _currentProverb?['context']?.toString() ?? '';
-      _isCorrect = answer == correctMeaning;
+      _isCorrect = answer == _correctMeaning;
       _showResult = true;
       
       if (_isCorrect) {
@@ -147,7 +153,7 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
       feedback: {
         'proverb': _currentProverb?['proverb'],
         'selected': answer,
-        'correct': correctMeaning,
+        'correct': _correctMeaning ?? '',
       },
     );
 
@@ -377,7 +383,7 @@ class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoadingRhythm = false;
+  bool _isLoadingRhythm = false;`n`n  Future<void> _initializeGame() async {`n    await _loadNewRhythm();`n  }
   String _rhythmPattern = '';
 
   @override
@@ -988,7 +994,7 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoadingScenario = false;
+  bool _isLoadingScenario = false;`n`n  Future<void> _initializeGame() async {`n    await _loadNewScenario();`n  }
   List<String> _bargainingPhrases = [];
 
   @override
@@ -1922,4 +1928,5 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
 // - MultilingualRelayGame from cultural/multilingual_relay_game.dart
 // - CulturalEtiquetteGame from cultural/cultural_etiquette_game.dart
 // - DrumWordGame from cultural/drum_word_game.dart
+
 

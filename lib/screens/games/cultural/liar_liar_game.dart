@@ -28,21 +28,13 @@ class LiarLiarGame extends BaseGameScreen {
 class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _currentSentence;
@@ -51,7 +43,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   bool _showResult = false;
   bool _userSelected = false;
 
@@ -67,7 +59,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _userSelected = false;
       _hasError = null;
@@ -89,12 +81,12 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
         _currentSentence = parsed['sentence'];
         _hasError = parsed['hasError'] as bool?;
         _errorExplanation = parsed['explanation'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading sentence: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _currentSentence = _getFallbackSentence();
         _hasError = Random().nextBool();
         _errorExplanation = 'Check grammar, word order, and verb conjugation.';
@@ -361,5 +353,8 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
     );
   }
 }
+
+
+
 
 

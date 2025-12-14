@@ -28,21 +28,13 @@ class FlashcardSafariGame extends BaseGameScreen {
 class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentCard;
@@ -53,7 +45,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _word = '';
   bool _showWord = true;
 
@@ -69,7 +61,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedTranslation = null;
       _showWord = true;
@@ -90,12 +82,12 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
         _round++;
         _word = parsed['word'];
         _translationOptions = parsed['options'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading card: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _word = _getFallbackWord();
         _translationOptions = _getFallbackTranslations();
       });
@@ -366,5 +358,8 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
     );
   }
 }
+
+
+
 
 

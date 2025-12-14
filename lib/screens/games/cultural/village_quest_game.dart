@@ -28,21 +28,13 @@ class VillageQuestGame extends BaseGameScreen {
 class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentScenario;
@@ -52,7 +44,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _npcName = '';
   String _npcMessage = '';
   String _scenarioDescription = '';
@@ -69,7 +61,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedResponse = null;
     });
@@ -87,12 +79,12 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
         _npcMessage = gameContent['message']?.toString() ?? gameContent['content']?.toString() ?? '';
         _scenarioDescription = gameContent['scenario']?.toString() ?? '';
         _responseOptions = _extractResponses(gameContent);
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _npcName = 'Village Elder';
         _npcMessage = 'Welcome to our village! How can I help you?';
         _responseOptions = _getFallbackResponses();
@@ -361,5 +353,8 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
     );
   }
 }
+
+
+
 
 

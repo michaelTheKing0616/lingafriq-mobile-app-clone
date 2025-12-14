@@ -9,6 +9,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
 import 'package:lingafriq/screens/profile/user_profile_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_select_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';

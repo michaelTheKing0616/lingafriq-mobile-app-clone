@@ -28,21 +28,13 @@ class DrumWordGame extends BaseGameScreen {
 class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _rhythmPattern;
@@ -53,7 +45,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _correctWord = '';
 
   @override
@@ -68,7 +60,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedWord = null;
     });
@@ -85,12 +77,12 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
         _rhythmPattern = parsed['rhythm'];
         _correctWord = parsed['word'];
         _wordOptions = parsed['words'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading challenge: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _rhythmPattern = 'DUM da-da DUM';
         _correctWord = 'Bàtà';
         _wordOptions = ['Bàtà', 'Ọmọ', 'Ìyá', 'Bàbá'];
@@ -344,5 +336,8 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
     );
   }
 }
+
+
+
 
 

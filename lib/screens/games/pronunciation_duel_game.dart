@@ -55,7 +55,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       await _audioPlayer.setUrl(_currentCard!.audioNativeUrl!);
       await _audioPlayer.play();
       await _audioPlayer.playerStateStream.firstWhere(
-        (state) => state.processingState == ProcessingState.complete,
+        (state) => state.processingState == ProcessingState.completed,
       );
     } catch (e) {
       debugPrint('Error playing audio: $e');
@@ -98,7 +98,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
 
     setState(() {
       _pronunciationScore = mockScore;
-      _mistakes = mockMistakes;
+      _mistakes = List<String>.from(mockMistakes);
     });
 
     // Complete turn

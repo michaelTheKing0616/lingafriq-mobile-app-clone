@@ -80,7 +80,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
       final gameProv = ref.read(gameProvider.notifier);
       _session = await gameProv.startGame(
-        userId: user.id,
+        userId: user.id.toString(),
         gameType: widget.getGameType(),
         language: widget.language,
         level: widget.level,

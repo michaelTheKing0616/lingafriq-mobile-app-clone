@@ -28,21 +28,13 @@ class AccentPuzzleGame extends BaseGameScreen {
 class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _targetWord;
@@ -53,7 +45,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _correctRegion = '';
 
   @override
@@ -68,7 +60,7 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedRegion = null;
     });
@@ -85,12 +77,12 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
         _targetWord = parsed['word'];
         _correctRegion = parsed['correctRegion'];
         _regionOptions = parsed['regions'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading puzzle: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _targetWord = _getFallbackWord();
         _correctRegion = 'Central';
         _regionOptions = ['Northern', 'Southern', 'Central', 'Eastern'];
@@ -348,5 +340,8 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
     );
   }
 }
+
+
+
 
 

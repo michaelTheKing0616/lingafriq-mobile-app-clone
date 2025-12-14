@@ -32,7 +32,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   String? _selectedLeft;
   String? _selectedRight;
   final List<_MatchResult> _results = [];
-  DateTime? _startTime;
   GameSession? _session;
 
   @override
@@ -47,7 +46,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
     final gameProv = ref.read(gameProvider.notifier);
     _session = await gameProv.startGame(
-      userId: user.id,
+      userId: user.id.toString(),
       gameType: GameType.wordMatchAudio,
       language: widget.language,
       level: widget.level,
@@ -61,8 +60,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       return;
     }
 
+    setStartTime(DateTime.now());
     setState(() {
-      _startTime = DateTime.now();
       _leftTiles = cards.map((c) => _GameTile(
             id: c.cardId,
             label: c.text,

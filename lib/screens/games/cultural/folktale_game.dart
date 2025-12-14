@@ -28,21 +28,13 @@ class FolktaleGame extends BaseGameScreen {
 class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentStory;
@@ -53,7 +45,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _storyTitle = '';
 
   @override
@@ -68,7 +60,7 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedPart = null;
     });
@@ -88,12 +80,12 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
         _round++;
         _storyTitle = storyData['title']?.toString() ?? 'Folktale';
         _storyParts = parts;
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading folktale: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _storyParts = _getFallbackParts();
         _storyTitle = 'Traditional Folktale';
       });
@@ -324,5 +316,8 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
     );
   }
 }
+
+
+
 
 

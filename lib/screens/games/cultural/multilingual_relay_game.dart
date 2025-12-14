@@ -28,21 +28,13 @@ class MultilingualRelayGame extends BaseGameScreen {
 class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _sourcePhrase;
@@ -54,7 +46,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
 
   @override
   Future<void> onGameInitialized() async {
@@ -68,7 +60,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedTarget = null;
     });
@@ -85,12 +77,12 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
         _sourcePhrase = parsed['source'];
         _intermediatePhrase = parsed['intermediate'];
         _targetOptions = parsed['targets'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading relay: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _sourcePhrase = 'Hello';
         _intermediatePhrase = 'Hola';
         _targetOptions = ['Sannu', 'Habari', 'Bawo', 'Kedu'];
@@ -377,5 +369,8 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
     );
   }
 }
+
+
+
 
 

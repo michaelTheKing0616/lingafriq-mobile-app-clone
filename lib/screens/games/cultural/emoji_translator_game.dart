@@ -28,21 +28,13 @@ class EmojiTranslatorGame extends BaseGameScreen {
 class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _emojiSequence;
@@ -53,7 +45,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
 
   @override
   Future<void> onGameInitialized() async {
@@ -67,7 +59,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedTranslation = null;
     });
@@ -83,12 +75,12 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
         _round++;
         _emojiSequence = parsed['emojis'];
         _translationOptions = parsed['options'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading challenge: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _emojiSequence = '👋 😊 🌍';
         _translationOptions = ['Hello, happy world', 'Good morning', 'Nice to meet you', 'How are you'];
         _translationOptions.shuffle(Random());
@@ -330,5 +322,8 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
     );
   }
 }
+
+
+
 
 

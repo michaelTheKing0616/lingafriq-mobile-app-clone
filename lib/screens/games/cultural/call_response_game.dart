@@ -28,21 +28,13 @@ class CallResponseGame extends BaseGameScreen {
 class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentPattern;
@@ -53,7 +45,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _callPhrase = '';
 
   @override
@@ -68,7 +60,7 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedResponse = null;
     });
@@ -88,12 +80,12 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
         _round++;
         _callPhrase = _extractCall(content);
         _responseOptions = responses;
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading pattern: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _responseOptions = _getFallbackResponses();
         _callPhrase = _getFallbackCall();
       });
@@ -356,5 +348,8 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
     );
   }
 }
+
+
+
 
 

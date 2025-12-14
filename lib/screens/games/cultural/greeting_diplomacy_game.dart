@@ -28,21 +28,13 @@ class GreetingDiplomacyGame extends BaseGameScreen {
 class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentScenario;
@@ -346,5 +338,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
     );
   }
 }
+
+
 
 

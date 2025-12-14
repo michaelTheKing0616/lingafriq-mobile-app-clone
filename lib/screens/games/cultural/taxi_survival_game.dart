@@ -28,21 +28,13 @@ class TaxiSurvivalGame extends BaseGameScreen {
 class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentScenario;
@@ -53,7 +45,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _scenarioText = '';
 
   @override
@@ -68,7 +60,7 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedPhrase = null;
     });
@@ -88,12 +80,12 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
         _round++;
         _scenarioText = _extractScenario(content);
         _phraseOptions = phrases;
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _phraseOptions = _getFallbackPhrases();
         _scenarioText = 'You need to take a taxi to the market';
       });
@@ -338,5 +330,8 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
     );
   }
 }
+
+
+
 
 

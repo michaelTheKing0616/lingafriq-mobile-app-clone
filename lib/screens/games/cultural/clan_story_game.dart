@@ -34,7 +34,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _storyPrompt = '';
 
   @override
@@ -49,7 +49,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedPart = null;
     });
@@ -69,12 +69,12 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
         _round++;
         _storyPrompt = storyData['title']?.toString() ?? 'Build the story';
         _storyParts = parts;
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading story: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _storyParts = _getFallbackParts();
         _storyPrompt = 'Build a clan story';
       });
@@ -151,25 +151,19 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   }
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       _currentStory = await polieGenerator.generateGameContent(
         language: widget.language,
-        gameType: widget.getGameType(),
+        gameType: widget.getGameType().name,
       );
       setState(() {
-        _isLoading = false;
-        _storyParts = _currentStory?['story_parts'] as List<dynamic>? ?? [];
+        setLoading(false);
+        _storyParts = (_currentStory?['story_parts'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
       });
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
 
@@ -179,9 +173,9 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
       return DynamicLoadingScreen();
     }
 
-    if (error != null || _error != null) {
+    if (error != null) {
       return ErrorBoundary(
-        errorMessage: error ?? _error ?? 'Unknown error',
+        errorMessage: error ?? 'Unknown error',
         onRetry: () {
           _initializeGame();
         },
@@ -328,4 +322,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     );
   }
 }
+
+
+
 

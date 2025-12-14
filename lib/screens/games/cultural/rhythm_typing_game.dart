@@ -28,21 +28,13 @@ class RhythmTypingGame extends BaseGameScreen {
 class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   String? _targetText;
@@ -51,7 +43,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   bool _isComplete = false;
 
   @override
@@ -72,7 +64,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _isComplete = false;
       _inputController.clear();
     });
@@ -88,12 +80,12 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
         _round++;
         _targetText = parsed['text'];
         _rhythmPattern = parsed['rhythm'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading challenge: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _targetText = _getFallbackText();
         _rhythmPattern = 'DUM da-da DUM';
       });
@@ -319,5 +311,8 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
     );
   }
 }
+
+
+
 
 

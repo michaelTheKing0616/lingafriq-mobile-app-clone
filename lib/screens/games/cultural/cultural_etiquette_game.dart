@@ -28,21 +28,13 @@ class CulturalEtiquetteGame extends BaseGameScreen {
 class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteGame> {
 
   Future<void> _initializeGame() async {
-    setState(() {
-      _isLoading = true;
-      setState(() { _error = null; });
-    });
+    setLoading(true); setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
       // Initialize game content
-      setState(() {
-        _isLoading = false;
-      });
+      setLoading(false);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-        setState(() { _error = e.toString(); });
-      });
+      setLoading(false); setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentScenario;
@@ -53,7 +45,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoading = false;
+  bool setLoading(false);
   String _scenarioDescription = '';
 
   @override
@@ -68,7 +60,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
     }
 
     setState(() {
-      _isLoading = true;
+      setLoading(true);
       _showResult = false;
       _selectedResponse = null;
     });
@@ -85,12 +77,12 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
         _round++;
         _scenarioDescription = parsed['scenario'];
         _responseOptions = parsed['options'];
-        _isLoading = false;
+        setLoading(false);
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
       setState(() {
-        _isLoading = false;
+        setLoading(false);
         _scenarioDescription = 'You meet an elder in the village. How do you greet them?';
         _responseOptions = ['Greet with respect using formal language', 'Say hello casually', 'Wave from a distance', 'Ignore them'];
         _responseOptions.shuffle(Random());
@@ -332,5 +324,8 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
     );
   }
 }
+
+
+
 
 
