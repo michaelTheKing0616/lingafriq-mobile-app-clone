@@ -55,7 +55,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       await _audioPlayer.setUrl(_currentCard!.audioNativeUrl!);
       await _audioPlayer.play();
       await _audioPlayer.playerStateStream.firstWhere(
-        (state) => state.processingState == ProcessingState.completed,
+        (state) => state.processingState == ProcessingState.complete,
       );
     } catch (e) {
       debugPrint('Error playing audio: $e');
