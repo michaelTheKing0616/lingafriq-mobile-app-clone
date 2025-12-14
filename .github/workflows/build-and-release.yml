@@ -2,9 +2,9 @@ name: Build and Release iOS & Android
 
 on:
   push:
-    branches: [ main ]
+    branches: [ fresh-main, main ]
   pull_request:
-    branches: [ main ]
+    branches: [ fresh-main, main ]
   workflow_dispatch:
 
 jobs:

@@ -1,11 +1,9 @@
 name: Build and Release
 
+# DISABLED - Use build-and-release.yml instead
+# This workflow does not generate signed AAB/IPA files
 on:
-  push:
-    branches: [ fresh-main, main ]
-  pull_request:
-    branches: [ fresh-main, main ]
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch: # Manual trigger only - not used for releases
 
 jobs:
   build:
