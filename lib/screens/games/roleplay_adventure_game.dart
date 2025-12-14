@@ -77,8 +77,8 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
         ? GameResult.correct
         : GameResult.incorrect;
 
-    final duration = _startTime != null
-        ? DateTime.now().difference(_startTime!).inMilliseconds
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
     completeTurn(

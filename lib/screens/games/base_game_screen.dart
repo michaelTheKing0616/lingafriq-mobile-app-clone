@@ -34,6 +34,27 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   DateTime? get startTime => _startTime;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  
+  // Protected setter for error - allows subclasses to set error
+  void setError(String? error) {
+    setState(() {
+      _error = error;
+    });
+  }
+  
+  // Protected setter for loading state
+  void setLoading(bool loading) {
+    setState(() {
+      _isLoading = loading;
+    });
+  }
+  
+  // Protected setter for start time
+  void setStartTime(DateTime? time) {
+    setState(() {
+      _startTime = time;
+    });
+  }
 
   @override
   void initState() {

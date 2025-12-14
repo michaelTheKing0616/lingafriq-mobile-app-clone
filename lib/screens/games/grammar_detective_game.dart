@@ -61,8 +61,8 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
     completeTurn(
       cardId: 'grammar_$_currentIndex',
       result: correct ? GameResult.correct : GameResult.incorrect,
-      durationMs: _startTime != null
-          ? DateTime.now().difference(_startTime!).inMilliseconds
+      durationMs: startTime != null
+          ? DateTime.now().difference(startTime!).inMilliseconds
           : 0,
       feedback: {'selected': _selectedError, 'correct': question.correctError},
     );

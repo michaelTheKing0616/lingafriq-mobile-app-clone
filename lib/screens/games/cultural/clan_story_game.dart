@@ -153,7 +153,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   Future<void> _initializeGame() async {
     setState(() {
       _isLoading = true;
-      _error = null;
+      setState(() { _error = null; });
     });
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
@@ -168,7 +168,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = e.toString();
+        setState(() { _error = e.toString(); });
       });
     }
   }

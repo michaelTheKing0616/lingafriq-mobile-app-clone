@@ -41,8 +41,8 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
 
   @override
   Future<void> onGameInitialized() async {
-    final gameProvider = ref.read(gameProvider.notifier);
-    _cards.addAll(gameProvider.availableCards);
+    final gameProv = ref.read(gameProvider.notifier);
+    _cards.addAll(gameProv.availableCards);
     if (_cards.isNotEmpty) {
       _currentCard = _cards[0];
     }
@@ -55,7 +55,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       await _audioPlayer.setUrl(_currentCard!.audioNativeUrl!);
       await _audioPlayer.play();
       await _audioPlayer.playerStateStream.firstWhere(
-        (state) => state.processingState == ProcessingState.complete,
+        (state) => state.processingState == ProcessingState.completed,
       );
     } catch (e) {
       debugPrint('Error playing audio: $e');
@@ -102,8 +102,8 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     });
 
     // Complete turn
-    final duration = _startTime != null
-        ? DateTime.now().difference(_startTime!).inMilliseconds
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
     
     await completeTurn(

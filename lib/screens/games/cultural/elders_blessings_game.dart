@@ -30,7 +30,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
   Future<void> _initializeGame() async {
     setState(() {
       _isLoading = true;
-      _error = null;
+      setState(() { _error = null; });
     });
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
@@ -41,7 +41,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = e.toString();
+        setState(() { _error = e.toString(); });
       });
     }
   }

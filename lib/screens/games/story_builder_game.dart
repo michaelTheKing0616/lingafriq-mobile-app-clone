@@ -50,8 +50,8 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
     });
 
     // Evaluate grammar (mock)
-    final duration = _startTime != null
-        ? DateTime.now().difference(_startTime!).inMilliseconds
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
     completeTurn(

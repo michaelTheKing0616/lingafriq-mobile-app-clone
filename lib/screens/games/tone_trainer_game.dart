@@ -35,8 +35,8 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
 
   @override
   Future<void> onGameInitialized() async {
-    final gameProvider = ref.read(gameProvider.notifier);
-    _cards.addAll(gameProvider.availableCards);
+    final gameProv = ref.read(gameProvider.notifier);
+    _cards.addAll(gameProv.availableCards);
     if (_cards.isNotEmpty) {
       _currentCard = _cards[0];
       _generateTargetTones();
@@ -83,8 +83,8 @@ class _ToneTrainerGameState extends BaseGameScreenState<ToneTrainerGame> {
             ? GameResult.partial
             : GameResult.incorrect;
 
-    final duration = _startTime != null
-        ? DateTime.now().difference(_startTime!).inMilliseconds
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
     completeTurn(

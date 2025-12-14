@@ -45,7 +45,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     final user = ref.read(userProvider);
     if (user == null) return;
 
-    final gameProvider = ref.read(gameProvider.notifier);
+    final gameProv = ref.read(gameProvider.notifier);
     _session = await gameProv.startGame(
       userId: user.id,
       gameType: GameType.wordMatchAudio,
@@ -113,8 +113,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
   Future<void> _evaluateMatch(String leftId, String rightId) async {
     final correct = leftId == rightId;
-    final duration = _startTime != null
-        ? DateTime.now().difference(_startTime!).inMilliseconds
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
     setState(() {

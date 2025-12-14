@@ -30,7 +30,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
   Future<void> _initializeGame() async {
     setState(() {
       _isLoading = true;
-      _error = null;
+      setState(() { _error = null; });
     });
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
@@ -41,7 +41,7 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = e.toString();
+        setState(() { _error = e.toString(); });
       });
     }
   }
