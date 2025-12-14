@@ -167,7 +167,7 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 

@@ -173,7 +173,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 

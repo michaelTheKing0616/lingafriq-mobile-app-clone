@@ -191,7 +191,7 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 

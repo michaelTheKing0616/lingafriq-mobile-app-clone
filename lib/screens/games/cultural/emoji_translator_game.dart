@@ -165,7 +165,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
 
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoading) {
+    if (isLoading) {
       return DynamicLoadingScreen();
     }
 
