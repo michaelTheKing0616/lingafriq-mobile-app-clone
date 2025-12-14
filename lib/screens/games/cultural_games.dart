@@ -1002,8 +1002,12 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoadingScenario = false;`n`n  Future<void> _initializeGame() async {`n    await _loadNewScenario();`n  }
+  bool _isLoadingScenario = false;
   List<String> _bargainingPhrases = [];
+
+  Future<void> _initializeGame() async {
+    await _loadNewScenario();
+  }
 
   @override
   void dispose() {

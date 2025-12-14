@@ -28,13 +28,15 @@ class GreetingDiplomacyGame extends BaseGameScreen {
 class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyGame> {
 
   Future<void> _initializeGame() async {
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
-      // Initialize game content
+      await _loadNewScenario();
       setLoading(false);
     } catch (e) {
-      setLoading(false); setError(e.toString());
+      setLoading(false);
+      setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentScenario;

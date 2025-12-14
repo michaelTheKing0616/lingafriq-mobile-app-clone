@@ -28,13 +28,15 @@ class FoodQuestGame extends BaseGameScreen {
 class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
 
   Future<void> _initializeGame() async {
-    setLoading(true); setError(null);
+    setLoading(true);
+    setError(null);
     try {
       final polieGenerator = ref.read(polieContentGeneratorProvider);
-      // Initialize game content
+      await _loadNewFood();
       setLoading(false);
     } catch (e) {
-      setLoading(false); setError(e.toString());
+      setLoading(false);
+      setError(e.toString());
     }
   }
   Map<String, dynamic>? _currentFood;
