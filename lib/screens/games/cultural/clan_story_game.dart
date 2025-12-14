@@ -34,7 +34,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool setLoading(false);
+  bool _isLoading = false;
   String _storyPrompt = '';
 
   @override
@@ -158,10 +158,10 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
         language: widget.language,
         gameType: widget.getGameType().name,
       );
-      setState(() {
         setLoading(false);
-        _storyParts = (_currentStory?['story_parts'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
-      });
+        setState(() {
+          _storyParts = (_currentStory?['story_parts'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [];
+        });
     } catch (e) {
       setLoading(false); setError(e.toString());
     }

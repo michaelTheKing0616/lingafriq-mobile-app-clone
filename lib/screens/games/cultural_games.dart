@@ -383,8 +383,12 @@ class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
-  bool _isLoadingRhythm = false;`n`n  Future<void> _initializeGame() async {`n    await _loadNewRhythm();`n  }
+  bool _isLoadingRhythm = false;
   String _rhythmPattern = '';
+
+  Future<void> _initializeGame() async {
+    await _loadNewRhythm();
+  }
 
   @override
   Future<void> onGameInitialized() async {
@@ -698,6 +702,10 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   final int _maxRounds = 5;
   bool _isLoading = false;
   String _storyPrompt = '';
+
+  Future<void> _initializeGame() async {
+    await _loadNewStory();
+  }
 
   @override
   Future<void> onGameInitialized() async {
@@ -1304,6 +1312,10 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
   bool _isLoading = false;
   String _scenarioText = '';
 
+  Future<void> _initializeGame() async {
+    await _loadNewScenario();
+  }
+
   @override
   Future<void> onGameInitialized() async {
     await _loadNewScenario();
@@ -1614,6 +1626,10 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
   final int _maxRounds = 5;
   bool _isLoadingFood = false;
   String _foodDescription = '';
+
+  Future<void> _initializeGame() async {
+    await _loadNewFood();
+  }
 
   @override
   Future<void> onGameInitialized() async {
