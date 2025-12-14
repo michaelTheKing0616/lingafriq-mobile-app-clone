@@ -89,7 +89,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return _currentSession!;
     } catch (e) {
       debugPrint('Error starting game: $e');
-      state = state.copyWith(isLoading: false, error: e.toString());
+      state = state.copyWith(isLoading: false);
       rethrow;
     }
   }

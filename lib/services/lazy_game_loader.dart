@@ -23,7 +23,7 @@ class LazyGameLoader {
     ];
 
     for (final gameType in commonGames) {
-      if (!_loadedGames[gameType] ?? false) {
+      if (_loadedGames[gameType] != true) {
         try {
           await _preloadGame(gameType);
           _loadedGames[gameType] = true;

@@ -36,6 +36,10 @@ class SharedPreferencesProvider {
     await Future.wait([emailRemoveFuture, passwordRemoveFuture]);
   }
 
+  Future<void> removeUser(String emailKey) async {
+    await prefs.remove(emailKey);
+  }
+
   String get getEmail {
     final email = prefs.getString(emailKey) ?? '';
     return email;

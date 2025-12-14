@@ -822,7 +822,7 @@ Make reviews efficient and rewarding.''';
         if (messagesList.length > 21) { // 1 system + 20 conversation
           final systemMsg = messagesList.firstWhere(
             (m) => m["role"] == "system",
-            orElse: () => null,
+            orElse: () => <String, dynamic>{},
           );
           final conversationMsgs = messagesList
               .where((m) => m["role"] != "system")

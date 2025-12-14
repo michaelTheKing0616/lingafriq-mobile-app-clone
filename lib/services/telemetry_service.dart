@@ -158,8 +158,8 @@ class TelemetryService {
       final eventsToSend = List<Map<String, dynamic>>.from(_pendingEvents);
       _pendingEvents.clear();
 
-      final apiProvider = _ref.read(apiProvider.notifier);
-      await apiProvider.sendTelemetry(eventsToSend);
+      final api = _ref.read(apiProvider.notifier);
+      await api.sendTelemetry(eventsToSend);
       
       debugPrint('✅ Flushed ${eventsToSend.length} telemetry events');
     } catch (e) {

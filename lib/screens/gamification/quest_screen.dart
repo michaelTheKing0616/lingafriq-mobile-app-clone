@@ -278,7 +278,7 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (_isGeneratingStory || _isGeneratingLessons) {
       return Scaffold(
         appBar: AppBar(

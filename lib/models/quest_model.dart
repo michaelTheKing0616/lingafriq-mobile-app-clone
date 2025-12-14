@@ -68,6 +68,8 @@ class QuestLesson {
   final bool isCompleted;
   final int xpReward;
 
+  final Map<String, dynamic>? content;
+
   QuestLesson({
     required this.id,
     required this.title,
@@ -76,6 +78,7 @@ class QuestLesson {
     required this.order,
     this.isCompleted = false,
     this.xpReward = 50,
+    this.content,
   });
 
   Map<String, dynamic> toJson() => {
@@ -86,6 +89,7 @@ class QuestLesson {
         'order': order,
         'isCompleted': isCompleted,
         'xpReward': xpReward,
+        'content': content,
       };
 
   factory QuestLesson.fromJson(Map<String, dynamic> json) => QuestLesson(

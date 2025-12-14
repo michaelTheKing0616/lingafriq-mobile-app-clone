@@ -57,8 +57,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       final lazyLoader = ref.read(lazyGameLoaderProvider);
       await lazyLoader.loadGameOnDemand(widget.getGameType());
 
-      final gameProvider = ref.read(gameProvider.notifier);
-      _session = await gameProvider.startGame(
+      final gameProv = ref.read(gameProvider.notifier);
+      _session = await gameProv.startGame(
         userId: user.id,
         gameType: widget.getGameType(),
         language: widget.language,
@@ -96,8 +96,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   }) async {
     if (_session == null) return;
 
-    final gameProvider = ref.read(gameProvider.notifier);
-    await gameProvider.completeTurn(
+    final gameProv = ref.read(gameProvider.notifier);
+    await gameProv.completeTurn(
       cardId: cardId,
       result: result,
       durationMs: durationMs,
@@ -110,8 +110,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   /// Finish the game
   Future<void> finishGame() async {
     try {
-      final gameProvider = ref.read(gameProvider.notifier);
-      final endedSession = await gameProvider.endGame();
+      final gameProv = ref.read(gameProvider.notifier);
+      final endedSession = await gameProv.endGame();
 
       if (mounted) {
         Navigator.pop(context);

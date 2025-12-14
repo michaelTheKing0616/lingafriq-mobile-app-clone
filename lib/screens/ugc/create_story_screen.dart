@@ -137,7 +137,7 @@ class CreateStoryScreen extends HookConsumerWidget {
                     vocabulary: vocabulary.isEmpty ? null : vocabulary,
                   );
                   
-                  if (story != null && mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Story created successfully!'),
@@ -147,7 +147,7 @@ class CreateStoryScreen extends HookConsumerWidget {
                     Navigator.of(context).pop(true);
                   }
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Error creating story: $e'),
@@ -156,7 +156,7 @@ class CreateStoryScreen extends HookConsumerWidget {
                     );
                   }
                 } finally {
-                  if (mounted) {
+                  if (context.mounted) {
                     isSubmitting.value = false;
                   }
                 }

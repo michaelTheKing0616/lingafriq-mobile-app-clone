@@ -88,7 +88,7 @@ class AppDrawer extends ConsumerWidget {
                     Navigator.of(context, rootNavigator: true).pop();
                     // Navigate to mode selection screen first (shows all 6 modes)
                     ref.read(navigationProvider).navigateTo(
-                          const AiChatSelectScreen(),
+                          AiChatSelectScreen(),
                         );
                   },
                 ),

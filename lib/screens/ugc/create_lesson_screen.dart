@@ -140,7 +140,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                     tags: tags.isEmpty ? null : tags,
                   );
                   
-                  if (lesson != null && mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Lesson created successfully!'),
@@ -150,7 +150,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                     Navigator.of(context).pop(true);
                   }
                 } catch (e) {
-                  if (mounted) {
+                  if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text('Error creating lesson: $e'),
@@ -159,7 +159,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                     );
                   }
                 } finally {
-                  if (mounted) {
+                  if (context.mounted) {
                     isSubmitting.value = false;
                   }
                 }

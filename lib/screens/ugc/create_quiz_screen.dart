@@ -165,7 +165,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                               : descriptionController.text,
                         );
                         
-                        if (quiz != null && mounted) {
+                        if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               content: Text('Quiz created successfully!'),
@@ -175,7 +175,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                           Navigator.of(context).pop(true);
                         }
                       } catch (e) {
-                        if (mounted) {
+                        if (context.mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Error creating quiz: $e'),
@@ -184,7 +184,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                           );
                         }
                       } finally {
-                        if (mounted) {
+                        if (context.mounted) {
                           isSubmitting.value = false;
                         }
                       }

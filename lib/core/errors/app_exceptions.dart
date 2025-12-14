@@ -1,6 +1,8 @@
 /// Application-level exceptions
 /// Centralized error handling for the app
 
+import 'package:dio/dio.dart';
+
 /// Base exception class
 abstract class AppException implements Exception {
   final String message;

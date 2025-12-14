@@ -182,7 +182,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
       itemBuilder: (context, index) {
         final grammarPoint = grammar[index];
         final explanation = index < explanations.length
-            ? (explanations[index] as Map?)?['explanation'] ?? ''
+            ? (explanations[index] as Map<String, dynamic>?)?['explanation'] as String? ?? ''
             : '';
         
         return Card(

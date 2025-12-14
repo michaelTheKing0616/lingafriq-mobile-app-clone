@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../models/game/game_session_model.dart';
-import '../../services/polie_content_generator.dart';
-import '../../widgets/error_boundary.dart';
-import '../../screens/loading/dynamic_loading_screen.dart';
+import '../../../models/game/game_session_model.dart';
+import '../../../services/polie_content_generator.dart';
+import '../../../widgets/error_boundary.dart';
+import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math';
@@ -26,6 +26,25 @@ class VillageQuestGame extends BaseGameScreen {
 }
 
 class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
+
+  Future<void> _initializeGame() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    try {
+      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      // Initialize game content
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+        _error = e.toString();
+      });
+    }
+  }
   Map<String, dynamic>? _currentScenario;
   List<String> _responseOptions = [];
   String? _selectedResponse;
@@ -168,7 +187,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
   @override
   Widget buildGameContent(BuildContext context) {
     if (isLoading || _isLoading) {
-      return const DynamicLoadingScreen();
+      return DynamicLoadingScreen();
     }
 
     if (error != null) {
@@ -342,4 +361,5 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
     );
   }
 }
+
 

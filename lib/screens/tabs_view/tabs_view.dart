@@ -83,13 +83,14 @@ class _TabsViewState extends ConsumerState<TabsView> {
           // Main content
           Expanded(
             child: IndexedStack(
-        index: index,
-        children: [
-          const HomeTab().animate().fadeIn(duration: 200.ms),
-          const CoursesTab().animate().fadeIn(duration: 200.ms),
-          const StandingsTab().animate().fadeIn(duration: 200.ms),
-          const ProfileTab().animate().fadeIn(duration: 200.ms),
-            ],
+              index: index,
+              children: [
+                const HomeTab().animate().fadeIn(duration: 200.ms),
+                const CoursesTab().animate().fadeIn(duration: 200.ms),
+                const StandingsTab().animate().fadeIn(duration: 200.ms),
+                const ProfileTab().animate().fadeIn(duration: 200.ms),
+              ],
+            ),
           ),
         ],
       ),

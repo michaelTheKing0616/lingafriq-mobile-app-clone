@@ -8,11 +8,16 @@ import 'package:lingafriq/screens/ugc/create_story_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Hub screen for User-Generated Content
-class UGCHubScreen extends ConsumerWidget {
+class UGCHubScreen extends ConsumerStatefulWidget {
   const UGCHubScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<UGCHubScreen> createState() => _UGCHubScreenState();
+}
+
+class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
+  @override
+  Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -56,7 +61,7 @@ class UGCHubScreen extends ConsumerWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const CreateLessonScreen()),
                 );
-                if (result == true && mounted) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Lesson created!'),
@@ -79,7 +84,7 @@ class UGCHubScreen extends ConsumerWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const CreateQuizScreen()),
                 );
-                if (result == true && mounted) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Quiz created!'),
@@ -102,7 +107,7 @@ class UGCHubScreen extends ConsumerWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const CreateStoryScreen()),
                 );
-                if (result == true && mounted) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Story created!'),
@@ -173,7 +178,7 @@ class UGCHubScreen extends ConsumerWidget {
                               contentId: item['id'] ?? '',
                               contentType: item['type'] ?? 'lesson',
                             );
-                            if (mounted) {
+                            if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text('Content shared!'),
