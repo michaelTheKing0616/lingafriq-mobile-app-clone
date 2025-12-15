@@ -33,6 +33,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   String? _selectedRight;
   final List<_MatchResult> _results = [];
   GameSession? _session;
+  DateTime? _startTime;
 
   @override
   void initState() {
@@ -60,8 +61,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       return;
     }
 
-    setStartTime(DateTime.now());
     setState(() {
+      _startTime = DateTime.now();
       _leftTiles = cards.map((c) => _GameTile(
             id: c.cardId,
             label: c.text,
@@ -112,8 +113,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
   Future<void> _evaluateMatch(String leftId, String rightId) async {
     final correct = leftId == rightId;
-    final duration = this.startTime != null
-        ? DateTime.now().difference(this.startTime!).inMilliseconds
+    final duration = _startTime != null
+        ? DateTime.now().difference(_startTime!).inMilliseconds
         : 0;
 
     setState(() {
