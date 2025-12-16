@@ -436,13 +436,13 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     "Marking as complete $endpointToHit".log("endpointToHit");
     
     for (int attempt = 0; attempt <= maxRetries; attempt++) {
-      try {
+    try {
         if (attempt > 0) {
           debugPrint('Retrying markAsComplete (attempt ${attempt + 1}/${maxRetries + 1})');
           await Future.delayed(Duration(seconds: attempt)); // Exponential backoff
         }
         
-        state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: true);
         
         // Add timeout to prevent infinite loading
         final res = await ref.read(client).patch(
@@ -458,37 +458,37 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           },
         );
         
-        if (res.statusCode != 200) throw res.data;
+      if (res.statusCode != 200) throw res.data;
         
         // Update account in background (don't wait for it)
-        accountUpdate().then((value) {
-          "Account updated".log("accountUpdate");
-          final userId = ref.read(userProvider)?.id;
-          if (userId != null) {
-            getProfileUser(userId).then((user) {
-              ref.read(userProvider.notifier).overrideUser(user);
+      accountUpdate().then((value) {
+        "Account updated".log("accountUpdate");
+        final userId = ref.read(userProvider)?.id;
+        if (userId != null) {
+          getProfileUser(userId).then((user) {
+            ref.read(userProvider.notifier).overrideUser(user);
             }).catchError((e) {
               "Error getting profile user $e".log("accountUpdate");
-            });
-          }
-        }).catchError((e) {
-          "Error Account update $e".log("accountUpdate");
-        });
+          });
+        }
+      }).catchError((e) {
+        "Error Account update $e".log("accountUpdate");
+      });
         
-        state = state.copyWith(isLoading: false);
-        return true;
-      } catch (e) {
-        state = state.copyWith(isLoading: false);
+      state = state.copyWith(isLoading: false);
+      return true;
+    } catch (e) {
+      state = state.copyWith(isLoading: false);
         
         // If it's the last attempt or a non-retryable error, handle it
         if (attempt == maxRetries || e is TimeoutException) {
           debugPrint('markAsComplete failed after ${attempt + 1} attempts: $e');
           // Don't show dialog for timeout - let the caller handle it
           if (e is! TimeoutException) {
-            ref.read(dialogProvider(e)).showExceptionDialog();
+      ref.read(dialogProvider(e)).showExceptionDialog();
           }
-          return false;
-        }
+      return false;
+    }
         
         // Otherwise, retry
         debugPrint('markAsComplete attempt ${attempt + 1} failed, retrying...');
