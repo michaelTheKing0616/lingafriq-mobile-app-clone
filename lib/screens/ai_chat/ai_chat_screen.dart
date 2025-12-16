@@ -153,18 +153,24 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         String errorTitle = 'Chat Error';
         String errorMessage = e.toString().replaceAll('Exception: ', '');
         
-        if (errorMessage.contains('API key') || errorMessage.contains('not configured')) {
+        if (errorMessage.contains('Invalid request format') || errorMessage.contains('Request validation failed')) {
+          errorTitle = 'Message Format Error';
+          errorMessage = 'There was an issue with the message format. Please try again with a shorter or simpler message.';
+        } else if (errorMessage.contains('API key') || errorMessage.contains('not configured')) {
           errorTitle = 'Configuration Required';
           errorMessage = 'AI Chat needs to be configured. Please contact support or check app settings.';
         } else if (errorMessage.contains('Rate limit') || errorMessage.contains('429')) {
           errorTitle = 'Rate Limit Exceeded';
           errorMessage = 'Too many requests. Please wait a moment and try again.';
-        } else if (errorMessage.contains('timeout') || errorMessage.contains('connection')) {
+        } else if (errorMessage.contains('timeout') || errorMessage.contains('connection') || errorMessage.contains('Connection')) {
           errorTitle = 'Connection Error';
           errorMessage = 'Unable to connect to AI service. Please check your internet connection and try again.';
         } else if (errorMessage.contains('401') || errorMessage.contains('Unauthorized')) {
           errorTitle = 'Authentication Error';
           errorMessage = 'Invalid API credentials. Please contact support.';
+        } else if (errorMessage.contains('No valid messages')) {
+          errorTitle = 'Empty Message';
+          errorMessage = 'Please enter a message before sending.';
         }
         
         ref.read(dialogProvider('')).showPlatformDialogue(

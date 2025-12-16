@@ -130,12 +130,22 @@ class QuizScreen extends HookConsumerWidget {
                             };
                             if (correct) {
                               if (!isCompleted) {
-                                final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
-                                if (!success) {
-                                  "Failed to mark quiz as complete".log("quiz_screen");
-                                } else {
-                                  final pointsEarned = quiz.length * 10;
-                                  await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
+                                try {
+                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  if (!success) {
+                                    "Failed to mark quiz as complete".log("quiz_screen");
+                                    if (context.mounted) {
+                                      VxToast.show(context, msg: "Failed to save progress. Your answer was correct!");
+                                    }
+                                  } else {
+                                    final pointsEarned = quiz.length * 10;
+                                    await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
+                                  }
+                                } catch (e) {
+                                  "Error marking quiz complete: $e".log("quiz_screen");
+                                  if (context.mounted) {
+                                    VxToast.show(context, msg: "Error saving progress. Your answer was correct!");
+                                  }
                                 }
                               }
                               if (context.mounted) {
@@ -168,12 +178,22 @@ class QuizScreen extends HookConsumerWidget {
                             ref.read(quizIndexProvider.notifier).setIndex(0);
                             if (correct) {
                               if (!isCompleted) {
-                                final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
-                                if (!success) {
-                                  "Failed to mark quiz as complete".log("quiz_screen");
-                                } else {
-                                  final pointsEarned = quiz.length * 10;
-                                  await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
+                                try {
+                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  if (!success) {
+                                    "Failed to mark quiz as complete".log("quiz_screen");
+                                    if (context.mounted) {
+                                      VxToast.show(context, msg: "Failed to save progress. Quiz completed!");
+                                    }
+                                  } else {
+                                    final pointsEarned = quiz.length * 10;
+                                    await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
+                                  }
+                                } catch (e) {
+                                  "Error marking quiz complete: $e".log("quiz_screen");
+                                  if (context.mounted) {
+                                    VxToast.show(context, msg: "Error saving progress. Quiz completed!");
+                                  }
                                 }
                               }
                               if (context.mounted) {

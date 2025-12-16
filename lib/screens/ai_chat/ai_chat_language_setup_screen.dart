@@ -98,34 +98,44 @@ class _AiChatLanguageSetupScreenState
                   ],
                 ),
               ),
-              // Mode toggle
+              // Mode display (read-only, shows selected mode)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
-                child: SegmentedButton<PolieMode>(
-                  segments: const [
-                    ButtonSegment(
-                      value: PolieMode.translation,
-                      icon: Icon(Icons.translate_rounded),
-                      label: Text('Translator'),
+                child: Container(
+                  padding: EdgeInsets.all(4.w),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF1E3325) : const Color(0xFFF5F7F5),
+                    borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                    border: Border.all(
+                      color: const Color(0xFF00A86B).withOpacity(0.3),
                     ),
-                    ButtonSegment(
-                      value: PolieMode.tutor,
-                      icon: Icon(Icons.school_rounded),
-                      label: Text('Tutor'),
-                    ),
-                  ],
-                  selected: {_mode},
-                  onSelectionChanged: (selection) {
-                    if (selection.isNotEmpty) {
-                      setState(() {
-                        _mode = selection.first;
-                      });
-                    }
-                  },
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        _getModeIcon(_mode),
+                        color: const Color(0xFF00A86B),
+                        size: 20.sp,
+                      ),
+                      SizedBox(width: 2.w),
+                      Text(
+                        _getModeName(_mode),
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                      SizedBox(width: 2.w),
+                      Text(
+                        'Mode',
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: isDark ? Colors.white70 : Colors.black54,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -182,9 +192,7 @@ class _AiChatLanguageSetupScreenState
                             ),
                             SizedBox(height: 0.5.h),
                             Text(
-                              _mode == PolieMode.translation
-                                  ? 'Translate with Polie'
-                                  : 'Tutor me in this',
+                              _getModeDescription(_mode, name),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 11.sp,
@@ -205,6 +213,57 @@ class _AiChatLanguageSetupScreenState
         ),
       ),
     );
+  }
+
+  IconData _getModeIcon(PolieMode mode) {
+    switch (mode) {
+      case PolieMode.translation:
+        return Icons.translate_rounded;
+      case PolieMode.tutor:
+        return Icons.school_rounded;
+      case PolieMode.roleplay:
+        return Icons.theater_comedy_rounded;
+      case PolieMode.conversation:
+        return Icons.chat_bubble_outline_rounded;
+      case PolieMode.vocab:
+        return Icons.book_rounded;
+      case PolieMode.review:
+        return Icons.refresh_rounded;
+    }
+  }
+
+  String _getModeName(PolieMode mode) {
+    switch (mode) {
+      case PolieMode.translation:
+        return 'Translation';
+      case PolieMode.tutor:
+        return 'Tutor';
+      case PolieMode.roleplay:
+        return 'Roleplay';
+      case PolieMode.conversation:
+        return 'Conversation';
+      case PolieMode.vocab:
+        return 'Vocabulary';
+      case PolieMode.review:
+        return 'Review';
+    }
+  }
+
+  String _getModeDescription(PolieMode mode, String language) {
+    switch (mode) {
+      case PolieMode.translation:
+        return 'Translate with Polie';
+      case PolieMode.tutor:
+        return 'Learn $language with Polie';
+      case PolieMode.roleplay:
+        return 'Practice $language scenarios';
+      case PolieMode.conversation:
+        return 'Chat in $language';
+      case PolieMode.vocab:
+        return 'Learn $language words';
+      case PolieMode.review:
+        return 'Review $language';
+    }
   }
 }
 

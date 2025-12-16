@@ -538,8 +538,18 @@ Make reviews efficient and rewarding.''';
   }
 
   Future<void> setLanguage(String language) async {
+    // Save current chat history before switching languages
+    if (_targetLanguage != language) {
+      await _saveChatHistory();
+    }
+    
     _selectedLanguage = language;
     _targetLanguage = language;
+    
+    // Clear current messages and load history for new language
+    _messages.clear();
+    await _loadChatHistory();
+    
     _initializeSystemPrompt();
     state = state.copyWith();
   }
@@ -775,38 +785,55 @@ Make reviews efficient and rewarding.''';
         // Ensure system prompt is not empty (use override if provided)
         final systemPrompt = (systemPromptOverride ?? _systemPrompt)?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
         
-        // Build messages array, ensuring all messages have valid content
-        // IMPORTANT: Scope messages by mode × language for separate chat bodies
-        final messagesList = <Map<String, dynamic>>[];
+        // Build messages array - CRITICAL: Groq API format
+        // Groq expects:
+        // - messages: array of {role: "user"|"assistant", content: string}
+        // - system messages are passed separately (not in messages array for some models)
+        // - For Groq, we can include system in messages array, but it's cleaner to pass separately
         
-        // Add system message if prompt exists
-        if (systemPrompt.isNotEmpty) {
-          messagesList.add({
-            "role": "system",
-            "content": systemPrompt,
-          });
-        }
+        final messagesList = <Map<String, dynamic>>[];
         
         // Filter messages by current mode and language to create scoped chat bodies
         // This ensures each mode × language combination has its own conversation history
         final scopedMessages = _messages.where((msg) {
-          // For now, include all messages, but in future we can add metadata
-          // to track which mode/language each message belongs to
-          return msg.content.trim().isNotEmpty;
+          // Only include user and assistant messages (system is handled separately)
+          return msg.content.trim().isNotEmpty && 
+                 (msg.role == 'user' || msg.role == 'assistant');
         }).toList();
         
         // Add conversation messages, filtering out empty ones and ensuring valid roles
         for (final msg in scopedMessages) {
           final content = msg.content.trim();
           if (content.isNotEmpty) {
-            // Ensure role is valid (user or assistant)
+            // Ensure role is valid (user or assistant) - Groq only accepts these roles in messages array
             final role = (msg.role == 'user' || msg.role == 'assistant') 
                 ? msg.role 
                 : 'user';
             
+            // Ensure content is a string and not null
+            final contentStr = content.toString();
+            if (contentStr.isNotEmpty && contentStr.length <= 100000) { // Groq has content length limits
+              messagesList.add({
+                "role": role,
+                "content": contentStr,
+              });
+            }
+          }
+        }
+        
+        // CRITICAL: Ensure we have at least one user message (the current one)
+        // The current user message should be the last one
+        final currentUserMessage = sanitizedMessage.trim();
+        if (currentUserMessage.isNotEmpty) {
+          // Check if the last message is already this user message
+          final lastMessage = messagesList.isNotEmpty ? messagesList.last : null;
+          if (lastMessage == null || 
+              lastMessage["role"] != "user" || 
+              lastMessage["content"] != currentUserMessage) {
+            // Add current user message
             messagesList.add({
-              "role": role,
-              "content": content,
+              "role": "user",
+              "content": currentUserMessage,
             });
           }
         }
@@ -817,25 +844,49 @@ Make reviews efficient and rewarding.''';
           throw Exception('No valid messages to send. Please enter a message.');
         }
         
-        // Ensure messages array is not too long (Groq has limits)
-        // Keep last 20 messages to avoid token limits
-        if (messagesList.length > 21) { // 1 system + 20 conversation
-          final systemMsg = messagesList.firstWhere(
-            (m) => m["role"] == "system",
-            orElse: () => <String, dynamic>{},
-          );
-          final conversationMsgs = messagesList
-              .where((m) => m["role"] != "system")
-              .toList();
-          
-          messagesList.clear();
-          if (systemMsg != null) {
-            messagesList.add(systemMsg);
+        // Final validation: Ensure all messages have required fields and correct types
+        for (int i = 0; i < messagesList.length; i++) {
+          final msg = messagesList[i];
+          if (msg["role"] == null || msg["content"] == null) {
+            throw Exception('Invalid message format at index $i: missing role or content');
           }
-          // Keep last 20 conversation messages
-          messagesList.addAll(
-            conversationMsgs.skip(conversationMsgs.length - 20).toList(),
-          );
+          if (msg["role"] is! String) {
+            throw Exception('Invalid message format at index $i: role must be a string');
+          }
+          if (msg["content"] is! String) {
+            // Convert to string if it's not already
+            msg["content"] = msg["content"].toString();
+          }
+          final contentStr = msg["content"] as String;
+          if (contentStr.isEmpty) {
+            throw Exception('Invalid message format at index $i: content cannot be empty');
+          }
+          // Ensure role is valid (only user or assistant in messages array)
+          if (msg["role"] != "user" && msg["role"] != "assistant") {
+            throw Exception('Invalid message format at index $i: role must be "user" or "assistant"');
+          }
+        }
+        
+        // Ensure messages array is not empty after validation
+        if (messagesList.isEmpty) {
+          throw Exception('No valid messages after validation. Please try again.');
+        }
+        
+        // Limit messages array to last 20 messages (to avoid token limits)
+        // Groq has token limits, so we keep recent conversation context
+        if (messagesList.length > 20) {
+          messagesList.removeRange(0, messagesList.length - 20);
+        }
+        
+        // Log the final message structure for debugging
+        debugPrint('Sending to Groq API:');
+        debugPrint('  Model: $currentModel');
+        debugPrint('  System prompt length: ${systemPrompt.length}');
+        debugPrint('  Messages count: ${messagesList.length}');
+        for (int i = 0; i < messagesList.length; i++) {
+          final msg = messagesList[i];
+          final content = msg["content"] as String;
+          debugPrint('  [$i] role=${msg["role"]}, content_length=${content.length}, preview=${content.substring(0, content.length > 50 ? 50 : content.length)}...');
         }
         
         // Validate model name
@@ -864,7 +915,16 @@ Make reviews efficient and rewarding.''';
           ),
           data: {
             "model": currentModel,
-            "messages": messagesList,
+            "messages": [
+              // Add system message as first message (Groq accepts this format)
+              if (systemPrompt.isNotEmpty)
+                {
+                  "role": "system",
+                  "content": systemPrompt,
+                },
+              // Add conversation messages
+              ...messagesList,
+            ],
             "temperature": _mode == PolieMode.translation ? 0.2 : 0.7,
             "max_tokens": 500,
             "stream": true,
@@ -883,16 +943,21 @@ Make reviews efficient and rewarding.''';
             // Try to read error response if available
             if (response.data != null) {
               // For stream responses, we might not be able to read the body easily
-              errorDetail = 'Request validation failed. Please check your message format.';
+              // But we can log the status code for debugging
+              debugPrint('Groq API error: Status ${response.statusCode}');
+              errorDetail = 'Request validation failed. Please check your message format and API key.';
             }
-          } catch (_) {}
+          } catch (e) {
+            debugPrint('Error reading response: $e');
+          }
           
           if (response.statusCode == 400) {
-            throw Exception('Invalid request format. ${errorDetail}');
+            // Provide more helpful error message
+            throw Exception('Invalid request format. ${errorDetail}\n\nPlease ensure:\n- Your message is not empty\n- API key is valid\n- Message format is correct');
           } else if (response.statusCode == 401) {
-            throw Exception('Invalid API key. Please check your Groq API key.');
+            throw Exception('Invalid API key. Please check your Groq API key in settings.');
           } else if (response.statusCode == 429) {
-            throw Exception('Rate limit exceeded. Please try again later.');
+            throw Exception('Rate limit exceeded. Please try again in a few moments.');
           } else {
             throw Exception('Request failed with status ${response.statusCode}: ${errorDetail}');
           }
@@ -1099,7 +1164,40 @@ Make reviews efficient and rewarding.''';
           }
         }
 
-        throw Exception('Failed to send message: ${e.toString()}');
+        // Provide more helpful error messages
+        String errorMessage = 'Failed to send message';
+        if (e is DioException) {
+          if (e.response != null) {
+            final statusCode = e.response!.statusCode;
+            final errorData = e.response!.data;
+            if (statusCode == 400) {
+              errorMessage = 'Invalid request format. Please check your message and try again.';
+              // Log the actual error for debugging
+              debugPrint('Groq API 400 error: $errorData');
+            } else if (statusCode == 401) {
+              errorMessage = 'Invalid API key. Please check your Groq API key.';
+            } else if (statusCode == 429) {
+              errorMessage = 'Rate limit exceeded. Please try again in a few moments.';
+            } else {
+              errorMessage = 'Request failed (${statusCode}). Please try again.';
+            }
+          } else if (e.type == DioExceptionType.connectionTimeout ||
+                     e.type == DioExceptionType.receiveTimeout) {
+            errorMessage = 'Connection timed out. Please check your internet connection.';
+          } else if (e.type == DioExceptionType.connectionError) {
+            errorMessage = 'Connection error. Please check your internet connection.';
+          }
+        } else if (e is TimeoutException) {
+          errorMessage = 'Request timed out. Please try again.';
+        } else {
+          final errorStr = e.toString();
+          if (errorStr.contains('Invalid request format')) {
+            errorMessage = errorStr;
+          } else {
+            errorMessage = 'Failed to send message: ${errorStr.replaceAll('Exception: ', '')}';
+          }
+        }
+        throw Exception(errorMessage);
       }
     }
   }
@@ -1580,10 +1678,33 @@ Return only JSON.
   /// This ensures each mode × language combination has its own conversation history
   String get _chatHistoryKey {
     final modeName = _mode.toString().split('.').last;
-    final langCode = _targetLanguage.toLowerCase().replaceAll(' ', '_');
+    // Use selectedLanguage as fallback if targetLanguage is empty
+    final language = (_targetLanguage.isNotEmpty ? _targetLanguage : _selectedLanguage)
+        .toLowerCase()
+        .replaceAll(' ', '_')
+        .replaceAll(RegExp(r'[^a-z0-9_]'), ''); // Sanitize
     // Format: ai_chat_history_groq_{mode}_{language}
     // Example: ai_chat_history_groq_translation_yoruba
-    return 'ai_chat_history_groq_${modeName}_$langCode';
+    return 'ai_chat_history_groq_${modeName}_$language';
+  }
+  
+  /// Get language code for backend API (normalized)
+  String get _languageCodeForBackend {
+    final language = (_targetLanguage.isNotEmpty ? _targetLanguage : _selectedLanguage)
+        .toLowerCase()
+        .replaceAll(' ', '_')
+        .replaceAll(RegExp(r'[^a-z0-9_]'), '');
+    return language;
+  }
+  
+  /// Get mode name for backend API
+  String get _modeNameForBackend {
+    return _mode == PolieMode.translation ? 'translation'
+        : _mode == PolieMode.tutor ? 'tutor'
+        : _mode == PolieMode.roleplay ? 'roleplay'
+        : _mode == PolieMode.conversation ? 'conversation'
+        : _mode == PolieMode.vocab ? 'vocab'
+        : 'review';
   }
 
   Future<void> _saveChatHistory() async {
@@ -1614,18 +1735,34 @@ Return only JSON.
       }
       _lastBackendSync = now;
 
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.aiChatHistory,
-        data: {
-          'user_id': user.id.toString(),
-          'mode': _mode.name,
-          'messages': _messages.map((m) => m.toJson()).toList(),
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
+      // Use backend API directly for chat history
+      try {
+        final apiProvider = ref.read(apiProvider.notifier);
+        final success = await apiProvider.saveAiChatHistory(
+          mode: _modeNameForBackend,
+          languageCode: _languageCodeForBackend,
+          messages: _messages.map((m) => m.toJson()).toList(),
+        );
+        if (success) {
+          debugPrint('Chat history synced to backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+        }
+      } catch (apiError) {
+        debugPrint('Error syncing to backend API, falling back to sync queue: $apiError');
+        // Fallback to sync queue
+        final syncProvider = ref.read(backendSyncProvider.notifier);
+        await syncProvider.queueSync(SyncTask(
+          type: SyncType.aiChatHistory,
+          data: {
+            'user_id': user.id.toString(),
+            'mode': _modeNameForBackend,
+            'languageCode': _languageCodeForBackend,
+            'messages': _messages.map((m) => m.toJson()).toList(),
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        ));
+      }
     } catch (e) {
-      debugPrint('Error queuing chat history sync: $e');
+      debugPrint('Error syncing chat history: $e');
     }
   }
 
@@ -1683,6 +1820,36 @@ Return only JSON.
 
   Future<void> _loadChatHistory() async {
     try {
+      // Try loading from backend first
+      try {
+        final user = ref.read(userProvider);
+        if (user != null) {
+          final apiProvider = ref.read(apiProvider.notifier);
+          final backendHistory = await apiProvider.getAiChatHistory(
+            mode: _modeNameForBackend,
+            languageCode: _languageCodeForBackend,
+          );
+          
+          if (backendHistory != null && backendHistory.isNotEmpty) {
+            _messages.clear();
+            _messages.addAll(
+              backendHistory.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
+            );
+            debugPrint('Loaded ${_messages.length} messages from backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+            state = state.copyWith();
+            
+            // Also save to local storage for offline access
+            final prefs = await SharedPreferences.getInstance();
+            final messagesJson = _messages.map((msg) => msg.toJson()).toList();
+            await prefs.setString(_chatHistoryKey, jsonEncode(messagesJson));
+            return;
+          }
+        }
+      } catch (backendError) {
+        debugPrint('Error loading from backend, trying local storage: $backendError');
+      }
+      
+      // Fallback to local storage
       final prefs = await SharedPreferences.getInstance();
       final historyJson = prefs.getString(_chatHistoryKey);
       if (historyJson != null && historyJson.isNotEmpty) {
@@ -1697,10 +1864,10 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('Loaded ${_messages.length} messages for $modeName mode');
+        debugPrint('Loaded ${_messages.length} messages from local storage for $modeName mode');
         state = state.copyWith();
       } else {
-        // No history for this mode, ensure messages are cleared
+        // No history for this mode × language combination
         _messages.clear();
         final modeName = _mode == PolieMode.translation ? "Translation" 
             : _mode == PolieMode.tutor ? "Tutor"
@@ -1708,7 +1875,7 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('No chat history found for $modeName mode');
+        debugPrint('No chat history found for $modeName mode × ${_languageCodeForBackend}');
         state = state.copyWith();
       }
     } catch (e) {

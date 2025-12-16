@@ -222,5 +222,87 @@ class ProgressIntegration {
       hoursSpent: metrics.timeSpentHours,
     );
   }
+
+  /// Call this when a story/chapter is completed
+  /// XP is only awarded AFTER the user has fully consumed the content (read story, completed lessons)
+  static Future<void> onStoryCompleted(
+    WidgetRef ref, {
+    required String chapterId,
+    required String chapterTitle,
+    int? wordsLearned,
+    int? xpReward,
+    bool allLessonsCompleted = false,
+  }) async {
+    // Only award XP if all lessons are completed (content fully consumed)
+    if (!allLessonsCompleted) {
+      debugPrint('Story not fully completed - lessons remaining. XP not awarded.');
+      return;
+    }
+
+    // Update daily goals (local)
+    ref.read(dailyGoalsProvider.notifier).updateGoalProgress('stories', 1);
+
+    // Sync with backend
+    try {
+      await ref.read(apiProvider.notifier).updateDailyGoal('stories', 1);
+    } catch (e) {
+      // Silently fail
+    }
+
+    // Track progress
+    ref.read(progressTrackingProvider.notifier).recordWordsLearned(wordsLearned ?? 10);
+    ref.read(progressTrackingProvider.notifier).recordActivityTime('stories', 15.0); // 15 minutes for story
+
+    // Award XP for gamification (server-authoritative)
+    try {
+      await ref.read(gamificationProvider.notifier).awardXP(
+        'complete_quest_chapter',
+        multiplier: (xpReward ?? 100) / 50.0,
+        sourceId: chapterId, // Unique source ID to prevent duplicate XP
+      );
+    } catch (e) {
+      debugPrint('Error awarding story XP: $e');
+    }
+
+    // Update points if earned (legacy support)
+    if (xpReward != null && xpReward > 0) {
+      try {
+        await ref.read(apiProvider.notifier).updateUserPoints(xpReward);
+      } catch (e) {
+        // Silently fail
+      }
+    }
+
+    // Sync with backend
+    try {
+      final metrics = ref.read(progressTrackingProvider.notifier).metrics;
+      await ref.read(apiProvider.notifier).updateProgressMetrics(metrics.toMap());
+    } catch (e) {
+      // Silently fail
+    }
+
+    // Check achievements
+    final metrics = ref.read(progressTrackingProvider.notifier).metrics;
+    ref.read(achievementsProvider.notifier).checkAndUnlockAchievements(
+      wordsLearned: metrics.wordsLearned,
+      storiesCompleted: (metrics.timeByActivity['stories'] ?? 0.0).toInt(),
+    );
+  }
+
+  /// Call this when a lesson within a story is completed
+  /// This does NOT award XP - XP is only awarded when the entire story/chapter is completed
+  static Future<void> onStoryLessonCompleted(WidgetRef ref, {String? language}) async {
+    // Track progress but don't award XP yet
+    ref.read(progressTrackingProvider.notifier).recordWordsLearned(3, language: language);
+    ref.read(progressTrackingProvider.notifier).recordActivityTime('stories', 3.0); // 3 minutes per lesson
+
+    // Sync with backend
+    try {
+      final metrics = ref.read(progressTrackingProvider.notifier).metrics;
+      await ref.read(apiProvider.notifier).updateProgressMetrics(metrics.toMap());
+    } catch (e) {
+      // Silently fail
+    }
+  }
 }
 

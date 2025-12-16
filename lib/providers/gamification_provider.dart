@@ -36,14 +36,64 @@ class GamificationProvider extends Notifier<BaseProviderState>
   }
 
   /// Award XP and handle level ups, currency rewards
-  Future<int> awardXP(String source, {double multiplier = 1.0}) async {
-    final xpGain = (XPSources.getXP(source) * multiplier).round();
-    final newXP = _gamification.xp + xpGain;
-    final newLevel = LevelTitles.getLevelFromXP(newXP);
-    final newTitle = LevelTitles.getTitleForLevel(newLevel);
-
+  /// Uses server-authoritative XP service to prevent cheating
+  Future<int> awardXP(String source, {double multiplier = 1.0, String? sourceId}) async {
+    final baseXP = XPSources.getXP(source);
+    final xpGain = (baseXP * multiplier).round();
+    
+    // Map source to backend XP source type
+    final backendSource = _mapSourceToBackendType(source);
+    final uniqueSourceId = sourceId ?? '${source}_${DateTime.now().millisecondsSinceEpoch}';
+    
+    // Award XP via backend service (server-authoritative)
+    try {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        final success = await ref.read(apiProvider.notifier).awardXP(
+          userId: user.id.toString(),
+          source: backendSource,
+          sourceId: uniqueSourceId,
+          amount: xpGain,
+          difficultyMultiplier: multiplier,
+        );
+        
+        if (!success) {
+          debugPrint('Failed to award XP via backend for source: $source');
+          // Fall back to local-only if backend fails (for offline support)
+          // But don't sync to backend to prevent double-counting
+        } else {
+          // Update local state from backend response
+          try {
+            final userXP = await ref.read(apiProvider.notifier).getUserXP(user.id.toString());
+            if (userXP != null && userXP is Map<String, dynamic>) {
+              final totalXP = (userXP['totalXP'] as num?)?.toInt() ?? _gamification.xp;
+              final backendLevel = (userXP['level'] as num?)?.toInt();
+              final newLevel = backendLevel ?? LevelTitles.getLevelFromXP(totalXP);
+              final newTitle = LevelTitles.getTitleForLevel(newLevel);
+              
+              _gamification = _gamification.copyWith(
+                xp: totalXP,
+                level: newLevel,
+                levelTitle: newTitle,
+              );
+            }
+          } catch (e) {
+            debugPrint('Error updating local XP from backend: $e');
+            // Continue with local calculation
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error awarding XP via backend: $e');
+      // Fall back to local-only for offline support
+    }
+    
     // Calculate currency rewards (5 ngwenya per XP)
     final ngwenyaGain = xpGain ~/ 5;
+    final currentXP = _gamification.xp;
+    final newXP = currentXP + xpGain;
+    final newLevel = LevelTitles.getLevelFromXP(newXP);
+    final newTitle = LevelTitles.getTitleForLevel(newLevel);
 
     _gamification = _gamification.copyWith(
       xp: newXP,
@@ -82,6 +132,23 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     state = state.copyWith();
     return xpGain;
+  }
+  
+  /// Map frontend XP source to backend source type
+  String _mapSourceToBackendType(String source) {
+    if (source.contains('quiz') || source.contains('lesson')) {
+      return 'quiz';
+    } else if (source.contains('story') || source.contains('chapter') || source.contains('quest')) {
+      return 'story';
+    } else if (source.contains('chat') || source.contains('polie')) {
+      return 'chat';
+    } else if (source.contains('event')) {
+      return 'event';
+    } else if (source.contains('tribe')) {
+      return 'tribe';
+    }
+    // Default to quiz for unknown sources
+    return 'quiz';
   }
 
   /// Emit event to backend

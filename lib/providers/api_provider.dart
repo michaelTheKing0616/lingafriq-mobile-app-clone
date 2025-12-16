@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -431,30 +432,70 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  Future<bool> markAsComplete(String endpointToHit) async {
+  Future<bool> markAsComplete(String endpointToHit, {int maxRetries = 2}) async {
     "Marking as complete $endpointToHit".log("endpointToHit");
-    try {
-      state = state.copyWith(isLoading: true);
-      final res = await ref.read(client).patch(endpointToHit);
-      if (res.statusCode != 200) throw res.data;
-      accountUpdate().then((value) {
-        "Account updated".log("accountUpdate");
-        final userId = ref.read(userProvider)?.id;
-        if (userId != null) {
-          getProfileUser(userId).then((user) {
-            ref.read(userProvider.notifier).overrideUser(user);
-          });
+    
+    for (int attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        if (attempt > 0) {
+          debugPrint('Retrying markAsComplete (attempt ${attempt + 1}/${maxRetries + 1})');
+          await Future.delayed(Duration(seconds: attempt)); // Exponential backoff
         }
-      }).catchError((e) {
-        "Error Account update $e".log("accountUpdate");
-      });
-      state = state.copyWith(isLoading: false);
-      return true;
-    } catch (e) {
-      state = state.copyWith(isLoading: false);
-      ref.read(dialogProvider(e)).showExceptionDialog();
-      return false;
+        
+        state = state.copyWith(isLoading: true);
+        
+        // Add timeout to prevent infinite loading
+        final res = await ref.read(client).patch(
+          endpointToHit,
+          options: Options(
+            receiveTimeout: const Duration(seconds: 10),
+            sendTimeout: const Duration(seconds: 10),
+          ),
+        ).timeout(
+          const Duration(seconds: 15),
+          onTimeout: () {
+            throw TimeoutException('Request timed out after 15 seconds');
+          },
+        );
+        
+        if (res.statusCode != 200) throw res.data;
+        
+        // Update account in background (don't wait for it)
+        accountUpdate().then((value) {
+          "Account updated".log("accountUpdate");
+          final userId = ref.read(userProvider)?.id;
+          if (userId != null) {
+            getProfileUser(userId).then((user) {
+              ref.read(userProvider.notifier).overrideUser(user);
+            }).catchError((e) {
+              "Error getting profile user $e".log("accountUpdate");
+            });
+          }
+        }).catchError((e) {
+          "Error Account update $e".log("accountUpdate");
+        });
+        
+        state = state.copyWith(isLoading: false);
+        return true;
+      } catch (e) {
+        state = state.copyWith(isLoading: false);
+        
+        // If it's the last attempt or a non-retryable error, handle it
+        if (attempt == maxRetries || e is TimeoutException) {
+          debugPrint('markAsComplete failed after ${attempt + 1} attempts: $e');
+          // Don't show dialog for timeout - let the caller handle it
+          if (e is! TimeoutException) {
+            ref.read(dialogProvider(e)).showExceptionDialog();
+          }
+          return false;
+        }
+        
+        // Otherwise, retry
+        debugPrint('markAsComplete attempt ${attempt + 1} failed, retrying...');
+      }
     }
+    
+    return false;
   }
 
   // Random Quiz Section
@@ -888,6 +929,96 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     } catch (e) {
       debugPrint('Error getting AI chat history: $e');
       return [];
+    }
+  }
+
+  /// Get AI chat history scoped by mode × language
+  /// GET /api/ai-chat-history?mode=translation&languageCode=yoruba
+  Future<List<Map<String, dynamic>>?> getAiChatHistoryScoped({
+    required String mode,
+    required String languageCode,
+  }) async {
+    try {
+      final res = await ref.read(client).get(
+        '/api/ai-chat-history',
+        queryParameters: {
+          'mode': mode,
+          'languageCode': languageCode,
+        },
+      );
+      if (res.statusCode != 200) throw res.data;
+      final messages = res.data['messages'] as List<dynamic>?;
+      return messages?.map((m) => Map<String, dynamic>.from(m)).toList();
+    } catch (e) {
+      debugPrint('Error getting scoped AI chat history: $e');
+      return null;
+    }
+  }
+
+  /// Save AI chat history scoped by mode × language
+  /// POST /api/ai-chat-history
+  Future<bool> saveAiChatHistory({
+    required String mode,
+    required String languageCode,
+    required List<Map<String, dynamic>> messages,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        '/api/ai-chat-history',
+        data: {
+          'mode': mode,
+          'languageCode': languageCode,
+          'messages': messages,
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error saving AI chat history: $e');
+      return false;
+    }
+  }
+
+  /// Award XP via server-authoritative XP service
+  /// POST /api/xp/award
+  Future<bool> awardXP({
+    required String userId,
+    required String source, // 'quiz', 'story', 'chat', 'event', 'tribe'
+    required String sourceId, // Unique ID for this specific event
+    required int amount,
+    double difficultyMultiplier = 1.0,
+    double repetitionFactor = 1.0,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        '/api/xp/award',
+        data: {
+          'userId': userId,
+          'source': source,
+          'sourceId': sourceId,
+          'amount': amount,
+          'difficultyMultiplier': difficultyMultiplier,
+          'repetitionFactor': repetitionFactor,
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error awarding XP: $e');
+      return false;
+    }
+  }
+
+  /// Get user's current XP and level
+  /// GET /api/xp/user/:userId
+  Future<Map<String, dynamic>?> getUserXP(String userId) async {
+    try {
+      final res = await ref.read(client).get('/api/xp/user/$userId');
+      if (res.statusCode == 200) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting user XP: $e');
+      return null;
     }
   }
 

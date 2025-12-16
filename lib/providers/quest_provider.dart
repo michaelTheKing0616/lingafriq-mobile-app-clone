@@ -8,6 +8,7 @@ import 'gamification_services_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
 import '../services/gamification/journey_service.dart';
+import '../utils/progress_integration.dart';
 
 final questProvider = NotifierProvider<QuestProvider, BaseProviderState>(() {
   return QuestProvider();
@@ -59,6 +60,18 @@ class QuestProvider extends Notifier<BaseProviderState> {
   Future<void> completeLesson(String lessonId) async {
     _lessonProgress[lessonId] = 1; // 1 = completed
 
+    // Track lesson completion (but don't award XP yet - XP only after all lessons completed)
+    try {
+      final chapter = _chapters.firstWhere(
+        (c) => c.lessons.any((l) => l.id == lessonId),
+        orElse: () => _chapters.first,
+      );
+      final targetLanguage = chapter.metadata?['language']?.toString();
+      await ProgressIntegration.onStoryLessonCompleted(ref, language: targetLanguage);
+    } catch (e) {
+      debugPrint('Error tracking lesson completion: $e');
+    }
+
     // Try to complete journey node via API
     try {
       final user = ref.read(userProvider);
@@ -72,41 +85,67 @@ class QuestProvider extends Notifier<BaseProviderState> {
     }
 
     // Check if chapter is completed
-    for (var chapter in _chapters) {
-      final allLessonsCompleted = chapter.lessons.every(
-        (lesson) => _lessonProgress[lesson.id] == 1,
-      );
+    try {
+      for (var chapter in _chapters) {
+        if (chapter.lessons.isEmpty) continue; // Skip chapters with no lessons
+        
+        final allLessonsCompleted = chapter.lessons.every(
+          (lesson) => _lessonProgress[lesson.id] == 1,
+        );
 
-      if (allLessonsCompleted && !chapter.isCompleted) {
-        // Mark chapter as completed
-        final chapterIndex = _chapters.indexWhere((c) => c.id == chapter.id);
-        if (chapterIndex >= 0) {
-          _chapters[chapterIndex] = QuestChapter(
-            id: chapter.id,
-            title: chapter.title,
-            description: chapter.description,
-            icon: chapter.icon,
-            chapterNumber: chapter.chapterNumber,
-            lessons: chapter.lessons,
-            isUnlocked: chapter.isUnlocked,
-            isCompleted: true,
-            xpReward: chapter.xpReward,
-            badgeReward: chapter.badgeReward,
-            metadata: chapter.metadata,
-          );
+        if (allLessonsCompleted && !chapter.isCompleted) {
+          // Mark chapter as completed
+          final chapterIndex = _chapters.indexWhere((c) => c.id == chapter.id);
+          if (chapterIndex >= 0) {
+            _chapters[chapterIndex] = QuestChapter(
+              id: chapter.id,
+              title: chapter.title,
+              description: chapter.description,
+              icon: chapter.icon,
+              chapterNumber: chapter.chapterNumber,
+              lessons: chapter.lessons,
+              isUnlocked: chapter.isUnlocked,
+              isCompleted: true,
+              xpReward: chapter.xpReward,
+              badgeReward: chapter.badgeReward,
+              metadata: chapter.metadata,
+            );
 
-          // Award XP and badge
-          final gamification = ref.read(gamificationProvider.notifier);
-          await gamification.awardXP('complete_quest_chapter', multiplier: chapter.xpReward / 50.0);
-          
-          if (chapter.badgeReward != null) {
-            await gamification.unlockBadge(chapter.badgeReward!);
+            // Award XP and badge via ProgressIntegration (server-authoritative)
+            // XP is only awarded after all lessons are completed (content fully consumed)
+            try {
+              await ProgressIntegration.onStoryCompleted(
+                ref,
+                chapterId: chapter.id,
+                chapterTitle: chapter.title,
+                wordsLearned: chapter.lessons.length * 5, // Estimate 5 words per lesson
+                xpReward: chapter.xpReward,
+                allLessonsCompleted: true, // All lessons are completed at this point
+              );
+            } catch (e) {
+              debugPrint('Error awarding story completion XP: $e');
+              // Continue - XP award failure shouldn't block chapter completion
+            }
+            
+            // Unlock badge
+            if (chapter.badgeReward != null) {
+              try {
+                final gamification = ref.read(gamificationProvider.notifier);
+                await gamification.unlockBadge(chapter.badgeReward!);
+              } catch (e) {
+                debugPrint('Error unlocking badge: $e');
+                // Continue - badge unlock failure shouldn't block chapter completion
+              }
+            }
+
+            // Unlock next chapter
+            _updateUnlockedChapters();
           }
-
-          // Unlock next chapter
-          _updateUnlockedChapters();
         }
       }
+    } catch (e) {
+      debugPrint('Error checking chapter completion: $e');
+      // Continue execution - completion check failure shouldn't block lesson completion
     }
 
     await _saveQuestProgress();
@@ -160,14 +199,22 @@ class QuestProvider extends Notifier<BaseProviderState> {
 
   /// Get progress for a chapter (0.0 to 1.0)
   double getChapterProgress(String chapterId) {
-    final chapter = _chapters.firstWhere((c) => c.id == chapterId);
-    if (chapter.lessons.isEmpty) return 0.0;
+    try {
+      final chapter = _chapters.firstWhere(
+        (c) => c.id == chapterId,
+        orElse: () => _chapters.firstOrNull ?? _chapters.first,
+      );
+      if (chapter.lessons.isEmpty) return 0.0;
 
-    final completedCount = chapter.lessons
-        .where((lesson) => _lessonProgress[lesson.id] == 1)
-        .length;
+      final completedCount = chapter.lessons
+          .where((lesson) => _lessonProgress[lesson.id] == 1)
+          .length;
 
-    return completedCount / chapter.lessons.length;
+      return completedCount / chapter.lessons.length;
+    } catch (e) {
+      debugPrint('Error getting chapter progress: $e');
+      return 0.0;
+    }
   }
 
   /// Persistence
