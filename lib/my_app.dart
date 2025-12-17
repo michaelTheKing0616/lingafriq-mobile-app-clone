@@ -8,6 +8,7 @@ import 'providers/navigation_provider.dart';
 import 'screens/splash/splash_screen.dart';
 import 'widgets/review/review_prompt_widget.dart';
 import 'core/errors/global_error_handler.dart';
+import 'widgets/gamification/xp_gain_overlay.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -51,8 +52,10 @@ class _MyAppState extends ConsumerState<MyApp> {
                   statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
                   systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
                 ),
-                child: ReviewPromptWidget(
-                  child: _Unfocus(child: child),
+                child: XPGainOverlayWidget(
+                  child: ReviewPromptWidget(
+                    child: _Unfocus(child: child),
+                  ),
                 ),
               ),
             );
