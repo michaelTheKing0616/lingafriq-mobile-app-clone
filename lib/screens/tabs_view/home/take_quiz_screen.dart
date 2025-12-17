@@ -45,6 +45,7 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
   bool _isLoadingQuiz = false;
   bool _hasError = false;
   String? _errorMessage;
+  DateTime? _loadingStartTime;
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +64,12 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
 
   Widget _buildQuizContent(BuildContext context, WidgetRef ref) {
     // Show new loading screen when loading quiz
+    // Minimum 4 seconds so users can read the facts
     if (_isLoadingQuiz) {
-      return const DynamicLoadingScreen();
+      return DynamicLoadingScreen(
+        message: 'Loading quizzes...',
+        loadingDuration: const Duration(seconds: 4),
+      );
     }
     
     return PopScope(
@@ -171,6 +176,9 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           return;
                                         }
 
+                                        // Track start time to ensure minimum display
+                                        _loadingStartTime = DateTime.now();
+                                        
                                         setState(() {
                                           _isLoadingQuiz = true;
                                           _hasError = false;
@@ -230,7 +238,17 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           
                                           if (!mounted) return;
                                           
+                                          // Ensure minimum display time (4 seconds) for reading facts
+                                          final elapsed = DateTime.now().difference(_loadingStartTime!);
+                                          const minDisplay = Duration(seconds: 4);
+                                          if (elapsed < minDisplay) {
+                                            await Future.delayed(minDisplay - elapsed);
+                                          }
+                                          
                                           if (randomQuizes.isEmpty) {
+                                            if (mounted) {
+                                              setState(() => _isLoadingQuiz = false);
+                                            }
                                             await ref.read(dialogProvider('')).showPlatformDialogue(
                                               title: 'No Quizzes Available',
                                               content: const Text("No quizzes available for this language yet. We're working to add more!"),
@@ -265,6 +283,15 @@ class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
                                           } while (randomQuizes.isNotEmpty);
                                         } catch (e, st) {
                                           debugPrint('Error in Take Quiz: $e\n$st');
+                                          
+                                          // Ensure minimum display even on error
+                                          if (_loadingStartTime != null) {
+                                            final elapsed = DateTime.now().difference(_loadingStartTime!);
+                                            const minDisplay = Duration(seconds: 2);
+                                            if (elapsed < minDisplay) {
+                                              await Future.delayed(minDisplay - elapsed);
+                                            }
+                                          }
                                           
                                           if (mounted) {
                                             setState(() {
