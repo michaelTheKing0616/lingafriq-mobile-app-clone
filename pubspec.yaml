@@ -67,6 +67,7 @@ dependencies:
   socket_io_client: ^3.1.2
   encrypt: ^5.0.3
   crypto: ^3.0.5
+  google_fonts: ^6.3.3
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1
