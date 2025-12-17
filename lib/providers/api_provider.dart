@@ -921,62 +921,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getAiChatHistory(String mode) async {
-    try {
-      final res = await ref.read(client).get('${Api.aiChatHistory}?mode=$mode');
-      if (res.statusCode != 200) throw res.data;
-      return List<Map<String, dynamic>>.from(res.data['messages'] ?? []);
-    } catch (e) {
-      debugPrint('Error getting AI chat history: $e');
-      return [];
-    }
-  }
-
-  /// Get AI chat history scoped by mode × language
-  /// GET /api/ai-chat-history?mode=translation&languageCode=yoruba
-  Future<List<Map<String, dynamic>>?> getAiChatHistoryScoped({
-    required String mode,
-    required String languageCode,
-  }) async {
-    try {
-      final res = await ref.read(client).get(
-        '/api/ai-chat-history',
-        queryParameters: {
-          'mode': mode,
-          'languageCode': languageCode,
-        },
-      );
-      if (res.statusCode != 200) throw res.data;
-      final messages = res.data['messages'] as List<dynamic>?;
-      return messages?.map((m) => Map<String, dynamic>.from(m)).toList();
-    } catch (e) {
-      debugPrint('Error getting scoped AI chat history: $e');
-      return null;
-    }
-  }
-
-  /// Save AI chat history scoped by mode × language
-  /// POST /api/ai-chat-history
-  Future<bool> saveAiChatHistory({
-    required String mode,
-    required String languageCode,
-    required List<Map<String, dynamic>> messages,
-  }) async {
-    try {
-      final res = await ref.read(client).post(
-        '/api/ai-chat-history',
-        data: {
-          'mode': mode,
-          'languageCode': languageCode,
-          'messages': messages,
-        },
-      );
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error saving AI chat history: $e');
-      return false;
-    }
-  }
 
   /// Award XP via server-authoritative XP service
   /// POST /api/xp/award
