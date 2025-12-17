@@ -33,6 +33,7 @@ import 'package:lingafriq/screens/social/social_gifting_screen.dart';
 import 'package:lingafriq/screens/social/ancestral_tree_screen.dart';
 import 'package:lingafriq/screens/ugc/ugc_hub_screen.dart';
 import 'package:lingafriq/screens/help/features_guide_screen.dart';
+import 'package:lingafriq/screens/contribute/native_speaker_contribution_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -278,6 +279,18 @@ class AppDrawer extends ConsumerWidget {
                   onTap: () {
                     Navigator.of(context, rootNavigator: true).pop();
                     ref.read(navigationProvider).navigateTo(const UGCHubScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.record_voice_over_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Contribute Your Voice'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  subtitle: 'Help others learn your language'.text.sm.gray500.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const NativeSpeakerContributionScreen());
                   },
                 ),
                 ListTile(
