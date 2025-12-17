@@ -6,11 +6,26 @@ import 'package:lingafriq/providers/progress_tracking_provider.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
+import 'package:lingafriq/utils/gamification_integration.dart';
 
 /// Helper class to integrate progress tracking into activities
 class ProgressIntegration {
   /// Call this when a lesson is completed
   static Future<void> onLessonCompleted(WidgetRef ref, {String? language, int? pointsEarned, bool perfect = false}) async {
+    debugPrint('[ProgressIntegration] Lesson completed');
+    
+    // Calculate XP
+    const baseXP = 25;
+    final perfectBonus = perfect ? 15 : 0;
+    final xpEarned = baseXP + perfectBonus + (pointsEarned ?? 0);
+    
+    // Use new gamification integration (handles everything: XP, challenges, milestones, leagues, backend sync)
+    await GamificationIntegration.of(ref).onLessonComplete(
+      xpEarned: xpEarned,
+      wordsLearned: 5, // estimate 5 words per lesson
+      timeSpentMinutes: 5, // estimate 5 minutes
+    );
+    
     // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('lessons', 1);
     
@@ -24,15 +39,6 @@ class ProgressIntegration {
     // Track progress (estimate 5 words learned per lesson)
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(5, language: language);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('lessons', 5.0); // 5 minutes
-    
-    // Award XP for gamification
-    try {
-      await ref.read(gamificationProvider.notifier).awardXP(
-        perfect ? 'perfect_lesson' : 'lesson_complete',
-      );
-    } catch (e) {
-      // Silently fail
-    }
     
     // Update points if earned
     if (pointsEarned != null && pointsEarned > 0) {
@@ -61,6 +67,21 @@ class ProgressIntegration {
 
   /// Call this when a quiz is completed
   static Future<void> onQuizCompleted(WidgetRef ref, {int? wordsLearned, int? pointsEarned, bool perfect = false}) async {
+    debugPrint('[ProgressIntegration] Quiz completed');
+    
+    // Calculate XP
+    const baseXP = 20;
+    final perfectBonus = perfect ? 25 : 0;
+    final xpEarned = baseXP + perfectBonus + (pointsEarned ?? 0);
+    
+    // Use new gamification integration (handles everything: XP, challenges, milestones, leagues, backend sync)
+    await GamificationIntegration.of(ref).onQuizComplete(
+      score: perfect ? 100 : 80, // estimate
+      xpEarned: xpEarned,
+      isPerfect: perfect,
+      wordsLearned: wordsLearned ?? 3,
+    );
+    
     // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('quizzes', 1);
     
@@ -74,13 +95,6 @@ class ProgressIntegration {
     // Track progress
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(wordsLearned ?? 3);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('quizzes', 3.0); // 3 minutes
-    
-    // Award XP for gamification
-    try {
-      await ref.read(gamificationProvider.notifier).awardXP('quiz_complete');
-    } catch (e) {
-      // Silently fail
-    }
     
     // Update points if earned
     if (pointsEarned != null && pointsEarned > 0) {

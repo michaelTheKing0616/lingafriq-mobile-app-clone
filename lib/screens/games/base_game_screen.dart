@@ -4,8 +4,11 @@ import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/gamification_provider.dart';
+import '../../providers/hearts_provider.dart';
 import '../../services/lazy_game_loader.dart';
 import '../../services/telemetry_service.dart';
+import '../../utils/gamification_integration.dart';
+import '../../widgets/gamification/gamification_widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Base class for all game screens - handles common functionality
@@ -107,7 +110,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   Future<void> onGameInitialized() async {}
 
   /// Complete a turn - call this from game implementations
-  Future<void> completeTurn({
+  /// Returns false if user is out of hearts and cannot continue
+  Future<bool> completeTurn({
     required String cardId,
     required GameResult result,
     required int durationMs,
@@ -115,7 +119,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     Map<String, dynamic>? feedback,
     String? userAction,
   }) async {
-    if (_session == null) return;
+    if (_session == null) return true;
 
     final gameProv = ref.read(gameProvider.notifier);
     await gameProv.completeTurn(
@@ -126,6 +130,68 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       feedback: feedback,
       userAction: userAction,
     );
+
+    // If incorrect, check hearts system
+    if (result == GameResult.wrong) {
+      final canContinue = await GamificationIntegration.of(ref).onMistake();
+      if (!canContinue && mounted) {
+        _showOutOfHeartsDialog();
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  /// Show dialog when user runs out of hearts
+  void _showOutOfHeartsDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Icon(Icons.favorite_border, color: Colors.red[400], size: 28),
+            const SizedBox(width: 8),
+            const Text('Out of Hearts!'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'You\'ve run out of hearts. Would you like to refill to continue?',
+              style: TextStyle(color: Colors.grey[700]),
+            ),
+            const SizedBox(height: 16),
+            const HeartsWidget(showRefill: false),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.pop(context); // Exit game
+            },
+            child: const Text('Exit Game'),
+          ),
+          FilledButton.icon(
+            onPressed: () async {
+              final success = await GamificationIntegration.of(ref).refillHearts();
+              if (success && mounted) {
+                Navigator.pop(ctx);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Hearts refilled! Continue playing.')),
+                );
+              }
+            },
+            icon: const Icon(Icons.favorite),
+            label: const Text('Refill Hearts'),
+          ),
+        ],
+      ),
+    );
   }
 
   /// Finish the game
@@ -134,9 +200,18 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       final gameProv = ref.read(gameProvider.notifier);
       final endedSession = await gameProv.endGame();
 
+      // Calculate XP based on performance
+      final xpEarned = _calculateXP(endedSession);
+      final wordsLearned = endedSession.correctCount;
+
+      // Award gamification
+      await GamificationIntegration.of(ref).onGameComplete(
+        xpEarned: xpEarned,
+        wordsLearned: wordsLearned,
+      );
+
       if (mounted) {
-        Navigator.pop(context);
-        _showCompletionDialog(endedSession);
+        _showCompletionDialog(endedSession, xpEarned);
       }
     } catch (e) {
       if (mounted) {
@@ -147,24 +222,75 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     }
   }
 
-  void _showCompletionDialog(GameSession session) {
+  /// Calculate XP based on game performance
+  int _calculateXP(GameSession session) {
+    const baseXP = 10;
+    final accuracyBonus = (session.accuracy * 20).round();
+    final speedBonus = session.durationMs < 30000 ? 10 : (session.durationMs < 60000 ? 5 : 0);
+    final perfectBonus = session.accuracy >= 1.0 ? 25 : 0;
+    
+    return baseXP + accuracyBonus + speedBonus + perfectBonus;
+  }
+
+  void _showCompletionDialog(GameSession session, int xpEarned) {
+    final isPerfect = session.accuracy >= 1.0;
+    
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Game Complete!'),
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Row(
+          children: [
+            Icon(
+              isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
+              color: isPerfect ? Colors.amber : Colors.green,
+              size: 28,
+            ),
+            const SizedBox(width: 8),
+            Text(isPerfect ? 'Perfect Score! 🎉' : 'Game Complete!'),
+          ],
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Accuracy: ${(session.accuracy * 100).toStringAsFixed(0)}%'),
-            Text('Correct: ${session.correctCount}/${session.totalTurns}'),
-            Text('Duration: ${(session.durationMs / 1000).toStringAsFixed(0)}s'),
+            _buildStatRow(Icons.track_changes, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
+            _buildStatRow(Icons.done_all, 'Correct', '${session.correctCount}/${session.totalTurns}'),
+            _buildStatRow(Icons.timer, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
+            const Divider(),
+            _buildStatRow(Icons.star, 'XP Earned', '+$xpEarned', isHighlight: true),
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
+          FilledButton.icon(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.check),
+            label: const Text('Done'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatRow(IconData icon, String label, String value, {bool isHighlight = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: isHighlight ? Colors.green : Colors.grey),
+          const SizedBox(width: 12),
+          Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+          const Spacer(),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: isHighlight ? FontWeight.bold : FontWeight.w500,
+              color: isHighlight ? Colors.green : Colors.black87,
+            ),
           ),
         ],
       ),
