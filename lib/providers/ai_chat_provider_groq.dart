@@ -1737,8 +1737,8 @@ Return only JSON.
 
       // Use backend API directly for chat history
       try {
-        final apiProvider = ref.read(apiProvider.notifier);
-        final success = await apiProvider.saveAiChatHistory(
+        final apiNotifier = ref.read(apiProvider.notifier);
+        final success = await apiNotifier.saveAiChatHistory(
           mode: _modeNameForBackend,
           languageCode: _languageCodeForBackend,
           messages: _messages.map((m) => m.toJson()).toList(),
@@ -1824,8 +1824,8 @@ Return only JSON.
       try {
         final user = ref.read(userProvider);
         if (user != null) {
-          final apiProvider = ref.read(apiProvider.notifier);
-          final backendHistory = await apiProvider.getAiChatHistory(
+          final apiNotifier = ref.read(apiProvider.notifier);
+          final backendHistory = await apiNotifier.getAiChatHistory(
             mode: _modeNameForBackend,
             languageCode: _languageCodeForBackend,
           );

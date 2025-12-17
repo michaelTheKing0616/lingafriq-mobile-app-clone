@@ -186,8 +186,8 @@ class _AuthInterceptor extends Interceptor {
       final password = emailAndPassword['password']!;
 
       // Attempt silent refresh
-      final authProvider = ref.read(authProvider.notifier);
-      final user = await authProvider.login(
+      final authNotifier = ref.read(authProvider.notifier);
+      final user = await authNotifier.login(
         email: email,
         password: password,
         silentRefresh: true,

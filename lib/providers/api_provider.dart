@@ -1184,6 +1184,59 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Save AI chat history scoped by mode × language
+  /// POST /api/ai-chat-history
+  Future<bool> saveAiChatHistory({
+    required String mode,
+    required String languageCode,
+    required List<Map<String, dynamic>> messages,
+  }) async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return false;
+      
+      final res = await ref.read(client).post(
+        Api.aiChatHistorySync,
+        data: {
+          'mode': mode,
+          'languageCode': languageCode,
+          'messages': messages,
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error saving AI chat history: $e');
+      return false;
+    }
+  }
+
+  /// Get AI chat history scoped by mode × language
+  /// GET /api/ai-chat-history?mode=translation&languageCode=yoruba
+  Future<List<Map<String, dynamic>>?> getAiChatHistory({
+    required String mode,
+    required String languageCode,
+  }) async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return null;
+      
+      final res = await ref.read(client).get(
+        Api.getAIChatHistory(mode, languageCode),
+      );
+      if (res.statusCode == 200) {
+        final data = res.data;
+        if (data is Map && data.containsKey('messages')) {
+          return List<Map<String, dynamic>>.from(data['messages']);
+        }
+        return List<Map<String, dynamic>>.from(data);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting AI chat history: $e');
+      return null;
+    }
+  }
+
   Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(Api.aiChatSRSSync, data: data);

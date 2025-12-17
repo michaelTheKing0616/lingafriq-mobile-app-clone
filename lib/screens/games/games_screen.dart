@@ -345,7 +345,7 @@ class GameTypesScreen extends ConsumerWidget {
       case GameType.villageQuest:
         return Icons.location_city_rounded;
       case GameType.accentDecodingPuzzle:
-        return Icons.puzzle_rounded;
+        return Icons.extension_rounded;
       case GameType.flashcardSafari:
         return Icons.style_rounded;
       case GameType.rapidTongueTwisterRace:

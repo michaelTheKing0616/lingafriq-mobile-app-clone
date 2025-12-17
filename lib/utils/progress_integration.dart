@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
@@ -226,7 +227,7 @@ class ProgressIntegration {
   /// Call this when a story/chapter is completed
   /// XP is only awarded AFTER the user has fully consumed the content (read story, completed lessons)
   static Future<void> onStoryCompleted(
-    WidgetRef ref, {
+    Ref ref, {
     required String chapterId,
     required String chapterTitle,
     int? wordsLearned,
@@ -285,13 +286,12 @@ class ProgressIntegration {
     final metrics = ref.read(progressTrackingProvider.notifier).metrics;
     ref.read(achievementsProvider.notifier).checkAndUnlockAchievements(
       wordsLearned: metrics.wordsLearned,
-      storiesCompleted: (metrics.timeByActivity['stories'] ?? 0.0).toInt(),
     );
   }
 
   /// Call this when a lesson within a story is completed
   /// This does NOT award XP - XP is only awarded when the entire story/chapter is completed
-  static Future<void> onStoryLessonCompleted(WidgetRef ref, {String? language}) async {
+  static Future<void> onStoryLessonCompleted(Ref ref, {String? language}) async {
     // Track progress but don't award XP yet
     ref.read(progressTrackingProvider.notifier).recordWordsLearned(3, language: language);
     ref.read(progressTrackingProvider.notifier).recordActivityTime('stories', 3.0); // 3 minutes per lesson

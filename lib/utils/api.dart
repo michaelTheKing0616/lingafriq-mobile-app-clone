@@ -128,8 +128,8 @@ class Api {
   static const String gameTelemetry = "api/games/telemetry/";
   static const String sendTelemetry = "api/telemetry/";
   
-  static const String aiChatHistorySync = "api/ai/chat/history/sync/";
-  static String getAIChatHistory(String mode) => "api/ai/chat/history/$mode/";
+  static const String aiChatHistorySync = "api/ai-chat-history/";
+  static String getAIChatHistory(String mode, String language) => "api/ai-chat-history/?mode=$mode&languageCode=$language";
   static const String aiChatSRSSync = "api/ai/chat/srs/sync/";
   static String getAIChatCEFR(String userId) => "api/ai/chat/cefr/$userId/";
   
