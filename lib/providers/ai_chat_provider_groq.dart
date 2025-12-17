@@ -16,6 +16,7 @@ import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
 import '../services/telemetry_service.dart';
+import '../services/env_config.dart';
 import '../utils/supported_languages.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
@@ -186,11 +187,8 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   final List<ChatMessage> _messages = [];
   final Dio _dio = Dio();
 
-  // API Configuration
-  static String get _groqApiKey {
-    const envKey = String.fromEnvironment('GROQ_API_KEY', defaultValue: 'YOUR_GROQ_API_KEY');
-    return envKey;
-  }
+  // API Configuration - uses centralized EnvConfig
+  static String get _groqApiKey => EnvConfig.groqApiKey;
 
   static const String _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
   // Groq model names to try in order (favor accuracy for African languages)
@@ -256,6 +254,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
   String get selectedLanguage => _selectedLanguage;
+  String get targetLanguage => _targetLanguage;
+  String get sourceLanguage => _sourceLanguage;
+  String? get currentSystemPrompt => _systemPrompt;
   List<Map<String, String>> get supportedLanguageOptions => List.unmodifiable(_supportedLanguageOptions);
   List<String> get supportedLanguages =>
       _supportedLanguageOptions.map((e) => e['name'] ?? '').where((e) => e.isNotEmpty).toList();
@@ -274,14 +275,56 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   BaseProviderState build() {
     // Only load history once on first build
     if (!_historyLoaded) {
-      _loadChatHistory();
-      _loadSRSMemory();
-      _loadCEFRInfo();
-      _initializeRoleplayDataset();
-      _historyLoaded = true;
+      // Load mode and language FIRST before loading history
+      // This ensures the correct mode×language scoped history is loaded
+      _loadModeAndLanguage().then((_) {
+        _loadChatHistory();
+        _loadSRSMemory();
+        _loadCEFRInfo();
+        _initializeRoleplayDataset();
+        _historyLoaded = true;
+      });
     }
     _initializeSystemPrompt();
     return BaseProviderState();
+  }
+  
+  /// Load last used mode and language from preferences
+  Future<void> _loadModeAndLanguage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Load last mode
+      final savedMode = prefs.getString('polie_last_mode');
+      if (savedMode != null) {
+        _mode = PolieMode.values.firstWhere(
+          (m) => m.toString().split('.').last == savedMode,
+          orElse: () => PolieMode.tutor,
+        );
+      }
+      
+      // Load last language
+      final savedLanguage = prefs.getString('polie_last_language');
+      if (savedLanguage != null && savedLanguage.isNotEmpty) {
+        _targetLanguage = savedLanguage;
+        _selectedLanguage = savedLanguage;
+      }
+      
+      debugPrint('Loaded last session: mode=${_mode.name}, language=$_targetLanguage');
+    } catch (e) {
+      debugPrint('Error loading mode/language preferences: $e');
+    }
+  }
+  
+  /// Save current mode and language to preferences
+  Future<void> _saveModeAndLanguage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('polie_last_mode', _mode.toString().split('.').last);
+      await prefs.setString('polie_last_language', _targetLanguage);
+    } catch (e) {
+      debugPrint('Error saving mode/language preferences: $e');
+    }
   }
   
   /// Initialize roleplay dataset on first build
@@ -587,6 +630,9 @@ Make reviews efficient and rewarding.''';
     _mode = mode;
     _tutorMode = mode == PolieMode.tutor;
     
+    // Save mode preference for persistence
+    await _saveModeAndLanguage();
+    
     // Clear current messages and load history for new mode × language combination
     _messages.clear();
     await _loadChatHistory();
@@ -601,7 +647,7 @@ Make reviews efficient and rewarding.''';
         : _mode == PolieMode.conversation ? "Conversation"
         : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
+    debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
   }
 
   Future<void> setTutorMode(bool enabled) async {
@@ -1720,8 +1766,6 @@ Return only JSON.
     }
   }
 
-  DateTime? _lastChatHistorySync;
-  
   /// Sync chat history to backend (debounced to avoid too many calls)
   Future<void> _syncChatHistoryToBackend() async {
     try {
@@ -1767,24 +1811,12 @@ Return only JSON.
   }
 
   /// Legacy sync method (kept for backward compatibility)
+  /// Now properly includes languageCode for backend validation
   Future<void> _syncChatHistoryToBackendLegacy() async {
     try {
-      // Debounce: only sync if last sync was more than 10 seconds ago
-      final now = DateTime.now();
-      if (_lastChatHistorySync != null && now.difference(_lastChatHistorySync!).inSeconds < 10) {
-        return; // Skip if synced recently
-      }
-      _lastChatHistorySync = now;
-      
       final user = ref.read(userProvider);
       if (user == null) return;
 
-      final mode = _mode == PolieMode.translation ? 'translation' 
-          : _mode == PolieMode.tutor ? 'tutor'
-          : _mode == PolieMode.roleplay ? 'roleplay'
-          : _mode == PolieMode.conversation ? 'conversation'
-          : _mode == PolieMode.vocab ? 'vocab'
-          : 'review';
       final messagesJson = _messages.map((msg) => msg.toJson()).toList();
       
       final syncProvider = ref.read(backendSyncProvider.notifier);
@@ -1792,7 +1824,8 @@ Return only JSON.
         type: SyncType.aiChatHistory,
         data: {
           'user_id': user.id.toString(),
-          'mode': mode,
+          'mode': _modeNameForBackend,
+          'languageCode': _languageCodeForBackend, // Fixed: was missing
           'messages': messagesJson,
           'timestamp': DateTime.now().toIso8601String(),
         },

@@ -3,17 +3,24 @@
 /// Combines LLaMA (dialogue) + NLLB (translation) + AfriTeVa (canonical) + diacritics enforcement
 
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../../providers/ai_chat_provider_groq.dart';
+import '../../utils/api.dart';
 import 'model_router.dart';
 import 'translation_service.dart';
 import 'canonical_phrase_service.dart';
 import '../../utils/diacritics_enforcer.dart';
 import '../../utils/supported_languages.dart';
+import '../env_config.dart';
 
 class HybridPolieOrchestrator {
   final TranslationService _translationService = TranslationService();
   final CanonicalPhraseService _canonicalService = CanonicalPhraseService();
+  final Dio _dio = Dio();
+  
+  // Recursion guard to prevent infinite loops
+  bool _isProcessingLlamaCall = false;
   
   /// Main orchestration method - routes to appropriate models and post-processes
   Future<HybridPolieResponse> orchestrate({
@@ -24,6 +31,9 @@ class HybridPolieOrchestrator {
     required GroqChatProvider groqProvider,
     String? hfToken,
   }) async {
+    // Get HuggingFace token from environment if not provided
+    final effectiveHfToken = hfToken ?? EnvConfig.huggingFaceToken;
+    
     // 1. Classify task
     final taskType = _modeToTaskType(mode);
     final modelType = ModelRouter.routeTask(
@@ -44,12 +54,12 @@ class HybridPolieOrchestrator {
     
     switch (modelType) {
       case ModelType.nllb200:
-        // Translation → NLLB-200
+        // Translation → NLLB-200 (via backend or direct HF API)
         final translation = await _translationService.translate(
           text: userMessage,
           sourceLang: sourceLanguage ?? 'english',
           targetLang: targetLanguage,
-          hfToken: hfToken,
+          hfToken: effectiveHfToken,
         );
         rawOutput = translation.translation;
         modelUsed = translation.model;
@@ -57,11 +67,11 @@ class HybridPolieOrchestrator {
         break;
         
       case ModelType.afriteva:
-        // Canonical phrase → AfriTeVa
+        // Canonical phrase → AfriTeVa (via backend)
         final canonical = await _canonicalService.generateCanonical(
           phrase: userMessage,
           language: targetLanguage,
-          hfToken: hfToken,
+          hfToken: effectiveHfToken,
         );
         rawOutput = canonical.canonicalText;
         modelUsed = canonical.model;
@@ -70,6 +80,15 @@ class HybridPolieOrchestrator {
         
       case ModelType.llama70b:
         // Dialogue/roleplay/tutor → LLaMA-3.1-70B
+        // Check recursion guard to prevent infinite loops
+        if (_isProcessingLlamaCall) {
+          debugPrint('⚠️ Recursion guard triggered - returning direct response');
+          rawOutput = userMessage;
+          modelUsed = 'direct-passthrough';
+          metadata['recursion_prevented'] = true;
+          break;
+        }
+        
         // Check if we need to inject canonical phrases
         String? canonicalPhrase;
         if (ModelRouter.needsCanonicalPhrase(taskType, targetLanguage)) {
@@ -77,7 +96,7 @@ class HybridPolieOrchestrator {
           final canonical = await _canonicalService.generateCanonical(
             phrase: userMessage,
             language: targetLanguage,
-            hfToken: hfToken,
+            hfToken: effectiveHfToken,
           );
           canonicalPhrase = canonical.canonicalText;
           metadata['canonical_injected'] = true;
@@ -91,11 +110,10 @@ class HybridPolieOrchestrator {
           canonicalPhrase: canonicalPhrase,
         );
         
-        // Call LLaMA via existing Groq provider
-        rawOutput = await _callLlamaViaGroq(
+        // Call LLaMA via direct Groq API (bypassing provider to prevent recursion)
+        rawOutput = await _callLlamaDirectly(
           prompt: enhancedPrompt,
-          groqProvider: groqProvider,
-          mode: mode,
+          systemPrompt: groqProvider.currentSystemPrompt,
         );
         modelUsed = 'llama-3.1-70b-versatile';
         metadata['canonical_phrase'] = canonicalPhrase;
@@ -188,22 +206,64 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
     return prompt;
   }
   
-  Future<String> _callLlamaViaGroq({
+  /// Call LLaMA directly via Groq API to prevent recursion
+  /// This bypasses the provider's hybrid mode check
+  Future<String> _callLlamaDirectly({
     required String prompt,
-    required GroqChatProvider groqProvider,
-    required PolieMode mode,
+    String? systemPrompt,
   }) async {
-    // Use existing Groq provider's streaming method
-    // This maintains compatibility with existing streaming and SRS integration
+    _isProcessingLlamaCall = true;
+    
     try {
-      String fullResponse = '';
-      await for (final chunk in groqProvider.sendMessageStream(prompt)) {
-        fullResponse += chunk;
+      final groqApiKey = EnvConfig.groqApiKey;
+      
+      if (groqApiKey.isEmpty || groqApiKey == 'YOUR_GROQ_API_KEY') {
+        debugPrint('⚠️ Groq API key not configured');
+        return prompt; // Fallback to original prompt
       }
-      return fullResponse;
-    } catch (e) {
-      debugPrint('Error calling LLaMA via Groq: $e');
+      
+      final messages = <Map<String, String>>[];
+      
+      // Add system prompt if available
+      if (systemPrompt != null && systemPrompt.isNotEmpty) {
+        messages.add({'role': 'system', 'content': systemPrompt});
+      }
+      
+      // Add user message
+      messages.add({'role': 'user', 'content': prompt});
+      
+      final response = await _dio.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        data: {
+          'model': 'llama-3.1-70b-versatile',
+          'messages': messages,
+          'max_tokens': 2048,
+          'temperature': 0.7,
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $groqApiKey',
+            'Content-Type': 'application/json',
+          },
+          receiveTimeout: const Duration(seconds: 60),
+        ),
+      );
+      
+      if (response.statusCode == 200) {
+        final data = response.data;
+        final choices = data['choices'] as List?;
+        if (choices != null && choices.isNotEmpty) {
+          final message = choices[0]['message'];
+          return message['content'] ?? prompt;
+        }
+      }
+      
       return prompt; // Fallback
+    } catch (e) {
+      debugPrint('Error calling LLaMA directly: $e');
+      return prompt; // Fallback
+    } finally {
+      _isProcessingLlamaCall = false;
     }
   }
   
@@ -243,4 +303,3 @@ class HybridPolieResponse {
     required this.needsNativeReview,
   });
 }
-
