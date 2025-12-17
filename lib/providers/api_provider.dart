@@ -1520,4 +1520,405 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  // ============================================
+  // ADVANCED GAMIFICATION APIs
+  // ============================================
+
+  // --- Daily Challenges ---
+  Future<Map<String, dynamic>?> getDailyChallenges() async {
+    try {
+      final res = await ref.read(client).get(Api.dailyChallenges);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting daily challenges: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> updateChallengeProgress({
+    required String type,
+    required int amount,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.dailyChallengesProgress,
+        data: {'type': type, 'amount': amount},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error updating challenge progress: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> claimChallengeReward(String challengeId) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.dailyChallengesClaim,
+        data: {'challengeId': challengeId},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error claiming challenge reward: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> claimAllChallengeRewards() async {
+    try {
+      final res = await ref.read(client).post(Api.dailyChallengesClaimAll);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error claiming all rewards: $e');
+      return null;
+    }
+  }
+
+  // --- League System ---
+  Future<Map<String, dynamic>?> getLeagueStanding() async {
+    try {
+      final res = await ref.read(client).get(Api.leagueStanding);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting league standing: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getLeaderboard({
+    String tier = 'bronze',
+    String type = 'weekly',
+    int limit = 30,
+  }) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.leagueLeaderboard,
+        queryParameters: {'tier': tier, 'type': type, 'limit': limit},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting leaderboard: $e');
+      return null;
+    }
+  }
+
+  Future<bool> addLeagueXP(int amount) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.leagueAddXP,
+        data: {'amount': amount},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error adding league XP: $e');
+      return false;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getLeagueHistory() async {
+    try {
+      final res = await ref.read(client).get(Api.leagueHistory);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting league history: $e');
+      return null;
+    }
+  }
+
+  // --- Milestones ---
+  Future<Map<String, dynamic>?> getUserMilestones() async {
+    try {
+      final res = await ref.read(client).get(Api.milestones);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting milestones: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> updateMilestoneStats(Map<String, dynamic> stats) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.milestonesUpdate,
+        data: {'stats': stats},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error updating milestone stats: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getMilestoneDefinitions() async {
+    try {
+      final res = await ref.read(client).get(Api.milestonesDefinitions);
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data as Map<String, dynamic>;
+      return (data['definitions'] as List).cast<Map<String, dynamic>>();
+    } catch (e) {
+      debugPrint('Error getting milestone definitions: $e');
+      return [];
+    }
+  }
+
+  // --- Hearts System ---
+  Future<Map<String, dynamic>?> getHeartsStatus() async {
+    try {
+      final res = await ref.read(client).get(Api.hearts);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting hearts status: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> useHeart() async {
+    try {
+      final res = await ref.read(client).post(Api.heartsUse);
+      if (res.statusCode != 200 && res.statusCode != 400) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error using heart: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> refillHearts() async {
+    try {
+      final res = await ref.read(client).post(Api.heartsRefill);
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error refilling hearts: $e');
+      return null;
+    }
+  }
+
+  Future<bool> toggleChallengeMode({bool? enabled}) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.heartsToggleChallengeMode,
+        data: enabled != null ? {'enabled': enabled} : null,
+      );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error toggling challenge mode: $e');
+      return false;
+    }
+  }
+
+  Future<bool> addBonusHearts(int count) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.heartsBonus,
+        data: {'count': count},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error adding bonus hearts: $e');
+      return false;
+    }
+  }
+
+  // --- Voice Contributions ---
+  Future<Map<String, dynamic>?> submitVoiceContribution({
+    required String language,
+    required String text,
+    required String category,
+    required List<int> audioBytes,
+    required double duration,
+    required int sampleRate,
+    required int numChannels,
+    required bool consentGiven,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'language': language,
+        'text': text,
+        'category': category,
+        'duration': duration,
+        'sampleRate': sampleRate,
+        'numChannels': numChannels,
+        'consentGiven': consentGiven.toString(),
+        'audio': MultipartFile.fromBytes(audioBytes, filename: 'recording.wav'),
+      });
+      
+      final res = await ref.read(client).post(
+        Api.voiceContributions,
+        data: formData,
+        options: Options(contentType: 'multipart/form-data'),
+      );
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error submitting voice contribution: $e');
+      return null;
+    }
+  }
+
+  Future<List<String>> getVoiceContributionPrompts({
+    required String language,
+    String? category,
+    int count = 5,
+  }) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.voiceContributionPrompts,
+        queryParameters: {
+          'language': language,
+          'category': category,
+          'count': count,
+        },
+      );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data as Map<String, dynamic>;
+      return (data['prompts'] as List).cast<String>();
+    } catch (e) {
+      debugPrint('Error getting contribution prompts: $e');
+      return [];
+    }
+  }
+
+  // --- Vocabulary System ---
+  Future<Map<String, dynamic>?> addVocabularyWord({
+    required String word,
+    required String language,
+    required String translation,
+    String? meaning,
+    String? exampleSentence,
+    List<String>? tags,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.vocabularyWords,
+        data: {
+          'word': word,
+          'language': language,
+          'translation': translation,
+          'meaning': meaning,
+          'exampleSentence': exampleSentence,
+          'tags': tags,
+        },
+      );
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error adding vocabulary word: $e');
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getVocabularyWords({
+    String? language,
+    List<String>? tags,
+    bool? isFavorite,
+  }) async {
+    try {
+      final params = <String, dynamic>{};
+      if (language != null) params['language'] = language;
+      if (tags != null) params['tags'] = tags.join(',');
+      if (isFavorite != null) params['isFavorite'] = isFavorite.toString();
+      
+      final res = await ref.read(client).get(
+        Api.vocabularyWords,
+        queryParameters: params.isEmpty ? null : params,
+      );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data as Map<String, dynamic>;
+      return (data['words'] as List).cast<Map<String, dynamic>>();
+    } catch (e) {
+      debugPrint('Error getting vocabulary words: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getWordsDueForReview({String? language}) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.vocabularyDueForReview,
+        queryParameters: language != null ? {'language': language} : null,
+      );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data as Map<String, dynamic>;
+      return (data['words'] as List).cast<Map<String, dynamic>>();
+    } catch (e) {
+      debugPrint('Error getting words due for review: $e');
+      return [];
+    }
+  }
+
+  Future<Map<String, dynamic>?> submitVocabularyReview({
+    required String wordId,
+    required int quality, // 0-5
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.vocabularyReview(wordId),
+        data: {'quality': quality},
+      );
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error submitting vocabulary review: $e');
+      return null;
+    }
+  }
+
+  // --- Learner Progress ---
+  Future<Map<String, dynamic>?> getLearnerProgress({
+    required String userId,
+    required String language,
+  }) async {
+    try {
+      final res = await ref.read(client).get(Api.learnerProgressGet(userId, language));
+      if (res.statusCode != 200 && res.statusCode != 201) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      debugPrint('Error getting learner progress: $e');
+      return null;
+    }
+  }
+
+  Future<bool> recordLearnerActivity({
+    required String userId,
+    required String language,
+  }) async {
+    try {
+      final res = await ref.read(client).post(Api.learnerProgressActivity(userId, language));
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error recording activity: $e');
+      return false;
+    }
+  }
+
+  Future<String?> getAICoachingRecommendation({
+    required String userId,
+    required String language,
+  }) async {
+    try {
+      final res = await ref.read(client).post(Api.learnerProgressCoach(userId, language));
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data as Map<String, dynamic>;
+      return data['recommendation'] as String?;
+    } catch (e) {
+      debugPrint('Error getting AI coaching: $e');
+      return null;
+    }
+  }
+
 }

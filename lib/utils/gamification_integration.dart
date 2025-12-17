@@ -5,8 +5,11 @@ import '../providers/milestones_provider.dart';
 import '../providers/league_provider.dart';
 import '../providers/hearts_provider.dart';
 import '../providers/gamification_provider.dart';
+import '../providers/api_provider.dart';
+import '../providers/user_provider.dart';
 import '../widgets/gamification/xp_gain_overlay.dart';
 import '../services/sound_effects_service.dart';
+import '../models/daily_challenge_model.dart';
 
 /// Gamification Integration Helper
 /// 
@@ -29,6 +32,27 @@ class _GamificationHelper {
 
   _GamificationHelper(this._ref);
 
+  /// Sync challenge progress with backend
+  Future<void> _syncChallengeProgress(String type, int amount) async {
+    try {
+      await _ref.read(apiProvider.notifier).updateChallengeProgress(
+        type: type,
+        amount: amount,
+      );
+    } catch (e) {
+      debugPrint('[Gamification] Backend sync error: $e');
+    }
+  }
+
+  /// Sync milestone stats with backend
+  Future<void> _syncMilestoneStats(Map<String, dynamic> stats) async {
+    try {
+      await _ref.read(apiProvider.notifier).updateMilestoneStats(stats);
+    } catch (e) {
+      debugPrint('[Gamification] Milestone sync error: $e');
+    }
+  }
+
   /// Call when a lesson is completed
   Future<void> onLessonComplete({
     required int xpEarned,
@@ -40,7 +64,7 @@ class _GamificationHelper {
     // Show XP overlay
     showXPGain(_ref, amount: xpEarned, source: 'Lesson Complete');
     
-    // Track daily challenges
+    // Track daily challenges (local)
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.lessonsComplete, 1);
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     
@@ -52,16 +76,41 @@ class _GamificationHelper {
       _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.timeSpent, timeSpentMinutes);
     }
     
-    // Add to league weekly XP
+    // Add to league weekly XP (local + backend)
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
+    _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
+    
+    // Sync with backend
+    _syncChallengeProgress('lessonsComplete', 1);
+    _syncChallengeProgress('xpEarned', xpEarned);
+    if (wordsLearned > 0) _syncChallengeProgress('wordsLearned', wordsLearned);
+    if (timeSpentMinutes > 0) _syncChallengeProgress('timeSpent', timeSpentMinutes);
     
     // Check milestones
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'lessonsCompleted': gamification.lessonsCompleted + 1,
+      'wordsLearned': gamification.wordsLearned + wordsLearned,
+      'totalXP': gamification.totalXP + xpEarned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      lessonsCompleted: gamification.lessonsCompleted + 1,
-      wordsLearned: gamification.wordsLearned + wordsLearned,
-      totalXP: gamification.totalXP + xpEarned,
+      lessonsCompleted: newStats['lessonsCompleted'],
+      wordsLearned: newStats['wordsLearned'],
+      totalXP: newStats['totalXP'],
     );
+    
+    // Sync milestones with backend
+    _syncMilestoneStats(newStats);
+    
+    // Record activity for streak
+    final user = _ref.read(userProvider);
+    if (user != null) {
+      _ref.read(apiProvider.notifier).recordLearnerActivity(
+        userId: user.id.toString(),
+        language: gamification.currentLanguage ?? 'en',
+      );
+    }
   }
 
   /// Call when a quiz is completed
@@ -81,28 +130,44 @@ class _GamificationHelper {
       bonusText: isPerfect ? '💯 Perfect Score!' : null,
     );
     
-    // Track daily challenges
+    // Track daily challenges (local)
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     
     if (isPerfect) {
       _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.perfectQuiz, 1);
       _ref.read(soundEffectsProvider).play(SoundEffect.perfectScore);
+      _syncChallengeProgress('perfectQuiz', 1);
     }
     
     if (wordsLearned > 0) {
       _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.wordsLearned, wordsLearned);
+      _syncChallengeProgress('wordsLearned', wordsLearned);
     }
     
-    // Add to league weekly XP
+    // Add to league weekly XP (local + backend)
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
+    _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
+    
+    // Sync with backend
+    _syncChallengeProgress('xpEarned', xpEarned);
     
     // Check milestones
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'quizzesCompleted': gamification.quizzesCompleted + 1,
+      'perfectQuizzes': isPerfect ? gamification.perfectQuizzes + 1 : gamification.perfectQuizzes,
+      'totalXP': gamification.totalXP + xpEarned,
+      'wordsLearned': gamification.wordsLearned + wordsLearned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      quizzesCompleted: gamification.quizzesCompleted + 1,
-      perfectQuizzes: isPerfect ? gamification.perfectQuizzes + 1 : gamification.perfectQuizzes,
-      totalXP: gamification.totalXP + xpEarned,
+      quizzesCompleted: newStats['quizzesCompleted'],
+      perfectQuizzes: newStats['perfectQuizzes'],
+      totalXP: newStats['totalXP'],
     );
+    
+    // Sync milestones with backend
+    _syncMilestoneStats(newStats);
   }
 
   /// Call when a game is completed
@@ -115,24 +180,39 @@ class _GamificationHelper {
     // Show XP overlay
     showXPGain(_ref, amount: xpEarned, source: 'Game Complete');
     
-    // Track daily challenges
+    // Track daily challenges (local)
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.gamesPlayed, 1);
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     
     if (wordsLearned > 0) {
       _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.wordsLearned, wordsLearned);
+      _syncChallengeProgress('wordsLearned', wordsLearned);
     }
     
-    // Add to league weekly XP
+    // Add to league weekly XP (local + backend)
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
+    _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
+    
+    // Sync with backend
+    _syncChallengeProgress('gamesPlayed', 1);
+    _syncChallengeProgress('xpEarned', xpEarned);
     
     // Check milestones
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'gamesPlayed': gamification.gamesPlayed + 1,
+      'wordsLearned': gamification.wordsLearned + wordsLearned,
+      'totalXP': gamification.totalXP + xpEarned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      gamesPlayed: gamification.gamesPlayed + 1,
-      wordsLearned: gamification.wordsLearned + wordsLearned,
-      totalXP: gamification.totalXP + xpEarned,
+      gamesPlayed: newStats['gamesPlayed'],
+      wordsLearned: newStats['wordsLearned'],
+      totalXP: newStats['totalXP'],
     );
+    
+    // Sync milestones with backend
+    _syncMilestoneStats(newStats);
   }
 
   /// Call when words are learned
@@ -143,15 +223,24 @@ class _GamificationHelper {
       showXPGain(_ref, amount: xpEarned, source: 'Words Learned');
       _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
       _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
+      _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
+      _syncChallengeProgress('xpEarned', xpEarned);
     }
     
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.wordsLearned, count);
+    _syncChallengeProgress('wordsLearned', count);
     
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'wordsLearned': gamification.wordsLearned + count,
+      'totalXP': gamification.totalXP + xpEarned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      wordsLearned: gamification.wordsLearned + count,
-      totalXP: gamification.totalXP + xpEarned,
+      wordsLearned: newStats['wordsLearned'],
+      totalXP: newStats['totalXP'],
     );
+    _syncMilestoneStats(newStats);
   }
 
   /// Call when sending a message to Polie
@@ -160,17 +249,28 @@ class _GamificationHelper {
     
     if (xpEarned > 0) {
       showXPGain(_ref, amount: xpEarned, source: 'AI Chat');
+      _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
     }
     
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.chatMessages, 1);
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
     
+    // Sync with backend
+    _syncChallengeProgress('chatMessages', 1);
+    _syncChallengeProgress('xpEarned', xpEarned);
+    
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'polieMessages': gamification.polieMessages + 1,
+      'totalXP': gamification.totalXP + xpEarned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      polieMessages: gamification.polieMessages + 1,
-      totalXP: gamification.totalXP + xpEarned,
+      polieMessages: newStats['polieMessages'],
+      totalXP: newStats['totalXP'],
     );
+    _syncMilestoneStats(newStats);
   }
 
   /// Call when completing a story chapter
@@ -182,12 +282,23 @@ class _GamificationHelper {
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.storyChapters, 1);
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
+    _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
+    
+    // Sync with backend
+    _syncChallengeProgress('storyChapters', 1);
+    _syncChallengeProgress('xpEarned', xpEarned);
     
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'storyChaptersRead': gamification.storyChaptersRead + 1,
+      'totalXP': gamification.totalXP + xpEarned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      storyChaptersRead: gamification.storyChaptersRead + 1,
-      totalXP: gamification.totalXP + xpEarned,
+      storyChaptersRead: newStats['storyChaptersRead'],
+      totalXP: newStats['totalXP'],
     );
+    _syncMilestoneStats(newStats);
   }
 
   /// Call when reading cultural content
@@ -196,11 +307,16 @@ class _GamificationHelper {
     
     if (xpEarned > 0) {
       showXPGain(_ref, amount: xpEarned, source: 'Cultural Article');
+      _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
     }
     
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.culturalContent, 1);
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
+    
+    // Sync with backend
+    _syncChallengeProgress('culturalContent', 1);
+    _syncChallengeProgress('xpEarned', xpEarned);
   }
 
   /// Call when submitting a voice recording
@@ -209,22 +325,33 @@ class _GamificationHelper {
     
     if (xpEarned > 0) {
       showXPGain(_ref, amount: xpEarned, source: 'Voice Contribution');
+      _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
     }
     
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.voiceRecordings, 1);
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
     _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
     
+    // Sync with backend
+    _syncChallengeProgress('voiceRecordings', 1);
+    _syncChallengeProgress('xpEarned', xpEarned);
+    
     final gamification = _ref.read(gamificationProvider);
+    final newStats = {
+      'voiceContributions': gamification.voiceContributions + 1,
+      'totalXP': gamification.totalXP + xpEarned,
+    };
+    
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
-      voiceContributions: gamification.voiceContributions + 1,
-      totalXP: gamification.totalXP + xpEarned,
+      voiceContributions: newStats['voiceContributions'],
+      totalXP: newStats['totalXP'],
     );
+    _syncMilestoneStats(newStats);
   }
 
   /// Call when making a mistake (for hearts system)
   /// Returns true if user can continue, false if out of hearts
-  bool onMistake() {
+  Future<bool> onMistake() async {
     final heartsState = _ref.read(heartsProvider);
     
     // If challenge mode is off or unlimited, always continue
@@ -232,13 +359,35 @@ class _GamificationHelper {
       return true;
     }
     
-    return _ref.read(heartsProvider.notifier).useHeart();
+    final canContinue = _ref.read(heartsProvider.notifier).useHeart();
+    
+    // Sync with backend
+    if (canContinue) {
+      _ref.read(apiProvider.notifier).useHeart();
+    }
+    
+    return canContinue;
   }
 
-  /// Call to check if user has hearts to continue
+  /// Call to check if user has hearts to continue (synchronous check)
   bool get canContinue {
     final heartsState = _ref.read(heartsProvider);
     return !heartsState.challengeModeEnabled || heartsState.isUnlimited || heartsState.currentHearts > 0;
+  }
+
+  /// Refill hearts using cowries
+  Future<bool> refillHearts() async {
+    final success = await _ref.read(heartsProvider.notifier).refillHearts();
+    if (success) {
+      _ref.read(apiProvider.notifier).refillHearts();
+    }
+    return success;
+  }
+
+  /// Toggle challenge mode
+  Future<void> toggleChallengeMode(bool enabled) async {
+    _ref.read(heartsProvider.notifier).setChallengeModeEnabled(enabled);
+    _ref.read(apiProvider.notifier).toggleChallengeMode(enabled: enabled);
   }
 
   /// Play sound effects

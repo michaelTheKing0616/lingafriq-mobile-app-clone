@@ -229,4 +229,52 @@ class Api {
   static const String shareUgcContent = "api/user-content/share/";
   static const String rateUgcContent = "api/user-content/rate/";
   // User-Generated Content Endpoints End
+
+  // ============================================
+  // ADVANCED GAMIFICATION ENDPOINTS
+  // ============================================
+  
+  // Daily Challenges
+  static const String dailyChallenges = "api/gamification/challenges";
+  static const String dailyChallengesProgress = "api/gamification/challenges/progress";
+  static const String dailyChallengesClaim = "api/gamification/challenges/claim";
+  static const String dailyChallengesClaimAll = "api/gamification/challenges/claim-all";
+  
+  // League System
+  static const String leagueStanding = "api/gamification/league";
+  static const String leagueLeaderboard = "api/gamification/league/leaderboard";
+  static const String leagueAddXP = "api/gamification/league/xp";
+  static const String leagueHistory = "api/gamification/league/history";
+  
+  // Milestones
+  static const String milestones = "api/gamification/milestones";
+  static const String milestonesUpdate = "api/gamification/milestones/update";
+  static const String milestonesDefinitions = "api/gamification/milestones/definitions";
+  
+  // Hearts System
+  static const String hearts = "api/gamification/hearts";
+  static const String heartsUse = "api/gamification/hearts/use";
+  static const String heartsRefill = "api/gamification/hearts/refill";
+  static const String heartsToggleChallengeMode = "api/gamification/hearts/toggle-challenge-mode";
+  static const String heartsBonus = "api/gamification/hearts/bonus";
+  
+  // Voice Contributions
+  static const String voiceContributions = "api/voice/contributions";
+  static const String voiceContributionPrompts = "api/voice/contributions/prompts";
+  static String voiceContributionsByUser(String userId) => "api/voice/contributions/user/$userId";
+  static String voiceContributionStats(String userId) => "api/voice/contributions/stats/$userId";
+  
+  // Vocabulary System
+  static const String vocabularyWords = "api/vocabulary/words";
+  static String vocabularyWord(String id) => "api/vocabulary/words/$id";
+  static String vocabularyReview(String id) => "api/vocabulary/words/$id/review";
+  static const String vocabularyDueForReview = "api/vocabulary/words/due-for-review";
+  static const String vocabularyStats = "api/vocabulary/stats";
+  
+  // Learner Progress
+  static String learnerProgressGet(String userId, String language) => "api/progress/$userId/$language";
+  static String learnerProgressUpdate(String userId, String language) => "api/progress/$userId/$language";
+  static String learnerProgressActivity(String userId, String language) => "api/progress/$userId/$language/activity";
+  static String learnerProgressCoach(String userId, String language) => "api/progress/$userId/$language/coach";
+  static String learnerProgressGoals(String userId, String language) => "api/progress/$userId/$language/goals";
 }
