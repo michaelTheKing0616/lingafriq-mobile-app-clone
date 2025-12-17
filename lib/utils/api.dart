@@ -102,8 +102,6 @@ class Api {
   static const String chatRooms = "chat/rooms/";
   static String chatMessages(String room) => "chat/rooms/$room/messages/";
   static const String onlineUsers = "chat/online_users/";
-  static const String aiChatHistory = "chat/ai/history/";
-  static const String syncAiChatHistory = "chat/ai/history/sync/";
   // Chat & Social End
 
   // Loading Screen Start
@@ -128,10 +126,54 @@ class Api {
   static const String gameTelemetry = "api/games/telemetry/";
   static const String sendTelemetry = "api/telemetry/";
   
+  // AI Chat History (scoped by mode × language)
   static const String aiChatHistorySync = "api/ai-chat-history/";
   static String getAIChatHistory(String mode, String language) => "api/ai-chat-history/?mode=$mode&languageCode=$language";
   static const String aiChatSRSSync = "api/ai/chat/srs/sync/";
   static String getAIChatCEFR(String userId) => "api/ai/chat/cefr/$userId/";
+  
+  // Gamification XP Routes
+  static const String xpAward = "api/gamification/xp/award";
+  static const String xpTotal = "api/gamification/xp/total";
+  static const String xpFormulas = "api/gamification/xp/formulas";
+  
+  // Gamification Routes (Tribes, Badges, etc.)
+  static const String tribes = "api/tribes/";
+  static String tribeDetails(String id) => "api/tribes/$id";
+  static String tribeJoin(String id) => "api/tribes/$id/join";
+  static String tribeLeave(String id) => "api/tribes/$id/leave";
+  static String tribeActivity(String id) => "api/tribes/$id/activity";
+  static String tribeDepositXP(String id) => "api/tribes/$id/deposit-xp";
+  
+  static const String badges = "api/badges/";
+  static String badgeDetails(String id) => "api/badges/$id";
+  static String badgeUnlock(String id) => "api/badges/$id/unlock";
+  
+  static const String events = "api/events/";
+  static String eventDetails(String id) => "api/events/$id";
+  static String eventJoin(String id) => "api/events/$id/join";
+  
+  static const String leaderboards = "api/leaderboards/";
+  static String leaderboardByType(String type) => "api/leaderboards/$type";
+  
+  static const String journey = "api/journey/";
+  static String journeyChapter(String id) => "api/journey/chapter/$id";
+  
+  static const String competitions = "api/competitions/";
+  static String competitionDetails(String id) => "api/competitions/$id";
+  
+  static const String items = "api/items/";
+  static String itemDetails(String id) => "api/items/$id";
+  static String itemClaim(String id) => "api/items/$id/claim";
+  static String itemUse(String id) => "api/items/$id/use";
+  
+  static const String villages = "api/villages/";
+  static String villageDetails(String id) => "api/villages/$id";
+  
+  static const String ancestry = "api/ancestry/";
+  static String ancestryTree(String userId) => "api/ancestry/$userId";
+  
+  static const String userLessons = "api/user-lessons/";
   
   static const String progressActivity = "api/progress/activity/";
   static String getProgress(String userId) => "api/progress/user/$userId/";

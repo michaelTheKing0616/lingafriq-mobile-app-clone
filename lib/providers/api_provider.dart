@@ -923,10 +923,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
 
   /// Award XP via server-authoritative XP service
-  /// POST /api/xp/award
+  /// POST /api/gamification/xp/award
   Future<bool> awardXP({
     required String userId,
-    required String source, // 'quiz', 'story', 'chat', 'event', 'tribe'
+    required String source, // 'quiz', 'story', 'chat', 'game', 'event', 'tribe', 'lesson', 'review'
     required String sourceId, // Unique ID for this specific event
     required int amount,
     double difficultyMultiplier = 1.0,
@@ -934,14 +934,15 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       final res = await ref.read(client).post(
-        '/api/xp/award',
+        '/api/gamification/xp/award',
         data: {
-          'userId': userId,
           'source': source,
           'sourceId': sourceId,
-          'amount': amount,
-          'difficultyMultiplier': difficultyMultiplier,
-          'repetitionFactor': repetitionFactor,
+          'baseXP': amount,
+          'metadata': {
+            'difficultyMultiplier': difficultyMultiplier,
+            'repetitionFactor': repetitionFactor,
+          },
         },
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -952,10 +953,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Get user's current XP and level
-  /// GET /api/xp/user/:userId
+  /// GET /api/gamification/xp/total
   Future<Map<String, dynamic>?> getUserXP(String userId) async {
     try {
-      final res = await ref.read(client).get('/api/xp/user/$userId');
+      final res = await ref.read(client).get('/api/gamification/xp/total');
       if (res.statusCode == 200) {
         return Map<String, dynamic>.from(res.data);
       }
