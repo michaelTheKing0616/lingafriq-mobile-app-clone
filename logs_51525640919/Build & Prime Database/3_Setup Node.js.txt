@@ -1,0 +1,28 @@
+﻿2025-12-05T12:29:36.7229462Z ##[group]Run actions/setup-node@v4
+2025-12-05T12:29:36.7230112Z with:
+2025-12-05T12:29:36.7230514Z   node-version: 18.x
+2025-12-05T12:29:36.7230950Z   cache: npm
+2025-12-05T12:29:36.7231353Z   always-auth: false
+2025-12-05T12:29:36.7231801Z   check-latest: false
+2025-12-05T12:29:36.7232580Z   token: ***
+2025-12-05T12:29:36.7233003Z env:
+2025-12-05T12:29:36.7233384Z   NODE_VERSION: 18.x
+2025-12-05T12:29:36.7233817Z ##[endgroup]
+2025-12-05T12:29:36.9476739Z Attempting to download 18.x...
+2025-12-05T12:29:37.4833136Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-05T12:29:38.0916083Z Extracting ...
+2025-12-05T12:29:38.1024208Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/f613c45b-2823-4bab-82ee-efc4523f632c -f /home/runner/work/_temp/71c11f6b-f661-442e-a72d-cb333a113a74
+2025-12-05T12:29:39.2163064Z Adding to the cache ...
+2025-12-05T12:29:41.3458987Z ##[group]Environment details
+2025-12-05T12:29:41.6394869Z node: v18.20.8
+2025-12-05T12:29:41.6399937Z npm: 10.8.2
+2025-12-05T12:29:41.6409192Z yarn: 1.22.22
+2025-12-05T12:29:41.6410027Z ##[endgroup]
+2025-12-05T12:29:41.6426122Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-05T12:29:41.7684368Z /home/runner/.npm
+2025-12-05T12:29:42.0029462Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T12:29:42.8022110Z Received 64730011 of 64730011 (100.0%), 92.3 MBs/sec
+2025-12-05T12:29:42.8029048Z Cache Size: ~62 MB (64730011 B)
+2025-12-05T12:29:42.8056407Z [command]/usr/bin/tar -xf /home/runner/work/_temp/41930133-7ff8-4634-b0aa-4678db9dea75/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-05T12:29:43.2102040Z Cache restored successfully
+2025-12-05T12:29:43.2230052Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d

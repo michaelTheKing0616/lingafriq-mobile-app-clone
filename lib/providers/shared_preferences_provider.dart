@@ -1,0 +1,82 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/models/profile_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+///Override provider in provider scope
+final sharedPreferencesProvider = Provider<SharedPreferencesProvider>((ref) {
+  throw UnimplementedError();
+});
+
+class SharedPreferencesProvider {
+  const SharedPreferencesProvider(this.prefs);
+  final SharedPreferences prefs;
+
+  final emailKey = 'email';
+  final passwordKey = 'password';
+
+  Future<void> storeEmailAndPassword(String email, String password) async {
+    final emailStoreFuture = prefs.setString(emailKey, email);
+    final passwordStoreFuture = prefs.setString(passwordKey, password);
+    await Future.wait([emailStoreFuture, passwordStoreFuture]);
+  }
+
+  Future<void> storeUser(ProfileModel user, String emailKey) async {
+    await prefs.setString(emailKey, user.toJson());
+  }
+
+  Future<ProfileModel?> getUser(emailKey) async {
+    final userJson = prefs.getString(emailKey);
+    if (userJson == null) return null;
+    return ProfileModel.fromJson(userJson);
+  }
+
+  Future<void> removeEmailAndPassword() async {
+    final emailRemoveFuture = prefs.remove(emailKey);
+    final passwordRemoveFuture = prefs.remove(passwordKey);
+    await Future.wait([emailRemoveFuture, passwordRemoveFuture]);
+  }
+
+  String get getEmail {
+    final email = prefs.getString(emailKey) ?? '';
+    return email;
+  }
+
+  Map<String, String>? get getEmailAndPassword {
+    final email = prefs.getString(emailKey);
+    final password = prefs.getString(passwordKey);
+    if (email == null || password == null) {
+      return null;
+    }
+    return {emailKey: email, passwordKey: password};
+  }
+
+  Map<String, dynamic>? get requestEmailAndPass {
+    final email = prefs.getString(emailKey);
+    final password = prefs.getString(passwordKey);
+    if (email == null || password == null) {
+      return null;
+    }
+    return {"email": email, "password": password};
+  }
+
+  _EmailAndPassword get emailAndPassword {
+    final email = prefs.getString(emailKey)!;
+    final password = prefs.getString(passwordKey)!;
+    return _EmailAndPassword(email, password);
+  }
+
+  bool showLanguageIntro(int id) {
+    return prefs.getBool("language/$id") ?? true;
+  }
+
+  Future<void> setLanguageIntro(int id) async {
+    await prefs.setBool("language/$id", false);
+  }
+}
+
+class _EmailAndPassword {
+  final String email;
+  final String password;
+
+  _EmailAndPassword(this.email, this.password);
+}

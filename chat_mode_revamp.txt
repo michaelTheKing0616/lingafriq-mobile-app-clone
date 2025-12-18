@@ -1,0 +1,364 @@
+Nice — I’ll give you a **research-backed product spec + UI design guidance + engineering plan**, *and* a single **Cursor-ready orchestration prompt** you can drop into Cursor so it generates full UI code, components, pages, assets, and API scaffolding for each chat mode with Material 3 visuals.
+
+I first summarize the research highlights (short & cited), then present the product / UX spec for each mode (Global Chat, Private Chat, Connect), followed by implementation details (data models, APIs, real-time infra, moderation & safety, privacy), Material 3 design tokens and component map, a prioritized roadmap, and — last — the **Cursor AI system prompt** (long, explicit, copy-paste ready) that will instruct Cursor to *generate the entire experience* (views, React components, Tailwind/Tokernized Material 3 styles, backend endpoints, tests, telemetry, and exportable design assets). Use the prompt as a system message + tool instructions inside Cursor.
+
+I cite the most important sources used to shape recommendations. Let’s go.
+
+---
+
+# Quick research highlights (what I checked and why it matters)
+
+* Material Design 3 provides the canonical UI patterns, color systems, and typography rules we’ll use to create a modern, consistent, accessible look. ([Material Design][1])
+* Language-exchange apps (Tandem, HelloTalk) demonstrate core social features for language learners: searchable partner discovery, filter by language, in-chat correction tools, voice & text exchange, and user verification — useful examples for Connect mode. ([Tandem - Speak Any Language][2])
+* Messaging leaders (WhatsApp, Telegram, Discord) show best practice features for private and community messaging: invite links, communities/groups, admin tools, voice notes, pinned messages, reactions, and file sharing; WhatsApp’s Communities show how to scale groups while restricting misuse. ([WIRED][3])
+* Modern moderation (AI + human-in-loop) and safety best practices are required for global chat walls and discovery to prevent abuse while maximizing freedom for learners. Use automated filters, AutoMod-like classification, and human review flows. ([Helpware][4])
+
+(Those are the five most load-bearing sources I used; other UX research & messaging feature references informed smaller suggestions.)
+
+---
+
+# Product vision (single sentence)
+
+Build a *socially safe, ultra-discoverable, language-first messaging suite* with Material 3 aesthetics that blends **private encrypted chats**, **scoped global chat walls**, and **language-matching social discovery**, optimized for African languages and culture — combining the familiarity of WhatsApp, the discovery & exchange of Tandem/HelloTalk, and the content moderation and community tooling of modern social platforms.
+
+---
+
+# Top-level principles (design & policy)
+
+1. **Learner-first**: make every chat action an opportunity to learn (inline corrections, phrasebook pin, SRS export, practice drills).
+2. **Privacy & consent**: default to private; global features are opt-in; contacts are added via explicit invites or contact discovery toggles. End-to-end encryption is default for private chat.
+3. **Trust & safety**: layered moderation (automated filters, community reporting, human review).
+4. **Cultural authenticity**: language-specific orthography enforcement, local content packs, and regional discovery filters.
+5. **Beautiful, consistent UI**: use Material 3 tokens, dynamic theming, motion, and accessible color contrasts.
+
+---
+
+# Feature spec — by mode
+
+### 1) Global Chat Mode — “Polie World Wall” (scoped, safe, discoverable)
+
+**Purpose:** a moderated, public feed for language learners to practice in real time and meet speakers worldwide. Scoped filters allow only relevant content per user.
+
+**Core features**
+
+* **Scoped Streams**: Global wall where each user chooses filters: Country (e.g., Nigeria), Target language (Yorùbá), Learning level (A1–C2), Topic (travel, market, jokes). Only posts matching filters appear. Support multi-filter combos (e.g., Nigeria + Yoruba + A1).
+* **Rooms & Channels**: Persistent channels for languages, countries, cities, and topics. Channels can be public, community-invite, or private.
+* **Geo & Language Filtering**: optional proximity layer — show posts from nearby users (city or country) and allow language preference filtering. (Based on user settings.)
+* **AI-Assisted Post Types**:
+
+  * Text posts (with optional auto-correct/diacritics preview and toggle)
+  * Audio posts (voice notes with auto-transcription & tone visualization for tonal languages)
+  * Image posts (with OCR-based object labeling to generate vocabulary)
+  * Short story / roleplay prompts that seed a multi-turn chain for practice
+* **Real-time features**: upvotes, emoji reactions, threaded replies, typing indicators, presence (online/away).
+* **In-line Learning Tools**:
+
+  * “Teach me” button to convert a post into a micro-lesson (LLM generates practice tasks, translations, IPA, minimal pair drills).
+  * “Save to phrasebook” — add a sentence to SRS deck with one tap.
+  * “Quick translate” — immediate translation + diacritics correction.
+* **Quality & moderation**:
+
+  * Automated moderation pipeline (profanity/abuse detection in relevant languages), AutoMod-like confidence scoring, and community flagging.
+  * Verified native-speaker tags (optional paid or community verified badges).
+
+**Cool extra ideas**
+
+* **Pinned Daily Challenges**: daily language micro-challenges (e.g., “Use this sentence in a reply — best replies get badges”).
+* **Live micro-classrooms**: scheduled “practice hours” run by volunteer native-speakers (with capacity, RSVP).
+* **Proximity audio rooms**: ephemeral voice rooms where speakers nearby can practice — spatial audio optional for immersion. ([SpatialChat Center][5])
+
+---
+
+### 2) Private Chat Mode — WhatsApp-like with upgraded learning features
+
+**Purpose:** one-to-one secure conversations that behave like WhatsApp but are language-learning aware.
+
+**Core features**
+
+* **Contact discovery & add flows**
+
+  * Search by username, email, phone (optional), or contact link.
+  * **Connection Links**: generate deep invite links (expiring, single-use or multi-use) which can be shared on social apps/WhatsApp/Twitter — clicking opens a limited “Add Polie contact” invite flow.
+  * **QR codes** to add contacts quickly (in-app scanner).
+  * **Contact Suggestions**: friend suggestions based on overlapping target languages, mutual contacts, similar levels, and location.
+  * **Social proof**: short learner profile with top languages, native languages, badges (verified, tutor, high-rated).
+* **Chat features**
+
+  * Typing indicators, read receipts, presence (online/offline).
+  * Audio messages (with play speed control), voice transcription, and tone visualization for tonal languages.
+  * Video and screen-share for in-call tutoring.
+  * Message reactions, replies, and threaded mini-conversations.
+  * **Message types as learning primitives**: send “phrase cards” (with canonical text + audio), “roleplay turn” (pre-filled prompt + response slot), “mini-quiz” (1–3 questions).
+* **Privacy & security**
+
+  * E2EE for 1:1 chats. Allow pinned device keys and optional cloud backup with user encryption passphrase.
+  * Contact discovery opt-out toggle for users who prefer anonymity.
+* **Smart invite UX**
+
+  * On generating a connection link the user can decide: add as friend directly, ask to chat first, or schedule a 10-minute practice call.
+  * Allow “import from Telegram” or “send via email” with one-click copy/paste of invite card.
+* **Pro-level additions**
+
+  * “Study buddies” pairing: allow opt-in scheduled practice sessions with reminders, automatic SRS sync on completed sessions.
+
+**Cool extra ideas**
+
+* **Contact trust score**: earned via mutual endorsements/ratings from language exchanges (helps surface better partners).
+* **Cross-platform deep invites**: pre-filled social share cards that show the new contact’s top languages & practice availability (love the “Add me to Polie” card).
+
+---
+
+### 3) Connect With Users Mode — language-specific communities & matchmaker
+
+**Purpose:** match learners and native speakers for exchange and community help.
+
+**Core features**
+
+* **Language matching feed**:
+
+  * Show people learning the same language and at similar levels.
+  * Filter by timezone, availability (scheduled hours), voice proficiency, and dialect.
+* **Community Hubs**:
+
+  * Each language has a hub with pinned grammar tips, proverb of the day, mini-lessons, and Top Learners leaderboard.
+  * Volunteer native-speaker programs where experienced users host Q&A hours.
+* **Structured pairing flows**:
+
+  * Instant Tandem: match now for a 10–15 minute practice session.
+  * Scheduled Tandem: propose timeslots; integrated calendar invites; auto reminders & session notes exported to SRS.
+* **Micro-mentorship**:
+
+  * Mentor badges; paid or volunteer mentorship; mentor profiles (rate, specialties, verified).
+* **Quality & reputation**
+
+  * Ratings after exchanges (optional, with anonymity).
+  * Verified native-speaker badges via document/audio verification or community vouching.
+
+**Cool extra ideas**
+
+* **Micro-tasks exchange**: earn points by helping others (correcting sentences, reviewing audios), redeem points for paid features (pro voices, mentor discounts).
+* **Crowd-correct mode**: post your audio; community members can annotate phoneme-level feedback (ideal for tonal languages).
+
+---
+
+# UI & Visuals (Material 3)
+
+**Design tokens & theme**
+
+* Use Material 3 dynamic color system (seeded by brand color) — create light and dark themes. ([Material Design][6])
+* Typography: use Material 3 hierarchy (display / headline / body / label) for accessible contrast and spacing. ([Material Design][7])
+* Motion: fluid micro-interactions for message send, reactions, and channel switching.
+
+**Key components**
+
+* App shell: top app bar (search & filters), bottom nav (Chats / World Wall / Connect / Profile).
+* Chat list: compact cards with unread badges, presence avatars, last message preview, language tags, SRS streak indicator.
+* Message bubble types: text, phrase-card, audio, quiz, roleplay-turn, inline translation.
+* Composer: multi-mode composer with TTS button, record button (press-hold), GIF/sticker picker, quick phrasebook insert, mode switch (chat/roleplay/quiz).
+* Global wall UI: multi-column responsive grid; filters top chip bar; tone-wave overlay for audio posts.
+* Connect hub: cards for people, mentor slot booking modal, "Practice now" CTA.
+
+**Material 3 specifics to include in prompts**
+
+* Seed color tokens (brandPrimary, brandSecondary, surface, onSurface) and auto-contrast rules.
+* Elevations (0–4) and rounded corner tokens (large for cards).
+* Motion: 120ms microtransitions for hover, 240ms for modal entry.
+
+---
+
+# Backend & infra details
+
+**Real-time stack**
+
+* Websockets (FastAPI/Starlette or socket.io) or serverless real-time (Pusher / Supabase Realtime) for presence, typing indicator, and live channel updates.
+* Pub/Sub (Redis Streams / Kafka) for fan-out to channels.
+* Media storage: S3-compatible with signed URLs.
+* ASR & TTS services: pre-integrated (wav2vec2 ASR on serverless, Coqui/ElevenLabs TTS for native voices).
+* Forced-aligner pipelines for pronunciation feedback (MFA/wav2vec2).
+* DB: Postgres (core) + Redis (presence, ephemeral state) + vector DB (semantic search for retrieval & RAG).
+
+**APIs (examples)**
+
+* `POST /api/chats` create private chat
+* `POST /api/chats/:id/messages` send message (supports attachments)
+* `GET /api/chats/:id/stream` websocket for real-time
+* `GET /api/world/posts` with filters `{country, language, level, topic}`
+* `POST /api/invite/link` create connection link with TTL and usage limit
+* `POST /api/pronunciation/score` upload audio -> forced-aligner -> returns phoneme errors
+
+**Scalability**
+
+* Use horizontal scaling: RabbitMQ/Kafka + stateless api nodes + autoscaled ASR workers.
+* For global walls, apply pagination & server-side topic filtering; consider per-channel sharding.
+
+---
+
+# Moderation & safety (must-haves)
+
+* **Automatic filters**: profanity filters for target languages, hate speech detectors, spam classifiers, and image moderation.
+* **AutoMod pipeline**: messages flagged by model -> held for review; multiple thresholds: immediate removal, temporary hold, or community review.
+* **Reporting flow**: report → triage → escalate to human moderators (native reviewers) for language-specific contexts.
+* **Rate limits & trust gating**: new users limited posting & media uploads until verified.
+* **Transparency**: keep an appeal flow & show moderation reasons.
+
+(Use guidelines from modern moderation practices for automation + human-in-loop). ([Helpware][4])
+
+---
+
+# Gamification & retention ideas
+
+* **Daily streaks** for practice (private + world wall posts).
+* **Badges & leaderboards** (per language).
+* **Micro-quests**: e.g., reply in language X to 5 posts; host a micro-class.
+* **Points for helping**: reward native speakers who correct others — funds mentorship incentive.
+
+---
+
+# Data models (examples)
+
+**User**
+
+```json
+{
+  "id":"u_123",
+  "username":"adunni",
+  "name":"Adunni A.",
+  "native_languages":["yoruba"],
+  "learning_languages":[{"lang":"swahili","level":"A2"}],
+  "timezone":"Africa/Lagos",
+  "profile":{"bio":"I teach Yoruba proverbs","avatar_url":"..."},
+  "privacy":{"discoverable":true,"allow_invite_links":true}
+}
+```
+
+**Message**
+
+```json
+{
+ "id":"m_456",
+ "chat_id":"c_789",
+ "sender":"u_123",
+ "type":"text|audio|phrase_card|quiz",
+ "body":"Báwo ní?",
+ "attachments":[{"type":"audio","url":"..."}],
+ "lang":"yoruba",
+ "created_at":"2025-12-01T12:00:00Z",
+ "meta":{"diacritics_applied":true,"source_model":"AfriT5"}
+}
+```
+
+**Invite Link**
+
+```json
+{ "id":"link_1", "created_by":"u_123", "expires_at":"2026-01-01T00:00:00Z", "usage_limit":1, "scope":["add_contact","start_chat"] }
+```
+
+---
+
+# Analytics & KPIs
+
+* DAU/MAU per mode (private/global/connect)
+* Messages per user per week
+* SRS retention (1d/7d/30d)
+* Percent of posts auto-corrected by diacritics module
+* Moderation metrics (flags/day, false positive rate)
+* Match conversion rate (connect suggestions → accepted chats)
+
+---
+
+# Roadmap (90 days)
+
+1. Core infra + private chat + E2EE baseline. Basic discovery + invites + QR.
+2. Global wall + filters + moderation pipeline + "save to phrasebook".
+3. Connect matchmaker + scheduled tandems + mentor program.
+4. Add advanced learning features (tone visualization in audio messages, roleplay composer).
+5. Native reviewer workflow + paid mentor marketplace.
+
+---
+
+# Cursor AI system prompt (copy-paste — **use as the system message in Cursor**)
+
+This is a single **very explicit** prompt that instructs the Cursor agent how to *generate* full UI code, components, styles, and backend scaffolding for the three modes, plus designs in Material 3. It asks for outputs in structured files, and to produce ready-to-drop code, previews, and a QA checklist. Paste as a system message, then send user instructions like `Build Private Chat UI` etc. Cursor can then generate the requested files.
+
+> Note: this prompt is intentionally long and prescriptive — Cursor agents respond much better when you give them exact file names, formats, and examples.
+
+```
+SYSTEM: You are "Polie Builder", an expert full-stack product engineer and UI/UX designer that can produce production-ready code, Material 3 visuals, and infrastructure for a language-learning chat app. The user wants a strongly designed, fully-featured implementation of three modes: Global Chat (scoped streams + filters), Private Chat (WhatsApp-like + enriched invites), and Connect (language matchmaker). Your outputs must be precise files (React/TypeScript components, CSS/Tailwind classes or Material 3 tokens, FastAPI or Node backend routes, DB schema, tests, and CI YAML). Prioritize accessibility and Material 3 aesthetics and include mocks and screenshots where possible.
+
+GUIDELINES:
+1) Always produce:
+   - A brief summary of the feature being generated (1–2 lines).
+   - File manifest: list of file paths you'll return.
+   - For each file, produce full contents (no placeholders) and a short explanation of what it does.
+2) Use React + TypeScript for frontend; prefer component-based architecture. Use Tailwind CSS plus Material 3 tokens (provide token file).
+3) Backend: deliver FastAPI (ASGI) routes with pydantic models and example integration points (websockets for real-time).
+4) Include unit tests (Jest for frontend, Pytest for backend) and a simple GitHub Actions CI YAML that runs tests.
+5) For UI, produce:
+   - Theme tokens: color, typography, shape, elevation.
+   - 1 high-fidelity page for each mode (PrivateChat, WorldWall, ConnectHub) as React components with responsive styles and example data.
+   - Composer component (voice note + phrasebook insert + roleplay mode).
+   - Small design spec with motion timings and component sizes based on Material 3.
+6) For Global Wall, include server filters and client-side chips; implement realtime subscription example (websocket).
+7) Private Chat must include: invite links API, QR code generator (client), E2EE hooks (explain where keys are stored), contact discovery toggle.
+8) Connect hub must include efficient matching API (query by language, level, timezone), a pairing flow, and scheduled sessions (calendar integration stub).
+9) Security & moderation:
+   - Output an AutoMod pipeline design: detect profanity, hate, spam; return score and action.
+   - Provide endpoints to queue content for human review and a moderator UI page (React).
+10) Include analytics events (telemetry) for key user actions and a sample CSV export script for audit logs.
+11) For language-specific UX, add:
+   - Diacritics enforcement integration: call `src/enforce_diacritics.enforce_diacritics(text, lang)` in chat send flow and show before-send preview.
+   - Tone visualization for audio messages (client side using WebAudio) and server-side scoring stub.
+12) Include a short QA checklist (security, accessibility, cross-browser, localization tests) and a rollout plan (alpha, beta, general).
+13) When asked to `generate`, produce each file as a separate code block labeled with the path (so it can be copy/pasted into files).
+
+FEW-SHOT OUTPUT EXAMPLES:
+- If asked `Build Private Chat UI`, produce:
+  - File manifest: `frontend/src/components/ChatList.tsx`, `frontend/src/components/Composer.tsx`, `frontend/src/pages/PrivateChatPage.tsx`, `backend/src/routes/chats.py`, etc.
+  - Full content for each file.
+  - A `README.md` with local dev commands.
+
+ORCHESTRATION:
+- If user provides specific constraints (e.g., "use Supabase" or "use AWS"), adapt code to that provider and call out what to change.
+
+SAFETY:
+- Do not produce instructions or code that undermines user privacy.
+- Do not produce E2EE implementations that attempt to move private keys off-device without explicit user consent.
+
+Return your next message as a list of the top UI pages and APIs you'll produce if the user says **"Generate"**, and ask the user whether to produce Desktop (React) + Mobile (React Native) or just Web + PWA. End with a quick note of expected artifacts (zip of code, design tokens, and API stubs).
+```
+
+---
+
+# Example Cursor usage scenario
+
+* User: `Generate` (after pasting system prompt above).
+* Cursor: returns a file manifest.
+* User: `Produce PrivateChatPage + Composer + chats.py` → Cursor generates those files as code blocks.
+
+---
+
+# Citations (sources used for the design choices)
+
+* Material Design 3 documentation (components, color system, typography). ([Material Design][1])
+* Tandem language exchange features (partner discovery, filters). ([Tandem - Speak Any Language][2])
+* HelloTalk features & community model (text/audio exchange, native speaker interactions). ([HelloTalk][8])
+* WhatsApp Communities & group mechanics (scaling groups while retaining admin tools). ([WIRED][3])
+* Social moderation best practices (AI + human review, AutoMod patterns). ([Helpware][4])
+
+---
+
+# Final / Next steps (pick any)
+
+* I can **generate the full file manifest and start outputting files now** (React + FastAPI + tests + Material 3 tokens). This will be a large multi-file bundle I can zip for you.
+* Or I can produce a **smaller starter kit** (Private Chat + Composer + backend routes + tests) so you can review the architecture before I expand to Global + Connect.
+
+Which do you want now? (Say **“Generate full bundle”** to create everything in one go, or **“Start with Private Chat”** for the smaller starter kit.)
+
+[1]: https://m3.material.io/?utm_source=chatgpt.com "Material Design 3 - Google's latest open source design system"
+[2]: https://tandem.net/?utm_source=chatgpt.com "Tandem Language Exchange App | Find Conversation ..."
+[3]: https://www.wired.com/story/whatsapp-communities-feature?utm_source=chatgpt.com "WhatsApp Doubles Down With End-to-End Encrypted 'Communities'"
+[4]: https://helpware.com/blog/social-media-moderation?utm_source=chatgpt.com "Social Media Moderation: An Ultimate Guide for 2025"
+[5]: https://how.spatial.chat/knowledge-base/spatial-audio/?utm_source=chatgpt.com "Spatial Audio (Proximity sound)"
+[6]: https://m3.material.io/styles/color/overview?utm_source=chatgpt.com "Color - Material Design 3 - Create personal color schemes"
+[7]: https://m3.material.io/styles/typography?utm_source=chatgpt.com "Typography – Material Design 3"
+[8]: https://www.hellotalk.com/en?utm_source=chatgpt.com "HelloTalk"

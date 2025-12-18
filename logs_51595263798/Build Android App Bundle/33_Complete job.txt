@@ -1,0 +1,8 @@
+﻿2025-12-06T14:09:36.7813484Z Evaluate and set job outputs
+2025-12-06T14:09:36.7817790Z Set output 'version'
+2025-12-06T14:09:36.7819779Z Set output 'version_name'
+2025-12-06T14:09:36.7820367Z Set output 'build_number'
+2025-12-06T14:09:36.7821035Z Cleaning up orphan processes
+2025-12-06T14:09:36.8178294Z Terminate orphan process: pid (3138) (java)
+2025-12-06T14:09:36.8203623Z Terminate orphan process: pid (3271) (java)
+2025-12-06T14:09:36.8248883Z Terminate orphan process: pid (3414) (java)

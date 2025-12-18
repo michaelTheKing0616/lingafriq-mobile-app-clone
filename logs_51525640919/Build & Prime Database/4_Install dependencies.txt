@@ -1,0 +1,81 @@
+﻿2025-12-05T12:29:43.2419484Z ##[group]Run echo "📦 Installing dependencies..."
+2025-12-05T12:29:43.2419958Z [36;1mecho "📦 Installing dependencies..."[0m
+2025-12-05T12:29:43.2420260Z [36;1mnpm ci[0m
+2025-12-05T12:29:43.2420489Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-05T12:29:43.2460047Z shell: /usr/bin/bash -e {0}
+2025-12-05T12:29:43.2460324Z env:
+2025-12-05T12:29:43.2460513Z   NODE_VERSION: 18.x
+2025-12-05T12:29:43.2460742Z ##[endgroup]
+2025-12-05T12:29:43.2548382Z 📦 Installing dependencies...
+2025-12-05T12:29:48.4453952Z npm warn deprecated @types/moment@2.13.0: This is a stub types definition for Moment (https://github.com/moment/moment). Moment provides its own type definitions, so you don't need @types/moment installed!
+2025-12-05T12:29:48.5686017Z npm warn deprecated @types/nanoid@3.0.0: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
+2025-12-05T12:29:48.5694598Z npm warn deprecated @types/mongoose-paginate-v2@1.6.5: This is a stub types definition. mongoose-paginate-v2 provides its own type definitions, so you do not need this installed.
+2025-12-05T12:29:48.5697047Z npm warn deprecated @types/mongoose@5.11.97: Mongoose publishes its own types, so you do not need to install this package.
+2025-12-05T12:29:48.6433607Z npm warn deprecated is-data-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-05T12:29:48.6437409Z npm warn deprecated is-accessor-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-05T12:29:48.6441566Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-12-05T12:29:48.6837068Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:29:48.6842780Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:29:48.6861337Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:29:48.6863922Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:29:48.6967470Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:29:48.6968824Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:29:48.7074144Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:29:48.7076612Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:29:48.7096063Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T12:29:48.7098559Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T12:29:48.7270647Z npm warn deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+2025-12-05T12:29:48.7586457Z npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+2025-12-05T12:29:48.7747295Z npm warn deprecated csurf@1.11.0: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-05T12:29:48.8010722Z npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+2025-12-05T12:29:48.8017508Z npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
+2025-12-05T12:29:48.8022703Z npm warn deprecated @babel/plugin-proposal-optional-catch-binding@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
+2025-12-05T12:29:48.8026102Z npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+2025-12-05T12:29:48.8030864Z npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+2025-12-05T12:29:48.8034433Z npm warn deprecated @babel/plugin-proposal-json-strings@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
+2025-12-05T12:29:48.8049828Z npm warn deprecated @babel/plugin-proposal-dynamic-import@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
+2025-12-05T12:29:48.8055458Z npm warn deprecated @babel/plugin-proposal-export-namespace-from@7.18.9: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-export-namespace-from instead.
+2025-12-05T12:29:48.8059519Z npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+2025-12-05T12:29:48.8790250Z npm warn deprecated @babel/plugin-proposal-class-static-block@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-static-block instead.
+2025-12-05T12:29:48.8796545Z npm warn deprecated @babel/plugin-proposal-logical-assignment-operators@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-logical-assignment-operators instead.
+2025-12-05T12:29:48.9027078Z npm warn deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+2025-12-05T12:29:48.9043217Z npm warn deprecated supertest@6.3.3: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-05T12:29:48.9265885Z npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2025-12-05T12:29:48.9831287Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-12-05T12:29:49.0148053Z npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
+2025-12-05T12:29:49.0154874Z npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+2025-12-05T12:29:49.0164512Z npm warn deprecated @babel/plugin-proposal-async-generator-functions@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
+2025-12-05T12:29:49.0812813Z npm warn deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+2025-12-05T12:29:49.1286110Z npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.1428159Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.1442145Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.1463748Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.1468779Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.1491298Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.1523416Z npm warn deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+2025-12-05T12:29:49.1883007Z npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+2025-12-05T12:29:49.1917650Z npm warn deprecated glob@7.1.6: Glob versions prior to v9 are no longer supported
+2025-12-05T12:29:49.2433377Z npm warn deprecated formidable@1.2.6: Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau
+2025-12-05T12:29:49.5648892Z npm warn deprecated multer@1.4.5-lts.1: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-12-05T12:29:49.5665173Z npm warn deprecated sane@4.1.0: some dependency vulnerabilities fixed, support for node < 10 dropped, and newer ECMAScript syntax/features added
+2025-12-05T12:29:49.5868543Z npm warn deprecated google-p12-pem@4.0.1: Package is no longer maintained
+2025-12-05T12:29:50.4123546Z npm warn deprecated babel-merge@3.0.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2025-12-05T12:29:50.4155028Z npm warn deprecated formidable@2.1.2: ACTION REQUIRED: SWITCH TO v3 - v1 and v2 are VULNERABLE! v1 is DEPRECATED FOR OVER 2 YEARS! Use formidable@latest or try formidable-mini for fresh projects
+2025-12-05T12:29:50.6531469Z npm warn deprecated superagent@8.0.9: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-05T12:29:51.1058059Z npm warn deprecated z-schema@5.0.6: has issues with node 14
+2025-12-05T12:30:02.4981663Z 
+2025-12-05T12:30:02.4984188Z added 1399 packages, and audited 1400 packages in 19s
+2025-12-05T12:30:02.4985027Z 
+2025-12-05T12:30:02.4986609Z 116 packages are looking for funding
+2025-12-05T12:30:02.4993672Z   run `npm fund` for details
+2025-12-05T12:30:02.5689503Z 
+2025-12-05T12:30:02.5694674Z 53 vulnerabilities (11 low, 18 moderate, 17 high, 7 critical)
+2025-12-05T12:30:02.5697595Z 
+2025-12-05T12:30:02.5700734Z To address issues that do not require attention, run:
+2025-12-05T12:30:02.5701533Z   npm audit fix
+2025-12-05T12:30:02.5703120Z 
+2025-12-05T12:30:02.5708290Z To address all issues (including breaking changes), run:
+2025-12-05T12:30:02.5713547Z   npm audit fix --force
+2025-12-05T12:30:02.5714028Z 
+2025-12-05T12:30:02.5714379Z Run `npm audit` for details.
+2025-12-05T12:30:02.6215736Z ✅ Dependencies installed

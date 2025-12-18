@@ -1,0 +1,231 @@
+﻿2025-12-08T23:08:03.9931192Z ##[group]Run echo "🧪 Running tests..."
+2025-12-08T23:08:03.9931830Z [36;1mecho "🧪 Running tests..."[0m
+2025-12-08T23:08:03.9932211Z [36;1mnpm test || echo "⚠️ Tests failed or not configured, continuing..."[0m
+2025-12-08T23:08:03.9964093Z shell: /usr/bin/bash -e {0}
+2025-12-08T23:08:03.9964326Z env:
+2025-12-08T23:08:03.9964503Z   NODE_VERSION: 18.x
+2025-12-08T23:08:03.9964724Z ##[endgroup]
+2025-12-08T23:08:04.0016648Z 🧪 Running tests...
+2025-12-08T23:08:04.1299889Z 
+2025-12-08T23:08:04.1300506Z > lingafriq_backend@1.0.0 test
+2025-12-08T23:08:04.1301075Z > jest --detectOpenHandles
+2025-12-08T23:08:04.1301350Z 
+2025-12-08T23:08:27.2674834Z FAIL dist/__test__/index.test.js (22.153 s)
+2025-12-08T23:08:27.2680551Z   ● Test the tests › Check if app is responding
+2025-12-08T23:08:27.2682673Z 
+2025-12-08T23:08:27.2683009Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2684283Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2685234Z 
+2025-12-08T23:08:27.2685399Z       37 |     });
+2025-12-08T23:08:27.2685846Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2687064Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2688554Z          |   ^
+2025-12-08T23:08:27.2689048Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2689691Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2690366Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2690758Z 
+2025-12-08T23:08:27.2690993Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2691862Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2692280Z 
+2025-12-08T23:08:27.2692641Z   ● Test the tests › Register New User
+2025-12-08T23:08:27.2692945Z 
+2025-12-08T23:08:27.2693246Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2694433Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2695287Z 
+2025-12-08T23:08:27.2695455Z       37 |     });
+2025-12-08T23:08:27.2695899Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2697073Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2698033Z          |   ^
+2025-12-08T23:08:27.2698484Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2699118Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2699803Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2700216Z 
+2025-12-08T23:08:27.2700459Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2701093Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2701693Z 
+2025-12-08T23:08:27.2702032Z   ● Test the tests › Login user
+2025-12-08T23:08:27.2702306Z 
+2025-12-08T23:08:27.2702579Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2703724Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2704593Z 
+2025-12-08T23:08:27.2704733Z       37 |     });
+2025-12-08T23:08:27.2705124Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2706257Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2707252Z          |   ^
+2025-12-08T23:08:27.2707737Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2708390Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2709506Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2709935Z 
+2025-12-08T23:08:27.2710174Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2710791Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2711205Z 
+2025-12-08T23:08:27.2712140Z   ● Test the tests › Check User
+2025-12-08T23:08:27.2712473Z 
+2025-12-08T23:08:27.2712749Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2713917Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2714753Z 
+2025-12-08T23:08:27.2714893Z       37 |     });
+2025-12-08T23:08:27.2715293Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2716386Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2717383Z          |   ^
+2025-12-08T23:08:27.2717872Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2718523Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2719220Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2719629Z 
+2025-12-08T23:08:27.2719853Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2720746Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2721145Z 
+2025-12-08T23:08:27.2721706Z   ● Test the tests › Get All Languages
+2025-12-08T23:08:27.2722041Z 
+2025-12-08T23:08:27.2722313Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2723473Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2724302Z 
+2025-12-08T23:08:27.2724450Z       37 |     });
+2025-12-08T23:08:27.2724885Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2726046Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2727018Z          |   ^
+2025-12-08T23:08:27.2727507Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2728146Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2728844Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2729178Z 
+2025-12-08T23:08:27.2729335Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2729688Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2729908Z 
+2025-12-08T23:08:27.2730191Z   ● Test the tests › Delete Account After all tests are run
+2025-12-08T23:08:27.2730410Z 
+2025-12-08T23:08:27.2730562Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2731216Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2731968Z 
+2025-12-08T23:08:27.2732055Z       37 |     });
+2025-12-08T23:08:27.2732377Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2733050Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2733589Z          |   ^
+2025-12-08T23:08:27.2733843Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2734189Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2734554Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2734780Z 
+2025-12-08T23:08:27.2734898Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2735238Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2735461Z 
+2025-12-08T23:08:27.2735467Z 
+2025-12-08T23:08:27.2735604Z   ● Test suite failed to run
+2025-12-08T23:08:27.2735958Z 
+2025-12-08T23:08:27.2736105Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2736748Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2737204Z 
+2025-12-08T23:08:27.2737211Z 
+2025-12-08T23:08:27.2737221Z 
+2025-12-08T23:08:27.2737343Z       at dist/__test__/index.test.js:82:3
+2025-12-08T23:08:27.2737680Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2737898Z 
+2025-12-08T23:08:27.2738412Z Test Suites: 1 failed, 1 total
+2025-12-08T23:08:27.2739022Z Tests:       6 failed, 6 total
+2025-12-08T23:08:27.2739593Z Snapshots:   0 total
+2025-12-08T23:08:27.2740016Z Time:        22.595 s
+2025-12-08T23:08:27.2740365Z Ran all test suites.
+2025-12-08T23:08:27.4579623Z 
+2025-12-08T23:08:27.4582710Z Jest has detected the following 2 open handles potentially keeping Jest from exiting:
+2025-12-08T23:08:27.4584496Z 
+2025-12-08T23:08:27.4584952Z   ●  Timeout
+2025-12-08T23:08:27.4585156Z 
+2025-12-08T23:08:27.4586009Z       46 |         const response = await request.post("/accounts/auth/jwt/create").send({email: "joebizzy@gmail.com ", password: formData.password});
+2025-12-08T23:08:27.4587083Z       47 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.4588219Z     > 48 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.4588770Z          |                                     ^
+2025-12-08T23:08:27.4589376Z       49 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.4590035Z       50 |         cookie = response.headers['set-cookie'];
+2025-12-08T23:08:27.4590611Z       51 |         expect(cookie).toBeTruthy();
+2025-12-08T23:08:27.4590924Z 
+2025-12-08T23:08:27.4591362Z       at Topology.selectServer (node_modules/mongodb/src/sdam/topology.ts:528:26)
+2025-12-08T23:08:27.4592467Z       at Topology.connect (node_modules/mongodb/src/sdam/topology.ts:414:5)
+2025-12-08T23:08:27.4593242Z       at node_modules/mongodb/lib/mongo_client.js:108:60
+2025-12-08T23:08:27.4593999Z       at topologyConnect (node_modules/mongodb/lib/mongo_client.js:108:87)
+2025-12-08T23:08:27.4594846Z       at MongoClient.connect (node_modules/mongodb/src/mongo_client.ts:423:5)
+2025-12-08T23:08:27.4595685Z       at _createMongoClient (node_modules/mongoose/lib/connection.js:375:16)
+2025-12-08T23:08:27.4596571Z       at NativeConnection.openUri (node_modules/mongoose/lib/connection.js:260:29)
+2025-12-08T23:08:27.4597422Z       at Mongoose.connect (node_modules/mongoose/lib/index.js:161:15)
+2025-12-08T23:08:27.4598158Z       at Object.<anonymous> (src/__test__/index.test.ts:48:37)
+2025-12-08T23:08:27.4598537Z 
+2025-12-08T23:08:27.4598555Z 
+2025-12-08T23:08:27.4598806Z   ●  Timeout
+2025-12-08T23:08:27.4598995Z 
+2025-12-08T23:08:27.4599779Z       46 |         const response = await request.post("/accounts/auth/jwt/create").send({email: "joebizzy@gmail.com ", password: formData.password});
+2025-12-08T23:08:27.4600816Z       47 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.4601332Z     > 48 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.4601941Z          |                                     ^
+2025-12-08T23:08:27.4602306Z       49 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.4602701Z       50 |         cookie = response.headers['set-cookie'];
+2025-12-08T23:08:27.4603050Z       51 |         expect(cookie).toBeTruthy();
+2025-12-08T23:08:27.4603244Z 
+2025-12-08T23:08:27.4603464Z       at makeConnection (node_modules/mongodb/src/cmap/connect.ts:362:14)
+2025-12-08T23:08:27.4603910Z       at connect (node_modules/mongodb/lib/cmap/connect.js:31:3)
+2025-12-08T23:08:27.4604336Z       at checkServer (node_modules/mongodb/src/sdam/monitor.ts:285:7)
+2025-12-08T23:08:27.4604791Z       at MonitorInterval.fn (node_modules/mongodb/lib/sdam/monitor.js:221:5)
+2025-12-08T23:08:27.4605345Z       at MonitorInterval._executeAndReschedule (node_modules/mongodb/src/sdam/monitor.ts:468:6)
+2025-12-08T23:08:27.4606119Z       at new MonitorInterval (node_modules/mongodb/src/sdam/monitor.ts:580:11)
+2025-12-08T23:08:27.4606594Z       at Monitor.connect (node_modules/mongodb/src/sdam/monitor.ts:140:16)
+2025-12-08T23:08:27.4607053Z       at Server.connect (node_modules/mongodb/src/sdam/server.ts:226:14)
+2025-12-08T23:08:27.4607551Z       at createAndConnectServer (node_modules/mongodb/src/sdam/topology.ts:207:3)
+2025-12-08T23:08:27.4607987Z       at node_modules/mongodb/lib/sdam/topology.js:152:7
+2025-12-08T23:08:27.4608300Z           at Array.map (<anonymous>)
+2025-12-08T23:08:27.4608688Z       at Topology.connect (node_modules/mongodb/src/sdam/topology.ts:389:29)
+2025-12-08T23:08:27.4609095Z       at node_modules/mongodb/lib/mongo_client.js:108:60
+2025-12-08T23:08:27.4609504Z       at topologyConnect (node_modules/mongodb/lib/mongo_client.js:108:87)
+2025-12-08T23:08:27.4609978Z       at MongoClient.connect (node_modules/mongodb/src/mongo_client.ts:423:5)
+2025-12-08T23:08:27.4610466Z       at _createMongoClient (node_modules/mongoose/lib/connection.js:375:16)
+2025-12-08T23:08:27.4610971Z       at NativeConnection.openUri (node_modules/mongoose/lib/connection.js:260:29)
+2025-12-08T23:08:27.4611627Z       at Mongoose.connect (node_modules/mongoose/lib/index.js:161:15)
+2025-12-08T23:08:27.4612059Z       at Object.<anonymous> (src/__test__/index.test.ts:48:37)
+2025-12-08T23:08:27.4612426Z 
+2025-12-08T23:08:47.2670699Z 
+2025-12-08T23:08:47.2672382Z   ●  Cannot log after tests are done. Did you forget to wait for something async in your test?
+2025-12-08T23:08:47.2673955Z     Attempted to log "MongooseServerSelectionError: Error: connect ECONNREFUSED 127.0.0.1:27017
+2025-12-08T23:08:47.2675644Z         at _handleConnectionErrors (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:297:11)
+2025-12-08T23:08:47.2677346Z         at NativeConnection.openUri (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:277:11)
+2025-12-08T23:08:47.2678873Z         at Object.<anonymous> (/home/runner/work/node-backend/node-backend/dist/__test__/index.test.js:41:7) {
+2025-12-08T23:08:47.2679713Z       reason: TopologyDescription {
+2025-12-08T23:08:47.2680140Z         type: 'Unknown',
+2025-12-08T23:08:47.2680669Z         servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-08T23:08:47.2681208Z         stale: false,
+2025-12-08T23:08:47.2681740Z         compatible: true,
+2025-12-08T23:08:47.2682193Z         heartbeatFrequencyMS: 10000,
+2025-12-08T23:08:47.2682623Z         localThresholdMS: 15,
+2025-12-08T23:08:47.2683015Z         setName: null,
+2025-12-08T23:08:47.2683361Z         maxElectionId: null,
+2025-12-08T23:08:47.2683740Z         maxSetVersion: null,
+2025-12-08T23:08:47.2684116Z         commonWireVersion: 0,
+2025-12-08T23:08:47.2686547Z         logicalSessionTimeoutMinutes: null
+2025-12-08T23:08:47.2687007Z       },
+2025-12-08T23:08:47.2687296Z       code: undefined
+2025-12-08T23:08:47.2687613Z     }".
+2025-12-08T23:08:47.2687772Z 
+2025-12-08T23:08:47.2688030Z       48 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:47.2688672Z       49 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:47.2689285Z     > 50 |         cookie = response.headers['set-cookie'];
+2025-12-08T23:08:47.2689756Z          |               ^
+2025-12-08T23:08:47.2690191Z       51 |         expect(cookie).toBeTruthy();
+2025-12-08T23:08:47.2690610Z       52 |     })
+2025-12-08T23:08:47.2690916Z       53 |
+2025-12-08T23:08:47.2691101Z 
+2025-12-08T23:08:47.2691730Z       at _handleConnectionErrors (node_modules/mongoose/lib/connection.js:297:11)
+2025-12-08T23:08:47.2692628Z       at NativeConnection.openUri (node_modules/mongoose/lib/connection.js:277:11)
+2025-12-08T23:08:47.2693350Z       at Object.<anonymous> (dist/__test__/index.test.js:41:7) {
+2025-12-08T23:08:47.2693880Z         reason: TopologyDescription {
+2025-12-08T23:08:47.2694291Z           type: 'Unknown',
+2025-12-08T23:08:47.2695133Z           servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-08T23:08:47.2695637Z           stale: false,
+2025-12-08T23:08:47.2695988Z           compatible: true,
+2025-12-08T23:08:47.2696409Z           heartbeatFrequencyMS: 10000,
+2025-12-08T23:08:47.2696862Z           localThresholdMS: 15,
+2025-12-08T23:08:47.2697233Z           setName: null,
+2025-12-08T23:08:47.2697620Z           maxElectionId: null,
+2025-12-08T23:08:47.2698021Z           maxSetVersion: null,
+2025-12-08T23:08:47.2698430Z           commonWireVersion: 0,
+2025-12-08T23:08:47.2698887Z           logicalSessionTimeoutMinutes: null
+2025-12-08T23:08:47.2699306Z         },
+2025-12-08T23:08:47.2699594Z         code: undefined
+2025-12-08T23:08:47.2699914Z       }".
+2025-12-08T23:08:47.2700506Z       at console.log (node_modules/@jest/console/build/CustomConsole.js:141:10)
+2025-12-08T23:08:47.2701220Z       at Object.<anonymous> (src/__test__/index.test.ts:50:15)
+2025-12-08T23:08:47.2701756Z 
+2025-12-08T23:08:47.2970803Z ⚠️ Tests failed or not configured, continuing...

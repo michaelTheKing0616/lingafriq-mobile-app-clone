@@ -1,0 +1,5822 @@
+{
+  "meta": {
+    "language": "Nigerian Pidgin",
+    "code": "nigerian_pidgin",
+    "level": "A2",
+    "generated_at": "2025-11-27T00:59:56.617456Z",
+    "format": "modular-full-academic-expanded"
+  },
+  "level_definitions": {
+    "can_do": "Skills targets for A2",
+    "target_vocab_estimate": 1500
+  },
+  "units": [
+    {
+      "unit": 1,
+      "title": "Unit 1 — Topic 1 (A2)",
+      "objectives": [
+        "Communicative objective 1 for Nigerian Pidgin",
+        "Grammar goal for unit 1"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 1 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u1-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u1-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u1-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u1-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u1-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u1-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u1-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u1-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 1."
+    },
+    {
+      "unit": 2,
+      "title": "Unit 2 — Topic 2 (A2)",
+      "objectives": [
+        "Communicative objective 2 for Nigerian Pidgin",
+        "Grammar goal for unit 2"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 2 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u2-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u2-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u2-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u2-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u2-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u2-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u2-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u2-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 2."
+    },
+    {
+      "unit": 3,
+      "title": "Unit 3 — Topic 3 (A2)",
+      "objectives": [
+        "Communicative objective 3 for Nigerian Pidgin",
+        "Grammar goal for unit 3"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 3 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u3-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u3-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u3-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u3-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u3-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u3-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u3-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u3-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 3."
+    },
+    {
+      "unit": 4,
+      "title": "Unit 4 — Topic 4 (A2)",
+      "objectives": [
+        "Communicative objective 4 for Nigerian Pidgin",
+        "Grammar goal for unit 4"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 4 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u4-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u4-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u4-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u4-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u4-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u4-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u4-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u4-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 4."
+    },
+    {
+      "unit": 5,
+      "title": "Unit 5 — Topic 5 (A2)",
+      "objectives": [
+        "Communicative objective 5 for Nigerian Pidgin",
+        "Grammar goal for unit 5"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 5 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u5-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u5-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u5-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u5-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u5-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u5-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u5-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u5-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 5."
+    },
+    {
+      "unit": 6,
+      "title": "Unit 6 — Topic 6 (A2)",
+      "objectives": [
+        "Communicative objective 6 for Nigerian Pidgin",
+        "Grammar goal for unit 6"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 6 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u6-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u6-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u6-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u6-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u6-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u6-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u6-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u6-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 6."
+    },
+    {
+      "unit": 7,
+      "title": "Unit 7 — Topic 7 (A2)",
+      "objectives": [
+        "Communicative objective 7 for Nigerian Pidgin",
+        "Grammar goal for unit 7"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 7 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u7-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u7-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u7-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u7-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u7-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u7-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u7-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u7-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 7."
+    },
+    {
+      "unit": 8,
+      "title": "Unit 8 — Topic 8 (A2)",
+      "objectives": [
+        "Communicative objective 8 for Nigerian Pidgin",
+        "Grammar goal for unit 8"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 8 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u8-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u8-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u8-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u8-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u8-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u8-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u8-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u8-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 8."
+    },
+    {
+      "unit": 9,
+      "title": "Unit 9 — Topic 9 (A2)",
+      "objectives": [
+        "Communicative objective 9 for Nigerian Pidgin",
+        "Grammar goal for unit 9"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 9 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u9-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u9-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u9-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u9-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u9-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u9-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u9-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u9-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 9."
+    },
+    {
+      "unit": 10,
+      "title": "Unit 10 — Topic 10 (A2)",
+      "objectives": [
+        "Communicative objective 10 for Nigerian Pidgin",
+        "Grammar goal for unit 10"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 10 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u10-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u10-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u10-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u10-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u10-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u10-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u10-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u10-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 10."
+    },
+    {
+      "unit": 11,
+      "title": "Unit 11 — Topic 11 (A2)",
+      "objectives": [
+        "Communicative objective 11 for Nigerian Pidgin",
+        "Grammar goal for unit 11"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 11 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u11-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u11-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u11-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u11-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u11-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u11-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u11-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u11-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 11."
+    },
+    {
+      "unit": 12,
+      "title": "Unit 12 — Topic 12 (A2)",
+      "objectives": [
+        "Communicative objective 12 for Nigerian Pidgin",
+        "Grammar goal for unit 12"
+      ],
+      "vocab": [
+        {
+          "word": "Nig_word1a",
+          "meaning": "meaning 1a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word1a."
+        },
+        {
+          "word": "Nig_word1b",
+          "meaning": "meaning 1b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word1b."
+        },
+        {
+          "word": "Nig_word2a",
+          "meaning": "meaning 2a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word2a."
+        },
+        {
+          "word": "Nig_word2b",
+          "meaning": "meaning 2b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word2b."
+        },
+        {
+          "word": "Nig_word3a",
+          "meaning": "meaning 3a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word3a."
+        },
+        {
+          "word": "Nig_word3b",
+          "meaning": "meaning 3b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word3b."
+        },
+        {
+          "word": "Nig_word4a",
+          "meaning": "meaning 4a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word4a."
+        },
+        {
+          "word": "Nig_word4b",
+          "meaning": "meaning 4b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word4b."
+        },
+        {
+          "word": "Nig_word5a",
+          "meaning": "meaning 5a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word5a."
+        },
+        {
+          "word": "Nig_word5b",
+          "meaning": "meaning 5b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word5b."
+        },
+        {
+          "word": "Nig_word6a",
+          "meaning": "meaning 6a",
+          "pos": "noun",
+          "example": "Example sentence with Nig_word6a."
+        },
+        {
+          "word": "Nig_word6b",
+          "meaning": "meaning 6b",
+          "pos": "verb",
+          "example": "Example sentence with Nig_word6b."
+        }
+      ],
+      "cultural_notes": "Overview of cultural context for unit 12 in Nigerian Pidgin.",
+      "lessons": [
+        {
+          "id": "Nigerian Pidgin-A2-u12-l1",
+          "title": "Lesson 1 — Basics",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word1a",
+              "meaning": "meaning 1a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word1a."
+            },
+            {
+              "word": "Nig_word1b",
+              "meaning": "meaning 1b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word1b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u12-l2",
+          "title": "Lesson 2 — Practice",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word2a",
+              "meaning": "meaning 2a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word2a."
+            },
+            {
+              "word": "Nig_word2b",
+              "meaning": "meaning 2b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word2b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u12-l3",
+          "title": "Lesson 3 — Dialogue",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word3a",
+              "meaning": "meaning 3a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word3a."
+            },
+            {
+              "word": "Nig_word3b",
+              "meaning": "meaning 3b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word3b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u12-l4",
+          "title": "Lesson 4 — Pronunciation",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word4a",
+              "meaning": "meaning 4a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word4a."
+            },
+            {
+              "word": "Nig_word4b",
+              "meaning": "meaning 4b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word4b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u12-l5",
+          "title": "Lesson 5 — Culture",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word5a",
+              "meaning": "meaning 5a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word5a."
+            },
+            {
+              "word": "Nig_word5b",
+              "meaning": "meaning 5b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word5b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "Nigerian Pidgin-A2-u12-l6",
+          "title": "Lesson 6 — Review",
+          "duration_min": 12,
+          "vocab": [
+            {
+              "word": "Nig_word6a",
+              "meaning": "meaning 6a",
+              "pos": "noun",
+              "example": "Example sentence with Nig_word6a."
+            },
+            {
+              "word": "Nig_word6b",
+              "meaning": "meaning 6b",
+              "pos": "verb",
+              "example": "Example sentence with Nig_word6b."
+            }
+          ],
+          "dialogue": {
+            "script": [
+              {
+                "speaker": "A",
+                "text": "Hello - sample line in Nigerian Pidgin.",
+                "translation": "Hello."
+              },
+              {
+                "speaker": "B",
+                "text": "Response line in Nigerian Pidgin.",
+                "translation": "Response."
+              },
+              {
+                "speaker": "A",
+                "text": "Follow-up question in Nigerian Pidgin.",
+                "translation": "Follow-up?"
+              }
+            ],
+            "notes": "This dialogue models a simple social exchange in Nigerian Pidgin. Include cultural note about greetings."
+          },
+          "cultural": {
+            "note": "Culture note for Nigerian Pidgin: greetings, gestures, politeness. Tip: use local honorifics where appropriate.",
+            "references": [
+              "https://example.org/nigerian pidgin/culture"
+            ]
+          },
+          "exercises": [
+            {
+              "type": "shadowing",
+              "prompt": "Repeat: Hello - sample line in Nigerian Pidgin."
+            },
+            {
+              "type": "role_play",
+              "prompt": "Play both roles in the dialogue."
+            },
+            {
+              "type": "cloze",
+              "prompt": "Translate 'thank you' to Nigerian Pidgin",
+              "answer": [
+                "example"
+              ]
+            }
+          ]
+        }
+      ],
+      "unit_quiz": {
+        "items": [
+          {
+            "id": "nigerian_pidgin-A2-u12-q1",
+            "type": "mcq",
+            "question": "Sample MCQ",
+            "options": [
+              "a",
+              "b",
+              "c"
+            ],
+            "answer": "a"
+          },
+          {
+            "id": "nigerian_pidgin-A2-u12-q2",
+            "type": "short_answer",
+            "question": "Translate 'thank you'",
+            "answer": [
+              "asante",
+              "thank you"
+            ]
+          }
+        ]
+      },
+      "teacher_notes": "Teacher guidance for Nigerian Pidgin, unit 12."
+    }
+  ],
+  "srs_settings": {
+    "intervals": [
+      "6h",
+      "24h",
+      "72h",
+      "168h",
+      "720h",
+      "2160h"
+    ],
+    "initial_strength": 0
+  },
+  "assessments": {
+    "rubrics": {
+      "speaking": {
+        "0": "unintelligible",
+        "3": "understandable with errors",
+        "5": "accurate and fluent"
+      }
+    }
+  },
+  "cultural_overview": {
+    "summary": "Key cultural features for Nigerian Pidgin learners: greetings, formality, common idioms."
+  }
+}

@@ -1,0 +1,31 @@
+﻿2025-12-08T19:20:32.9054232Z Current runner version: '2.329.0'
+2025-12-08T19:20:32.9079029Z ##[group]Runner Image Provisioner
+2025-12-08T19:20:32.9080116Z Hosted Compute Agent
+2025-12-08T19:20:32.9080762Z Version: 20251124.448
+2025-12-08T19:20:32.9081327Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-08T19:20:32.9082022Z Build Date: 2025-11-24T21:16:26Z
+2025-12-08T19:20:32.9082607Z ##[endgroup]
+2025-12-08T19:20:32.9083174Z ##[group]Operating System
+2025-12-08T19:20:32.9083755Z Ubuntu
+2025-12-08T19:20:32.9084230Z 24.04.3
+2025-12-08T19:20:32.9084709Z LTS
+2025-12-08T19:20:32.9085123Z ##[endgroup]
+2025-12-08T19:20:32.9085636Z ##[group]Runner Image
+2025-12-08T19:20:32.9086187Z Image: ubuntu-24.04
+2025-12-08T19:20:32.9086723Z Version: 20251126.144.1
+2025-12-08T19:20:32.9087687Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-08T19:20:32.9089122Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-08T19:20:32.9090551Z ##[endgroup]
+2025-12-08T19:20:32.9091642Z ##[group]GITHUB_TOKEN Permissions
+2025-12-08T19:20:32.9093754Z Contents: write
+2025-12-08T19:20:32.9094298Z Metadata: read
+2025-12-08T19:20:32.9094806Z PullRequests: write
+2025-12-08T19:20:32.9095352Z ##[endgroup]
+2025-12-08T19:20:32.9097570Z Secret source: Actions
+2025-12-08T19:20:32.9098521Z Prepare workflow directory
+2025-12-08T19:20:32.9417302Z Prepare all required actions
+2025-12-08T19:20:32.9456587Z Getting action download info
+2025-12-08T19:20:33.4033011Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-08T19:20:33.7984958Z Download action repository 'actions/download-artifact@v4' (SHA:d3f86a106a0bac45b974a628896c90dbdf5c8093)
+2025-12-08T19:20:34.2397134Z Download action repository 'softprops/action-gh-release@v2' (SHA:a06a81a03ee405af7f2048a818ed3f03bbf83c7b)
+2025-12-08T19:20:34.6473828Z Complete job name: Create GitHub Release

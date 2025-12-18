@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Language Learning App Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&amp;family=Nunito:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#58cc02","primary-dark": "#4a9202",
+            "background-light": "#f6f8f6","background-duo": "#f7fcff","path-red": "#ff4b4b",
+            "path-blue": "#1cb0f6",
+            "path-purple": "#a738df",
+            "path-orange": "#ff9600",
+            "text-light": "#3c3c3c",
+            "text-dark": "#e0f8e7",
+            "text-secondary-light": "#6b7280",
+            "text-secondary-dark": "#9ca3af",
+          },
+          fontFamily: {
+            "headline": ["Fredoka", "sans-serif"],"body": ["Nunito", "sans-serif"]},
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body bg-background-duo text-text-light dark:bg-background-dark dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="flex flex-col flex-1 w-full max-w-md mx-auto justify-between p-4 pb-8">
+<div class="pt-4 text-center">
+<h1 class="font-headline text-4xl font-extrabold leading-tight text-primary pb-2">Your Language Journey Starts Here!</h1>
+<p class="text-text-secondary-light text-base font-normal leading-normal px-4">Choose your path and unlock new opportunities.</p>
+</div>
+<div class="flex-grow flex flex-col items-center justify-center gap-6 py-6 px-2">
+<div class="w-full bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center gap-4 border-b-4 border-path-red">
+<div class="w-28 h-28 flex justify-center items-center">
+<img alt="A cheerful person with a backpack, ready to travel the world." class="object-cover w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5afURivCo_OlrKdT_gxrkGwMMOoPIfLs0vlvUiipmUExSybeseQPeFZUP5qpfArYQfwfvM3b-An4-22MHkwGs1LA-1tMmqdSpGrOiV8-gqhHqcaZQYfxA_9fZG4aOXJe8E9HlhI-LksleigzLfSsevyJUrEMOvyFoQJ91WmSdNvN5G_yLy61lGJ6JaSasY_da-Nj2EgG5mHol2E4jg--Fh48Ly6b6XI8PiiLKBMWZIdoXXxmJ5Q2QA-Ohq4T67RNXkEfo44IlfquU"/>
+</div>
+<h2 class="font-headline text-2xl font-bold text-path-red text-center">Travel the World</h2>
+<p class="text-sm text-center text-text-secondary-light">Explore new cultures and make global connections.</p>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-path-red text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-path-red/30">
+<span class="truncate">Learn for Adventure</span>
+</button>
+</div>
+<div class="w-full bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center gap-4 border-b-4 border-path-blue">
+<div class="w-28 h-28 flex justify-center items-center">
+<img alt="A focused professional with a laptop, indicating career advancement." class="object-cover w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5afURivCo_OlrKdT_gxrkGwMMOoPIfLs0vlvUiipmUExSybeseQPeFZUP5qpfArYQfwfvM3b-An4-22MHkwGs1LA-1tMmqdSpGrOiV8-gqhHqcaZQYfxA_9fZG4aOXJe8E9HlhI-LksleigzLfSsevyJUrEMOvyFoQJ91WmSdNvN5G_yLy61lGJ6JaSasY_da-Nj2EgG5mHol2E4jg--Fh48Ly6b6XI8PiiLKBMWZIdoXXxmJ5Q2QA-Ohq4T67RNXkEfo44IlfquU"/>
+</div>
+<h2 class="font-headline text-2xl font-bold text-path-blue text-center">Boost Your Career</h2>
+<p class="text-sm text-center text-text-secondary-light">Open doors to international business opportunities.</p>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-path-blue text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-path-blue/30">
+<span class="truncate">Learn for Success</span>
+</button>
+</div>
+<div class="w-full bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center gap-4 border-b-4 border-path-purple">
+<div class="w-28 h-28 flex justify-center items-center">
+<img alt="A curious student with books, symbolizing academic pursuits." class="object-cover w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5afURivCo_OlrKdT_gxrkGwMMOoPIfLs0vlvUiipmUExSybeseQPeFZUP5qpfArYQfwfvM3b-An4-22MHkwGs1LA-1tMmqdSpGrOiV8-gqhHqcaZQYfxA_9fZG4aOXJe8E9HlhI-LksleigzLfSsevyJUrEMOvyFoQJ91WmSdNvN5G_yLy61lGJ6JaSasY_da-Nj2EgG5mHol2E4jg--Fh48Ly6b6XI8PiiLKBMWZIdoXXxmJ5Q2QA-Ohq4T67RNXkEfo44IlfquU"/>
+</div>
+<h2 class="font-headline text-2xl font-bold text-path-purple text-center">Excel in Academics</h2>
+<p class="text-sm text-center text-text-secondary-light">Prepare for studies abroad and broaden your knowledge.</p>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-path-purple text-white text-base font-bold leading-normal tracking-[0.015em] shadow-lg shadow-path-purple/30">
+<span class="truncate">Learn for Knowledge</span>
+</button>
+</div>
+</div>
+<div class="w-full pt-4">
+<div class="flex px-4 pt-2 justify-center">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 flex-1 bg-transparent text-primary text-base font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Already learning? Log in</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

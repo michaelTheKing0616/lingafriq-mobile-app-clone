@@ -1,0 +1,33 @@
+﻿2025-12-08T19:07:41.6393176Z Current runner version: '2.329.0'
+2025-12-08T19:07:41.6420632Z ##[group]Runner Image Provisioner
+2025-12-08T19:07:41.6421685Z Hosted Compute Agent
+2025-12-08T19:07:41.6422373Z Version: 20251124.448
+2025-12-08T19:07:41.6423006Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-08T19:07:41.6423797Z Build Date: 2025-11-24T21:16:26Z
+2025-12-08T19:07:41.6424431Z ##[endgroup]
+2025-12-08T19:07:41.6425004Z ##[group]Operating System
+2025-12-08T19:07:41.6425643Z Ubuntu
+2025-12-08T19:07:41.6426144Z 24.04.3
+2025-12-08T19:07:41.6426684Z LTS
+2025-12-08T19:07:41.6427211Z ##[endgroup]
+2025-12-08T19:07:41.6427795Z ##[group]Runner Image
+2025-12-08T19:07:41.6428452Z Image: ubuntu-24.04
+2025-12-08T19:07:41.6429017Z Version: 20251126.144.1
+2025-12-08T19:07:41.6430089Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-08T19:07:41.6431745Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-08T19:07:41.6433058Z ##[endgroup]
+2025-12-08T19:07:41.6434302Z ##[group]GITHUB_TOKEN Permissions
+2025-12-08T19:07:41.6436937Z Contents: write
+2025-12-08T19:07:41.6437590Z Metadata: read
+2025-12-08T19:07:41.6438136Z ##[endgroup]
+2025-12-08T19:07:41.6440457Z Secret source: Actions
+2025-12-08T19:07:41.6441407Z Prepare workflow directory
+2025-12-08T19:07:41.6776513Z Prepare all required actions
+2025-12-08T19:07:41.6815780Z Getting action download info
+2025-12-08T19:07:42.0597827Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-08T19:07:42.3505304Z Download action repository 'actions/setup-java@v4' (SHA:c1e323688fd81a25caa38c78aa6df2d33d3e20d9)
+2025-12-08T19:07:42.6402771Z Download action repository 'subosito/flutter-action@v2' (SHA:fd55f4c5af5b953cc57a2be44cb082c8f6635e8e)
+2025-12-08T19:07:42.8043035Z Download action repository 'actions/***-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2025-12-08T19:07:43.0238094Z Getting action download info
+2025-12-08T19:07:43.5650791Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2025-12-08T19:07:43.7307108Z Complete job name: Build Android App Bundle

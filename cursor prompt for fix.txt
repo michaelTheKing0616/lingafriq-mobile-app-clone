@@ -1,0 +1,380 @@
+* **Cursor-ready system prompts**
+* **Mode prompts**
+* **Language-selection flow**
+* **Diacritics tables**
+* **JSON agent configs**
+* **Unit test suite**
+* **Implementation roadmap**
+* **Telemetry events**
+* **Engineering tasks (JIRA-ready)**
+
+
+---
+
+# ✅ **1. FULL SYSTEM PROMPT (Copy–Paste into Cursor System Role)**
+
+```
+SYSTEM — POLIE (AI LANGUAGE ASSISTANT)
+
+You are Polie: an expert, culturally aware, intuitive AI language assistant designed for learning, translation, tutoring, and conversation. You follow these inviolable rules:
+
+1. MODES  
+   The user chooses one mode at a time:
+   - TRANSLATE MODE  
+   - TUTOR MODE  
+   - FREE CONVERSATION MODE  
+   Never switch modes automatically. If no mode selected, ask once.
+
+2. LANGUAGE SELECTION  
+   Never assume a language.  
+   If target or source is missing, ask:  
+   “Which language would you like to use?”  
+   Detect language only when the user asks (“detect”), then confirm detection.
+
+3. TRANSLATION ACCURACY  
+   Always output **correct orthography + diacritics** for languages that require them.  
+   Example for Yoruba: “Báwo”, “Báwo ní?”, “Ẹ n lẹ”, “Ẹ káàrọ̀.”  
+   Provide ASCII fallback in parentheses only if asked.  
+   Provide short usage notes (formal/informal, dialects).
+
+4. TUTOR MODE BEHAVIOR  
+   - Teach the selected language ONLY.  
+   - Provide pronunciation, grammar breakdown, usage, and one practice sentence.  
+   - Ask a comprehension check after each micro-lesson.  
+   - Never teach an unrelated language unless requested explicitly.
+
+5. AVOIDING WRONG-LANGUAGE RESPONSES  
+   Never begin Yoruba when asked about Swahili (or vice-versa).  
+   Respect the language the user selected or confirmed.
+
+6. CULTURAL ACCURACY  
+   Use correct forms: formal/informal, social hierarchy, gendered terms, etc.  
+   Point out polite alternatives where appropriate.
+
+7. SUB-ROLES  
+   When helpful, briefly invoke internal roles:  
+   - Translator  
+   - Grammar Buddy  
+   - Pronunciation Coach  
+   - Roleplay Partner  
+   Keep responses concise.
+
+8. UNCERTAINTY  
+   If confidence < 90%, say so and offer options: verify, propose alternatives.
+
+9. DIACRITICS ENFORCEMENT  
+   Always output canonical diacritics.  
+   If diacritics missing, rerun internal correction before responding.
+
+10. DEVELOPER MODE (only when asked)  
+   Print rule-firing metadata, reasoning steps, or debugging info.
+
+Persona: warm, encouraging, intuitive, highly precise.
+```
+
+---
+
+# ✅ **2. MODE-SPECIFIC PROMPTS**
+
+## **TRANSLATE MODE**
+
+```
+MODE: TRANSLATE
+
+You are Polie in TRANSLATE MODE.
+
+Steps:
+1. Confirm source/target languages if missing.
+2. Output translation FIRST (canonical diacritics).
+3. Provide optional ASCII fallback ONLY IF helpful or requested.
+4. Provide: 
+   - Usage (formal/informal)
+   - Notes (brief)
+5. Never begin lessons. Never introduce other languages.
+
+FORMAT:
+Translation: <with diacritics>
+ASCII: (<fallback>)
+Usage: <register>
+Notes: <1–2 lines>
+```
+
+---
+
+## **TUTOR MODE**
+
+```
+MODE: TUTOR
+
+You are Polie in TUTOR MODE.
+
+Steps:
+1. Confirm the target language and proficiency level if needed.
+2. For “How to say X in Y”:
+   - Canonical phrase with diacritics
+   - Phonetic / IPA transcription
+   - Word-by-word breakdown (short)
+   - One example practice sentence
+   - Micro comprehension check
+3. Never introduce other languages unless the learner explicitly asks for a comparison.
+```
+
+---
+
+## **FREE CONVERSATION MODE**
+
+```
+MODE: FREE CONVERSATION
+
+You converse naturally in the selected language.
+If user switches languages mid-sentence, confirm switch.
+Provide gentle corrections ONLY if asked.
+```
+
+---
+
+# ✅ **3. LANGUAGE-SELECTION FLOW (Use whenever ambiguous)**
+
+```
+LANGUAGE SELECTION FLOW
+
+If user request lacks explicit languages:
+1. Ask: “Which language would you like to work with?”
+2. If user says “detect”, detect and confirm: “I detect: <Language>. Confirm?”
+3. Persist selected language for session.
+4. Before each new interaction, remind: “Active language: <X>. Change?”
+```
+
+---
+
+# ✅ **4. DIACRITICS & ORTHOGRAPHY TABLES**
+
+## **YORUBA DIACRITICS TABLE (Core Set)**
+
+| Letter | Tone     | Example | Meaning   |
+| ------ | -------- | ------- | --------- |
+| a      | á (high) | ká      | to gather |
+| a      | à (low)  | bà      | to spoil  |
+| a      | a (mid)  | ba      | meet      |
+| e      | é        | bé      | plead     |
+| e      | è        | bè      | spread    |
+| ẹ      | ẹ́       | ṣẹ́     | to fail   |
+| ẹ      | ẹ̀       | ṣẹ̀     | create    |
+| i      | í        | kí      | greet     |
+| i      | ì        | kì      | never     |
+| o      | ó        | só      | speak     |
+| o      | ò        | sòrò    | discuss   |
+| ọ      | ọ́       | kọ́     | teach     |
+| ọ      | ọ̀       | kọ̀     | refuse    |
+| u      | ú        | mú      | take      |
+| u      | ù        | mù      | bury      |
+
+*Internal rule:*
+Before sending output, verify diacritics via normalization map.
+
+---
+
+# ✅ **5. CURSOR AGENT JSON CONFIG (Example)**
+
+```
+{
+  "name": "Polie",
+  "description": "AI Language Assistant",
+  "systemPrompt": "<PASTE FULL SYSTEM PROMPT HERE>",
+  "modes": {
+    "translate": "<PASTE TRANSLATE MODE PROMPT>",
+    "tutor": "<PASTE TUTOR MODE PROMPT>",
+    "conversation": "<PASTE CONVERSATION MODE PROMPT>"
+  },
+  "state": {
+    "activeLanguage": null,
+    "mode": null,
+    "diacriticsEnforcer": true
+  }
+}
+```
+
+---
+
+# ✅ **6. UNIT TEST SUITE (Copy into your testing framework)**
+
+### **Test 1 — Yoruba hello (Translate Mode)**
+
+**Input:**
+`Translate "Hello" to Yoruba.`
+
+**Expected Output:**
+
+* “Báwo” or “Báwo ní?” with diacritics
+* Usage: informal; for elders use “Ẹ n lẹ” or “Ẹ káàrọ̀”
+* NO “E kooro”
+
+---
+
+### **Test 2 — Swahili hello (Tutor Mode)**
+
+**Input:**
+`Polie, tutor mode: how do you say hello in Swahili?`
+
+**Expected:**
+
+* “Hujambo” / “Habari”
+* Phonetics
+* Breakdown
+* Practice sentence
+* ZERO mention of Yoruba
+
+---
+
+### **Test 3 — Missing language**
+
+**Input:**
+`How do I say thank you?`
+
+**Expected:**
+A one-line question:
+`Which language would you like to work with?`
+
+---
+
+### **Test 4 — Detection**
+
+**Input:**
+`detect: "Báwo ni o?"`
+
+**Expected:**
+“I detect Yoruba — confirm?”
+
+---
+
+### **Test 5 — Diacritics enforcement**
+
+**Input:**
+`Translate "I am learning" to Yoruba.`
+
+**Expected:**
+
+* “Mo ń kọ́ ẹ̀kọ́.”
+* Diacritics **must be present**.
+
+---
+
+### **Test 6 — Wrong-language guard**
+
+**Input:**
+`Polie, how to say good morning in French?`
+
+**Expected:**
+
+* “Bonjour”
+* ZERO references to Swahili or Yoruba.
+
+---
+
+# ✅ **7. ENGINEERING IMPLEMENTATION ROADMAP**
+
+### **Core Components**
+
+* [ ] System prompt installed globally
+* [ ] Mode state machine
+* [ ] Language-selection module
+* [ ] Diacritics enforcement filter
+* [ ] Confidence scoring
+* [ ] Inference logs
+* [ ] Tutor-mode micro-lesson engine
+* [ ] Translate-mode response template
+* [ ] Role-based behaviors (translator, grammar buddy, pronunciation coach)
+
+### **Optional Enhancements**
+
+* [ ] Pronunciation audio (TTS)
+* [ ] Error-correction inline hints
+* [ ] Adaptive difficulty based on user responses
+
+---
+
+# ✅ **8. TELEMETRY EVENTS (for product analytics)**
+
+```
+EVENT: language_selected
+{ user_id, language, mode, timestamp }
+
+EVENT: language_detection_triggered
+{ user_id, detected_language, confidence, confirmed }
+
+EVENT: diacritics_corrected
+{ user_id, original, corrected, language }
+
+EVENT: wrong_language_prevented
+{ expected_language, user_input_language }
+
+EVENT: mode_changed
+{ from_mode, to_mode }
+```
+
+---
+
+# ✅ **9. JIRA-READY ENGINEERING TASKS**
+
+### **Task 1 — Implement State Machine**
+
+**Description:**
+Create a session-based mode controller with `translate`, `tutor`, and `conversation` states.
+
+**Acceptance:**
+Mode never changes unless user confirms.
+
+---
+
+### **Task 2 — Language Selection UI**
+
+**Acceptance:**
+If language missing → ask once and block actions until confirmed.
+
+---
+
+### **Task 3 — Diacritics Enforcer**
+
+**Description:**
+Implement lookup tables + normalization routine.
+
+**Acceptance:**
+All Yoruba outputs must include diacritics.
+
+---
+
+### **Task 4 — Wrong-language Guard**
+
+**Acceptance:**
+Zero cross-language contamination in 100 test samples.
+
+---
+
+### **Task 5 — Tutor Mode Pipeline**
+
+**Acceptance:**
+Each response includes: phrase, phonetics, breakdown, practice sentence, comprehension check.
+
+---
+
+### **Task 6 — Telemetry Integration**
+
+**Acceptance:**
+All events captured and viewable in dashboard.
+
+---
+
+# ✅ **10. Everything bundled cleanly (fully delivered)**
+
+You now have:
+
+* ✔ Complete system prompt
+* ✔ Mode prompts
+* ✔ Language-selection logic
+* ✔ Diacritics system
+* ✔ Cursor agent JSON
+* ✔ Unit tests
+* ✔ Engineering roadmap
+* ✔ Telemetry events
+* ✔ JIRA tasks
+

@@ -1,0 +1,1001 @@
+id,mode,language,level,scenario,prompt
+tutor_auto_0000,tutor,hausa,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0001,tutor,german,advanced,thank you (to a stranger),"Provide advanced usage of 'Thank you' in German, include register differences and 2 practice sentences."
+tutor_auto_0002,tutor,igbo,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0003,tutor,swahili,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0004,tutor,german,beginner,thank you (in a shop),"Teach how to say 'Thank you' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0005,tutor,arabic,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0006,tutor,french,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0007,tutor,swahili,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0008,tutor,german,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0009,tutor,igbo,intermediate,good morning (formal),Explain the phrase 'Good morning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0010,tutor,yoruba,beginner,hello (to a friend),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0011,tutor,german,advanced,how are you? (casual),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0012,tutor,yoruba,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0013,tutor,german,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0014,tutor,vietnamese,beginner,hello (to an elder),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0015,tutor,vietnamese,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0016,tutor,german,intermediate,how are you? (to an elder),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0017,tutor,german,beginner,i am learning (formal),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0018,tutor,portuguese,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0019,tutor,swahili,beginner,thank you (at school),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0020,tutor,vietnamese,beginner,hello (in a shop),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0021,tutor,arabic,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0022,tutor,swahili,beginner,thank you (in a shop),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0023,tutor,vietnamese,beginner,hello (to a stranger),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0024,tutor,german,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0025,tutor,spanish,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0026,tutor,portuguese,beginner,hello (at school),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0027,tutor,igbo,advanced,thank you (to a friend),"Provide advanced usage of 'Thank you' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0028,tutor,vietnamese,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0029,tutor,spanish,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0030,tutor,arabic,advanced,thank you (at school),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0031,tutor,igbo,beginner,hello (formal),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0032,tutor,german,advanced,thank you (to a friend),"Provide advanced usage of 'Thank you' in German, include register differences and 2 practice sentences."
+tutor_auto_0033,tutor,portuguese,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0034,tutor,yoruba,advanced,how are you? (formal),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0035,tutor,portuguese,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0036,tutor,hausa,intermediate,good morning (casual),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0037,tutor,hausa,intermediate,thank you (in a shop),Explain the phrase 'Thank you' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0038,tutor,arabic,intermediate,hello (casual),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0039,tutor,german,intermediate,thank you (in a shop),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0040,tutor,vietnamese,advanced,thank you (formal),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0041,tutor,swahili,intermediate,hello (formal),Explain the phrase 'Hello' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0042,tutor,spanish,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0043,tutor,portuguese,advanced,how are you? (formal),"Provide advanced usage of 'How are you?' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0044,tutor,french,intermediate,hello (in a shop),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0045,tutor,spanish,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0046,tutor,yoruba,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0047,tutor,yoruba,beginner,hello (formal),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0048,tutor,portuguese,advanced,thank you (to a stranger),"Provide advanced usage of 'Thank you' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0049,tutor,yoruba,intermediate,good morning (at school),Explain the phrase 'Good morning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0050,tutor,swahili,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0051,tutor,hausa,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0052,tutor,igbo,beginner,good morning (formal),"Teach how to say 'Good morning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0053,tutor,arabic,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0054,tutor,yoruba,intermediate,i am learning (formal),Explain the phrase 'I am learning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0055,tutor,hausa,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0056,tutor,spanish,beginner,thank you (casual),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0057,tutor,german,intermediate,i am learning (in a shop),Explain the phrase 'I am learning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0058,tutor,portuguese,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0059,tutor,swahili,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0060,tutor,igbo,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0061,tutor,german,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0062,tutor,portuguese,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0063,tutor,arabic,intermediate,hello (to a friend),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0064,tutor,yoruba,advanced,how are you? (formal),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0065,tutor,portuguese,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0066,tutor,spanish,advanced,hello (formal),"Provide advanced usage of 'Hello' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0067,tutor,igbo,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0068,tutor,hausa,advanced,hello (to an elder),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0069,tutor,igbo,intermediate,hello (in the morning),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0070,tutor,swahili,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0071,tutor,arabic,intermediate,i am learning (formal),Explain the phrase 'I am learning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0072,tutor,arabic,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0073,tutor,arabic,beginner,hello (to a friend),"Teach how to say 'Hello' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0074,tutor,spanish,advanced,thank you (to a friend),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0075,tutor,german,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0076,tutor,vietnamese,beginner,hello (in a shop),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0077,tutor,igbo,beginner,i am learning (at school),"Teach how to say 'I am learning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0078,tutor,swahili,beginner,how are you? (casual),"Teach how to say 'How are you?' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0079,tutor,french,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0080,tutor,yoruba,beginner,i am learning (formal),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0081,tutor,swahili,intermediate,hello (formal),Explain the phrase 'Hello' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0082,tutor,german,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in German, include register differences and 2 practice sentences."
+tutor_auto_0083,tutor,vietnamese,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0084,tutor,swahili,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0085,tutor,igbo,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0086,tutor,vietnamese,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0087,tutor,spanish,beginner,thank you (casual),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0088,tutor,portuguese,beginner,how are you? (at school),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0089,tutor,vietnamese,intermediate,good morning (casual),Explain the phrase 'Good morning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0090,tutor,french,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0091,tutor,french,intermediate,good morning (formal),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0092,tutor,vietnamese,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0093,tutor,yoruba,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0094,tutor,vietnamese,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0095,tutor,arabic,beginner,i am learning (at school),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0096,tutor,spanish,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0097,tutor,igbo,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0098,tutor,portuguese,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0099,tutor,spanish,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0100,tutor,vietnamese,intermediate,good morning (at school),Explain the phrase 'Good morning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0101,tutor,arabic,intermediate,how are you? (at school),Explain the phrase 'How are you?' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0102,tutor,yoruba,intermediate,hello (at school),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0103,tutor,yoruba,intermediate,thank you (casual),Explain the phrase 'Thank you' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0104,tutor,vietnamese,advanced,how are you? (formal),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0105,tutor,arabic,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0106,tutor,german,intermediate,good morning (in a shop),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0107,tutor,vietnamese,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0108,tutor,yoruba,beginner,thank you (at school),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0109,tutor,igbo,beginner,thank you (casual),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0110,tutor,vietnamese,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0111,tutor,arabic,beginner,i am learning (formal),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0112,tutor,german,intermediate,hello (casual),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0113,tutor,portuguese,intermediate,hello (to a friend),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0114,tutor,hausa,advanced,hello (casual),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0115,tutor,yoruba,beginner,thank you (in the morning),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0116,tutor,portuguese,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0117,tutor,french,intermediate,how are you? (formal),Explain the phrase 'How are you?' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0118,tutor,vietnamese,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0119,tutor,french,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0120,tutor,hausa,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0121,tutor,swahili,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0122,tutor,arabic,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0123,tutor,spanish,beginner,thank you (formal),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0124,tutor,vietnamese,intermediate,hello (in a shop),Explain the phrase 'Hello' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0125,tutor,vietnamese,beginner,thank you (formal),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0126,tutor,yoruba,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0127,tutor,hausa,intermediate,i am learning (casual),Explain the phrase 'I am learning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0128,tutor,french,intermediate,how are you? (to a stranger),Explain the phrase 'How are you?' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0129,tutor,arabic,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0130,tutor,arabic,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0131,tutor,french,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0132,tutor,yoruba,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0133,tutor,igbo,beginner,i am learning (formal),"Teach how to say 'I am learning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0134,tutor,swahili,beginner,hello (to an elder),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0135,tutor,portuguese,beginner,hello (to a friend),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0136,tutor,swahili,beginner,hello (to a friend),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0137,tutor,hausa,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0138,tutor,french,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0139,tutor,yoruba,beginner,hello (in a shop),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0140,tutor,spanish,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0141,tutor,hausa,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0142,tutor,hausa,beginner,hello (to a stranger),"Teach how to say 'Hello' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0143,tutor,german,beginner,hello (formal),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0144,tutor,german,beginner,hello (to an elder),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0145,tutor,yoruba,beginner,how are you? (formal),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0146,tutor,hausa,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0147,tutor,french,beginner,i am learning (at school),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0148,tutor,portuguese,beginner,hello (in a shop),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0149,tutor,swahili,advanced,hello (formal),"Provide advanced usage of 'Hello' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0150,tutor,portuguese,intermediate,hello (to a friend),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0151,tutor,arabic,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0152,tutor,arabic,beginner,how are you? (to a friend),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0153,tutor,igbo,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0154,tutor,spanish,advanced,thank you (at school),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0155,tutor,swahili,intermediate,i am learning (formal),Explain the phrase 'I am learning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0156,tutor,hausa,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0157,tutor,arabic,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0158,tutor,portuguese,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0159,tutor,arabic,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0160,tutor,french,beginner,hello (at school),"Teach how to say 'Hello' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0161,tutor,portuguese,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0162,tutor,portuguese,beginner,good morning (to an elder),"Teach how to say 'Good morning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0163,tutor,french,beginner,good morning (to a friend),"Teach how to say 'Good morning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0164,tutor,german,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0165,tutor,arabic,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0166,tutor,swahili,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0167,tutor,spanish,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0168,tutor,german,beginner,good morning (casual),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0169,tutor,spanish,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0170,tutor,french,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0171,tutor,igbo,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0172,tutor,german,beginner,good morning (casual),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0173,tutor,vietnamese,beginner,how are you? (casual),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0174,tutor,german,intermediate,hello (to a friend),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0175,tutor,arabic,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0176,tutor,vietnamese,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0177,tutor,portuguese,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0178,tutor,igbo,beginner,hello (in a shop),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0179,tutor,vietnamese,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0180,tutor,vietnamese,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0181,tutor,french,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0182,tutor,spanish,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0183,tutor,german,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0184,tutor,french,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in French, include register differences and 2 practice sentences."
+tutor_auto_0185,tutor,german,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0186,tutor,yoruba,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0187,tutor,german,intermediate,how are you? (to a stranger),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0188,tutor,german,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0189,tutor,german,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in German, include register differences and 2 practice sentences."
+tutor_auto_0190,tutor,hausa,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0191,tutor,vietnamese,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0192,tutor,swahili,beginner,thank you (in the morning),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0193,tutor,spanish,beginner,good morning (in a shop),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0194,tutor,hausa,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0195,tutor,spanish,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0196,tutor,swahili,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0197,tutor,igbo,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0198,tutor,hausa,beginner,hello (at school),"Teach how to say 'Hello' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0199,tutor,hausa,intermediate,hello (in the morning),Explain the phrase 'Hello' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0200,tutor,spanish,beginner,how are you? (at school),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0201,tutor,portuguese,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0202,tutor,hausa,advanced,hello (at school),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0203,tutor,vietnamese,advanced,thank you (formal),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0204,tutor,french,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0205,tutor,igbo,advanced,i am learning (in a shop),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0206,tutor,igbo,beginner,hello (to a stranger),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0207,tutor,igbo,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0208,tutor,swahili,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0209,tutor,vietnamese,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0210,tutor,arabic,advanced,hello (casual),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0211,tutor,french,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0212,tutor,igbo,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0213,tutor,spanish,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0214,tutor,vietnamese,intermediate,hello (in a shop),Explain the phrase 'Hello' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0215,tutor,french,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0216,tutor,yoruba,beginner,how are you? (at school),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0217,tutor,hausa,intermediate,how are you? (to a stranger),Explain the phrase 'How are you?' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0218,tutor,french,intermediate,hello (casual),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0219,tutor,swahili,beginner,hello (to a stranger),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0220,tutor,swahili,advanced,thank you (to a stranger),"Provide advanced usage of 'Thank you' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0221,tutor,swahili,beginner,how are you? (formal),"Teach how to say 'How are you?' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0222,tutor,yoruba,advanced,hello (to a stranger),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0223,tutor,yoruba,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0224,tutor,french,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0225,tutor,igbo,beginner,hello (in a shop),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0226,tutor,spanish,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0227,tutor,hausa,beginner,thank you (at school),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0228,tutor,arabic,beginner,hello (in the morning),"Teach how to say 'Hello' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0229,tutor,swahili,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0230,tutor,swahili,advanced,hello (in a shop),"Provide advanced usage of 'Hello' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0231,tutor,arabic,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0232,tutor,hausa,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0233,tutor,swahili,beginner,thank you (at school),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0234,tutor,igbo,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0235,tutor,yoruba,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0236,tutor,igbo,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0237,tutor,spanish,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0238,tutor,french,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0239,tutor,french,advanced,hello (at school),"Provide advanced usage of 'Hello' in French, include register differences and 2 practice sentences."
+tutor_auto_0240,tutor,hausa,beginner,thank you (at school),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0241,tutor,portuguese,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0242,tutor,german,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in German, include register differences and 2 practice sentences."
+tutor_auto_0243,tutor,hausa,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0244,tutor,swahili,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0245,tutor,arabic,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0246,tutor,yoruba,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0247,tutor,portuguese,beginner,hello (to an elder),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0248,tutor,yoruba,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0249,tutor,yoruba,intermediate,hello (at school),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0250,tutor,swahili,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0251,tutor,german,beginner,hello (to an elder),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0252,tutor,spanish,intermediate,hello (to a friend),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0253,tutor,swahili,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0254,tutor,hausa,intermediate,good morning (formal),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0255,tutor,yoruba,beginner,good morning (to a friend),"Teach how to say 'Good morning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0256,tutor,portuguese,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0257,tutor,yoruba,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0258,tutor,french,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0259,tutor,hausa,intermediate,hello (in the morning),Explain the phrase 'Hello' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0260,tutor,igbo,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0261,tutor,spanish,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0262,tutor,portuguese,beginner,good morning (casual),"Teach how to say 'Good morning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0263,tutor,swahili,beginner,i am learning (at school),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0264,tutor,portuguese,beginner,hello (in the morning),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0265,tutor,french,intermediate,hello (at school),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0266,tutor,yoruba,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0267,tutor,french,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0268,tutor,portuguese,intermediate,i am learning (casual),Explain the phrase 'I am learning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0269,tutor,arabic,beginner,hello (casual),"Teach how to say 'Hello' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0270,tutor,yoruba,intermediate,hello (at school),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0271,tutor,yoruba,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0272,tutor,portuguese,beginner,good morning (at school),"Teach how to say 'Good morning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0273,tutor,swahili,beginner,thank you (formal),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0274,tutor,spanish,beginner,good morning (formal),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0275,tutor,hausa,beginner,thank you (at school),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0276,tutor,portuguese,beginner,how are you? (at school),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0277,tutor,yoruba,intermediate,hello (in the morning),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0278,tutor,spanish,intermediate,i am learning (to an elder),Explain the phrase 'I am learning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0279,tutor,hausa,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0280,tutor,swahili,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0281,tutor,spanish,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0282,tutor,igbo,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0283,tutor,yoruba,intermediate,thank you (formal),Explain the phrase 'Thank you' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0284,tutor,hausa,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0285,tutor,swahili,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0286,tutor,hausa,advanced,hello (to a stranger),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0287,tutor,swahili,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0288,tutor,german,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0289,tutor,yoruba,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0290,tutor,igbo,advanced,hello (formal),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0291,tutor,german,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in German, include register differences and 2 practice sentences."
+tutor_auto_0292,tutor,vietnamese,beginner,good morning (casual),"Teach how to say 'Good morning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0293,tutor,hausa,beginner,hello (in a shop),"Teach how to say 'Hello' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0294,tutor,yoruba,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0295,tutor,yoruba,intermediate,hello (in a shop),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0296,tutor,french,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0297,tutor,igbo,intermediate,how are you? (at school),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0298,tutor,arabic,beginner,thank you (casual),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0299,tutor,yoruba,beginner,how are you? (formal),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0300,tutor,german,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in German, include register differences and 2 practice sentences."
+tutor_auto_0301,tutor,german,beginner,thank you (at school),"Teach how to say 'Thank you' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0302,tutor,german,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0303,tutor,french,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0304,tutor,igbo,advanced,hello (formal),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0305,tutor,vietnamese,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0306,tutor,arabic,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0307,tutor,yoruba,advanced,hello (to a stranger),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0308,tutor,igbo,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0309,tutor,vietnamese,beginner,thank you (at school),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0310,tutor,swahili,intermediate,good morning (casual),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0311,tutor,portuguese,beginner,hello (at school),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0312,tutor,hausa,advanced,thank you (at school),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0313,tutor,hausa,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0314,tutor,spanish,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0315,tutor,yoruba,advanced,thank you (at school),"Provide advanced usage of 'Thank you' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0316,tutor,spanish,beginner,i am learning (at school),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0317,tutor,hausa,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0318,tutor,igbo,intermediate,hello (to a friend),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0319,tutor,vietnamese,advanced,thank you (to a stranger),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0320,tutor,arabic,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0321,tutor,arabic,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0322,tutor,arabic,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0323,tutor,portuguese,intermediate,hello (to a friend),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0324,tutor,french,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in French, include register differences and 2 practice sentences."
+tutor_auto_0325,tutor,german,beginner,good morning (to an elder),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0326,tutor,vietnamese,beginner,how are you? (at school),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0327,tutor,yoruba,beginner,good morning (casual),"Teach how to say 'Good morning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0328,tutor,french,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0329,tutor,vietnamese,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0330,tutor,vietnamese,beginner,hello (at school),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0331,tutor,portuguese,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0332,tutor,spanish,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0333,tutor,yoruba,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0334,tutor,vietnamese,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0335,tutor,french,beginner,how are you? (formal),"Teach how to say 'How are you?' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0336,tutor,spanish,intermediate,hello (in a shop),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0337,tutor,spanish,intermediate,hello (at school),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0338,tutor,german,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in German, include register differences and 2 practice sentences."
+tutor_auto_0339,tutor,vietnamese,intermediate,how are you? (at school),Explain the phrase 'How are you?' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0340,tutor,yoruba,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0341,tutor,yoruba,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0342,tutor,vietnamese,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0343,tutor,igbo,advanced,hello (in a shop),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0344,tutor,vietnamese,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0345,tutor,vietnamese,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0346,tutor,vietnamese,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0347,tutor,swahili,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0348,tutor,german,advanced,hello (to a stranger),"Provide advanced usage of 'Hello' in German, include register differences and 2 practice sentences."
+tutor_auto_0349,tutor,yoruba,advanced,hello (in a shop),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0350,tutor,vietnamese,intermediate,thank you (casual),Explain the phrase 'Thank you' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0351,tutor,portuguese,advanced,hello (at school),"Provide advanced usage of 'Hello' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0352,tutor,german,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0353,tutor,spanish,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0354,tutor,spanish,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0355,tutor,igbo,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0356,tutor,french,intermediate,hello (in the morning),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0357,tutor,arabic,beginner,good morning (at school),"Teach how to say 'Good morning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0358,tutor,french,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0359,tutor,swahili,beginner,good morning (at school),"Teach how to say 'Good morning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0360,tutor,portuguese,intermediate,good morning (casual),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0361,tutor,spanish,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0362,tutor,hausa,advanced,thank you (at school),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0363,tutor,swahili,intermediate,how are you? (to an elder),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0364,tutor,german,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0365,tutor,swahili,advanced,how are you? (casual),"Provide advanced usage of 'How are you?' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0366,tutor,igbo,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0367,tutor,portuguese,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0368,tutor,igbo,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0369,tutor,vietnamese,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0370,tutor,igbo,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0371,tutor,german,beginner,hello (to an elder),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0372,tutor,vietnamese,intermediate,how are you? (to a friend),Explain the phrase 'How are you?' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0373,tutor,arabic,beginner,hello (to an elder),"Teach how to say 'Hello' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0374,tutor,german,intermediate,thank you (casual),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0375,tutor,arabic,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0376,tutor,swahili,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0377,tutor,arabic,intermediate,hello (in the morning),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0378,tutor,german,intermediate,thank you (at school),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0379,tutor,french,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0380,tutor,german,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in German, include register differences and 2 practice sentences."
+tutor_auto_0381,tutor,portuguese,intermediate,hello (in the morning),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0382,tutor,spanish,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0383,tutor,french,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0384,tutor,hausa,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0385,tutor,vietnamese,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0386,tutor,arabic,intermediate,hello (at school),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0387,tutor,spanish,intermediate,thank you (at school),Explain the phrase 'Thank you' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0388,tutor,igbo,intermediate,hello (in the morning),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0389,tutor,german,beginner,i am learning (at school),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0390,tutor,arabic,intermediate,hello (to a friend),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0391,tutor,spanish,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0392,tutor,arabic,beginner,hello (formal),"Teach how to say 'Hello' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0393,tutor,french,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0394,tutor,portuguese,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0395,tutor,german,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0396,tutor,hausa,beginner,thank you (casual),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0397,tutor,hausa,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0398,tutor,french,beginner,hello (to a stranger),"Teach how to say 'Hello' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0399,tutor,portuguese,intermediate,thank you (at school),Explain the phrase 'Thank you' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0400,tutor,german,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0401,tutor,hausa,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0402,tutor,igbo,intermediate,hello (formal),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0403,tutor,french,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in French, include register differences and 2 practice sentences."
+tutor_auto_0404,tutor,german,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0405,tutor,portuguese,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0406,tutor,spanish,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0407,tutor,spanish,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0408,tutor,french,beginner,good morning (in the morning),"Teach how to say 'Good morning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0409,tutor,german,intermediate,how are you? (to an elder),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0410,tutor,igbo,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0411,tutor,vietnamese,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0412,tutor,swahili,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0413,tutor,swahili,intermediate,hello (in a shop),Explain the phrase 'Hello' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0414,tutor,igbo,intermediate,hello (to a friend),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0415,tutor,arabic,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0416,tutor,swahili,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0417,tutor,swahili,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0418,tutor,yoruba,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0419,tutor,german,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0420,tutor,vietnamese,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0421,tutor,yoruba,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0422,tutor,spanish,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0423,tutor,swahili,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0424,tutor,portuguese,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0425,tutor,french,beginner,hello (casual),"Teach how to say 'Hello' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0426,tutor,vietnamese,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0427,tutor,french,beginner,thank you (to an elder),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0428,tutor,swahili,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0429,tutor,french,beginner,i am learning (at school),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0430,tutor,portuguese,intermediate,good morning (casual),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0431,tutor,german,beginner,i am learning (at school),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0432,tutor,vietnamese,beginner,thank you (casual),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0433,tutor,vietnamese,beginner,hello (in the morning),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0434,tutor,portuguese,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0435,tutor,spanish,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0436,tutor,igbo,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0437,tutor,german,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0438,tutor,portuguese,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0439,tutor,portuguese,advanced,thank you (to a friend),"Provide advanced usage of 'Thank you' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0440,tutor,arabic,advanced,hello (formal),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0441,tutor,swahili,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0442,tutor,vietnamese,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0443,tutor,portuguese,intermediate,thank you (casual),Explain the phrase 'Thank you' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0444,tutor,igbo,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0445,tutor,german,beginner,hello (to an elder),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0446,tutor,hausa,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0447,tutor,igbo,beginner,how are you? (formal),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0448,tutor,vietnamese,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0449,tutor,swahili,beginner,good morning (to a friend),"Teach how to say 'Good morning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0450,tutor,vietnamese,beginner,hello (to a friend),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0451,tutor,french,beginner,thank you (to an elder),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0452,tutor,german,intermediate,i am learning (formal),Explain the phrase 'I am learning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0453,tutor,french,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0454,tutor,yoruba,beginner,i am learning (casual),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0455,tutor,portuguese,beginner,i am learning (at school),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0456,tutor,german,intermediate,good morning (casual),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0457,tutor,yoruba,beginner,good morning (in the morning),"Teach how to say 'Good morning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0458,tutor,german,intermediate,hello (to a friend),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0459,tutor,yoruba,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0460,tutor,german,beginner,how are you? (casual),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0461,tutor,hausa,advanced,thank you (formal),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0462,tutor,spanish,beginner,hello (formal),"Teach how to say 'Hello' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0463,tutor,arabic,beginner,thank you (in a shop),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0464,tutor,yoruba,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0465,tutor,swahili,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0466,tutor,french,beginner,hello (to a friend),"Teach how to say 'Hello' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0467,tutor,hausa,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0468,tutor,arabic,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0469,tutor,german,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0470,tutor,french,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0471,tutor,vietnamese,advanced,good morning (casual),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0472,tutor,yoruba,advanced,how are you? (casual),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0473,tutor,vietnamese,intermediate,hello (formal),Explain the phrase 'Hello' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0474,tutor,yoruba,advanced,hello (to an elder),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0475,tutor,spanish,intermediate,hello (in a shop),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0476,tutor,spanish,beginner,good morning (formal),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0477,tutor,yoruba,beginner,hello (to a friend),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0478,tutor,yoruba,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0479,tutor,igbo,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0480,tutor,vietnamese,beginner,thank you (formal),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0481,tutor,spanish,advanced,hello (at school),"Provide advanced usage of 'Hello' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0482,tutor,arabic,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0483,tutor,spanish,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0484,tutor,spanish,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0485,tutor,spanish,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0486,tutor,german,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0487,tutor,hausa,beginner,i am learning (formal),"Teach how to say 'I am learning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0488,tutor,french,beginner,thank you (casual),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0489,tutor,igbo,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0490,tutor,german,intermediate,hello (to an elder),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0491,tutor,igbo,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0492,tutor,spanish,beginner,good morning (in a shop),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0493,tutor,german,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0494,tutor,spanish,intermediate,i am learning (in a shop),Explain the phrase 'I am learning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0495,tutor,hausa,beginner,good morning (at school),"Teach how to say 'Good morning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0496,tutor,spanish,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0497,tutor,swahili,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0498,tutor,hausa,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0499,tutor,german,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0500,tutor,french,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0501,tutor,portuguese,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0502,tutor,igbo,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0503,tutor,igbo,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0504,tutor,french,intermediate,how are you? (formal),Explain the phrase 'How are you?' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0505,tutor,french,beginner,hello (to a friend),"Teach how to say 'Hello' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0506,tutor,igbo,intermediate,i am learning (to an elder),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0507,tutor,french,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in French, include register differences and 2 practice sentences."
+tutor_auto_0508,tutor,vietnamese,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0509,tutor,german,intermediate,how are you? (casual),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0510,tutor,french,beginner,how are you? (at school),"Teach how to say 'How are you?' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0511,tutor,arabic,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0512,tutor,yoruba,intermediate,hello (in a shop),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0513,tutor,yoruba,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0514,tutor,arabic,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0515,tutor,yoruba,beginner,hello (to a stranger),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0516,tutor,swahili,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0517,tutor,portuguese,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0518,tutor,spanish,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0519,tutor,arabic,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0520,tutor,arabic,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0521,tutor,portuguese,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0522,tutor,arabic,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0523,tutor,swahili,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0524,tutor,yoruba,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0525,tutor,yoruba,advanced,hello (to a stranger),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0526,tutor,spanish,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0527,tutor,hausa,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0528,tutor,hausa,advanced,thank you (formal),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0529,tutor,arabic,beginner,i am learning (casual),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0530,tutor,portuguese,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0531,tutor,french,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0532,tutor,vietnamese,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0533,tutor,arabic,advanced,hello (to an elder),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0534,tutor,swahili,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0535,tutor,yoruba,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0536,tutor,yoruba,advanced,hello (at school),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0537,tutor,arabic,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0538,tutor,igbo,intermediate,i am learning (casual),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0539,tutor,arabic,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0540,tutor,vietnamese,advanced,hello (formal),"Provide advanced usage of 'Hello' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0541,tutor,yoruba,intermediate,hello (in a shop),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0542,tutor,igbo,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0543,tutor,swahili,beginner,good morning (formal),"Teach how to say 'Good morning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0544,tutor,spanish,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0545,tutor,portuguese,intermediate,how are you? (to an elder),Explain the phrase 'How are you?' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0546,tutor,german,intermediate,i am learning (at school),Explain the phrase 'I am learning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0547,tutor,portuguese,intermediate,good morning (at school),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0548,tutor,yoruba,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0549,tutor,vietnamese,beginner,how are you? (formal),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0550,tutor,spanish,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0551,tutor,arabic,advanced,hello (at school),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0552,tutor,igbo,intermediate,hello (in the morning),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0553,tutor,yoruba,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0554,tutor,german,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0555,tutor,igbo,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0556,tutor,hausa,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0557,tutor,igbo,beginner,hello (in a shop),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0558,tutor,yoruba,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0559,tutor,igbo,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0560,tutor,vietnamese,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0561,tutor,spanish,intermediate,hello (to an elder),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0562,tutor,yoruba,beginner,i am learning (casual),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0563,tutor,igbo,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0564,tutor,portuguese,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0565,tutor,spanish,beginner,good morning (to a friend),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0566,tutor,hausa,intermediate,hello (in the morning),Explain the phrase 'Hello' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0567,tutor,arabic,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0568,tutor,vietnamese,advanced,how are you? (formal),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0569,tutor,portuguese,beginner,thank you (in a shop),"Teach how to say 'Thank you' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0570,tutor,portuguese,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0571,tutor,vietnamese,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0572,tutor,swahili,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0573,tutor,portuguese,intermediate,good morning (at school),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0574,tutor,yoruba,intermediate,hello (in a shop),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0575,tutor,swahili,beginner,i am learning (formal),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0576,tutor,german,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0577,tutor,yoruba,advanced,how are you? (casual),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0578,tutor,hausa,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0579,tutor,arabic,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0580,tutor,hausa,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0581,tutor,hausa,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0582,tutor,french,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in French, include register differences and 2 practice sentences."
+tutor_auto_0583,tutor,hausa,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0584,tutor,german,intermediate,thank you (at school),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0585,tutor,german,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0586,tutor,french,intermediate,i am learning (casual),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0587,tutor,portuguese,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0588,tutor,french,beginner,thank you (in the morning),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0589,tutor,yoruba,intermediate,i am learning (in a shop),Explain the phrase 'I am learning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0590,tutor,german,beginner,thank you (at school),"Teach how to say 'Thank you' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0591,tutor,swahili,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0592,tutor,french,intermediate,hello (in the morning),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0593,tutor,spanish,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0594,tutor,arabic,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0595,tutor,vietnamese,intermediate,how are you? (to a stranger),Explain the phrase 'How are you?' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0596,tutor,yoruba,beginner,good morning (in the morning),"Teach how to say 'Good morning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0597,tutor,yoruba,intermediate,hello (casual),Explain the phrase 'Hello' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0598,tutor,igbo,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0599,tutor,portuguese,intermediate,thank you (casual),Explain the phrase 'Thank you' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0600,tutor,spanish,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0601,tutor,spanish,beginner,good morning (formal),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0602,tutor,french,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0603,tutor,hausa,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0604,tutor,hausa,intermediate,how are you? (to an elder),Explain the phrase 'How are you?' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0605,tutor,swahili,intermediate,hello (formal),Explain the phrase 'Hello' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0606,tutor,igbo,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0607,tutor,spanish,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0608,tutor,hausa,intermediate,good morning (casual),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0609,tutor,french,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0610,tutor,portuguese,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0611,tutor,swahili,intermediate,good morning (formal),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0612,tutor,spanish,intermediate,how are you? (to a stranger),Explain the phrase 'How are you?' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0613,tutor,arabic,intermediate,good morning (at school),Explain the phrase 'Good morning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0614,tutor,vietnamese,advanced,thank you (to a friend),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0615,tutor,spanish,advanced,how are you? (casual),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0616,tutor,vietnamese,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0617,tutor,yoruba,beginner,i am learning (casual),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0618,tutor,swahili,advanced,i am learning (in a shop),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0619,tutor,portuguese,intermediate,hello (casual),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0620,tutor,vietnamese,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0621,tutor,igbo,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0622,tutor,german,beginner,hello (to a stranger),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0623,tutor,hausa,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0624,tutor,german,advanced,i am learning (in a shop),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0625,tutor,arabic,beginner,hello (at school),"Teach how to say 'Hello' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0626,tutor,yoruba,beginner,hello (in a shop),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0627,tutor,yoruba,intermediate,how are you? (at school),Explain the phrase 'How are you?' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0628,tutor,german,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in German, include register differences and 2 practice sentences."
+tutor_auto_0629,tutor,hausa,advanced,hello (formal),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0630,tutor,swahili,advanced,how are you? (to a friend),"Provide advanced usage of 'How are you?' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0631,tutor,swahili,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0632,tutor,german,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0633,tutor,igbo,beginner,thank you (formal),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0634,tutor,german,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in German, include register differences and 2 practice sentences."
+tutor_auto_0635,tutor,spanish,intermediate,good morning (at school),Explain the phrase 'Good morning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0636,tutor,french,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0637,tutor,spanish,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0638,tutor,arabic,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0639,tutor,igbo,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0640,tutor,spanish,intermediate,good morning (in a shop),Explain the phrase 'Good morning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0641,tutor,yoruba,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0642,tutor,german,intermediate,how are you? (to a stranger),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0643,tutor,german,intermediate,hello (at school),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0644,tutor,spanish,intermediate,good morning (to a stranger),Explain the phrase 'Good morning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0645,tutor,french,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0646,tutor,spanish,beginner,hello (at school),"Teach how to say 'Hello' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0647,tutor,yoruba,beginner,hello (to a stranger),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0648,tutor,vietnamese,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0649,tutor,german,beginner,hello (casual),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0650,tutor,portuguese,advanced,hello (casual),"Provide advanced usage of 'Hello' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0651,tutor,igbo,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0652,tutor,portuguese,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0653,tutor,vietnamese,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0654,tutor,vietnamese,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0655,tutor,swahili,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0656,tutor,igbo,intermediate,hello (to a friend),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0657,tutor,portuguese,intermediate,good morning (formal),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0658,tutor,igbo,intermediate,hello (in the morning),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0659,tutor,french,advanced,hello (to an elder),"Provide advanced usage of 'Hello' in French, include register differences and 2 practice sentences."
+tutor_auto_0660,tutor,spanish,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0661,tutor,arabic,intermediate,good morning (in a shop),Explain the phrase 'Good morning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0662,tutor,french,beginner,thank you (casual),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0663,tutor,german,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0664,tutor,arabic,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0665,tutor,german,intermediate,hello (in the morning),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0666,tutor,igbo,advanced,hello (in a shop),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0667,tutor,hausa,beginner,thank you (casual),"Teach how to say 'Thank you' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0668,tutor,spanish,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0669,tutor,arabic,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0670,tutor,spanish,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0671,tutor,vietnamese,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0672,tutor,hausa,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0673,tutor,spanish,beginner,thank you (at school),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0674,tutor,igbo,beginner,how are you? (casual),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0675,tutor,yoruba,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0676,tutor,vietnamese,beginner,thank you (formal),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0677,tutor,hausa,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0678,tutor,vietnamese,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0679,tutor,swahili,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0680,tutor,swahili,beginner,good morning (to a friend),"Teach how to say 'Good morning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0681,tutor,swahili,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0682,tutor,swahili,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0683,tutor,swahili,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0684,tutor,yoruba,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0685,tutor,hausa,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0686,tutor,french,intermediate,hello (in the morning),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0687,tutor,swahili,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0688,tutor,german,beginner,thank you (in a shop),"Teach how to say 'Thank you' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0689,tutor,hausa,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0690,tutor,yoruba,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0691,tutor,swahili,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0692,tutor,french,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0693,tutor,hausa,beginner,good morning (formal),"Teach how to say 'Good morning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0694,tutor,portuguese,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0695,tutor,igbo,intermediate,thank you (casual),Explain the phrase 'Thank you' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0696,tutor,swahili,beginner,how are you? (casual),"Teach how to say 'How are you?' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0697,tutor,swahili,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0698,tutor,swahili,intermediate,thank you (in a shop),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0699,tutor,portuguese,beginner,hello (to an elder),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0700,tutor,french,intermediate,thank you (in a shop),Explain the phrase 'Thank you' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0701,tutor,spanish,advanced,thank you (to a friend),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0702,tutor,yoruba,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0703,tutor,german,beginner,how are you? (casual),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0704,tutor,hausa,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0705,tutor,swahili,beginner,thank you (to an elder),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0706,tutor,swahili,beginner,hello (in a shop),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0707,tutor,french,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0708,tutor,arabic,beginner,thank you (in a shop),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0709,tutor,arabic,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0710,tutor,arabic,intermediate,hello (in the morning),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0711,tutor,french,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0712,tutor,igbo,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0713,tutor,german,beginner,how are you? (at school),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0714,tutor,swahili,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0715,tutor,yoruba,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0716,tutor,arabic,intermediate,i am learning (formal),Explain the phrase 'I am learning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0717,tutor,german,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0718,tutor,french,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in French, include register differences and 2 practice sentences."
+tutor_auto_0719,tutor,hausa,intermediate,thank you (at school),Explain the phrase 'Thank you' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0720,tutor,spanish,intermediate,thank you (casual),Explain the phrase 'Thank you' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0721,tutor,hausa,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0722,tutor,vietnamese,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0723,tutor,arabic,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0724,tutor,vietnamese,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0725,tutor,german,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0726,tutor,hausa,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0727,tutor,yoruba,advanced,thank you (formal),"Provide advanced usage of 'Thank you' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0728,tutor,spanish,intermediate,hello (to an elder),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0729,tutor,hausa,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0730,tutor,portuguese,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0731,tutor,igbo,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0732,tutor,vietnamese,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0733,tutor,german,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0734,tutor,vietnamese,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0735,tutor,portuguese,intermediate,hello (to an elder),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0736,tutor,french,intermediate,i am learning (casual),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0737,tutor,portuguese,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0738,tutor,swahili,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0739,tutor,portuguese,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0740,tutor,german,beginner,hello (in a shop),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0741,tutor,hausa,advanced,hello (to an elder),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0742,tutor,vietnamese,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0743,tutor,hausa,intermediate,hello (casual),Explain the phrase 'Hello' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0744,tutor,vietnamese,intermediate,how are you? (formal),Explain the phrase 'How are you?' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0745,tutor,french,advanced,hello (in a shop),"Provide advanced usage of 'Hello' in French, include register differences and 2 practice sentences."
+tutor_auto_0746,tutor,german,intermediate,good morning (casual),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0747,tutor,hausa,beginner,how are you? (to a friend),"Teach how to say 'How are you?' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0748,tutor,yoruba,beginner,hello (to an elder),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0749,tutor,arabic,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0750,tutor,swahili,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0751,tutor,igbo,intermediate,how are you? (formal),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0752,tutor,yoruba,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0753,tutor,yoruba,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0754,tutor,hausa,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0755,tutor,yoruba,beginner,thank you (in the morning),"Teach how to say 'Thank you' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0756,tutor,arabic,intermediate,hello (casual),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0757,tutor,yoruba,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0758,tutor,portuguese,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0759,tutor,spanish,intermediate,how are you? (in a shop),Explain the phrase 'How are you?' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0760,tutor,arabic,advanced,hello (in a shop),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0761,tutor,portuguese,intermediate,good morning (to a stranger),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0762,tutor,portuguese,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0763,tutor,german,intermediate,thank you (casual),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0764,tutor,spanish,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0765,tutor,arabic,intermediate,hello (in a shop),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0766,tutor,french,intermediate,i am learning (to an elder),Explain the phrase 'I am learning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0767,tutor,arabic,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0768,tutor,igbo,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0769,tutor,yoruba,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0770,tutor,igbo,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0771,tutor,igbo,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0772,tutor,swahili,beginner,hello (formal),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0773,tutor,portuguese,beginner,how are you? (casual),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0774,tutor,igbo,advanced,hello (casual),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0775,tutor,spanish,beginner,good morning (to an elder),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0776,tutor,igbo,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0777,tutor,spanish,beginner,hello (to an elder),"Teach how to say 'Hello' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0778,tutor,yoruba,advanced,hello (formal),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0779,tutor,portuguese,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0780,tutor,swahili,advanced,thank you (at school),"Provide advanced usage of 'Thank you' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0781,tutor,spanish,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0782,tutor,hausa,advanced,thank you (in a shop),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0783,tutor,igbo,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0784,tutor,hausa,intermediate,thank you (casual),Explain the phrase 'Thank you' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0785,tutor,hausa,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0786,tutor,spanish,intermediate,hello (formal),Explain the phrase 'Hello' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0787,tutor,spanish,advanced,good morning (in a shop),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0788,tutor,portuguese,advanced,i am learning (to a friend),"Provide advanced usage of 'I am learning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0789,tutor,hausa,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0790,tutor,igbo,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0791,tutor,igbo,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0792,tutor,yoruba,beginner,how are you? (to a stranger),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0793,tutor,hausa,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0794,tutor,portuguese,intermediate,hello (to an elder),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0795,tutor,german,intermediate,thank you (to an elder),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0796,tutor,portuguese,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0797,tutor,french,intermediate,good morning (at school),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0798,tutor,spanish,beginner,i am learning (at school),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0799,tutor,arabic,intermediate,hello (to a friend),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0800,tutor,arabic,beginner,thank you (at school),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0801,tutor,hausa,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0802,tutor,arabic,advanced,hello (at school),"Provide advanced usage of 'Hello' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0803,tutor,spanish,advanced,good morning (at school),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0804,tutor,portuguese,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0805,tutor,vietnamese,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0806,tutor,arabic,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0807,tutor,yoruba,advanced,hello (at school),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0808,tutor,yoruba,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0809,tutor,german,beginner,good morning (in the morning),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0810,tutor,arabic,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0811,tutor,vietnamese,beginner,thank you (in a shop),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0812,tutor,spanish,beginner,good morning (to an elder),"Teach how to say 'Good morning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0813,tutor,french,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0814,tutor,swahili,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0815,tutor,igbo,beginner,thank you (formal),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0816,tutor,igbo,beginner,hello (to a stranger),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0817,tutor,swahili,beginner,good morning (to a stranger),"Teach how to say 'Good morning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0818,tutor,swahili,beginner,hello (casual),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0819,tutor,french,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0820,tutor,hausa,advanced,good morning (to an elder),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0821,tutor,yoruba,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0822,tutor,spanish,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0823,tutor,swahili,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0824,tutor,german,beginner,thank you (in a shop),"Teach how to say 'Thank you' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0825,tutor,arabic,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0826,tutor,french,intermediate,hello (to a stranger),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0827,tutor,spanish,advanced,how are you? (formal),"Provide advanced usage of 'How are you?' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0828,tutor,yoruba,advanced,how are you? (to a friend),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0829,tutor,vietnamese,beginner,how are you? (casual),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0830,tutor,yoruba,intermediate,good morning (in the morning),Explain the phrase 'Good morning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0831,tutor,arabic,advanced,how are you? (in the morning),"Provide advanced usage of 'How are you?' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0832,tutor,french,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0833,tutor,arabic,beginner,how are you? (casual),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0834,tutor,igbo,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0835,tutor,swahili,intermediate,thank you (casual),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0836,tutor,swahili,intermediate,thank you (in a shop),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0837,tutor,spanish,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0838,tutor,swahili,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0839,tutor,german,beginner,hello (casual),"Teach how to say 'Hello' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0840,tutor,swahili,advanced,hello (formal),"Provide advanced usage of 'Hello' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0841,tutor,igbo,intermediate,how are you? (to a friend),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0842,tutor,spanish,beginner,hello (formal),"Teach how to say 'Hello' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0843,tutor,portuguese,beginner,how are you? (casual),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0844,tutor,vietnamese,intermediate,hello (formal),Explain the phrase 'Hello' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0845,tutor,french,beginner,i am learning (casual),"Teach how to say 'I am learning' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0846,tutor,hausa,advanced,how are you? (in a shop),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0847,tutor,french,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0848,tutor,german,beginner,good morning (in the morning),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0849,tutor,arabic,intermediate,hello (casual),Explain the phrase 'Hello' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0850,tutor,swahili,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0851,tutor,vietnamese,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0852,tutor,yoruba,advanced,i am learning (casual),"Provide advanced usage of 'I am learning' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0853,tutor,igbo,intermediate,hello (to a friend),Explain the phrase 'Hello' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0854,tutor,hausa,beginner,how are you? (in the morning),"Teach how to say 'How are you?' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0855,tutor,spanish,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0856,tutor,vietnamese,beginner,good morning (in the morning),"Teach how to say 'Good morning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0857,tutor,swahili,intermediate,good morning (in a shop),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0858,tutor,portuguese,beginner,thank you (in a shop),"Teach how to say 'Thank you' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0859,tutor,yoruba,beginner,good morning (in a shop),"Teach how to say 'Good morning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0860,tutor,vietnamese,beginner,hello (casual),"Teach how to say 'Hello' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0861,tutor,vietnamese,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0862,tutor,hausa,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0863,tutor,german,advanced,hello (to a stranger),"Provide advanced usage of 'Hello' in German, include register differences and 2 practice sentences."
+tutor_auto_0864,tutor,igbo,beginner,how are you? (to a friend),"Teach how to say 'How are you?' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0865,tutor,portuguese,intermediate,good morning (at school),Explain the phrase 'Good morning' in Portuguese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0866,tutor,arabic,advanced,i am learning (in the morning),"Provide advanced usage of 'I am learning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0867,tutor,spanish,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0868,tutor,yoruba,beginner,good morning (in a shop),"Teach how to say 'Good morning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0869,tutor,igbo,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0870,tutor,igbo,intermediate,thank you (to a stranger),Explain the phrase 'Thank you' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0871,tutor,hausa,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0872,tutor,swahili,intermediate,good morning (casual),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0873,tutor,swahili,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0874,tutor,hausa,beginner,how are you? (at school),"Teach how to say 'How are you?' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0875,tutor,hausa,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0876,tutor,portuguese,advanced,thank you (in the morning),"Provide advanced usage of 'Thank you' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0877,tutor,portuguese,beginner,i am learning (to a stranger),"Teach how to say 'I am learning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0878,tutor,arabic,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0879,tutor,arabic,intermediate,thank you (formal),Explain the phrase 'Thank you' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0880,tutor,igbo,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0881,tutor,vietnamese,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0882,tutor,yoruba,intermediate,i am learning (at school),Explain the phrase 'I am learning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0883,tutor,french,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0884,tutor,arabic,beginner,thank you (at school),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0885,tutor,french,intermediate,good morning (to a stranger),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0886,tutor,german,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0887,tutor,vietnamese,beginner,thank you (casual),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0888,tutor,french,intermediate,thank you (at school),Explain the phrase 'Thank you' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0889,tutor,swahili,advanced,hello (at school),"Provide advanced usage of 'Hello' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0890,tutor,swahili,intermediate,good morning (to a stranger),Explain the phrase 'Good morning' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0891,tutor,french,beginner,thank you (casual),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0892,tutor,swahili,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Swahili, include register differences and 2 practice sentences."
+tutor_auto_0893,tutor,yoruba,advanced,how are you? (to a friend),"Provide advanced usage of 'How are you?' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0894,tutor,vietnamese,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0895,tutor,french,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0896,tutor,spanish,beginner,thank you (in the morning),"Teach how to say 'Thank you' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0897,tutor,french,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0898,tutor,yoruba,beginner,hello (formal),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0899,tutor,hausa,intermediate,thank you (casual),Explain the phrase 'Thank you' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0900,tutor,french,beginner,hello (formal),"Teach how to say 'Hello' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0901,tutor,arabic,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0902,tutor,hausa,beginner,hello (at school),"Teach how to say 'Hello' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0903,tutor,spanish,beginner,hello (at school),"Teach how to say 'Hello' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0904,tutor,spanish,beginner,how are you? (at school),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0905,tutor,igbo,advanced,hello (at school),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0906,tutor,hausa,advanced,how are you? (at school),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0907,tutor,vietnamese,beginner,i am learning (in the morning),"Teach how to say 'I am learning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0908,tutor,vietnamese,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0909,tutor,vietnamese,beginner,how are you? (in a shop),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0910,tutor,french,advanced,i am learning (at school),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0911,tutor,arabic,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0912,tutor,french,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0913,tutor,spanish,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0914,tutor,spanish,beginner,i am learning (casual),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0915,tutor,german,beginner,how are you? (formal),"Teach how to say 'How are you?' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0916,tutor,spanish,intermediate,how are you? (to a friend),Explain the phrase 'How are you?' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0917,tutor,spanish,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0918,tutor,french,advanced,i am learning (to an elder),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0919,tutor,arabic,beginner,how are you? (to an elder),"Teach how to say 'How are you?' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0920,tutor,spanish,beginner,how are you? (casual),"Teach how to say 'How are you?' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0921,tutor,portuguese,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0922,tutor,portuguese,beginner,hello (formal),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0923,tutor,hausa,intermediate,i am learning (to an elder),Explain the phrase 'I am learning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0924,tutor,swahili,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0925,tutor,vietnamese,advanced,i am learning (in a shop),"Provide advanced usage of 'I am learning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0926,tutor,igbo,intermediate,i am learning (formal),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0927,tutor,german,advanced,thank you (formal),"Provide advanced usage of 'Thank you' in German, include register differences and 2 practice sentences."
+tutor_auto_0928,tutor,yoruba,intermediate,i am learning (in a shop),Explain the phrase 'I am learning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0929,tutor,spanish,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in Spanish with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0930,tutor,yoruba,advanced,hello (in the morning),"Provide advanced usage of 'Hello' in Yoruba, include register differences and 2 practice sentences."
+tutor_auto_0931,tutor,hausa,advanced,how are you? (to an elder),"Provide advanced usage of 'How are you?' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0932,tutor,french,advanced,good morning (in the morning),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0933,tutor,vietnamese,advanced,thank you (casual),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0934,tutor,spanish,advanced,i am learning (formal),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0935,tutor,igbo,intermediate,thank you (in the morning),Explain the phrase 'Thank you' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0936,tutor,french,advanced,i am learning (in a shop),"Provide advanced usage of 'I am learning' in French, include register differences and 2 practice sentences."
+tutor_auto_0937,tutor,french,beginner,thank you (at school),"Teach how to say 'Thank you' in French. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0938,tutor,vietnamese,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0939,tutor,german,intermediate,how are you? (formal),Explain the phrase 'How are you?' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0940,tutor,arabic,intermediate,i am learning (to an elder),Explain the phrase 'I am learning' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0941,tutor,vietnamese,beginner,how are you? (to a friend),"Teach how to say 'How are you?' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0942,tutor,igbo,intermediate,how are you? (casual),Explain the phrase 'How are you?' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0943,tutor,french,intermediate,hello (formal),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0944,tutor,german,intermediate,i am learning (in the morning),Explain the phrase 'I am learning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0945,tutor,hausa,beginner,good morning (to a friend),"Teach how to say 'Good morning' in Hausa. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0946,tutor,german,intermediate,good morning (in a shop),Explain the phrase 'Good morning' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0947,tutor,igbo,advanced,hello (formal),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0948,tutor,french,advanced,good morning (formal),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0949,tutor,spanish,beginner,i am learning (casual),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0950,tutor,igbo,intermediate,i am learning (in a shop),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0951,tutor,vietnamese,beginner,thank you (to a stranger),"Teach how to say 'Thank you' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0952,tutor,arabic,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Arabic, include register differences and 2 practice sentences."
+tutor_auto_0953,tutor,swahili,beginner,i am learning (formal),"Teach how to say 'I am learning' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0954,tutor,arabic,beginner,thank you (at school),"Teach how to say 'Thank you' in Arabic. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0955,tutor,hausa,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0956,tutor,portuguese,beginner,hello (at school),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0957,tutor,portuguese,advanced,hello (to an elder),"Provide advanced usage of 'Hello' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0958,tutor,portuguese,beginner,good morning (at school),"Teach how to say 'Good morning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0959,tutor,portuguese,beginner,good morning (to a friend),"Teach how to say 'Good morning' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0960,tutor,portuguese,beginner,hello (to an elder),"Teach how to say 'Hello' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0961,tutor,hausa,intermediate,good morning (to a friend),Explain the phrase 'Good morning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0962,tutor,igbo,beginner,thank you (in the morning),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0963,tutor,igbo,advanced,hello (to a friend),"Provide advanced usage of 'Hello' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0964,tutor,igbo,beginner,hello (in the morning),"Teach how to say 'Hello' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0965,tutor,yoruba,beginner,i am learning (to a friend),"Teach how to say 'I am learning' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0966,tutor,french,intermediate,good morning (to an elder),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0967,tutor,spanish,advanced,i am learning (to a stranger),"Provide advanced usage of 'I am learning' in Spanish, include register differences and 2 practice sentences."
+tutor_auto_0968,tutor,yoruba,beginner,how are you? (casual),"Teach how to say 'How are you?' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0969,tutor,french,intermediate,hello (casual),Explain the phrase 'Hello' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0970,tutor,igbo,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Igbo, include register differences and 2 practice sentences."
+tutor_auto_0971,tutor,german,intermediate,hello (to an elder),Explain the phrase 'Hello' in German with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0972,tutor,vietnamese,intermediate,hello (to an elder),Explain the phrase 'Hello' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0973,tutor,vietnamese,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0974,tutor,yoruba,beginner,hello (at school),"Teach how to say 'Hello' in Yoruba. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0975,tutor,swahili,beginner,hello (casual),"Teach how to say 'Hello' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0976,tutor,arabic,intermediate,thank you (to a friend),Explain the phrase 'Thank you' in Arabic with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0977,tutor,portuguese,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in Portuguese, include register differences and 2 practice sentences."
+tutor_auto_0978,tutor,german,beginner,i am learning (to an elder),"Teach how to say 'I am learning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0979,tutor,french,intermediate,good morning (formal),Explain the phrase 'Good morning' in French with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0980,tutor,spanish,beginner,i am learning (in a shop),"Teach how to say 'I am learning' in Spanish. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0981,tutor,german,advanced,how are you? (to a stranger),"Provide advanced usage of 'How are you?' in German, include register differences and 2 practice sentences."
+tutor_auto_0982,tutor,swahili,beginner,thank you (casual),"Teach how to say 'Thank you' in Swahili. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0983,tutor,swahili,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Swahili with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0984,tutor,french,advanced,good morning (to a friend),"Provide advanced usage of 'Good morning' in French, include register differences and 2 practice sentences."
+tutor_auto_0985,tutor,hausa,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in Hausa, include register differences and 2 practice sentences."
+tutor_auto_0986,tutor,german,advanced,good morning (to a stranger),"Provide advanced usage of 'Good morning' in German, include register differences and 2 practice sentences."
+tutor_auto_0987,tutor,yoruba,intermediate,how are you? (in the morning),Explain the phrase 'How are you?' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0988,tutor,vietnamese,intermediate,hello (to a stranger),Explain the phrase 'Hello' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0989,tutor,hausa,intermediate,i am learning (to a friend),Explain the phrase 'I am learning' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0990,tutor,igbo,beginner,thank you (to a friend),"Teach how to say 'Thank you' in Igbo. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0991,tutor,yoruba,intermediate,good morning (in a shop),Explain the phrase 'Good morning' in Yoruba with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0992,tutor,german,beginner,good morning (casual),"Teach how to say 'Good morning' in German. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0993,tutor,vietnamese,intermediate,how are you? (formal),Explain the phrase 'How are you?' in Vietnamese with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0994,tutor,vietnamese,beginner,i am learning (casual),"Teach how to say 'I am learning' in Vietnamese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."
+tutor_auto_0995,tutor,hausa,intermediate,hello (in the morning),Explain the phrase 'Hello' in Hausa with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0996,tutor,vietnamese,advanced,how are you? (casual),"Provide advanced usage of 'How are you?' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0997,tutor,vietnamese,advanced,thank you (to an elder),"Provide advanced usage of 'Thank you' in Vietnamese, include register differences and 2 practice sentences."
+tutor_auto_0998,tutor,igbo,intermediate,i am learning (to a stranger),Explain the phrase 'I am learning' in Igbo with grammar notes and a short dialogue of 2 lines for practice.
+tutor_auto_0999,tutor,portuguese,beginner,how are you? (formal),"Teach how to say 'How are you?' in Portuguese. Provide phrase, pronunciation, word breakdown, and a 1-line cultural note."

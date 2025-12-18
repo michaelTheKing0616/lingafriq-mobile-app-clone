@@ -1,0 +1,28 @@
+﻿2025-12-04T15:44:33.8627892Z ##[group]Run actions/setup-node@v4
+2025-12-04T15:44:33.8628627Z with:
+2025-12-04T15:44:33.8629037Z   node-version: 18.x
+2025-12-04T15:44:33.8629543Z   cache: npm
+2025-12-04T15:44:33.8629950Z   always-auth: false
+2025-12-04T15:44:33.8630394Z   check-latest: false
+2025-12-04T15:44:33.8631043Z   token: ***
+2025-12-04T15:44:33.8631446Z env:
+2025-12-04T15:44:33.8631990Z   NODE_VERSION: 18.x
+2025-12-04T15:44:33.8632427Z ##[endgroup]
+2025-12-04T15:44:34.1248954Z Attempting to download 18.x...
+2025-12-04T15:44:34.6234827Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-04T15:44:35.0692429Z Extracting ...
+2025-12-04T15:44:35.0695690Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/75f3e72c-fc07-48de-8fc2-00ca8a6f3476 -f /home/runner/work/_temp/b4094548-2c72-42d4-a3c7-632ef78a5d51
+2025-12-04T15:44:36.2128679Z Adding to the cache ...
+2025-12-04T15:44:38.3488894Z ##[group]Environment details
+2025-12-04T15:44:38.7217443Z node: v18.20.8
+2025-12-04T15:44:38.7219593Z npm: 10.8.2
+2025-12-04T15:44:38.7220105Z yarn: 1.22.22
+2025-12-04T15:44:38.7220822Z ##[endgroup]
+2025-12-04T15:44:38.7246051Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-04T15:44:38.8503770Z /home/runner/.npm
+2025-12-04T15:44:38.9647015Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-04T15:44:39.3962173Z Received 64730011 of 64730011 (100.0%), 160.8 MBs/sec
+2025-12-04T15:44:39.3967568Z Cache Size: ~62 MB (64730011 B)
+2025-12-04T15:44:39.3998695Z [command]/usr/bin/tar -xf /home/runner/work/_temp/5fe00508-a402-4142-9eb4-02ded2e4d66c/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-04T15:44:39.8045394Z Cache restored successfully
+2025-12-04T15:44:39.8203017Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d

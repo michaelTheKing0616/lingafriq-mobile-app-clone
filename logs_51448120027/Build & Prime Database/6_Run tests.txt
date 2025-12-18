@@ -1,0 +1,32 @@
+﻿2025-12-04T15:45:09.3483208Z ##[group]Run echo "🧪 Running tests..."
+2025-12-04T15:45:09.3483564Z [36;1mecho "🧪 Running tests..."[0m
+2025-12-04T15:45:09.3483930Z [36;1mnpm test || echo "⚠️ Tests failed or not configured, continuing..."[0m
+2025-12-04T15:45:09.3517332Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:45:09.3517575Z env:
+2025-12-04T15:45:09.3517752Z   NODE_VERSION: 18.x
+2025-12-04T15:45:09.3517969Z ##[endgroup]
+2025-12-04T15:45:09.3573739Z 🧪 Running tests...
+2025-12-04T15:45:09.4925555Z 
+2025-12-04T15:45:09.4928208Z > lingafriq_backend@1.0.0 test
+2025-12-04T15:45:09.4933703Z > jest --detectOpenHandles
+2025-12-04T15:45:09.4934047Z 
+2025-12-04T15:45:19.5895876Z FAIL dist/__test__/index.test.js
+2025-12-04T15:45:19.5915215Z   ● Test suite failed to run
+2025-12-04T15:45:19.5915930Z 
+2025-12-04T15:45:19.5916978Z     RangeError: express-jwt: `secret` is a required option
+2025-12-04T15:45:19.5917785Z 
+2025-12-04T15:45:19.5918348Z 
+2025-12-04T15:45:19.5920034Z 
+2025-12-04T15:45:19.5921917Z       at expressjwt (node_modules/express-jwt/dist/index.js:117:11)
+2025-12-04T15:45:19.5923635Z       at Object.<anonymous> (dist/middleware/auth.middleware.js:42:57)
+2025-12-04T15:45:19.5925851Z       at Object.<anonymous> (dist/routes/language.route.js:34:30)
+2025-12-04T15:45:19.5927376Z       at Object.<anonymous> (src/routes/index.route.ts:39:6)
+2025-12-04T15:45:19.5928389Z       at Object.<anonymous> (src/app.ts:46:30)
+2025-12-04T15:45:19.5930108Z       at Object.<anonymous> (src/__test__/index.test.ts:29:16)
+2025-12-04T15:45:19.5930772Z 
+2025-12-04T15:45:19.5947075Z Test Suites: 1 failed, 1 total
+2025-12-04T15:45:19.5947943Z Tests:       0 total
+2025-12-04T15:45:19.5949599Z Snapshots:   0 total
+2025-12-04T15:45:19.5949990Z Time:        9.56 s
+2025-12-04T15:45:19.5950354Z Ran all test suites.
+2025-12-04T15:45:19.7538263Z ⚠️ Tests failed or not configured, continuing...

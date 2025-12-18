@@ -1,0 +1,22 @@
+{
+  "app": "Lingafriq",
+  "generated_at": "2025-12-13T12:21:35.292714Z",
+  "schema_version": "1.0",
+  "levels": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ],
+  "languages": [
+    "afrikaans",
+    "hausa",
+    "igbo",
+    "yoruba",
+    "swahili",
+    "zulu",
+    "nigerian_pidgin"
+  ]
+}

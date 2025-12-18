@@ -1,0 +1,224 @@
+﻿2025-12-04T15:45:19.7574395Z ##[group]Run echo "=========================================="
+2025-12-04T15:45:19.7574870Z [36;1mecho "=========================================="[0m
+2025-12-04T15:45:19.7575198Z [36;1mecho "🚀 Starting Wikipedia Scraper"[0m
+2025-12-04T15:45:19.7575513Z [36;1mecho "=========================================="[0m
+2025-12-04T15:45:19.7575785Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7576068Z [36;1mecho "This will populate your MongoDB database with:"[0m
+2025-12-04T15:45:19.7576448Z [36;1mecho "  • 40+ African culture articles from Wikipedia"[0m
+2025-12-04T15:45:19.7576862Z [36;1mecho "  • Categories: tradition, cuisine, music, history, etc."[0m
+2025-12-04T15:45:19.7577303Z [36;1mecho "  • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc."[0m
+2025-12-04T15:45:19.7577654Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7577860Z [36;1mecho "Connecting to MongoDB..."[0m
+2025-12-04T15:45:19.7578110Z [36;1m[0m
+2025-12-04T15:45:19.7578292Z [36;1mif [ -z "$MONGODB_URI" ]; then[0m
+2025-12-04T15:45:19.7578632Z [36;1m  echo "❌ ERROR: MONGODB_URI secret is not set!"[0m
+2025-12-04T15:45:19.7578973Z [36;1m  echo "Please add MONGODB_URI to repository secrets"[0m
+2025-12-04T15:45:19.7579259Z [36;1m  exit 1[0m
+2025-12-04T15:45:19.7579455Z [36;1mfi[0m
+2025-12-04T15:45:19.7579619Z [36;1m[0m
+2025-12-04T15:45:19.7579794Z [36;1mif [ -z "$JWT_SECRET" ]; then[0m
+2025-12-04T15:45:19.7580075Z [36;1m  echo "❌ ERROR: JWT_SECRET secret is not set!"[0m
+2025-12-04T15:45:19.7580405Z [36;1m  echo "Please add JWT_SECRET to repository secrets"[0m
+2025-12-04T15:45:19.7580706Z [36;1m  exit 1[0m
+2025-12-04T15:45:19.7580878Z [36;1mfi[0m
+2025-12-04T15:45:19.7581041Z [36;1m[0m
+2025-12-04T15:45:19.7581221Z [36;1mecho "✅ Secrets configured"[0m
+2025-12-04T15:45:19.7581563Z [36;1mecho "✅ MongoDB URI: ${MONGODB_URI:0:20}... (truncated for security)"[0m
+2025-12-04T15:45:19.7582547Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7582870Z [36;1mecho "Running scraper..."[0m
+2025-12-04T15:45:19.7583267Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7583485Z [36;1m[0m
+2025-12-04T15:45:19.7583658Z [36;1mnode -e "[0m
+2025-12-04T15:45:19.7583932Z [36;1m  import('./dist/services/cultureScraper.service.js')[0m
+2025-12-04T15:45:19.7584263Z [36;1m    .then(m => m.runScraperJob())[0m
+2025-12-04T15:45:19.7584511Z [36;1m    .then(() => {[0m
+2025-12-04T15:45:19.7584727Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7585008Z [36;1m      console.log('==========================================');[0m
+2025-12-04T15:45:19.7585363Z [36;1m      console.log('✅ SCRAPER COMPLETED SUCCESSFULLY!');[0m
+2025-12-04T15:45:19.7585712Z [36;1m      console.log('==========================================');[0m
+2025-12-04T15:45:19.7585998Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7586273Z [36;1m      console.log('Your database should now contain:');[0m
+2025-12-04T15:45:19.7586599Z [36;1m      console.log('  • Collection: articles');[0m
+2025-12-04T15:45:19.7586945Z [36;1m      console.log('  • Documents: 40+ African culture articles');[0m
+2025-12-04T15:45:19.7587359Z [36;1m      console.log('  • Source: Wikipedia (with proper attribution)');[0m
+2025-12-04T15:45:19.7587685Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7587916Z [36;1m      console.log('Test it:');[0m
+2025-12-04T15:45:19.7588299Z [36;1m      console.log('  curl https://your-backend-url/culture-magazine/articles');[0m
+2025-12-04T15:45:19.7588681Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7588906Z [36;1m      process.exit(0);[0m
+2025-12-04T15:45:19.7589320Z [36;1m    })[0m
+2025-12-04T15:45:19.7589509Z [36;1m    .catch(err => {[0m
+2025-12-04T15:45:19.7589727Z [36;1m      console.error('');[0m
+2025-12-04T15:45:19.7590051Z [36;1m      console.error('==========================================');[0m
+2025-12-04T15:45:19.7590437Z [36;1m      console.error('❌ SCRAPER ERROR:');[0m
+2025-12-04T15:45:19.7590749Z [36;1m      console.error('==========================================');[0m
+2025-12-04T15:45:19.7591055Z [36;1m      console.error(err);[0m
+2025-12-04T15:45:19.7591467Z [36;1m      console.error('');[0m
+2025-12-04T15:45:19.7592253Z [36;1m      console.error('Common issues:');[0m
+2025-12-04T15:45:19.7592594Z [36;1m      console.error('  1. Cannot connect to MongoDB');[0m
+2025-12-04T15:45:19.7592987Z [36;1m      console.error('     → Check MongoDB Atlas network access (0.0.0.0/0)');[0m
+2025-12-04T15:45:19.7593521Z [36;1m      console.error('     → Verify connection string format');[0m
+2025-12-04T15:45:19.7593887Z [36;1m      console.error('  2. Authentication failed');[0m
+2025-12-04T15:45:19.7594304Z [36;1m      console.error('     → Check username/password in MONGODB_URI');[0m
+2025-12-04T15:45:19.7594681Z [36;1m      console.error('  3. Network timeout');[0m
+2025-12-04T15:45:19.7595050Z [36;1m      console.error('     → Wikipedia might be temporarily unreachable');[0m
+2025-12-04T15:45:19.7595400Z [36;1m      console.error('');[0m
+2025-12-04T15:45:19.7595640Z [36;1m      process.exit(0);[0m
+2025-12-04T15:45:19.7595880Z [36;1m    });[0m
+2025-12-04T15:45:19.7596151Z [36;1m" || echo "⚠️ Scraper encountered issues but workflow continues"[0m
+2025-12-04T15:45:19.7629891Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:45:19.7630134Z env:
+2025-12-04T15:45:19.7630314Z   NODE_VERSION: 18.x
+2025-12-04T15:45:19.7630891Z   MONGODB_URI: ***
+2025-12-04T15:45:19.7631106Z   JWT_SECRET: ***
+2025-12-04T15:45:19.7631338Z   NEWS_API_KEY: ***
+2025-12-04T15:45:19.7631974Z   NODE_ENV: production
+2025-12-04T15:45:19.7632198Z ##[endgroup]
+2025-12-04T15:45:19.7691485Z ==========================================
+2025-12-04T15:45:19.7693505Z 🚀 Starting Wikipedia Scraper
+2025-12-04T15:45:19.7694038Z ==========================================
+2025-12-04T15:45:19.7694351Z 
+2025-12-04T15:45:19.7694673Z This will populate your MongoDB database with:
+2025-12-04T15:45:19.7695384Z   • 40+ African culture articles from Wikipedia
+2025-12-04T15:45:19.7696121Z   • Categories: tradition, cuisine, music, history, etc.
+2025-12-04T15:45:19.7696972Z   • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc.
+2025-12-04T15:45:19.7697442Z 
+2025-12-04T15:45:19.7697621Z Connecting to MongoDB...
+2025-12-04T15:45:19.7698085Z ✅ Secrets configured
+2025-12-04T15:45:19.7698805Z ✅ MongoDB URI: mongodb://lingafriqa... (truncated for security)
+2025-12-04T15:45:19.7699165Z 
+2025-12-04T15:45:19.7699315Z Running scraper...
+2025-12-04T15:45:19.7699528Z 
+2025-12-04T15:45:20.0437688Z Starting culture content scraper...
+2025-12-04T15:45:35.9644268Z Error saving article "Yoruba people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:45:35.9646639Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:45:35.9653069Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:45:35.9653751Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:45:45.9758504Z Error saving article "Igbo people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:45:45.9761011Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:45:45.9762601Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:45:45.9763315Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:45:55.9862109Z Error saving article "Hausa people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:45:55.9864810Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:45:55.9866174Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:45:55.9868035Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:05.9974189Z Error saving article "Nigerian cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:05.9979827Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:05.9982671Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:05.9984153Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:16.0084354Z Error saving article "Nollywood": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:16.0086892Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:16.0088259Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:16.0089189Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:26.0189388Z Error saving article "Afrobeat": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:26.0191938Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:26.0193227Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:26.0193912Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:36.0299489Z Error saving article "Jollof rice": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:36.0303380Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:36.0304291Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:36.0304749Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:46.0341967Z Error saving article "Zulu people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:46.0345533Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:46.0347229Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:46.0352692Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:56.0408587Z Error saving article "Xhosa people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:56.0411975Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:56.0413335Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:56.0414043Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:06.0459985Z Error saving article "South African cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:06.0464058Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:06.0465468Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:06.0466169Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:16.0509171Z Error saving article "Kwaito": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:16.0513201Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:16.0515360Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:16.0515993Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:26.0620708Z Error saving article "Ubuntu philosophy": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:26.0623866Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:26.0627626Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:26.0628406Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:36.0732513Z Error saving article "Regional variations of barbecue": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:36.0735218Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:36.0737826Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:36.0738333Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:46.0792681Z Error saving article "Swahili culture": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:46.0795664Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:46.0797090Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:46.0797864Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:56.0903229Z Error saving article "Maasai people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:56.0906111Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:56.0908311Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:56.0909196Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:06.1013720Z Error saving article "Culture of Kenya": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:06.1017177Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:06.1018220Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:06.1018673Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:16.1124081Z Error saving article "Benga music": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:16.1127546Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:16.1128704Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:16.1129190Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:26.1235004Z Error saving article "Asante people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:26.1237207Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:26.1238456Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:26.1238893Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:36.1343839Z Error saving article "Ghanaian cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:36.1346316Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:36.1348192Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:36.1348891Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:46.1390595Z Error saving article "Highlife": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:46.1393065Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:46.1394487Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:46.1394985Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:56.1498769Z Error saving article "Kente cloth": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:56.1502505Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:56.1503782Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:56.1504696Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:06.1609318Z Error saving article "Ethiopian cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:06.1612279Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:06.1613951Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:06.1614699Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:16.1624937Z Error saving article "Ethiopian Orthodox Tewahedo Church": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:16.1627574Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:16.1628500Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:16.1628965Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:26.1737404Z Error saving article "Geʽez": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:26.1739159Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:26.1740262Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:26.1741067Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:36.1842758Z Error saving article "Coffee ceremony of Ethiopia and Eritrea": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:36.1845547Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:36.1846936Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:36.1847718Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:46.1953030Z Error saving article "African art": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:46.1955240Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:46.1956974Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:46.1957706Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:56.2048158Z Error saving article "African literature": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:56.2051086Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:56.2054017Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:56.2055335Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:50:06.2069693Z Error saving article "Pan-Africanism": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:50:06.2072174Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:50:06.2073494Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:50:06.2076602Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:50:16.2157491Z Error saving article "Kwanzaa": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:50:16.2160705Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:50:16.2162253Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:50:16.2162963Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:50:16.2169957Z ✓ Scraped and saved 0 new articles
+2025-12-04T15:50:16.6445118Z ✓ Scraped and saved 0 news articles
+2025-12-04T15:50:16.6446543Z Culture content scraper completed.
+2025-12-04T15:50:16.6447899Z 
+2025-12-04T15:50:16.6448187Z ==========================================
+2025-12-04T15:50:16.6450029Z ✅ SCRAPER COMPLETED SUCCESSFULLY!
+2025-12-04T15:50:16.6450614Z ==========================================
+2025-12-04T15:50:16.6450942Z 
+2025-12-04T15:50:16.6451185Z Your database should now contain:
+2025-12-04T15:50:16.6451933Z   • Collection: articles
+2025-12-04T15:50:16.6477512Z   • Documents: 40+ African culture articles
+2025-12-04T15:50:16.6478355Z   • Source: Wikipedia (with proper attribution)
+2025-12-04T15:50:16.6478712Z 
+2025-12-04T15:50:16.6478849Z Test it:
+2025-12-04T15:50:16.6479348Z   curl https://your-backend-url/culture-magazine/articles
+2025-12-04T15:50:16.6479740Z 

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Your Progress</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2bee6c",
+              "background-light": "#f6f8f6",
+              "background-dark": "#102216",
+              "surface-light": "#ffffff",
+              "surface-dark": "#1a2c20",
+              "text-primary-light": "#0d1b12",
+              "text-primary-dark": "#e0f8e7",
+              "text-secondary-light": "#4c9a66",
+              "text-secondary-dark": "#8cdca4",
+              "border-light": "#cfe7d7",
+              "border-dark": "#345c3f",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-primary-light dark:text-text-primary-dark">
+<div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm p-4 pb-2 justify-between">
+<h2 class="text-text-primary-light dark:text-text-primary-dark text-lg font-bold leading-tight tracking-[-0.015em] flex-1">Your Progress</h2>
+<div class="flex size-12 shrink-0 items-center justify-end">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAMxPB0BQZ0mKEckmoeChfkhi-eiviSozqaDBHgwdYqGaMinsDQzBttYao9FmJxgkKtiIvYU1Zsmmj9jUO3JK5AhVAbcP1nSRJkokiRRqkhyiLwY4FMsffFFjrPgSkWJmJpnEc1Bp8tAMY7Rn83rIoapy57P0FJHEjkmbynLLoEV95v_mC-uz7AkidmYPMy_pFI_tjNYrCt2o5mfygQi-_PTBrEtIgHykPZHtoqLbW80eiWAjXKi91EjMgFOXfpeqoPo5eBtQ_gerYq");'></div>
+</div>
+</header>
+<main class="flex-1 px-4 pb-24">
+<!-- Proficiency Section -->
+<section class="flex flex-col items-center py-6 text-center">
+<div class="relative w-48 h-48">
+<svg class="w-full h-full" viewbox="0 0 36 36">
+<path class="stroke-current text-primary/20 dark:text-primary/10" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-width="3"></path>
+<path class="stroke-current text-primary" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke-dasharray="65, 100" stroke-linecap="round" stroke-width="3"></path>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<img alt="Friendly owl character illustration" class="w-20 h-20 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbLAQXdUwWKDOsFEHjTMzlj7CRCCMvGV6_pWYzjHbKOZsAF_kFJBPKsHhsSAEJtajRlPk4tecNW-ksMj-H40VEYbt4ckv1F9bKm1yIQ72Rn7n9EH2aeEiUM71usGcm6cj7Oz8_548fssS4_Sce_QCftyVKPWGd16T5EZelzouHd4RHrjQ6dFKu9zKcYCAASb9AUMF-9GiitLK8CjZIYqjq737NFzTwcSZcWOCl9lN3vjXmor7uOh_RbiE1XqVdfJ95wTic7xUwfUn4"/>
+</div>
+</div>
+<h2 class="text-text-primary-light dark:text-text-primary-dark tracking-light text-[28px] font-bold leading-tight pt-5">Beginner - A2</h2>
+<div class="flex flex-col gap-3 w-full max-w-sm mt-4">
+<div class="flex gap-6 justify-between"><p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Overall Proficiency</p></div>
+<div class="rounded-full bg-border-light dark:bg-border-dark"><div class="h-2 rounded-full bg-primary" style="width: 65%;"></div></div>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm font-normal leading-normal">Keep going to reach B1!</p>
+</div>
+</section>
+<!-- Stats Summary -->
+<section class="flex flex-wrap gap-4">
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-light dark:bg-surface-dark p-4 border border-border-light dark:border-border-dark text-center items-center">
+<span class="material-symbols-outlined text-primary text-3xl">local_fire_department</span>
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Day Streak</p>
+<p class="text-text-primary-light dark:text-text-primary-dark tracking-light text-2xl font-bold leading-tight">28</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-light dark:bg-surface-dark p-4 border border-border-light dark:border-border-dark text-center items-center">
+<span class="material-symbols-outlined text-primary text-3xl">school</span>
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Words Learned</p>
+<p class="text-text-primary-light dark:text-text-primary-dark tracking-light text-2xl font-bold leading-tight">150</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl bg-surface-light dark:bg-surface-dark p-4 border border-border-light dark:border-border-dark text-center items-center">
+<span class="material-symbols-outlined text-primary text-3xl">library_books</span>
+<p class="text-text-primary-light dark:text-text-primary-dark text-base font-medium leading-normal">Lessons Done</p>
+<p class="text-text-primary-light dark:text-text-primary-dark tracking-light text-2xl font-bold leading-tight">32</p>
+</div>
+</section>
+<!-- Course Progress Section -->
+<section class="mt-8">
+<h2 class="text-text-primary-light dark:text-text-primary-dark text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Course Progress</h2>
+<div class="flex flex-col items-center gap-6">
+<!-- Lesson Item - Completed -->
+<div class="flex items-center gap-4 w-full">
+<div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white">
+<span class="material-symbols-outlined text-4xl">check_circle</span>
+</div>
+<div class="flex-1 rounded-xl p-4 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark">
+<h3 class="font-bold text-text-primary-light dark:text-text-primary-dark">Unit 1: The Basics</h3>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Greetings, Numbers, Food</p>
+</div>
+</div>
+<!-- Trophy Milestone -->
+<div class="flex flex-col items-center justify-center text-center w-full my-2">
+<img class="h-20 w-20 object-contain" data-alt="A golden trophy illustration" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKhq2mn6yJj5Q2SD1vKEhz5KXL5zVNlYz_RDm-BGMB2A0G_CtUS-S9zdMrgfXDfw2R1noV4ifPTPmwIO4M8tuVVGHFhRGUIhomnwn--uehH6_PsxZHqz1Kc5RXDPjI21dOj0NrBwRGJb0Am86rJ9AktBNCiV2H09fe9jTTyFbsSmX8_ke__DytDw7ebVY4Mx_YfCTqmGhf0IHme8y5cmhT7fmqtFSgtdatkwDhVJQEkwmdwVwDg-kEU437FSEZOJmZtk1_yvXvZHj9"/>
+<p class="font-bold mt-2 text-text-primary-light dark:text-text-primary-dark">Unit 1 Complete!</p>
+</div>
+<!-- Lesson Item - In Progress -->
+<div class="flex items-center gap-4 w-full">
+<div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-white">
+<span class="material-symbols-outlined text-4xl">play_circle</span>
+</div>
+<div class="flex-1 rounded-xl p-4 bg-primary/20 dark:bg-primary/10 border-2 border-primary">
+<h3 class="font-bold text-text-primary-light dark:text-text-primary-dark">Unit 2: Travel Essentials</h3>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Directions, Hotels, Transport</p>
+</div>
+</div>
+<!-- Lesson Item - Locked -->
+<div class="flex items-center gap-4 w-full opacity-50">
+<div class="flex h-16 w-16 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-4xl">lock</span>
+</div>
+<div class="flex-1 rounded-xl p-4 bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark">
+<h3 class="font-bold text-text-primary-light dark:text-text-primary-dark">Unit 3: Conversations</h3>
+<p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Meeting People, Hobbies</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Achievements Section -->
+<section class="mt-8">
+<h2 class="text-text-primary-light dark:text-text-primary-dark text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Achievements</h2>
+<div class="grid grid-cols-3 gap-4 text-center">
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<img class="w-20 h-20" data-alt="Gold medal badge for Word Wizard" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbhs5-RuBQuDPpu6R325B46MeLPHRqa3wZDUDC2Y5IQ31YBnWiYpodfOWegSxFRsM6wzuNMNhixWShA0QI9z9XGR9XGQI2itsJdsThelraK0GkgGCezsWB73gAM0AjaiYNJ6iAK9C_w4MPise3Nj3CFWjuT2RX6OE7Z8PneJ4agLPY3rxdqJwJO1EIU7PnARhXJCXzMxDQ17szGdr_givWuJBd05vMWNiR1sDeDpiZFQ0jfYMijMlFPqKDVzkb67fzn77UWLNfo9vB"/>
+</div>
+<p class="text-sm font-medium">Word Wizard</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<img class="w-20 h-20" data-alt="Gold medal badge for Streak Champion" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChkeQR0jjDjRcBgsoB3sdYo65u-kFD5wDRpcilWbKdRCtwAoQMG97XGCgASapBZ9WUg6HY-gzeKN6soNi0gknxBNCQFlxBKRdlbN_a2a8QkDzzTdVd_SRnvIPLsHpK_J6ui8drsA5J4aX_2zEjxpTnNDTzkKgdwGn6DJoS7TdbYyuFrGQNC-Hl0X3_ZKUJQ8Vsf9vnjOohrvGRSeNZ7I5mVHzDUSTNbnGuogGldo-2Mp88BJC9DWYqqY_uF6iVBF3sWQxXGr4IdBvK"/>
+</div>
+<p class="text-sm font-medium">Streak Champion</p>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="relative">
+<img class="w-20 h-20 opacity-40" data-alt="Locked gray medal badge for Perfect Quizzer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC47cbGmZ84VQE1mpu_wcoZNokDMBKXT1E8NXQNh-_x_rZlzkFZPxgj8OrsyD2SXETrAncdAfaqKlUC3PqtqU2ZPNqF428ugzw3zXhTvAJUyg1g4osIr-Dn7zOiaCMqjpjKgOElsELrfLNAwrWwmNUPGM9g54-urCSOkfEk9O7DmvwATkl8dwihfIpaqx2z6qX2uxcVy3VKEH2Cn7U6K3U8TIMpHkfBSgF2RS9D8BQJEZR2CwMPmOQ1-OO5zqq9ERmevoSmqtm3mFyz"/>
+</div>
+<p class="text-sm font-medium opacity-40">Perfect Quizzer</p>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

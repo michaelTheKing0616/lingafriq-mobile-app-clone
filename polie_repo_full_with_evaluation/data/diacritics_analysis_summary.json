@@ -1,0 +1,688 @@
+{
+  "metrics_fuzzy": {
+    "tp": 310,
+    "fp": 0,
+    "fn": 20,
+    "precision": 1.0,
+    "recall": 0.9393939393939394,
+    "f1": 0.96875,
+    "per_lang": {
+      "yoruba": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "hausa": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "swahili": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "portuguese": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "spanish": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "french": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "german": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "vietnamese": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "igbo": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      },
+      "arabic": {
+        "tp": 31,
+        "fp": 0,
+        "fn": 2,
+        "total": 33
+      }
+    }
+  },
+  "metrics_exact": {
+    "tp": 50,
+    "fp": 0,
+    "fn": 280,
+    "precision": 1.0,
+    "recall": 0.15151515151515152,
+    "f1": 0.2631578947368421,
+    "per_lang": {
+      "yoruba": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "hausa": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "swahili": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "portuguese": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "spanish": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "french": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "german": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "vietnamese": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "igbo": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      },
+      "arabic": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 28,
+        "total": 33
+      }
+    }
+  },
+  "total_samples": 330,
+  "top_corrected": [
+    [
+      "thank you",
+      80
+    ],
+    [
+      "how are you?",
+      70
+    ],
+    [
+      "i am learning",
+      60
+    ],
+    [
+      "good morning",
+      60
+    ],
+    [
+      "hello",
+      40
+    ]
+  ],
+  "failure_count": 20,
+  "sample_failures": [
+    {
+      "lang": "hausa",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Lafiya lau?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "hausa",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "vietnamese",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Bạn khỏe không?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "vietnamese",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "hausa",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Ina koyo",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "hausa",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "french",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "J'apprends",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "french",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "arabic",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "أنا أتعلم",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "arabic",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "vietnamese",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Tôi đang học",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "vietnamese",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "swahili",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Habari gani?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "swahili",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "yoruba",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Báwo ní?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "spanish",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Estoy aprendiendo",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "spanish",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "french",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Comment ça va?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "french",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "spanish",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "¿Cómo estás?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "spanish",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "swahili",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Ninajifunza",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "swahili",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "igbo",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "A na m amụta",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "igbo",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "arabic",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "كيف حالك؟",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "arabic",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "igbo",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Kedu?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "igbo",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "portuguese",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Estou aprendendo",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "portuguese",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "german",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Wie geht's?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "german",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "german",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Ich lerne",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "german",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "yoruba",
+      "input": " m lrnng",
+      "pred": " m lrnng",
+      "gt": "Mo ń kọ́ ẹ̀kọ́",
+      "meta": {
+        "original": " m lrnng",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": " m lrnng",
+        "time_ms": 0
+      }
+    },
+    {
+      "lang": "portuguese",
+      "input": "hw r y?",
+      "pred": "hw r y?",
+      "gt": "Como você está?",
+      "meta": {
+        "original": "hw r y?",
+        "lang": "portuguese",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "no_fuzzy",
+            0.7368421052631579
+          ],
+          [
+            "no_change",
+            null
+          ]
+        ],
+        "normalized": "hw r y?",
+        "time_ms": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>App Settings UI</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#E87A5D",
+                        "accent": "#FDBA74",
+                        "background-light": "#FFFBF5",
+                        "background-dark": "#1f1a18",
+                        "text-light": "#332D29",
+                        "text-dark": "#EAE4E0",
+                        "text-subtle-light": "#6b5f59",
+                        "text-subtle-dark": "#a39893",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#2a2421",
+                        "border-light": "#E5E7EB",
+                        "border-dark": "#4a413d",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "1.5rem",
+                        "xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 p-4 pb-3 backdrop-blur-sm">
+<div class="flex size-10 shrink-0 items-center justify-center text-text-light dark:text-text-dark">
+<span class="material-symbols-outlined text-3xl">arrow_back</span>
+</div>
+<h1 class="flex-1 text-center text-xl font-bold leading-tight tracking-tight text-text-light dark:text-text-dark">Settings</h1>
+<div class="size-10 shrink-0"></div> <!-- Spacer -->
+</header>
+<main class="flex-grow px-4 pb-8">
+<!-- Profile Header -->
+<section class="flex p-4 @container my-2">
+<div class="flex w-full flex-col items-center gap-4 @[520px]:flex-row @[520px]:justify-between">
+<div class="flex items-center gap-4">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-20 w-20" data-alt="User's profile picture, a woman with braided hair smiling." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuACLvYniSArWllKsitPjjCLn4vqCN4ZcQIRjpX11igQIB5DTn_fl6KIKXjpIRYbsxoujU6kqisyz5ic1SaCTZR5Tq0mjQfFkyCnm_I_kxdHG7CGq4OsQBk4ZM_rn-71gdDEmdnT_G18CZmSTuEkIhbVjROkMGxl9Q5j94BVGXaZRnxMgIFhSYBrq7xKLT8rdCem-uB3dQE2byqbtRe5fZzrwuXchYxyptcwcR2PX9juOBGRdyLxV1Iz4xc4WVHtsPd27EjF01xIl9Pw");'></div>
+<div class="flex flex-col justify-center">
+<p class="text-xl font-bold leading-tight tracking-tight text-text-light dark:text-text-dark">Amara Okoro</p>
+<p class="text-sm font-normal leading-normal text-text-subtle-light dark:text-text-subtle-dark">amara.okoro@email.com</p>
+</div>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-5 bg-primary/20 dark:bg-primary/30 text-primary text-sm font-bold leading-normal tracking-wide w-full max-w-[480px] @[480px]:w-auto">
+<span class="truncate">Edit Profile</span>
+</button>
+</div>
+</section>
+<!-- Language & Learning Section -->
+<section class="mt-6">
+<h2 class="text-lg font-bold leading-tight tracking-tight px-4 pb-2 pt-4 text-text-light dark:text-text-dark">Language &amp; Learning</h2>
+<div class="overflow-hidden rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm shadow-gray-200/50 dark:shadow-none">
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-primary/20 dark:bg-primary/30 shrink-0 size-12 text-primary">
+<span class="material-symbols-outlined">language</span>
+</div>
+<div class="flex flex-col justify-center flex-1">
+<p class="text-base font-medium leading-normal line-clamp-1 text-text-light dark:text-text-dark">Current Language</p>
+<p class="text-sm font-normal leading-normal line-clamp-2 text-text-subtle-light dark:text-text-subtle-dark">Yoruba</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<div class="border-t border-border-light dark:border-border-dark mx-4"></div>
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-primary/20 dark:bg-primary/30 shrink-0 size-12 text-primary">
+<span class="material-symbols-outlined">sign_language</span>
+</div>
+<div class="flex flex-col justify-center flex-1">
+<p class="text-base font-medium leading-normal line-clamp-1 text-text-light dark:text-text-dark">Dialect Preference</p>
+<p class="text-sm font-normal leading-normal line-clamp-2 text-text-subtle-light dark:text-text-subtle-dark">Standard Yoruba</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<div class="border-t border-border-light dark:border-border-dark mx-4"></div>
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-primary/20 dark:bg-primary/30 shrink-0 size-12 text-primary">
+<span class="material-symbols-outlined">timer</span>
+</div>
+<div class="flex flex-col justify-center flex-1">
+<p class="text-base font-medium leading-normal line-clamp-1 text-text-light dark:text-text-dark">Daily Learning Goal</p>
+<p class="text-sm font-normal leading-normal line-clamp-2 text-text-subtle-light dark:text-text-subtle-dark">15 minutes / day</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Notifications Section -->
+<section class="mt-6">
+<h2 class="text-lg font-bold leading-tight tracking-tight px-4 pb-2 pt-4 text-text-light dark:text-text-dark">Notifications</h2>
+<div class="overflow-hidden rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm shadow-gray-200/50 dark:shadow-none">
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-accent/20 dark:bg-accent/30 shrink-0 size-12 text-accent">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Learning Reminders</p>
+</div>
+<div class="relative inline-flex cursor-pointer items-center">
+<input checked="" class="peer sr-only" id="reminders-toggle" type="checkbox"/>
+<div class="h-7 w-12 rounded-full bg-gray-200 after:absolute after:left-[4px] after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:border-gray-600 dark:bg-gray-700"></div>
+</div>
+</div>
+<div class="border-t border-border-light dark:border-border-dark mx-4"></div>
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-accent/20 dark:bg-accent/30 shrink-0 size-12 text-accent">
+<span class="material-symbols-outlined">campaign</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Promotions &amp; Updates</p>
+</div>
+<div class="relative inline-flex cursor-pointer items-center">
+<input class="peer sr-only" id="promotions-toggle" type="checkbox"/>
+<div class="h-7 w-12 rounded-full bg-gray-200 after:absolute after:left-[4px] after:top-1 after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none dark:border-gray-600 dark:bg-gray-700"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Account & Security Section -->
+<section class="mt-6">
+<h2 class="text-lg font-bold leading-tight tracking-tight px-4 pb-2 pt-4 text-text-light dark:text-text-dark">Account &amp; Security</h2>
+<div class="overflow-hidden rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm shadow-gray-200/50 dark:shadow-none">
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0 size-12 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">lock</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Change Password</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<div class="border-t border-border-light dark:border-border-dark mx-4"></div>
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0 size-12 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Manage Subscription</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Support & Legal Section -->
+<section class="mt-6">
+<h2 class="text-lg font-bold leading-tight tracking-tight px-4 pb-2 pt-4 text-text-light dark:text-text-dark">Support &amp; Legal</h2>
+<div class="overflow-hidden rounded-lg bg-surface-light dark:bg-surface-dark shadow-sm shadow-gray-200/50 dark:shadow-none">
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0 size-12 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">help_center</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Help Center / FAQ</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<div class="border-t border-border-light dark:border-border-dark mx-4"></div>
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0 size-12 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">gavel</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Terms of Service</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<div class="border-t border-border-light dark:border-border-dark mx-4"></div>
+<div class="flex items-center gap-4 min-h-[72px] p-4">
+<div class="flex items-center justify-center rounded-lg bg-gray-200 dark:bg-gray-700 shrink-0 size-12 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">privacy_tip</span>
+</div>
+<div class="flex-1">
+<p class="text-base font-medium leading-normal text-text-light dark:text-text-dark">Privacy Policy</p>
+</div>
+<div class="shrink-0 text-text-subtle-light dark:text-text-subtle-dark">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+</section>
+<!-- App Actions -->
+<section class="mt-8 flex flex-col gap-4">
+<button class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 bg-primary/20 dark:bg-primary/30 text-primary text-base font-bold leading-normal tracking-wide">
+<span class="truncate">Log Out</span>
+</button>
+<button class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 px-5 text-red-600 dark:text-red-500 text-base font-medium leading-normal tracking-wide">
+<span class="truncate">Delete Account</span>
+</button>
+</section>
+</main>
+</div>
+</body></html>

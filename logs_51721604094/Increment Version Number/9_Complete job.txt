@@ -1,0 +1,5 @@
+﻿2025-12-08T19:07:32.6285669Z Evaluate and set job outputs
+2025-12-08T19:07:32.6292139Z Set output 'version'
+2025-12-08T19:07:32.6293692Z Set output 'version_name'
+2025-12-08T19:07:32.6294314Z Set output 'build_number'
+2025-12-08T19:07:32.6294931Z Cleaning up orphan processes

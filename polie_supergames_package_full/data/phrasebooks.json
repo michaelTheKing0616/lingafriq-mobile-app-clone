@@ -1,0 +1,17 @@
+{
+  "yoruba": {
+    "hello": "Báwo",
+    "thank_you": "Ẹ ṣé",
+    "good_morning": "Ẹ káàrọ̀"
+  },
+  "swahili": {
+    "hello": "Hujambo",
+    "thank_you": "Asante",
+    "good_morning": "Habari ya asubuhi"
+  },
+  "igbo": {
+    "hello": "Ndewo",
+    "thank_you": "Daalụ",
+    "good_morning": "Ụtụtụ ọma"
+  }
+}
