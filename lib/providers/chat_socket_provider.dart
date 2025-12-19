@@ -16,7 +16,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   String _activeRoom = 'general';
   bool _isConnected = false;
   final Map<String, List<Map<String, dynamic>>> _roomMessages = {};
-  IO.Socket? _socket;
+  Socket? _socket;
 
   @override
   ChatSocketState build() {
@@ -42,7 +42,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
 
     _socket = IO.io(
       'http://$apiBaseUrl',
-      IO.OptionBuilder()
+      OptionBuilder()
           .setTransports(['websocket', 'polling'])
           .setExtraHeaders(headers)
           .enableAutoConnect()

@@ -18,9 +18,10 @@ class DailyChallengesScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Calculate progress
-    final completedCount = dailyGoals.goals.where((g) => g.isCompleted).length;
-    final totalCount = dailyGoals.goals.length;
-    final totalXP = dailyGoals.goals
+    final goalsProvider = ref.read(dailyGoalsProvider.notifier);
+    final completedCount = goalsProvider.goals.where((g) => g.isCompleted).length;
+    final totalCount = goalsProvider.goals.length;
+    final totalXP = goalsProvider.goals
         .where((g) => g.isCompleted)
         .fold(0, (sum, goal) => sum + (goal.xpReward ?? 0));
     

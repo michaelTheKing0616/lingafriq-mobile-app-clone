@@ -19,6 +19,7 @@ class UserGamificationModel {
   final int ubuntuDonationsCount;
   final int ubuntuDonatedLessons;
   final int ubuntuDonatedXp;
+  final int hearts; // Hearts for gameplay
 
   UserGamificationModel({
     this.xp = 0,
@@ -40,6 +41,7 @@ class UserGamificationModel {
     this.ubuntuDonationsCount = 0,
     this.ubuntuDonatedLessons = 0,
     this.ubuntuDonatedXp = 0,
+    this.hearts = 5, // Default hearts
   });
 
   UserGamificationModel copyWith({
@@ -62,6 +64,7 @@ class UserGamificationModel {
     int? ubuntuDonationsCount,
     int? ubuntuDonatedLessons,
     int? ubuntuDonatedXp,
+    int? hearts,
   }) {
     return UserGamificationModel(
       xp: xp ?? this.xp,
@@ -83,6 +86,7 @@ class UserGamificationModel {
       ubuntuDonationsCount: ubuntuDonationsCount ?? this.ubuntuDonationsCount,
       ubuntuDonatedLessons: ubuntuDonatedLessons ?? this.ubuntuDonatedLessons,
       ubuntuDonatedXp: ubuntuDonatedXp ?? this.ubuntuDonatedXp,
+      hearts: hearts ?? this.hearts,
     );
   }
 

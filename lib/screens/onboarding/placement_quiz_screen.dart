@@ -24,7 +24,7 @@ class PlacementQuizScreen extends HookConsumerWidget {
     final localization = ref.read(localizationProvider);
 
     return FutureBuilder<List<PlacementQuestion>>(
-      future: PlacementTestService.loadQuestionsForLanguage(ref, languageCode),
+      future: PlacementTestService.loadQuestionsForLanguage(ref as Ref, languageCode),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Scaffold(

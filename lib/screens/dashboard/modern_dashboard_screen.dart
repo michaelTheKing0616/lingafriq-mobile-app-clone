@@ -30,8 +30,9 @@ class ModernDashboardScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Calculate today's goal progress
-    final completedGoals = dailyGoals.goals.where((g) => g.isCompleted).length;
-    final totalGoals = dailyGoals.goals.length;
+    final goalsProvider = ref.read(dailyGoalsProvider.notifier);
+    final completedGoals = goalsProvider.goals.where((g) => g.isCompleted).length;
+    final totalGoals = goalsProvider.goals.length;
     final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
     
     return Scaffold(

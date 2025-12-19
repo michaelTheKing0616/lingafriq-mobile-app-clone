@@ -117,7 +117,7 @@ final gamePlaylistProvider = Provider<GamePlaylist>((ref) {
 
   // --- Strategy selection via experiments ---
   final playlistStrategy =
-      experiments.variant('games_playlist_treatment') ?? 'standard';
+      experiments.variants['games_playlist_treatment'] ?? 'standard';
 
   // Baseline strategy: static curated mix that ignores telemetry.
   if (playlistStrategy == 'baseline') {

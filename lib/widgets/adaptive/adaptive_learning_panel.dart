@@ -26,7 +26,7 @@ class AdaptiveLearningPanel extends ConsumerWidget {
     final experiments = ref.watch(experimentsProvider);
 
     final isDashboardVariantV2 =
-        experiments.variant('polie_dashboard_variant') == 'v2';
+        experiments.variants['polie_dashboard_variant'] == 'v2';
 
     return Container(
       width: double.infinity,

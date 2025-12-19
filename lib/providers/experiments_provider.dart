@@ -4,15 +4,19 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'base_provider.dart';
 
-class ExperimentsState extends BaseProviderState {
+class ExperimentsState {
   final Map<String, bool> flags;
   final Map<String, String> variants;
   final bool loaded;
+  final bool isLoading;
+  final String? error;
 
   const ExperimentsState({
     this.flags = const {},
     this.variants = const {},
     this.loaded = false,
+    this.isLoading = false,
+    this.error,
   });
 
   ExperimentsState copyWith({
@@ -26,24 +30,12 @@ class ExperimentsState extends BaseProviderState {
       flags: flags ?? this.flags,
       variants: variants ?? this.variants,
       loaded: loaded ?? this.loaded,
-    ).copyBase(
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
     );
   }
 
-  ExperimentsState copyBase({
-    bool? isLoading,
-    String? error,
-  }) {
-    return ExperimentsState(
-      flags: flags,
-      variants: variants,
-      loaded: loaded,
-    )
-      .._isLoading = isLoading ?? this.isLoading
-      .._error = error ?? this.error;
-  }
+  String? variant(String key) => variants[key];
 }
 
 final experimentsProvider =
@@ -51,8 +43,7 @@ final experimentsProvider =
   return ExperimentsNotifier();
 });
 
-class ExperimentsNotifier extends Notifier<ExperimentsState>
-    with BaseProviderMixin {
+class ExperimentsNotifier extends Notifier<ExperimentsState> {
   @override
   ExperimentsState build() {
     // Load experiments lazily after first build

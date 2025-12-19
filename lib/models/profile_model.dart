@@ -18,6 +18,14 @@ class ProfileModel {
   final bool agree_to_privacy_terms;
   final String? avater;
   final int completed_point;
+  
+  // Alias for avatar (fix typo)
+  String? get avatar => avater;
+  
+  // Add missing properties (TODO: Add from backend)
+  int? get streak => null;
+  int? get level => null;
+  
   ProfileModel({
     required this.id,
     this.globalId,

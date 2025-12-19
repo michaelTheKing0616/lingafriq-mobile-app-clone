@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history/models/history_response.dart';
 import 'package:lingafriq/history/models/section_history_model.dart';
@@ -227,7 +227,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  Future<Map<String, dynamic>> updateSubscription(SubscriptionTier tier) async {
+  Future<Map<String, dynamic>> updateSubscription(String tier) async {
     try {
       final res = await ref.read(client).put(
             '/subscription',
@@ -486,29 +486,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// List all language villages (optionally filtered by language tag).
-  Future<List<Map<String, dynamic>>> getVillages({String? language}) async {
-    try {
-      final params = <String, dynamic>{};
-      if (language != null && language.isNotEmpty) {
-        params['lang'] = language;
-      }
-      final res = await ref.read(client).get(
-            '/api/villages',
-            queryParameters: params.isEmpty ? null : params,
-          );
-      if (res.statusCode != 200) throw res.data;
-      final body = res.data;
-      final data = body is Map && body['data'] != null ? body['data'] : body;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   /// List recent village voice messages for a language.
   Future<List<Map<String, dynamic>>> getVillageVoiceMessages({
     required String language,
@@ -745,132 +722,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final res = await ref.read(client).post(
             '/media/$mediaId/link-lesson',
-            data: payload,
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /*
-   * User Generated Content (UGC)
-   * These helpers wire the mobile app to the backend UGC endpoints:
-   *   POST /api/user-content/lessons
-   *   POST /api/user-content/quizzes
-   *   POST /api/user-content/stories
-   *   GET  /api/user-content
-   *   POST /api/user-content/share
-   *   POST /api/user-content/rate
-   */
-
-  Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/user-content/lessons',
-            data: data,
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/user-content/quizzes',
-            data: data,
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/user-content/stories',
-            data: data,
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getUserContent({
-    String? language,
-    String? contentType,
-  }) async {
-    try {
-      final queryParams = <String, dynamic>{};
-      if (language != null) queryParams['language'] = language;
-      if (contentType != null) queryParams['content_type'] = contentType;
-
-      final res = await ref.read(client).get(
-            '/api/user-content',
-            queryParameters: queryParams.isEmpty ? null : queryParams,
-          );
-      if (res.statusCode != 200) throw res.data;
-
-      final data = res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<bool> shareUgcContent({
-    required String contentId,
-    required String contentType,
-    List<String>? userIds,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'content_id': contentId,
-        'content_type': contentType,
-      };
-      if (userIds != null) {
-        payload['shared_with'] = userIds;
-      }
-
-      final res = await ref.read(client).post(
-            '/api/user-content/share',
-            data: payload,
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> rateUgcContent({
-    required String contentId,
-    required int rating,
-    String? review,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'content_id': contentId,
-        'rating': rating,
-      };
-      if (review != null) {
-        payload['review'] = review;
-      }
-
-      final res = await ref.read(client).post(
-            '/api/user-content/rate',
             data: payload,
           );
       if (res.statusCode != 200) throw res.data;

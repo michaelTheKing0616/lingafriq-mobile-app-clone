@@ -99,6 +99,12 @@ class PanAfricanColors {
   static const Color cardDark = Color(0xFF1F3527);
   static const Color borderDark = Color(0xFF2A4A35);
   
+  // Additional aliases for compatibility
+  static const Color surface = surfaceLight;
+  static const Color outline = borderLight;
+  static const Color textPrimary = Color(0xFF1A2E21);
+  static const Color textSecondary = Color(0xFF4A5D52);
+  
   // ═══════════════════════════════════════════════════════════════════════════
   // TEXT COLORS
   // ═══════════════════════════════════════════════════════════════════════════
@@ -136,6 +142,13 @@ class PanAfricanGradients {
     end: Alignment.bottomRight,
     colors: [Color(0xFFF7CB46), Color(0xFFE8A817), Color(0xFFF7CB46)],
     stops: [0.0, 0.5, 1.0],
+  );
+  
+  /// Primary Green - For success states and primary actions
+  static const LinearGradient primaryGreen = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF1B7340), Color(0xFF2BEE6C)],
   );
   
   /// Kente Vibrant - Celebratory/achievement gradient
@@ -261,6 +274,17 @@ class PanAfricanShadows {
       spreadRadius: 2,
     ),
   ];
+  
+  // Additional shadow getters for compatibility
+  static List<BoxShadow> Function(Color) get glow => (color) => [
+    BoxShadow(
+      color: color.withOpacity(0.3),
+      blurRadius: 20,
+      spreadRadius: 2,
+    ),
+  ];
+  
+  static List<BoxShadow> get glowGreen => glowGreen(0.3);
 }
 
 /// Pan-African Typography

@@ -13,6 +13,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/screens/chat/chat_search_screen.dart';
 import 'package:lingafriq/widgets/audio_player_widget.dart';
 
