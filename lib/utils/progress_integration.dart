@@ -20,7 +20,7 @@ class ProgressIntegration {
     final xpEarned = baseXP + perfectBonus + (pointsEarned ?? 0);
     
     // Use new gamification integration (handles everything: XP, challenges, milestones, leagues, backend sync)
-    await GamificationIntegration.of(ref).onLessonComplete(
+    await ref.gamify.onLessonComplete(
       xpEarned: xpEarned,
       wordsLearned: 5, // estimate 5 words per lesson
       timeSpentMinutes: 5, // estimate 5 minutes
@@ -75,7 +75,7 @@ class ProgressIntegration {
     final xpEarned = baseXP + perfectBonus + (pointsEarned ?? 0);
     
     // Use new gamification integration (handles everything: XP, challenges, milestones, leagues, backend sync)
-    await GamificationIntegration.of(ref).onQuizComplete(
+    await ref.gamify.onQuizComplete(
       score: perfect ? 100 : 80, // estimate
       xpEarned: xpEarned,
       isPerfect: perfect,

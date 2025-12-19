@@ -1320,4 +1320,427 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
+
+  /*
+   * Gamification & Progress API Methods
+   */
+
+  /// Sync gamification data with backend
+  Future<bool> syncGamification(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/sync', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing gamification: $e');
+      return false;
+    }
+  }
+
+  /// Sync game session data
+  Future<bool> syncGameSession(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/game-session', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing game session: $e');
+      return false;
+    }
+  }
+
+  /// Sync game SRS data
+  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/game-srs', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing game SRS: $e');
+      return false;
+    }
+  }
+
+  /// Sync AI chat history
+  Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/ai-chat/history/sync', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat history: $e');
+      return false;
+    }
+  }
+
+  /// Sync AI chat SRS
+  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/ai-chat/srs/sync', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat SRS: $e');
+      return false;
+    }
+  }
+
+  /// Sync progress data
+  Future<bool> syncProgress(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/progress/sync', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing progress: $e');
+      return false;
+    }
+  }
+
+  /// Sync onboarding data
+  Future<bool> syncOnboarding(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/onboarding/sync', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing onboarding: $e');
+      return false;
+    }
+  }
+
+  /// Send telemetry events
+  Future<bool> sendTelemetry(List<Map<String, dynamic>> events) async {
+    try {
+      final res = await ref.read(client).post('/api/telemetry', data: {'events': events});
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error sending telemetry: $e');
+      return false;
+    }
+  }
+
+  /// Get daily goals
+  Future<List<Map<String, dynamic>>> getDailyGoals() async {
+    try {
+      final res = await ref.read(client).get('/api/gamification/daily-goals');
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      if (data is Map && data['goals'] is List) {
+        return (data['goals'] as List).cast<Map<String, dynamic>>();
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error getting daily goals: $e');
+      return [];
+    }
+  }
+
+  /// Update daily streak
+  Future<bool> updateDailyStreak(int streak) async {
+    try {
+      final res = await ref.read(client).put('/api/gamification/daily-streak', data: {'streak': streak});
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating daily streak: $e');
+      return false;
+    }
+  }
+
+  /// Update daily goal progress
+  Future<bool> updateDailyGoal(String goalType, int amount) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/daily-goals/update', data: {
+        'type': goalType,
+        'amount': amount,
+      });
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error updating daily goal: $e');
+      return false;
+    }
+  }
+
+  /// Save AI chat history
+  Future<bool> saveAiChatHistory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post('/api/ai-chat/history', data: data);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error saving AI chat history: $e');
+      return false;
+    }
+  }
+
+  /// Get AI chat history
+  Future<List<Map<String, dynamic>>> getAiChatHistory({String? userId, String? language, int limit = 50}) async {
+    try {
+      final params = <String, dynamic>{'limit': limit};
+      if (userId != null) params['user_id'] = userId;
+      if (language != null) params['language'] = language;
+      final res = await ref.read(client).get('/api/ai-chat/history', queryParameters: params);
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      if (data is Map && data['history'] is List) {
+        return (data['history'] as List).cast<Map<String, dynamic>>();
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error getting AI chat history: $e');
+      return [];
+    }
+  }
+
+  /// Block a user
+  Future<bool> blockUser(String userId) async {
+    try {
+      final res = await ref.read(client).post('/api/users/$userId/block');
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error blocking user: $e');
+      return false;
+    }
+  }
+
+  /// Award XP to user
+  Future<bool> awardXP({
+    required String userId,
+    required int amount,
+    String? source,
+    String? sourceId,
+    double? difficultyMultiplier,
+    Map<String, dynamic>? metadata,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'amount': amount,
+        if (source != null) 'source': source,
+        if (sourceId != null) 'sourceId': sourceId,
+        if (difficultyMultiplier != null) 'multiplier': difficultyMultiplier,
+        if (metadata != null) 'metadata': metadata,
+      };
+      final res = await ref.read(client).post('/api/gamification/xp/award', data: payload);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error awarding XP: $e');
+      return false;
+    }
+  }
+
+  /// Get user XP
+  Future<Map<String, dynamic>> getUserXP(String userId) async {
+    try {
+      final res = await ref.read(client).get('/api/gamification/xp/$userId');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      debugPrint('Error getting user XP: $e');
+      return {};
+    }
+  }
+
+  /// Get gamification data for user
+  Future<Map<String, dynamic>> getGamification(String userId) async {
+    try {
+      final res = await ref.read(client).get('/api/gamification/$userId');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      debugPrint('Error getting gamification: $e');
+      return {};
+    }
+  }
+
+  /// Get loading screen content
+  Future<Map<String, dynamic>> getLoadingScreenContent() async {
+    try {
+      final res = await ref.read(client).get('/api/content/loading-screen');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      debugPrint('Error getting loading screen content: $e');
+      return {};
+    }
+  }
+
+  /// Get progress metrics
+  Future<Map<String, dynamic>> getProgressMetrics() async {
+    try {
+      final res = await ref.read(client).get('/api/progress/metrics');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      debugPrint('Error getting progress metrics: $e');
+      return {};
+    }
+  }
+
+  /// Update user points
+  Future<bool> updateUserPoints(int points) async {
+    try {
+      final res = await ref.read(client).put('/api/gamification/points', data: {'points': points});
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating user points: $e');
+      return false;
+    }
+  }
+
+  /// Update progress metrics
+  Future<bool> updateProgressMetrics(Map<String, dynamic> metrics) async {
+    try {
+      final res = await ref.read(client).put('/api/progress/metrics', data: metrics);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error updating progress metrics: $e');
+      return false;
+    }
+  }
+
+  /// Get achievements
+  Future<List<Map<String, dynamic>>> getAchievements() async {
+    try {
+      final res = await ref.read(client).get('/api/gamification/achievements');
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      if (data is Map && data['achievements'] is List) {
+        return (data['achievements'] as List).cast<Map<String, dynamic>>();
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error getting achievements: $e');
+      return [];
+    }
+  }
+
+  /// Unlock achievement
+  Future<bool> unlockAchievement(String achievementId) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/achievements/$achievementId/unlock');
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error unlocking achievement: $e');
+      return false;
+    }
+  }
+
+  /// Update XP and level
+  Future<bool> updateXP(int totalXP, int level) async {
+    try {
+      final res = await ref.read(client).put('/api/gamification/xp', data: {
+        'totalXP': totalXP,
+        'level': level,
+      });
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error updating XP: $e');
+      return false;
+    }
+  }
+
+  /// Update challenge progress
+  Future<bool> updateChallengeProgress({required String type, required int amount}) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/challenges/progress', data: {
+        'type': type,
+        'amount': amount,
+      });
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error updating challenge progress: $e');
+      return false;
+    }
+  }
+
+  /// Update milestone stats
+  Future<bool> updateMilestoneStats(Map<String, dynamic> stats) async {
+    try {
+      final res = await ref.read(client).put('/api/gamification/milestones/stats', data: stats);
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error updating milestone stats: $e');
+      return false;
+    }
+  }
+
+  /// Add league XP
+  Future<bool> addLeagueXP(int xp) async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/leagues/xp', data: {'xp': xp});
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error adding league XP: $e');
+      return false;
+    }
+  }
+
+  /// Record learner activity
+  Future<bool> recordLearnerActivity({required String userId, required String language}) async {
+    try {
+      final res = await ref.read(client).post('/api/progress/activity', data: {
+        'user_id': userId,
+        'language': language,
+      });
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error recording learner activity: $e');
+      return false;
+    }
+  }
+
+  /// Use a heart (for challenge mode)
+  Future<bool> useHeart() async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/hearts/use');
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error using heart: $e');
+      return false;
+    }
+  }
+
+  /// Refill hearts
+  Future<bool> refillHearts() async {
+    try {
+      final res = await ref.read(client).post('/api/gamification/hearts/refill');
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error refilling hearts: $e');
+      return false;
+    }
+  }
+
+  /// Toggle challenge mode
+  Future<bool> toggleChallengeMode({required bool enabled}) async {
+    try {
+      final res = await ref.read(client).put('/api/gamification/challenge-mode', data: {'enabled': enabled});
+      return res.statusCode == 200;
+    } catch (e) {
+      debugPrint('Error toggling challenge mode: $e');
+      return false;
+    }
+  }
+
+  /// Get leaderboard
+  Future<List<Map<String, dynamic>>> getLeaderboard({String? league, int limit = 100}) async {
+    try {
+      final params = <String, dynamic>{'limit': limit};
+      if (league != null) params['league'] = league;
+      final res = await ref.read(client).get('/api/gamification/leaderboard', queryParameters: params);
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      if (data is Map && data['leaderboard'] is List) {
+        return (data['leaderboard'] as List).cast<Map<String, dynamic>>();
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error getting leaderboard: $e');
+      return [];
+    }
+  }
 }
