@@ -127,6 +127,59 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Search users by handle (global_id) so learners can discover each other
+  /// for chats and communities. Requires authentication.
+  Future<List<Map<String, dynamic>>> searchUsersByHandle(String handle) async {
+    try {
+      final res = await ref.read(client).get(
+            'accounts/auth/users/search',
+            queryParameters: {'handle': handle},
+          );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Get list of blocked users for the current learner
+  Future<List<Map<String, dynamic>>> getBlockedUsers() async {
+    try {
+      final res = await ref.read(client).get('user-connections/blocked');
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is Map && data['data'] is List) {
+        return (data['data'] as List).cast<Map<String, dynamic>>();
+      }
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Report a chat message for moderation
+  Future<bool> reportChatMessage({
+    required String messageId,
+    String? reason,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+            '/chat/messages/$messageId/report',
+            data: {
+              if (reason != null && reason.isNotEmpty) 'reason': reason,
+            },
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<bool> deleteUser(Map<String, dynamic> data) async {
     try {
       final userId = ref.read(userProvider)?.id;
@@ -160,6 +213,44 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /*
+   * Subscription API helpers
+   */
+
+  Future<Map<String, dynamic>> getSubscription() async {
+    try {
+      final res = await ref.read(client).get('/subscription');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> updateSubscription(SubscriptionTier tier) async {
+    try {
+      final res = await ref.read(client).put(
+            '/subscription',
+            data: {
+              'tier': tier.toString().split('.').last,
+            },
+          );
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> cancelSubscription() async {
+    try {
+      final res = await ref.read(client).post('/subscription/cancel');
+      if (res.statusCode != 200) throw res.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<User> getUserInfo() async {
     "getUserInfo".log('getUserInfo');
     try {
@@ -168,6 +259,624 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return User.fromMap(res.data);
     } catch (e) {
       rethrow;
+    }
+  }
+
+  /*
+   * User Generated Content (UGC)
+   * These helpers wire the mobile app to the backend UGC endpoints:
+   *   POST /api/user-content/lessons
+   *   POST /api/user-content/quizzes
+   *   POST /api/user-content/stories
+   *   GET  /api/user-content
+   *   POST /api/user-content/share
+   *   POST /api/user-content/rate
+   */
+
+  Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/user-content/lessons',
+            data: data,
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/user-content/quizzes',
+            data: data,
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/user-content/stories',
+            data: data,
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getUserContent({
+    String? language,
+    String? contentType,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+      if (language != null) queryParams['language'] = language;
+      if (contentType != null) queryParams['content_type'] = contentType;
+
+      final res = await ref.read(client).get(
+            '/api/user-content',
+            queryParameters: queryParams.isEmpty ? null : queryParams,
+          );
+      if (res.statusCode != 200) throw res.data;
+
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> shareUgcContent({
+    required String contentId,
+    required String contentType,
+    List<String>? userIds,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'content_id': contentId,
+        'content_type': contentType,
+      };
+      if (userIds != null) {
+        payload['shared_with'] = userIds;
+      }
+
+      final res = await ref.read(client).post(
+            '/api/user-content/share',
+            data: payload,
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> rateUgcContent({
+    required String contentId,
+    required int rating,
+    String? review,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'content_id': contentId,
+        'rating': rating,
+      };
+      if (review != null) {
+        payload['review'] = review;
+      }
+
+      final res = await ref.read(client).post(
+            '/api/user-content/rate',
+            data: payload,
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Search chat messages (global or private) using the backend search endpoint.
+  Future<List<Map<String, dynamic>>> searchChatMessages({
+    required String query,
+    String? room,
+    String type = 'all', // 'global' | 'private' | 'all'
+    int limit = 50,
+  }) async {
+    try {
+      final params = <String, dynamic>{
+        'q': query,
+        'type': type,
+        'limit': limit,
+      };
+      if (room != null && room.isNotEmpty) {
+        params['room'] = room;
+      }
+      final res = await ref.read(client).get(
+            '/chat/messages/search',
+            queryParameters: params,
+          );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data['data'] ?? res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Family subscription: get family progress dashboard
+  Future<Map<String, dynamic>> getFamilyProgressDashboard() async {
+    try {
+      final res = await ref.read(client).get('/api/progress/family/dashboard');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /*
+   * Experiments & feature flags
+   * Lightweight configuration returned by /api/experiments/config.
+   */
+
+  Future<Map<String, dynamic>> getExperimentsConfig() async {
+    try {
+      final res = await ref.read(client).get('/api/experiments/config');
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /*
+   * Language villages & voice rooms
+   */
+
+  /// Get (or lazily create) a language village for the given language.
+  Future<Map<String, dynamic>> getVillage(String language) async {
+    try {
+      final res = await ref.read(client).get('/api/villages/$language');
+      if (res.statusCode != 200) throw res.data;
+      if (res.data is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(res.data as Map);
+      }
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// List all villages, optionally filtered by language.
+  Future<List<Map<String, dynamic>>> getVillages({String? language}) async {
+    try {
+      final params = <String, dynamic>{};
+      if (language != null && language.isNotEmpty) {
+        params['lang'] = language;
+      }
+      final res = await ref.read(client).get(
+            '/api/villages',
+            queryParameters: params.isEmpty ? null : params,
+          );
+      if (res.statusCode != 200) throw res.data;
+      final body = res.data;
+      final data = body is Map && body['data'] != null ? body['data'] : body;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// List all language villages (optionally filtered by language tag).
+  Future<List<Map<String, dynamic>>> getVillages({String? language}) async {
+    try {
+      final params = <String, dynamic>{};
+      if (language != null && language.isNotEmpty) {
+        params['lang'] = language;
+      }
+      final res = await ref.read(client).get(
+            '/api/villages',
+            queryParameters: params.isEmpty ? null : params,
+          );
+      if (res.statusCode != 200) throw res.data;
+      final body = res.data;
+      final data = body is Map && body['data'] != null ? body['data'] : body;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// List recent village voice messages for a language.
+  Future<List<Map<String, dynamic>>> getVillageVoiceMessages({
+    required String language,
+    int limit = 50,
+  }) async {
+    try {
+      final res = await ref.read(client).get(
+            '/api/villages/$language/voice-messages',
+            queryParameters: {'limit': limit},
+          );
+      if (res.statusCode != 200) throw res.data;
+      final body = res.data;
+      final data = body is Map && body['data'] != null ? body['data'] : body;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Link an uploaded audio media item to a village as a voice message.
+  Future<bool> createVillageVoiceMessage({
+    required String language,
+    required String mediaId,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/villages/$language/voice-message',
+            data: {'mediaId': mediaId},
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      debugPrint('Error creating village voice message: $e');
+      return false;
+    }
+  }
+
+  /// Request an STT-based summary of recent village voice messages.
+  Future<Map<String, dynamic>> summarizeVillageAudio({
+    required String language,
+    int limit = 10,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/voice/stt/summarize-village',
+            data: {
+              'language': language,
+              'limit': limit,
+            },
+          );
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Request a summarized transcript of recent village voice messages.
+  Future<Map<String, dynamic>> summarizeVillageVoice({
+    required String language,
+    int limit = 10,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/voice/stt/summarize-village',
+            data: {
+              'language': language,
+              'limit': limit,
+            },
+          );
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      debugPrint('Error summarizing village voice: $e');
+      rethrow;
+    }
+  }
+
+  /// Record an Ubuntu streak donation when the user would otherwise break their streak.
+  Future<bool> donateUbuntuStreak({
+    required int streakBefore,
+    required int donatedLessons,
+    int? donatedXp,
+    String? language,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'streakBefore': streakBefore,
+        'donatedLessons': donatedLessons,
+      };
+      if (donatedXp != null && donatedXp > 0) {
+        payload['donatedXp'] = donatedXp;
+      }
+      if (language != null && language.isNotEmpty) {
+        payload['language'] = language;
+      }
+
+      final res = await ref.read(client).post(
+            '/api/gamification/ubuntu/donate',
+            data: payload,
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      // Donation failure should not break streak logic; log and continue.
+      debugPrint('Error donating Ubuntu streak: $e');
+      return false;
+    }
+  }
+
+  /*
+   * Media import & voice integration helpers
+   */
+
+  Future<Map<String, dynamic>> uploadMedia({
+    required String filePath,
+    required String fileName,
+    String? title,
+    String? description,
+    String? language,
+  }) async {
+    try {
+      final file = await MultipartFile.fromFile(filePath, filename: fileName);
+      final formData = FormData.fromMap({
+        'file': file,
+        if (title != null) 'title': title,
+        if (description != null) 'description': description,
+        if (language != null) 'language': language,
+      });
+
+      final res = await ref.read(client).post(
+            '/media/upload',
+            data: formData,
+            options: Options(contentType: 'multipart/form-data'),
+          );
+
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      final body = res.data;
+      if (body is Map && body['data'] != null) {
+        return Map<String, dynamic>.from(body['data'] as Map);
+      }
+      return Map<String, dynamic>.from(body ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> transcribeAudioFile({
+    required String filePath,
+    required String fileName,
+    String? language,
+    String task = 'transcribe',
+  }) async {
+    try {
+      final file = await MultipartFile.fromFile(filePath, filename: fileName);
+      final formData = FormData.fromMap({
+        'audio': file,
+        if (language != null) 'language': language,
+        'task': task,
+      });
+
+      final res = await ref.read(client).post(
+            '/api/voice/stt/transcribe',
+            data: formData,
+            options: Options(contentType: 'multipart/form-data'),
+          );
+
+      if (res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Quick pronunciation scoring via voice-service proxy.
+  /// Proxies to: POST /api/voice/pronunciation/quick
+  Future<Map<String, dynamic>> pronunciationQuick({
+    required String audioPath,
+    required String expectedText,
+    required String language,
+  }) async {
+    try {
+      final file = File(audioPath);
+      final fileName = audioPath.split(Platform.pathSeparator).last;
+
+      final formData = FormData.fromMap({
+        'learner_audio': await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        ),
+        'expected_text': expectedText,
+        'language': language,
+      });
+
+      final res = await ref.read(client).post(
+            '/voice/pronunciation/quick',
+            data: formData,
+          );
+
+      if (res.statusCode != 200) {
+        throw res.data;
+      }
+
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      debugPrint('Error calling pronunciationQuick: $e');
+      rethrow;
+    }
+  }
+
+  Future<bool> linkMediaToLesson({
+    required String mediaId,
+    required String lessonId,
+    String? summary,
+    List<String>? keyPhrases,
+    String? cefrLevel,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'lesson_id': lessonId,
+      };
+      if (summary != null && summary.isNotEmpty) {
+        payload['summary'] = summary;
+      }
+      if (keyPhrases != null && keyPhrases.isNotEmpty) {
+        payload['key_phrases'] = keyPhrases;
+      }
+      if (cefrLevel != null && cefrLevel.isNotEmpty) {
+        payload['cefr_level'] = cefrLevel;
+      }
+
+      final res = await ref.read(client).post(
+            '/media/$mediaId/link-lesson',
+            data: payload,
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /*
+   * User Generated Content (UGC)
+   * These helpers wire the mobile app to the backend UGC endpoints:
+   *   POST /api/user-content/lessons
+   *   POST /api/user-content/quizzes
+   *   POST /api/user-content/stories
+   *   GET  /api/user-content
+   *   POST /api/user-content/share
+   *   POST /api/user-content/rate
+   */
+
+  Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/user-content/lessons',
+            data: data,
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/user-content/quizzes',
+            data: data,
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+            '/api/user-content/stories',
+            data: data,
+          );
+      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
+      return Map<String, dynamic>.from(res.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getUserContent({
+    String? language,
+    String? contentType,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+      if (language != null) queryParams['language'] = language;
+      if (contentType != null) queryParams['content_type'] = contentType;
+
+      final res = await ref.read(client).get(
+            '/api/user-content',
+            queryParameters: queryParams.isEmpty ? null : queryParams,
+          );
+      if (res.statusCode != 200) throw res.data;
+
+      final data = res.data;
+      if (data is List) {
+        return data.cast<Map<String, dynamic>>();
+      }
+
+      return const <Map<String, dynamic>>[];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<bool> shareUgcContent({
+    required String contentId,
+    required String contentType,
+    List<String>? userIds,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'content_id': contentId,
+        'content_type': contentType,
+      };
+      if (userIds != null) {
+        payload['shared_with'] = userIds;
+      }
+
+      final res = await ref.read(client).post(
+            '/api/user-content/share',
+            data: payload,
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> rateUgcContent({
+    required String contentId,
+    required int rating,
+    String? review,
+  }) async {
+    try {
+      final payload = <String, dynamic>{
+        'content_id': contentId,
+        'rating': rating,
+      };
+      if (review != null) {
+        payload['review'] = review;
+      }
+
+      final res = await ref.read(client).post(
+            '/api/user-content/rate',
+            data: payload,
+          );
+      if (res.statusCode != 200) throw res.data;
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 

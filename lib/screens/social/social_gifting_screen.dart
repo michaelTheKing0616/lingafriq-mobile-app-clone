@@ -13,7 +13,16 @@ class SocialGiftingScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Send a Lesson'),
+        title: Row(
+          children: const [
+            Text('Send a Lesson'),
+            SizedBox(width: 8),
+            Text(
+              'beta',
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),

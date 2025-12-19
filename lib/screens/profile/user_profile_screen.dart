@@ -4,6 +4,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
@@ -139,6 +140,28 @@ class UserProfileScreen extends ConsumerWidget {
                             color: Colors.white.withOpacity(0.9),
                           ),
                         ),
+                        if (user?.globalId != null) SizedBox(height: 0.5.h),
+                        if (user?.globalId != null)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 3.w,
+                              vertical: 0.6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(
+                                DesignSystem.radiusRound,
+                              ),
+                            ),
+                            child: Text(
+                              '@${user!.globalId}',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.white.withOpacity(0.9),
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          ),
                         SizedBox(height: 3.h),
                         // Gamification Stats
                         Consumer(
@@ -192,39 +215,56 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.language_rounded,
-                              color: AfricanTheme.primaryGreen,
-                              size: 20,
-                            ),
-                            SizedBox(width: 3.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Learning',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark ? Colors.white70 : Colors.black54,
-                                    ),
+                        Consumer(
+                          builder: (context, ref, _) {
+                            final onboarding = ref.watch(onboardingProvider);
+                            final selectedLang =
+                                (onboarding.selectedLanguage ?? '').trim();
+                            final displayLang = selectedLang.isNotEmpty
+                                ? selectedLang
+                                : 'Your chosen language';
+                            return Row(
+                              children: [
+                                Icon(
+                                  Icons.language_rounded,
+                                  color: AfricanTheme.primaryGreen,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 3.w),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Learning',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: isDark
+                                              ? Colors.white70
+                                              : Colors.black54,
+                                        ),
+                                      ),
+                                      Text(
+                                        displayLang,
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black87,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'Swahili', // TODO: Get from user preferences
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         Divider(height: 4.h, color: isDark ? Colors.grey[800] : Colors.grey[200]),
+                        // We currently do not receive a reliable "member since"
+                        // field from the backend user profile, so instead of
+                        // hard-coding a date we show a generic, honest label.
                         Row(
                           children: [
                             Icon(
@@ -238,18 +278,22 @@ class UserProfileScreen extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Member since',
+                                    'Member',
                                     style: TextStyle(
                                       fontSize: 12.sp,
-                                      color: isDark ? Colors.white70 : Colors.black54,
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black54,
                                     ),
                                   ),
                                   Text(
-                                    'January 2024', // TODO: Get from user data
+                                    'Keeping your streak alive ✨',
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black87,
                                     ),
                                   ),
                                 ],

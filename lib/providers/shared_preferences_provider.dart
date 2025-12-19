@@ -13,6 +13,7 @@ class SharedPreferencesProvider {
 
   final emailKey = 'email';
   final passwordKey = 'password';
+  static const _onboardingSeenKey = 'onboarding_seen';
 
   Future<void> storeEmailAndPassword(String email, String password) async {
     final emailStoreFuture = prefs.setString(emailKey, email);
@@ -71,6 +72,14 @@ class SharedPreferencesProvider {
 
   Future<void> setLanguageIntro(int id) async {
     await prefs.setBool("language/$id", false);
+  }
+
+  /// Onboarding flags
+  bool get hasSeenOnboarding =>
+      prefs.getBool(_onboardingSeenKey) ?? false;
+
+  Future<void> setOnboardingSeen([bool value = true]) async {
+    await prefs.setBool(_onboardingSeenKey, value);
   }
 }
 

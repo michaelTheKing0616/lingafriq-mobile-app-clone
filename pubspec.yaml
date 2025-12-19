@@ -47,6 +47,12 @@ dependencies:
   better_player_plus: ^1.1.2
   # better_player: ^0.0.84 
   just_audio: ^0.10.5
+  flutter_cache_manager: ^3.4.0
+  http: ^1.2.2
+  path_provider: ^2.1.5
+  permission_handler: ^11.3.1
+  record: ^5.1.1
+  livekit_client: ^2.3.2
   flutter_inappwebview: ^6.1.5 
   intl: ^0.20.2 
   url_launcher: ^6.3.2

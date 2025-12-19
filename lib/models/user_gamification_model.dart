@@ -16,6 +16,9 @@ class UserGamificationModel {
   final Map<String, int> questProgress; // questId -> progress
   final DateTime? lastLogin;
   final bool ubuntuStreakActive; // Never break - help others if you do
+  final int ubuntuDonationsCount;
+  final int ubuntuDonatedLessons;
+  final int ubuntuDonatedXp;
 
   UserGamificationModel({
     this.xp = 0,
@@ -34,6 +37,9 @@ class UserGamificationModel {
     this.questProgress = const {},
     this.lastLogin,
     this.ubuntuStreakActive = false,
+    this.ubuntuDonationsCount = 0,
+    this.ubuntuDonatedLessons = 0,
+    this.ubuntuDonatedXp = 0,
   });
 
   UserGamificationModel copyWith({
@@ -53,6 +59,9 @@ class UserGamificationModel {
     Map<String, int>? questProgress,
     DateTime? lastLogin,
     bool? ubuntuStreakActive,
+    int? ubuntuDonationsCount,
+    int? ubuntuDonatedLessons,
+    int? ubuntuDonatedXp,
   }) {
     return UserGamificationModel(
       xp: xp ?? this.xp,
@@ -71,6 +80,9 @@ class UserGamificationModel {
       questProgress: questProgress ?? this.questProgress,
       lastLogin: lastLogin ?? this.lastLogin,
       ubuntuStreakActive: ubuntuStreakActive ?? this.ubuntuStreakActive,
+      ubuntuDonationsCount: ubuntuDonationsCount ?? this.ubuntuDonationsCount,
+      ubuntuDonatedLessons: ubuntuDonatedLessons ?? this.ubuntuDonatedLessons,
+      ubuntuDonatedXp: ubuntuDonatedXp ?? this.ubuntuDonatedXp,
     );
   }
 
@@ -91,6 +103,9 @@ class UserGamificationModel {
         'questProgress': questProgress,
         'lastLogin': lastLogin?.toIso8601String(),
         'ubuntuStreakActive': ubuntuStreakActive,
+        'ubuntuDonationsCount': ubuntuDonationsCount,
+        'ubuntuDonatedLessons': ubuntuDonatedLessons,
+        'ubuntuDonatedXp': ubuntuDonatedXp,
       };
 
   factory UserGamificationModel.fromJson(Map<String, dynamic> json) =>
@@ -121,6 +136,9 @@ class UserGamificationModel {
             ? DateTime.parse(json['lastLogin'] as String)
             : null,
         ubuntuStreakActive: json['ubuntuStreakActive'] as bool? ?? false,
+        ubuntuDonationsCount: json['ubuntuDonationsCount'] as int? ?? 0,
+        ubuntuDonatedLessons: json['ubuntuDonatedLessons'] as int? ?? 0,
+        ubuntuDonatedXp: json['ubuntuDonatedXp'] as int? ?? 0,
       );
 }
 

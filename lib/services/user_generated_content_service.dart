@@ -17,6 +17,7 @@ class UserGeneratedContentService {
     required String content,
     String? description,
     List<String>? tags,
+    bool allowOfficialUse = false,
   }) async {
     try {
       final user = _ref.read(userProvider);
@@ -31,6 +32,7 @@ class UserGeneratedContentService {
         'tags': tags ?? [],
         'author_id': user.id,
         'type': 'user_generated',
+        'allow_official_use': allowOfficialUse,
       };
 
       debugPrint('Creating user-generated lesson: $title');

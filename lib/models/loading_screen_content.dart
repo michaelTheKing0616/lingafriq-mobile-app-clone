@@ -9,6 +9,8 @@ class LoadingScreenContent {
   final String language; // Language name (e.g., "Swahili", "Yoruba", "Zulu")
   final String fact; // Interesting fact about Africa/the language
   final String? personName; // Optional: Name of the person (for AI-generated images)
+  /// Optional: Polie-generated micro-tip or learning nudge to show with the fact.
+  final String? aiTip;
 
   LoadingScreenContent({
     required this.id,
@@ -20,6 +22,7 @@ class LoadingScreenContent {
     required this.language,
     required this.fact,
     this.personName,
+    this.aiTip,
   });
 
   Map<String, dynamic> toJson() => {
@@ -32,12 +35,13 @@ class LoadingScreenContent {
         'language': language,
         'fact': fact,
         'personName': personName,
+        'aiTip': aiTip,
       };
 
   factory LoadingScreenContent.fromJson(Map<String, dynamic> json) =>
       LoadingScreenContent(
         id: json['id'] as String,
-        imageUrl: json['imageUrl'] as String,
+        imageUrl: (json['imageUrl'] ?? '') as String,
         country: json['country'] as String,
         countryFlag: json['countryFlag'] as String,
         greeting: json['greeting'] as String,
@@ -45,6 +49,7 @@ class LoadingScreenContent {
         language: json['language'] as String,
         fact: json['fact'] as String,
         personName: json['personName'] as String?,
+        aiTip: json['aiTip'] as String?,
       );
 }
 

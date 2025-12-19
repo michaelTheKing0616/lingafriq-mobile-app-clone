@@ -12,6 +12,7 @@ import 'base_provider.dart';
 import 'api_provider.dart';
 import 'backend_sync_provider.dart';
 import 'user_provider.dart';
+import 'subscription_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
@@ -251,6 +252,10 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Backend sync debouncing
   DateTime? _lastBackendSync;
 
+  // Approximate per-day Polie token usage (synced via subscription provider)
+  int _dailyTokenLimit = 0;
+  int _dailyTokensUsed = 0;
+
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
   String get selectedLanguage => _selectedLanguage;
@@ -258,6 +263,59 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   String get sourceLanguage => _sourceLanguage;
   String? get currentSystemPrompt => _systemPrompt;
   List<Map<String, String>> get supportedLanguageOptions => List.unmodifiable(_supportedLanguageOptions);
+  int get dailyTokenLimit => _dailyTokenLimit;
+  int get dailyTokensUsed => _dailyTokensUsed;
+  int get remainingTokens => (_dailyTokenLimit - _dailyTokensUsed).clamp(0, _dailyTokenLimit);
+
+  /// Local enforcement of Polie token quotas for all modes.
+  /// Uses subscriptionProvider limits (synced from backend) plus a local
+  /// accumulator so even direct Groq calls are capped per day.
+  Future<void> _enforcePolieQuota(int estimatedTokens) async {
+    // Read current subscription state (tier + any known usage from backend)
+    final sub = ref.read(subscriptionProvider);
+
+    // Mirror backend defaults so UI and server stay aligned even if stats
+    // haven't been pulled yet.
+    int fallbackLimit;
+    switch (sub.tier) {
+      case SubscriptionTier.premium:
+        fallbackLimit = 40000;
+        break;
+      case SubscriptionTier.family:
+        fallbackLimit = 80000;
+        break;
+      case SubscriptionTier.lifetime:
+        fallbackLimit = 60000;
+        break;
+      case SubscriptionTier.free:
+      default:
+        fallbackLimit = 8000;
+        break;
+    }
+
+    final limit = sub.dailyPolieLimit ?? fallbackLimit;
+    if (limit <= 0) {
+      // Safety: if we somehow have no limit, don't hard-block usage.
+      _dailyTokenLimit = 0;
+      return;
+    }
+
+    // Combine backend-reported usage with local accumulator.
+    final backendUsed = sub.dailyPolieUsed ?? 0;
+    final effectiveUsed = backendUsed + _dailyTokensUsed;
+    final projected = effectiveUsed + estimatedTokens;
+
+    if (projected > limit) {
+      final remaining = (limit - effectiveUsed).clamp(0, limit);
+      throw Exception(
+        'You’ve reached today’s Polie limit for your ${sub.tierName} plan. '
+        'Remaining tokens: $remaining. Please try again tomorrow or upgrade your plan for more AI time.',
+      );
+    }
+
+    _dailyTokenLimit = limit;
+    _dailyTokensUsed = projected;
+  }
   List<String> get supportedLanguages =>
       _supportedLanguageOptions.map((e) => e['name'] ?? '').where((e) => e.isNotEmpty).toList();
   bool get hasMessages => _messages.isNotEmpty;
@@ -268,6 +326,19 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int get difficulty => _difficulty;
   PolieMode get mode => _mode;
   bool get isTranslationMode => _mode == PolieMode.translation;
+
+  // SRS / CEFR summary for adaptive experiences
+  int get totalSRSItems => _memory.length;
+  int get dueSRSItems {
+    final now = DateTime.now();
+    int count = 0;
+    for (final entry in _memory.values) {
+      if (entry.nextReview.isBefore(now)) {
+        count++;
+      }
+    }
+    return count;
+  }
 
   bool _historyLoaded = false;
 
@@ -722,6 +793,11 @@ Make reviews efficient and rewarding.''';
     if (sanitizedMessage.length > 2000) {
       throw Exception('Message is too long. Please keep it under 2000 characters.');
     }
+
+    // Enforce Polie token quotas across ALL modes before we touch the network.
+    // This uses subscriptionProvider limits plus a local counter so even pure
+    // Groq-based modes (conversation/roleplay/review) respect quotas.
+    await _enforcePolieQuota(sanitizedMessage.length);
 
     _currentStreamCancel?.call();
     final cancelToken = CancelToken();

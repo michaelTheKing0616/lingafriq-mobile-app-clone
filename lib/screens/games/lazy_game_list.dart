@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
+import 'package:lingafriq/providers/game_playlist_provider.dart';
 import 'language_games_screen_components.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -72,6 +73,9 @@ class LazyGameList extends HookConsumerWidget {
     
     final hasMoreCore = visibleCoreGames.length < allCoreGames.length;
     final hasMoreCultural = visibleCulturalGames.length < allCulturalGames.length;
+
+    // Polie-powered dynamic playlist
+    final playlist = ref.watch(gamePlaylistProvider);
     
     // Preload games when they become visible
     useEffect(() {
@@ -97,6 +101,14 @@ class LazyGameList extends HookConsumerWidget {
             onLanguageChanged: onLanguageChanged,
           ),
           SizedBox(height: 2.h),
+          // Polie-recommended row
+          if (playlist.primary.isNotEmpty)
+            _GameSection(
+              title: 'Polie Recommends',
+              games: playlist.primary,
+              onGameSelected: onGameSelected,
+            ),
+          if (playlist.secondary.isNotEmpty) SizedBox(height: 2.h),
           // Core Games Section with Lazy Loading
           _GameSection(
             title: 'Core Games',

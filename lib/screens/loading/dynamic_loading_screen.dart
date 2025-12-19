@@ -407,15 +407,21 @@ class _DynamicLoadingScreenState
   }
 
   Widget _buildFact(LoadingScreenContent content, bool isDark) {
-    // Use backend fact if available, otherwise use fallback
-    final fact = content.fact.isNotEmpty 
-        ? content.fact 
-        : _fallbackFacts[_factIndex];
+    // Prefer Polie-generated micro-tip if available, otherwise use backend fact,
+    // otherwise fall back to a static fact.
+    final String factText;
+    if ((content.aiTip ?? '').isNotEmpty) {
+      factText = content.aiTip!.trim();
+    } else if (content.fact.isNotEmpty) {
+      factText = content.fact;
+    } else {
+      factText = _fallbackFacts[_factIndex];
+    }
     
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       child: Container(
-        key: ValueKey(fact),
+        key: ValueKey(factText),
         margin: EdgeInsets.symmetric(horizontal: 16.sp),
         padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 16.sp),
         decoration: BoxDecoration(
@@ -464,7 +470,7 @@ class _DynamicLoadingScreenState
             ),
             SizedBox(height: 12.sp),
             Text(
-              fact,
+              factText,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,

@@ -1,57 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
-/// Subscription tier provider
-class SubscriptionNotifier extends Notifier<SubscriptionState> {
-  @override
-  SubscriptionState build() {
-    // Load subscription status from backend or local storage
-    return SubscriptionState(
-      tier: SubscriptionTier.free,
-      isActive: false,
-      expiresAt: null,
-    );
-  }
-
-  Future<void> subscribe(SubscriptionTier tier) async {
-    // Implement subscription logic
-    // This would typically call a payment API (Stripe, RevenueCat, etc.)
-    state = SubscriptionState(
-      tier: tier,
-      isActive: true,
-      expiresAt: DateTime.now().add(const Duration(days: 30)), // Monthly
-    );
-  }
-
-  Future<void> cancelSubscription() async {
-    state = SubscriptionState(
-      tier: SubscriptionTier.free,
-      isActive: false,
-      expiresAt: null,
-    );
-  }
-
-  bool hasFeature(String feature) {
-    switch (feature) {
-      case 'all_games':
-        return state.tier != SubscriptionTier.free;
-      case 'unlimited_ai':
-        return state.tier != SubscriptionTier.free;
-      case 'offline_mode':
-        return state.tier != SubscriptionTier.free;
-      case 'no_ads':
-        return state.tier != SubscriptionTier.free;
-      case 'pronunciation_scoring':
-        return state.tier != SubscriptionTier.free;
-      default:
-        return true;
-    }
-  }
-}
-
-final subscriptionProvider = NotifierProvider<SubscriptionNotifier, SubscriptionState>(() {
-  return SubscriptionNotifier();
-});
-
+/// Logical subscription tiers used throughout the app.
+/// Backend `subscription.tier` uses the same enum string values.
 enum SubscriptionTier {
   free,
   premium,
@@ -63,11 +15,17 @@ class SubscriptionState {
   final SubscriptionTier tier;
   final bool isActive;
   final DateTime? expiresAt;
+  /// Approximate Polie character/token quota per day for this user.
+  /// This is populated from backend usage stats when available.
+  final int? dailyPolieLimit;
+  final int? dailyPolieUsed;
 
-  SubscriptionState({
+  const SubscriptionState({
     required this.tier,
     required this.isActive,
     this.expiresAt,
+    this.dailyPolieLimit,
+    this.dailyPolieUsed,
   });
 
   bool get isExpired {
@@ -93,12 +51,152 @@ class SubscriptionState {
       case SubscriptionTier.free:
         return 0.0;
       case SubscriptionTier.premium:
-        return 4.99;
+        return 4.99; // Individual African-market friendly price
       case SubscriptionTier.family:
-        return 9.99;
+        return 9.99; // Up to 4 family members
       case SubscriptionTier.lifetime:
         return 99.99; // One-time
     }
   }
+
+  int get remainingPolieTokens {
+    if (dailyPolieLimit == null || dailyPolieUsed == null) return 0;
+    return (dailyPolieLimit! - dailyPolieUsed!).clamp(0, dailyPolieLimit!);
+  }
 }
+
+/// Subscription tier provider
+class SubscriptionNotifier extends Notifier<SubscriptionState> {
+  @override
+  SubscriptionState build() {
+    // Load subscription status from backend when the notifier is first built.
+    _loadFromBackend();
+    return const SubscriptionState(
+      tier: SubscriptionTier.free,
+      isActive: false,
+      expiresAt: null,
+      dailyPolieLimit: null,
+      dailyPolieUsed: null,
+    );
+  }
+
+  Future<void> _loadFromBackend() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final api = ref.read(apiProvider.notifier);
+      final res = await api.getSubscription();
+
+      final tierString = (res['tier'] as String?) ?? 'free';
+      final expiresAtRaw = res['expiresAt'] as String?;
+      final isActive = res['isActive'] == true;
+      final dailyLimit = res['dailyPolieLimit'] as int?;
+      final dailyUsed = res['dailyPolieUsed'] as int?;
+
+      final tier = SubscriptionTier.values.firstWhere(
+        (t) => t.toString().split('.').last == tierString,
+        orElse: () => SubscriptionTier.free,
+      );
+
+      DateTime? expiresAt;
+      if (expiresAtRaw != null) {
+        expiresAt = DateTime.tryParse(expiresAtRaw);
+      }
+
+      state = SubscriptionState(
+        tier: tier,
+        isActive: isActive,
+        expiresAt: expiresAt,
+        dailyPolieLimit: dailyLimit,
+        dailyPolieUsed: dailyUsed,
+      );
+    } catch (_) {
+      // Fail silently; app will treat user as free tier
+    }
+  }
+
+  Future<void> subscribe(SubscriptionTier tier) async {
+    final api = ref.read(apiProvider.notifier);
+    // For now we assume payment is handled externally and we only update the tier.
+    final res = await api.updateSubscription(tier);
+
+    final tierString = (res['tier'] as String?) ?? 'free';
+    final expiresAtRaw = res['expiresAt'] as String?;
+    final isActive = res['isActive'] == true;
+    final dailyLimit = res['dailyPolieLimit'] as int?;
+    final dailyUsed = res['dailyPolieUsed'] as int?;
+
+    final mappedTier = SubscriptionTier.values.firstWhere(
+      (t) => t.toString().split('.').last == tierString,
+      orElse: () => SubscriptionTier.free,
+    );
+
+    DateTime? expiresAt;
+    if (expiresAtRaw != null) {
+      expiresAt = DateTime.tryParse(expiresAtRaw);
+    }
+
+    state = SubscriptionState(
+      tier: mappedTier,
+      isActive: isActive,
+      expiresAt: expiresAt,
+      dailyPolieLimit: dailyLimit,
+      dailyPolieUsed: dailyUsed,
+    );
+  }
+
+  Future<void> cancelSubscription() async {
+    final api = ref.read(apiProvider.notifier);
+    await api.cancelSubscription();
+    state = const SubscriptionState(
+      tier: SubscriptionTier.free,
+      isActive: false,
+      expiresAt: null,
+      dailyPolieLimit: null,
+      dailyPolieUsed: null,
+    );
+  }
+
+  /// Feature-gating logic inspired by top language apps, but tuned for LingAfriq.
+  bool hasFeature(String feature) {
+    final tier = state.tier;
+
+    switch (feature) {
+      case 'all_games':
+        // Free: core games only, Premium/Family/Lifetime: full game catalog
+        return tier != SubscriptionTier.free;
+      case 'unlimited_ai':
+        // Free: capped daily AI turns (enforced elsewhere), paid tiers: unlimited
+        return tier == SubscriptionTier.premium ||
+            tier == SubscriptionTier.family ||
+            tier == SubscriptionTier.lifetime;
+      case 'offline_mode':
+        // Offline downloads reserved for paying users
+        return tier == SubscriptionTier.premium ||
+            tier == SubscriptionTier.family ||
+            tier == SubscriptionTier.lifetime;
+      case 'no_ads':
+        // Only free tier sees ads
+        return tier != SubscriptionTier.free;
+      case 'pronunciation_scoring':
+        // Full MFA-based pronunciation scoring is a premium feature;
+        // free tier may get occasional trials.
+        return tier == SubscriptionTier.premium ||
+            tier == SubscriptionTier.family ||
+            tier == SubscriptionTier.lifetime;
+      case 'family_dashboard':
+        // Only family tier gets a family dashboard and multi-user tracking
+        return tier == SubscriptionTier.family;
+      default:
+        // Unknown features default to allowed
+        return true;
+    }
+  }
+}
+
+final subscriptionProvider =
+    NotifierProvider<SubscriptionNotifier, SubscriptionState>(() {
+  return SubscriptionNotifier();
+});
 

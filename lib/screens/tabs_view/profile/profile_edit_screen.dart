@@ -27,6 +27,7 @@ class ProfileEditScreen extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final firstnameController = useTextEditingController(text: user?.first_name);
     final lastNameController = useTextEditingController(text: user?.last_name);
+    final handleController = useTextEditingController(text: user?.globalId);
     final selectedCountry = useState<String?>(user?.nationality);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
 
@@ -83,6 +84,28 @@ class ProfileEditScreen extends HookConsumerWidget {
               textInputAction: TextInputAction.next,
             ),
             12.heightBox,
+            // Handle / global ID editor (optional, must be unique)
+            PrimaryTextField(
+              controller: handleController,
+              title: "Handle",
+              hintText: "Choose a unique handle (e.g. lingafriq_learner)",
+              validator: (value) {
+                final v = value?.trim() ?? '';
+                if (v.isEmpty) return null; // Optional
+                if (v.length < 3 || v.length > 30) {
+                  return "Handle must be between 3 and 30 characters";
+                }
+                if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(v)) {
+                  return "Only letters, numbers, and underscores are allowed";
+                }
+                return null;
+              },
+              textInputAction: TextInputAction.next,
+              onChanged: (value) {
+                // No-op; we'll read from controller in onTap below
+              },
+            ),
+            12.heightBox,
             IgnorePointer(
               ignoring: true,
               child: TitledDropDown<String>(
@@ -108,7 +131,16 @@ class ProfileEditScreen extends HookConsumerWidget {
                   nationality: selectedCountry.value,
                 );
 
-                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                final payload = updatedUser.toMap();
+                final handle = handleController.text.trim();
+                if (handle.isNotEmpty) {
+                  payload['handle'] = handle;
+                } else {
+                  // Explicitly clear handle if user empties the field
+                  payload['handle'] = null;
+                }
+
+                await ref.read(apiProvider.notifier).updateProfile(payload);
                 ref.read(userProvider.notifier).overrideUser(updatedUser);
 
                 Navigator.of(context).pop();

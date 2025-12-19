@@ -53,7 +53,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
         // Send to backend
         await ref.read(apiProvider.notifier).sendTelemetry({
           'eventType': 'user_rating',
-          'userId': user.id,
+          'userId': user.globalId ?? user.id.toString(),
           'metadata': {
             'rating': rating,
             'reason': _selectedReason,

@@ -6,6 +6,8 @@ import '../utils/api.dart';
 
 class ProfileModel {
   final int id;
+  /// Global, stable identifier shared across services (maps to backend global_id).
+  final String? globalId;
   final String email;
   final String username;
   final String first_name;
@@ -18,6 +20,7 @@ class ProfileModel {
   final int completed_point;
   ProfileModel({
     required this.id,
+    this.globalId,
     required this.email,
     required this.username,
     required this.first_name,
@@ -32,6 +35,7 @@ class ProfileModel {
 
   ProfileModel copyWith({
     int? id,
+    String? globalId,
     String? email,
     String? username,
     String? first_name,
@@ -45,6 +49,7 @@ class ProfileModel {
   }) {
     return ProfileModel(
       id: id ?? this.id,
+      globalId: globalId ?? this.globalId,
       email: email ?? this.email,
       username: username ?? this.username,
       first_name: first_name ?? this.first_name,
@@ -62,6 +67,9 @@ class ProfileModel {
     final result = <String, dynamic>{};
 
     result.addAll({'id': id});
+    if (globalId != null) {
+      result.addAll({'global_id': globalId});
+    }
     result.addAll({'email': email});
     result.addAll({'username': username});
     result.addAll({'first_name': first_name});
@@ -81,6 +89,7 @@ class ProfileModel {
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
     return ProfileModel(
       id: map['id']?.toInt() ?? 0,
+      globalId: map['global_id'],
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       first_name: map['first_name'] ?? '',

@@ -4,6 +4,8 @@ import 'dart:convert';
 
 class User {
   final int id;
+  /// Global, stable identifier shared across services (maps to backend global_id).
+  final String? globalId;
   final String email;
   final String username;
   final String first_name;
@@ -15,8 +17,10 @@ class User {
   final String ranks;
   final String points;
   final String level;
+
   User({
     required this.id,
+    this.globalId,
     required this.email,
     required this.username,
     required this.first_name,
@@ -32,6 +36,7 @@ class User {
 
   User copyWith({
     int? id,
+    String? globalId,
     String? email,
     String? username,
     String? first_name,
@@ -46,6 +51,7 @@ class User {
   }) {
     return User(
       id: id ?? this.id,
+      globalId: globalId ?? this.globalId,
       email: email ?? this.email,
       username: username ?? this.username,
       first_name: first_name ?? this.first_name,
@@ -65,6 +71,9 @@ class User {
 
     result.addAll({'id': id});
     result.addAll({'email': email});
+    if (globalId != null) {
+      result.addAll({'global_id': globalId});
+    }
     result.addAll({'username': username});
     result.addAll({'first_name': first_name});
     result.addAll({'last_name': last_name});
@@ -102,6 +111,7 @@ class User {
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id']?.toInt() ?? 0,
+      globalId: map['global_id'],
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       first_name: map['first_name'] ?? '',
@@ -131,6 +141,7 @@ class User {
 
     return other is User &&
         other.id == id &&
+        other.globalId == globalId &&
         other.email == email &&
         other.username == username &&
         other.first_name == first_name &&
@@ -148,6 +159,7 @@ class User {
   int get hashCode {
     return id.hashCode ^
         email.hashCode ^
+        (globalId?.hashCode ?? 0) ^
         username.hashCode ^
         first_name.hashCode ^
         last_name.hashCode ^
