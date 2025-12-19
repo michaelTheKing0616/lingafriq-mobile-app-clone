@@ -51,9 +51,9 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (user != null) {
         final success = await ref.read(apiProvider.notifier).awardXP(
           userId: user.id.toString(),
+          amount: xpGain,
           source: backendSource,
           sourceId: uniqueSourceId,
-          amount: xpGain,
           difficultyMultiplier: multiplier,
         );
         
