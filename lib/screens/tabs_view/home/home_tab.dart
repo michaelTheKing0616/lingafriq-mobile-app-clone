@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/utils/utils.dart' show debugPrint;
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -14,36 +13,16 @@ import 'package:lingafriq/screens/tabs_view/home/search_languages_page.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/greegins_builder.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
 import '../../../detail_types/introduction_screen.dart';
-import '../../../lessons/screens/lessons_list_screen.dart';
-import '../../../utils/app_colors.dart';
-import '../../../widgets/primary_button.dart';
 import 'language_detail_screen.dart';
-import 'take_quiz_screen.dart';
 
-// Remove autoDispose to prevent data loss on tab changes
-// Cache data to improve stability and offline experience
-final languagesProvider = FutureProvider((ref) async {
-  try {
-    final languages = await ref.read(apiProvider.notifier).getLanguages();
-    // Cache the result in shared preferences
-    ref.read(sharedPreferencesProvider).cacheLanguages(languages.toJson());
-    return languages;
-  } catch (e) {
-    // Try to load from cache if API fails
-    final cachedData = ref.read(sharedPreferencesProvider).getCachedLanguages();
-    if (cachedData != null) {
-      return LanguageResponse.fromJson(cachedData);
-    }
-    rethrow;
-  }
+final languagesProvider = FutureProvider.autoDispose((ref) {
+  return ref.read(apiProvider.notifier).getLanguages();
 });
 
 final _timerProvider = Provider((ref) {
@@ -94,53 +73,32 @@ class HomeTab extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SafeArea(
-                  bottom: false,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).padding.top + 8,
-                      left: 16,
-                      right: 16,
-                      bottom: 8,
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            ref.read(scaffoldKeyProvider).currentState!.openDrawer();
-                          },
-                          icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Consumer(
-                            builder: (context, ref, child) {
-                              final title = ref.watch(_titleProvider);
-                              return GreetingsBuilder(
-                                // pageTitle: "Welcome Back",
-                                pageTitle: "$title, ${ref.watch(userProvider)?.username}",
-                                showGreeting: ref.watch(userProvider) != null,
-                                greetingTitle: "",
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                IconButton(
+                  onPressed: () {
+                    ref.read(scaffoldKeyProvider).currentState!.openDrawer();
+                  },
+                  icon: const Icon(Icons.menu_rounded, color: Colors.white),
                 ),
+                // const PointsAndProfileImageBuilder(),
+                Consumer(
+                  builder: (context, ref, child) {
+                    final title = ref.watch(_titleProvider);
+                    return GreetingsBuilder(
+                      // pageTitle: "Welcome Back",
+                      pageTitle: "$title, ${ref.watch(userProvider)?.username}",
+                      showGreeting: ref.watch(userProvider) != null,
+                      greetingTitle: "",
+                    );
+                  },
+                )
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ModernSectionHeader(
-                title: "Featured Languages",
-                subtitle: "Start your learning journey",
-              ),
+              "Featured Languages".text.size(22.sp).medium.make(),
+              12.heightBox,
               Expanded(
                 child: languagesAsync.when(
                   data: (languageRespponse) {
@@ -154,23 +112,14 @@ class HomeTab extends HookConsumerWidget {
                             ref.invalidate(languagesProvider);
                             return Future.value();
                           },
-                          child: LayoutBuilder(
-                            builder: (context, constraints) {
-                              // Responsive grid columns based on screen width
-                              final screenWidth = MediaQuery.of(context).size.width;
-                              final crossAxisCount = screenWidth > 600 ? 3 : (screenWidth > 400 ? 2 : 2);
-                              final spacing = screenWidth > 600 ? 16.0 : 12.0;
-                              
-                              return GridView.count(
-                                padding: EdgeInsets.zero,
-                                crossAxisCount: crossAxisCount,
-                                crossAxisSpacing: spacing,
-                                mainAxisSpacing: spacing,
-                                childAspectRatio: screenWidth > 600 ? 1.2 : 1.1,
-                                children:
-                                    featuredLanguages.map((e) => LanguageItem(language: e)).toList(),
-                              );
-                            },
+                          child: GridView.count(
+                            padding: EdgeInsets.zero,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 16,
+                            childAspectRatio: 1.1,
+                            children:
+                                featuredLanguages.map((e) => LanguageItem(language: e)).toList(),
                           ),
                         ).expand(),
                         "More Languages".text.size(22.sp).medium.make().py8().px8(),
@@ -204,7 +153,7 @@ class HomeTab extends HookConsumerWidget {
                     return StreamErrorWidget(
                       error: e,
                       onTryAgain: () {
-                        // ref.read(navigationProvider).navigateTo(
+                        // ref.read(navigationProvider).naviateTo(
                         //       LanguageDetailScreen(
                         //         language: Language(
                         //           id: 2,
@@ -224,7 +173,9 @@ class HomeTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const DynamicLoadingScreen(),
+                  loading: () => const AdaptiveProgressIndicator(
+                    message: "Loading Languages ...",
+                  ),
                 ),
               ),
             ],
@@ -246,188 +197,15 @@ class LanguageItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ModernLanguageCard(
-      languageName: language.name,
-      imageUrl: language.background,
-      isFeatured: language.is_featured,
-      onTap: () async {
-        onTap?.call();
-        final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
-        if (result) {
-          ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
-          return;
-        }
-        // Show lesson/quiz options
-        _showLanguageOptions(context, ref);
-      },
-    );
-  }
-
-  void _showLanguageOptions(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: context.adaptive12,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(DesignSystem.radiusXL)),
-        ),
-        padding: EdgeInsets.only(
-          top: DesignSystem.spacingL,
-          left: DesignSystem.spacingL,
-          right: DesignSystem.spacingL,
-          bottom: MediaQuery.of(context).viewPadding.bottom + DesignSystem.spacingL,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Handle bar
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: context.adaptive38,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            SizedBox(height: DesignSystem.spacingL),
-            Text(
-              language.name,
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: context.adaptive,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: DesignSystem.spacingL),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pop(context);
-                // Pre-load lessons data for faster navigation
-                ref.read(apiProvider.notifier).getLessons(language.id);
-                ref.read(navigationProvider).navigateTo(LessonsListScreen(language: language));
-              },
-              text: "Take a Lesson",
-              color: AppColors.primaryGreen,
-            ),
-            SizedBox(height: DesignSystem.spacingM),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pop(context);
-                // Pre-load quiz data for faster navigation
-                ref.read(apiProvider.notifier).getRandomQuizLessons(language.id);
-                ref.read(navigationProvider).navigateTo(TakeQuizScreen(language: language));
-              },
-              text: "Take a Quiz",
-              color: AppColors.primaryOrange,
-            ),
-            SizedBox(height: DesignSystem.spacingM),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
-              },
-              child: Text(
-                "View Details",
-                style: TextStyle(color: context.primaryColor),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class LanguageItemOld extends ConsumerWidget {
-  final Language language;
-  final Function? onTap;
-  const LanguageItemOld({
-    Key? key,
-    required this.language,
-    this.onTap,
-  }) : super(key: key);
-
-  void _showLanguageOptions(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        decoration: BoxDecoration(
-          color: context.adaptive12,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              language.name,
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: context.adaptive,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pop(context);
-                // Pre-load lessons data for faster navigation
-                ref.read(apiProvider.notifier).getLessons(language.id);
-                ref.read(navigationProvider).navigateTo(LessonsListScreen(language: language));
-              },
-              text: "Take a Lesson",
-              color: AppColors.primaryGreen,
-            ),
-            const SizedBox(height: 12),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pop(context);
-                // Pre-load quiz data for faster navigation
-                ref.read(apiProvider.notifier).getRandomQuizLessons(language.id);
-                ref.read(navigationProvider).navigateTo(TakeQuizScreen(language: language));
-              },
-              text: "Take a Quiz",
-              color: AppColors.primaryOrange,
-            ),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
-              },
-              child: Text(
-                "View Details",
-                style: TextStyle(color: context.primaryColor),
-              ),
-            ),
-            SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
     return InkWell(
       onTap: () async {
         onTap?.call();
         final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
         if (result) {
-          ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
+          ref.read(navigationProvider).naviateTo(IntroductionScreen(language: language));
           return;
         }
-        // Show lesson/quiz options
-        _showLanguageOptions(context, ref);
+        ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
       },
       child: Container(
         width: double.infinity,

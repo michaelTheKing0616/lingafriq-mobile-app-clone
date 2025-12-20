@@ -6,10 +6,9 @@ import 'package:lingafriq/models/quiz_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../widgets/points_and_profile_image_builder.dart';
 import 'quiz_answers_screen.dart';
@@ -53,234 +52,174 @@ class QuizScreen extends HookConsumerWidget {
     }).toList();
     final showIndicator = useState({"isLoading": false, "isCorrect": true});
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    final indicatorOverlayVisible = showIndicator.value['isLoading'] as bool;
-    final indicatorIsCorrect = showIndicator.value['isCorrect'] as bool;
-
-    final content = PopScope(
-      canPop: true,
-      onPopInvoked: (didPop) {
-        if (!didPop) {
-          ref.read(navigationProvider).pop();
-        }
-      },
-      child: Scaffold(
-        body: Column(
-          children: [
-            TopGradientBox(
-              borderRadius: 0,
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const BackButton(color: Colors.white),
-                      title.text.xl2.semiBold
-                          .maxLines(2)
-                          .ellipsis
-                          .color(Colors.white)
-                          .make()
-                          .p16(),
-                    ],
-                  ).expand(),
-                  PointsAndProfileImageBuilder(
-                    size: Size(0.07.sh, 0.07.sh),
-                  ),
-                  16.widthBox,
-                ],
+    return LoadingOverlayPro(
+      isLoading: isLoading,
+      child: LoadingOverlayPro(
+        isLoading: showIndicator.value['isLoading'] as bool,
+        progressIndicator: Material(
+          color: Colors.transparent,
+          child: Builder(builder: (context) {
+            if (quiz.length == 1 || isTakeQuiz) {
+              final isCorrect = showIndicator.value['isCorrect'] as bool;
+              return singleQuizIndicatorBuilder(isCorrect);
+            }
+            return multiQuizIndicatorBuilder();
+          }),
+        ),
+        child: Scaffold(
+          body: Column(
+            children: [
+              TopGradientBox(
+                borderRadius: 0,
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const BackButton(color: Colors.white),
+                        title.text.xl2.semiBold
+                            .maxLines(2)
+                            .ellipsis
+                            .color(Colors.white)
+                            .make()
+                            .p16(),
+                      ],
+                    ).expand(),
+                    PointsAndProfileImageBuilder(
+                      size: Size(0.07.sh, 0.07.sh),
+                    ),
+                    16.widthBox,
+                  ],
+                ),
               ),
-            ),
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                children: quiz.asMap().entries.map((e) {
-                  return QuizItem(
-                    quiz: e.value,
-                    onSelect: (value) {
-                      selectedAnswer[e.key].value = {e.value.question: value};
-                    },
-                  );
-                }).toList(),
+              Expanded(
+                child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: pageController,
+                  children: quiz.asMap().entries.map((e) {
+                    return QuizItem(
+                      quiz: e.value,
+                      onSelect: (value) {
+                        selectedAnswer[e.key].value = {e.value.question: value};
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
-            ),
-            if (quiz.length != 1) _DotIndicator(quiz: quiz).pOnly(top: 4),
-            SafeArea(
-              top: false,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Consumer(
-                    builder: ((context, ref, child) {
-                      final index = ref.watch(quizIndexProvider);
-                      return PrimaryButton(
-                        width: 0.3.sw,
-                        onTap: () async {
-                          if (quiz.length == 1) {
-                            final currenlySelectedAnswer =
-                                selectedAnswer.first.value[quiz.first.question];
-                            if (currenlySelectedAnswer == null) {
+              if (quiz.length != 1) _DotIndicator(quiz: quiz).pOnly(top: 4),
+              SafeArea(
+                top: false,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Consumer(
+                      builder: ((context, ref, child) {
+                        final index = ref.watch(quizIndexProvider);
+                        return PrimaryButton(
+                          width: 0.3.sw,
+                          onTap: () async {
+                            if (quiz.length == 1) {
+                              final currenlySelectedAnswer =
+                                  selectedAnswer.first.value[quiz.first.question];
+                              if (currenlySelectedAnswer == null) {
+                                VxToast.show(context, msg: "Please select an option");
+                                return;
+                              }
+                              final correct = quiz.first.answer == currenlySelectedAnswer;
+                              showIndicator.value = {"isLoading": true, "isCorrect": correct};
+                              await Future.delayed(const Duration(milliseconds: 700));
+                              showIndicator.value = {
+                                "isLoading": false,
+                              };
+                              if (correct) {
+                                if (!isCompleted) {
+                                  await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                }
+                                Navigator.of(context).pop(true);
+                              }
+                              if (!correct && isTakeQuiz) {
+                                Navigator.of(context).pop(false);
+                              }
+                              return;
+                            }
+                            final currentlySelectedAnswer =
+                                selectedAnswer[index].value[quiz[index].question];
+                            if (currentlySelectedAnswer == null) {
                               VxToast.show(context, msg: "Please select an option");
                               return;
                             }
-                            final correct = quiz.first.answer == currenlySelectedAnswer;
+                            final correct = quiz[index].answer == currentlySelectedAnswer;
                             showIndicator.value = {"isLoading": true, "isCorrect": correct};
                             await Future.delayed(const Duration(milliseconds: 700));
-                            showIndicator.value = {
-                              "isLoading": false,
-                            };
-                            if (correct) {
-                              if (!isCompleted) {
-                                try {
-                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
-                                  if (!success) {
-                                    "Failed to mark quiz as complete".log("quiz_screen");
-                                    if (context.mounted) {
-                                      VxToast.show(context, msg: "Failed to save progress. Your answer was correct!");
-                                    }
-                                  } else {
-                                    final pointsEarned = quiz.length * 10;
-                                    await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
-                                  }
-                                } catch (e) {
-                                  "Error marking quiz complete: $e".log("quiz_screen");
-                                  if (context.mounted) {
-                                    VxToast.show(context, msg: "Error saving progress. Your answer was correct!");
-                                  }
+                            showIndicator.value = {"isLoading": false, "isCorrect": correct};
+                            if (isTakeQuiz && index == quiz.length - 1) {
+                              final correctAnswers = selectedAnswer.asMap().entries.where((e) {
+                                final currentQuiz = quiz.elementAt(e.key);
+                                return currentQuiz.answer == e.value.value[currentQuiz.question];
+                              });
+                              final correct = quiz.length == correctAnswers.length;
+                              ref.read(quizIndexProvider.notifier).setIndex(0);
+                              if (correct) {
+                                if (!isCompleted) {
+                                  await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
                                 }
-                              }
-                              if (context.mounted) {
                                 Navigator.of(context).pop(true);
                               }
-                            }
-                            if (!correct && isTakeQuiz) {
-                              if (context.mounted) {
+                              if (!correct && isTakeQuiz) {
                                 Navigator.of(context).pop(false);
                               }
+                              return;
                             }
-                            return;
-                          }
-                          final currentlySelectedAnswer =
-                              selectedAnswer[index].value[quiz[index].question];
-                          if (currentlySelectedAnswer == null) {
-                            VxToast.show(context, msg: "Please select an option");
-                            return;
-                          }
-                          final correct = quiz[index].answer == currentlySelectedAnswer;
-                          showIndicator.value = {"isLoading": true, "isCorrect": correct};
-                          await Future.delayed(const Duration(milliseconds: 700));
-                          showIndicator.value = {"isLoading": false, "isCorrect": correct};
-                          if (isTakeQuiz && index == quiz.length - 1) {
-                            final correctAnswers = selectedAnswer.asMap().entries.where((e) {
-                              final currentQuiz = quiz.elementAt(e.key);
-                              return currentQuiz.answer == e.value.value[currentQuiz.question];
-                            });
-                            final correct = quiz.length == correctAnswers.length;
-                            ref.read(quizIndexProvider.notifier).setIndex(0);
-                            if (correct) {
-                              if (!isCompleted) {
-                                try {
-                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
-                                  if (!success) {
-                                    "Failed to mark quiz as complete".log("quiz_screen");
-                                    if (context.mounted) {
-                                      VxToast.show(context, msg: "Failed to save progress. Quiz completed!");
-                                    }
-                                  } else {
-                                    final pointsEarned = quiz.length * 10;
-                                    await ProgressIntegration.onQuizCompleted(ref, pointsEarned: pointsEarned);
-                                  }
-                                } catch (e) {
-                                  "Error marking quiz complete: $e".log("quiz_screen");
-                                  if (context.mounted) {
-                                    VxToast.show(context, msg: "Error saving progress. Quiz completed!");
-                                  }
-                                }
-                              }
-                              if (context.mounted) {
-                                Navigator.of(context).pop(true);
-                              }
-                            }
-                            if (!correct && isTakeQuiz) {
-                              if (context.mounted) {
-                                Navigator.of(context).pop(false);
-                              }
-                            }
-                            return;
-                          }
 
-                          if (index == quiz.length - 1) {
-                            ref.read(navigationProvider).navigateTo(QuizAnswersScreen(
-                                  quiz: quiz,
-                                  title: title,
-                                  selectedAnswers: selectedAnswer.map((e) => e.value).toList(),
-                                  endpointToHit: endpointToHit,
-                                  isCompleted: isCompleted,
-                                ));
-                            ref.read(quizIndexProvider.notifier).setIndex(0);
+                            if (index == quiz.length - 1) {
+                              ref.read(navigationProvider).naviateTo(QuizAnswersScreen(
+                                    quiz: quiz,
+                                    title: title,
+                                    selectedAnswers: selectedAnswer.map((e) => e.value).toList(),
+                                    endpointToHit: endpointToHit,
+                                    isCompleted: isCompleted,
+                                  ));
+                              ref.read(quizIndexProvider.notifier).setIndex(0);
+                              pageController.animateToPage(
+                                0,
+                                duration: const Duration(milliseconds: 500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                              );
+                              return;
+                            }
+                            ref.read(quizIndexProvider.notifier).setIndex(index + 1);
                             pageController.animateToPage(
-                              0,
+                              index + 1,
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.fastLinearToSlowEaseIn,
                             );
-                            return;
-                          }
-                          ref.read(quizIndexProvider.notifier).setIndex(index + 1);
-                          pageController.animateToPage(
-                            index + 1,
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                          );
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            (quiz.length == (index + 1) ? "Submit" : "Next")
-                                .text
-                                .size(18.sp)
-                                .white
-                                .make(),
-                            12.widthBox,
-                            const Icon(
-                              Icons.arrow_circle_right,
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      );
-                    }),
-                  ),
-                ],
-              ).p16(),
-            )
-          ],
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              (quiz.length == (index + 1) ? "Submit" : "Next")
+                                  .text
+                                  .size(18.sp)
+                                  .white
+                                  .make(),
+                              12.widthBox,
+                              const Icon(
+                                Icons.arrow_circle_right,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        );
+                      }),
+                    ),
+                  ],
+                ).p16(),
+              )
+            ],
+          ),
         ),
       ),
-    );
-
-    return Stack(
-      children: [
-        content,
-        if (isLoading)
-          const Positioned.fill(
-            child: IgnorePointer(child: DynamicLoadingScreen()),
-          ),
-        if (indicatorOverlayVisible)
-          Positioned.fill(
-            child: IgnorePointer(
-              child: Container(
-                color: Colors.black.withOpacity(0.35),
-                alignment: Alignment.center,
-                child: Material(
-                  color: Colors.transparent,
-                  child: quiz.length == 1 || isTakeQuiz
-                      ? singleQuizIndicatorBuilder(indicatorIsCorrect)
-                      : multiQuizIndicatorBuilder(),
-                ),
-              ),
-            ),
-          ),
-      ],
     );
   }
 

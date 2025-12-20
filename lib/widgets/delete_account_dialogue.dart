@@ -16,8 +16,8 @@ class DeleteAccountDialog {
               onPressed: () => Navigator.of(context).pop(false),
               child: const Text("Cancel"),
             ),
-            FilledButton(
-              style: FilledButton.styleFrom(
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
               onPressed: () => Navigator.of(context).pop(true),
@@ -54,7 +54,7 @@ class EnterPasswordDialog {
               onPressed: () => Navigator.of(context).pop(null),
               child: const Text("Cancel"),
             ),
-            FilledButton(
+            ElevatedButton(
               onPressed: () {
                 final password = controller.text.trim();
                 Navigator.of(context).pop(password);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/design_system.dart';
 
 class TopGradientBox extends StatelessWidget {
   final Widget child;
@@ -18,21 +17,16 @@ class TopGradientBox extends StatelessWidget {
         borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(borderRadius),
         ),
-        gradient: DesignSystem.primaryGradient,
-        boxShadow: DesignSystem.shadowMedium,
+        gradient: const LinearGradient(
+          colors: [
+            Color(0XFFC4413A),
+            Color(0XFFF7CB46),
+          ],
+        ),
       ),
       child: SafeArea(
         bottom: false,
-        minimum: EdgeInsets.zero,
-        child: Padding(
-          padding: EdgeInsets.only(
-            top: MediaQuery.of(context).viewPadding.top + 16,
-            bottom: 8,
-            left: 8,
-            right: 8,
-          ),
-          child: child,
-        ),
+        child: child,
       ),
     );
   }

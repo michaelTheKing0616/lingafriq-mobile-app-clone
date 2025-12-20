@@ -132,7 +132,7 @@ class _MannerismItem extends ConsumerWidget {
             ? () {
                 ref
                     .read(navigationProvider)
-                    .navigateTo(MannerismSectionsListScreen(mannerism: mannerism));
+                    .naviateTo(MannerismSectionsListScreen(mannerism: mannerism));
               }
             : null,
         child: Column(

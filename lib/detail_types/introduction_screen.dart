@@ -56,7 +56,7 @@ class IntroductionScreen extends ConsumerWidget {
             onTap: () {
               ref.read(sharedPreferencesProvider).setLanguageIntro(language.id);
               ref.read(navigationProvider).pop();
-              ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
+              ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
             },
             text: "Continue",
           ).centered().safeArea(),

@@ -1,14 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
-import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
-import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/progress_integration.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -33,8 +27,17 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   WordCard? _selectedRight;
   int _score = 0;
   int _matches = 0;
-  int _totalPairs = 0;
   bool _gameComplete = false;
+
+  // Sample word pairs - In production, these would come from API
+  final List<Map<String, String>> _sampleWords = [
+    {'english': 'Hello', 'translation': 'Sannu'},
+    {'english': 'Thank you', 'translation': 'Na gode'},
+    {'english': 'Goodbye', 'translation': 'Sai an jima'},
+    {'english': 'Water', 'translation': 'Ruwa'},
+    {'english': 'Food', 'translation': 'Abinci'},
+    {'english': 'Friend', 'translation': 'Aboki'},
+  ];
 
   @override
   void initState() {
@@ -43,22 +46,13 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   void _initializeGame() {
-    // Get language-specific words
-    final words = LanguageWords.getWordsForLanguage(widget.language.name);
-    
-    // Shuffle and take 8-12 words for variety
-    final shuffledWords = List<Map<String, String>>.from(words)..shuffle();
-    final selectedWords = shuffledWords.take(10).toList();
-    
     // Create word pairs
-    _wordPairs = selectedWords
+    _wordPairs = _sampleWords
         .map((w) => WordPair(
               english: w['english']!,
               translation: w['translation']!,
             ))
         .toList();
-    
-    _totalPairs = _wordPairs.length;
 
     // Shuffle and create cards
     final shuffledPairs = List<WordPair>.from(_wordPairs)..shuffle();
@@ -123,16 +117,13 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
       setState(() {
         _selectedLeft!.isMatched = true;
         _selectedRight!.isMatched = true;
+        _score += 10;
         _matches++;
         _selectedLeft = null;
         _selectedRight = null;
 
         if (_matches == _wordPairs.length) {
           _gameComplete = true;
-          // Calculate final score: max 10 points, reduced by wrong attempts
-          // For now, perfect game = 10 points (can be adjusted based on attempts)
-          _score = 10;
-          _updateUserPoints(_score);
         }
       });
     } else {
@@ -147,249 +138,69 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
     }
   }
 
-  Future<void> _updateUserPoints(int points) async {
-    try {
-      debugPrint('Updating user points: $points (matches: $_matches, total: $_totalPairs)');
-      
-      // Calculate points: max 10 points for perfect game
-      final calculatedPoints = _totalPairs > 0 
-          ? (10 * (_matches / _totalPairs)).round()
-          : 0;
-      
-      // Update user points using the same pattern as quizzes/lessons
-      final user = ref.read(userProvider);
-      if (user != null) {
-        final oldPoints = user.completed_point;
-        debugPrint('User points before update: $oldPoints');
-        
-        // Submit game completion to backend
-        final gameSuccess = await ref.read(apiProvider.notifier).submitGameCompletion(
-          gameType: 'word_match',
-          languageId: widget.language.id,
-          points: calculatedPoints,
-          score: _matches,
-        );
-        if (gameSuccess) {
-          // Track progress with points
-          await ProgressIntegration.onGameCompleted(ref as Ref, wordsLearned: _matches, pointsEarned: calculatedPoints);
-          ref.read(userProvider.notifier).addPoints(calculatedPoints);
-        }
-        
-        debugPrint('Game completion submission: $gameSuccess');
-        
-        // Also call accountUpdate to refresh profile
-        final updateSuccess = await ref.read(apiProvider.notifier).accountUpdate();
-        debugPrint('Account update success: $updateSuccess');
-        
-        if (updateSuccess) {
-          // Wait for server to process
-          await Future.delayed(const Duration(milliseconds: 1500));
-          
-          // Refresh user profile to get latest points
-          try {
-            final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-            if (updatedUser != null) {
-              final newPoints = updatedUser.completed_point;
-              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
-              ref.read(userProvider.notifier).overrideUser(updatedUser);
-              
-              if (newPoints > oldPoints) {
-                debugPrint('✅ Game points successfully added!');
-              } else {
-                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
-              }
-            }
-          } catch (e) {
-            debugPrint('Error refreshing user profile: $e');
-          }
-        } else {
-          debugPrint('⚠️ Account update failed');
-        }
-      } else {
-        debugPrint('⚠️ No user logged in, cannot update points');
-      }
-    } catch (e) {
-      debugPrint('❌ Failed to update user points: $e');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmall = screenWidth < 360;
-    
-    return PopScope(
-      canPop: false,
-      onPopInvoked: (didPop) async {
-        if (!didPop && !_gameComplete) {
-          final shouldPop = await showDialog<bool>(
-            context: context,
-            builder: (context) => AlertDialog(
-              title: const Text('Exit Game?'),
-              content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
-              actions: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context, false),
-                  child: const Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.pop(context, true),
-                  child: const Text('Exit'),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Word Match - ${widget.language.name}'),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.primaryGreen,
+                AppColors.accentGold,
               ],
-            ),
-          );
-          if (shouldPop == true && context.mounted) {
-            Navigator.pop(context);
-          }
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
-              ),
-              onPressed: () async {
-                if (!_gameComplete) {
-                  final shouldPop = await showDialog<bool>(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Exit Game?'),
-                      content: const Text('Are you sure you want to exit? Your progress will not be saved.'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true),
-                          child: const Text('Exit'),
-                        ),
-                      ],
-                    ),
-                  );
-                  if (shouldPop == true && context.mounted) {
-                    Navigator.pop(context);
-                  }
-                } else {
-                  Navigator.pop(context);
-                }
-              },
             ),
           ),
         ),
-      body: SafeArea(
-        child: _gameComplete
-            ? _buildGameComplete()
-            : Column(
-                children: [
-                  _buildScoreBar(),
-                  Padding(
-                    padding: EdgeInsets.all(DesignSystem.spacingM),
-                    child: Text(
-                      'Match the pairs',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: context.isDarkMode ? AppColors.stitchTextDark : AppColors.stitchTextLight,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        // Responsive layout: stack on small screens, side-by-side on larger
-                        if (screenWidth < 400) {
-                          return Column(
-                            children: [
-                              Expanded(
-                                child: _buildCardColumn(_leftCards, true),
-                              ),
-                              SizedBox(height: DesignSystem.spacingM),
-                              Expanded(
-                                child: _buildCardColumn(_rightCards, false),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return Row(
-                            children: [
-                              Expanded(
-                                child: _buildCardColumn(_leftCards, true),
-                              ),
-                              SizedBox(width: DesignSystem.spacingM),
-                              Expanded(
-                                child: _buildCardColumn(_rightCards, false),
-                              ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-        ),
       ),
+      body: _gameComplete
+          ? _buildGameComplete()
+          : Column(
+              children: [
+                _buildScoreBar(),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildCardColumn(_leftCards, true),
+                      ),
+                      Container(
+                        width: 2,
+                        color: context.adaptive12,
+                      ),
+                      Expanded(
+                        child: _buildCardColumn(_rightCards, false),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
     );
   }
 
   Widget _buildScoreBar() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmall = screenWidth < 360;
-    final isDark = context.isDarkMode;
-    final progress = _wordPairs.isNotEmpty ? _matches / _wordPairs.length : 0.0;
-    
     return Container(
-      padding: EdgeInsets.all(isSmall ? 12 : 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.stitchBackgroundDark : AppColors.stitchBackgroundLight,
-        boxShadow: DesignSystem.shadowSmall,
+        color: context.adaptive12,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: Icon(Icons.close, color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight),
-                onPressed: () => Navigator.pop(context),
-              ),
-              Expanded(
-                child: Container(
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: FractionallySizedBox(
-                    alignment: Alignment.centerLeft,
-                    widthFactor: progress,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.stitchPrimaryGame,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 16),
-              Text(
-                '$_matches/${_wordPairs.length}',
-                style: TextStyle(
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.stitchPrimaryGame,
-                ),
-              ),
-            ],
+          _buildScoreItem(Icons.star, 'Score', _score.toString()),
+          _buildScoreItem(
+            Icons.check_circle,
+            'Matches',
+            '$_matches/${_wordPairs.length}',
           ),
         ],
       ),
@@ -397,18 +208,14 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   Widget _buildScoreItem(IconData icon, String label, String value) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isSmall = screenWidth < 360;
-    
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: AppColors.primaryGreen, size: isSmall ? 20.sp : 24.sp),
-        SizedBox(height: isSmall ? 2 : 4),
+        Icon(icon, color: AppColors.primaryGreen, size: 24.sp),
+        const SizedBox(height: 4),
         Text(
           value,
           style: TextStyle(
-            fontSize: isSmall ? 18.sp : 20.sp,
+            fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             color: context.adaptive,
           ),
@@ -416,7 +223,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
         Text(
           label,
           style: TextStyle(
-            fontSize: isSmall ? 10.sp : 12.sp,
+            fontSize: 12.sp,
             color: context.adaptive54,
           ),
         ),
@@ -425,10 +232,8 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   Widget _buildCardColumn(List<WordCard> cards, bool isLeft) {
-    final isDark = context.isDarkMode;
-    
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.all(8),
       itemCount: cards.length,
       itemBuilder: (context, index) {
         final card = cards[index];
@@ -436,84 +241,49 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             (!isLeft && _selectedRight == card);
 
         return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => _selectCard(card),
-              borderRadius: BorderRadius.circular(DesignSystem.radiusM),
-              child: Container(
-                height: 64,
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          child: ModernCard(
+            onTap: () => _selectCard(card),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: card.isMatched
+                    ? AppColors.success.withOpacity(0.2)
+                    : isSelected
+                        ? AppColors.primaryGreen.withOpacity(0.2)
+                        : null,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
                   color: card.isMatched
-                      ? AppColors.stitchPrimary.withOpacity(0.2)
+                      ? AppColors.success
                       : isSelected
-                          ? AppColors.stitchSecondary.withOpacity(0.1)
-                          : (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight),
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusM),
-                  border: Border(
-                    bottom: BorderSide(
-                      color: card.isMatched
-                          ? AppColors.stitchPrimary
-                          : isSelected
-                              ? AppColors.stitchSecondary
-                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
-                      width: 4,
+                          ? AppColors.primaryGreen
+                          : Colors.transparent,
+                  width: 2,
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (card.isMatched)
+                    Icon(
+                      Icons.check_circle,
+                      color: AppColors.success,
+                      size: 20.sp,
                     ),
-                    left: BorderSide(
-                      color: card.isMatched
-                          ? AppColors.stitchPrimary
-                          : isSelected
-                              ? AppColors.stitchSecondary
-                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
-                      width: 2,
-                    ),
-                    right: BorderSide(
-                      color: card.isMatched
-                          ? AppColors.stitchPrimary
-                          : isSelected
-                              ? AppColors.stitchSecondary
-                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
-                      width: 2,
-                    ),
-                    top: BorderSide(
-                      color: card.isMatched
-                          ? AppColors.stitchPrimary
-                          : isSelected
-                              ? AppColors.stitchSecondary
-                              : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
-                      width: 2,
+                  if (card.isMatched) const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      card.text,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: context.adaptive,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    if (card.isMatched)
-                      Icon(
-                        Icons.check_circle,
-                        color: AppColors.stitchPrimary,
-                        size: 20.sp,
-                      ),
-                    if (card.isMatched) const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        card.text,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: card.isMatched
-                              ? AppColors.stitchPrimary
-                              : isSelected
-                                  ? AppColors.stitchSecondary
-                                  : (isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
+                ],
               ),
             ),
           ),
@@ -563,30 +333,6 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 color: context.adaptive54,
               ),
             ),
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppColors.primaryGreen, width: 2),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.star, color: AppColors.accentGold, size: 24.sp),
-                  const SizedBox(width: 8),
-                  Text(
-                    '+$_score Points Earned!',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryGreen,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 24),
             Container(
               padding: const EdgeInsets.all(16),
@@ -595,7 +341,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
-                'Perfect Match! All $_totalPairs pairs found',
+                'Final Score: $_score',
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
@@ -604,43 +350,11 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               ),
             ),
             const SizedBox(height: 32),
-            SafeArea(
-              top: false,
-              minimum: EdgeInsets.zero,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewPadding.bottom,
-                  left: 16,
-                  right: 16,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    PrimaryButton(
-                      onTap: () {
-                        // Restart the game
-                        setState(() {
-                          _gameComplete = false;
-                          _score = 0;
-                          _matches = 0;
-                          _selectedLeft = null;
-                          _selectedRight = null;
-                        });
-                        _initializeGame();
-                      },
-                      text: 'Play Again',
-                    ),
-                    const SizedBox(height: 12),
-                    PrimaryButton(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      text: 'Return to Games',
-                      color: AppColors.primaryGreen.withOpacity(0.7),
-                    ),
-                  ],
-                ),
-              ),
+            PrimaryButton(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              text: 'Play Again',
             ),
           ],
         ),

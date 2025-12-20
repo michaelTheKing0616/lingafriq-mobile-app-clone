@@ -27,17 +27,6 @@ class ProfileTab extends HookConsumerWidget {
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-          ],
-        ),
         body: Column(
           children: [
             TopGradientBox(
@@ -49,7 +38,7 @@ class ProfileTab extends HookConsumerWidget {
                     onTap: () {
                       ref
                           .read(navigationProvider)
-                          .navigateTo(const ProfileEditScreen());
+                          .naviateTo(const ProfileEditScreen());
                     },
                   ),
                   16.widthBox,
@@ -90,7 +79,7 @@ class ProfileTab extends HookConsumerWidget {
                   onTap: () {
                     ref
                         .read(navigationProvider)
-                        .navigateTo(const ChangePasswordScreen());
+                        .naviateTo(const ChangePasswordScreen());
                   },
                 ),
                 _ProfileItem(
@@ -98,21 +87,21 @@ class ProfileTab extends HookConsumerWidget {
                   onTap: () {
                     ref
                         .read(navigationProvider)
-                        .navigateTo(const SuggestLanguageScreen());
+                        .naviateTo(const SuggestLanguageScreen());
                   },
                 ),
                 _ProfileItem(
                   title: "Who are we?",
                   onTap: () {
                     kLaunchUrl('https://lingafriq.com/#about-us');
-                    // ref.read(navigationProvider).navigateTo(const AboutUsScreen());
+                    // ref.read(navigationProvider).naviateTo(const AboutUsScreen());
                   },
                 ),
                 _ProfileItem(
                   title: "App Privacy and User Policy",
                   onTap: () {
                     kLaunchUrl('https://lingafriq.com/app-policy.html');
-                    // ref.read(navigationProvider).navigateTo(const AppPolicyScreen());
+                    // ref.read(navigationProvider).naviateTo(const AppPolicyScreen());
                   },
                 ),
                 _ProfileItem(

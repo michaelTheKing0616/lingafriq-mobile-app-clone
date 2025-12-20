@@ -36,10 +36,6 @@ class SharedPreferencesProvider {
     await Future.wait([emailRemoveFuture, passwordRemoveFuture]);
   }
 
-  Future<void> removeUser(String emailKey) async {
-    await prefs.remove(emailKey);
-  }
-
   String get getEmail {
     final email = prefs.getString(emailKey) ?? '';
     return email;
@@ -75,61 +71,6 @@ class SharedPreferencesProvider {
 
   Future<void> setLanguageIntro(int id) async {
     await prefs.setBool("language/$id", false);
-  }
-
-  bool get hasSeenOnboarding {
-    return prefs.getBool("has_seen_onboarding") ?? false;
-  }
-
-  Future<void> setOnboardingSeen() async {
-    await prefs.setBool("has_seen_onboarding", true);
-  }
-  
-  /// Check if this is a fresh install or new update
-  /// Compares current app version with stored version
-  /// Returns true if version changed (new install or update)
-  Future<bool> isFreshInstallOrUpdate() async {
-    const String currentVersion = '1.6.0+110'; // Update this when app version changes
-    final String? storedVersion = prefs.getString('app_version');
-    
-    if (storedVersion == null) {
-      // First install - store version and return true
-      await prefs.setString('app_version', currentVersion);
-      return true;
-    }
-    
-    if (storedVersion != currentVersion) {
-      // Version changed - update stored version and return true
-      await prefs.setString('app_version', currentVersion);
-      return true;
-    }
-    
-    // Same version - not a fresh install or update
-    return false;
-  }
-  
-  /// Reset onboarding flag (useful for testing or forcing onboarding on updates)
-  Future<void> resetOnboarding() async {
-    await prefs.remove("has_seen_onboarding");
-  }
-
-  // Cache languages for offline access and stability
-  Future<void> cacheLanguages(String languagesJson) async {
-    await prefs.setString("cached_languages", languagesJson);
-    await prefs.setInt("cached_languages_timestamp", DateTime.now().millisecondsSinceEpoch);
-  }
-
-  String? getCachedLanguages() {
-    // Check if cache is less than 24 hours old
-    final timestamp = prefs.getInt("cached_languages_timestamp");
-    if (timestamp != null) {
-      final cacheAge = DateTime.now().millisecondsSinceEpoch - timestamp;
-      // Cache valid for 24 hours
-      if (cacheAge < 24 * 60 * 60 * 1000) {
-        return prefs.getString("cached_languages");
-      }
-    }
-    return null;
   }
 }
 

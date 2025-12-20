@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/auth/sign_up_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/validators.dart';
@@ -20,20 +19,9 @@ class LoginScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Load saved credentials from SharedPreferences
-    // This will pre-fill the form if user has logged in before
-    final savedCredentials = ref.read(sharedPreferencesProvider).getEmailAndPassword;
-    final emailController = useTextEditingController(
-      text: savedCredentials?['email'] ?? '',
-    );
-    final passwordController = useTextEditingController(
-      text: savedCredentials?['password'] ?? '',
-    );
-    
-    // Show a helpful message if credentials are pre-filled
-    final hasPrefilledCredentials = savedCredentials != null && 
-                                    savedCredentials['email'] != null && 
-                                    savedCredentials['email']!.isNotEmpty;
+    final emailController =
+        useTextEditingController(text: kDebugMode ? "itsatifsiddiqui@gmail.com" : null);
+    final passwordController = useTextEditingController(text: kDebugMode ? "Mubeen12" : null);
     final formKey = GlobalObjectKey<FormState>(context);
     final isLoading = ref.watch(authProvider.select((value) => value.isLoading));
     final showPassword = useState<bool>(false);
@@ -44,44 +32,13 @@ class LoginScreen extends HookConsumerWidget {
         body: Form(
           key: formKey,
           autovalidateMode: AutovalidateMode.always,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: 16.sp,
-              vertical: 24.sp,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                const TitleLogo(),
-                32.heightBox,
-                // Show helpful message if credentials are pre-filled
-                if (hasPrefilledCredentials)
-                  Container(
-                    margin: EdgeInsets.only(bottom: 16.sp),
-                    padding: EdgeInsets.all(12.sp),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.blue.withOpacity(0.3)),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.info_outline, color: Colors.blue, size: 20.sp),
-                        SizedBox(width: 8.sp),
-                        Expanded(
-                          child: Text(
-                            'Your login details have been pre-filled',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: Colors.blue[700],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              0.2.sh.heightBox,
+              const TitleLogo().centered(),
+              24.heightBox,
               PrimaryTextField(
                 controller: emailController,
                 title: "Email",
@@ -112,7 +69,7 @@ class LoginScreen extends HookConsumerWidget {
                 children: [
                   const Spacer(),
                   "Forgot password?".text.make().p8().mdClick(() {
-                    ref.read(navigationProvider).navigateTo(const ForgotPasswordScreen());
+                    ref.read(navigationProvider).naviateTo(const ForgotPasswordScreen());
                   }).make(),
                 ],
               ),
@@ -143,13 +100,11 @@ class LoginScreen extends HookConsumerWidget {
                   .make()
                   .p8()
                   .mdClick(() {
-                    ref.read(navigationProvider).navigateTo(const SignupScreen());
+                    ref.read(navigationProvider).naviateTo(const SignupScreen());
                   })
-                  .make(),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-              ],
-            ),
-          ).safeArea(),
+                  .make()
+            ],
+          ).scrollVertical().p16().safeArea(),
         ),
       ),
     );

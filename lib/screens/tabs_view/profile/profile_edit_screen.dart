@@ -33,54 +33,38 @@ class ProfileEditScreen extends HookConsumerWidget {
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.dark,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: const Text('Edit Profile'),
-        ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: 16.sp,
-            vertical: 24.sp,
-          ),
-          child: Column(
+        appBar: AppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
+        body: Column(
           children: [
             // ✅ Avatar section
-            Center(
-              child: ProfileImageBuilder(
-                onTap: () async {
-                  final user = ref.read(userProvider);
-                  if (user == null) return;
+            ProfileImageBuilder(
+              onTap: () async {
+                final user = ref.read(userProvider);
+                if (user == null) return;
 
-                  final current = kAvatarsList.containsKey(user.avater)
-                      ? kAvatarsList[user.avater]!
-                      : kAvatarsList.values.first;
+                final current = kAvatarsList.containsKey(user.avater)
+                    ? kAvatarsList[user.avater]!
+                    : kAvatarsList.values.first;
 
-                  final selectedAvatar = await _AvatarSelector.showAvatarSelectorDialog(
-                    context,
-                    selectedAvatar: current,
-                  );
+                final selectedAvatar = await _AvatarSelector.showAvatarSelectorDialog(
+                  context,
+                  selectedAvatar: current,
+                );
 
-                  if (selectedAvatar == null) return;
+                if (selectedAvatar == null) return;
 
-                  final updatedUser = user.copyWith(avater: selectedAvatar);
-                  await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                  ref.read(userProvider.notifier).overrideUser(updatedUser);
+                final updatedUser = user.copyWith(avater: selectedAvatar);
+                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                ref.read(userProvider.notifier).overrideUser(updatedUser);
 
-                  Navigator.of(context).pop();
-                  HapticFeedback.lightImpact();
-                  VxToast.show(context, msg: 'Avatar updated');
-                },
-              ),
-            ),
+                Navigator.of(context).pop();
+                HapticFeedback.lightImpact();
+                VxToast.show(context, msg: 'Avatar updated');
+              },
+            ).centered(),
             24.heightBox,
-            const Center(
-              child: ProfileDetailsBuilder(crossAxisAlignment: CrossAxisAlignment.center),
-            ),
-            32.heightBox,
+            const ProfileDetailsBuilder(crossAxisAlignment: CrossAxisAlignment.center).centered(),
+            16.heightBox,
 
             // ✅ Input fields
             PrimaryTextField(
@@ -90,7 +74,7 @@ class ProfileEditScreen extends HookConsumerWidget {
               validator: Validators.emptyValidator,
               textInputAction: TextInputAction.next,
             ),
-            16.heightBox,
+            12.heightBox,
             PrimaryTextField(
               controller: lastNameController,
               title: "Last name",
@@ -112,66 +96,60 @@ class ProfileEditScreen extends HookConsumerWidget {
             24.heightBox,
 
             // ✅ Save button
-            Center(
-              child: PrimaryButton(
-                width: 0.6.sw,
-                onTap: () async {
-                  final user = ref.read(userProvider);
-                  if (user == null) return;
+            PrimaryButton(
+              width: 0.6.sw,
+              onTap: () async {
+                final user = ref.read(userProvider);
+                if (user == null) return;
 
-                  final updatedUser = user.copyWith(
-                    first_name: firstnameController.text.trim(),
-                    last_name: lastNameController.text.trim(),
-                    nationality: selectedCountry.value,
-                  );
+                final updatedUser = user.copyWith(
+                  first_name: firstnameController.text.trim(),
+                  last_name: lastNameController.text.trim(),
+                  nationality: selectedCountry.value,
+                );
 
-                  await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                  ref.read(userProvider.notifier).overrideUser(updatedUser);
+                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                ref.read(userProvider.notifier).overrideUser(updatedUser);
 
-                  Navigator.of(context).pop();
-                  HapticFeedback.lightImpact();
-                  VxToast.show(context, msg: 'Success');
-                },
-                text: "Save",
-              ),
+                Navigator.of(context).pop();
+                HapticFeedback.lightImpact();
+                VxToast.show(context, msg: 'Success');
+              },
+              text: "Save",
             ),
-            32.heightBox,
+            24.heightBox,
 
             // ✅ Delete Account Button
-            Center(
-              child: PrimaryButton(
-                width: 0.6.sw,
-                text: "Delete Account",
-                color: AppColors.red,
-                onTap: () async {
-                  final confirm = await DeleteAccountDialog.showDeleteAccountDialog(context);
-                  if (confirm == true) {
-                    final password = await EnterPasswordDialog.show(context);
-                    if (password != null && password.isNotEmpty) {
-                      try {
-                        final svc = AccountService(ref);
-                        final msg = await svc.deleteAccount(password);
+            PrimaryButton(
+              width: 0.6.sw,
+              text: "Delete Account",
+              color: AppColors.red,
+              onTap: () async {
+                final confirm = await DeleteAccountDialog.showDeleteAccountDialog(context);
+                if (confirm == true) {
+                  final password = await EnterPasswordDialog.show(context);
+                  if (password != null && password.isNotEmpty) {
+                    try {
+                      final svc = AccountService(ref);
+                      final msg = await svc.deleteAccount(password);
 
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(SnackBar(content: Text(msg)));
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text(msg)));
 
-                        // ✅ Proper logout and navigation
-                        await ref.read(authProvider.notifier).signOut(deleteAccount: true);
-                        Navigator.of(context).popUntil((route) => route.isFirst);
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Error: $e")),
-                        );
-                      }
+                      // ✅ Proper logout and navigation
+                      await ref.read(authProvider.notifier).signOut(deleteAccount: true);
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Error: $e")),
+                      );
                     }
                   }
-                },
-              ),
+                }
+              },
             ),
-            32.heightBox,
           ],
-        ),
-      ),
+        ).p16().scrollVertical(),
       ),
     );
   }

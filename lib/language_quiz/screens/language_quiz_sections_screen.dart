@@ -18,7 +18,6 @@ import '../../providers/navigation_provider.dart';
 import '../../utils/api.dart';
 import '../../widgets/adaptive_progress_indicator.dart';
 import '../../widgets/error_widet.dart';
-import '../../screens/loading/dynamic_loading_screen.dart';
 import '../../widgets/greegins_builder.dart';
 import '../../widgets/info_widget.dart';
 import '../../widgets/top_gradient_box_builder.dart';
@@ -154,7 +153,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
           },
         );
       },
-      loading: () => const DynamicLoadingScreen(),
+      loading: () => const AdaptiveProgressIndicator(),
     );
   }
 
@@ -195,7 +194,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
             title: languageQuiz.title,
             quiz: quiz,
             isTakeQuiz: true,
@@ -244,7 +243,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).navigateTo(
+      final result = await ref.read(navigationProvider).naviateTo(
             CorrectionScreen(
               title: languageQuiz.title,
               score: languageQuiz.score,

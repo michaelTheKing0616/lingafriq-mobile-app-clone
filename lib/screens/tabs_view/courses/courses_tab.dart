@@ -12,7 +12,6 @@ import '../../../utils/constants.dart';
 import '../../../widgets/adaptive_progress_indicator.dart';
 import '../../../widgets/error_widet.dart';
 import '../../../widgets/greegins_builder.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import '../home/home_tab.dart';
 import '../home/language_detail_screen.dart';
 import '../tabs_view.dart';
@@ -88,7 +87,9 @@ class CoursesTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => DynamicLoadingScreen(),
+                  loading: () => const AdaptiveProgressIndicator(
+                    message: "Loading Courses ...",
+                  ),
                 ),
               ),
             ],
@@ -114,7 +115,7 @@ class _ProgressItem extends ConsumerWidget {
       shadowColor: Colors.black38,
       child: InkWell(
         onTap: () {
-          ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
+          ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
         },
         child: Column(
           children: [
