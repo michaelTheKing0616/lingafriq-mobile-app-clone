@@ -73,17 +73,22 @@ android {
                 // Try multiple locations: CI/CD location first, then root location
                 def keystoreFile = null
                 if (keystorePath) {
-                    // Try CI/CD location: android/app/upload-keystore.jks
-                    def ciKeystore = file("${rootProject.projectDir}/android/${keystorePath}")
-                    // Try root location: upload-keystore.jks (for local development)
-                    def rootKeystore = file("${rootProject.projectDir}/${keystorePath.split('/').last()}")
-                    
+                    // In CI we write: android/app/upload-keystore.jks
+                    // and set in key.properties: storeFile=app/upload-keystore.jks
+                    //
+                    // rootProject.projectDir points to the `android/` folder, so the correct
+                    // resolved path is: android/<storeFile> (NOT android/android/<storeFile>).
+                    def ciKeystore = file("${rootProject.projectDir}/${keystorePath}")
+
+                    // Optional local convenience: allow placing the keystore directly in android/
+                    def androidRootKeystore = file("${rootProject.projectDir}/${keystorePath.split('/').last()}")
+
                     if (ciKeystore.exists()) {
                         keystoreFile = ciKeystore
                         println("✅ Found keystore at CI/CD location: ${keystoreFile.absolutePath}")
-                    } else if (rootKeystore.exists()) {
-                        keystoreFile = rootKeystore
-                        println("✅ Found keystore at root location: ${keystoreFile.absolutePath}")
+                    } else if (androidRootKeystore.exists()) {
+                        keystoreFile = androidRootKeystore
+                        println("✅ Found keystore at android/ root location: ${keystoreFile.absolutePath}")
                     }
                 }
                 
@@ -96,7 +101,7 @@ android {
                     println("✅ Keystore configured successfully")
                 } else {
                     println("⚠️ Keystore file not found. Tried:")
-                    println("   - ${rootProject.projectDir}/android/${keystorePath}")
+                    println("   - ${rootProject.projectDir}/${keystorePath}")
                     println("   - ${rootProject.projectDir}/${keystorePath?.split('/')?.last()}")
                 }
             }
