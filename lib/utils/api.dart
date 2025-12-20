@@ -70,9 +70,4 @@ class Api {
   // static String completeRandomWordQuiz(languageId, questionId) =>
   //     "/random_quiz/$languageId/questions/$questionId/word_ques_detail";
   //History Quiz End
-
-  //Culture Magazine
-  static const String cultureMagazineArticles = "/api/culture-magazine/articles";
-  static const String cultureMagazineFeaturedArticles = "/api/culture-magazine/featured";
-  static String cultureMagazineArticleBySlug(String slug) => "/api/culture-magazine/articles/$slug";
 }

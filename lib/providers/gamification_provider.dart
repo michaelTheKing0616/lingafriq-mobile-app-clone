@@ -51,9 +51,9 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (user != null) {
         final success = await ref.read(apiProvider.notifier).awardXP(
           userId: user.id.toString(),
-          amount: xpGain,
           source: backendSource,
           sourceId: uniqueSourceId,
+          amount: xpGain,
           difficultyMultiplier: multiplier,
         );
         
@@ -196,29 +196,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
       debugPrint('Used streak freeze! Remaining: $newFreezeLeft');
     } else {
       // Streak broken
-      if (_gamification.ubuntuStreakActive && _gamification.dailyStreak > 0) {
-        // Ubuntu mode: donate lessons instead of breaking.
-        final previousStreak = _gamification.dailyStreak;
-        final donatedLessons = previousStreak.clamp(1, 30);
-        final estimatedDonatedXp = donatedLessons * 30; // ~30 XP per lesson
-
-        debugPrint(
-          'Ubuntu streak: donating $donatedLessons lessons (~$estimatedDonatedXp XP) '
-          'to help others instead of breaking a ${previousStreak}-day streak.',
-        );
-
-        // Fire-and-forget donation to backend; failure should not block UX.
-        _donateUbuntuStreak(
-          streakBefore: previousStreak,
-          donatedLessons: donatedLessons,
-          donatedXp: estimatedDonatedXp,
-        );
-
-        // Preserve streak instead of resetting.
-        newStreak = previousStreak;
-      } else {
-        newStreak = 1;
+      if (_gamification.ubuntuStreakActive) {
+        // Ubuntu mode: donate lessons instead of breaking
+        debugPrint('Ubuntu streak: Donating lessons to help others');
+        // TODO: Implement lesson donation
       }
+      newStreak = 1;
     }
 
     // Streak bonuses
@@ -243,36 +226,6 @@ class GamificationProvider extends Notifier<BaseProviderState>
     await _syncToBackend();
 
     state = state.copyWith();
-  }
-
-  /// Ubuntu streak donation helper – informs backend that the learner chose
-  /// to convert a broken streak into help for others.
-  Future<void> _donateUbuntuStreak({
-    required int streakBefore,
-    required int donatedLessons,
-    required int donatedXp,
-  }) async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) return;
-
-      final api = ref.read(apiProvider.notifier);
-      await api.donateUbuntuStreak(
-        streakBefore: streakBefore,
-        donatedLessons: donatedLessons,
-        donatedXp: donatedXp,
-        language: null, // Optional: can be wired to current study language
-      );
-
-      // Emit a local gamification event for analytics / UI nudges.
-      await _emitEvent('ubuntu_donation', {
-        'streak_before': streakBefore,
-        'donated_lessons': donatedLessons,
-        'donated_xp': donatedXp,
-      });
-    } catch (e) {
-      debugPrint('Error during Ubuntu streak donation: $e');
-    }
   }
 
   /// Check perfect week streak
@@ -429,15 +382,6 @@ class GamificationProvider extends Notifier<BaseProviderState>
   Future<void> enableUbuntuStreak() async {
     _gamification = _gamification.copyWith(ubuntuStreakActive: true);
     await _saveGamification();
-    await _syncToBackend();
-    state = state.copyWith();
-  }
-
-  /// Explicitly set the Ubuntu streak flag (used when turning it off).
-  Future<void> setUbuntuStreakActive(bool active) async {
-    _gamification = _gamification.copyWith(ubuntuStreakActive: active);
-    await _saveGamification();
-    await _syncToBackend();
     state = state.copyWith();
   }
 

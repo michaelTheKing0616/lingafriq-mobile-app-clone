@@ -14,8 +14,6 @@ import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/widgets/adaptive/adaptive_learning_panel.dart';
-import 'package:lingafriq/widgets/gamification/ubuntu_card_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -30,9 +28,8 @@ class ModernDashboardScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Calculate today's goal progress
-    final goalsProvider = ref.read(dailyGoalsProvider.notifier);
-    final completedGoals = goalsProvider.goals.where((g) => g.isCompleted).length;
-    final totalGoals = goalsProvider.goals.length;
+    final completedGoals = dailyGoals.goals.where((g) => g.isCompleted).length;
+    final totalGoals = dailyGoals.goals.length;
     final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
     
     return Scaffold(
@@ -576,16 +573,6 @@ class _QuickActionCard extends StatelessWidget {
             ],
           ),
         ),
-
-                  SizedBox(height: 3.h),
-
-                  // Adaptive Learning Panel powered by Polie + gamification
-                  const AdaptiveLearningPanel(),
-
-                  SizedBox(height: 2.h),
-
-                  // Ubuntu Streak card – opt‑in social streak protection
-                  const UbuntuCardWidget(),
       ),
     );
   }

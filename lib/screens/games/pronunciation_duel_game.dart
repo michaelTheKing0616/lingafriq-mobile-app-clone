@@ -1,14 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/api_provider.dart';
-import '../../utils/progress_integration.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -85,84 +82,41 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   }
 
   Future<String> _getRecordingPath() async {
-    final dir = await getTemporaryDirectory();
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    return '${dir.path}/pronunciation_duel_$ts.m4a';
+    // TODO: Use path_provider for proper path
+    return '/tmp/recording_${DateTime.now().millisecondsSinceEpoch}.m4a';
   }
 
   Future<void> _scorePronunciation(String audioPath) async {
-    try {
-      final api = ref.read(apiProvider.notifier);
-      final language = widget.language;
-      final referenceText = _currentCard?.text ?? '';
+    // TODO: Call pronunciation scoring API
+    // For now, mock scoring
+    await Future.delayed(const Duration(seconds: 1));
+    
+    final mockScore = 70 + (DateTime.now().millisecond % 30); // 70-100
+    final mockMistakes = mockScore < 85
+        ? ['Vowel length', 'Tone accuracy']
+        : [];
 
-      final result = await api.pronunciationQuick(
-        audioPath: audioPath,
-        expectedText: referenceText,
-        language: language,
-      );
+    setState(() {
+      _pronunciationScore = mockScore;
+      _mistakes = List<String>.from(mockMistakes);
+    });
 
-      final score0to1 = (result['score'] ?? 0.7) as num;
-      final score = (score0to1 * 100).round().clamp(0, 100);
-      final mistakes = <String>[];
-      if (result['phoneme_errors'] is List) {
-        mistakes.addAll(List<String>.from(result['phoneme_errors']));
-      } else if (result['feedback'] is String &&
-          (result['feedback'] as String).isNotEmpty) {
-        mistakes.add(result['feedback'] as String);
-      }
-
-      setState(() {
-        _pronunciationScore = score;
-        _mistakes = mistakes;
-      });
-
-      // Complete turn with real score
-      final duration = startTime != null
-          ? DateTime.now().difference(startTime!).inMilliseconds
-          : 0;
-
-      await completeTurn(
-        cardId: _currentCard!.cardId,
-        result: score >= 85 ? GameResult.correct : GameResult.partial,
-        durationMs: duration,
-        confidence: score0to1.toDouble(),
-        feedback: {
-          'score': score,
-          'feedback': result['feedback'],
-          'phoneme_errors': result['phoneme_errors'],
-          'word_errors': result['word_errors'],
-        },
-        userAction: 'pronounced',
-      );
-
-      // Feed into global progress (for pronunciation achievements, etc.)
-      await ProgressIntegration.onChatActivity(
-        ref,
-        minutes: (duration / 1000.0 / 60.0),
-        pronunciationScore: score0to1.toDouble(),
-      );
-    } catch (e) {
-      debugPrint('Error scoring pronunciation: $e');
-      final duration = startTime != null
-          ? DateTime.now().difference(startTime!).inMilliseconds
-          : 0;
-      await completeTurn(
-        cardId: _currentCard!.cardId,
-        result: GameResult.partial,
-        durationMs: duration,
-        confidence: 0.5,
-        feedback: {'error': e.toString()},
-        userAction: 'pronounced',
-      );
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Pronunciation scoring is temporarily unavailable.'),
-          ),
-        );
-      }
-    }
+    // Complete turn
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
+        : 0;
+    
+    await completeTurn(
+      cardId: _currentCard!.cardId,
+      result: mockScore >= 85 ? GameResult.correct : GameResult.partial,
+      durationMs: duration,
+      confidence: mockScore / 100.0,
+      feedback: {
+        'score': mockScore,
+        'mistakes': mockMistakes,
+      },
+      userAction: 'pronounced',
+    );
   }
 
   void _nextCard() {

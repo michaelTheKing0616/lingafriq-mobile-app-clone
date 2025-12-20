@@ -31,8 +31,7 @@ class TelemetryService {
       final event = {
         'event_type': eventType,
         'feature': feature,
-        // Prefer globalId when available so telemetry is stable across services.
-        'user_id': user.globalId ?? user.id.toString(),
+        'user_id': user.id,
         'timestamp': DateTime.now().toIso8601String(),
         'metadata': metadata ?? {},
       };

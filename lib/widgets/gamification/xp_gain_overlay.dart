@@ -28,13 +28,14 @@ class XPGainEvent {
 }
 
 /// Provider for managing XP gain events
-final xpGainOverlayProvider = NotifierProvider<XPGainOverlayNotifier, List<XPGainEvent>>(() {
-  return XPGainOverlayNotifier();
+final xpGainOverlayProvider = StateNotifierProvider<XPGainOverlayNotifier, List<XPGainEvent>>((ref) {
+  return XPGainOverlayNotifier(ref);
 });
 
-class XPGainOverlayNotifier extends Notifier<List<XPGainEvent>> {
-  @override
-  List<XPGainEvent> build() => [];
+class XPGainOverlayNotifier extends StateNotifier<List<XPGainEvent>> {
+  final Ref _ref;
+  
+  XPGainOverlayNotifier(this._ref) : super([]);
   
   /// Show XP gain overlay
   void showXPGain({
@@ -56,12 +57,12 @@ class XPGainOverlayNotifier extends Notifier<List<XPGainEvent>> {
     
     state = [...state, event];
     
-    // Play sound - TODO: Add sound effects provider reference if needed
-    // if (isLevelUp) {
-    //   ref.read(soundEffectsProvider).playLevelUp();
-    // } else {
-    //   ref.read(soundEffectsProvider).playXPGain(amount);
-    // }
+    // Play sound
+    if (isLevelUp) {
+      _ref.read(soundEffectsProvider).playLevelUp();
+    } else {
+      _ref.read(soundEffectsProvider).playXPGain(amount);
+    }
     
     // Auto-remove after animation
     Future.delayed(const Duration(seconds: 3), () {

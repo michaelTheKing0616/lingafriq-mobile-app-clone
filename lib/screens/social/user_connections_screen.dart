@@ -11,7 +11,6 @@ import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/screens/social/global_people_search_screen.dart';
 
 class UserConnectionsScreen extends ConsumerStatefulWidget {
   const UserConnectionsScreen({Key? key}) : super(key: key);
@@ -93,18 +92,6 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.alternate_email_rounded),
-            tooltip: 'Global people search',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const GlobalPeopleSearchScreen(),
-                ),
-              );
-            },
-          ),
           IconButton(
             icon: const Icon(Icons.lock_outline),
             tooltip: 'Private chats',

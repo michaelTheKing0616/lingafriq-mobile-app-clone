@@ -6,7 +6,6 @@ import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
-import '../../services/polie_content_generator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// WordMatch+Audio Game - Upgraded version with TTS, pronunciation, diacritics
@@ -35,8 +34,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   final List<_MatchResult> _results = [];
   GameSession? _session;
   DateTime? _startTime;
-  int _mistakeCount = 0;
-  String? _polieHint;
 
   @override
   void initState() {
@@ -127,12 +124,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         correct: correct,
         timestamp: DateTime.now(),
       ));
-      if (correct) {
-        _mistakeCount = 0;
-        _polieHint = null;
-      } else {
-        _mistakeCount += 1;
-      }
     });
 
     // Update game provider
@@ -145,11 +136,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       userAction: 'matched_audio_played',
     );
 
-    // Ask Polie for a hint after a couple of mistakes
-    if (!correct && _mistakeCount >= 2) {
-      _maybeAskPolieForHint(leftId, rightId);
-    }
-
     // Show feedback
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -159,31 +145,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
           duration: const Duration(seconds: 1),
         ),
       );
-    }
-  }
-
-  Future<void> _maybeAskPolieForHint(String leftId, String rightId) async {
-    try {
-      final leftTile = _leftTiles.firstWhere((t) => t.id == leftId, orElse: () => _leftTiles.first);
-      final rightTile =
-          _rightTiles.firstWhere((t) => t.id == rightId, orElse: () => _rightTiles.first);
-
-      final context =
-          'Word: "${leftTile.label}" (native) vs "${rightTile.label}" (meaning). The learner matched them incorrectly in a word + audio matching game.';
-
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      final hint = await polieGenerator.generateGameHint(
-        gameType: 'word_match_audio',
-        language: widget.language,
-        context: context,
-      );
-
-      if (!mounted) return;
-      setState(() {
-        _polieHint = hint;
-      });
-    } catch (e) {
-      debugPrint('Error getting Polie hint: $e');
     }
   }
 
@@ -236,38 +197,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                       child: LinearProgressIndicator(
                         value: _results.length / _leftTiles.length,
                         minHeight: 8,
-                      ),
-                    ),
-                  if (_polieHint != null)
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 1.h),
-                      child: Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.all(3.w),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.smart_toy_rounded,
-                              color: Theme.of(context).colorScheme.onPrimaryContainer,
-                            ),
-                            SizedBox(width: 2.w),
-                            Expanded(
-                              child: Text(
-                                _polieHint!,
-                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onPrimaryContainer,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ),
                   Expanded(

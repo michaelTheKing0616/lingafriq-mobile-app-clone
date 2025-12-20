@@ -4,10 +4,6 @@ import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
-import 'package:lingafriq/screens/dashboard/modern_dashboard_screen.dart';
-import 'package:lingafriq/providers/subscription_provider.dart';
-import 'package:lingafriq/screens/subscription/family_dashboard_screen.dart';
-import 'package:lingafriq/screens/help/features_guide_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -43,21 +39,6 @@ class AppDrawer extends ConsumerWidget {
                 ),
                 ListTile(
                   leading: Icon(
-                    Icons.dashboard_customize_rounded,
-                    color: context.primaryColor,
-                  ),
-                  title: 'Smart Dashboard'
-                      .text
-                      .xl
-                      .make()
-                      .offset(offset: const Offset(-16, 0)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const ModernDashboardScreen());
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
                     Icons.person,
                     color: context.primaryColor,
                   ),
@@ -75,46 +56,6 @@ class AppDrawer extends ConsumerWidget {
                   title: 'Settings'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
                     ref.read(navigationProvider).naviateTo(const ProfileEditScreen());
-                  },
-                ),
-                Consumer(
-                  builder: (context, ref, _) {
-                    final sub = ref.watch(subscriptionProvider);
-                    if (sub.tier != SubscriptionTier.family) {
-                      return const SizedBox.shrink();
-                    }
-                    return ListTile(
-                      leading: Icon(
-                        Icons.family_restroom_rounded,
-                        color: context.primaryColor,
-                      ),
-                      title: 'Family Dashboard'
-                          .text
-                          .xl
-                          .make()
-                          .offset(offset: const Offset(-16, 0)),
-                      onTap: () {
-                        Navigator.pop(context);
-                        ref.read(navigationProvider).naviateTo(
-                              const FamilyDashboardScreen(),
-                            );
-                      },
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.help_outline_rounded,
-                    color: context.primaryColor,
-                  ),
-                  title: 'Features Guide'
-                      .text
-                      .xl
-                      .make()
-                      .offset(offset: const Offset(-16, 0)),
-                  onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const FeaturesGuideScreen());
                   },
                 ),
                 ListTile(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/socket_provider.dart';
@@ -9,7 +8,6 @@ import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import '../../providers/tribe_vs_tribe_provider.dart';
 import '../../providers/gamification_provider.dart';
-import '../../widgets/social/tribe_vs_tribe_card.dart';
 
 /// Tribe vs Tribe Events Screen
 class TribeVsTribeScreen extends ConsumerStatefulWidget {
@@ -112,6 +110,14 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () => Navigator.pop(context),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            ),
+          ],
         ),
         body: const Center(
           child: Text('No active event'),
@@ -119,76 +125,63 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
       );
     }
 
-    final isActive = displayEvent['isActive'] == true;
-
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF0B1F1A),
-              Color(0xFF102B24),
-              Color(0xFF081317),
-            ],
-          ),
+      appBar: AppBar(
+        title: const Text('Tribe vs Tribe'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
         ),
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(4.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Futuristic header
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    SizedBox(width: 2.w),
-                    Text(
-                      'Tribe vs Tribe Arena',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const Spacer(),
-                    IconButton(
-                      icon: const Icon(Icons.refresh, color: Colors.white),
-                      onPressed: _loadCompetitions,
-                    ),
-                  ],
-                ),
-                SizedBox(height: 2.h),
-                Expanded(
-                  child: ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              _loadCompetitions();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          // Event header
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    displayEvent['name'] ?? 'Competition',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(displayEvent['description'] ?? ''),
+                  const SizedBox(height: 16),
+                  Row(
                     children: [
-                      // Event header using the rich TribeVsTribeCard
-                      TribeVsTribeCard(
-                        eventName: displayEvent['name'] ?? 'Competition',
-                        participatingTribes: _competitionResults.isNotEmpty
-                            ? _competitionResults
-                                .map<String>((r) => r['subject_name']?.toString() ?? 'Tribe')
-                                .toList()
-                            : leaderboard.keys.toList(),
-                        tribeScores: _competitionResults.isNotEmpty
-                            ? {
-                                for (final r in _competitionResults)
-                                  (r['subject_name']?.toString() ?? 'Tribe'):
-                                      (r['points'] as int? ?? 0),
-                              }
-                            : leaderboard.map((k, v) => MapEntry(k, v)),
-                        startDate: DateTime.now(),
-                        endDate: DateTime.now().add(const Duration(days: 7)),
-                        isActive: isActive,
-                        onTap: () {},
+                      const Icon(Icons.timer, size: 16),
+                      const SizedBox(width: 4),
+                      Text(
+                        displayEvent['isActive'] == true
+                            ? 'Active Competition'
+                            : 'Upcoming Competition',
                       ),
-                      SizedBox(height: 2.h),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
           // Leaderboard
           Text(
             'Tribe Leaderboard',

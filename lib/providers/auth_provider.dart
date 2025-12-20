@@ -6,7 +6,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
-import '../screens/onboarding/kijiji_onboarding_screen.dart';
+import '../screens/onboarding/onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
@@ -39,17 +39,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     if (user is ProfileModel) {
       ref.read(userProvider.notifier).overrideUser(user);
       await ref.read(apiProvider.notifier).regiserDevice();
-
-      // If the user has not completed onboarding (including placement test),
-      // take them through the Kijiji flow instead of dropping them straight
-      // into the main app.
-      final hasSeenOnboarding =
-          ref.read(sharedPreferencesProvider).hasSeenOnboarding;
-      if (!hasSeenOnboarding) {
-        ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
-      } else {
-        ref.read(navigationProvider).naviateOffAll(const TabsView());
-      }
+      ref.read(navigationProvider).naviateOffAll(const TabsView());
       return;
     }
 
@@ -76,9 +66,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        // New accounts: always take them through the rich Kijiji onboarding
-        // flow, which includes the placement test (with a skip option).
-        ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
+        ref.read(navigationProvider).naviateOffAll(const OnboardingScreen());
         return user;
       }
       return user;
