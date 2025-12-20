@@ -52,3 +52,6 @@ android/key.properties
 *.jks
 upload-keystore.jks
 keystore_base64.txt
+
+# CI logs / local artifacts (do not commit)
+logs_*/
