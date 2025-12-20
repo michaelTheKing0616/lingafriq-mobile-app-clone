@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -169,8 +170,8 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           score: _matches,
         );
         if (gameSuccess) {
-          // Track progress
-          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _matches);
+          // Track progress with points
+          await ProgressIntegration.onGameCompleted(ref as Ref, wordsLearned: _matches, pointsEarned: calculatedPoints);
           ref.read(userProvider.notifier).addPoints(calculatedPoints);
         }
         

@@ -19,8 +19,8 @@ class GrammarNotifier extends Notifier<GrammarState> {
   }
 
   Map<String, GrammarExplanation> _getGrammarDatabase(String language) {
-    // Grammar explanations for African languages
-    // This is production-ready content covering key grammatical concepts
+    // This would typically come from a backend or local database
+    // For now, returning sample data for all supported languages
     
     // Import SupportedLanguages to ensure we support all languages
     final supportedLanguages = [

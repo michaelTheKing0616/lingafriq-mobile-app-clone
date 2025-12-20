@@ -79,7 +79,104 @@ class CultureContent {
     isFeatured: map['isFeatured'] ?? false,
   );
 
+  /// Factory constructor to parse backend API response
+  /// Maps backend category to ContentType enum
+  factory CultureContent.fromBackendMap(Map<String, dynamic> map) {
+    // Map backend category to ContentType
+    final category = (map['category'] ?? '').toString().toLowerCase();
+    ContentType contentType;
+    
+    switch (category) {
+      case 'music':
+        contentType = ContentType.music;
+        break;
+      case 'festivals':
+        contentType = ContentType.festival;
+        break;
+      case 'tradition':
+      case 'history':
+        contentType = ContentType.lore;
+        break;
+      case 'cuisine':
+        contentType = ContentType.recipe;
+        break;
+      case 'art':
+      case 'literature':
+        contentType = ContentType.story;
+        break;
+      case 'language':
+      default:
+        contentType = ContentType.article;
+        break;
+    }
+
+    // Parse publish date
+    DateTime publishDate;
+    try {
+      if (map['published_date'] != null) {
+        publishDate = DateTime.parse(map['published_date'].toString());
+      } else if (map['created_at'] != null) {
+        publishDate = DateTime.parse(map['created_at'].toString());
+      } else {
+        publishDate = DateTime.now();
+      }
+    } catch (e) {
+      publishDate = DateTime.now();
+    }
+
+    return CultureContent(
+      id: map['_id']?.toString() ?? map['id']?.toString() ?? '',
+      title: map['title'] ?? '',
+      description: map['excerpt'] ?? map['description'] ?? '',
+      type: contentType,
+      imageUrl: map['featured_image'] ?? map['imageUrl'],
+      audioUrl: map['audioUrl'],
+      videoUrl: map['videoUrl'],
+      content: map['content'] ?? '',
+      language: map['language'] ?? 'English',
+      country: map['country'] ?? map['region'],
+      publishDate: publishDate,
+      tags: List<String>.from(map['tags'] ?? []),
+      views: map['views'] ?? 0,
+      isFeatured: map['featured'] ?? false,
+    );
+  }
+
   String toJson() => jsonEncode(toMap());
   factory CultureContent.fromJson(String json) => CultureContent.fromMap(jsonDecode(json));
+
+  CultureContent copyWith({
+    String? id,
+    String? title,
+    String? description,
+    ContentType? type,
+    String? imageUrl,
+    String? audioUrl,
+    String? videoUrl,
+    String? content,
+    String? language,
+    String? country,
+    DateTime? publishDate,
+    List<String>? tags,
+    int? views,
+    bool? isFeatured,
+  }) {
+    return CultureContent(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      type: type ?? this.type,
+      imageUrl: imageUrl ?? this.imageUrl,
+      audioUrl: audioUrl ?? this.audioUrl,
+      videoUrl: videoUrl ?? this.videoUrl,
+      content: content ?? this.content,
+      language: language ?? this.language,
+      country: country ?? this.country,
+      publishDate: publishDate ?? this.publishDate,
+      tags: tags ?? this.tags,
+      views: views ?? this.views,
+      isFeatured: isFeatured ?? this.isFeatured,
+    );
+  }
 }
 

@@ -7,13 +7,12 @@ class AncestralTreeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Currently shows a local, illustrative tree based on your gifting activity.
-    // Marked as beta until fully wired to backend gifting/social graph.
+    // Mock data - TODO: Load from backend
     final treeData = _generateMockTreeData();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ancestral Tree (beta)'),
+        title: const Text('Ancestral Tree'),
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),

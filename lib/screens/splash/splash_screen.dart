@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/core/initialization/app_initializer.dart';
 
 import '../../widgets/app_logo.dart';
 
@@ -29,8 +31,10 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     
     // Initialize app (any async setup)
     await Future.wait([
-      // Add any initialization tasks here
-      Future.delayed(const Duration(milliseconds: 100)), // Placeholder
+      // Daily check-in for gamification
+      ref.read(gamificationProvider.notifier).dailyCheckIn(),
+      // App initialization (backend health, cache, games)
+      _initializeAppServices(),
     ]);
 
     // Ensure minimum 3 seconds, maximum 4 seconds
@@ -58,6 +62,38 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         // Navigate after loading screen completes
         ref.read(authProvider.notifier).navigateBasedOnCondition();
       }
+  }
+
+  /// Initialize app services (backend health, cache, games)
+  Future<void> _initializeAppServices() async {
+    try {
+      final initializer = ref.read(appInitializerProvider);
+      final result = await initializer.initialize();
+      
+      if (result.success) {
+        debugPrint('✅ App initialization successful: ${result.duration.inMilliseconds}ms');
+        if (result.backendStatus != null) {
+          if (result.backendStatus!.isFullyOperational) {
+            debugPrint('✅ Backend fully operational');
+          } else if (result.backendStatus!.hasPartialConnectivity) {
+            debugPrint('⚠️ Backend has partial connectivity');
+          } else {
+            debugPrint('⚠️ Backend offline - app will work in offline mode');
+          }
+        }
+      } else {
+        debugPrint('⚠️ App initialization completed with warnings');
+        if (result.error != null) {
+          debugPrint('Error: ${result.error}');
+        }
+      }
+      
+      // Continue background initialization
+      initializer.initializeBackground();
+    } catch (e) {
+      debugPrint('❌ App initialization error: $e');
+      // Continue anyway - app can work offline
+    }
   }
 
   @override

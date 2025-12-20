@@ -8,7 +8,9 @@ import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
 import 'package:lingafriq/screens/profile/user_profile_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_select_screen.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/achievements/achievements_screen.dart';
@@ -19,6 +21,19 @@ import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/social/user_connections_screen.dart';
 import 'package:lingafriq/screens/curriculum/curriculum_screen.dart';
+import 'package:lingafriq/screens/gamification/badge_collection_screen.dart';
+import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
+import 'package:lingafriq/screens/gamification/quest_screen.dart';
+import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
+import 'package:lingafriq/screens/gamification/seasonal_events_screen.dart';
+import 'package:lingafriq/screens/gamification/magic_items_screen.dart';
+import 'package:lingafriq/screens/social/language_villages_screen.dart';
+import 'package:lingafriq/screens/social/tribe_vs_tribe_screen.dart';
+import 'package:lingafriq/screens/social/social_gifting_screen.dart';
+import 'package:lingafriq/screens/social/ancestral_tree_screen.dart';
+import 'package:lingafriq/screens/ugc/ugc_hub_screen.dart';
+import 'package:lingafriq/screens/help/features_guide_screen.dart';
+import 'package:lingafriq/screens/contribute/native_speaker_contribution_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -38,10 +53,12 @@ class AppDrawer extends ConsumerWidget {
             BackButton(
               color: context.adaptive,
             ),
-            Column(
-              children: [
-                0.05.sh.heightBox,
-                ListTile(
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    0.05.sh.heightBox,
+                    ListTile(
                   leading: Icon(
                     Icons.home_rounded,
                     color: context.primaryColor,
@@ -49,7 +66,7 @@ class AppDrawer extends ConsumerWidget {
                   title: 'Home'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
                     ref.read(tabIndexProvider.notifier).setIndex(0);
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                   },
                 ),
                 ListTile(
@@ -59,8 +76,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Profile'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const UserProfileScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const UserProfileScreen());
                   },
                 ),
                 ListTile(
@@ -70,8 +87,11 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'AI Chat'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const AiChatSelectScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    // Navigate to mode selection screen first (shows all 6 modes)
+                    ref.read(navigationProvider).navigateTo(
+                          AiChatSelectScreen(),
+                        );
                   },
                 ),
                 ListTile(
@@ -81,8 +101,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Language Games'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const GamesScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const GamesScreen());
                   },
                 ),
                 ListTile(
@@ -92,8 +112,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Daily Goals'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const DailyGoalsScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const DailyGoalsScreen());
                   },
                 ),
                 ListTile(
@@ -103,8 +123,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Progress Dashboard'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const ProgressDashboardScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const ProgressDashboardScreen());
                   },
                 ),
                 ListTile(
@@ -114,8 +134,118 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Achievements'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const AchievementsScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const AchievementsScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.workspace_premium_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Badges'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const BadgeCollectionScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.leaderboard_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Leaderboards'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const LeaderboardScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.auto_stories_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'The Great Journey'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const QuestScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.group_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'My Tribe'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const TribeSelectionScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.location_city,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Language Villages'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const LanguageVillagesScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.groups_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Tribe vs Tribe'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const TribeVsTribeScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.card_giftcard_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Send a Lesson'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const SocialGiftingScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.account_tree_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Ancestral Tree'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const AncestralTreeScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.event_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Seasonal Events'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const SeasonalEventsScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.auto_awesome_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Magic Items'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const MagicItemsScreen());
                   },
                 ),
                 ListTile(
@@ -125,8 +255,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Global Progress'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const GlobalProgressScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const GlobalProgressScreen());
                   },
                 ),
                 ListTile(
@@ -136,8 +266,31 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Import Media'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const ImportMediaScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const ImportMediaScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.create_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Create Content'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const UGCHubScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.record_voice_over_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Contribute Your Voice'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  subtitle: 'Help others learn your language'.text.sm.gray500.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const NativeSpeakerContributionScreen());
                   },
                 ),
                 ListTile(
@@ -147,8 +300,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Culture Magazine'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const CultureMagazineScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const CultureMagazineScreen());
                   },
                 ),
                 ListTile(
@@ -158,8 +311,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Connect with Users'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const UserConnectionsScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const UserConnectionsScreen());
                   },
                 ),
                 ListTile(
@@ -169,8 +322,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Global Chat'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const GlobalChatScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const GlobalChatScreen());
                   },
                 ),
                 ListTile(
@@ -180,10 +333,10 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Private Chats'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                     ref
                         .read(navigationProvider)
-                        .naviateTo(const PrivateChatListScreen());
+                        .navigateTo(const PrivateChatListScreen());
                   },
                 ),
                 ListTile(
@@ -193,8 +346,20 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Comprehensive Curriculum'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const CurriculumScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const CurriculumScreen());
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.help_outline_rounded,
+                    color: context.primaryColor,
+                  ),
+                  title: 'Features Guide'.text.xl.make().offset(offset: const Offset(-16, 0)),
+                  subtitle: 'Learn how to use all features'.text.sm.gray500.make().offset(offset: const Offset(-16, 0)),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const FeaturesGuideScreen());
                   },
                 ),
                 ListTile(
@@ -204,8 +369,8 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'Settings'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
-                    ref.read(navigationProvider).naviateTo(const SettingsScreen());
+                    Navigator.of(context, rootNavigator: true).pop();
+                    ref.read(navigationProvider).navigateTo(const SettingsScreen());
                   },
                 ),
                 ListTile(
@@ -215,12 +380,14 @@ class AppDrawer extends ConsumerWidget {
                   ),
                   title: 'App Policy'.text.xl.make().offset(offset: const Offset(-16, 0)),
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.of(context, rootNavigator: true).pop();
                     kLaunchUrl('https://lingafriq.com/app-policy.html');
                   },
                 ),
-              ],
-            ).scrollVertical().expand(),
+                  ],
+                ),
+              ),
+            ),
             PrimaryButton(
               onTap: () async {
                 final result = await ref.read(dialogProvider('')).showPlatformDialogue(

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/models/profile_model.dart';
-import 'package:lingafriq/providers/socket_provider.dart';
+import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -84,6 +84,10 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
         titleSpacing: 0,
         title: Row(
           children: [
@@ -129,11 +133,17 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
             ),
           ],
         ),
-        actions: const [
-          Padding(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+          const Padding(
             padding: EdgeInsets.only(right: 12),
             child: Icon(Icons.lock_outline, size: 20),
-          )
+          ),
         ],
       ),
       body: Column(

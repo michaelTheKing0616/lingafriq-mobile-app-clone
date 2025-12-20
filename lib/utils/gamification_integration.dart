@@ -87,7 +87,7 @@ class _GamificationHelper {
     if (timeSpentMinutes > 0) _syncChallengeProgress('timeSpent', timeSpentMinutes);
     
     // Check milestones
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'lessonsCompleted': gamification.lessonsCompleted + 1,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
@@ -152,7 +152,7 @@ class _GamificationHelper {
     _syncChallengeProgress('xpEarned', xpEarned);
     
     // Check milestones
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'quizzesCompleted': gamification.quizzesCompleted + 1,
       'perfectQuizzes': isPerfect ? gamification.perfectQuizzes + 1 : gamification.perfectQuizzes,
@@ -198,7 +198,7 @@ class _GamificationHelper {
     _syncChallengeProgress('xpEarned', xpEarned);
     
     // Check milestones
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'gamesPlayed': gamification.gamesPlayed + 1,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
@@ -230,7 +230,7 @@ class _GamificationHelper {
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.wordsLearned, count);
     _syncChallengeProgress('wordsLearned', count);
     
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'wordsLearned': gamification.wordsLearned + count,
       'totalXP': gamification.totalXP + xpEarned,
@@ -260,7 +260,7 @@ class _GamificationHelper {
     _syncChallengeProgress('chatMessages', 1);
     _syncChallengeProgress('xpEarned', xpEarned);
     
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'polieMessages': gamification.polieMessages + 1,
       'totalXP': gamification.totalXP + xpEarned,
@@ -288,7 +288,7 @@ class _GamificationHelper {
     _syncChallengeProgress('storyChapters', 1);
     _syncChallengeProgress('xpEarned', xpEarned);
     
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'storyChaptersRead': gamification.storyChaptersRead + 1,
       'totalXP': gamification.totalXP + xpEarned,
@@ -336,7 +336,7 @@ class _GamificationHelper {
     _syncChallengeProgress('voiceRecordings', 1);
     _syncChallengeProgress('xpEarned', xpEarned);
     
-    final gamification = _ref.read(gamificationProvider.notifier).gamification;
+    final gamification = _ref.read(gamificationProvider);
     final newStats = {
       'voiceContributions': gamification.voiceContributions + 1,
       'totalXP': gamification.totalXP + xpEarned,

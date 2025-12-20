@@ -7,13 +7,13 @@ final navigationProvider = Provider((ref) => NavigationProvider());
 class NavigationProvider {
   final navigatorKey = GlobalKey<NavigatorState>();
 
-  Future<T?> naviateTo<T>(Widget child) async {
+  Future<T?> navigateTo<T>(Widget child) async {
     return await navigatorKey.currentState!.push(MaterialPageRoute(builder: (context) {
       return child;
     }));
   }
 
-  Future<T?> naviateOffAll<T>(Widget child) async {
+  Future<T?> navigateOffAll<T>(Widget child) async {
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
     return await navigatorKey.currentState!.pushReplacement(MaterialPageRoute(builder: (context) {
       return child;

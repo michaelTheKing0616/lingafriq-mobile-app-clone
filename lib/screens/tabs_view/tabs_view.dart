@@ -1,4 +1,4 @@
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,6 +10,11 @@ import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/screens/tabs_view/standings/standings_tab.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/haptic_feedback_helper.dart';
+import 'package:lingafriq/services/lazy_game_loader.dart';
+import 'package:lingafriq/services/telemetry_service.dart';
+import 'package:lingafriq/widgets/connection_status_indicator.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class TabIndexNotifier extends Notifier<int> {
   @override
@@ -35,10 +40,32 @@ class TabsView extends StatefulHookConsumerWidget {
 }
 
 class _TabsViewState extends ConsumerState<TabsView> {
+  String? _sessionId;
+
   @override
   void initState() {
-    ref.read(firebaseMessagingProvider).initFCM();
     super.initState();
+    ref.read(firebaseMessagingProvider).initFCM();
+    
+    // Preload common games for better performance
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(lazyGameLoaderProvider).preloadCommonGames();
+      
+      // Start telemetry session
+      _sessionId = 'main_app_${DateTime.now().millisecondsSinceEpoch}';
+      final telemetry = ref.read(telemetryServiceProvider);
+      telemetry.startSession(_sessionId!);
+    });
+  }
+  
+  @override
+  void dispose() {
+    // End telemetry session
+    if (_sessionId != null) {
+      final telemetry = ref.read(telemetryServiceProvider);
+      telemetry.endSession(_sessionId!);
+    }
+    super.dispose();
   }
 
   @override
@@ -49,14 +76,22 @@ class _TabsViewState extends ConsumerState<TabsView> {
     return Scaffold(
       key: scaffoldKey,
       drawer: const AppDrawer(),
-      body: IndexedStack(
-        index: index,
-        children: const [
-          HomeTab(),
-          CoursesTab(),
-         // Center(),
-           StandingsTab(),
-          ProfileTab(),
+      body: Column(
+        children: [
+          // Connection status indicator
+          const ConnectionStatusIndicator(),
+          // Main content
+          Expanded(
+            child: IndexedStack(
+              index: index,
+              children: [
+                const HomeTab().animate().fadeIn(duration: 200.ms),
+                const CoursesTab().animate().fadeIn(duration: 200.ms),
+                const StandingsTab().animate().fadeIn(duration: 200.ms),
+                const ProfileTab().animate().fadeIn(duration: 200.ms),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: SafeArea(
@@ -73,43 +108,44 @@ class _BottomNavigationBar extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(tabIndexProvider);
-    return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-        child: AnimatedBottomNavigationBar(
-          gapLocation: GapLocation.none,
-          backgroundColor: context.primaryColor,
-          activeColor: context.isDarkMode ? Colors.black : AppColors.primaryOrange,
-          inactiveColor: Colors.white.withOpacity(0.6),
-          splashColor: context.isDarkMode ? AppColors.primaryGreen : AppColors.primaryOrange,
-          splashRadius: 30.sp,
-          icons: const [
-            Icons.home_rounded,
-            Icons.folder_copy_rounded,
-            Icons.bar_chart_rounded,
-            Icons.person_rounded
-          ],
-          iconSize: 30.sp,
-          activeIndex: index,
-          onTap: (value) {
-            //Refresh languages provider when tab is changed to courses tab
-            if (value == 1) {
-              ref.invalidate(languagesProvider);
-            }
-            HapticFeedback.lightImpact();
-            ref.read(tabIndexProvider.notifier).setIndex(value);
-          },
+    final theme = Theme.of(context);
+    
+    return NavigationBar(
+      selectedIndex: index,
+      onDestinationSelected: (value) {
+        //Refresh languages provider when tab is changed to courses tab
+        if (value == 1) {
+          ref.invalidate(languagesProvider);
+        }
+        HapticHelper.lightImpact();
+        ref.read(tabIndexProvider.notifier).setIndex(value);
+      },
+      elevation: 8,
+      backgroundColor: theme.colorScheme.surface,
+      indicatorColor: theme.colorScheme.primaryContainer,
+      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      destinations: const [
+        NavigationDestination(
+          icon: Icon(Icons.home_outlined),
+          selectedIcon: Icon(Icons.home_rounded),
+          label: 'Home',
         ),
-      ),
-    );
+        NavigationDestination(
+          icon: Icon(Icons.folder_copy_outlined),
+          selectedIcon: Icon(Icons.folder_copy_rounded),
+          label: 'Courses',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.bar_chart_outlined),
+          selectedIcon: Icon(Icons.bar_chart_rounded),
+          label: 'Standings',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.person_outline),
+          selectedIcon: Icon(Icons.person_rounded),
+          label: 'Profile',
+        ),
+      ],
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0);
   }
 }

@@ -6,6 +6,7 @@ import 'package:lingafriq/screens/tabs_view/standings/leader_board_provider.dart
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
 import '../../../widgets/greegins_builder.dart';
@@ -121,7 +122,7 @@ class _StandingsBuilder extends HookConsumerWidget {
           },
         );
       },
-      loading: () => const AdaptiveProgressIndicator(),
+      loading: () => const DynamicLoadingScreen(),
     );
   }
 }

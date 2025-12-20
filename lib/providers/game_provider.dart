@@ -8,8 +8,6 @@ import '../providers/gamification_provider.dart';
 import '../providers/api_provider.dart';
 import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
-import '../providers/curriculum_provider.dart';
-import '../models/curriculum_model.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
 import '../services/telemetry_service.dart';
@@ -32,26 +30,6 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   BaseProviderState build() {
     _loadUserSRS();
     return BaseProviderState();
-  }
-
-  /// Warm up game content for a given game type/language/level without
-  /// starting a visible session. This is used by lazy loaders and
-  /// background initialization on low‑end devices to reduce first-load jank.
-  Future<void> warmupGameContent({
-    required GameType gameType,
-    required String language,
-    String? level,
-    int count = 10,
-  }) async {
-    try {
-      await _loadCardsForGame(
-        language: language,
-        level: level,
-        count: count,
-      );
-    } catch (e) {
-      debugPrint('Error warming up game content for $gameType ($language, $level): $e');
-    }
   }
 
   /// Start a new game session
@@ -234,80 +212,13 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? level,
     int count = 10,
   }) async {
+    // TODO: Load from backend API or local database
+    // For now, generate mock cards
     final cards = <PhraseCard>[];
 
-    // 1) Try to derive cards from the installed curriculum for this language/level.
-    try {
-      final curriculumState = ref.read(curriculumProvider);
-      final curriculumNotifier = ref.read(curriculumProvider.notifier);
-
-      Curriculum? curriculumModel =
-          curriculumNotifier.curriculum; // may already be loaded
-
-      if (curriculumModel == null) {
-        // Attempt to load from bundle/cache once
-        await curriculumNotifier.loadCurriculumFromBundle();
-        curriculumModel = curriculumNotifier.curriculum;
-      }
-
-      if (curriculumModel != null) {
-        final langKey = language.toLowerCase();
-        final levelKey = (level ?? 'A1').toUpperCase();
-        final languageMap = curriculumModel.languages[langKey];
-
-        if (languageMap != null && languageMap.isNotEmpty) {
-          // Prefer requested level when available; otherwise fall back to first level.
-          final List<CurriculumUnit> unitsForLevel =
-              languageMap[levelKey] ?? languageMap.values.first;
-
-          final selectedUnits = unitsForLevel.isNotEmpty
-              ? unitsForLevel
-              : languageMap.values.expand((u) => u).toList();
-
-          final vocabCards = <PhraseCard>[];
-
-          for (final unit in selectedUnits) {
-            for (final lesson in unit.lessons) {
-              for (final v in lesson.vocabObjects) {
-                if (v.word.trim().isEmpty) continue;
-                vocabCards.add(
-                  PhraseCard(
-                    cardId:
-                        '${langKey}_${lesson.id}_${v.word}_${v.meaning}'.hashCode.toString(),
-                    language: language,
-                    text: v.word,
-                    ascii: v.word,
-                    gloss: v.meaning,
-                    level: levelKey,
-                    tags: [lesson.id, unit.title],
-                    srs: _userSRS[
-                          '${_currentSession?.userId ?? 'user'}_${langKey}_${lesson.id}_${v.word}',
-                        ] ??
-                        SRSState(),
-                  ),
-                );
-                if (vocabCards.length >= count * 2) break;
-              }
-              if (vocabCards.length >= count * 2) break;
-            }
-            if (vocabCards.length >= count * 2) break;
-          }
-
-          if (vocabCards.isNotEmpty) {
-            vocabCards.shuffle();
-            cards.addAll(vocabCards.take(count));
-          }
-        }
-      }
-    } catch (e) {
-      debugPrint('Error deriving game cards from curriculum: $e');
-    }
-
-    // 2) Fallback to curated starter deck if curriculum is unavailable.
-    if (cards.isEmpty) {
-      final starterCards = _generateMockCards(language, level, count);
-      cards.addAll(starterCards);
-    }
+    // Mock data - in production, load from API
+    final mockCards = _generateMockCards(language, level, count);
+    cards.addAll(mockCards);
 
     // Apply diacritics enforcement to all cards
     for (var i = 0; i < cards.length; i++) {
@@ -327,7 +238,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return cards;
   }
 
-  /// Generate a small curated deck of cards for early game sessions.
+  /// Generate mock cards (replace with API call)
   List<PhraseCard> _generateMockCards(String language, String? level, int count) {
     final cards = <PhraseCard>[];
     final lang = language.toLowerCase();
@@ -474,7 +385,6 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await syncProvider.queueSync(SyncTask(
         type: SyncType.gameSRS,
         data: {
-          // Game SRS sync is keyed by the numeric user id in the backend.
           'user_id': user.id.toString(),
           'srs': srsData,
           'timestamp': DateTime.now().toIso8601String(),
@@ -495,7 +405,6 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await syncProvider.queueSync(SyncTask(
         type: SyncType.telemetry,
         data: {
-          // Telemetry sync for legacy game events still expects numeric user id.
           'user_id': user.id.toString(),
           'event': event,
           'timestamp': DateTime.now().toIso8601String(),

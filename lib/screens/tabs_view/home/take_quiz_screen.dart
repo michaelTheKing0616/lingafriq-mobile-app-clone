@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -7,11 +8,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history_quiz/screens/history_quiz_sections_screen.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:loading_overlay_pro/loading_overlay_pro.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 import '../../../detail_types/correction_screen.dart';
 import '../../../detail_types/quiz_screen.dart';
@@ -27,7 +30,7 @@ import '../../../utils/api.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/greegins_builder.dart';
 
-class TakeQuizScreen extends ConsumerWidget {
+class TakeQuizScreen extends ConsumerStatefulWidget {
   final Language language;
   const TakeQuizScreen({
     Key? key,
@@ -35,18 +38,40 @@ class TakeQuizScreen extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TakeQuizScreen> createState() => _TakeQuizScreenState();
+}
+
+class _TakeQuizScreenState extends ConsumerState<TakeQuizScreen> {
+  bool _isLoadingQuiz = false;
+  bool _hasError = false;
+  String? _errorMessage;
+  DateTime? _loadingStartTime;
+
+  @override
+  Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Quiz module is temporarily unavailable',
+      errorMessage: _errorMessage ?? 'Quiz module is temporarily unavailable',
       onRetry: () {
-        // Retry by rebuilding
+        setState(() {
+          _isLoadingQuiz = false;
+          _hasError = false;
+          _errorMessage = null;
+        });
       },
       child: _buildQuizContent(context, ref),
     );
   }
 
   Widget _buildQuizContent(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
+    // Show new loading screen when loading quiz
+    // Minimum 4 seconds so users can read the facts
+    if (_isLoadingQuiz) {
+      return DynamicLoadingScreen(
+        message: 'Loading quizzes...',
+        loadingDuration: const Duration(seconds: 4),
+      );
+    }
+    
     return PopScope(
       canPop: true,
       onPopInvoked: (didPop) {
@@ -54,9 +79,7 @@ class TakeQuizScreen extends ConsumerWidget {
           ref.read(navigationProvider).pop();
         }
       },
-      child: LoadingOverlayPro(
-        isLoading: isLoading,
-        child: Scaffold(
+      child: Scaffold(
           drawer: const AppDrawer(),
           body: Column(
             children: [
@@ -147,40 +170,157 @@ class TakeQuizScreen extends ConsumerWidget {
                                     top: constraints.maxHeight * 0.075,
                                     child: _RandomTextBuilder(
                                       onTap: () async {
+                                        // Re-entrancy guard: prevent concurrent taps
+                                        if (_isLoadingQuiz) {
+                                          debugPrint('TakeQuiz: already loading, ignoring tap');
+                                          return;
+                                        }
+
+                                        // Track start time to ensure minimum display
+                                        _loadingStartTime = DateTime.now();
+                                        
+                                        setState(() {
+                                          _isLoadingQuiz = true;
+                                          _hasError = false;
+                                          _errorMessage = null;
+                                        });
+
                                         try {
-                                          debugPrint('Fetching random quizzes for language: ${language.id}');
+                                          debugPrint('Fetching random quizzes for language: ${widget.language.id}');
                                           
+                                          // Check token first
+                                          final token = ref.read(apiProvider.notifier).token;
+                                          if (token == null || token.isEmpty) {
+                                            debugPrint('No token found, attempting to refresh...');
+                                            // Try to refresh token with a timeout to avoid hanging forever
+                                            final authNotifier = ref.read(authProvider.notifier);
+                                            final emailAndPass = ref.read(sharedPreferencesProvider).requestEmailAndPass;
+                                            if (emailAndPass != null) {
+                                              // Protect login with a timeout (e.g., 15s) so UI won't hang forever
+                                              await authNotifier
+                                                  .login(
+                                                    email: emailAndPass['email']!,
+                                                    password: emailAndPass['password']!,
+                                                    silentRefresh: true,
+                                                  )
+                                                  .timeout(
+                                                    const Duration(seconds: 15),
+                                                    onTimeout: () {
+                                                      debugPrint('Silent login timed out after 15s');
+                                                      throw TimeoutException('Silent login timed out');
+                                                    },
+                                                  );
+                                            } else {
+                                              throw Exception('Please log in again to continue');
+                                            }
+                                          }
+                                          
+                                          final currentToken = ref.read(apiProvider.notifier).token;
+                                          debugPrint('Current token: ${currentToken != null ? "EXISTS (${currentToken.substring(0, min(20, currentToken.length))}...)" : "NULL"}');
+                                          
+                                          if (currentToken == null || currentToken.isEmpty) {
+                                            throw Exception('Please log in to access quizzes.');
+                                          }
+                                          
+                                          // Add timeout to prevent endless loading from API layer
                                           final randomQuizes = await ref
                                               .read(apiProvider.notifier)
-                                              .getRandomQuizLessons(language.id);
+                                              .getRandomQuizLessons(widget.language.id)
+                                              .timeout(
+                                                const Duration(seconds: 30),
+                                                onTimeout: () {
+                                                  debugPrint('Quiz fetch timed out after 30 seconds');
+                                                  throw TimeoutException('Quiz loading timed out. Please check your connection.');
+                                                },
+                                              );
                                           
-                                          debugPrint('Received ${randomQuizes.length} quizzes');
+                                          debugPrint('Quiz fetch completed, count=${randomQuizes.length}');
+                                          
+                                          if (!mounted) return;
+                                          
+                                          // Ensure minimum display time (4 seconds) for reading facts
+                                          final elapsed = DateTime.now().difference(_loadingStartTime!);
+                                          const minDisplay = Duration(seconds: 4);
+                                          if (elapsed < minDisplay) {
+                                            await Future.delayed(minDisplay - elapsed);
+                                          }
                                           
                                           if (randomQuizes.isEmpty) {
-                                            ref
-                                                .read(dialogProvider(
-                                                    "No quizzes available for this language yet. We're working to add more!"))
-                                                .showSuccessSnackBar();
+                                            if (mounted) {
+                                              setState(() => _isLoadingQuiz = false);
+                                            }
+                                            await ref.read(dialogProvider('')).showPlatformDialogue(
+                                              title: 'No Quizzes Available',
+                                              content: const Text("No quizzes available for this language yet. We're working to add more!"),
+                                              action1Text: 'OK',
+                                            );
                                             return;
+                                          }
+                                          
+                                          // Reset loading before opening details so UI won't remain stuck when navigations happen
+                                          if (mounted) {
+                                            setState(() {
+                                              _isLoadingQuiz = false;
+                                            });
                                           }
                                           
                                           final random = Random();
                                           do {
                                             if (randomQuizes.isEmpty) break;
-                                            final indexToOpen =
-                                                random.randomUpto(randomQuizes.length);
+                                            
+                                            final indexToOpen = random.randomUpto(randomQuizes.length);
                                             final quiz = randomQuizes[indexToOpen];
                                             final result = await openQuizDetail(quiz, ref);
+                                            
                                             if (result == null) break;
+                                            
                                             if (result == true) {
                                               randomQuizes.removeAt(indexToOpen);
+                                            } else {
+                                              // if user returned without completing, break
+                                              break;
                                             }
                                           } while (randomQuizes.isNotEmpty);
-                                        } catch (e) {
-                                          debugPrint('Error in Take Quiz: $e');
-                                          ref.read(dialogProvider(
-                                            'Failed to load quiz. ${e.toString()}'
-                                          )).showExceptionDialog();
+                                        } catch (e, st) {
+                                          debugPrint('Error in Take Quiz: $e\n$st');
+                                          
+                                          // Ensure minimum display even on error
+                                          if (_loadingStartTime != null) {
+                                            final elapsed = DateTime.now().difference(_loadingStartTime!);
+                                            const minDisplay = Duration(seconds: 2);
+                                            if (elapsed < minDisplay) {
+                                              await Future.delayed(minDisplay - elapsed);
+                                            }
+                                          }
+                                          
+                                          if (mounted) {
+                                            setState(() {
+                                              _isLoadingQuiz = false;
+                                              _hasError = true;
+                                              _errorMessage = e.toString().replaceAll('Exception: ', '');
+                                            });
+                                          }
+                                          
+                                          // Build friendly message
+                                          String errorMsg = 'Failed to load quiz. ';
+                                          if (e is TimeoutException || e.toString().contains('timeout') || e.toString().contains('Timeout')) {
+                                            errorMsg += 'Please check your internet connection and try again.';
+                                          } else if (e.toString().contains('401') || e.toString().contains('Unauthorized')) {
+                                            errorMsg += 'Your session has expired. Please log in again.';
+                                          } else if (e.toString().contains('403') || e.toString().contains('Forbidden')) {
+                                            errorMsg += 'You don\'t have permission to access this content.';
+                                          } else {
+                                            errorMsg += e.toString().replaceAll('Exception: ', '');
+                                          }
+                                          
+                                          ref.read(dialogProvider(errorMsg)).showExceptionDialog();
+                                        } finally {
+                                          // Ensure loading is always cleared
+                                          if (mounted) {
+                                            setState(() {
+                                              _isLoadingQuiz = false;
+                                            });
+                                          }
                                         }
                                       },
                                     ).animate(effects: kGradientTextEffects),
@@ -190,8 +330,8 @@ class TakeQuizScreen extends ConsumerWidget {
                                     top: constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
                                     child: _LanguageTextBuilder(
                                       onTap: () {
-                                        ref.read(navigationProvider).naviateTo(
-                                              LanguageQuizSectionsListScreen(language: language),
+                                        ref.read(navigationProvider).navigateTo(
+                                              LanguageQuizSectionsListScreen(language: widget.language),
                                             );
                                       },
                                     ).animate(effects: kGradientTextEffects),
@@ -202,8 +342,8 @@ class TakeQuizScreen extends ConsumerWidget {
                                     child: _HistoryTextBuilder(
                                       size: Size(18.sp, 18.sp),
                                       onTap: () {
-                                        ref.read(navigationProvider).naviateTo(
-                                              HistoryQuizSectionsListScreen(language: language),
+                                        ref.read(navigationProvider).navigateTo(
+                                              HistoryQuizSectionsListScreen(language: widget.language),
                                             );
                                       },
                                     ).animate(effects: kGradientTextEffects),
@@ -227,7 +367,6 @@ class TakeQuizScreen extends ConsumerWidget {
               ],
             ).expand()
           ],
-        ),
         ),
       ),
     );
@@ -260,11 +399,11 @@ class TakeQuizScreen extends ConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: randomQuiz.title,
             quiz: quiz,
             isTakeQuiz: true,
-            endpointToHit: Api.completeRandomInstantQuiz(language.id, randomQuiz.id),
+            endpointToHit: Api.completeRandomInstantQuiz(widget.language.id, randomQuiz.id),
           ));
       "$result".log("openChoiceQuizScreen");
       return result;
@@ -304,13 +443,13 @@ class TakeQuizScreen extends ConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: randomQuiz.title,
               score: randomQuiz.score,
               wordCorrections: wordCorrections,
               isTakeQuiz: true,
-              endpointToHit: Api.completeRandomWordQuiz(language.id, randomQuiz.id),
+              endpointToHit: Api.completeRandomWordQuiz(widget.language.id, randomQuiz.id),
             ),
           );
       "$result".log("openWordQuizScreen");

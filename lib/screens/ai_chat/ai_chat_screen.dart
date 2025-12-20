@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
@@ -100,8 +101,21 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
 
     try {
       final provider = ref.read(groqChatProvider.notifier);
+      
+      // Note: API key check is done inside sendMessageStream
+      // We'll catch the exception if it's not configured
+      
       String fullResponse = '';
-      await for (final chunk in provider.sendMessageStream(message)) {
+      Stream<String> messageStream;
+      
+      try {
+        messageStream = provider.sendMessageStream(message);
+      } catch (e) {
+        // Handle immediate errors (e.g., empty message, configuration issues)
+        throw Exception('Failed to start chat: ${e.toString().replaceAll('Exception: ', '')}');
+      }
+      
+      await for (final chunk in messageStream) {
         if (mounted) {
           setState(() {
             _streamingText += chunk;
@@ -121,17 +135,47 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       }
 
       if (mounted && _voiceOutputEnabled && fullResponse.isNotEmpty) {
-        final tts = ref.read(ttsProvider.notifier);
-        // Ensure TTS is initialized
-        await tts.init();
-        // Use target language for authentic African accent
-        await tts.speak(fullResponse, languageName: provider.targetLanguage);
+        try {
+          final tts = ref.read(ttsProvider.notifier);
+          // Ensure TTS is initialized
+          await tts.init();
+          // Use target language for authentic African accent
+          await tts.speak(fullResponse, languageName: provider.targetLanguage);
+        } catch (ttsError) {
+          // TTS errors shouldn't block the chat
+          debugPrint('TTS error: $ttsError');
+        }
       }
     } catch (e) {
+      debugPrint('AI Chat error: $e');
       if (mounted) {
+        // Provide user-friendly error messages
+        String errorTitle = 'Chat Error';
+        String errorMessage = e.toString().replaceAll('Exception: ', '');
+        
+        if (errorMessage.contains('Invalid request format') || errorMessage.contains('Request validation failed')) {
+          errorTitle = 'Message Format Error';
+          errorMessage = 'There was an issue with the message format. Please try again with a shorter or simpler message.';
+        } else if (errorMessage.contains('API key') || errorMessage.contains('not configured')) {
+          errorTitle = 'Configuration Required';
+          errorMessage = 'AI Chat needs to be configured. Please contact support or check app settings.';
+        } else if (errorMessage.contains('Rate limit') || errorMessage.contains('429')) {
+          errorTitle = 'Rate Limit Exceeded';
+          errorMessage = 'Too many requests. Please wait a moment and try again.';
+        } else if (errorMessage.contains('timeout') || errorMessage.contains('connection') || errorMessage.contains('Connection')) {
+          errorTitle = 'Connection Error';
+          errorMessage = 'Unable to connect to AI service. Please check your internet connection and try again.';
+        } else if (errorMessage.contains('401') || errorMessage.contains('Unauthorized')) {
+          errorTitle = 'Authentication Error';
+          errorMessage = 'Invalid API credentials. Please contact support.';
+        } else if (errorMessage.contains('No valid messages')) {
+          errorTitle = 'Empty Message';
+          errorMessage = 'Please enter a message before sending.';
+        }
+        
         ref.read(dialogProvider('')).showPlatformDialogue(
-              title: 'Error',
-              content: Text(e.toString().replaceAll('Exception: ', '')),
+              title: errorTitle,
+              content: Text(errorMessage),
               action1Text: 'OK',
             );
       }
@@ -325,7 +369,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               if (selectedSource != null && selectedTarget != null) {
                 chatNotifier.setLanguageDirection(selectedSource!, selectedTarget!);
@@ -338,7 +382,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 );
               }
             },
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),
@@ -366,18 +410,28 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     final chatState = ref.watch(groqChatProvider);
     final isDark = context.isDarkMode;
     final theme = Theme.of(context);
+    final isTranslationMode = chatNotifier.isTranslationMode;
+
+    // Different colors for different modes
+    final modeColor = isTranslationMode 
+        ? const Color(0xFF007A3D) // Green for translation
+        : const Color(0xFFCE1126); // Red for tutor
+    
+    final backgroundColor = isDark 
+        ? const Color(0xFF102216) 
+        : (isTranslationMode ? const Color(0xFFF0FFF4) : const Color(0xFFFFF0F0)); // Subtle tint
 
     return Theme(
       data: theme.copyWith(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.primaryGreen,
+          seedColor: modeColor,
           brightness: isDark ? Brightness.dark : Brightness.light,
         ),
       ),
       child: Scaffold(
         drawer: const AppDrawer(),
-        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        backgroundColor: backgroundColor,
         body: SafeArea(
           child: Column(
             children: [
@@ -516,9 +570,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 ),
               ],
               selected: {chatNotifier.mode},
-              onSelectionChanged: (selection) {
+              onSelectionChanged: (selection) async {
                 if (selection.isEmpty) return;
-                chatNotifier.setMode(selection.first);
+                await chatNotifier.setMode(selection.first);
               },
               style: ButtonStyle(
                 visualDensity: VisualDensity.compact,

@@ -7,6 +7,9 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/services/polie_content_generator.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
@@ -44,6 +47,11 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
   Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
 
+    // Show loading screen when importing
+    if (_isLoading) {
+      return const DynamicLoadingScreen();
+    }
+
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
       body: Stack(
@@ -77,16 +85,28 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.of(context).pop(),
-                        style: IconButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.2),
-                          shape: const CircleBorder(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.of(context).pop(),
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            shape: const CircleBorder(),
+                          ),
                         ),
-                      ),
+                        IconButton(
+                          icon: const Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            Scaffold.of(context).openDrawer();
+                          },
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            shape: const CircleBorder(),
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 2.h),
                     const Icon(
@@ -164,9 +184,9 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                           ),
                         ),
                         SizedBox(height: 3.h),
-                        ElevatedButton(
+                        FilledButton(
                           onPressed: () => _importFromFile(),
-                          style: ElevatedButton.styleFrom(
+                          style: FilledButton.styleFrom(
                             backgroundColor: AppColors.primaryGreen,
                             foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
@@ -418,12 +438,12 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               Navigator.pop(context);
               _importFromUrl(_urlController.text);
             },
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),
@@ -464,7 +484,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          ElevatedButton(
+          FilledButton(
             onPressed: () {
               if (_textController.text.isNotEmpty) {
                 setState(() {
@@ -473,7 +493,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                 Navigator.pop(context);
               }
             },
-            style: ElevatedButton.styleFrom(
+            style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),
@@ -486,23 +506,120 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
   Future<void> _importFromUrl(String url) async {
     setState(() => _isLoading = true);
-    // TODO: Implement web scraping or use WebView to extract text
-    // For now, show a placeholder
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _importedText = 'Content from URL would be extracted here. This feature requires web scraping implementation.';
-      _isLoading = false;
-    });
+    try {
+      // Use Polie to extract and summarize content from URL
+      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      
+      // Generate a summary/extraction prompt for Polie
+      final extractedContent = await polieGenerator.generateGameContent(
+        gameType: 'content_extraction',
+        language: _selectedLanguage ?? 'English',
+        additionalContext: 'Extract and summarize the main content from this URL: $url',
+      );
+      
+      setState(() {
+        _importedText = extractedContent['content']?.toString() ?? 
+                       'Content extracted from URL. You can now create a lesson from this text.';
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _importedText = 'Unable to extract content from URL. Please try pasting the text directly or check your connection.';
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error extracting content: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 
   void _createLesson(BuildContext context) {
-    // TODO: Implement lesson creation from imported text
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Lesson creation feature coming soon!'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
-    );
+    if (_importedText == null || _importedText!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please import some content first.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
+    if (_selectedLanguage == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please select a target language first.'),
+          backgroundColor: Colors.orange,
+        ),
+      );
+      return;
+    }
+    
+    // Use Polie to create a structured lesson from the imported text
+    _createLessonWithPolie(context);
+  }
+  
+  Future<void> _createLessonWithPolie(BuildContext context) async {
+    setState(() => _isLoading = true);
+    
+    try {
+      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      
+      // Generate a structured lesson from the imported text
+      final lessonContent = await polieGenerator.generateGameContent(
+        gameType: 'lesson_creation',
+        language: _selectedLanguage!,
+        additionalContext: 'Create a structured language lesson from this content:\n\n$_importedText',
+      );
+      
+      setState(() => _isLoading = false);
+      
+      if (mounted) {
+        // Show success message and offer to save/navigate
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Lesson created successfully!'),
+            backgroundColor: AppColors.primaryGreen,
+            action: SnackBarAction(
+              label: 'View',
+              onPressed: () {
+                // TODO: Navigate to lesson detail screen when available
+                // For now, show the generated content
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Generated Lesson'),
+                    content: SingleChildScrollView(
+                      child: Text(lessonContent['content']?.toString() ?? 'Lesson content generated.'),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Close'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating lesson: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }
 

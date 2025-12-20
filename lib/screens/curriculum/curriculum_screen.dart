@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
@@ -36,6 +40,16 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return ErrorBoundary(
+      errorMessage: 'Comprehensive Curriculum is temporarily unavailable',
+      onRetry: () {
+        _loadCurriculum();
+      },
+      child: _buildContent(context),
+    );
+  }
+
+  Widget _buildContent(BuildContext context) {
     final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
     final selectedLanguage = ref.watch(curriculumProvider.notifier).selectedLanguage;
     final isLoading = ref.watch(curriculumProvider.select((state) => state.isLoading));
@@ -58,10 +72,17 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
             onPressed: _loadCurriculum,
             tooltip: 'Reload Curriculum',
           ),
+          IconButton(
+            icon: Icon(Icons.menu, color: isDark ? Colors.white : Colors.black87),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            tooltip: 'Menu',
+          ),
         ],
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator(color: AppColors.primaryGreen))
+          ? const DynamicLoadingScreen()
           : curriculum == null
               ? _buildEmptyState(context, isDark)
               : _buildCurriculumContent(context, curriculum, selectedLanguage, isDark),
@@ -99,9 +120,9 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 24.sp),
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: _loadCurriculum,
-              style: ElevatedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 backgroundColor: AppColors.primaryGreen,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),
@@ -398,20 +419,26 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               : (isDark ? Colors.grey[400] : Colors.grey[600]),
         ),
         onPressed: () {
-          if (!lesson.isCompleted) {
-            ref.read(curriculumProvider.notifier).markLessonComplete(
-                  language,
-                  level,
-                  lesson.id,
-                );
-            // TODO: Navigate to lesson screen
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Starting lesson: ${lesson.title}'),
-                backgroundColor: AppColors.primaryGreen,
+          // Navigate to lesson detail screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LessonDetailScreen(
+                lesson: lesson,
+                language: language,
+                level: level,
               ),
-            );
-          }
+            ),
+          ).then((completed) {
+            // Mark lesson as complete if user completed it
+            if (completed == true && !lesson.isCompleted) {
+              ref.read(curriculumProvider.notifier).markLessonComplete(
+                    language,
+                    level,
+                    lesson.id,
+                  );
+            }
+          });
         },
       ),
     );

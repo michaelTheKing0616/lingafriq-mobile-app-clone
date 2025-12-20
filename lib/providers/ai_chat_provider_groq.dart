@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dio/dio.dart';
@@ -8,6 +9,15 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
+import 'api_provider.dart';
+import 'backend_sync_provider.dart';
+import 'user_provider.dart';
+import '../utils/diacritics_enforcer.dart';
+import '../data/roleplay_dataset.dart';
+import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
+import '../services/telemetry_service.dart';
+import '../services/env_config.dart';
+import '../utils/supported_languages.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -55,21 +65,64 @@ class ChatMessage {
       );
 }
 
-// Word Memory for SRS
+// Word Memory for SRS (SM-2 variant)
 class WordMemory {
-  int strength = 0; // 0-5
+  double ease = 2.5; // Ease factor (SM-2 algorithm)
+  int repetitions = 0; // Number of successful reviews
+  int intervalDays = 1; // Days until next review
   DateTime nextReview = DateTime.now();
   int attempts = 0;
   int successes = 0;
+  int strength = 0; // Legacy: 0-5 (mapped from repetitions)
 
   WordMemory({
-    this.strength = 0,
+    this.ease = 2.5,
+    this.repetitions = 0,
+    this.intervalDays = 1,
     DateTime? nextReview,
     this.attempts = 0,
     this.successes = 0,
-  }) : nextReview = nextReview ?? DateTime.now();
+  }) : nextReview = nextReview ?? DateTime.now() {
+    // Map repetitions to legacy strength for backward compatibility
+    strength = repetitions.clamp(0, 5);
+  }
+
+  /// Update SRS using SM-2 variant algorithm
+  /// Quality: 0-5 (0=complete blackout, 5=perfect recall)
+  void updateWithSM2(int quality) {
+    if (quality < 3) {
+      // Failed: reset
+      repetitions = 0;
+      intervalDays = 1;
+    } else {
+      // Passed: update
+      if (repetitions == 0) {
+        intervalDays = 1;
+      } else if (repetitions == 1) {
+        intervalDays = 6;
+      } else {
+        intervalDays = (intervalDays * ease).round();
+      }
+      repetitions++;
+    }
+    
+    // Update ease factor (SM-2 formula)
+    ease = (ease + 0.1 - (5 - quality) * 0.08).clamp(1.3, double.infinity);
+    
+    // Update next review date
+    nextReview = DateTime.now().add(Duration(days: intervalDays));
+    
+    // Update legacy strength
+    strength = repetitions.clamp(0, 5);
+    
+    attempts++;
+    if (quality >= 3) successes++;
+  }
 
   Map<String, dynamic> toJson() => {
+        'ease': ease,
+        'repetitions': repetitions,
+        'intervalDays': intervalDays,
         'strength': strength,
         'nextReview': nextReview.toIso8601String(),
         'attempts': attempts,
@@ -77,7 +130,9 @@ class WordMemory {
       };
 
   factory WordMemory.fromJson(Map<String, dynamic> json) => WordMemory(
-        strength: json['strength'] ?? 0,
+        ease: (json['ease'] ?? 2.5).toDouble(),
+        repetitions: json['repetitions'] ?? 0,
+        intervalDays: json['intervalDays'] ?? 1,
         nextReview: DateTime.parse(json['nextReview']),
         attempts: json['attempts'] ?? 0,
         successes: json['successes'] ?? 0,
@@ -125,29 +180,41 @@ class GrammarFeedback {
 // Conversation Turn
 enum ConversationTurn { user, ai }
 
-// Polie chat modes
-enum PolieMode { translation, tutor }
+// Polie chat modes - Premium version with all modes
+enum PolieMode { translation, tutor, roleplay, conversation, vocab, review }
 
 class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<ChatMessage> _messages = [];
   final Dio _dio = Dio();
 
-  // API Configuration
-  static String get _groqApiKey {
-    const envKey = String.fromEnvironment('GROQ_API_KEY', defaultValue: 'YOUR_GROQ_API_KEY');
-    return envKey;
-  }
+  // API Configuration - uses centralized EnvConfig
+  static String get _groqApiKey => EnvConfig.groqApiKey;
 
   static const String _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
-  // Groq model names to try in order
-  // Note: If Aya 8B is not available on Groq, it will try alternatives
+  // Groq model names to try in order (favor accuracy for African languages)
+  // Note: Aya 8B can be less reliable for some translations (e.g., Yoruba),
+  // so we prefer the larger Llama model first for quality, then fall back.
   static const List<String> _modelNames = [
-    'aya-8b',                    // Primary: Aya 8B model (if available)
-    'cohere/aya-8b',             // Alternative format
-    'llama-3.1-8b-instant',      // Fallback: Fast Llama model
-    'llama-3.1-70b-versatile',  // Fallback: More capable model
+    'llama-3.1-70b-versatile',   // Highest quality, multilingual, free on Groq
+    'llama-3.1-8b-instant',      // Faster fallback
+    'aya-8b',                    // Cohere Aya 8B (if available)
+    'cohere/aya-8b',             // Alternate naming
   ];
   static String _modelName = _modelNames[0];
+
+  // Supported African languages list (text + speech-friendly where possible)
+  static const List<Map<String, String>> _supportedLanguageOptions = [
+    {'name': 'Yoruba', 'flag': '🇳🇬', 'code': 'yo'},
+    {'name': 'Hausa', 'flag': '🇳🇬', 'code': 'ha'},
+    {'name': 'Igbo', 'flag': '🇳🇬', 'code': 'ig'},
+    {'name': 'Swahili', 'flag': '🇰🇪', 'code': 'sw'},
+    {'name': 'Zulu', 'flag': '🇿🇦', 'code': 'zu'},
+    {'name': 'Xhosa', 'flag': '🇿🇦', 'code': 'xh'},
+    {'name': 'Amharic', 'flag': '🇪🇹', 'code': 'am'},
+    {'name': 'Twi', 'flag': '🇬🇭', 'code': 'tw'},
+    {'name': 'Afrikaans', 'flag': '🇿🇦', 'code': 'af'},
+    {'name': 'Nigerian Pidgin', 'flag': '🇳🇬', 'code': 'pcm'},
+  ];
 
   // Language and System Prompt
   String _selectedLanguage = 'Yoruba';
@@ -180,10 +247,19 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   ConversationTurn _turn = ConversationTurn.user;
   bool _userInterrupt = false;
   VoidCallback? _currentStreamCancel;
+  
+  // Backend sync debouncing
+  DateTime? _lastBackendSync;
 
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
   String get selectedLanguage => _selectedLanguage;
+  String get targetLanguage => _targetLanguage;
+  String get sourceLanguage => _sourceLanguage;
+  String? get currentSystemPrompt => _systemPrompt;
+  List<Map<String, String>> get supportedLanguageOptions => List.unmodifiable(_supportedLanguageOptions);
+  List<String> get supportedLanguages =>
+      _supportedLanguageOptions.map((e) => e['name'] ?? '').where((e) => e.isNotEmpty).toList();
   bool get hasMessages => _messages.isNotEmpty;
   bool get isBusy => state.isLoading;
   CEFRInfo get cefrInfo => _cefrInfo;
@@ -193,61 +269,187 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   PolieMode get mode => _mode;
   bool get isTranslationMode => _mode == PolieMode.translation;
 
+  bool _historyLoaded = false;
+
   @override
   BaseProviderState build() {
-    _loadChatHistory();
-    _loadSRSMemory();
-    _loadCEFRInfo();
+    // Only load history once on first build
+    if (!_historyLoaded) {
+      // Load mode and language FIRST before loading history
+      // This ensures the correct mode×language scoped history is loaded
+      _loadModeAndLanguage().then((_) {
+        _loadChatHistory();
+        _loadSRSMemory();
+        _loadCEFRInfo();
+        _initializeRoleplayDataset();
+        _historyLoaded = true;
+      });
+    }
     _initializeSystemPrompt();
     return BaseProviderState();
   }
+  
+  /// Load last used mode and language from preferences
+  Future<void> _loadModeAndLanguage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      
+      // Load last mode
+      final savedMode = prefs.getString('polie_last_mode');
+      if (savedMode != null) {
+        _mode = PolieMode.values.firstWhere(
+          (m) => m.toString().split('.').last == savedMode,
+          orElse: () => PolieMode.tutor,
+        );
+      }
+      
+      // Load last language
+      final savedLanguage = prefs.getString('polie_last_language');
+      if (savedLanguage != null && savedLanguage.isNotEmpty) {
+        _targetLanguage = savedLanguage;
+        _selectedLanguage = savedLanguage;
+      }
+      
+      debugPrint('Loaded last session: mode=${_mode.name}, language=$_targetLanguage');
+    } catch (e) {
+      debugPrint('Error loading mode/language preferences: $e');
+    }
+  }
+  
+  /// Save current mode and language to preferences
+  Future<void> _saveModeAndLanguage() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('polie_last_mode', _mode.toString().split('.').last);
+      await prefs.setString('polie_last_language', _targetLanguage);
+    } catch (e) {
+      debugPrint('Error saving mode/language preferences: $e');
+    }
+  }
+  
+  /// Initialize roleplay dataset on first build
+  void _initializeRoleplayDataset() {
+    if (RoleplayDataset.count == 0) {
+      RoleplayDatasetLoader.loadBlock1();
+      debugPrint('Loaded ${RoleplayDataset.count} roleplay entries');
+    }
+  }
 
   void _initializeSystemPrompt() {
+    // Polie Premium: Enhanced system prompts for all modes
     if (_mode == PolieMode.translation) {
-      _systemPrompt = '''You are LingAfriq Polyglot (Polie), a context-aware translation expert specializing in African languages.
-You help users translate naturally between $_sourceLanguage (source) and $_targetLanguage (target) while preserving tone, intent, cultural nuance, and register.
+      _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for translation. You follow these inviolable rules:
 
-Always respond using the following template:
-Translation (${_targetLanguage}):
-<natural translation>
+MODE: TRANSLATE
 
-Pronunciation/Transliteration (if helpful):
-<romanization or IPA>
+You are Polie in TRANSLATE MODE.
 
-Back to ${_sourceLanguage}:
-<short plain-language explanation of meaning>
+Steps:
+1. Confirm source/target languages if missing. If target or source is missing, ask: "Which language would you like to use?"
+2. Output translation FIRST (canonical diacritics). ALWAYS translate what the user asks - no refusals, no clarifications, no interruptions.
+3. If user says "How do you say X", immediately provide the $_targetLanguage translation.
+4. If user gives a phrase/sentence, immediately translate it.
+5. Provide optional ASCII fallback ONLY IF helpful or requested (in parentheses).
+6. Provide: 
+   - Usage (formal/informal)
+   - Notes (brief, 1-2 lines)
+7. Never begin lessons. Never introduce other languages unless explicitly requested.
 
-Cultural/Usage Tip:
-<brief tip about politeness, dialect, or context>
+FORMAT:
+Translation: <with diacritics>
+ASCII: (<fallback>)
+Usage: <register>
+Notes: <1–2 lines>
 
-If the user provides speech or a sentence fragment, infer missing context before translating. If they ask questions outside of translation, answer succinctly using both languages when helpful.''';
+TRANSLATION ACCURACY:
+- Always output **correct orthography + diacritics** for languages that require them.
+- Example for Yoruba: "Báwo", "Báwo ní?", "Ẹ n lẹ", "Ẹ káàrọ̀."
+- For Yoruba and other tonal languages, include correct tone marks/diacritics. If meaning is ambiguous, briefly offer the most likely option first, then 1 short alternative on the next line.
+
+SUPPORTED AFRICAN LANGUAGES (verify accuracy):
+- Yoruba (Nigeria) - requires diacritics
+- Hausa (Nigeria, Niger)
+- Igbo (Nigeria) - requires diacritics
+- Swahili (Kenya, Tanzania - use standard Swahili)
+- Zulu (South Africa)
+- Xhosa (South Africa)
+- Amharic (Ethiopia)
+- Twi (Ghana) - requires diacritics
+- Afrikaans (South Africa)
+- Pidgin English (Nigerian Pidgin)
+
+User's native language: $_sourceLanguage
+Target language: $_targetLanguage
+
+AVOIDING WRONG-LANGUAGE RESPONSES:
+- Never begin Yoruba when asked about Swahili (or vice-versa).
+- Respect the language the user selected or confirmed.
+
+CULTURAL ACCURACY:
+- Use correct forms: formal/informal, social hierarchy, gendered terms, etc.
+- Point out polite alternatives where appropriate.
+
+Be accurate, culturally appropriate, and instant. No denials, no interruptions in translation mode.''';
       return;
     }
 
-    _systemPrompt = '''You are LingAfriq Polyglot (Polie), an expert AI language learning tutor specializing in African languages. 
-You help users learn and practice various African languages including:
+    if (_mode == PolieMode.tutor) {
+      _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for tutoring. You follow these inviolable rules:
+
+MODE: TUTOR
+
+You are Polie in TUTOR MODE.
+
+Steps:
+1. Confirm the target language and proficiency level if needed.
+2. For "How to say X in Y":
+   - Canonical phrase with diacritics
+   - Phonetic / IPA transcription
+   - Word-by-word breakdown (short)
+   - One example practice sentence
+   - Micro comprehension check
+3. Never introduce other languages unless the learner explicitly asks for a comparison.
+
+TUTOR MODE BEHAVIOR:
+- Teach the selected language ONLY ($_targetLanguage).
+- Provide pronunciation, grammar breakdown, usage, and one practice sentence.
+- Ask a comprehension check after each micro-lesson.
+- Never teach an unrelated language unless requested explicitly.
+
+SUPPORTED AFRICAN LANGUAGES:
 - Swahili (Kiswahili)
-- Yoruba
-- Igbo
+- Yoruba (requires diacritics)
+- Igbo (requires diacritics)
 - Hausa
 - Zulu (IsiZulu)
 - Xhosa
 - Amharic
 - Pidgin English (Nigerian Pidgin)
-- Twi
+- Twi (requires diacritics)
 - Afrikaans
 - And many other African languages
 
 The user's native language is: $_sourceLanguage
 The user wants to learn: $_targetLanguage
 
-You can:
-- Help users practice conversations
-- Explain grammar and vocabulary
-- Provide context-aware translations between $_sourceLanguage and $_targetLanguage
-- Create learning exercises
-- Answer questions about African cultures and languages
-- Engage in natural conversations in the target language ($_targetLanguage)
+TRANSLATION ACCURACY:
+- Always output **correct orthography + diacritics** for languages that require them.
+- Example for Yoruba: "Báwo", "Báwo ní?", "Ẹ n lẹ", "Ẹ káàrọ̀."
+
+AVOIDING WRONG-LANGUAGE RESPONSES:
+- Never begin Yoruba when asked about Swahili (or vice-versa).
+- Respect the language the user selected or confirmed.
+
+CULTURAL ACCURACY:
+- Use correct forms: formal/informal, social hierarchy, gendered terms, etc.
+- Point out polite alternatives where appropriate.
+
+SUB-ROLES:
+When helpful, briefly invoke internal roles:
+- Grammar Buddy
+- Pronunciation Coach
+- Roleplay Partner
+Keep responses concise.
 
 Always be encouraging, patient, and culturally sensitive. 
 - When teaching, use $_targetLanguage primarily but explain in $_sourceLanguage when needed
@@ -255,40 +457,201 @@ Always be encouraging, patient, and culturally sensitive.
 - Respond naturally in the language the user is learning, or in the language they're using to communicate with you
 
 When the user is practicing, end your responses with a question or task to keep the conversation engaging and educational.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.roleplay) {
+      // Get few-shot examples for the target language to enhance prompts
+      final examples = RoleplayDataset.getFewShotExamples(_selectedLanguage, count: 3);
+      String examplesText = '';
+      if (examples.isNotEmpty) {
+        examplesText = '\n\nFEW-SHOT EXAMPLES:\n';
+        for (final example in examples) {
+          examplesText += 'Scenario: ${example.scenario}\n';
+          examplesText += 'User: ${example.userUtterance}\n';
+          examplesText += 'Assistant: ${example.assistantResponse}\n';
+          examplesText += 'Notes: ${example.notes}\n\n';
+        }
+      }
+      
+      _systemPrompt = '''You are Polie Premium in ROLEPLAY MODE.
+
+MODE: ROLEPLAY
+
+Setup: Create engaging scenarios with roles, tone, and target vocab/grammar goals.
+
+Steps:
+1. Setup: Present scenario, roles, tone, target vocab/grammar goals.
+2. Run a multi-turn simulation (3-6 turns) with branching options.
+3. After each user turn: provide gentle correction, immediate feedback, and one improvement suggestion.
+4. Provide a "replay" button suggestion (play audio + show corrections).
+
+ROLEPLAY BEHAVIOR:
+- Create realistic scenarios: ordering food, greeting elders, shopping, asking directions, etc.
+- Use appropriate register (formal/informal) based on scenario.
+- Provide immediate feedback after each user response.
+- Offer corrections gently and constructively.
+- Include cultural context in scenarios.
+- Use canonical diacritics for all target language responses.
+- Reference the examples below for authentic phrasing and cultural context.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage$examplesText
+
+Always be encouraging and make roleplay fun and educational.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.conversation) {
+      _systemPrompt = '''You are Polie Premium in CONVERSATION MODE.
+
+MODE: CONVERSATION
+
+Steps:
+1. Mirror the user's selected level and adjust complexity adaptively.
+2. Offer corrections only when asked or when user enables auto-correct mode.
+3. Provide inline translations on request.
+4. Keep conversation natural and flowing.
+
+CONVERSATION BEHAVIOR:
+- Adapt to user's proficiency level automatically.
+- Use $_targetLanguage primarily, but explain in $_sourceLanguage when needed.
+- Only correct errors when explicitly requested or in auto-correct mode.
+- Provide translations on demand with a simple format: "Translation: [text]"
+- Keep responses natural and conversational.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage
+
+Be warm, natural, and encouraging. Make conversation feel authentic.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.vocab) {
+      _systemPrompt = '''You are Polie Premium in VOCAB MODE.
+
+MODE: VOCAB
+
+Steps:
+1. Present vocabulary words with diacritics, pronunciation, and usage.
+2. Provide example sentences and context.
+3. Track vocabulary progress and suggest spaced repetition.
+4. Create vocabulary quizzes and exercises.
+
+VOCAB BEHAVIOR:
+- Present words with canonical diacritics.
+- Include pronunciation (IPA or simple phonetics).
+- Provide example sentences in context.
+- Track user progress and suggest review timing (SRS).
+- Create engaging vocabulary exercises.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage
+
+Make vocabulary learning engaging and memorable.''';
+      return;
+    }
+    
+    if (_mode == PolieMode.review) {
+      _systemPrompt = '''You are Polie Premium in REVIEW MODE.
+
+MODE: REVIEW
+
+Steps:
+1. Present words/phrases due for review based on spaced repetition.
+2. Test user's recall and provide feedback.
+3. Adjust difficulty based on performance.
+4. Update SRS intervals based on quality of recall.
+
+REVIEW BEHAVIOR:
+- Present review items based on SRS schedule.
+- Test recall with various question types.
+- Provide immediate feedback on correctness.
+- Adjust intervals based on performance (SM-2 algorithm).
+- Track progress and celebrate improvements.
+
+Target language: $_targetLanguage
+User's native language: $_sourceLanguage
+
+Make reviews efficient and rewarding.''';
+      return;
+    }
+
+    // Default: Tutor mode (already set above)
   }
 
   Future<void> setLanguage(String language) async {
+    // Save current chat history before switching languages
+    if (_targetLanguage != language) {
+      await _saveChatHistory();
+    }
+    
     _selectedLanguage = language;
     _targetLanguage = language;
+    
+    // Clear current messages and load history for new language
+    _messages.clear();
+    await _loadChatHistory();
+    
     _initializeSystemPrompt();
     state = state.copyWith();
   }
 
+  /// Set language direction and load scoped chat history (mode × language)
+  /// This ensures each mode × language combination has its own conversation history
   Future<void> setLanguageDirection(String sourceLanguage, String targetLanguage) async {
+    // Save current chat history before switching languages (if language changed)
+    if (_sourceLanguage != sourceLanguage || _targetLanguage != targetLanguage) {
+      await _saveChatHistory();
+    }
+    
     _sourceLanguage = sourceLanguage;
     _targetLanguage = targetLanguage;
     _selectedLanguage = targetLanguage;
     _initializeSystemPrompt();
+    
+    // Clear current messages and load history for new mode × language combination
+    _messages.clear();
+    await _loadChatHistory();
+    
     state = state.copyWith();
   }
 
   String get sourceLanguage => _sourceLanguage;
   String get targetLanguage => _targetLanguage;
 
-  void setMode(PolieMode mode) {
+  Future<void> setMode(PolieMode mode) async {
     if (_mode == mode) return;
-    // Save current chat history before switching
-    _saveChatHistory();
+    
+    // Save current chat history before switching modes (scoped by mode × language)
+    await _saveChatHistory();
+    
+    // Switch to new mode
     _mode = mode;
     _tutorMode = mode == PolieMode.tutor;
-    // Load chat history for new mode
-    _loadChatHistory();
+    
+    // Save mode preference for persistence
+    await _saveModeAndLanguage();
+    
+    // Clear current messages and load history for new mode × language combination
+    _messages.clear();
+    await _loadChatHistory();
     _initializeSystemPrompt();
+    
+    // Notify listeners of the change
     state = state.copyWith();
+    
+    final modeName = _mode == PolieMode.translation ? "Translation" 
+        : _mode == PolieMode.tutor ? "Tutor"
+        : _mode == PolieMode.roleplay ? "Roleplay"
+        : _mode == PolieMode.conversation ? "Conversation"
+        : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+    debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
   }
 
-  void setTutorMode(bool enabled) {
-    setMode(enabled ? PolieMode.tutor : PolieMode.translation);
+  Future<void> setTutorMode(bool enabled) async {
+    await setMode(enabled ? PolieMode.tutor : PolieMode.translation);
   }
 
   void interruptAI() {
@@ -296,10 +659,68 @@ When the user is practicing, end your responses with a question or task to keep 
     _currentStreamCancel?.call();
   }
 
+  // Hybrid Polie orchestrator (optional - can be enabled via feature flag)
+  bool _useHybridPolie = true; // Enable hybrid mode by default
+  HybridPolieOrchestrator? _hybridOrchestrator;
+  
+  /// Enable/disable hybrid Polie mode
+  void setHybridMode(bool enabled) {
+    _useHybridPolie = enabled;
+    if (enabled && _hybridOrchestrator == null) {
+      _hybridOrchestrator = HybridPolieOrchestrator();
+    }
+  }
+
   // ----- Streaming Chat Message -----
-  Stream<String> sendMessageStream(String userMessage) async* {
-    if (userMessage.trim().isEmpty) {
+  /// Sanitize and validate user input to prevent errors
+  String _sanitizeInput(String input) {
+    // Remove null bytes and control characters (except newlines and tabs)
+    String sanitized = input.replaceAll(RegExp(r'[\x00-\x08\x0B-\x0C\x0E-\x1F]'), '');
+    
+    // Normalize whitespace (collapse multiple spaces, preserve newlines)
+    sanitized = sanitized.replaceAll(RegExp(r'[ \t]+'), ' ');
+    
+    // Trim but preserve intentional spacing
+    sanitized = sanitized.trim();
+    
+    // Ensure proper encoding (handle any encoding issues)
+    try {
+      utf8.decode(utf8.encode(sanitized));
+    } catch (e) {
+      debugPrint('Encoding issue detected, fixing: $e');
+      sanitized = input.replaceAll(RegExp(r'[^\x20-\x7E\n\t]'), '');
+    }
+    
+    return sanitized;
+  }
+
+  /// Enhanced JSON parsing with fallback handling
+  Map<String, dynamic>? _parseJsonSafely(String jsonStr) {
+    try {
+      return jsonDecode(jsonStr) as Map<String, dynamic>?;
+    } catch (e) {
+      debugPrint('JSON parse error: $e for string: ${jsonStr.substring(0, jsonStr.length > 100 ? 100 : jsonStr.length)}');
+      // Try to extract partial data if possible
+      try {
+        // Remove problematic characters and try again
+        final cleaned = jsonStr.replaceAll(RegExp(r'[\x00-\x1F]'), '');
+        return jsonDecode(cleaned) as Map<String, dynamic>?;
+      } catch (_) {
+        return null;
+      }
+    }
+  }
+
+  Stream<String> sendMessageStream(String userMessage, {String? systemPromptOverride}) async* {
+    // Enhanced input validation and sanitization
+    final sanitizedMessage = _sanitizeInput(userMessage);
+    if (sanitizedMessage.trim().isEmpty) {
       throw Exception('Message cannot be empty');
+    }
+
+    // Validate message length (prevent extremely long messages)
+    if (sanitizedMessage.length > 2000) {
+      throw Exception('Message is too long. Please keep it under 2000 characters.');
     }
 
     _currentStreamCancel?.call();
@@ -308,7 +729,7 @@ When the user is practicing, end your responses with a question or task to keep 
 
     final userMsg = ChatMessage(
       role: 'user',
-      content: userMessage,
+      content: sanitizedMessage,
       timestamp: DateTime.now(),
     );
     _messages.add(userMsg);
@@ -316,6 +737,81 @@ When the user is practicing, end your responses with a question or task to keep 
     await _saveChatHistory();
 
     state = state.copyWith(isLoading: true);
+    
+    // Use system prompt override if provided (for content generation)
+    final effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
+    
+    // Use Hybrid Polie if enabled and appropriate for the task
+    if (_useHybridPolie && _hybridOrchestrator != null) {
+      // Check if we should use hybrid routing
+      final shouldUseHybrid = _mode == PolieMode.translation || 
+                             _mode == PolieMode.tutor ||
+                             _mode == PolieMode.vocab;
+      
+      if (shouldUseHybrid) {
+        try {
+          final hybridResponse = await _hybridOrchestrator!.orchestrate(
+            userMessage: userMessage,
+            mode: _mode,
+            targetLanguage: _selectedLanguage,
+            sourceLanguage: _sourceLanguage,
+            groqProvider: this,
+            hfToken: null, // Can be set via environment
+          );
+          
+          // Stream the response word by word for natural feel
+          final words = hybridResponse.output.split(' ');
+          for (int i = 0; i < words.length; i++) {
+            if (_userInterrupt) {
+              state = state.copyWith(isLoading: false);
+              return;
+            }
+            
+            final chunk = i == 0 ? words[i] : ' ${words[i]}';
+            yield chunk;
+            await Future.delayed(const Duration(milliseconds: 30)); // Natural typing speed
+          }
+          
+          // Log telemetry if diacritics were corrected
+          if (hybridResponse.diacriticsCorrected) {
+            debugPrint('✅ Hybrid Polie: Diacritics corrected using ${hybridResponse.model}');
+          }
+          
+          // Add assistant message
+          final assistantMsg = ChatMessage(
+            role: 'assistant',
+            content: hybridResponse.output,
+            timestamp: DateTime.now(),
+          );
+          _messages.add(assistantMsg);
+          state = state.copyWith();
+          await _saveChatHistory();
+          
+          // Add tutor prompts if in tutor mode
+          if (_tutorMode && !_userInterrupt) {
+            final reviewWord = _dueReview();
+            if (reviewWord != null) {
+              final tutorCue = "Review time! Translate '$reviewWord' to $_selectedLanguage.";
+              yield "\n\n$tutorCue";
+            } else {
+              final tutorCue = _adaptiveTutorPrompt(_selectedLanguage);
+              if (!hybridResponse.output.trim().endsWith("?") &&
+                  !hybridResponse.output.toLowerCase().contains("your turn") &&
+                  !hybridResponse.output.toLowerCase().contains("now you try")) {
+                yield "\n\n$tutorCue";
+              }
+            }
+          }
+          
+          _turn = ConversationTurn.user;
+          state = state.copyWith(isLoading: false);
+          return;
+        } catch (e) {
+          debugPrint('⚠️ Hybrid Polie failed, falling back to standard mode: $e');
+          // Fall through to standard Groq implementation
+        }
+      }
+    }
 
     int retryCount = 0;
     int modelIndex = 0;
@@ -332,6 +828,124 @@ When the user is practicing, end your responses with a question or task to keep 
         // Try different model names if previous one failed
         final currentModel = _modelNames[modelIndex];
 
+        // Ensure system prompt is not empty (use override if provided)
+        final systemPrompt = (systemPromptOverride ?? _systemPrompt)?.trim() ?? 'You are Polie, a helpful AI language assistant for African languages.';
+        
+        // Build messages array - CRITICAL: Groq API format
+        // Groq expects:
+        // - messages: array of {role: "user"|"assistant", content: string}
+        // - system messages are passed separately (not in messages array for some models)
+        // - For Groq, we can include system in messages array, but it's cleaner to pass separately
+        
+        final messagesList = <Map<String, dynamic>>[];
+        
+        // Filter messages by current mode and language to create scoped chat bodies
+        // This ensures each mode × language combination has its own conversation history
+        final scopedMessages = _messages.where((msg) {
+          // Only include user and assistant messages (system is handled separately)
+          return msg.content.trim().isNotEmpty && 
+                 (msg.role == 'user' || msg.role == 'assistant');
+        }).toList();
+        
+        // Add conversation messages, filtering out empty ones and ensuring valid roles
+        for (final msg in scopedMessages) {
+          final content = msg.content.trim();
+          if (content.isNotEmpty) {
+            // Ensure role is valid (user or assistant) - Groq only accepts these roles in messages array
+            final role = (msg.role == 'user' || msg.role == 'assistant') 
+                ? msg.role 
+                : 'user';
+            
+            // Ensure content is a string and not null
+            final contentStr = content.toString();
+            if (contentStr.isNotEmpty && contentStr.length <= 100000) { // Groq has content length limits
+              messagesList.add({
+                "role": role,
+                "content": contentStr,
+              });
+            }
+          }
+        }
+        
+        // CRITICAL: Ensure we have at least one user message (the current one)
+        // The current user message should be the last one
+        final currentUserMessage = sanitizedMessage.trim();
+        if (currentUserMessage.isNotEmpty) {
+          // Check if the last message is already this user message
+          final lastMessage = messagesList.isNotEmpty ? messagesList.last : null;
+          if (lastMessage == null || 
+              lastMessage["role"] != "user" || 
+              lastMessage["content"] != currentUserMessage) {
+            // Add current user message
+            messagesList.add({
+              "role": "user",
+              "content": currentUserMessage,
+            });
+          }
+        }
+        
+        // Validate we have at least one user message
+        final hasUserMessage = messagesList.any((m) => m["role"] == "user");
+        if (messagesList.isEmpty || !hasUserMessage) {
+          throw Exception('No valid messages to send. Please enter a message.');
+        }
+        
+        // Final validation: Ensure all messages have required fields and correct types
+        for (int i = 0; i < messagesList.length; i++) {
+          final msg = messagesList[i];
+          if (msg["role"] == null || msg["content"] == null) {
+            throw Exception('Invalid message format at index $i: missing role or content');
+          }
+          if (msg["role"] is! String) {
+            throw Exception('Invalid message format at index $i: role must be a string');
+          }
+          if (msg["content"] is! String) {
+            // Convert to string if it's not already
+            msg["content"] = msg["content"].toString();
+          }
+          final contentStr = msg["content"] as String;
+          if (contentStr.isEmpty) {
+            throw Exception('Invalid message format at index $i: content cannot be empty');
+          }
+          // Ensure role is valid (only user or assistant in messages array)
+          if (msg["role"] != "user" && msg["role"] != "assistant") {
+            throw Exception('Invalid message format at index $i: role must be "user" or "assistant"');
+          }
+        }
+        
+        // Ensure messages array is not empty after validation
+        if (messagesList.isEmpty) {
+          throw Exception('No valid messages after validation. Please try again.');
+        }
+        
+        // Limit messages array to last 20 messages (to avoid token limits)
+        // Groq has token limits, so we keep recent conversation context
+        if (messagesList.length > 20) {
+          messagesList.removeRange(0, messagesList.length - 20);
+        }
+        
+        // Log the final message structure for debugging
+        debugPrint('Sending to Groq API:');
+        debugPrint('  Model: $currentModel');
+        debugPrint('  System prompt length: ${systemPrompt.length}');
+        debugPrint('  Messages count: ${messagesList.length}');
+        for (int i = 0; i < messagesList.length; i++) {
+          final msg = messagesList[i];
+          final content = msg["content"] as String;
+          debugPrint('  [$i] role=${msg["role"]}, content_length=${content.length}, preview=${content.substring(0, content.length > 50 ? 50 : content.length)}...');
+        }
+        
+        // Validate model name
+        if (currentModel.isEmpty) {
+          throw Exception('Invalid model configuration. Please check your settings.');
+        }
+        
+        debugPrint('Sending to Groq: model=$currentModel, messages=${messagesList.length}');
+        
+        // Track request start time for performance metrics
+        final requestStartTime = DateTime.now();
+        
+        // Enhanced request with timeout and better error handling
         final response = await _dio.post(
           _groqUrl,
           cancelToken: cancelToken,
@@ -341,31 +955,71 @@ When the user is practicing, end your responses with a question or task to keep 
               'Authorization': 'Bearer $_groqApiKey',
             },
             responseType: ResponseType.stream,
+            validateStatus: (status) => status! < 500, // Don't throw on 4xx, handle manually
+            receiveTimeout: const Duration(seconds: 60), // 60 second timeout for responses
+            sendTimeout: const Duration(seconds: 30), // 30 second timeout for sending
           ),
           data: {
             "model": currentModel,
             "messages": [
-              {"role": "system", "content": _systemPrompt ?? ''},
-              ..._messages.map((m) => {
-                    "role": m.role,
-                    "content": m.content,
-                  }),
+              // Add system message as first message (Groq accepts this format)
+              if (systemPrompt.isNotEmpty)
+                {
+                  "role": "system",
+                  "content": systemPrompt,
+                },
+              // Add conversation messages
+              ...messagesList,
             ],
             "temperature": _mode == PolieMode.translation ? 0.2 : 0.7,
             "max_tokens": 500,
             "stream": true,
           },
+        ).timeout(
+          const Duration(seconds: 90), // Overall timeout
+          onTimeout: () {
+            throw TimeoutException('Request timed out. Please check your connection and try again.');
+          },
         );
+        
+        // Check for 4xx errors manually
+        if (response.statusCode != null && response.statusCode! >= 400 && response.statusCode! < 500) {
+          String errorDetail = 'Bad request';
+          try {
+            // Try to read error response if available
+            if (response.data != null) {
+              // For stream responses, we might not be able to read the body easily
+              // But we can log the status code for debugging
+              debugPrint('Groq API error: Status ${response.statusCode}');
+              errorDetail = 'Request validation failed. Please check your message format and API key.';
+            }
+          } catch (e) {
+            debugPrint('Error reading response: $e');
+          }
+          
+          if (response.statusCode == 400) {
+            // Provide more helpful error message
+            throw Exception('Invalid request format. ${errorDetail}\n\nPlease ensure:\n- Your message is not empty\n- API key is valid\n- Message format is correct');
+          } else if (response.statusCode == 401) {
+            throw Exception('Invalid API key. Please check your Groq API key in settings.');
+          } else if (response.statusCode == 429) {
+            throw Exception('Rate limit exceeded. Please try again in a few moments.');
+          } else {
+            throw Exception('Request failed with status ${response.statusCode}: ${errorDetail}');
+          }
+        }
 
         String buffer = "";
         String output = "";
 
         final responseBody = response.data;
-        if (responseBody is! ResponseBody) {
+        // Check if response is a stream
+        if (responseBody == null) {
           throw Exception('Unexpected response from Groq (missing stream body).');
         }
 
-        final byteStream = responseBody.stream.cast<List<int>>();
+        // Handle stream response - Dio returns ResponseBody for stream responses
+        final byteStream = (responseBody as dynamic).stream.cast<List<int>>();
 
         await for (final chunk in byteStream
             .transform(utf8.decoder)
@@ -380,10 +1034,15 @@ When the user is practicing, end your responses with a question or task to keep 
             if (jsonStr == "[DONE]") break;
 
             try {
-              final jsonData = jsonDecode(jsonStr);
+              // Use enhanced JSON parsing with fallback
+              final jsonData = _parseJsonSafely(jsonStr);
+              if (jsonData == null) {
+                continue; // Skip malformed JSON chunks
+              }
+              
               final delta = jsonData["choices"]?[0]?["delta"]?["content"];
 
-              if (delta != null) {
+              if (delta != null && delta is String) {
                 buffer += delta;
 
                 final last = buffer.trim().isNotEmpty
@@ -456,15 +1115,64 @@ When the user is practicing, end your responses with a question or task to keep 
         _turn = ConversationTurn.user;
         state = state.copyWith(isLoading: false);
 
+        // Enhanced diacritics enforcement with metadata and audit logging
+        final diacriticsResult = DiacriticsEnforcer.enforceWithMetadata(
+          output.trim(),
+          _selectedLanguage,
+          enableFuzzy: true,
+          fuzzyThreshold: 0.75,
+        );
+        
+        final correctedOutput = diacriticsResult['text'] as String;
+        final wasChanged = diacriticsResult['changed'] as bool;
+        final metadata = diacriticsResult['metadata'] as Map<String, dynamic>;
+        
+        // Log telemetry event if diacritics were corrected
+        if (wasChanged) {
+          debugPrint('Diacritics corrected: ${metadata['method']} method for $_selectedLanguage');
+          // Track diacritics correction via telemetry service
+          try {
+            final telemetry = ref.read(telemetryServiceProvider);
+            await telemetry.trackPoliePerformance(
+              mode: _mode.name,
+              language: _selectedLanguage,
+              responseTimeMs: 0, // Would need to track start time
+              tokenCount: output.length,
+              diacriticsCorrected: true,
+              modelUsed: _modelName,
+              confidence: (metadata['score'] as num?)?.toDouble() ?? 1.0,
+            );
+          } catch (e) {
+            debugPrint('Error tracking diacritics correction: $e');
+          }
+        }
+
         final assistantMsg = ChatMessage(
           role: 'assistant',
-          content: output.trim(),
+          content: correctedOutput,
           timestamp: DateTime.now(),
         );
 
         _messages.add(assistantMsg);
         state = state.copyWith();
         await _saveChatHistory();
+
+        // Track Polie performance metrics
+        try {
+          final responseTime = DateTime.now().difference(requestStartTime);
+          final telemetry = ref.read(telemetryServiceProvider);
+          await telemetry.trackPoliePerformance(
+            mode: _mode.name,
+            language: _selectedLanguage,
+            responseTimeMs: responseTime.inMilliseconds,
+            tokenCount: correctedOutput.length, // Approximate token count
+            diacriticsCorrected: wasChanged,
+            modelUsed: _modelName,
+            confidence: (metadata['score'] as num?)?.toDouble(),
+          );
+        } catch (e) {
+          debugPrint('Error tracking Polie performance: $e');
+        }
 
         return;
       } catch (e) {
@@ -502,7 +1210,40 @@ When the user is practicing, end your responses with a question or task to keep 
           }
         }
 
-        throw Exception('Failed to send message: ${e.toString()}');
+        // Provide more helpful error messages
+        String errorMessage = 'Failed to send message';
+        if (e is DioException) {
+          if (e.response != null) {
+            final statusCode = e.response!.statusCode;
+            final errorData = e.response!.data;
+            if (statusCode == 400) {
+              errorMessage = 'Invalid request format. Please check your message and try again.';
+              // Log the actual error for debugging
+              debugPrint('Groq API 400 error: $errorData');
+            } else if (statusCode == 401) {
+              errorMessage = 'Invalid API key. Please check your Groq API key.';
+            } else if (statusCode == 429) {
+              errorMessage = 'Rate limit exceeded. Please try again in a few moments.';
+            } else {
+              errorMessage = 'Request failed (${statusCode}). Please try again.';
+            }
+          } else if (e.type == DioExceptionType.connectionTimeout ||
+                     e.type == DioExceptionType.receiveTimeout) {
+            errorMessage = 'Connection timed out. Please check your internet connection.';
+          } else if (e.type == DioExceptionType.connectionError) {
+            errorMessage = 'Connection error. Please check your internet connection.';
+          }
+        } else if (e is TimeoutException) {
+          errorMessage = 'Request timed out. Please try again.';
+        } else {
+          final errorStr = e.toString();
+          if (errorStr.contains('Invalid request format')) {
+            errorMessage = errorStr;
+          } else {
+            errorMessage = 'Failed to send message: ${errorStr.replaceAll('Exception: ', '')}';
+          }
+        }
+        throw Exception(errorMessage);
       }
     }
   }
@@ -516,8 +1257,19 @@ When the user is practicing, end your responses with a question or task to keep 
     return fullResponse;
   }
 
+  // Random number generator for roleplay scenarios
+  final Random _random = Random();
+  
   // ----- Tutor Turn & Adaptive Prompt -----
   String _adaptiveTutorPrompt(String language) {
+    // Use roleplay dataset to suggest scenarios (30% chance)
+    if (_random.nextDouble() < 0.3) {
+      final roleplayEntry = RoleplayDataset.getRandomForLanguage(language);
+      if (roleplayEntry != null) {
+        return "Roleplay: ${roleplayEntry.scenario}. ${roleplayEntry.userUtterance}";
+      }
+    }
+    
     final stages = [
       "Translate to $language:",
       "Say this in $language:",
@@ -556,30 +1308,20 @@ When the user is practicing, end your responses with a question or task to keep 
     }
   }
 
-  // ----- Word Memory (SRS) -----
-  void _updateSRS(String word, bool correct) {
+  // ----- Word Memory (SRS) - Enhanced with SM-2 variant -----
+  /// Update SRS using SM-2 algorithm
+  /// quality: 0-5 (0=complete blackout, 5=perfect recall)
+  void _updateSRS(String word, int quality) {
     final entry = _memory[word] ?? WordMemory();
-    entry.attempts++;
-
-    if (correct) {
-      entry.successes++;
-      entry.strength = (entry.strength + 1).clamp(0, 5);
-    } else {
-      entry.strength = (entry.strength - 1).clamp(0, 5);
-    }
-
-    final intervals = [
-      const Duration(hours: 6),
-      const Duration(days: 1),
-      const Duration(days: 3),
-      const Duration(days: 7),
-      const Duration(days: 30),
-      const Duration(days: 90),
-    ];
-
-    entry.nextReview = DateTime.now().add(intervals[entry.strength.clamp(0, 5)]);
+    entry.updateWithSM2(quality);
     _memory[word] = entry;
     _saveSRSMemory();
+  }
+  
+  /// Legacy method for backward compatibility
+  void _updateSRSLegacy(String word, bool correct) {
+    final quality = correct ? 4 : 2; // Map bool to quality scale
+    _updateSRS(word, quality);
   }
 
   String? _dueReview() {
@@ -966,15 +1708,49 @@ Return only JSON.
   Future<void> clearChat() async {
     _messages.clear();
     state = state.copyWith();
-    await _saveChatHistory();
+    await _saveChatHistory(); // Save empty history to clear this mode's history
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('Cleared chat history for $modeName mode');
   }
 
   // ----- Persistence -----
-  // Separate chat histories for translation and tutor modes
+  // Separate chat histories for each mode
+  /// Chat history key scoped by mode × language (m × n chat bodies)
+  /// This ensures each mode × language combination has its own conversation history
   String get _chatHistoryKey {
-    return _mode == PolieMode.translation
-        ? 'ai_chat_history_groq_translation'
-        : 'ai_chat_history_groq_tutor';
+    final modeName = _mode.toString().split('.').last;
+    // Use selectedLanguage as fallback if targetLanguage is empty
+    final language = (_targetLanguage.isNotEmpty ? _targetLanguage : _selectedLanguage)
+        .toLowerCase()
+        .replaceAll(' ', '_')
+        .replaceAll(RegExp(r'[^a-z0-9_]'), ''); // Sanitize
+    // Format: ai_chat_history_groq_{mode}_{language}
+    // Example: ai_chat_history_groq_translation_yoruba
+    return 'ai_chat_history_groq_${modeName}_$language';
+  }
+  
+  /// Get language code for backend API (normalized)
+  String get _languageCodeForBackend {
+    final language = (_targetLanguage.isNotEmpty ? _targetLanguage : _selectedLanguage)
+        .toLowerCase()
+        .replaceAll(' ', '_')
+        .replaceAll(RegExp(r'[^a-z0-9_]'), '');
+    return language;
+  }
+  
+  /// Get mode name for backend API
+  String get _modeNameForBackend {
+    return _mode == PolieMode.translation ? 'translation'
+        : _mode == PolieMode.tutor ? 'tutor'
+        : _mode == PolieMode.roleplay ? 'roleplay'
+        : _mode == PolieMode.conversation ? 'conversation'
+        : _mode == PolieMode.vocab ? 'vocab'
+        : 'review';
   }
 
   Future<void> _saveChatHistory() async {
@@ -982,25 +1758,164 @@ Return only JSON.
       final prefs = await SharedPreferences.getInstance();
       final messagesJson = _messages.map((msg) => msg.toJson()).toList();
       await prefs.setString(_chatHistoryKey, jsonEncode(messagesJson));
+      
+      // Sync to backend (debounced to avoid too many calls)
+      _syncChatHistoryToBackend();
     } catch (e) {
       debugPrint('Error saving chat history: $e');
     }
   }
 
+  /// Sync chat history to backend (debounced to avoid too many calls)
+  Future<void> _syncChatHistoryToBackend() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      // Debounce: only sync if last sync was more than 3 seconds ago
+      final now = DateTime.now();
+      if (_lastBackendSync != null && now.difference(_lastBackendSync!).inSeconds < 3) {
+        return;
+      }
+      _lastBackendSync = now;
+
+      // Use backend API directly for chat history
+      try {
+        final apiNotifier = ref.read(apiProvider.notifier);
+        final success = await apiNotifier.saveAiChatHistory(
+          mode: _modeNameForBackend,
+          languageCode: _languageCodeForBackend,
+          messages: _messages.map((m) => m.toJson()).toList(),
+        );
+        if (success) {
+          debugPrint('Chat history synced to backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+        }
+      } catch (apiError) {
+        debugPrint('Error syncing to backend API, falling back to sync queue: $apiError');
+        // Fallback to sync queue
+        final syncProvider = ref.read(backendSyncProvider.notifier);
+        await syncProvider.queueSync(SyncTask(
+          type: SyncType.aiChatHistory,
+          data: {
+            'user_id': user.id.toString(),
+            'mode': _modeNameForBackend,
+            'languageCode': _languageCodeForBackend,
+            'messages': _messages.map((m) => m.toJson()).toList(),
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        ));
+      }
+    } catch (e) {
+      debugPrint('Error syncing chat history: $e');
+    }
+  }
+
+  /// Legacy sync method (kept for backward compatibility)
+  /// Now properly includes languageCode for backend validation
+  Future<void> _syncChatHistoryToBackendLegacy() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final messagesJson = _messages.map((msg) => msg.toJson()).toList();
+      
+      final syncProvider = ref.read(backendSyncProvider.notifier);
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.aiChatHistory,
+        data: {
+          'user_id': user.id.toString(),
+          'mode': _modeNameForBackend,
+          'languageCode': _languageCodeForBackend, // Fixed: was missing
+          'messages': messagesJson,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
+      
+      // Also sync SRS memory
+      final memoryJson = <String, dynamic>{};
+      _memory.forEach((key, value) {
+        memoryJson[key] = value.toJson();
+      });
+      
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.aiChatSRS,
+        data: {
+          'user_id': user.id.toString(),
+          'memory': memoryJson,
+          'cefr': _cefrInfo.toJson(),
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
+    } catch (e) {
+      debugPrint('Error queuing chat sync: $e');
+    }
+  }
+
   Future<void> _loadChatHistory() async {
     try {
+      // Try loading from backend first
+      try {
+        final user = ref.read(userProvider);
+        if (user != null) {
+          final apiNotifier = ref.read(apiProvider.notifier);
+          final backendHistory = await apiNotifier.getAiChatHistory(
+            mode: _modeNameForBackend,
+            languageCode: _languageCodeForBackend,
+          );
+          
+          if (backendHistory != null && backendHistory.isNotEmpty) {
+            _messages.clear();
+            _messages.addAll(
+              backendHistory.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
+            );
+            debugPrint('Loaded ${_messages.length} messages from backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+            state = state.copyWith();
+            
+            // Also save to local storage for offline access
+            final prefs = await SharedPreferences.getInstance();
+            final messagesJson = _messages.map((msg) => msg.toJson()).toList();
+            await prefs.setString(_chatHistoryKey, jsonEncode(messagesJson));
+            return;
+          }
+        }
+      } catch (backendError) {
+        debugPrint('Error loading from backend, trying local storage: $backendError');
+      }
+      
+      // Fallback to local storage
       final prefs = await SharedPreferences.getInstance();
       final historyJson = prefs.getString(_chatHistoryKey);
-      if (historyJson != null) {
+      if (historyJson != null && historyJson.isNotEmpty) {
         final List<dynamic> messagesList = jsonDecode(historyJson);
         _messages.clear();
         _messages.addAll(
-          messagesList.map((json) => ChatMessage.fromJson(json)),
+          messagesList.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
         );
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('Loaded ${_messages.length} messages from local storage for $modeName mode');
+        state = state.copyWith();
+      } else {
+        // No history for this mode × language combination
+        _messages.clear();
+        final modeName = _mode == PolieMode.translation ? "Translation" 
+            : _mode == PolieMode.tutor ? "Tutor"
+            : _mode == PolieMode.roleplay ? "Roleplay"
+            : _mode == PolieMode.conversation ? "Conversation"
+            : _mode == PolieMode.vocab ? "Vocab"
+            : "Review";
+        debugPrint('No chat history found for $modeName mode × ${_languageCodeForBackend}');
         state = state.copyWith();
       }
     } catch (e) {
       debugPrint('Error loading chat history: $e');
+      // On error, clear messages to prevent showing wrong mode's history
+      _messages.clear();
+      state = state.copyWith();
     }
   }
 

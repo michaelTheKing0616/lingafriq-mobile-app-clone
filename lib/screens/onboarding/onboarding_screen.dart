@@ -40,7 +40,7 @@ class OnboardingScreen extends HookConsumerWidget {
               onPageChanged: (value) {
                 HapticFeedback.lightImpact();
                 if (value == 4) {
-                  ref.read(navigationProvider).naviateOffAll(const TabsView());
+                  ref.read(navigationProvider).navigateOffAll(const TabsView());
                 } else {
                   ref.read(_indexProvider.notifier).setIndex(value);
                 }
@@ -49,39 +49,39 @@ class OnboardingScreen extends HookConsumerWidget {
                 _OnboardingItem(
                   topImage: Images.obTop1,
                   bottomImage: Images.obBottom1,
-                  title: "What Do We Offer Uniqely",
-                  description: "54 countries, 2000+ languages, 1+ billion voices. One origin. ",
+                  title: "Welcome to LingAfriq",
+                  description: "54 countries, 2000+ languages, 1+ billion voices. One origin. Discover the richness of African languages and cultures.",
                   textfontsize: 24.sp,
                 ),
                 _OnboardingItem(
                   textfontsize: 22.sp,
                   topImage: Images.obTop2,
                   bottomImage: Images.obBottom2,
-                  title: "What Do We Offer Uniqely",
+                  title: "Amplifying Africa's Voice",
                   description:
-                      "Afrika has a voice, and our duty is to amplify it.  We’d love take you on a journey through history, and  help you express yourself through language. One thing is certain, we bring you closer to Afrika and her culture.",
+                      "Africa has a voice, and our duty is to amplify it. We'll take you on a journey through history and help you express yourself through language. We bring you closer to Africa and her culture.",
                 ),
                 _OnboardingItem(
                     textfontsize: 17.sp,
                     topImage: Images.obTop3,
                     bottomImage: Images.obBottom3,
-                    title: "What Do We Offer Uniqely",
+                    title: "Comprehensive Learning Tools",
                     description:
-                        '''This app provides you with learning tools such as video, audio, and illustrations to teach you your preferred Afrikan language from scratch. 
+                        '''Learn your preferred African language from scratch with video, audio, and illustrations. 
 
-Learn about the history of the people who speak this language, and how they express themselves in their interactions with each other through their mannerisms. 
+Discover the history of the people who speak this language and how they express themselves through mannerisms. 
 
-LingAfriq offers interactive quizzes  to test and improve your knowledge on language topics, history, and current affairs. 
+Test and improve your knowledge with interactive quizzes on language topics, history, and current affairs. 
 
-Earn points as you progress and see how you compare to other learners on the leaderboard.'''),
+Earn XP as you progress and compete with other learners on the leaderboard.'''),
                 _OnboardingItem(
                   topImage: Images.obTop4,
                   bottomImage: Images.obBottom2,
-                  title: "What Do We Offer Uniqely",
+                  title: "Growing Language Library",
                   description:
-                      '''We aim to have all Afrikan languages, but we’re not there yet. We’re working to feature more languages. Don’t see a language you’d like to learn, let’s know about it and we’d work to include it (that’s if we’re not working on it already 😉♥️). 
+                      '''We're working to feature all African languages. Don't see your language? Let us know through your profile's Feedback option, and we'll work to include it! 
 
-You can do this by going to your profile tab, and selecting the “Feedback” option to enter this information. Now let’s get to learning!''',
+Your learning journey starts now. Let's begin!''',
                   width: 0.9.sw,
                   textfontsize: 19.5.sp,
                 ),
@@ -129,7 +129,7 @@ You can do this by going to your profile tab, and selecting the “Feedback” o
                                     );
                                   } else {
                                     ref.read(apiProvider.notifier).regiserDevice();
-                                    ref.read(navigationProvider).naviateOffAll(const TabsView());
+                                    ref.read(navigationProvider).navigateOffAll(const TabsView());
                                   }
                                 },
                                 icon: Icon(
@@ -195,17 +195,30 @@ class _OnboardingItem extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                4.heightBox,
-                if (textfontsize != null)
-                  description.text.center.white.size(textfontsize).make() //.pOnly(right: 0.1.sw)
-                else
-                  description.text.center.white.make(), //.pOnly(right: 0.1.sw),
-                64.heightBox,
-              ],
-            ).safeArea(top: false),
+            child: Container(
+              decoration: BoxDecoration(
+                // Add semi-transparent dark overlay for better text contrast
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black.withOpacity(0.6),
+                    Colors.black.withOpacity(0.8),
+                  ],
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  4.heightBox,
+                  if (textfontsize != null)
+                    description.text.center.white.size(textfontsize).make()
+                  else
+                    description.text.center.white.make(),
+                  64.heightBox,
+                ],
+              ).safeArea(top: false),
+            ),
           ).expand(flex: 9),
           // AspectRatio(
           //   // aspectRatio: 1121.9 / 792.81,

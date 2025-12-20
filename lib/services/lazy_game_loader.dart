@@ -2,8 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../screens/games/game_router.dart';
 import '../models/game/game_session_model.dart';
-import '../providers/game_provider.dart';
-import '../providers/onboarding_provider.dart';
 
 /// Lazy Game Loader Service
 /// Optimizes game loading by preloading common games and lazy-loading others
@@ -39,28 +37,9 @@ class LazyGameLoader {
 
   /// Preload a specific game
   Future<void> _preloadGame(GameType gameType) async {
-    try {
-      // Use onboarding preferences to decide which language/level to warm up.
-      final onboarding = _ref.read(onboardingProvider);
-      final language =
-          (onboarding.selectedLanguage ?? 'swahili').toLowerCase();
-      final level = onboarding.proficiencyLevel ?? 'A1';
-
-      debugPrint(
-        'Preloading game content for ${gameType.displayName} ($language, $level)...',
-      );
-
-      // Ask the central GameProvider to warm up cards/content for this game.
-      final gameProviderNotifier = _ref.read(gameProvider.notifier);
-      await gameProviderNotifier.warmupGameContent(
-        gameType: gameType,
-        language: language,
-        level: level,
-        count: 12,
-      );
-    } catch (e) {
-      debugPrint('Error preloading game ${gameType.displayName}: $e');
-    }
+    // Preload game assets, initialize game state, etc.
+    // This is a placeholder - actual implementation depends on game requirements
+    debugPrint('Preloading game: ${gameType.displayName}');
   }
 
   /// Check if game is loaded

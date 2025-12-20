@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
+import 'package:lingafriq/providers/backend_sync_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingData> {
   SharedPreferencesProvider get _prefs => ref.read(sharedPreferencesProvider);
@@ -250,6 +253,41 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
     );
   }
   
+  void updatePath(String path) {
+    state = OnboardingData(
+      ageCategory: state.ageCategory,
+      learningReasons: state.learningReasons,
+      selectedLanguage: state.selectedLanguage,
+      selectedDialect: state.selectedDialect,
+      proficiencyLevel: state.proficiencyLevel,
+      literacyPreference: state.literacyPreference,
+      learningStyle: state.learningStyle,
+      pacePreference: state.pacePreference,
+      appTone: state.appTone,
+      gamificationLevel: state.gamificationLevel,
+      culturalContentEnabled: state.culturalContentEnabled,
+      selectedPath: path,
+      primaryGoal: state.primaryGoal,
+      secondaryGoals: state.secondaryGoals,
+      motivationTriggers: state.motivationTriggers,
+      dailyDurationMinutes: state.dailyDurationMinutes,
+      preferredTimeOfDay: state.preferredTimeOfDay,
+      remindersEnabled: state.remindersEnabled,
+      largeTextEnabled: state.largeTextEnabled,
+      highContrastEnabled: state.highContrastEnabled,
+      dyslexiaModeEnabled: state.dyslexiaModeEnabled,
+      soundOffModeEnabled: state.soundOffModeEnabled,
+      motionReductionEnabled: state.motionReductionEnabled,
+      socialPreference: state.socialPreference,
+      competitionEnabled: state.competitionEnabled,
+      speakingComfortLevel: state.speakingComfortLevel,
+      username: state.username,
+      avatarPath: state.avatarPath,
+      location: state.location,
+      placementTestResults: state.placementTestResults,
+    );
+  }
+
   void updatePersonality(String tone, String gamification, {bool? culturalContent}) {
     state = OnboardingData(
       ageCategory: state.ageCategory,
@@ -263,6 +301,7 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
       appTone: tone,
       gamificationLevel: gamification,
       culturalContentEnabled: culturalContent ?? state.culturalContentEnabled,
+      selectedPath: state.selectedPath,
       primaryGoal: state.primaryGoal,
       secondaryGoals: state.secondaryGoals,
       motivationTriggers: state.motivationTriggers,
@@ -428,6 +467,24 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
   
   Future<void> saveOnboardingData() async {
     await _prefs.prefs.setString('onboarding_data', state.toJson());
+    
+    // Sync to backend
+    try {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        final syncProvider = ref.read(backendSyncProvider.notifier);
+        await syncProvider.queueSync(SyncTask(
+          type: SyncType.onboarding,
+          data: {
+            'user_id': user.id.toString(),
+            'onboarding_data': state.toJson(),
+            'timestamp': DateTime.now().toIso8601String(),
+          },
+        ));
+      }
+    } catch (e) {
+      debugPrint('Error queuing onboarding sync: $e');
+    }
   }
   
   Future<void> _loadOnboardingData() async {

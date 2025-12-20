@@ -38,10 +38,10 @@ class LanguageVillage {
       };
 
   factory LanguageVillage.fromJson(Map<String, dynamic> json) => LanguageVillage(
-        id: (json['id'] ?? json['_id']).toString(),
-        name: json['name'] as String? ?? 'Language Village',
-        language: (json['language'] ?? json['lang'] ?? '').toString(),
-        description: (json['description'] ?? '').toString(),
+        id: json['id'] as String,
+        name: json['name'] as String,
+        language: json['language'] as String,
+        description: json['description'] as String,
         currentParticipants: json['currentParticipants'] as int? ?? 0,
         maxParticipants: json['maxParticipants'] as int? ?? 50,
         isActive: json['isActive'] as bool? ?? true,

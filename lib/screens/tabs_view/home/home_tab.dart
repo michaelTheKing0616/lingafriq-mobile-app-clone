@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
+import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/greegins_builder.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
@@ -203,7 +204,7 @@ class HomeTab extends HookConsumerWidget {
                     return StreamErrorWidget(
                       error: e,
                       onTryAgain: () {
-                        // ref.read(navigationProvider).naviateTo(
+                        // ref.read(navigationProvider).navigateTo(
                         //       LanguageDetailScreen(
                         //         language: Language(
                         //           id: 2,
@@ -223,9 +224,7 @@ class HomeTab extends HookConsumerWidget {
                       },
                     );
                   },
-                  loading: () => const AdaptiveProgressIndicator(
-                    message: "Loading Languages ...",
-                  ),
+                  loading: () => const DynamicLoadingScreen(),
                 ),
               ),
             ],
@@ -255,7 +254,7 @@ class LanguageItem extends ConsumerWidget {
         onTap?.call();
         final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
         if (result) {
-          ref.read(navigationProvider).naviateTo(IntroductionScreen(language: language));
+          ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
           return;
         }
         // Show lesson/quiz options
@@ -311,7 +310,7 @@ class LanguageItem extends ConsumerWidget {
                 Navigator.pop(context);
                 // Pre-load lessons data for faster navigation
                 ref.read(apiProvider.notifier).getLessons(language.id);
-                ref.read(navigationProvider).naviateTo(LessonsListScreen(language: language));
+                ref.read(navigationProvider).navigateTo(LessonsListScreen(language: language));
               },
               text: "Take a Lesson",
               color: AppColors.primaryGreen,
@@ -322,7 +321,7 @@ class LanguageItem extends ConsumerWidget {
                 Navigator.pop(context);
                 // Pre-load quiz data for faster navigation
                 ref.read(apiProvider.notifier).getRandomQuizLessons(language.id);
-                ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
+                ref.read(navigationProvider).navigateTo(TakeQuizScreen(language: language));
               },
               text: "Take a Quiz",
               color: AppColors.primaryOrange,
@@ -331,7 +330,7 @@ class LanguageItem extends ConsumerWidget {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
+                ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
               },
               child: Text(
                 "View Details",
@@ -383,7 +382,7 @@ class LanguageItemOld extends ConsumerWidget {
                 Navigator.pop(context);
                 // Pre-load lessons data for faster navigation
                 ref.read(apiProvider.notifier).getLessons(language.id);
-                ref.read(navigationProvider).naviateTo(LessonsListScreen(language: language));
+                ref.read(navigationProvider).navigateTo(LessonsListScreen(language: language));
               },
               text: "Take a Lesson",
               color: AppColors.primaryGreen,
@@ -394,7 +393,7 @@ class LanguageItemOld extends ConsumerWidget {
                 Navigator.pop(context);
                 // Pre-load quiz data for faster navigation
                 ref.read(apiProvider.notifier).getRandomQuizLessons(language.id);
-                ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
+                ref.read(navigationProvider).navigateTo(TakeQuizScreen(language: language));
               },
               text: "Take a Quiz",
               color: AppColors.primaryOrange,
@@ -403,7 +402,7 @@ class LanguageItemOld extends ConsumerWidget {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
+                ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
               },
               child: Text(
                 "View Details",
@@ -424,7 +423,7 @@ class LanguageItemOld extends ConsumerWidget {
         onTap?.call();
         final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
         if (result) {
-          ref.read(navigationProvider).naviateTo(IntroductionScreen(language: language));
+          ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
           return;
         }
         // Show lesson/quiz options
