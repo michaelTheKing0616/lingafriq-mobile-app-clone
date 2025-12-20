@@ -1,0 +1,5 @@
+2025-12-19T18:40:37.2060000Z Job is waiting for a hosted runner to come online.
+2025-12-19T18:40:37.2040000Z Requested labels: ubuntu-latest
+2025-12-19T18:40:37.2040000Z Job defined at: michaelTheKing0616/lingafriq-mobile-app-clone/.github/workflows/build-and-release.yml@refs/heads/main
+2025-12-19T18:40:37.2040000Z Waiting for a runner to pick up this job...
+2025-12-19T18:40:37.2060000Z Job is about to start running on the hosted runner: GitHub Actions 1000001050

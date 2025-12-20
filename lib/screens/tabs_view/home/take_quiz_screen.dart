@@ -10,6 +10,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../../../detail_types/correction_screen.dart';
@@ -20,6 +21,8 @@ import '../../../models/word_correction_model.dart';
 import '../../../providers/dialog_provider.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../random_quiz/models/random_quiz_lesson_model.dart';
+import '../../../screens/tabs_view/app_drawer/app_drawer.dart';
+import '../../../screens/tabs_view/tabs_view.dart';
 import '../../../utils/api.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/greegins_builder.dart';
@@ -33,18 +36,78 @@ class TakeQuizScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    return ErrorBoundary(
+      errorMessage: 'Quiz module is temporarily unavailable',
+      onRetry: () {
+        // Retry by rebuilding
+      },
+      child: _buildQuizContent(context, ref),
+    );
+  }
+
+  Widget _buildQuizContent(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    return LoadingOverlayPro(
-      isLoading: isLoading,
-      child: Scaffold(
-        body: Column(
-          children: [
-            TopGradientBox(
-              borderRadius: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  BackButton(color: Colors.white),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          ref.read(navigationProvider).pop();
+        }
+      },
+      child: LoadingOverlayPro(
+        isLoading: isLoading,
+        child: Scaffold(
+          drawer: const AppDrawer(),
+          body: Column(
+            children: [
+              TopGradientBox(
+                borderRadius: 0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SafeArea(
+                      bottom: false,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).padding.top + 8,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                                onPressed: () {
+                                  ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Text(
+                                  'Take Quiz',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              IconButton(
+                                icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                                onPressed: () {
+                                  ref.read(navigationProvider).pop();
+                                },
+                                padding: EdgeInsets.zero,
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                   GreetingsBuilder(
                     greetingTitle: '',
@@ -84,28 +147,41 @@ class TakeQuizScreen extends ConsumerWidget {
                                     top: constraints.maxHeight * 0.075,
                                     child: _RandomTextBuilder(
                                       onTap: () async {
-                                        final randomQuizes = await ref
-                                            .read(apiProvider.notifier)
-                                            .getRandomQuizLessons(language.id);
-                                        // randomQuizes.shuffle();
-                                        if (randomQuizes.isEmpty) {
-                                          ref
-                                              .read(dialogProvider(
-                                                  "We're working to add random quiz!"))
-                                              .showSuccessSnackBar();
-                                          return;
-                                        }
-                                        final random = Random();
-                                        do {
-                                          final indexToOpen =
-                                              random.randomUpto(randomQuizes.length);
-                                          final quiz = randomQuizes[indexToOpen];
-                                          final result = await openQuizDetail(quiz, ref);
-                                          if (result == null) break;
-                                          if (result == true) {
-                                            randomQuizes.removeAt(indexToOpen);
+                                        try {
+                                          debugPrint('Fetching random quizzes for language: ${language.id}');
+                                          
+                                          final randomQuizes = await ref
+                                              .read(apiProvider.notifier)
+                                              .getRandomQuizLessons(language.id);
+                                          
+                                          debugPrint('Received ${randomQuizes.length} quizzes');
+                                          
+                                          if (randomQuizes.isEmpty) {
+                                            ref
+                                                .read(dialogProvider(
+                                                    "No quizzes available for this language yet. We're working to add more!"))
+                                                .showSuccessSnackBar();
+                                            return;
                                           }
-                                        } while (randomQuizes.isNotEmpty);
+                                          
+                                          final random = Random();
+                                          do {
+                                            if (randomQuizes.isEmpty) break;
+                                            final indexToOpen =
+                                                random.randomUpto(randomQuizes.length);
+                                            final quiz = randomQuizes[indexToOpen];
+                                            final result = await openQuizDetail(quiz, ref);
+                                            if (result == null) break;
+                                            if (result == true) {
+                                              randomQuizes.removeAt(indexToOpen);
+                                            }
+                                          } while (randomQuizes.isNotEmpty);
+                                        } catch (e) {
+                                          debugPrint('Error in Take Quiz: $e');
+                                          ref.read(dialogProvider(
+                                            'Failed to load quiz. ${e.toString()}'
+                                          )).showExceptionDialog();
+                                        }
                                       },
                                     ).animate(effects: kGradientTextEffects),
                                   ),
@@ -151,6 +227,7 @@ class TakeQuizScreen extends ConsumerWidget {
               ],
             ).expand()
           ],
+        ),
         ),
       ),
     );

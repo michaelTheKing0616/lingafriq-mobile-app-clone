@@ -22,7 +22,6 @@ class PrimaryTextField extends StatelessWidget {
     this.minLines,
     this.maxLines,
     this.border,
-    this.onChanged,
   }) : super(key: key);
   final TextEditingController controller;
   final String title;

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
-import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
@@ -48,66 +47,63 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
         }
       }
       
-      final curriculumService = ref.read(curriculumServiceProvider);
+      // Try to load from bundle directory
+      final bundleName = useExpanded ? 'curriculum_expanded_bundle' : 'curriculum_bundle';
       
-      // Load master index to get available languages and levels
-      final masterIndex = await curriculumService.loadMasterIndex();
-      if (masterIndex == null) {
-        throw Exception('Master index not found. Please ensure curriculum bundle is properly installed.');
-      }
-
-      final languages = List<String>.from(masterIndex['languages'] ?? []);
-      final levels = List<String>.from(masterIndex['levels'] ?? ['A1', 'A2', 'B1']);
+      // Try multiple possible paths
+      final possiblePaths = [
+        '$bundleName/curriculum',
+        '../$bundleName/curriculum',
+        '../../$bundleName/curriculum',
+      ];
       
-      // Build curriculum from all languages and levels
-      final languagesMap = <String, Map<String, List<CurriculumUnit>>>{};
-      
-      for (final language in languages) {
-        final levelsMap = <String, List<CurriculumUnit>>{};
-        
-        for (final level in levels) {
-          try {
-            Map<String, dynamic>? curriculumData;
-            
-            if (useExpanded) {
-              curriculumData = await curriculumService.loadExpandedCurriculum(language, level);
-            }
-            
-            if (curriculumData == null) {
-              curriculumData = await curriculumService.loadCompactCurriculum(language, level);
-            }
-            
-            if (curriculumData != null && curriculumData['units'] != null) {
-              final units = (curriculumData['units'] as List)
-                  .map((u) => CurriculumUnit.fromMap(u as Map<String, dynamic>))
-                  .toList();
-              levelsMap[level] = units;
-            }
-          } catch (e) {
-            debugPrint('Error loading $language $level: $e');
-            // Continue with other languages/levels
-          }
+      Directory? curriculumDir;
+      for (final path in possiblePaths) {
+        final dir = Directory(path);
+        if (await dir.exists()) {
+          curriculumDir = dir;
+          break;
         }
-        
-        if (levelsMap.isNotEmpty) {
-          languagesMap[language] = levelsMap;
+      }
+      
+      if (curriculumDir == null) {
+        // Try loading from assets
+        try {
+          // Note: Assets need to be declared in pubspec.yaml
+          // For now, show a helpful error message
+          throw Exception('Curriculum bundle not found. Please ensure curriculum files are available in the app bundle or contact support.');
+        } catch (e) {
+          state = state.copyWith(isLoading: false);
+          rethrow;
         }
       }
 
-      if (languagesMap.isEmpty) {
-        throw Exception('No curriculum data found. Please ensure curriculum bundle is properly installed.');
+      // Try to load the main compact curriculum file first
+      final mainFile = File('${curriculumDir.path}/curriculum_compact_A1_B1_all_languages.json');
+      File? jsonFile;
+      
+      if (await mainFile.exists()) {
+        jsonFile = mainFile;
+      } else {
+        // Fallback: find any JSON file in the directory
+        try {
+          final files = await curriculumDir.list().toList();
+          final foundFile = files.firstWhere(
+            (file) => file.path.endsWith('.json'),
+            orElse: () => throw Exception('No JSON file found in curriculum bundle'),
+          );
+          jsonFile = foundFile as File;
+        } catch (e) {
+          throw Exception('No curriculum JSON files found. Please ensure curriculum bundle is properly installed.');
+        }
       }
 
-      // Create curriculum object
-      _curriculum = Curriculum(
-        meta: CurriculumMeta(
-          title: 'Comprehensive Curriculum',
-          generatedAt: DateTime.now(),
-          languages: languages,
-          levels: levels,
-        ),
-        languages: languagesMap,
-      );
+      if (jsonFile == null || !await jsonFile.exists()) {
+        throw Exception('Curriculum file not found. Please contact support.');
+      }
+
+      final jsonString = await jsonFile.readAsString();
+      _curriculum = Curriculum.fromJson(jsonString);
       
       await _saveCurriculum();
       state = state.copyWith(isLoading: false);

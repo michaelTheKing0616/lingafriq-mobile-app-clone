@@ -1,0 +1,31 @@
+﻿2025-12-19T18:29:59.3856402Z ##[group]Run # Extract current version from pubspec.yaml
+2025-12-19T18:29:59.3857011Z [36;1m# Extract current version from pubspec.yaml[0m
+2025-12-19T18:29:59.3857487Z [36;1mcurrent_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')[0m
+2025-12-19T18:29:59.3858006Z [36;1mversion_name=$(echo $current_version | cut -d'+' -f1)[0m
+2025-12-19T18:29:59.3858429Z [36;1mbuild_number=$(echo $current_version | cut -d'+' -f2)[0m
+2025-12-19T18:29:59.3858979Z [36;1m[0m
+2025-12-19T18:29:59.3859272Z [36;1m# Ensure build number is at least 91 (last prod was 90)[0m
+2025-12-19T18:29:59.3859718Z [36;1m# If current build is less than 91, set to 91, otherwise increment[0m
+2025-12-19T18:29:59.3860150Z [36;1mif [ "$build_number" -lt 91 ]; then[0m
+2025-12-19T18:29:59.3860579Z [36;1m  echo "⚠️ Build number $build_number is less than 91. Setting to 91."[0m
+2025-12-19T18:29:59.3861001Z [36;1m  build_number=91[0m
+2025-12-19T18:29:59.3861294Z [36;1melif [ "$build_number" -eq 90 ]; then[0m
+2025-12-19T18:29:59.3861707Z [36;1m  echo "📦 Current build is 90, incrementing to 91."[0m
+2025-12-19T18:29:59.3862222Z [36;1m  build_number=91[0m
+2025-12-19T18:29:59.3862472Z [36;1melse[0m
+2025-12-19T18:29:59.3862715Z [36;1m  # Increment build number[0m
+2025-12-19T18:29:59.3863034Z [36;1m  build_number=$((build_number + 1))[0m
+2025-12-19T18:29:59.3863325Z [36;1mfi[0m
+2025-12-19T18:29:59.3863522Z [36;1m[0m
+2025-12-19T18:29:59.3863786Z [36;1mnew_version="${version_name}+${build_number}"[0m
+2025-12-19T18:29:59.3864099Z [36;1m[0m
+2025-12-19T18:29:59.3864317Z [36;1m# Update pubspec.yaml[0m
+2025-12-19T18:29:59.3864663Z [36;1msed -i "s/^version: .*/version: $new_version/" pubspec.yaml[0m
+2025-12-19T18:29:59.3865020Z [36;1m[0m
+2025-12-19T18:29:59.3865296Z [36;1mecho "version=$new_version" >> $GITHUB_OUTPUT[0m
+2025-12-19T18:29:59.3865688Z [36;1mecho "version_name=$version_name" >> $GITHUB_OUTPUT[0m
+2025-12-19T18:29:59.3866082Z [36;1mecho "build_number=$build_number" >> $GITHUB_OUTPUT[0m
+2025-12-19T18:29:59.3866546Z [36;1mecho "📦 Updated version: $new_version (build number: $build_number)"[0m
+2025-12-19T18:29:59.3903115Z shell: /usr/bin/bash -e {0}
+2025-12-19T18:29:59.3903446Z ##[endgroup]
+2025-12-19T18:29:59.4043283Z 📦 Updated version: 1.6.0+92 (build number: 92)

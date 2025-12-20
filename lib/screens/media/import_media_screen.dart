@@ -7,10 +7,6 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
-import 'package:lingafriq/services/polie_content_generator.dart';
-import 'package:lingafriq/services/user_generated_content_service.dart';
-import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
@@ -26,8 +22,6 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
   bool _isLoading = false;
   final TextEditingController _urlController = TextEditingController();
   final TextEditingController _textController = TextEditingController();
-  String? _lastImportedMediaId;
-  bool _allowOfficialUse = false;
 
   @override
   void dispose() {
@@ -49,11 +43,6 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
   Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
-
-    // Show loading screen when importing
-    if (_isLoading) {
-      return const DynamicLoadingScreen();
-    }
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -88,28 +77,16 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: const CircleBorder(),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     SizedBox(height: 2.h),
                     const Icon(
@@ -187,9 +164,9 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                           ),
                         ),
                         SizedBox(height: 3.h),
-                        FilledButton(
+                        ElevatedButton(
                           onPressed: () => _importFromFile(),
-                          style: FilledButton.styleFrom(
+                          style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryGreen,
                             foregroundColor: Colors.white,
                             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
@@ -392,50 +369,16 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: [
-          'txt',
-          'pdf',
-          'doc',
-          'docx',
-          'jpg',
-          'jpeg',
-          'png',
-          'mp3',
-          'wav',
-          'm4a',
-          'mp4',
-          'mov',
-        ],
+        allowedExtensions: ['txt', 'pdf', 'doc', 'docx'],
       );
 
       if (result != null && result.files.single.path != null) {
         final file = File(result.files.single.path!);
-        final ext = (result.files.single.extension ?? '').toLowerCase();
-
-        // Text-like documents: read content directly
-        if (['txt', 'pdf', 'doc', 'docx'].contains(ext)) {
-          final text = await file.readAsString();
-          setState(() {
-            _importedText = text;
-            _isLoading = false;
-          });
-        } else if (['mp3', 'wav', 'm4a', 'mp4', 'mov'].contains(ext)) {
-          // Audio / video media: upload and transcribe via voice service
-          await _handleAudioOrVideoImport(file, ext);
-        } else if (['jpg', 'jpeg', 'png'].contains(ext)) {
-          // Images: ask user for a short description to seed Polie
-          await _handleImageImport(file, ext);
-        } else {
-          setState(() => _isLoading = false);
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Unsupported file type. Please select text, image, audio, or video.'),
-                backgroundColor: Colors.orange,
-              ),
-            );
-          }
-        }
+        final text = await file.readAsString();
+        setState(() {
+          _importedText = text;
+          _isLoading = false;
+        });
       } else {
         setState(() => _isLoading = false);
       }
@@ -447,136 +390,6 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
         );
       }
     }
-  }
-
-  Future<void> _handleAudioOrVideoImport(File file, String ext) async {
-    try {
-      final fileName = file.path.split(Platform.pathSeparator).last;
-      final api = ref.read(apiProvider.notifier);
-
-      // Upload media to backend for persistence
-      final mediaData = await api.uploadMedia(
-        filePath: file.path,
-        fileName: fileName,
-        title: fileName,
-        description: 'Imported from device for Polie analysis',
-        language: _selectedLanguage,
-      );
-
-      // Remember media id so we can link it to the generated lesson later
-      final mediaId = (mediaData['_id'] ?? mediaData['id'])?.toString();
-      _lastImportedMediaId = mediaId;
-
-      // Transcribe via voice service proxy
-      final sttResult = await api.transcribeAudioFile(
-        filePath: file.path,
-        fileName: fileName,
-        language: _selectedLanguage,
-        task: 'transcribe',
-      );
-
-      final transcript = (sttResult['text'] ?? sttResult['transcription'] ?? '').toString();
-
-      if (transcript.isEmpty) {
-        setState(() => _isLoading = false);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No speech detected in media. Please try another file.'),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
-        return;
-      }
-
-      setState(() {
-        _importedText = transcript;
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() => _isLoading = false);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error processing media: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
-
-  Future<void> _handleImageImport(File file, String ext) async {
-    // For now we use a human-in-the-loop description to seed Polie.
-    // In future, this can be extended to call an OCR/vision API via the backend.
-    setState(() => _isLoading = false);
-
-    if (!mounted) return;
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        final descriptionController = TextEditingController();
-        final isDark = context.isDarkMode;
-
-        return AlertDialog(
-          backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-          title: Text(
-            'Describe this image',
-            style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Tell Polie what is in this image so it can build a lesson around it.',
-                style: TextStyle(color: isDark ? Colors.white70 : Colors.black87),
-              ),
-              const SizedBox(height: 12),
-              TextField(
-                controller: descriptionController,
-                maxLines: 5,
-                decoration: InputDecoration(
-                  hintText: 'E.g. A family cooking jollof rice together in Lagos...',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  filled: true,
-                  fillColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[100],
-                ),
-                style: TextStyle(color: isDark ? Colors.white : Colors.black87),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'Cancel',
-                style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600]),
-              ),
-            ),
-            FilledButton(
-              onPressed: () {
-                final desc = descriptionController.text.trim();
-                if (desc.isNotEmpty) {
-                  setState(() {
-                    _importedText = desc;
-                  });
-                  Navigator.pop(context);
-                }
-              },
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-                foregroundColor: Colors.white,
-              ),
-              child: const Text('Use description'),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   void _showUrlImportDialog(BuildContext context, bool isDark) {
@@ -605,12 +418,12 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          FilledButton(
+          ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
               _importFromUrl(_urlController.text);
             },
-            style: FilledButton.styleFrom(
+            style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),
@@ -651,7 +464,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel', style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[600])),
           ),
-          FilledButton(
+          ElevatedButton(
             onPressed: () {
               if (_textController.text.isNotEmpty) {
                 setState(() {
@@ -660,7 +473,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                 Navigator.pop(context);
               }
             },
-            style: FilledButton.styleFrom(
+            style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primaryGreen,
               foregroundColor: Colors.white,
             ),
@@ -673,207 +486,23 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
   Future<void> _importFromUrl(String url) async {
     setState(() => _isLoading = true);
-    try {
-      // Use Polie to extract and summarize content from URL
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      
-      // Generate a summary/extraction prompt for Polie
-      final extractedContent = await polieGenerator.generateGameContent(
-        gameType: 'content_extraction',
-        language: _selectedLanguage ?? 'English',
-        additionalContext: 'Extract and summarize the main content from this URL: $url',
-      );
-      
-      setState(() {
-        _importedText = extractedContent['content']?.toString() ?? 
-                       'Content extracted from URL. You can now create a lesson from this text.';
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _importedText = 'Unable to extract content from URL. Please try pasting the text directly or check your connection.';
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error extracting content: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    // TODO: Implement web scraping or use WebView to extract text
+    // For now, show a placeholder
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      _importedText = 'Content from URL would be extracted here. This feature requires web scraping implementation.';
+      _isLoading = false;
+    });
   }
 
   void _createLesson(BuildContext context) {
-    if (_importedText == null || _importedText!.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please import some content first.'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-    
-    if (_selectedLanguage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a target language first.'),
-          backgroundColor: Colors.orange,
-        ),
-      );
-      return;
-    }
-    
-    // Use Polie to create a structured lesson from the imported text
-    _createLessonWithPolie(context);
-  }
-  
-  Future<void> _createLessonWithPolie(BuildContext context) async {
-    setState(() => _isLoading = true);
-    
-    try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-
-      // Generate a structured lesson from the imported text using Polie
-      final lessonContent = await polieGenerator.generateGameContent(
-        gameType: 'lesson_creation',
-        language: _selectedLanguage!,
-        additionalContext: 'Create a structured language lesson from this content:\n\n$_importedText',
-      );
-
-      final generatedContent =
-          lessonContent['content']?.toString() ?? 'Lesson content generated.';
-      final title = 'Imported media lesson - ${_selectedLanguage!}';
-
-      // Ask learner if LingAfriq may consider this content for official use.
-      _allowOfficialUse = await showDialog<bool>(
-            context: context,
-            barrierDismissible: false,
-            builder: (ctx) {
-              bool consent = false;
-              final isDark = ctx.isDarkMode;
-              return StatefulBuilder(
-                builder: (ctx, setState) => AlertDialog(
-                  backgroundColor:
-                      isDark ? const Color(0xFF1F3527) : Colors.white,
-                  title: const Text('Save lesson & share with LingAfriq?'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Your lesson will be saved to your library. '
-                        'If you like, you can also allow LingAfriq to review it for possible inclusion as official course content when it is highly rated.',
-                      ),
-                      const SizedBox(height: 12),
-                      CheckboxListTile(
-                        value: consent,
-                        onChanged: (v) =>
-                            setState(() => consent = v ?? false),
-                        title: const Text(
-                          'Yes, LingAfriq may consider this for official use if learners rate it highly.',
-                        ),
-                        controlAffinity: ListTileControlAffinity.leading,
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(ctx, false),
-                      child: const Text('Just save for me'),
-                    ),
-                    FilledButton(
-                      onPressed: () => Navigator.pop(ctx, consent),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.primaryGreen,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Save lesson'),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ) ??
-          false;
-
-      // Persist lesson via backend UGC pipeline so it appears under UGC hub and is available cross-device
-      try {
-        final ugcService = ref.read(userGeneratedContentServiceProvider);
-        final lessonResult = await ugcService.createLesson(
-          language: _selectedLanguage!,
-          title: title,
-          content: generatedContent,
-          description: 'Lesson generated from imported media/text via Polie',
-          tags: ['imported', 'polie', 'media'],
-          allowOfficialUse: _allowOfficialUse,
-        );
-
-        // If this lesson came from an uploaded media item, link them on the backend
-        if (_lastImportedMediaId != null && lessonResult != null) {
-          final lessonId = (lessonResult['id'] ?? lessonResult['_id'])?.toString();
-          if (lessonId != null) {
-            final api = ref.read(apiProvider.notifier);
-            // Use a compact summary for media analysis
-            final summary = generatedContent.length > 280
-                ? '${generatedContent.substring(0, 277)}...'
-                : generatedContent;
-            await api.linkMediaToLesson(
-              mediaId: _lastImportedMediaId!,
-              lessonId: lessonId,
-              summary: summary,
-              // keyPhrases and cefrLevel can be populated later as we extend Polie
-            );
-          }
-        }
-      } catch (_) {
-        // Non-fatal: even if persistence fails, user still sees generated lesson
-      }
-
-      setState(() => _isLoading = false);
-
-      if (!mounted) return;
-
-      // Show success message and offer to review the generated lesson
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Lesson created from media and saved to your content.'),
-          backgroundColor: AppColors.primaryGreen,
-          action: SnackBarAction(
-            label: 'View',
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                  title: Text(title),
-                  content: SingleChildScrollView(
-                    child: Text(generatedContent),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Close'),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
-      );
-    } catch (e) {
-      setState(() => _isLoading = false);
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error creating lesson: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
+    // TODO: Implement lesson creation from imported text
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Lesson creation feature coming soon!'),
+        backgroundColor: AppColors.primaryGreen,
+      ),
+    );
   }
 }
 

@@ -18,9 +18,6 @@ class OnboardingData {
   String? gamificationLevel; // 'high', 'medium', 'minimal'
   bool? culturalContentEnabled;
   
-  // Learning Path
-  String? selectedPath; // 'explore', 'career', 'academic' - from onboarding path selection
-  
   // Goals & Motivation
   String? primaryGoal; // 'travel', 'heritage', 'business', 'academic', 'confidence', 'brain_training'
   List<String> secondaryGoals;
@@ -63,7 +60,6 @@ class OnboardingData {
     this.appTone,
     this.gamificationLevel,
     this.culturalContentEnabled,
-    this.selectedPath,
     this.primaryGoal,
     this.secondaryGoals = const [],
     this.motivationTriggers = const [],
@@ -96,7 +92,6 @@ class OnboardingData {
     'appTone': appTone,
     'gamificationLevel': gamificationLevel,
     'culturalContentEnabled': culturalContentEnabled,
-    'selectedPath': selectedPath,
     'primaryGoal': primaryGoal,
     'secondaryGoals': secondaryGoals,
     'motivationTriggers': motivationTriggers,
@@ -129,7 +124,6 @@ class OnboardingData {
     appTone: map['appTone'],
     gamificationLevel: map['gamificationLevel'],
     culturalContentEnabled: map['culturalContentEnabled'],
-    selectedPath: map['selectedPath'],
     primaryGoal: map['primaryGoal'],
     secondaryGoals: List<String>.from(map['secondaryGoals'] ?? []),
     motivationTriggers: List<String>.from(map['motivationTriggers'] ?? []),

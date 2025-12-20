@@ -27,45 +27,60 @@ class ProfileEditScreen extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final firstnameController = useTextEditingController(text: user?.first_name);
     final lastNameController = useTextEditingController(text: user?.last_name);
-    final handleController = useTextEditingController(text: user?.globalId);
     final selectedCountry = useState<String?>(user?.nationality);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
 
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: Scaffold(
-        appBar: AppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
-        body: Column(
+        appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle.dark,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: const Text('Edit Profile'),
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: 16.sp,
+            vertical: 24.sp,
+          ),
+          child: Column(
           children: [
             // ✅ Avatar section
-            ProfileImageBuilder(
-              onTap: () async {
-                final user = ref.read(userProvider);
-                if (user == null) return;
+            Center(
+              child: ProfileImageBuilder(
+                onTap: () async {
+                  final user = ref.read(userProvider);
+                  if (user == null) return;
 
-                final current = kAvatarsList.containsKey(user.avater)
-                    ? kAvatarsList[user.avater]!
-                    : kAvatarsList.values.first;
+                  final current = kAvatarsList.containsKey(user.avater)
+                      ? kAvatarsList[user.avater]!
+                      : kAvatarsList.values.first;
 
-                final selectedAvatar = await _AvatarSelector.showAvatarSelectorDialog(
-                  context,
-                  selectedAvatar: current,
-                );
+                  final selectedAvatar = await _AvatarSelector.showAvatarSelectorDialog(
+                    context,
+                    selectedAvatar: current,
+                  );
 
-                if (selectedAvatar == null) return;
+                  if (selectedAvatar == null) return;
 
-                final updatedUser = user.copyWith(avater: selectedAvatar);
-                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                ref.read(userProvider.notifier).overrideUser(updatedUser);
+                  final updatedUser = user.copyWith(avater: selectedAvatar);
+                  await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                  ref.read(userProvider.notifier).overrideUser(updatedUser);
 
-                Navigator.of(context).pop();
-                HapticFeedback.lightImpact();
-                VxToast.show(context, msg: 'Avatar updated');
-              },
-            ).centered(),
+                  Navigator.of(context).pop();
+                  HapticFeedback.lightImpact();
+                  VxToast.show(context, msg: 'Avatar updated');
+                },
+              ),
+            ),
             24.heightBox,
-            const ProfileDetailsBuilder(crossAxisAlignment: CrossAxisAlignment.center).centered(),
-            16.heightBox,
+            const Center(
+              child: ProfileDetailsBuilder(crossAxisAlignment: CrossAxisAlignment.center),
+            ),
+            32.heightBox,
 
             // ✅ Input fields
             PrimaryTextField(
@@ -75,35 +90,13 @@ class ProfileEditScreen extends HookConsumerWidget {
               validator: Validators.emptyValidator,
               textInputAction: TextInputAction.next,
             ),
-            12.heightBox,
+            16.heightBox,
             PrimaryTextField(
               controller: lastNameController,
               title: "Last name",
               hintText: "Enter your Last name",
               validator: Validators.emptyValidator,
               textInputAction: TextInputAction.next,
-            ),
-            12.heightBox,
-            // Handle / global ID editor (optional, must be unique)
-            PrimaryTextField(
-              controller: handleController,
-              title: "Handle",
-              hintText: "Choose a unique handle (e.g. lingafriq_learner)",
-              validator: (value) {
-                final v = value?.trim() ?? '';
-                if (v.isEmpty) return null; // Optional
-                if (v.length < 3 || v.length > 30) {
-                  return "Handle must be between 3 and 30 characters";
-                }
-                if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(v)) {
-                  return "Only letters, numbers, and underscores are allowed";
-                }
-                return null;
-              },
-              textInputAction: TextInputAction.next,
-              onChanged: (value) {
-                // No-op; we'll read from controller in onTap below
-              },
             ),
             12.heightBox,
             IgnorePointer(
@@ -119,69 +112,66 @@ class ProfileEditScreen extends HookConsumerWidget {
             24.heightBox,
 
             // ✅ Save button
-            PrimaryButton(
-              width: 0.6.sw,
-              onTap: () async {
-                final user = ref.read(userProvider);
-                if (user == null) return;
+            Center(
+              child: PrimaryButton(
+                width: 0.6.sw,
+                onTap: () async {
+                  final user = ref.read(userProvider);
+                  if (user == null) return;
 
-                final updatedUser = user.copyWith(
-                  first_name: firstnameController.text.trim(),
-                  last_name: lastNameController.text.trim(),
-                  nationality: selectedCountry.value,
-                );
+                  final updatedUser = user.copyWith(
+                    first_name: firstnameController.text.trim(),
+                    last_name: lastNameController.text.trim(),
+                    nationality: selectedCountry.value,
+                  );
 
-                final payload = updatedUser.toMap();
-                final handle = handleController.text.trim();
-                if (handle.isNotEmpty) {
-                  payload['handle'] = handle;
-                } else {
-                  // Explicitly clear handle if user empties the field
-                  payload['handle'] = null;
-                }
+                  await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                  ref.read(userProvider.notifier).overrideUser(updatedUser);
 
-                await ref.read(apiProvider.notifier).updateProfile(payload);
-                ref.read(userProvider.notifier).overrideUser(updatedUser);
-
-                Navigator.of(context).pop();
-                HapticFeedback.lightImpact();
-                VxToast.show(context, msg: 'Success');
-              },
-              text: "Save",
+                  Navigator.of(context).pop();
+                  HapticFeedback.lightImpact();
+                  VxToast.show(context, msg: 'Success');
+                },
+                text: "Save",
+              ),
             ),
-            24.heightBox,
+            32.heightBox,
 
             // ✅ Delete Account Button
-            PrimaryButton(
-              width: 0.6.sw,
-              text: "Delete Account",
-              color: AppColors.red,
-              onTap: () async {
-                final confirm = await DeleteAccountDialog.showDeleteAccountDialog(context);
-                if (confirm == true) {
-                  final password = await EnterPasswordDialog.show(context);
-                  if (password != null && password.isNotEmpty) {
-                    try {
-                      final svc = AccountService(ref);
-                      final msg = await svc.deleteAccount(password);
+            Center(
+              child: PrimaryButton(
+                width: 0.6.sw,
+                text: "Delete Account",
+                color: AppColors.red,
+                onTap: () async {
+                  final confirm = await DeleteAccountDialog.showDeleteAccountDialog(context);
+                  if (confirm == true) {
+                    final password = await EnterPasswordDialog.show(context);
+                    if (password != null && password.isNotEmpty) {
+                      try {
+                        final svc = AccountService(ref);
+                        final msg = await svc.deleteAccount(password);
 
-                      ScaffoldMessenger.of(context)
-                          .showSnackBar(SnackBar(content: Text(msg)));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(SnackBar(content: Text(msg)));
 
-                      // ✅ Proper logout and navigation
-                      await ref.read(authProvider.notifier).signOut(deleteAccount: true);
-                      Navigator.of(context).popUntil((route) => route.isFirst);
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Error: $e")),
-                      );
+                        // ✅ Proper logout and navigation
+                        await ref.read(authProvider.notifier).signOut(deleteAccount: true);
+                        Navigator.of(context).popUntil((route) => route.isFirst);
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Error: $e")),
+                        );
+                      }
                     }
                   }
-                }
-              },
+                },
+              ),
             ),
+            32.heightBox,
           ],
-        ).p16().scrollVertical(),
+        ),
+      ),
       ),
     );
   }

@@ -3,8 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/progress_metrics_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/backend_sync_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
 import 'base_provider.dart';
 
 final progressTrackingProvider = NotifierProvider<ProgressTrackingProvider, BaseProviderState>(() {
@@ -63,7 +61,6 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -79,7 +76,6 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -95,7 +91,6 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -111,7 +106,6 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -127,7 +121,6 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
 
@@ -142,38 +135,8 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
     );
     _saveMetrics();
     _updateDailyHistory();
-    _syncToBackend(); // Sync to backend after update
     state = state.copyWith();
   }
-
-  /// Sync progress metrics to backend (debounced to avoid too many calls)
-  Future<void> _syncToBackend() async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) return;
-
-      // Debounce: only sync if last sync was more than 5 seconds ago
-      final now = DateTime.now();
-      if (_lastBackendSync != null && now.difference(_lastBackendSync!).inSeconds < 5) {
-        return; // Skip if synced recently
-      }
-      _lastBackendSync = now;
-      
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.progress,
-        data: {
-          'user_id': user.id.toString(),
-          'metrics': _metrics.toMap(),
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
-    } catch (e) {
-      debugPrint('Error queuing progress sync: $e');
-    }
-  }
-
-  DateTime? _lastBackendSync;
 
   void _updateDailyHistory() {
     final today = DateTime.now();

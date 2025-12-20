@@ -1,0 +1,28 @@
+﻿2025-12-19T18:40:49.3007466Z ##[group]Run softprops/action-gh-release@v2
+2025-12-19T18:40:49.3007769Z with:
+2025-12-19T18:40:49.3007949Z   name: LingAfriq v1.6.0+92
+2025-12-19T18:40:49.3008324Z   tag_name: v1.6.0+92
+2025-12-19T18:40:49.3008878Z   files: build/release/android/*.aab
+build/release/android/mapping.txt
+build/release/ios/*.ipa
+build/release/ios/*.zip
+build/release/ios/*.xcarchive.zip
+
+2025-12-19T18:40:49.3009498Z   generate_release_notes: true
+2025-12-19T18:40:49.3009713Z   draft: false
+2025-12-19T18:40:49.3009884Z   prerelease: false
+2025-12-19T18:40:49.3010086Z   fail_on_unmatched_files: false
+2025-12-19T18:40:49.3010306Z   overwrite_files: true
+2025-12-19T18:40:49.3010625Z   token: ***
+2025-12-19T18:40:49.3010799Z env:
+2025-12-19T18:40:49.3011042Z   GITHUB_TOKEN: ***
+2025-12-19T18:40:49.3011227Z ##[endgroup]
+2025-12-19T18:40:49.3968862Z 🤔 Pattern 'build/release/android/*.aab' does not match any files.
+2025-12-19T18:40:49.3973047Z 🤔 Pattern 'build/release/android/mapping.txt' does not match any files.
+2025-12-19T18:40:49.3974015Z 🤔 Pattern 'build/release/ios/*.ipa' does not match any files.
+2025-12-19T18:40:49.3975090Z 🤔 Pattern 'build/release/ios/*.zip' does not match any files.
+2025-12-19T18:40:49.3975800Z 🤔 Pattern 'build/release/ios/*.xcarchive.zip' does not match any files.
+2025-12-19T18:40:49.8797758Z Found release LingAfriq v1.6.0+92 (with id=271318612)
+2025-12-19T18:40:50.5438642Z 🤔 build/release/android/*.aab,build/release/android/mapping.txt,build/release/ios/*.ipa,build/release/ios/*.zip,build/release/ios/*.xcarchive.zip does not include a valid file.
+2025-12-19T18:40:50.5444399Z Finalizing release...
+2025-12-19T18:40:50.8392885Z 🎉 Release ready at https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone/releases/tag/v1.6.0%2B92

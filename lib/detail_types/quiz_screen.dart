@@ -6,6 +6,7 @@ import 'package:lingafriq/models/quiz_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -66,17 +67,24 @@ class QuizScreen extends HookConsumerWidget {
             return multiQuizIndicatorBuilder();
           }),
         ),
-        child: Scaffold(
-          body: Column(
-            children: [
-              TopGradientBox(
-                borderRadius: 0,
-                child: Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const BackButton(color: Colors.white),
+        child: PopScope(
+          canPop: true,
+          onPopInvoked: (didPop) {
+            if (!didPop) {
+              ref.read(navigationProvider).pop();
+            }
+          },
+          child: Scaffold(
+            body: Column(
+              children: [
+                TopGradientBox(
+                  borderRadius: 0,
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const BackButton(color: Colors.white),
                         title.text.xl2.semiBold
                             .maxLines(2)
                             .ellipsis
@@ -133,12 +141,22 @@ class QuizScreen extends HookConsumerWidget {
                               };
                               if (correct) {
                                 if (!isCompleted) {
-                                  await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  if (!success) {
+                                    "Failed to mark quiz as complete".log("quiz_screen");
+                                  } else {
+                                    // Track progress
+                                    await ProgressIntegration.onQuizCompleted(ref);
+                                  }
                                 }
-                                Navigator.of(context).pop(true);
+                                if (context.mounted) {
+                                  Navigator.of(context).pop(true);
+                                }
                               }
                               if (!correct && isTakeQuiz) {
-                                Navigator.of(context).pop(false);
+                                if (context.mounted) {
+                                  Navigator.of(context).pop(false);
+                                }
                               }
                               return;
                             }
@@ -161,12 +179,22 @@ class QuizScreen extends HookConsumerWidget {
                               ref.read(quizIndexProvider.notifier).setIndex(0);
                               if (correct) {
                                 if (!isCompleted) {
-                                  await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  final success = await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
+                                  if (!success) {
+                                    "Failed to mark quiz as complete".log("quiz_screen");
+                                  } else {
+                                    // Track progress
+                                    await ProgressIntegration.onQuizCompleted(ref);
+                                  }
                                 }
-                                Navigator.of(context).pop(true);
+                                if (context.mounted) {
+                                  Navigator.of(context).pop(true);
+                                }
                               }
                               if (!correct && isTakeQuiz) {
-                                Navigator.of(context).pop(false);
+                                if (context.mounted) {
+                                  Navigator.of(context).pop(false);
+                                }
                               }
                               return;
                             }
@@ -217,6 +245,7 @@ class QuizScreen extends HookConsumerWidget {
                 ).p16(),
               )
             ],
+          ),
           ),
         ),
       ),

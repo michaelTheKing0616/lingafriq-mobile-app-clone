@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
+import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -12,6 +13,8 @@ import '../../../history/screens/history_list_screen.dart';
 import '../../../lessons/screens/lessons_list_screen.dart';
 import '../../../mannerisms/screens/mannerism_list_screen.dart';
 import '../../../providers/navigation_provider.dart';
+import '../../../screens/tabs_view/app_drawer/app_drawer.dart';
+import '../../../screens/tabs_view/tabs_view.dart';
 import '../../../widgets/greegins_builder.dart';
 
 class LanguageDetailScreen extends ConsumerWidget {
@@ -23,21 +26,71 @@ class LanguageDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Scaffold(
-      body: Column(
-        children: [
-          TopGradientBox(
-            borderRadius: 0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const BackButton(color: Colors.white),
-                // const PointsAndProfileImageBuilder(),
-                // 0.05.sh.heightBox,
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) {
+        if (!didPop) {
+          ref.read(navigationProvider).pop();
+        }
+      },
+      child: Scaffold(
+        drawer: const AppDrawer(),
+        body: Column(
+          children: [
+            TopGradientBox(
+              borderRadius: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SafeArea(
+                    bottom: false,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top + 8,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                              onPressed: () {
+                                ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                language.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            IconButton(
+                              icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                              onPressed: () {
+                                ref.read(navigationProvider).pop();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                const SizedBox(height: 16),
                 GreetingsBuilder(
                   greetingTitle: '',
                   pageTitle: language.name,
-                )
+                ),
+                const SizedBox(height: 8),
               ],
             ),
           ),
@@ -137,22 +190,43 @@ class LanguageDetailScreen extends ConsumerWidget {
                           );
                         },
                       ).px16(),
-                    ),
+                      ),
                     20.heightBox,
-                    PrimaryButton(
-                      width: 0.6.sw,
-                      onTap: () {
-                        ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
-                      },
-                      color: AppColors.primaryGreen,
-                      text: "Take Quiz",
-                    ).centered(),
+                      Padding(
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewPadding.bottom > 0 
+                            ? MediaQuery.of(context).viewPadding.bottom + 8 
+                            : 20,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.6,
+                        child: SafeArea(
+                          top: false,
+                          minimum: EdgeInsets.zero,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewPadding.bottom,
+                            ),
+                            child: PrimaryButton(
+                              onTap: () {
+                                ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
+                              },
+                              color: AppColors.primaryGreen,
+                              text: "Take Quiz",
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
             ],
           ).expand()
         ],
+      ),
       ),
     );
   }

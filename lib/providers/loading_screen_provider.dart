@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
-import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Provider for managing loading screen content
@@ -39,13 +38,9 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
       try {
         // Try to load from backend
         final contentData = await ref.read(apiProvider.notifier).getLoadingScreenContent();
-        var content = LoadingScreenContent.fromJson(contentData);
+        final content = LoadingScreenContent.fromJson(contentData);
         state = content;
-
-        // Ask Polie for an additional micro-tip if possible
-        content = await _attachAiTip(content);
-        state = content;
-
+        
         // Save to local preferences as backup
         await _prefs.setString(_lastContentKey, content.id);
         return;
@@ -56,7 +51,7 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
         return;
       }
     }
-
+    
     // Use local content (default)
     _loadLocalContent();
   }
@@ -81,11 +76,8 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     final random = Random();
     final selected = availableContent[random.nextInt(availableContent.length)];
     
-    // Update state and enrich with AI tip
+    // Update state
     state = selected;
-    _attachAiTip(selected).then((enhanced) {
-      state = enhanced;
-    });
     
     // Save to preferences
     _prefs.setString(_lastContentKey, selected.id);
@@ -138,35 +130,8 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     required String language,
   }) async {
     // TODO: Implement AI image generation API call
-    // Example: Could be extended to call a dedicated backend endpoint.
-    // For now, use the AI image service indirectly via curated content.
+    // Example: Use DALL-E, Midjourney API, or custom AI service
+    // For now, return placeholder
     return 'assets/images/loading/placeholder.png';
-  }
-
-  /// Ask Polie for an additional loading-screen micro-tip and attach it
-  /// to the LoadingScreenContent instance.
-  Future<LoadingScreenContent> _attachAiTip(LoadingScreenContent base) async {
-    try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      final tip = await polieGenerator.generateLoadingScreenTip(
-        language: base.language,
-        greeting: base.greeting,
-        fact: base.fact,
-      );
-      return LoadingScreenContent(
-        id: base.id,
-        imageUrl: base.imageUrl,
-        country: base.country,
-        countryFlag: base.countryFlag,
-        greeting: base.greeting,
-        greetingTranslation: base.greetingTranslation,
-        language: base.language,
-        fact: base.fact,
-        personName: base.personName,
-        aiTip: tip,
-      );
-    } catch (_) {
-      return base;
-    }
   }
 }

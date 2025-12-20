@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/chat_socket_provider.dart';
+import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -11,7 +10,6 @@ import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/screens/social/global_people_search_screen.dart';
 
 class UserConnectionsScreen extends ConsumerStatefulWidget {
   const UserConnectionsScreen({Key? key}) : super(key: key);
@@ -32,16 +30,12 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
   }
 
   void _initializeSocket() {
-    try {
-      final user = ref.read(userProvider);
-      if (user != null) {
-        ref.read(socketProvider.notifier).connect(
-          user.id.toString(),
-          user.username,
-        );
-      }
-    } catch (e) {
-      debugPrint('Error initializing socket: $e');
+    final user = ref.read(userProvider);
+    if (user != null) {
+      ref.read(socketProvider.notifier).connect(
+        user.id.toString(),
+        user.username,
+      );
     }
   }
 
@@ -62,13 +56,6 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
     final isConnected = ref.watch(socketProvider.notifier).isConnected;
     final currentUser = ref.watch(userProvider);
     final isDark = context.isDarkMode;
-
-    // Ensure socket is initialized if user is available
-    if (currentUser != null && !isConnected) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _initializeSocket();
-      });
-    }
 
     final filteredUsers = onlineUsers.where((user) {
       if (_searchQuery.isEmpty) return true;
@@ -93,18 +80,6 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.alternate_email_rounded),
-            tooltip: 'Global people search',
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const GlobalPeopleSearchScreen(),
-                ),
-              );
-            },
-          ),
           IconButton(
             icon: const Icon(Icons.lock_outline),
             tooltip: 'Private chats',
@@ -176,19 +151,21 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
           
           // Users List
           Expanded(
-            child: currentUser == null
+            child: isConnected && filteredUsers.isEmpty
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.person_off,
+                          Icons.people_outline,
                           size: 64.sp,
                           color: isDark ? Colors.grey[600] : Colors.grey[400],
                         ),
                         SizedBox(height: 16.sp),
                         Text(
-                          'Please log in to connect with users',
+                          _searchQuery.isEmpty
+                              ? 'No users online'
+                              : 'No users found',
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: isDark ? Colors.grey[400] : Colors.grey[600],
@@ -197,60 +174,16 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                       ],
                     ),
                   )
-                : !isConnected
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.wifi_off,
-                              size: 64.sp,
-                              color: isDark ? Colors.grey[600] : Colors.grey[400],
-                            ),
-                            SizedBox(height: 16.sp),
-                            Text(
-                              'Connecting...',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: isDark ? Colors.grey[400] : Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : filteredUsers.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.people_outline,
-                                  size: 64.sp,
-                                  color: isDark ? Colors.grey[600] : Colors.grey[400],
-                                ),
-                                SizedBox(height: 16.sp),
-                                Text(
-                                  _searchQuery.isEmpty
-                                      ? 'No users online'
-                                      : 'No users found',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: isDark ? Colors.grey[400] : Colors.grey[600],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
-                            padding: EdgeInsets.all(16.sp),
-                            itemCount: filteredUsers.length,
-                            itemBuilder: (context, index) {
-                              final user = filteredUsers[index];
-                              final isCurrentUser = user['userId'] == currentUser.id.toString();
-                              if (isCurrentUser) return const SizedBox.shrink();
-                              return _buildUserCard(context, user, isDark);
-                            },
-                          ),
+                : ListView.builder(
+                    padding: EdgeInsets.all(16.sp),
+                    itemCount: filteredUsers.length,
+                    itemBuilder: (context, index) {
+                      final user = filteredUsers[index];
+                      final isCurrentUser = user['userId'] == currentUser?.id.toString();
+                      if (isCurrentUser) return SizedBox.shrink();
+                      return _buildUserCard(context, user, isDark);
+                    },
+                  ),
           ),
         ],
       ),

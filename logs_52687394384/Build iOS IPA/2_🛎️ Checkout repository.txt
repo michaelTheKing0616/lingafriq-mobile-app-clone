@@ -1,0 +1,75 @@
+﻿2025-12-19T18:30:06.9592100Z ##[group]Run actions/checkout@v4
+2025-12-19T18:30:06.9592990Z with:
+2025-12-19T18:30:06.9593260Z   ref: main
+2025-12-19T18:30:06.9593610Z   repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-19T18:30:06.9594230Z   token: ***
+2025-12-19T18:30:06.9594490Z   ssh-strict: true
+2025-12-19T18:30:06.9594770Z   ssh-user: git
+2025-12-19T18:30:06.9595050Z   persist-credentials: true
+2025-12-19T18:30:06.9595350Z   clean: true
+2025-12-19T18:30:06.9595630Z   sparse-checkout-cone-mode: true
+2025-12-19T18:30:06.9595960Z   fetch-depth: 1
+2025-12-19T18:30:06.9596230Z   fetch-tags: false
+2025-12-19T18:30:06.9596500Z   show-progress: true
+2025-12-19T18:30:06.9596780Z   lfs: false
+2025-12-19T18:30:06.9597030Z   submodules: false
+2025-12-19T18:30:06.9597310Z   set-safe-directory: true
+2025-12-19T18:30:06.9597720Z ##[endgroup]
+2025-12-19T18:30:07.2737890Z Syncing repository: michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-19T18:30:07.2740290Z ##[group]Getting Git version info
+2025-12-19T18:30:07.2741180Z Working directory is '/Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-19T18:30:07.2742700Z [command]/opt/homebrew/bin/git version
+2025-12-19T18:30:07.3289230Z git version 2.50.1
+2025-12-19T18:30:07.3324630Z ##[endgroup]
+2025-12-19T18:30:07.3331120Z Copying '/Users/runner/.gitconfig' to '/Users/runner/work/_temp/519e7e82-1796-4f40-bff1-815361f2bf56/.gitconfig'
+2025-12-19T18:30:07.3346340Z Temporarily overriding HOME='/Users/runner/work/_temp/519e7e82-1796-4f40-bff1-815361f2bf56' before making global git config changes
+2025-12-19T18:30:07.3347630Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-19T18:30:07.3350580Z [command]/opt/homebrew/bin/git config --global --add safe.directory /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-19T18:30:07.3474250Z Deleting the contents of '/Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone'
+2025-12-19T18:30:07.3478810Z ##[group]Initializing the repository
+2025-12-19T18:30:07.3483390Z [command]/opt/homebrew/bin/git init /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone
+2025-12-19T18:30:07.3692020Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-19T18:30:07.3693000Z hint: is subject to change. To configure the initial branch name to use in all
+2025-12-19T18:30:07.3693800Z hint: of your new repositories, which will suppress this warning, call:
+2025-12-19T18:30:07.3694390Z hint:
+2025-12-19T18:30:07.3694800Z hint: 	git config --global init.defaultBranch <name>
+2025-12-19T18:30:07.3695260Z hint:
+2025-12-19T18:30:07.3695700Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-19T18:30:07.3696840Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-19T18:30:07.3697540Z hint:
+2025-12-19T18:30:07.3697860Z hint: 	git branch -m <name>
+2025-12-19T18:30:07.3698260Z hint:
+2025-12-19T18:30:07.3698740Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-19T18:30:07.3700040Z Initialized empty Git repository in /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/.git/
+2025-12-19T18:30:07.3713130Z [command]/opt/homebrew/bin/git remote add origin https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-19T18:30:07.3789950Z ##[endgroup]
+2025-12-19T18:30:07.3790630Z ##[group]Disabling automatic garbage collection
+2025-12-19T18:30:07.3792320Z [command]/opt/homebrew/bin/git config --local gc.auto 0
+2025-12-19T18:30:07.3863340Z ##[endgroup]
+2025-12-19T18:30:07.3863970Z ##[group]Setting up auth
+2025-12-19T18:30:07.3865950Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-19T18:30:07.3940010Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-19T18:30:07.5365070Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-19T18:30:07.5425990Z [command]/opt/homebrew/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-19T18:30:07.6156450Z [command]/opt/homebrew/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-19T18:30:07.6220360Z [command]/opt/homebrew/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-19T18:30:07.6856790Z [command]/opt/homebrew/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-19T18:30:07.6905910Z ##[endgroup]
+2025-12-19T18:30:07.6906690Z ##[group]Fetching the repository
+2025-12-19T18:30:07.6911970Z [command]/opt/homebrew/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +refs/heads/main*:refs/remotes/origin/main* +refs/tags/main*:refs/tags/main*
+2025-12-19T18:30:10.8350960Z From https://github.com/michaelTheKing0616/lingafriq-mobile-app-clone
+2025-12-19T18:30:10.8352780Z  * [new branch]      main       -> origin/main
+2025-12-19T18:30:10.8409740Z ##[endgroup]
+2025-12-19T18:30:10.8410700Z ##[group]Determining the checkout info
+2025-12-19T18:30:10.8415010Z [command]/opt/homebrew/bin/git branch --list --remote origin/main
+2025-12-19T18:30:10.8474490Z   origin/main
+2025-12-19T18:30:10.8477290Z ##[endgroup]
+2025-12-19T18:30:10.8480370Z [command]/opt/homebrew/bin/git sparse-checkout disable
+2025-12-19T18:30:10.8545960Z [command]/opt/homebrew/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-19T18:30:10.8601660Z ##[group]Checking out the ref
+2025-12-19T18:30:10.8604050Z [command]/opt/homebrew/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-19T18:30:11.7728900Z Switched to a new branch 'main'
+2025-12-19T18:30:11.7734210Z branch 'main' set up to track 'origin/main'.
+2025-12-19T18:30:11.8006620Z ##[endgroup]
+2025-12-19T18:30:11.8093870Z [command]/opt/homebrew/bin/git log -1 --format=%H
+2025-12-19T18:30:11.8176550Z 31a5ae44a361100029e03631b6587c274a0167a6

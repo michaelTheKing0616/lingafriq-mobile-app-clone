@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/services/secure_storage_service.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
@@ -24,35 +25,58 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> navigateBasedOnCondition() async {
-    final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
-    if (emailAndPassword == null) {
-      ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+    final secureStorage = SecureStorageService();
+    
+    // Check if user has seen onboarding
+    final hasSeenOnboarding = ref.read(sharedPreferencesProvider).hasSeenOnboarding;
+    if (!hasSeenOnboarding) {
+      ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
       return;
     }
-
-    final email = emailAndPassword['email']!;
-    final password = emailAndPassword['password']!;
-
-    final user = await login(email: email, password: password);
-
-    //Login suceess, login can fail is user has changed the password in the web
-    if (user is ProfileModel) {
-      ref.read(userProvider.notifier).overrideUser(user);
-      await ref.read(apiProvider.notifier).regiserDevice();
-
-      // If the user has not completed onboarding (including placement test),
-      // take them through the Kijiji flow instead of dropping them straight
-      // into the main app.
-      final hasSeenOnboarding =
-          ref.read(sharedPreferencesProvider).hasSeenOnboarding;
-      if (!hasSeenOnboarding) {
-        ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
-      } else {
-        ref.read(navigationProvider).naviateOffAll(const TabsView());
+    
+    // Check for valid session token first (1 hour TTL)
+    final hasValidSession = await secureStorage.hasValidSession();
+    if (hasValidSession) {
+      // Get and set token in API provider for all subsequent requests
+      final sessionToken = await secureStorage.readSessionToken();
+      if (sessionToken != null) {
+        ref.read(apiProvider.notifier).token = sessionToken;
       }
-      return;
+      
+      // Session is valid, navigate to main app
+      // Try to get user from stored data
+      final email = await secureStorage.getUserEmail();
+      if (email != null) {
+        final user = await ref.read(sharedPreferencesProvider).getUser(email);
+        if (user != null) {
+          ref.read(userProvider.notifier).overrideUser(user);
+          await ref.read(apiProvider.notifier).regiserDevice();
+          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          return;
+        }
+      }
     }
+    
+    // Check for valid refresh token (30 days TTL)
+    final hasValidRefresh = await secureStorage.hasValidRefreshToken();
+    if (hasValidRefresh) {
+      // Try to refresh session using stored credentials
+      final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
+      if (emailAndPassword != null) {
+        final email = emailAndPassword['email']!;
+        final password = emailAndPassword['password']!;
+        final user = await login(email: email, password: password, silentRefresh: true);
 
+        if (user is ProfileModel) {
+          ref.read(userProvider.notifier).overrideUser(user);
+          await ref.read(apiProvider.notifier).regiserDevice();
+          ref.read(navigationProvider).naviateOffAll(const TabsView());
+          return;
+        }
+      }
+    }
+    
+    // If no valid tokens, show login screen
     ref.read(navigationProvider).naviateOffAll(const LoginScreen());
   }
 
@@ -62,29 +86,49 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     bool storeCredentials = false,
     bool splashlogin = false,
     bool updateProfile = false,
+    bool silentRefresh = false,
   }) async {
     try {
-      if (storeCredentials) {
+      if (storeCredentials && !silentRefresh) {
         state = state.copyWith(isLoading: true);
       }
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
+      
+      // Store tokens in secure storage
+      final secureStorage = SecureStorageService();
+      final apiProviderInstance = ref.read(apiProvider.notifier);
+      if (apiProviderInstance.token != null) {
+        await secureStorage.storeSessionToken(apiProviderInstance.token!);
+        // If backend provides refresh token, store it too
+        // For now, we'll use the same token as refresh (backend may need to be updated)
+        await secureStorage.storeRefreshToken(apiProviderInstance.token!);
+      }
+      
+      // Store user profile for pre-filling
+      final displayName = user.username.isNotEmpty ? user.username : '${user.first_name} ${user.last_name}'.trim();
+      await secureStorage.storeUserProfile(email, displayName: displayName);
+      
       if (storeCredentials) {
         await ref.read(sharedPreferencesProvider).storeEmailAndPassword(email, password);
         ref.read(apiProvider.notifier).accountUpdate();
-        await Future.delayed(const Duration(seconds: 3));
+        if (!silentRefresh) {
+          await Future.delayed(const Duration(seconds: 3));
+        }
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        // New accounts: always take them through the rich Kijiji onboarding
-        // flow, which includes the placement test (with a skip option).
-        ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
+        if (!silentRefresh) {
+          ref.read(navigationProvider).naviateOffAll(const TabsView());
+        }
         return user;
       }
       return user;
     } catch (e) {
       state = state.copyWith(isLoading: false);
-      await ref.read(dialogProvider(e)).showExceptionDialog();
+      if (!silentRefresh) {
+        await ref.read(dialogProvider(e)).showExceptionDialog();
+      }
       return null;
     }
   }
@@ -159,6 +203,12 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   // }
 
   Future<void> signOut({bool deleteAccount = false}) async {
+    final secureStorage = SecureStorageService();
+    
+    // Clear all tokens
+    await secureStorage.clearAllTokens();
+    await secureStorage.clearUserProfile();
+    
     await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
     "Delete Account $deleteAccount".log('signout');
     if (deleteAccount == false) {

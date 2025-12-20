@@ -63,10 +63,10 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                       onGetStarted: () async {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         ref.read(apiProvider.notifier).regiserDevice();
-                        ref.read(navigationProvider).navigateOffAll(const TabsView());
+                        ref.read(navigationProvider).naviateOffAll(const TabsView());
                       },
                       onLogin: () {
-                        ref.read(navigationProvider).navigateTo(const LoginScreen());
+                        ref.read(navigationProvider).naviateTo(const LoginScreen());
                       },
                     );
                   default:
@@ -616,7 +616,6 @@ class _GetStartedScreen extends StatelessWidget {
                     ...paths.asMap().entries.map((entry) {
                       final index = entry.key;
                       final path = entry.value;
-                      final pathKey = ['explore', 'career', 'academic'][index];
                       return SlideTransition(
                         position: Tween<Offset>(
                           begin: Offset(0, 0.3 + (index * 0.1)),
@@ -631,19 +630,11 @@ class _GetStartedScreen extends StatelessWidget {
                         )),
                         child: FadeTransition(
                           opacity: animationController,
-                          child: Consumer(
-                            builder: (context, ref, child) {
-                              return _PathCard(
-                                icon: path['icon'] as IconData,
-                                title: path['title'] as String,
-                                description: path['description'] as String,
-                                color: path['color'] as Color,
-                                onTap: () {
-                                  // Track path selection
-                                  ref.read(onboardingProvider.notifier).updatePath(pathKey);
-                                },
-                              );
-                            },
+                          child: _PathCard(
+                            icon: path['icon'] as IconData,
+                            title: path['title'] as String,
+                            description: path['description'] as String,
+                            color: path['color'] as Color,
                           ),
                         ),
                       );
@@ -662,9 +653,9 @@ class _GetStartedScreen extends StatelessWidget {
                         opacity: animationController,
                         child: SizedBox(
                           width: double.infinity,
-                          child: FilledButton(
+                          child: ElevatedButton(
                             onPressed: onGetStarted,
-                            style: FilledButton.styleFrom(
+                            style: ElevatedButton.styleFrom(
                               backgroundColor: AfricanTheme.primaryGreen,
                               foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(vertical: 16),
@@ -716,7 +707,6 @@ class _PathCard extends StatelessWidget {
   final String title;
   final String description;
   final Color color;
-  final VoidCallback? onTap;
   
   const _PathCard({
     Key? key,
@@ -724,29 +714,25 @@ class _PathCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.color,
-    this.onTap,
   }) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-          boxShadow: DesignSystem.shadowMedium,
-          border: Border(
-            bottom: BorderSide(
-              color: color,
-              width: 4,
-            ),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        boxShadow: DesignSystem.shadowMedium,
+        border: Border(
+          bottom: BorderSide(
+            color: color,
+            width: 4,
           ),
         ),
-        child: Row(
+      ),
+      child: Row(
         children: [
           Container(
             width: 56,

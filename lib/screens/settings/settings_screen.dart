@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
-import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/utils/haptic_feedback_helper.dart';
-import 'package:lingafriq/widgets/material3/material3_migration_helper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 /// Settings Screen - Based on Figma Make Design
 class SettingsScreen extends ConsumerStatefulWidget {
@@ -27,13 +23,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ErrorBoundary(
-      errorMessage: 'Settings temporarily unavailable',
-      child: _buildSettings(context),
-    );
-  }
-
-  Widget _buildSettings(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
@@ -69,29 +58,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    // Always show back button and menu
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: widget.onBack ?? () => Navigator.pop(context),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
+                    // Always show back button
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: widget.onBack ?? () => Navigator.pop(context),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: const CircleBorder(),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     SizedBox(height: 2.h),
                     const Icon(
@@ -127,7 +104,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   _SettingsCard(
                     title: 'Notifications',
                     isDark: isDark,
-                    index: 0,
                     children: [
                       _SwitchSetting(
                         icon: Icons.notifications_rounded,
@@ -150,7 +126,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   _SettingsCard(
                     title: 'Learning',
                     isDark: isDark,
-                    index: 1,
                     children: [
                       _DropdownSetting(
                         label: 'Daily Goal',
@@ -173,7 +148,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   _SettingsCard(
                     title: 'Appearance',
                     isDark: isDark,
-                    index: 2,
                     children: [
                       _SwitchSetting(
                         icon: Icons.palette_rounded,
@@ -198,39 +172,38 @@ class _SettingsCard extends StatelessWidget {
   final String title;
   final List<Widget> children;
   final bool isDark;
-  final int index;
   
   const _SettingsCard({
     required this.title,
     required this.children,
     required this.isDark,
-    required this.index,
   });
   
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Material3Helper.enhancedCard(
-      elevation: isDark ? 2 : 4,
-      color: isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surface,
+    return Container(
       padding: EdgeInsets.all(5.w),
+      decoration: BoxDecoration(
+        color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
+        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        boxShadow: DesignSystem.shadowLarge,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: theme.textTheme.titleLarge?.copyWith(
+            style: TextStyle(
+              fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onSurface,
+              color: isDark ? Colors.white : Colors.black87,
             ),
           ),
           SizedBox(height: 2.h),
           ...children,
         ],
       ),
-    ).animate(delay: (index * 100).ms)
-      .fadeIn(duration: 300.ms)
-      .slideX(begin: -0.1, end: 0, duration: 300.ms);
+    );
   }
 }
 
@@ -275,10 +248,8 @@ class _SwitchSetting extends StatelessWidget {
           ),
           Switch(
             value: value,
-            onChanged: (v) {
-              HapticHelper.selectionClick();
-              onChanged(v);
-            },
+            onChanged: onChanged,
+            activeColor: AfricanTheme.primaryGreen,
           ),
         ],
       ),
@@ -315,42 +286,27 @@ class _DropdownSetting extends StatelessWidget {
               color: isDark ? Colors.white : Colors.black87,
             ),
           ),
-          MenuButtonTheme(
-            data: MenuButtonThemeData(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(
-                  EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+            decoration: BoxDecoration(
+              color: isDark ? Colors.grey[800] : Colors.grey[100],
+              borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+              border: Border.all(
+                color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
               ),
             ),
-            child: MenuAnchor(
-              builder: (context, controller, child) {
-                return FilledButton.tonal(
-                  onPressed: () {
-                    if (controller.isOpen) {
-                      controller.close();
-                    } else {
-                      controller.open();
-                    }
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(value),
-                      SizedBox(width: 4.w),
-                      Icon(Icons.arrow_drop_down, size: 20.sp),
-                    ],
-                  ),
-                );
-              },
-              menuChildren: options.map((opt) {
-                return MenuItemButton(
-                  onPressed: () {
-                    onChanged(opt);
-                  },
-                  child: Text(opt),
-                );
-              }).toList(),
+            child: DropdownButton<String>(
+              value: value,
+              items: options.map((opt) => DropdownMenuItem(
+                value: opt,
+                child: Text(opt),
+              )).toList(),
+              onChanged: onChanged,
+              underline: const SizedBox(),
+              style: TextStyle(
+                color: isDark ? Colors.white : Colors.black87,
+                fontSize: 14.sp,
+              ),
             ),
           ),
         ],

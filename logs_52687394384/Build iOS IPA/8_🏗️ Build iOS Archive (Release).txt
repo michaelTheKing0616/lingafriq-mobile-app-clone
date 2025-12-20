@@ -1,0 +1,954 @@
+﻿2025-12-19T18:32:06.4275460Z ##[group]Run if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
+2025-12-19T18:32:06.4275930Z [36;1mif [ -n "$BUILD_CERTIFICATE_BASE64" ]; then[0m
+2025-12-19T18:32:06.4276210Z [36;1m  # Build signed IPA[0m
+2025-12-19T18:32:06.4276480Z [36;1m  echo "🔐 Building signed IPA..."[0m
+2025-12-19T18:32:06.4276830Z [36;1m  flutter build ipa --release --split-debug-info=build/symbols[0m
+2025-12-19T18:32:06.4277230Z [36;1melse[0m
+2025-12-19T18:32:06.4277530Z [36;1m  # Build archive without signing (for manual signing later)[0m
+2025-12-19T18:32:06.4277930Z [36;1m  echo "⚠️ No signing credentials found. Building archive without signing..."[0m
+2025-12-19T18:32:06.4278520Z [36;1m  echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"[0m
+2025-12-19T18:32:06.4279020Z [36;1m  flutter build ios --release --no-codesign --split-debug-info=build/symbols[0m
+2025-12-19T18:32:06.4279350Z [36;1mfi[0m
+2025-12-19T18:32:06.4310960Z shell: /bin/bash -e {0}
+2025-12-19T18:32:06.4311290Z env:
+2025-12-19T18:32:06.4311700Z   FLUTTER_ROOT: /Users/runner/hostedtoolcache/flutter/stable-3.35.0-arm64
+2025-12-19T18:32:06.4312330Z   PUB_CACHE: /Users/runner/.pub-cache
+2025-12-19T18:32:06.4312620Z   BUILD_CERTIFICATE_BASE64: 
+2025-12-19T18:32:06.4312910Z ##[endgroup]
+2025-12-19T18:32:06.4913330Z ⚠️ No signing credentials found. Building archive without signing...
+2025-12-19T18:32:06.4913950Z 📝 Note: You'll need to sign manually in Xcode for App Store submission
+2025-12-19T18:32:06.7276340Z Resolving dependencies...
+2025-12-19T18:32:07.2238800Z Downloading packages...
+2025-12-19T18:32:07.3612560Z   _fe_analyzer_shared 85.0.0 (92.0.0 available)
+2025-12-19T18:32:07.3621290Z   _flutterfire_internals 1.3.64 (1.3.65 available)
+2025-12-19T18:32:07.3645920Z   analyzer 7.7.1 (9.0.0 available)
+2025-12-19T18:32:07.3646420Z   archive 3.6.1 (4.0.7 available)
+2025-12-19T18:32:07.3646790Z   args 2.5.0 (2.7.0 available)
+2025-12-19T18:32:07.3647150Z   boolean_selector 2.1.1 (2.1.2 available)
+2025-12-19T18:32:07.3647710Z   characters 1.4.0 (1.4.1 available)
+2025-12-19T18:32:07.3648150Z   checked_yaml 2.0.3 (2.0.4 available)
+2025-12-19T18:32:07.3648590Z   cli_util 0.4.1 (0.4.2 available)
+2025-12-19T18:32:07.3649020Z   connectivity_plus 6.1.5 (7.0.0 available)
+2025-12-19T18:32:07.3649600Z   coverage 1.14.0 (1.15.0 available)
+2025-12-19T18:32:07.3664630Z   crypto 3.0.5 (3.0.7 available)
+2025-12-19T18:32:07.3665150Z   csslib 1.0.0 (1.0.2 available)
+2025-12-19T18:32:07.3665520Z   device_info_plus 11.3.0 (12.3.0 available)
+2025-12-19T18:32:07.3665990Z   dio_web_adapter 2.0.0 (2.1.1 available)
+2025-12-19T18:32:07.3666360Z   ffi 2.1.3 (2.1.4 available)
+2025-12-19T18:32:07.3666710Z   file_picker 8.3.7 (10.3.8 available)
+2025-12-19T18:32:07.3667070Z   firebase_core 4.2.1 (4.3.0 available)
+2025-12-19T18:32:07.3667530Z   firebase_core_web 3.3.0 (3.3.1 available)
+2025-12-19T18:32:07.3667910Z   firebase_messaging 16.0.4 (16.1.0 available)
+2025-12-19T18:32:07.3668350Z   firebase_messaging_platform_interface 4.7.4 (4.7.5 available)
+2025-12-19T18:32:07.3668760Z   firebase_messaging_web 4.1.0 (4.1.1 available)
+2025-12-19T18:32:07.3669070Z   fixnum 1.1.0 (1.1.1 available)
+2025-12-19T18:32:07.3669340Z   fl_chart 0.69.2 (1.1.1 available)
+2025-12-19T18:32:07.3669680Z   flutter_inappwebview_internal_annotations 1.1.1 (1.2.0 available)
+2025-12-19T18:32:07.3670120Z   flutter_inappwebview_platform_interface 1.3.0 (1.3.0+1 available)
+2025-12-19T18:32:07.3670500Z   flutter_lints 5.0.0 (6.0.0 available)
+2025-12-19T18:32:07.3670820Z   flutter_webrtc 0.12.12+hotfix.1 (1.2.1 available)
+2025-12-19T18:32:07.3671130Z   html 0.15.4 (0.15.6 available)
+2025-12-19T18:32:07.3671400Z   http 1.2.2 (1.6.0 available)
+2025-12-19T18:32:07.3671700Z   http_parser 4.0.2 (4.1.2 available)
+2025-12-19T18:32:07.3671980Z   image 4.2.0 (4.7.1 available)
+2025-12-19T18:32:07.3672250Z   js 0.6.7 (0.7.2 available)
+2025-12-19T18:32:07.3672500Z   lints 5.0.0 (6.0.0 available)
+2025-12-19T18:32:07.3672780Z   livekit_client 2.3.6 (2.6.0 available)
+2025-12-19T18:32:07.3673070Z   logging 1.2.0 (1.3.0 available)
+2025-12-19T18:32:07.3674140Z   matcher 0.12.17 (0.12.18 available)
+2025-12-19T18:32:07.3676550Z   material_color_utilities 0.11.1 (0.13.0 available)
+2025-12-19T18:32:07.3676890Z   meta 1.16.0 (1.17.0 available)
+2025-12-19T18:32:07.3677170Z   path_provider_android 2.2.10 (2.2.22 available)
+2025-12-19T18:32:07.3677500Z   path_provider_foundation 2.4.0 (2.5.1 available)
+2025-12-19T18:32:07.3677820Z   permission_handler 11.4.0 (12.0.1 available)
+2025-12-19T18:32:07.3678210Z   permission_handler_android 12.1.0 (13.0.1 available)
+2025-12-19T18:32:07.3678520Z   petitparser 6.0.2 (7.0.1 available)
+2025-12-19T18:32:07.3678800Z   platform 3.1.5 (3.1.6 available)
+2025-12-19T18:32:07.3679080Z   protobuf 3.1.0 (6.0.0 available)
+2025-12-19T18:32:07.3679350Z   record 5.2.1 (6.1.2 available)
+2025-12-19T18:32:07.3679620Z   record_linux 0.7.2 (1.2.1 available)
+2025-12-19T18:32:07.3679920Z   shared_preferences 2.5.3 (2.5.4 available)
+2025-12-19T18:32:07.3680280Z   shared_preferences_android 2.4.17 (2.4.18 available)
+2025-12-19T18:32:07.3680730Z   shared_preferences_foundation 2.5.2 (2.5.6 available)
+2025-12-19T18:32:07.3681550Z   shared_preferences_web 2.4.2 (2.4.3 available)
+2025-12-19T18:32:07.3683200Z   shelf 1.4.1 (1.4.2 available)
+2025-12-19T18:32:07.3683480Z   socket_io_client 2.0.3+1 (3.1.3 available)
+2025-12-19T18:32:07.3683790Z   socket_io_common 2.0.3 (3.1.1 available)
+2025-12-19T18:32:07.3684130Z   source_span 1.10.0 (1.10.1 available)
+2025-12-19T18:32:07.3684400Z   sqflite 2.3.3+2 (2.4.2 available)
+2025-12-19T18:32:07.3684700Z   sqflite_common 2.5.4+4 (2.5.6 available)
+2025-12-19T18:32:07.3684990Z   string_scanner 1.2.0 (1.4.1 available)
+2025-12-19T18:32:07.3685280Z   synchronized 3.3.0+3 (3.4.0 available)
+2025-12-19T18:32:07.3685570Z   term_glyph 1.2.1 (1.2.2 available)
+2025-12-19T18:32:07.3685830Z   test 1.26.2 (1.28.0 available)
+2025-12-19T18:32:07.3686090Z   test_api 0.7.6 (0.7.8 available)
+2025-12-19T18:32:07.3686370Z   test_core 0.6.11 (0.6.14 available)
+2025-12-19T18:32:07.3686650Z   typed_data 1.3.2 (1.4.0 available)
+2025-12-19T18:32:07.3686940Z   url_launcher_android 6.3.10 (6.3.28 available)
+2025-12-19T18:32:07.3687290Z   url_launcher_ios 6.3.1 (6.3.6 available)
+2025-12-19T18:32:07.3687580Z   url_launcher_linux 3.2.0 (3.2.2 available)
+2025-12-19T18:32:07.3687880Z   url_launcher_macos 3.2.1 (3.2.5 available)
+2025-12-19T18:32:07.3688170Z   url_launcher_web 2.3.3 (2.4.1 available)
+2025-12-19T18:32:07.3688490Z   url_launcher_windows 3.1.2 (3.1.5 available)
+2025-12-19T18:32:07.3688780Z   uuid 4.5.1 (4.5.2 available)
+2025-12-19T18:32:07.3689040Z   vm_service 14.2.5 (15.0.2 available)
+2025-12-19T18:32:07.3689350Z   watcher 1.1.4 (1.2.0 available)
+2025-12-19T18:32:07.3689610Z   web 1.1.0 (1.1.1 available)
+2025-12-19T18:32:07.3689860Z   win32 5.13.0 (5.15.0 available)
+2025-12-19T18:32:07.3690120Z   win32_registry 1.1.5 (2.1.0 available)
+2025-12-19T18:32:07.3690400Z   xml 6.5.0 (6.6.1 available)
+2025-12-19T18:32:07.3690660Z   yaml 3.1.2 (3.1.3 available)
+2025-12-19T18:32:07.3703070Z Got dependencies!
+2025-12-19T18:32:07.3706550Z 79 packages have newer versions incompatible with dependency constraints.
+2025-12-19T18:32:07.3707170Z Try `flutter pub outdated` for more information.
+2025-12-19T18:32:07.8020990Z Warning: Building for device with codesigning disabled. You will have to manually codesign before deploying to device.
+2025-12-19T18:32:13.1717620Z Building com.owlab.lingafriq for device (ios-release)...
+2025-12-19T18:32:13.2798560Z Upgrading Runner.xcscheme
+2025-12-19T18:32:19.8932050Z Running pod install...                                           2,577ms
+2025-12-19T18:34:07.0574270Z Running Xcode build...                                          
+2025-12-19T18:34:07.0677470Z Xcode build done.                                           107.1s
+2025-12-19T18:34:08.8373130Z Failed to build iOS app
+2025-12-19T18:34:08.8474360Z Error output from Xcode build:
+2025-12-19T18:34:08.8607280Z ↳
+2025-12-19T18:34:08.8608020Z     ** BUILD FAILED **
+2025-12-19T18:34:08.8708960Z 
+2025-12-19T18:34:08.8809530Z 
+2025-12-19T18:34:08.8936680Z Xcode's output:
+2025-12-19T18:34:08.9038970Z ↳
+2025-12-19T18:34:08.9140330Z     Writing result bundle at path:
+2025-12-19T18:34:08.9243410Z     	/var/folders/bp/kmfmhnl95kx1c8x321z7twbw0000gn/T/flutter_tools.LKot6b/flutter_ios_build_temp_dirjgf4yW/temporary_xcresult_bundle
+2025-12-19T18:34:08.9344640Z 
+2025-12-19T18:34:08.9452280Z     /Users/runner/.pub-cache/hosted/pub.dev/url_launcher_ios-6.3.1/ios/url_launcher_ios/Sources/url_launcher_ios/URLLauncherPlugin.swift:22:26: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:08.9658020Z         UIApplication.shared.keyWindow?.rootViewController?.topViewController
+2025-12-19T18:34:08.9759370Z                              ^
+2025-12-19T18:34:08.9861310Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_tts-4.2.3/ios/Classes/SwiftFlutterTtsPlugin.swift:10:7: warning: stored property 'synthesizer' of 'Sendable'-conforming class 'SwiftFlutterTtsPlugin' has non-sendable type 'AVSpeechSynthesizer'; this is an error in the Swift 6 language mode
+2025-12-19T18:34:08.9961080Z       let synthesizer = AVSpeechSynthesizer()
+2025-12-19T18:34:09.0070500Z           ^
+2025-12-19T18:34:09.0173240Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/AVFAudio.framework/Headers/AVSpeechSynthesis.h:227:12: note: class 'AVSpeechSynthesizer' does not conform to the 'Sendable' protocol
+2025-12-19T18:34:09.0273370Z     @interface AVSpeechSynthesizer : NSObject
+2025-12-19T18:34:09.0374510Z                ^
+2025-12-19T18:34:09.0476510Z     /Users/runner/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.7/ios/Classes/strategies/PhonePermissionStrategy.m:49:35: warning: 'subscriberCellularProvider' is deprecated: first deprecated in iOS 12.0 [-Wdeprecated-declarations]
+2025-12-19T18:34:09.0579430Z        49 |     CTCarrier *carrier = [netInfo subscriberCellularProvider];
+2025-12-19T18:34:09.0692060Z           |                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:09.0884890Z           |                                   serviceSubscriberCellularProviders
+2025-12-19T18:34:09.0886220Z     In module 'CoreTelephony' imported from /Users/runner/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.7/ios/Classes/strategies/PhonePermissionStrategy.m:8:
+2025-12-19T18:34:09.0988100Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTTelephonyNetworkInfo.h:114:50: note: property 'subscriberCellularProvider' is declared deprecated here
+2025-12-19T18:34:09.1090430Z       114 | @property(readonly, retain, nullable) CTCarrier *subscriberCellularProvider API_DEPRECATED_WITH_REPLACEMENT("serviceSubscriberCellularProviders", ios(4.0, 12.0)) API_UNAVAILABLE(macos);
+2025-12-19T18:34:09.1192290Z           |                                                  ^
+2025-12-19T18:34:09.1294950Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreTelephony.framework/Headers/CTTelephonyNetworkInfo.h:114:50: note: 'subscriberCellularProvider' has been explicitly marked deprecated here
+2025-12-19T18:34:09.1397840Z     1 warning generated.
+2025-12-19T18:34:09.1489020Z     While building module 'WebRTC':
+2025-12-19T18:34:09.1591220Z     In file included from <module-includes>:1:
+2025-12-19T18:34:09.1703540Z     In file included from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/build/ios/Release-iphoneos/XCFrameworkIntermediates/WebRTC-SDK/WebRTC.framework/Headers/WebRTC.h:52:
+2025-12-19T18:34:09.1811350Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/build/ios/Release-iphoneos/XCFrameworkIntermediates/WebRTC-SDK/WebRTC.framework/Headers/RTCAudioDeviceModule.h:25:43: warning: a block declaration without a prototype is deprecated  [-Wstrict-prototypes]
+2025-12-19T18:34:09.1913760Z        25 | typedef void (^RTCOnAudioDevicesDidUpdate)();
+2025-12-19T18:34:09.2015470Z           |                                           ^
+2025-12-19T18:34:09.2115940Z           |                                            void
+2025-12-19T18:34:09.2215930Z     1 warning generated.
+2025-12-19T18:34:09.2318920Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_webrtc-0.12.12+hotfix.1/ios/Classes/FlutterRTCDesktopCapturer.m:73:15: warning: performSelector may cause a leak because its selector is unknown [-Warc-performSelector-leaks]
+2025-12-19T18:34:09.2417510Z        73 |       [picker performSelector:selector withObject:nil];
+2025-12-19T18:34:09.2517850Z           |               ^
+2025-12-19T18:34:09.2619470Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_webrtc-0.12.12+hotfix.1/ios/Classes/FlutterRTCDesktopCapturer.m:73:31: note: used here
+2025-12-19T18:34:09.2719420Z        73 |       [picker performSelector:selector withObject:nil];
+2025-12-19T18:34:09.2820620Z           |                               ^
+2025-12-19T18:34:09.2921920Z     1 warning generated.
+2025-12-19T18:34:09.3023180Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_local_notifications-19.5.0/ios/flutter_local_notifications/Sources/flutter_local_notifications/FlutterLocalNotificationsPlugin.m:972:30: warning: 'UNNotificationPresentationOptionAlert' is deprecated: first deprecated in iOS 14.0 [-Wdeprecated-declarations]
+2025-12-19T18:34:09.3122850Z       972 |       presentationOptions |= UNNotificationPresentationOptionAlert;
+2025-12-19T18:34:09.3223970Z           |                              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:09.3324520Z           |                              UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner
+2025-12-19T18:34:09.3426360Z     In module 'UserNotifications' imported from /Users/runner/.pub-cache/hosted/pub.dev/flutter_local_notifications-19.5.0/ios/flutter_local_notifications/Sources/flutter_local_notifications/./include/flutter_local_notifications/FlutterLocalNotificationsPlugin.h:2:
+2025-12-19T18:34:09.3530120Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UNUserNotificationCenter.h:84:5: note: 'UNNotificationPresentationOptionAlert' has been explicitly marked deprecated here
+2025-12-19T18:34:09.3630500Z        84 |     UNNotificationPresentationOptionAlert API_DEPRECATED_WITH_REPLACEMENT("UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner", macos(10.14, 11.0), ios(10.0, 14.0), watchos(3.0, 7.0), tvos(10.0, 14.0)) = (1 << 2),
+2025-12-19T18:34:09.3732710Z           |     ^
+2025-12-19T18:34:09.3834280Z     1 warning generated.
+2025-12-19T18:34:09.3938660Z     /Users/runner/.pub-cache/hosted/pub.dev/audio_session-0.2.2/ios/audio_session/Sources/audio_session/DarwinAudioSession.m:689:59: warning: 'AVAudioSessionInterruptionWasSuspendedKey' is deprecated: first deprecated in iOS 14.5 - No longer supported - see AVAudioSessionInterruptionReasonKey [-Wdeprecated-declarations]
+2025-12-19T18:34:09.4041130Z       689 |         wasSuspended = [notification.userInfo valueForKey:AVAudioSessionInterruptionWasSuspendedKey];
+2025-12-19T18:34:09.4146150Z           |                                                           ^
+2025-12-19T18:34:09.4247080Z     In module 'AVFoundation' imported from /Users/runner/.pub-cache/hosted/pub.dev/audio_session-0.2.2/ios/audio_session/Sources/audio_session/DarwinAudioSession.m:2:
+2025-12-19T18:34:09.4349000Z     In module 'AVFAudio' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/AVFoundation.framework/Headers/AVFAudio.h:8:
+2025-12-19T18:34:09.4449650Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/AVFAudio.framework/Headers/AVAudioSession.h:705:27: note: 'AVAudioSessionInterruptionWasSuspendedKey' has been explicitly marked deprecated here
+2025-12-19T18:34:09.4550960Z       705 | OS_EXPORT NSString *const AVAudioSessionInterruptionWasSuspendedKey API_DEPRECATED("No longer supported - see AVAudioSessionInterruptionReasonKey", ios(10.3, 14.5), watchos(3.2, 7.3), tvos(10.3, 14.5));
+2025-12-19T18:34:09.4651410Z           |                           ^
+2025-12-19T18:34:09.4752680Z     1 warning generated.
+2025-12-19T18:34:09.4853700Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:208:64: warning: 'UTTypeCreatePreferredIdentifierForTag' is deprecated: first deprecated in iOS 15.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.4956670Z       208 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:09.5055590Z           |                                                                ^
+2025-12-19T18:34:09.5157670Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:17:
+2025-12-19T18:34:09.5259010Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:317:1: note: 'UTTypeCreatePreferredIdentifierForTag' has been explicitly marked deprecated here
+2025-12-19T18:34:09.5359770Z       317 | UTTypeCreatePreferredIdentifierForTag(
+2025-12-19T18:34:09.5460830Z           | ^
+2025-12-19T18:34:09.5562200Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:208:102: warning: 'kUTTagClassFilenameExtension' is deprecated: first deprecated in iOS 15.0 - Use UTTagClassFilenameExtension instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.5662560Z       208 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:09.5764390Z           |                                                                                                      ^
+2025-12-19T18:34:09.5867480Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:17:
+2025-12-19T18:34:09.5966970Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:258:26: note: 'kUTTagClassFilenameExtension' has been explicitly marked deprecated here
+2025-12-19T18:34:09.6101400Z       258 | extern const CFStringRef kUTTagClassFilenameExtension                API_DEPRECATED("Use UTTagClassFilenameExtension instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:09.6214680Z           |                          ^
+2025-12-19T18:34:09.6322570Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:208:173: warning: 'kUTTypeImage' is deprecated: first deprecated in iOS 15.0 - Use UTTypeImage or UTType.image (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.6424590Z       208 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:09.6534710Z           |                                                                                                                                                                             ^
+2025-12-19T18:34:09.6656170Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:17:
+2025-12-19T18:34:09.6760270Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:725:26: note: 'kUTTypeImage' has been explicitly marked deprecated here
+2025-12-19T18:34:09.6863810Z       725 | extern const CFStringRef kUTTypeImage                                API_DEPRECATED("Use UTTypeImage or UTType.image (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:09.6967090Z           |                          ^
+2025-12-19T18:34:09.7069150Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:210:17: warning: 'UTTypeIsDynamic' is deprecated: first deprecated in iOS 15.0 - Use UTType.dynamic instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.7168580Z       210 |             if (UTTypeIsDynamic((__bridge CFStringRef)typeIdentifierHint)) {
+2025-12-19T18:34:09.7268760Z           |                 ^
+2025-12-19T18:34:09.7369730Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOCoder.m:17:
+2025-12-19T18:34:09.7471350Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:536:1: note: 'UTTypeIsDynamic' has been explicitly marked deprecated here
+2025-12-19T18:34:09.7577290Z       536 | UTTypeIsDynamic(CFStringRef inUTI)                                   API_DEPRECATED("Use UTType.dynamic instead.", ios(8.0, 15.0), macos(10.10, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:09.7677540Z           | ^
+2025-12-19T18:34:09.7778370Z     4 warnings generated.
+2025-12-19T18:34:09.7879420Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:652:64: warning: 'UTTypeCreatePreferredIdentifierForTag' is deprecated: first deprecated in iOS 15.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.7980220Z       652 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:09.8082820Z           |                                                                ^
+2025-12-19T18:34:09.8192520Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:20:
+2025-12-19T18:34:09.8329750Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:317:1: note: 'UTTypeCreatePreferredIdentifierForTag' has been explicitly marked deprecated here
+2025-12-19T18:34:09.8436210Z       317 | UTTypeCreatePreferredIdentifierForTag(
+2025-12-19T18:34:09.8537340Z           | ^
+2025-12-19T18:34:09.8819590Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:652:102: warning: 'kUTTagClassFilenameExtension' is deprecated: first deprecated in iOS 15.0 - Use UTTagClassFilenameExtension instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.8923600Z       652 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:09.9025630Z           |                                                                                                      ^
+2025-12-19T18:34:09.9135130Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:20:
+2025-12-19T18:34:09.9243570Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:258:26: note: 'kUTTagClassFilenameExtension' has been explicitly marked deprecated here
+2025-12-19T18:34:09.9401630Z       258 | extern const CFStringRef kUTTagClassFilenameExtension                API_DEPRECATED("Use UTTagClassFilenameExtension instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:09.9503370Z           |                          ^
+2025-12-19T18:34:09.9604820Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:652:173: warning: 'kUTTypeImage' is deprecated: first deprecated in iOS 15.0 - Use UTTypeImage or UTType.image (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:09.9705220Z       652 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:09.9804950Z           |                                                                                                                                                                             ^
+2025-12-19T18:34:09.9906560Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:20:
+2025-12-19T18:34:10.0007350Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:725:26: note: 'kUTTypeImage' has been explicitly marked deprecated here
+2025-12-19T18:34:10.0108300Z       725 | extern const CFStringRef kUTTypeImage                                API_DEPRECATED("Use UTTypeImage or UTType.image (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.0208750Z           |                          ^
+2025-12-19T18:34:10.0309550Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:654:17: warning: 'UTTypeIsDynamic' is deprecated: first deprecated in iOS 15.0 - Use UTType.dynamic instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.0409890Z       654 |             if (UTTypeIsDynamic((__bridge CFStringRef)typeIdentifierHint)) {
+2025-12-19T18:34:10.0510270Z           |                 ^
+2025-12-19T18:34:10.0611830Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageIOAnimatedCoder.m:20:
+2025-12-19T18:34:10.0712390Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:536:1: note: 'UTTypeIsDynamic' has been explicitly marked deprecated here
+2025-12-19T18:34:10.0812990Z       536 | UTTypeIsDynamic(CFStringRef inUTI)                                   API_DEPRECATED("Use UTType.dynamic instead.", ios(8.0, 15.0), macos(10.10, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.0914820Z           | ^
+2025-12-19T18:34:10.1015210Z     4 warnings generated.
+2025-12-19T18:34:10.1117640Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:89:64: warning: 'UTTypeCreatePreferredIdentifierForTag' is deprecated: first deprecated in iOS 15.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.1221420Z        89 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:10.1324360Z           |                                                                ^
+2025-12-19T18:34:10.1426070Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:17:
+2025-12-19T18:34:10.1528220Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:317:1: note: 'UTTypeCreatePreferredIdentifierForTag' has been explicitly marked deprecated here
+2025-12-19T18:34:10.1628410Z       317 | UTTypeCreatePreferredIdentifierForTag(
+2025-12-19T18:34:10.1731240Z           | ^
+2025-12-19T18:34:10.1830050Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:89:102: warning: 'kUTTagClassFilenameExtension' is deprecated: first deprecated in iOS 15.0 - Use UTTagClassFilenameExtension instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.1930710Z        89 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:10.2030930Z           |                                                                                                      ^
+2025-12-19T18:34:10.2132690Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:17:
+2025-12-19T18:34:10.2233920Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:258:26: note: 'kUTTagClassFilenameExtension' has been explicitly marked deprecated here
+2025-12-19T18:34:10.2333720Z       258 | extern const CFStringRef kUTTagClassFilenameExtension                API_DEPRECATED("Use UTTagClassFilenameExtension instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.2434320Z           |                          ^
+2025-12-19T18:34:10.2535790Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:89:173: warning: 'kUTTypeImage' is deprecated: first deprecated in iOS 15.0 - Use UTTypeImage or UTType.image (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.2636730Z        89 |             typeIdentifierHint = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)fileExtensionHint, kUTTypeImage);
+2025-12-19T18:34:10.2736770Z           |                                                                                                                                                                             ^
+2025-12-19T18:34:10.2840940Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:17:
+2025-12-19T18:34:10.2943770Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:725:26: note: 'kUTTypeImage' has been explicitly marked deprecated here
+2025-12-19T18:34:10.3045960Z       725 | extern const CFStringRef kUTTypeImage                                API_DEPRECATED("Use UTTypeImage or UTType.image (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.3166800Z           |                          ^
+2025-12-19T18:34:10.3271460Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:91:17: warning: 'UTTypeIsDynamic' is deprecated: first deprecated in iOS 15.0 - Use UTType.dynamic instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.3372160Z        91 |             if (UTTypeIsDynamic((__bridge CFStringRef)typeIdentifierHint)) {
+2025-12-19T18:34:10.3475520Z           |                 ^
+2025-12-19T18:34:10.3577260Z     In module 'CoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/SDImageCacheDefine.m:17:
+2025-12-19T18:34:10.3681920Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:536:1: note: 'UTTypeIsDynamic' has been explicitly marked deprecated here
+2025-12-19T18:34:10.3779780Z       536 | UTTypeIsDynamic(CFStringRef inUTI)                                   API_DEPRECATED("Use UTType.dynamic instead.", ios(8.0, 15.0), macos(10.10, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.3879600Z           | ^
+2025-12-19T18:34:10.3980200Z     4 warnings generated.
+2025-12-19T18:34:10.4080790Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/NSData+ImageContentType.m:159:16: warning: 'UTTypeConformsTo' is deprecated: first deprecated in iOS 15.0 - Use -[UTType conformsToType:] instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.4182200Z       159 |     } else if (UTTypeConformsTo(uttype, kSDUTTypeRAW)) {
+2025-12-19T18:34:10.4283740Z           |                ^
+2025-12-19T18:34:10.4385400Z     In module 'MobileCoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/SDWebImage/SDWebImage/Core/NSData+ImageContentType.m:14:
+2025-12-19T18:34:10.4485570Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:10.4588540Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:472:1: note: 'UTTypeConformsTo' has been explicitly marked deprecated here
+2025-12-19T18:34:10.4687320Z       472 | UTTypeConformsTo(
+2025-12-19T18:34:10.4787720Z           | ^
+2025-12-19T18:34:10.4888860Z     1 warning generated.
+2025-12-19T18:34:10.4989890Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:51:37: warning: a function declaration without a prototype is deprecated in all versions of C [-Wstrict-prototypes]
+2025-12-19T18:34:10.5091460Z        51 | void GCDWebServerInitializeFunctions() {
+2025-12-19T18:34:10.5191800Z           |                                     ^
+2025-12-19T18:34:10.5292360Z           |                                      void
+2025-12-19T18:34:10.5394340Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:179:25: warning: 'UTTypeCreatePreferredIdentifierForTag' is deprecated: first deprecated in iOS 15.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.5494310Z       179 |       CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+2025-12-19T18:34:10.5594870Z           |                         ^
+2025-12-19T18:34:10.5695600Z     In module 'MobileCoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:34:
+2025-12-19T18:34:10.5796220Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:10.5896990Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:317:1: note: 'UTTypeCreatePreferredIdentifierForTag' has been explicitly marked deprecated here
+2025-12-19T18:34:10.5997350Z       317 | UTTypeCreatePreferredIdentifierForTag(
+2025-12-19T18:34:10.6098550Z           | ^
+2025-12-19T18:34:10.6199780Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:179:63: warning: 'kUTTagClassFilenameExtension' is deprecated: first deprecated in iOS 15.0 - Use UTTagClassFilenameExtension instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.6300180Z       179 |       CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL);
+2025-12-19T18:34:10.6399750Z           |                                                               ^
+2025-12-19T18:34:10.6500940Z     In module 'MobileCoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:34:
+2025-12-19T18:34:10.6603610Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:10.6703940Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:258:26: note: 'kUTTagClassFilenameExtension' has been explicitly marked deprecated here
+2025-12-19T18:34:10.6912450Z       258 | extern const CFStringRef kUTTagClassFilenameExtension                API_DEPRECATED("Use UTTagClassFilenameExtension instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.7043210Z           |                          ^
+2025-12-19T18:34:10.7145670Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:181:38: warning: 'UTTypeCopyPreferredTagWithClass' is deprecated: first deprecated in iOS 15.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.7338930Z       181 |         mimeType = CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
+2025-12-19T18:34:10.7441730Z           |                                      ^
+2025-12-19T18:34:10.7543790Z     In module 'MobileCoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:34:
+2025-12-19T18:34:10.7545600Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:10.7647580Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:395:1: note: 'UTTypeCopyPreferredTagWithClass' has been explicitly marked deprecated here
+2025-12-19T18:34:10.7749950Z       395 | UTTypeCopyPreferredTagWithClass(
+2025-12-19T18:34:10.7851020Z           | ^
+2025-12-19T18:34:10.7952700Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:181:75: warning: 'kUTTagClassMIMEType' is deprecated: first deprecated in iOS 15.0 - Use UTTagClassMIMEType instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:10.8055070Z       181 |         mimeType = CFBridgingRelease(UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType));
+2025-12-19T18:34:10.8156460Z           |                                                                           ^
+2025-12-19T18:34:10.8258600Z     In module 'MobileCoreServices' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerFunctions.m:34:
+2025-12-19T18:34:10.8367550Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:10.8469800Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:262:26: note: 'kUTTagClassMIMEType' has been explicitly marked deprecated here
+2025-12-19T18:34:10.8594980Z       262 | extern const CFStringRef kUTTagClassMIMEType                         API_DEPRECATED("Use UTTagClassMIMEType instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:10.8696650Z           |                          ^
+2025-12-19T18:34:10.8798160Z     5 warnings generated.
+2025-12-19T18:34:10.8900520Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/GCDWebServer/GCDWebServer/Core/GCDWebServerConnection.m:782:106: warning: conditional expression between different enumeration types ('enum GCDWebServerRedirectionHTTPStatusCode' and 'enum GCDWebServerClientErrorHTTPStatusCode') [-Wenum-compare-conditional]
+2025-12-19T18:34:10.9003330Z       782 |     NSInteger code = [request.method isEqualToString:@"HEAD"] || [request.method isEqualToString:@"GET"] ? kGCDWebServerHTTPStatusCode_NotModified : kGCDWebServerHTTPStatusCode_PreconditionFailed;
+2025-12-19T18:34:10.9105060Z           |                                                                                                          ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:10.9206660Z     1 warning generated.
+2025-12-19T18:34:10.9308300Z     /Users/runner/.pub-cache/hosted/pub.dev/better_player_plus-1.1.5/ios/Classes/BetterPlayer.swift:168:162: warning: forced cast from 'NSDictionary' to '[NSObject : AnyObject]' always succeeds; did you mean to use 'as'?
+2025-12-19T18:34:10.9411030Z                 item = cacheManager.getCachingPlayerItemForNormalPlayback(url, cacheKey: _cacheKey, videoExtension: _videoExt, headers: finalHeaders as NSDictionary as! [NSObject: AnyObject]) ?? AVPlayerItem(url: url)
+2025-12-19T18:34:10.9513250Z                                                                                           ^~~
+2025-12-19T18:34:10.9614460Z                                                                                           as
+2025-12-19T18:34:10.9716480Z     /Users/runner/.pub-cache/hosted/pub.dev/better_player_plus-1.1.5/ios/Classes/BetterPlayer.swift:161:13: warning: variable 'finalHeaders' was never mutated; consider changing to 'let' constant
+2025-12-19T18:34:10.9818210Z             var finalHeaders = headers
+2025-12-19T18:34:10.9919500Z             ~~~ ^
+2025-12-19T18:34:11.0021030Z             let
+2025-12-19T18:34:11.0122800Z     /Users/runner/.pub-cache/hosted/pub.dev/better_player_plus-1.1.5/ios/Classes/BetterPlayer.swift:276:25: warning: variable 'start' was never mutated; consider changing to 'let' constant
+2025-12-19T18:34:11.0224790Z                         var start = NSNumber(value: BetterPlayerTimeUtils.cmTimeToMillis(range.start))
+2025-12-19T18:34:11.0326480Z                         ~~~ ^
+2025-12-19T18:34:11.0427820Z                         let
+2025-12-19T18:34:11.0529880Z     /Users/runner/.pub-cache/hosted/pub.dev/better_player_plus-1.1.5/ios/Classes/CacheManager.swift:217:13: warning: initialization of immutable value 'str' was never used; consider replacing with assignment to '_' or removing it
+2025-12-19T18:34:11.0631910Z             let str = String(format: "%.1f%%", percentage)
+2025-12-19T18:34:11.0733050Z             ~~~~^~~
+2025-12-19T18:34:11.0834500Z             _
+2025-12-19T18:34:11.0936260Z     /Users/runner/.pub-cache/hosted/pub.dev/better_player_plus-1.1.5/ios/Classes/SwiftBetterPlayerPlugin.swift:322:140: warning: forced cast from 'NSDictionary' to '[NSObject : AnyObject]' always succeeds; did you mean to use 'as'?
+2025-12-19T18:34:11.1039070Z                         cacheManager.preCacheURL(url, cacheKey: cacheKey, videoExtension: videoExtension, withHeaders: headers as NSDictionary as! [NSObject: AnyObject]) { _ in }
+2025-12-19T18:34:11.1140910Z                                                                                           ^~~
+2025-12-19T18:34:11.1242460Z                                                                                           as
+2025-12-19T18:34:11.1344090Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:763:19: warning: unnecessary check for 'iOS'; enclosing scope ensures guard will always be true
+2025-12-19T18:34:11.1446800Z             } else if #available(iOS 16.0, *) {
+2025-12-19T18:34:11.1549690Z                       ^
+2025-12-19T18:34:11.1651150Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:745:14: note: enclosing scope here
+2025-12-19T18:34:11.1753390Z             else if #available(iOS 15.0, *) {
+2025-12-19T18:34:11.1824960Z                  ^
+2025-12-19T18:34:11.1928250Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/HeadlessInAppWebView/HeadlessInAppWebView.swift:40:53: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:11.2030490Z                 if let keyWindow = UIApplication.shared.keyWindow {
+2025-12-19T18:34:11.2132260Z                                                         ^
+2025-12-19T18:34:11.2239120Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppBrowser/InAppBrowserManager.swift:48:59: warning: 'statusBarStyle' was deprecated in iOS 13.0: Use the statusBarManager property of the window scene instead.
+2025-12-19T18:34:11.2343510Z                 previousStatusBarStyle = UIApplication.shared.statusBarStyle.rawValue
+2025-12-19T18:34:11.2445170Z                                                               ^
+2025-12-19T18:34:11.2547750Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppBrowser/InAppBrowserWebViewController.swift:637:34: warning: 'statusBarStyle' was deprecated in iOS 13.0: Use the statusBarManager property of the window scene instead.
+2025-12-19T18:34:11.2650120Z                 UIApplication.shared.statusBarStyle = statusBarStyle
+2025-12-19T18:34:11.2751500Z                                      ^
+2025-12-19T18:34:11.2861650Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:495:25: warning: 'clearCache' is deprecated: Use InAppWebViewManager.clearAllCache instead.
+2025-12-19T18:34:11.2963590Z                 if settings.clearCache {
+2025-12-19T18:34:11.3065640Z                             ^
+2025-12-19T18:34:11.3167440Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:496:17: warning: 'clearCache()' is deprecated: Use InAppWebViewManager.clearAllCache instead.
+2025-12-19T18:34:11.3269100Z                     clearCache()
+2025-12-19T18:34:11.3370650Z                     ^
+2025-12-19T18:34:11.3472650Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:524:39: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.3582020Z                 configuration.preferences.javaScriptEnabled = settings.javaScriptEnabled
+2025-12-19T18:34:11.3685300Z                                           ^
+2025-12-19T18:34:11.3792860Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:685:42: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.3895370Z                 if configuration.preferences.javaScriptEnabled {
+2025-12-19T18:34:11.3996990Z                                              ^
+2025-12-19T18:34:11.4098980Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:1221:63: warning: 'clearCache' is deprecated: Use InAppWebViewManager.clearAllCache instead.
+2025-12-19T18:34:11.4208970Z             if newSettingsMap["clearCache"] != nil && newSettings.clearCache {
+2025-12-19T18:34:11.4311610Z                                                                   ^
+2025-12-19T18:34:11.4413060Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:1222:13: warning: 'clearCache()' is deprecated: Use InAppWebViewManager.clearAllCache instead.
+2025-12-19T18:34:11.4515810Z                 clearCache()
+2025-12-19T18:34:11.4618200Z                 ^
+2025-12-19T18:34:11.4721580Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:1226:39: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.4737090Z                 configuration.preferences.javaScriptEnabled = newSettings.javaScriptEnabled
+2025-12-19T18:34:11.4837990Z                                           ^
+2025-12-19T18:34:11.4944490Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:2906:38: warning: 'onFindResultReceived(activeMatchOrdinal:numberOfMatches:isDoneCounting:)' is deprecated: Use FindInteractionChannelDelegate.onFindResultReceived instead.
+2025-12-19T18:34:11.5049540Z                 webView.channelDelegate?.onFindResultReceived(activeMatchOrdinal: activeMatchOrdinal, numberOfMatches: numberOfMatches, isDoneCounting: isDoneCounting)
+2025-12-19T18:34:11.5150820Z                                          ^
+2025-12-19T18:34:11.5252620Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:3088:38: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.5354540Z             if configuration.preferences.javaScriptEnabled {
+2025-12-19T18:34:11.5455410Z                                          ^
+2025-12-19T18:34:11.5557110Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:3096:38: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.5658840Z             if configuration.preferences.javaScriptEnabled, let lastTouchLocation = lastTouchPoint {
+2025-12-19T18:34:11.5760720Z                                          ^
+2025-12-19T18:34:11.5862480Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:3114:38: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.5964210Z             if configuration.preferences.javaScriptEnabled {
+2025-12-19T18:34:11.6065200Z                                          ^
+2025-12-19T18:34:11.6166980Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebView.swift:3128:38: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.6268910Z             if configuration.preferences.javaScriptEnabled {
+2025-12-19T18:34:11.6370240Z                                          ^
+2025-12-19T18:34:11.6472220Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/InAppWebViewSettings.swift:150:75: warning: 'javaScriptEnabled' was deprecated in iOS 14.0: Use WKWebpagePreferences.allowsContentJavaScript to disable content JavaScript on a per-navigation basis
+2025-12-19T18:34:11.6574230Z                 realSettings["javaScriptEnabled"] = configuration.preferences.javaScriptEnabled
+2025-12-19T18:34:11.6675550Z                                                                               ^
+2025-12-19T18:34:11.6777210Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/SafariViewController/SafariViewController.swift:39:15: warning: 'init(url:entersReaderIfAvailable:)' was deprecated in iOS 11.0
+2025-12-19T18:34:11.6878750Z             super.init(url: url, entersReaderIfAvailable: entersReaderIfAvailable)
+2025-12-19T18:34:11.6980150Z                   ^
+2025-12-19T18:34:11.7082080Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLCredential.swift:14:25: warning: comparing non-optional value of type '[Any]' to 'nil' always returns true
+2025-12-19T18:34:11.7183620Z             if certificates != nil {
+2025-12-19T18:34:11.7284820Z                ~~~~~~~~~~~~ ^  ~~~
+2025-12-19T18:34:11.7386300Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLProtectionSpace.swift:18:38: warning: 'SecTrustEvaluate' was deprecated in iOS 13.0: renamed to 'SecTrustEvaluateWithError(_:_:)'
+2025-12-19T18:34:11.7487770Z             let secTrustEvaluateStatus = SecTrustEvaluate(serverTrust, &secResult);
+2025-12-19T18:34:11.7588790Z                                          ^
+2025-12-19T18:34:11.7690610Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLProtectionSpace.swift:18:38: note: use 'SecTrustEvaluateWithError(_:_:)' instead
+2025-12-19T18:34:11.7792180Z             let secTrustEvaluateStatus = SecTrustEvaluate(serverTrust, &secResult);
+2025-12-19T18:34:11.7893600Z                                          ^~~~~~~~~~~~~~~~
+2025-12-19T18:34:11.7996680Z                                          SecTrustEvaluateWithError
+2025-12-19T18:34:11.8098240Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLProtectionSpace.swift:20:77: warning: 'SecTrustGetCertificateAtIndex' was deprecated in iOS 15.0: renamed to 'SecTrustCopyCertificateChain(_:)'
+2025-12-19T18:34:11.8200460Z             if secTrustEvaluateStatus == errSecSuccess, let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+2025-12-19T18:34:11.8301650Z                                                                                 ^
+2025-12-19T18:34:11.8403130Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLProtectionSpace.swift:20:77: note: use 'SecTrustCopyCertificateChain(_:)' instead
+2025-12-19T18:34:11.8504970Z             if secTrustEvaluateStatus == errSecSuccess, let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) {
+2025-12-19T18:34:11.8606450Z                                                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:11.8707800Z                                                                                 SecTrustCopyCertificateChain
+2025-12-19T18:34:11.8809430Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLProtectionSpace.swift:40:9: warning: 'SecTrustEvaluate' was deprecated in iOS 13.0: renamed to 'SecTrustEvaluateWithError(_:_:)'
+2025-12-19T18:34:11.8911160Z             SecTrustEvaluate(serverTrust, &secResult);
+2025-12-19T18:34:11.9012340Z             ^
+2025-12-19T18:34:11.9113720Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Types/URLProtectionSpace.swift:40:9: note: use 'SecTrustEvaluateWithError(_:_:)' instead
+2025-12-19T18:34:11.9215760Z             SecTrustEvaluate(serverTrust, &secResult);
+2025-12-19T18:34:11.9316790Z             ^~~~~~~~~~~~~~~~
+2025-12-19T18:34:11.9417960Z             SecTrustEvaluateWithError
+2025-12-19T18:34:11.9519780Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Util.swift:86:25: warning: 'spotlightSuggestion' was deprecated in iOS 10.0: renamed to 'WKDataDetectorTypes.lookupSuggestion'
+2025-12-19T18:34:11.9621480Z                     return .spotlightSuggestion
+2025-12-19T18:34:11.9722820Z                             ^
+2025-12-19T18:34:11.9824290Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Util.swift:86:25: note: use 'WKDataDetectorTypes.lookupSuggestion' instead
+2025-12-19T18:34:11.9925660Z                     return .spotlightSuggestion
+2025-12-19T18:34:12.0027070Z                             ^~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:12.0128280Z                             WKDataDetectorTypes.lookupSuggestion
+2025-12-19T18:34:12.0230180Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Util.swift:121:31: warning: 'spotlightSuggestion' was deprecated in iOS 10.0: renamed to 'WKDataDetectorTypes.lookupSuggestion'
+2025-12-19T18:34:12.0331820Z                 if type.contains(.spotlightSuggestion) {
+2025-12-19T18:34:12.0432940Z                                   ^
+2025-12-19T18:34:12.0534590Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/Util.swift:121:31: note: use 'WKDataDetectorTypes.lookupSuggestion' instead
+2025-12-19T18:34:12.0636450Z                 if type.contains(.spotlightSuggestion) {
+2025-12-19T18:34:12.0737970Z                                   ^~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:12.0839430Z                                   WKDataDetectorTypes.lookupSuggestion
+2025-12-19T18:34:12.1299630Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/UIApplication/VisibleViewController.swift:13:40: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:12.1402000Z             guard let rootViewController = keyWindow?.rootViewController else {
+2025-12-19T18:34:12.1504510Z                                            ^
+2025-12-19T18:34:12.1606850Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:36:19: warning: unnecessary check for 'iOS'; enclosing scope ensures guard will always be true
+2025-12-19T18:34:12.1708710Z             } else if #available(iOS 11.0, *) {
+2025-12-19T18:34:12.1809700Z                       ^
+2025-12-19T18:34:12.1911210Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:30:9: note: enclosing scope here
+2025-12-19T18:34:12.2012870Z             if #available(iOS 12.0, *) {
+2025-12-19T18:34:12.2114220Z             ^
+2025-12-19T18:34:12.2215910Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:71:70: warning: 'SFAuthenticationSession' was deprecated in iOS 12.0: renamed to 'ASWebAuthenticationSession'
+2025-12-19T18:34:12.2320810Z             } else if #available(iOS 11.0, *), let session = session as? SFAuthenticationSession {
+2025-12-19T18:34:12.2403900Z                                                                          ^
+2025-12-19T18:34:12.2505320Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:71:70: note: use 'ASWebAuthenticationSession' instead
+2025-12-19T18:34:12.2607440Z             } else if #available(iOS 11.0, *), let session = session as? SFAuthenticationSession {
+2025-12-19T18:34:12.2709820Z                                                                          ^~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:12.2811160Z                                                                          ASWebAuthenticationSession
+2025-12-19T18:34:12.2912750Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:86:70: warning: 'SFAuthenticationSession' was deprecated in iOS 12.0: renamed to 'ASWebAuthenticationSession'
+2025-12-19T18:34:12.3014530Z             } else if #available(iOS 11.0, *), let session = session as? SFAuthenticationSession {
+2025-12-19T18:34:12.3115670Z                                                                          ^
+2025-12-19T18:34:12.3217180Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:86:70: note: use 'ASWebAuthenticationSession' instead
+2025-12-19T18:34:12.3319020Z             } else if #available(iOS 11.0, *), let session = session as? SFAuthenticationSession {
+2025-12-19T18:34:12.3420770Z                                                                          ^~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:12.3521890Z                                                                          ASWebAuthenticationSession
+2025-12-19T18:34:12.3623720Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/WebAuthenticationSession/WebAuthenticationSession.swift:93:37: warning: 'windows' was deprecated in iOS 15.0: Use UIWindowScene.windows on a relevant window scene instead
+2025-12-19T18:34:12.3798830Z             return UIApplication.shared.windows.first { $0.isKeyWindow } ?? ASPresentationAnchor()
+2025-12-19T18:34:12.4014010Z                                         ^
+2025-12-19T18:34:12.4135880Z Encountered error while building for device.
+2025-12-19T18:34:12.4137270Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/WebViewChannelDelegate.swift:261:22: warning: 'clearCache()' is deprecated: Use InAppWebViewManager.clearAllCache instead.
+2025-12-19T18:34:12.4356250Z                 webView?.clearCache()
+2025-12-19T18:34:12.4550910Z                          ^
+2025-12-19T18:34:12.4764350Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Classes/InAppWebView/WebViewChannelDelegate.swift:592:29: warning: 'closeAllMediaPresentations()' was deprecated in iOS 15.0
+2025-12-19T18:34:12.4865560Z                         webView.closeAllMediaPresentations()
+2025-12-19T18:34:12.4966330Z                                 ^
+2025-12-19T18:34:12.5067830Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/PDFPreview/DKPDFView.swift:50:48: warning: 'gray' was deprecated in iOS 13.0: renamed to 'UIActivityIndicatorView.Style.medium'
+2025-12-19T18:34:12.5168330Z             return UIActivityIndicatorView(style: .gray)
+2025-12-19T18:34:12.5269330Z                                                    ^
+2025-12-19T18:34:12.5371110Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/PDFPreview/DKPDFView.swift:50:48: note: use 'UIActivityIndicatorView.Style.medium' instead
+2025-12-19T18:34:12.5472420Z             return UIActivityIndicatorView(style: .gray)
+2025-12-19T18:34:12.5573110Z                                                    ^~~~
+2025-12-19T18:34:12.5674050Z                                                    UIActivityIndicatorView.Style.medium
+2025-12-19T18:34:12.5776100Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/ImagePreview/DKPhotoBaseImagePreviewVC.swift:171:30: warning: 'UIPreviewAction' was deprecated in iOS 13.0: Please use UIContextMenuInteraction.
+2025-12-19T18:34:12.5876750Z             let saveActionItem = UIPreviewAction(title: DKPhotoGalleryResource.localizedStringWithKey("preview.3DTouch.saveImage.title"),
+2025-12-19T18:34:12.5978080Z                                  ^
+2025-12-19T18:34:12.6079980Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGallery.swift:144:62: warning: 'statusBarStyle' was deprecated in iOS 13.0: Use the statusBarManager property of the window scene instead.
+2025-12-19T18:34:12.6179700Z         private let defaultStatusBarStyle = UIApplication.shared.statusBarStyle
+2025-12-19T18:34:12.6280690Z                                                                  ^
+2025-12-19T18:34:12.6383750Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGalleryContentVC.swift:39:52: warning: using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead
+2025-12-19T18:34:12.6486900Z     internal protocol DKPhotoGalleryContentDataSource: class {
+2025-12-19T18:34:12.6587220Z                                                        ^~~~~
+2025-12-19T18:34:12.6688140Z                                                        AnyObject
+2025-12-19T18:34:12.6790930Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGalleryContentVC.swift:55:50: warning: using 'class' keyword to define a class-constrained protocol is deprecated; use 'AnyObject' instead
+2025-12-19T18:34:12.6892450Z     internal protocol DKPhotoGalleryContentDelegate: class {
+2025-12-19T18:34:12.6993370Z                                                      ^~~~~
+2025-12-19T18:34:12.7094340Z                                                      AnyObject
+2025-12-19T18:34:12.7197260Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoGalleryContentVC.swift:107:14: warning: 'automaticallyAdjustsScrollViewInsets' was deprecated in iOS 11.0: Use UIScrollView's contentInsetAdjustmentBehavior instead
+2025-12-19T18:34:12.7297540Z             self.automaticallyAdjustsScrollViewInsets = false
+2025-12-19T18:34:12.7398480Z                  ^
+2025-12-19T18:34:12.7500030Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/ImagePreview/DKPhotoImageDownloader.swift:92:87: warning: 'kUTTypeGIF' was deprecated in iOS 15.0: Use UTTypeGIF or UTType.gif (swift) instead.
+2025-12-19T18:34:12.7599950Z                 let isGif = (asset.value(forKey: "uniformTypeIdentifier") as? String) == (kUTTypeGIF as String)
+2025-12-19T18:34:12.7701040Z                                                                                           ^
+2025-12-19T18:34:12.7802890Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/ImagePreview/DKPhotoImageDownloader.swift:94:42: warning: 'requestImageData(for:options:resultHandler:)' was deprecated in iOS 13
+2025-12-19T18:34:12.7903070Z                     PHImageManager.default().requestImageData(for: asset,
+2025-12-19T18:34:12.8004120Z                                              ^
+2025-12-19T18:34:12.8105660Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/ImagePreview/DKPhotoImagePreviewVC.swift:34:42: warning: 'contentEdgeInsets' was deprecated in iOS 15.0: This property is ignored when using UIButtonConfiguration
+2025-12-19T18:34:12.8205440Z             self.downloadOriginalImageButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+2025-12-19T18:34:12.8306670Z                                              ^
+2025-12-19T18:34:12.8408140Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/QRCode/DKPhotoWebVC.swift:46:56: warning: 'gray' was deprecated in iOS 13.0: renamed to 'UIActivityIndicatorView.Style.medium'
+2025-12-19T18:34:12.8508910Z             self.spinner = UIActivityIndicatorView(style: .gray)
+2025-12-19T18:34:12.8609970Z                                                            ^
+2025-12-19T18:34:12.8711140Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/QRCode/DKPhotoWebVC.swift:46:56: note: use 'UIActivityIndicatorView.Style.medium' instead
+2025-12-19T18:34:12.8811180Z             self.spinner = UIActivityIndicatorView(style: .gray)
+2025-12-19T18:34:12.8912150Z                                                            ^~~~
+2025-12-19T18:34:12.9013330Z                                                            UIActivityIndicatorView.Style.medium
+2025-12-19T18:34:12.9114320Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/PlayerPreview/DKPlayerView.swift:152:48: warning: 'gray' was deprecated in iOS 13.0: renamed to 'UIActivityIndicatorView.Style.medium'
+2025-12-19T18:34:12.9214880Z             return UIActivityIndicatorView(style: .gray)
+2025-12-19T18:34:12.9316500Z                                                    ^
+2025-12-19T18:34:12.9417370Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/Preview/PlayerPreview/DKPlayerView.swift:152:48: note: use 'UIActivityIndicatorView.Style.medium' instead
+2025-12-19T18:34:12.9518120Z             return UIActivityIndicatorView(style: .gray)
+2025-12-19T18:34:12.9619390Z                                                    ^~~~
+2025-12-19T18:34:12.9719980Z                                                    UIActivityIndicatorView.Style.medium
+2025-12-19T18:34:12.9821380Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoIncrementalIndicator.swift:161:124: warning: forming 'UnsafeMutableRawPointer' to an inout variable of type String exposes the internal representation rather than the string contents.
+2025-12-19T18:34:12.9921560Z             scrollView.addObserver(self, forKeyPath: DKPhotoIncrementalIndicator.contentSizeKeyPath, options: [.new], context: &DKPhotoIncrementalIndicator.context)
+2025-12-19T18:34:13.0022950Z                                                                                           ^
+2025-12-19T18:34:13.0124320Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoIncrementalIndicator.swift:162:126: warning: forming 'UnsafeMutableRawPointer' to an inout variable of type String exposes the internal representation rather than the string contents.
+2025-12-19T18:34:13.0224490Z             scrollView.addObserver(self, forKeyPath: DKPhotoIncrementalIndicator.contentOffsetKeyPath, options: [.new], context: &DKPhotoIncrementalIndicator.context)
+2025-12-19T18:34:13.0326140Z                                                                                           ^
+2025-12-19T18:34:13.0427470Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKPhotoGallery/DKPhotoGallery/DKPhotoIncrementalIndicator.swift:171:23: warning: forming 'UnsafeMutableRawPointer' to an inout variable of type String exposes the internal representation rather than the string contents.
+2025-12-19T18:34:13.0527840Z             if context == &DKPhotoIncrementalIndicator.context {
+2025-12-19T18:34:13.0628770Z                           ^
+2025-12-19T18:34:13.0730490Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/View/DKAssetGroupDetailVC.swift:344:14: warning: 'frameInterval' was deprecated in iOS 10.0: preferredFramesPerSecond
+2025-12-19T18:34:13.0830380Z             link.frameInterval = 1
+2025-12-19T18:34:13.0931460Z                  ^
+2025-12-19T18:34:13.1033210Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImageAssetExporter.swift:557:38: warning: capture of 'fileManager' with non-sendable type 'FileManager' in an isolated local function; this is an error in the Swift 6 language mode
+2025-12-19T18:34:13.1133050Z                                     try? fileManager.removeItem(at: auxiliaryDirectory)
+2025-12-19T18:34:13.1234360Z                                          ^
+2025-12-19T18:34:13.1336240Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSFileManager.h:96:12: note: class 'FileManager' does not conform to the 'Sendable' protocol
+2025-12-19T18:34:13.1436490Z     @interface NSFileManager : NSObject
+2025-12-19T18:34:13.1537240Z                ^
+2025-12-19T18:34:13.1638820Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImageDataManager/DKImageDataManager.swift:154:43: warning: 'requestImageData(for:options:resultHandler:)' was deprecated in iOS 13
+2025-12-19T18:34:13.1739680Z             let imageRequestID = self.manager.requestImageData(
+2025-12-19T18:34:13.1840810Z                                               ^
+2025-12-19T18:34:13.1942400Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/Extensions/DKImageExtensionGallery.swift:35:38: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:13.2042120Z                     UIApplication.shared.keyWindow!.rootViewController!.present(photoGallery: gallery)
+2025-12-19T18:34:13.2143100Z                                          ^
+2025-12-19T18:34:13.2245270Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImagePickerController.swift:265:45: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:13.2345280Z                 targetVC = UIApplication.shared.keyWindow!.rootViewController!
+2025-12-19T18:34:13.2446510Z                                                 ^
+2025-12-19T18:34:13.2548770Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKImagePickerController.swift:281:34: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:13.2649040Z                 UIApplication.shared.keyWindow!.rootViewController!.dismiss(animated: true,
+2025-12-19T18:34:13.2750160Z                                      ^
+2025-12-19T18:34:13.2852880Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKPopoverViewController.swift:30:43: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:13.2951460Z             let window = UIApplication.shared.keyWindow!
+2025-12-19T18:34:13.3052550Z                                               ^
+2025-12-19T18:34:13.3154770Z     /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/DKImagePickerController/Sources/DKImagePickerController/DKPopoverViewController.swift:43:43: warning: 'keyWindow' was deprecated in iOS 13.0: Should not be used for applications that support multiple scenes as it returns a key window across all connected scenes
+2025-12-19T18:34:13.3256620Z             let window = UIApplication.shared.keyWindow!
+2025-12-19T18:34:13.3375540Z                                               ^
+2025-12-19T18:34:13.3514060Z     /Users/runner/.pub-cache/hosted/pub.dev/firebase_core-4.2.1/ios/firebase_core/Sources/firebase_core/FLTFirebaseCorePlugin.m:92:35: warning: incompatible pointer types assigning to 'NSString * _Nullable' from 'NSNull * _Nonnull' [-Wincompatible-pointer-types]
+2025-12-19T18:34:13.3618250Z        92 |   pigeonOptions.deepLinkURLScheme = [NSNull null];
+2025-12-19T18:34:13.3727250Z           |                                   ^ ~~~~~~~~~~~~~
+2025-12-19T18:34:13.3844900Z     1 warning generated.
+2025-12-19T18:34:13.3947290Z     /Users/runner/.pub-cache/hosted/pub.dev/firebase_messaging-16.0.4/ios/firebase_messaging/Sources/firebase_messaging/FLTFirebaseMessagingPlugin.m:348:32: warning: 'UNNotificationPresentationOptionAlert' is deprecated: first deprecated in iOS 14.0 [-Wdeprecated-declarations]
+2025-12-19T18:34:13.4048940Z       348 |         presentationOptions |= UNNotificationPresentationOptionAlert;
+2025-12-19T18:34:13.4149940Z           |                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:13.4251030Z           |                                UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner
+2025-12-19T18:34:13.4352190Z     In module 'UserNotifications' imported from /Users/runner/.pub-cache/hosted/pub.dev/firebase_messaging-16.0.4/ios/firebase_messaging/Sources/firebase_messaging/include/FLTFirebaseMessagingPlugin.h:15:
+2025-12-19T18:34:13.4453030Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UserNotifications.framework/Headers/UNUserNotificationCenter.h:84:5: note: 'UNNotificationPresentationOptionAlert' has been explicitly marked deprecated here
+2025-12-19T18:34:13.4554870Z        84 |     UNNotificationPresentationOptionAlert API_DEPRECATED_WITH_REPLACEMENT("UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner", macos(10.14, 11.0), ios(10.0, 14.0), watchos(3.0, 7.0), tvos(10.0, 14.0)) = (1 << 2),
+2025-12-19T18:34:13.4654860Z           |     ^
+2025-12-19T18:34:13.4755760Z     1 warning generated.
+2025-12-19T18:34:13.4856930Z     /* com.apple.ibtool.document.warnings */
+2025-12-19T18:34:13.4957930Z     /Users/runner/.pub-cache/hosted/pub.dev/flutter_inappwebview_ios-1.1.2/ios/Storyboards/WebView.storyboard:global: warning: This file is set to build for a version older than the deployment target. Functionality may be limited. [9]
+2025-12-19T18:34:13.5058990Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FileUtils.m:52:31: warning: 'UTTypeCreatePreferredIdentifierForTag' is deprecated: first deprecated in iOS 15.0 - Use the UTType class instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:13.5160640Z        52 |             CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[format pathExtension], NULL);
+2025-12-19T18:34:13.5261010Z           |                               ^
+2025-12-19T18:34:13.5362660Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FileUtils.h:7:
+2025-12-19T18:34:13.5463060Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:13.5565430Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:317:1: note: 'UTTypeCreatePreferredIdentifierForTag' has been explicitly marked deprecated here
+2025-12-19T18:34:13.5665510Z       317 | UTTypeCreatePreferredIdentifierForTag(
+2025-12-19T18:34:13.5766900Z           | ^
+2025-12-19T18:34:13.5868430Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FileUtils.m:52:69: warning: 'kUTTagClassFilenameExtension' is deprecated: first deprecated in iOS 15.0 - Use UTTagClassFilenameExtension instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:13.5968570Z        52 |             CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[format pathExtension], NULL);
+2025-12-19T18:34:13.6069830Z           |                                                                     ^
+2025-12-19T18:34:13.6171220Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FileUtils.h:7:
+2025-12-19T18:34:13.6271720Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:13.6373460Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTType.h:258:26: note: 'kUTTagClassFilenameExtension' has been explicitly marked deprecated here
+2025-12-19T18:34:13.6474090Z       258 | extern const CFStringRef kUTTagClassFilenameExtension                API_DEPRECATED("Use UTTagClassFilenameExtension instead.", ios(3.0, 15.0), macos(10.3, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:13.6575510Z           |                          ^
+2025-12-19T18:34:13.6676400Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FileUtils.m:133:30: warning: unused variable 'exportError' [-Wunused-variable]
+2025-12-19T18:34:13.6777410Z       133 |                     NSError *exportError = exporter.error;
+2025-12-19T18:34:13.6877850Z           |                              ^~~~~~~~~~~
+2025-12-19T18:34:13.6978610Z     3 warnings generated.
+2025-12-19T18:34:13.7079630Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:57:68: warning: 'windows' is deprecated: first deprecated in iOS 15.0 - Use UIWindowScene.windows on a relevant window scene instead [-Wdeprecated-declarations]
+2025-12-19T18:34:13.7179900Z        57 |         for (UIWindow *window in [UIApplication sharedApplication].windows) {
+2025-12-19T18:34:13.7280910Z           |                                                                    ^
+2025-12-19T18:34:13.7382280Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:13.7482810Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIApplication.h:109:62: note: 'windows' has been explicitly marked deprecated here
+2025-12-19T18:34:13.7584320Z       109 | @property(nonatomic,readonly) NSArray<__kindof UIWindow *>  *windows API_DEPRECATED("Use UIWindowScene.windows on a relevant window scene instead", ios(2.0, 15.0), visionos(1.0, 1.0)) API_UNAVAILABLE(watchos);
+2025-12-19T18:34:13.7684680Z           |                                                              ^
+2025-12-19T18:34:13.7786450Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:199:112: warning: 'UIDocumentPickerModeExportToService' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:13.7888430Z       199 |     self.documentPickerController = [[UIDocumentPickerViewController alloc] initWithURL:destinationPath inMode:UIDocumentPickerModeExportToService];
+2025-12-19T18:34:13.7988510Z           |                                                                                                                ^
+2025-12-19T18:34:13.8090020Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:13.8191070Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:30:29: note: 'UIDocumentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:13.8291860Z        30 | typedef NS_ENUM(NSUInteger, UIDocumentPickerMode) {
+2025-12-19T18:34:13.8392820Z           |                             ^
+2025-12-19T18:34:13.8494330Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:199:77: warning: 'initWithURL:inMode:' is deprecated: first deprecated in iOS 14.0 [-Wdeprecated-declarations]
+2025-12-19T18:34:13.8594500Z       199 |     self.documentPickerController = [[UIDocumentPickerViewController alloc] initWithURL:destinationPath inMode:UIDocumentPickerModeExportToService];
+2025-12-19T18:34:13.8695830Z           |                                                                             ^~~~~~~~~~~
+2025-12-19T18:34:13.8796450Z           |                                                                             use initForExportingURLs:asCopy: or initForExportingURLs: instead
+2025-12-19T18:34:13.8897700Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:13.8998850Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:53:1: note: 'initWithURL:inMode:' has been explicitly marked deprecated here
+2025-12-19T18:34:13.9100100Z        53 | - (instancetype)initWithURL:(NSURL *)url inMode:(UIDocumentPickerMode)mode NS_DESIGNATED_INITIALIZER API_DEPRECATED_WITH_REPLACEMENT("use initForExportingURLs:asCopy: or initForExportingURLs: instead", ios(8.0, 14.0), visionos(1.0, 1.0)) API_UNAVAILABLE(tvos, watchos);
+2025-12-19T18:34:13.9201890Z           | ^
+2025-12-19T18:34:13.9305270Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:217:64: warning: 'UIDocumentPickerModeOpen' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:13.9405760Z       217 |                                          inMode: isDirectory ? UIDocumentPickerModeOpen : UIDocumentPickerModeImport];
+2025-12-19T18:34:13.9507730Z           |                                                                ^
+2025-12-19T18:34:13.9610040Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:13.9711120Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:30:29: note: 'UIDocumentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:13.9813670Z        30 | typedef NS_ENUM(NSUInteger, UIDocumentPickerMode) {
+2025-12-19T18:34:13.9915490Z           |                             ^
+2025-12-19T18:34:14.0018310Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:217:91: warning: 'UIDocumentPickerModeImport' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:14.0128600Z       217 |                                          inMode: isDirectory ? UIDocumentPickerModeOpen : UIDocumentPickerModeImport];
+2025-12-19T18:34:14.0229100Z           |                                                                                           ^
+2025-12-19T18:34:14.0331560Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.0433040Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:30:29: note: 'UIDocumentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:14.0535340Z        30 | typedef NS_ENUM(NSUInteger, UIDocumentPickerMode) {
+2025-12-19T18:34:14.0636830Z           |                             ^
+2025-12-19T18:34:14.0738430Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:216:42: warning: 'initWithDocumentTypes:inMode:' is deprecated: first deprecated in iOS 14.0 [-Wdeprecated-declarations]
+2025-12-19T18:34:14.0840390Z       216 |                                          initWithDocumentTypes: isDirectory ? @[@"public.folder"] : self.allowedExtensions
+2025-12-19T18:34:14.0940270Z           |                                          ^~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:14.1041580Z           |                                          use initForOpeningContentTypes:asCopy: or initForOpeningContentTypes: instead
+2025-12-19T18:34:14.1143490Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.1244220Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:41:1: note: 'initWithDocumentTypes:inMode:' has been explicitly marked deprecated here
+2025-12-19T18:34:14.1353410Z        41 | - (instancetype)initWithDocumentTypes:(NSArray <NSString *>*)allowedUTIs inMode:(UIDocumentPickerMode)mode NS_DESIGNATED_INITIALIZER API_DEPRECATED_WITH_REPLACEMENT("use initForOpeningContentTypes:asCopy: or initForOpeningContentTypes: instead", ios(8.0, 14.0), visionos(1.0, 1.0)) API_UNAVAILABLE(tvos, watchos);
+2025-12-19T18:34:14.1447400Z           | ^
+2025-12-19T18:34:14.1548980Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:260:52: warning: 'kUTTypeMovie' is deprecated: first deprecated in iOS 15.0 - Use UTTypeMovie or UTType.movie (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:14.1653740Z       260 |     NSArray<NSString*> * videoTypes = @[(NSString*)kUTTypeMovie, (NSString*)kUTTypeAVIMovie, (NSString*)kUTTypeVideo, (NSString*)kUTTypeMPEG4];
+2025-12-19T18:34:14.1756870Z           |                                                    ^
+2025-12-19T18:34:14.1912340Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FilePickerPlugin.h:5:
+2025-12-19T18:34:14.2015110Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:14.2206740Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:880:26: note: 'kUTTypeMovie' has been explicitly marked deprecated here
+2025-12-19T18:34:14.2325810Z       880 | extern const CFStringRef kUTTypeMovie                                API_DEPRECATED("Use UTTypeMovie or UTType.movie (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:14.2438780Z           |                          ^
+2025-12-19T18:34:14.2551030Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:260:77: warning: 'kUTTypeAVIMovie' is deprecated: first deprecated in iOS 15.0 - Use UTTypeAVI or UTType.avi (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:14.2652820Z       260 |     NSArray<NSString*> * videoTypes = @[(NSString*)kUTTypeMovie, (NSString*)kUTTypeAVIMovie, (NSString*)kUTTypeVideo, (NSString*)kUTTypeMPEG4];
+2025-12-19T18:34:14.2754280Z           |                                                                             ^
+2025-12-19T18:34:14.2855800Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FilePickerPlugin.h:5:
+2025-12-19T18:34:14.2957900Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:14.3062660Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:892:26: note: 'kUTTypeAVIMovie' has been explicitly marked deprecated here
+2025-12-19T18:34:14.3164500Z       892 | extern const CFStringRef kUTTypeAVIMovie                             API_DEPRECATED("Use UTTypeAVI or UTType.avi (swift) instead.", ios(8.0, 15.0), macos(10.10, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:14.3265930Z           |                          ^
+2025-12-19T18:34:14.3367430Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:260:105: warning: 'kUTTypeVideo' is deprecated: first deprecated in iOS 15.0 - Use UTTypeVideo or UTType.video (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:14.3469410Z       260 |     NSArray<NSString*> * videoTypes = @[(NSString*)kUTTypeMovie, (NSString*)kUTTypeAVIMovie, (NSString*)kUTTypeVideo, (NSString*)kUTTypeMPEG4];
+2025-12-19T18:34:14.3570730Z           |                                                                                                         ^
+2025-12-19T18:34:14.3672160Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FilePickerPlugin.h:5:
+2025-12-19T18:34:14.3774240Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:14.3876360Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:881:26: note: 'kUTTypeVideo' has been explicitly marked deprecated here
+2025-12-19T18:34:14.3978380Z       881 | extern const CFStringRef kUTTypeVideo                                API_DEPRECATED("Use UTTypeVideo or UTType.video (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:14.4079680Z           |                          ^
+2025-12-19T18:34:14.4181320Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:260:130: warning: 'kUTTypeMPEG4' is deprecated: first deprecated in iOS 15.0 - Use UTTypeMPEG4Movie or UTType.mpeg4 (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:14.4283590Z       260 |     NSArray<NSString*> * videoTypes = @[(NSString*)kUTTypeMovie, (NSString*)kUTTypeAVIMovie, (NSString*)kUTTypeVideo, (NSString*)kUTTypeMPEG4];
+2025-12-19T18:34:14.4385750Z           |                                                                                                                                  ^
+2025-12-19T18:34:14.4487330Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FilePickerPlugin.h:5:
+2025-12-19T18:34:14.4589430Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:14.4693040Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:888:26: note: 'kUTTypeMPEG4' has been explicitly marked deprecated here
+2025-12-19T18:34:14.4795060Z       888 | extern const CFStringRef kUTTypeMPEG4                                API_DEPRECATED("Use UTTypeMPEG4Movie or UTType.mpeg4 (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:14.4897300Z           |                          ^
+2025-12-19T18:34:14.5004030Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:261:53: warning: 'kUTTypeImage' is deprecated: first deprecated in iOS 15.0 - Use UTTypeImage or UTType.image (swift) instead. [-Wdeprecated-declarations]
+2025-12-19T18:34:14.5106290Z       261 |     NSArray<NSString*> * imageTypes = @[(NSString *)kUTTypeImage];
+2025-12-19T18:34:14.5211980Z           |                                                     ^
+2025-12-19T18:34:14.5317870Z     In module 'MobileCoreServices' imported from /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/include/file_picker/FilePickerPlugin.h:5:
+2025-12-19T18:34:14.5420150Z     In module 'CoreServices' imported from /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h:9:
+2025-12-19T18:34:14.5523920Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/CoreServices.framework/Headers/UTCoreTypes.h:725:26: note: 'kUTTypeImage' has been explicitly marked deprecated here
+2025-12-19T18:34:14.5626090Z       725 | extern const CFStringRef kUTTypeImage                                API_DEPRECATED("Use UTTypeImage or UTType.image (swift) instead.", ios(3.0, 15.0), macos(10.4, 12.0), tvos(9.0, 15.0), watchos(1.0, 8.0));
+2025-12-19T18:34:14.5731430Z           |                          ^
+2025-12-19T18:34:14.5833260Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:293:106: warning: 'UIActivityIndicatorViewStyleWhite' is deprecated: first deprecated in iOS 13.0 [-Wdeprecated-declarations]
+2025-12-19T18:34:14.5936590Z       293 |     UIActivityIndicatorView* indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+2025-12-19T18:34:14.6040260Z           |                                                                                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2025-12-19T18:34:14.6146620Z           |                                                                                                          UIActivityIndicatorViewStyleMedium
+2025-12-19T18:34:14.6252220Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.6355440Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIActivityIndicatorView.h:19:5: note: 'UIActivityIndicatorViewStyleWhite' has been explicitly marked deprecated here
+2025-12-19T18:34:14.6457720Z        19 |     UIActivityIndicatorViewStyleWhite API_DEPRECATED_WITH_REPLACEMENT("UIActivityIndicatorViewStyleMedium", ios(2.0, 13.0), tvos(9.0, 13.0)) API_UNAVAILABLE(visionos, watchos) = 1,
+2025-12-19T18:34:14.6559990Z           |     ^
+2025-12-19T18:34:14.6665360Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:408:19: warning: 'documentPickerMode' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:14.6771220Z       408 |     if(controller.documentPickerMode == UIDocumentPickerModeOpen) {
+2025-12-19T18:34:14.6872740Z           |                   ^
+2025-12-19T18:34:14.6873470Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.6981850Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:66:62: note: 'documentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:14.7074470Z        66 | @property (nonatomic, assign, readonly) UIDocumentPickerMode documentPickerMode API_DEPRECATED("Use appropriate initializers instead", ios(8.0, 14.0), visionos(1.0, 1.0)) API_UNAVAILABLE(watchos);
+2025-12-19T18:34:14.7175970Z           |                                                              ^
+2025-12-19T18:34:14.7277610Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:408:41: warning: 'UIDocumentPickerModeOpen' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:14.7379650Z       408 |     if(controller.documentPickerMode == UIDocumentPickerModeOpen) {
+2025-12-19T18:34:14.7480630Z           |                                         ^
+2025-12-19T18:34:14.7581960Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.7683960Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:30:29: note: 'UIDocumentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:14.7786080Z        30 | typedef NS_ENUM(NSUInteger, UIDocumentPickerMode) {
+2025-12-19T18:34:14.7887250Z           |                             ^
+2025-12-19T18:34:14.7988790Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:409:17: warning: incompatible pointer types assigning to 'NSMutableArray<NSURL *> *' from 'NSArray<NSURL *> *' [-Wincompatible-pointer-types]
+2025-12-19T18:34:14.8090240Z       409 |         newUrls = urls;
+2025-12-19T18:34:14.8191310Z           |                 ^ ~~~~
+2025-12-19T18:34:14.8293070Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:411:19: warning: 'documentPickerMode' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:14.8395450Z       411 |     if(controller.documentPickerMode == UIDocumentPickerModeImport) {
+2025-12-19T18:34:14.8497670Z           |                   ^
+2025-12-19T18:34:14.8599150Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.8703020Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:66:62: note: 'documentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:14.8806890Z        66 | @property (nonatomic, assign, readonly) UIDocumentPickerMode documentPickerMode API_DEPRECATED("Use appropriate initializers instead", ios(8.0, 14.0), visionos(1.0, 1.0)) API_UNAVAILABLE(watchos);
+2025-12-19T18:34:14.8908410Z           |                                                              ^
+2025-12-19T18:34:14.9010340Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:411:41: warning: 'UIDocumentPickerModeImport' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:14.9112640Z       411 |     if(controller.documentPickerMode == UIDocumentPickerModeImport) {
+2025-12-19T18:34:14.9213810Z           |                                         ^
+2025-12-19T18:34:14.9315220Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:14.9417280Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:30:29: note: 'UIDocumentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:14.9518480Z        30 | typedef NS_ENUM(NSUInteger, UIDocumentPickerMode) {
+2025-12-19T18:34:14.9619330Z           |                             ^
+2025-12-19T18:34:14.9721200Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:438:19: warning: 'documentPickerMode' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:14.9820910Z       438 |     if(controller.documentPickerMode == UIDocumentPickerModeOpen) {
+2025-12-19T18:34:14.9922020Z           |                   ^
+2025-12-19T18:34:15.0023480Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:15.0124600Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:66:62: note: 'documentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:15.0226320Z        66 | @property (nonatomic, assign, readonly) UIDocumentPickerMode documentPickerMode API_DEPRECATED("Use appropriate initializers instead", ios(8.0, 14.0), visionos(1.0, 1.0)) API_UNAVAILABLE(watchos);
+2025-12-19T18:34:15.0326990Z           |                                                              ^
+2025-12-19T18:34:15.0428720Z     /Users/runner/.pub-cache/hosted/pub.dev/file_picker-8.3.7/ios/file_picker/Sources/file_picker/FilePickerPlugin.m:438:41: warning: 'UIDocumentPickerModeOpen' is deprecated: first deprecated in iOS 14.0 - Use appropriate initializers instead [-Wdeprecated-declarations]
+2025-12-19T18:34:15.0528970Z       438 |     if(controller.documentPickerMode == UIDocumentPickerModeOpen) {
+2025-12-19T18:34:15.0630290Z           |                                         ^
+2025-12-19T18:34:15.0731980Z     In module 'UIKit' imported from /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/ios/Pods/Target Support Files/file_picker/file_picker-prefix.pch:2:
+2025-12-19T18:34:15.0833140Z     /Applications/Xcode_16.4.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDocumentPickerViewController.h:30:29: note: 'UIDocumentPickerMode' has been explicitly marked deprecated here
+2025-12-19T18:34:15.0933780Z        30 | typedef NS_ENUM(NSUInteger, UIDocumentPickerMode) {
+2025-12-19T18:34:15.1034720Z           |                             ^
+2025-12-19T18:34:15.1135280Z     19 warnings generated.
+2025-12-19T18:34:15.1236400Z     lib/providers/game_playlist_provider.dart:26:52: Error: Can't find ')' to match '('.
+2025-12-19T18:34:15.1337520Z     final gamePlaylistProvider = Provider<GamePlaylist>((ref) {
+2025-12-19T18:34:15.1438650Z                                                        ^
+2025-12-19T18:34:15.1539610Z     lib/providers/game_playlist_provider.dart:234:1: Error: Expected ';' after this.
+2025-12-19T18:34:15.1640660Z     }
+2025-12-19T18:34:15.1741070Z     ^
+2025-12-19T18:34:15.1842140Z     lib/providers/ai_chat_provider_groq.dart:692:14: Error: 'targetLanguage' is already declared in this scope.
+2025-12-19T18:34:15.1944240Z       String get targetLanguage => _targetLanguage;
+2025-12-19T18:34:15.2046520Z                  ^^^^^^^^^^^^^^
+2025-12-19T18:34:15.2147810Z     lib/providers/ai_chat_provider_groq.dart:262:14: Context: Previous declaration of 'targetLanguage'.
+2025-12-19T18:34:15.2198480Z       String get targetLanguage => _targetLanguage;
+2025-12-19T18:34:15.2299350Z                  ^^^^^^^^^^^^^^
+2025-12-19T18:34:15.2400530Z     lib/providers/ai_chat_provider_groq.dart:691:14: Error: 'sourceLanguage' is already declared in this scope.
+2025-12-19T18:34:15.2501690Z       String get sourceLanguage => _sourceLanguage;
+2025-12-19T18:34:15.2602620Z                  ^^^^^^^^^^^^^^
+2025-12-19T18:34:15.2703630Z     lib/providers/ai_chat_provider_groq.dart:263:14: Context: Previous declaration of 'sourceLanguage'.
+2025-12-19T18:34:15.2804650Z       String get sourceLanguage => _sourceLanguage;
+2025-12-19T18:34:15.2905700Z                  ^^^^^^^^^^^^^^
+2025-12-19T18:34:15.3007240Z     lib/utils/pan_african_design_system.dart:287:30: Error: 'glowGreen' is already declared in this scope.
+2025-12-19T18:34:15.3108400Z       static List<BoxShadow> get glowGreen => glowGreen(0.3);
+2025-12-19T18:34:15.3209360Z                                  ^^^^^^^^^
+2025-12-19T18:34:15.3311310Z     lib/utils/pan_african_design_system.dart:270:26: Context: Previous declaration of 'glowGreen'.
+2025-12-19T18:34:15.3412390Z       static List<BoxShadow> glowGreen(double opacity) => [
+2025-12-19T18:34:15.3513220Z                              ^^^^^^^^^
+2025-12-19T18:34:15.3614320Z     lib/providers/chat_socket_provider.dart:19:3: Error: Type 'Socket' not found.
+2025-12-19T18:34:15.3715370Z       Socket? _socket;
+2025-12-19T18:34:15.3816610Z       ^^^^^^
+2025-12-19T18:34:15.3917910Z     lib/widgets/gamification/badge_gallery_widget.dart:6:1: Error: 'Badge' is imported from both 'package:flutter/src/material/badge.dart' and 'package:lingafriq/models/badge_model.dart'.
+2025-12-19T18:34:15.4022630Z     import '../../models/badge_model.dart' show Badge;
+2025-12-19T18:34:15.4123490Z     ^^^^^
+2025-12-19T18:34:15.4225330Z     ../../../.pub-cache/hosted/pub.dev/record_linux-0.7.2/lib/record_linux.dart:12:7: Error: The non-abstract class 'RecordLinux' is missing implementations for these members:
+2025-12-19T18:34:15.4326920Z      - RecordMethodChannelPlatformInterface.startStream
+2025-12-19T18:34:15.4427780Z     Try to either
+2025-12-19T18:34:15.4528740Z      - provide an implementation,
+2025-12-19T18:34:15.4629660Z      - inherit an implementation from a superclass or mixin,
+2025-12-19T18:34:15.4731540Z      - mark the class as abstract, or
+2025-12-19T18:34:15.4833210Z      - provide a 'noSuchMethod' implementation.
+2025-12-19T18:34:15.4933870Z 
+2025-12-19T18:34:15.5034640Z     class RecordLinux extends RecordPlatform {
+2025-12-19T18:34:15.5135480Z           ^^^^^^^^^^^
+2025-12-19T18:34:15.5237330Z     ../../../.pub-cache/hosted/pub.dev/record_platform_interface-1.4.0/lib/src/record_platform_interface.dart:46:29: Context: 'RecordMethodChannelPlatformInterface.startStream' is defined here.
+2025-12-19T18:34:15.5339230Z       Future<Stream<Uint8List>> startStream(String recorderId, RecordConfig config);
+2025-12-19T18:34:15.5440330Z                                 ^^^^^^^^^^^
+2025-12-19T18:34:15.5541440Z     lib/widgets/primary_text_field.dart:25:10: Error: 'onChanged' isn't an instance field of this class.
+2025-12-19T18:34:15.5642420Z         this.onChanged,
+2025-12-19T18:34:15.5743210Z              ^^^^^^^^^
+2025-12-19T18:34:15.5845400Z     lib/screens/dashboard/modern_dashboard_screen.dart:34:63: Error: The getter 'isCompleted' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:34:15.5946920Z      - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:34:15.6049430Z     Try correcting the name to the name of an existing getter, or defining a getter or field named 'isCompleted'.
+2025-12-19T18:34:15.6151010Z         final completedGoals = goalsProvider.goals.where((g) => g.isCompleted).length;
+2025-12-19T18:34:15.6252130Z                                                                   ^^^^^^^^^^^
+2025-12-19T18:34:15.6353280Z     lib/screens/dashboard/modern_dashboard_screen.dart:552:21: Error: Too many positional arguments: 0 allowed, but 4 found.
+2025-12-19T18:34:15.6454410Z     Try removing the extra positional arguments.
+2025-12-19T18:34:15.6555420Z           child: InkWell(
+2025-12-19T18:34:15.6656630Z                         ^
+2025-12-19T18:34:15.6758290Z     ../../../hostedtoolcache/flutter/stable-3.35.0-arm64/packages/flutter/lib/src/material/ink_well.dart:1494:9: Context: Found this candidate, but the arguments don't match.
+2025-12-19T18:34:15.6859640Z       const InkWell({
+2025-12-19T18:34:15.6999730Z             ^^^^^^^
+2025-12-19T18:34:15.7213680Z     lib/providers/subscription_provider.dart:122:46: Error: The argument type 'SubscriptionTier' can't be assigned to the parameter type 'String'.
+2025-12-19T18:34:15.7315310Z      - 'SubscriptionTier' is from 'package:lingafriq/providers/subscription_provider.dart' ('lib/providers/subscription_provider.dart').
+2025-12-19T18:34:15.7415350Z         final res = await api.updateSubscription(tier);
+2025-12-19T18:34:15.7514350Z                                                  ^
+2025-12-19T18:34:15.7618110Z     lib/providers/backend_sync_provider.dart:183:19: Error: The method 'syncTelemetry' isn't defined for the type 'ApiProvider'.
+2025-12-19T18:34:15.7721570Z      - 'ApiProvider' is from 'package:lingafriq/providers/api_provider.dart' ('lib/providers/api_provider.dart').
+2025-12-19T18:34:15.7823040Z     Try correcting the name to the name of an existing method, or defining a method named 'syncTelemetry'.
+2025-12-19T18:34:15.7923930Z             await api.syncTelemetry(task.data);
+2025-12-19T18:34:15.8024340Z                       ^^^^^^^^^^^^^
+2025-12-19T18:34:15.8125490Z     lib/providers/daily_goals_provider.dart:33:24: Error: The method 'containsKey' isn't defined for the type 'List<Map<String, dynamic>>'.
+2025-12-19T18:34:15.8225850Z      - 'List' is from 'dart:core'.
+2025-12-19T18:34:15.8326060Z      - 'Map' is from 'dart:core'.
+2025-12-19T18:34:15.8427310Z     Try correcting the name to the name of an existing method, or defining a method named 'containsKey'.
+2025-12-19T18:34:15.8528630Z           if (backendGoals.containsKey('goals') && backendGoals.containsKey('streak')) {
+2025-12-19T18:34:15.8629920Z                            ^^^^^^^^^^^
+2025-12-19T18:34:15.8739670Z     lib/providers/daily_goals_provider.dart:33:61: Error: The method 'containsKey' isn't defined for the type 'List<Map<String, dynamic>>'.
+2025-12-19T18:34:15.8949200Z      - 'List' is from 'dart:core'.
+2025-12-19T18:34:15.9050120Z      - 'Map' is from 'dart:core'.
+2025-12-19T18:34:15.9151140Z     Try correcting the name to the name of an existing method, or defining a method named 'containsKey'.
+2025-12-19T18:34:15.9251390Z           if (backendGoals.containsKey('goals') && backendGoals.containsKey('streak')) {
+2025-12-19T18:34:15.9351780Z                                                                 ^^^^^^^^^^^
+2025-12-19T18:34:15.9453180Z     lib/providers/daily_goals_provider.dart:34:44: Error: A value of type 'String' can't be assigned to a variable of type 'int'.
+2025-12-19T18:34:15.9553490Z             final backendStreak = backendGoals['streak'] as int? ?? 0;
+2025-12-19T18:34:15.9654600Z                                                ^
+2025-12-19T18:34:15.9755320Z     lib/screens/goals/daily_challenges_screen.dart:22:63: Error: The getter 'isCompleted' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:34:15.9855550Z      - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:34:15.9956230Z     Try correcting the name to the name of an existing getter, or defining a getter or field named 'isCompleted'.
+2025-12-19T18:34:16.0056280Z         final completedCount = goalsProvider.goals.where((g) => g.isCompleted).length;
+2025-12-19T18:34:16.0156650Z                                                                   ^^^^^^^^^^^
+2025-12-19T18:34:16.0258270Z     lib/screens/goals/daily_challenges_screen.dart:25:25: Error: The getter 'isCompleted' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:34:16.0359960Z      - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:34:16.0460300Z     Try correcting the name to the name of an existing getter, or defining a getter or field named 'isCompleted'.
+2025-12-19T18:34:16.0561510Z             .where((g) => g.isCompleted)
+2025-12-19T18:34:16.0662440Z                             ^^^^^^^^^^^
+2025-12-19T18:34:16.0763730Z     lib/screens/goals/daily_challenges_screen.dart:26:45: Error: The getter 'xpReward' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:34:16.0864190Z      - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:34:16.0964370Z     Try correcting the name to the name of an existing getter, or defining a getter or field named 'xpReward'.
+2025-12-19T18:34:16.1064480Z             .fold(0, (sum, goal) => sum + (goal.xpReward ?? 0));
+2025-12-19T18:34:16.1165240Z                                                 ^^^^^^^^
+2025-12-19T18:34:16.1266160Z     lib/screens/goals/daily_challenges_screen.dart:26:37: Error: A value of type 'num' can't be returned from a function with return type 'int'.
+2025-12-19T18:34:16.1366540Z             .fold(0, (sum, goal) => sum + (goal.xpReward ?? 0));
+2025-12-19T18:34:16.1467540Z                                         ^
+2025-12-19T18:34:16.1568250Z     lib/screens/goals/daily_challenges_screen.dart:163:33: Error: The getter 'goals' isn't defined for the type 'BaseProviderState'.
+2025-12-19T18:34:16.1668400Z      - 'BaseProviderState' is from 'package:lingafriq/providers/base_provider.dart' ('lib/providers/base_provider.dart').
+2025-12-19T18:34:16.1768660Z     Try correcting the name to the name of an existing getter, or defining a getter or field named 'goals'.
+2025-12-19T18:34:16.1868900Z                       ...dailyGoals.goals.map((goal) {
+2025-12-19T18:34:16.1969530Z                                     ^^^^^
+2025-12-19T18:34:16.2070370Z     lib/providers/ai_chat_provider_groq.dart:1861:60: Error: Too few positional arguments: 1 required, 0 given.
+2025-12-19T18:34:16.2170680Z             final success = await apiNotifier.saveAiChatHistory(
+2025-12-19T18:34:16.2271200Z                                                                ^
+2025-12-19T18:34:16.2371820Z     lib/providers/ai_chat_provider_groq.dart:1938:13: Error: No named parameter with the name 'mode'.
+2025-12-19T18:34:16.2472260Z                 mode: _modeNameForBackend,
+2025-12-19T18:34:16.2572850Z                 ^^^^
+2025-12-19T18:34:16.2673900Z     lib/screens/games/lazy_game_list.dart:99:11: Error: The method '_LanguageSelector' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:34:16.2774070Z      - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:34:16.2874390Z     Try correcting the name to the name of an existing method, or defining a method named '_LanguageSelector'.
+2025-12-19T18:34:16.2974450Z               _LanguageSelector(
+2025-12-19T18:34:16.3075320Z               ^^^^^^^^^^^^^^^^^
+2025-12-19T18:34:16.3176270Z     lib/screens/games/lazy_game_list.dart:106:13: Error: The method '_GameSection' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:34:16.3276420Z      - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:34:16.3376490Z     Try correcting the name to the name of an existing method, or defining a method named '_GameSection'.
+2025-12-19T18:34:16.3477640Z                 _GameSection(
+2025-12-19T18:34:16.3578190Z                 ^^^^^^^^^^^^
+2025-12-19T18:34:16.3680310Z     lib/screens/games/lazy_game_list.dart:113:11: Error: The method '_GameSection' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:34:16.3783710Z      - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:34:16.3883790Z     Try correcting the name to the name of an existing method, or defining a method named '_GameSection'.
+2025-12-19T18:34:16.3984240Z               _GameSection(
+2025-12-19T18:34:16.4085840Z               ^^^^^^^^^^^^
+2025-12-19T18:34:16.4186050Z     lib/screens/games/lazy_game_list.dart:144:11: Error: The method '_GameSection' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:34:16.4286440Z      - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:34:16.4386550Z     Try correcting the name to the name of an existing method, or defining a method named '_GameSection'.
+2025-12-19T18:34:16.4487980Z               _GameSection(
+2025-12-19T18:34:16.4587890Z               ^^^^^^^^^^^^
+2025-12-19T18:34:16.4689040Z     lib/screens/games/language_games_screen_components.dart:219:22: Error: Member not found: 'drums_rounded'.
+2025-12-19T18:34:16.4791220Z             return Icons.drums_rounded;
+2025-12-19T18:34:16.4890980Z                          ^^^^^^^^^^^^^
+2025-12-19T18:34:16.4991750Z     lib/screens/ai_chat/ai_chat_screen.dart:140:29: Error: Too many positional arguments: 2 allowed, but 3 found.
+2025-12-19T18:34:16.5093360Z     Try removing the extra positional arguments.
+2025-12-19T18:34:16.5192930Z               _buildMessageInput(context, chatNotifier, chatState),
+2025-12-19T18:34:16.5294100Z                                 ^
+2025-12-19T18:34:16.5395070Z     lib/providers/chat_socket_provider.dart:19:3: Error: 'Socket' isn't a type.
+2025-12-19T18:34:16.5495070Z       Socket? _socket;
+2025-12-19T18:34:16.5595890Z       ^^^^^^
+2025-12-19T18:34:16.5697210Z     lib/providers/chat_socket_provider.dart:45:7: Error: The method 'OptionBuilder' isn't defined for the type 'ChatSocketNotifier'.
+2025-12-19T18:34:16.5798530Z      - 'ChatSocketNotifier' is from 'package:lingafriq/providers/chat_socket_provider.dart' ('lib/providers/chat_socket_provider.dart').
+2025-12-19T18:34:16.5898630Z     Try correcting the name to the name of an existing method, or defining a method named 'OptionBuilder'.
+2025-12-19T18:34:16.5998790Z           OptionBuilder()
+2025-12-19T18:34:16.6099110Z           ^^^^^^^^^^^^^
+2025-12-19T18:34:16.6200080Z     lib/providers/game_provider.dart:284:99: Error: Expected ']' before this.
+2025-12-19T18:34:16.6300590Z                               '${_currentSession?.userId ?? 'user'}_${langKey}_${lesson.id}_${v.word}',
+2025-12-19T18:34:16.6401380Z                                                                                           ^
+2025-12-19T18:34:16.6502100Z     lib/utils/gamification_integration.dart:298:7: Error: No named parameter with the name 'storyChaptersRead'.
+2025-12-19T18:34:16.6602310Z           storyChaptersRead: newStats['storyChaptersRead'],
+2025-12-19T18:34:16.6702580Z           ^^^^^^^^^^^^^^^^^
+2025-12-19T18:34:16.6803450Z     lib/providers/hearts_provider.dart:165:24: Error: The getter 'cowries' isn't defined for the type 'BaseProviderState'.
+2025-12-19T18:34:16.6904390Z      - 'BaseProviderState' is from 'package:lingafriq/providers/base_provider.dart' ('lib/providers/base_provider.dart').
+2025-12-19T18:34:16.7004820Z     Try correcting the name to the name of an existing getter, or defining a getter or field named 'cowries'.
+2025-12-19T18:34:16.7105200Z           if (gamification.cowries < HeartsConfig.cowriesCostPerRefill) {
+2025-12-19T18:34:16.7205340Z                            ^^^^^^^
+2025-12-19T18:34:16.7306600Z     lib/providers/hearts_provider.dart:170:53: Error: The method 'spendCurrency' isn't defined for the type 'GamificationProvider'.
+2025-12-19T18:34:16.7406940Z      - 'GamificationProvider' is from 'package:lingafriq/providers/gamification_provider.dart' ('lib/providers/gamification_provider.dart').
+2025-12-19T18:34:16.7507200Z     Try correcting the name to the name of an existing method, or defining a method named 'spendCurrency'.
+2025-12-19T18:34:16.7607490Z           await ref.read(gamificationProvider.notifier).spendCurrency(
+2025-12-19T18:34:16.7708450Z                                                         ^^^^^^^^^^^^^
+2025-12-19T18:34:16.7809010Z     lib/providers/milestones_provider.dart:81:7: Error: The argument type 'Ref' can't be assigned to the parameter type 'WidgetRef'.
+2025-12-19T18:34:16.7910280Z      - 'Ref' is from 'package:riverpod/src/framework.dart' ('../../../.pub-cache/hosted/pub.dev/riverpod-3.0.3/lib/src/framework.dart').
+2025-12-19T18:34:16.8010940Z      - 'WidgetRef' is from 'package:flutter_riverpod/src/core.dart' ('../../../.pub-cache/hosted/pub.dev/flutter_riverpod-3.0.3/lib/src/core.dart').
+2025-12-19T18:34:16.8111580Z           ref,
+2025-12-19T18:34:16.8212310Z           ^
+2025-12-19T18:34:16.8312800Z     lib/providers/league_provider.dart:143:9: Error: No named parameter with the name 'tier'.
+2025-12-19T18:34:16.8412900Z             tier: state.currentTier.name,
+2025-12-19T18:34:16.8513650Z             ^^^^
+2025-12-19T18:34:16.8614640Z     lib/widgets/gamification/daily_challenges_widget.dart:81:38: Error: Member not found: 'medium'.
+2025-12-19T18:34:16.8715090Z             boxShadow: PanAfricanShadows.medium,
+2025-12-19T18:34:16.8815350Z                                          ^^^^^^
+2025-12-19T18:34:16.8916430Z     lib/widgets/gamification/daily_challenges_widget.dart:458:42: Error: Can't use 'glowGreen' because it is declared more than once.
+2025-12-19T18:34:16.9016540Z                 boxShadow: PanAfricanShadows.glowGreen,
+2025-12-19T18:34:16.9117570Z                                              ^^^^^^^^^
+2025-12-19T18:34:16.9218460Z     lib/widgets/gamification/league_widget.dart:58:38: Error: Member not found: 'medium'.
+2025-12-19T18:34:16.9319240Z             boxShadow: PanAfricanShadows.medium,
+2025-12-19T18:34:16.9418760Z                                          ^^^^^^
+2025-12-19T18:34:16.9519800Z     lib/widgets/gamification/hearts_widget.dart:164:38: Error: Member not found: 'medium'.
+2025-12-19T18:34:16.9620270Z             boxShadow: PanAfricanShadows.medium,
+2025-12-19T18:34:16.9720590Z                                          ^^^^^^
+2025-12-19T18:34:16.9821550Z     lib/widgets/gamification/hearts_widget.dart:243:42: Error: Member not found: 'large'.
+2025-12-19T18:34:16.9921900Z                 boxShadow: PanAfricanShadows.large,
+2025-12-19T18:34:17.0022790Z                                              ^^^^^
+2025-12-19T18:34:17.0123120Z     Target kernel_snapshot_program failed: Exception
+2025-12-19T18:34:17.0224130Z     Failed to package /Users/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone.
+2025-12-19T18:34:17.0324390Z     Command PhaseScriptExecution failed with a nonzero exit code
+2025-12-19T18:34:17.0425140Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'WebRTC-SDK' from project 'Pods')
+2025-12-19T18:34:17.0525450Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'wakelock_plus-wakelock_plus_privacy' from project 'Pods')
+2025-12-19T18:34:17.0627220Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'wakelock_plus' from project 'Pods')
+2025-12-19T18:34:17.0728610Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'url_launcher_ios-url_launcher_ios_privacy' from project 'Pods')
+2025-12-19T18:34:17.0828990Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'url_launcher_ios' from project 'Pods')
+2025-12-19T18:34:17.0928760Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'sqflite-sqflite_darwin_privacy' from project 'Pods')
+2025-12-19T18:34:17.1030400Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'sqflite' from project 'Pods')
+2025-12-19T18:34:17.1131910Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'shared_preferences_foundation-shared_preferences_foundation_privacy' from project 'Pods')
+2025-12-19T18:34:17.1233150Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'shared_preferences_foundation' from project 'Pods')
+2025-12-19T18:34:17.1334000Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'record_darwin-record_darwin_privacy' from project 'Pods')
+2025-12-19T18:34:17.1433790Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'record_darwin' from project 'Pods')
+2025-12-19T18:34:17.1535370Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'permission_handler_apple-permission_handler_apple_privacy' from project 'Pods')
+2025-12-19T18:34:17.1552270Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'permission_handler_apple' from project 'Pods')
+2025-12-19T18:34:17.1554530Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'path_provider_foundation-path_provider_foundation_privacy' from project 'Pods')
+2025-12-19T18:34:17.1657940Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'path_provider_foundation' from project 'Pods')
+2025-12-19T18:34:17.1760480Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'package_info_plus-package_info_plus_privacy' from project 'Pods')
+2025-12-19T18:34:17.1861920Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'package_info_plus' from project 'Pods')
+2025-12-19T18:34:17.1963340Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'nanopb-nanopb_Privacy' from project 'Pods')
+2025-12-19T18:34:17.2065200Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'nanopb' from project 'Pods')
+2025-12-19T18:34:17.2166680Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'livekit_client' from project 'Pods')
+2025-12-19T18:34:17.2268080Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'just_audio' from project 'Pods')
+2025-12-19T18:34:17.2369590Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'flutter_webrtc' from project 'Pods')
+2025-12-19T18:34:17.2471210Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'flutter_tts' from project 'Pods')
+2025-12-19T18:34:17.2572920Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'flutter_local_notifications-flutter_local_notifications_privacy' from project 'Pods')
+2025-12-19T18:34:17.2674570Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'flutter_local_notifications' from project 'Pods')
+2025-12-19T18:34:17.2776290Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'flutter_inappwebview_ios-flutter_inappwebview_ios_privacy' from project 'Pods')
+2025-12-19T18:34:17.2879190Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'flutter_inappwebview_ios' from project 'Pods')
+2025-12-19T18:34:17.2982670Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'firebase_messaging-firebase_messaging_Privacy' from project 'Pods')
+2025-12-19T18:34:17.3084160Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'firebase_messaging' from project 'Pods')
+2025-12-19T18:34:17.3091830Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'firebase_core' from project 'Pods')
+2025-12-19T18:34:17.3092910Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'file_picker-file_picker_ios_privacy' from project 'Pods')
+2025-12-19T18:34:17.3194390Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'file_picker' from project 'Pods')
+2025-12-19T18:34:17.3296010Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'device_info_plus-device_info_plus_privacy' from project 'Pods')
+2025-12-19T18:34:17.3397940Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'device_info_plus' from project 'Pods')
+2025-12-19T18:34:17.3424000Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'connectivity_plus-connectivity_plus_privacy' from project 'Pods')
+2025-12-19T18:34:17.3425140Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'connectivity_plus' from project 'Pods')
+2025-12-19T18:34:17.3526570Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'better_player_plus' from project 'Pods')
+2025-12-19T18:34:17.3627000Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'audioplayers_darwin' from project 'Pods')
+2025-12-19T18:34:17.3727870Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'audio_session' from project 'Pods')
+2025-12-19T18:34:17.3828900Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'SwiftyGif-SwiftyGif' from project 'Pods')
+2025-12-19T18:34:17.3929510Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'SwiftyGif' from project 'Pods')
+2025-12-19T18:34:17.4031100Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'SDWebImage-SDWebImage' from project 'Pods')
+2025-12-19T18:34:17.4131340Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'SDWebImage' from project 'Pods')
+2025-12-19T18:34:17.4220690Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'Runner' from project 'Runner')
+2025-12-19T18:34:17.4223460Z     note: Run script build phase 'Run Script' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Runner' from project 'Runner')
+2025-12-19T18:34:17.4225330Z     note: Run script build phase 'Thin Binary' will be run during every build because the option to run the script phase "Based on dependency analysis" is unchecked. (in target 'Runner' from project 'Runner')
+2025-12-19T18:34:17.4227020Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'PromisesObjC-FBLPromises_Privacy' from project 'Pods')
+2025-12-19T18:34:17.4328540Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'PromisesObjC' from project 'Pods')
+2025-12-19T18:34:17.4429100Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'Pods-Runner' from project 'Pods')
+2025-12-19T18:34:17.4530690Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'PINOperation-PINOperation' from project 'Pods')
+2025-12-19T18:34:17.4632350Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'PINOperation' from project 'Pods')
+2025-12-19T18:34:17.4732790Z     note: Disabling previews because SWIFT_VERSION is set and SWIFT_OPTIMIZATION_LEVEL=-O, expected -Onone (in target 'PINCache-PINCache' from project 'Pods')
+2025-12-19T18:34:17.4807320Z ##[error]Process completed with exit code 1.

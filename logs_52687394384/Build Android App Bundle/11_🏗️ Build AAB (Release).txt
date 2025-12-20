@@ -1,0 +1,326 @@
+﻿2025-12-19T18:31:49.6373249Z ##[group]Run flutter build appbundle --release --split-debug-info=build/symbols
+2025-12-19T18:31:49.6374072Z [36;1mflutter build appbundle --release --split-debug-info=build/symbols[0m
+2025-12-19T18:31:49.6406500Z shell: /usr/bin/bash -e {0}
+2025-12-19T18:31:49.6406749Z env:
+2025-12-19T18:31:49.6407045Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-19T18:31:49.6407571Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.17-10/x64
+2025-12-19T18:31:49.6408211Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.35.0-x64
+2025-12-19T18:31:49.6408558Z   PUB_CACHE: /home/runner/.pub-cache
+2025-12-19T18:31:49.6408834Z   ANDROID_HOME: /usr/local/lib/android/sdk
+2025-12-19T18:31:49.6409095Z ##[endgroup]
+2025-12-19T18:31:49.9692427Z Resolving dependencies...
+2025-12-19T18:31:50.6914971Z Downloading packages...
+2025-12-19T18:31:50.8732372Z   _fe_analyzer_shared 85.0.0 (92.0.0 available)
+2025-12-19T18:31:50.8733023Z   _flutterfire_internals 1.3.64 (1.3.65 available)
+2025-12-19T18:31:50.8733611Z   analyzer 7.7.1 (9.0.0 available)
+2025-12-19T18:31:50.8734234Z   archive 3.6.1 (4.0.7 available)
+2025-12-19T18:31:50.8734659Z   args 2.5.0 (2.7.0 available)
+2025-12-19T18:31:50.8735082Z   boolean_selector 2.1.1 (2.1.2 available)
+2025-12-19T18:31:50.8735547Z   characters 1.4.0 (1.4.1 available)
+2025-12-19T18:31:50.8735979Z   checked_yaml 2.0.3 (2.0.4 available)
+2025-12-19T18:31:50.8736417Z   cli_util 0.4.1 (0.4.2 available)
+2025-12-19T18:31:50.8736865Z   connectivity_plus 6.1.5 (7.0.0 available)
+2025-12-19T18:31:50.8737319Z   coverage 1.14.0 (1.15.0 available)
+2025-12-19T18:31:50.8737734Z   crypto 3.0.5 (3.0.7 available)
+2025-12-19T18:31:50.8738119Z   csslib 1.0.0 (1.0.2 available)
+2025-12-19T18:31:50.8738537Z   device_info_plus 11.3.0 (12.3.0 available)
+2025-12-19T18:31:50.8739024Z   dio_web_adapter 2.0.0 (2.1.1 available)
+2025-12-19T18:31:50.8739488Z   ffi 2.1.3 (2.1.4 available)
+2025-12-19T18:31:50.8739887Z   file_picker 8.3.7 (10.3.8 available)
+2025-12-19T18:31:50.8740364Z   firebase_core 4.2.1 (4.3.0 available)
+2025-12-19T18:31:50.8740812Z   firebase_core_web 3.3.0 (3.3.1 available)
+2025-12-19T18:31:50.8741346Z   firebase_messaging 16.0.4 (16.1.0 available)
+2025-12-19T18:31:50.8741942Z   firebase_messaging_platform_interface 4.7.4 (4.7.5 available)
+2025-12-19T18:31:50.8742557Z   firebase_messaging_web 4.1.0 (4.1.1 available)
+2025-12-19T18:31:50.8743027Z   fixnum 1.1.0 (1.1.1 available)
+2025-12-19T18:31:50.8743437Z   fl_chart 0.69.2 (1.1.1 available)
+2025-12-19T18:31:50.8744367Z   flutter_inappwebview_internal_annotations 1.1.1 (1.2.0 available)
+2025-12-19T18:31:50.8745108Z   flutter_inappwebview_platform_interface 1.3.0 (1.3.0+1 available)
+2025-12-19T18:31:50.8745710Z   flutter_lints 5.0.0 (6.0.0 available)
+2025-12-19T18:31:50.8746227Z   flutter_webrtc 0.12.12+hotfix.1 (1.2.1 available)
+2025-12-19T18:31:50.8746752Z   html 0.15.4 (0.15.6 available)
+2025-12-19T18:31:50.8747166Z   http 1.2.2 (1.6.0 available)
+2025-12-19T18:31:50.8747556Z   http_parser 4.0.2 (4.1.2 available)
+2025-12-19T18:31:50.8747998Z   image 4.2.0 (4.7.1 available)
+2025-12-19T18:31:50.8748407Z   js 0.6.7 (0.7.2 available)
+2025-12-19T18:31:50.8748785Z   lints 5.0.0 (6.0.0 available)
+2025-12-19T18:31:50.8749173Z   livekit_client 2.3.6 (2.6.0 available)
+2025-12-19T18:31:50.8749610Z   logging 1.2.0 (1.3.0 available)
+2025-12-19T18:31:50.8749994Z   matcher 0.12.17 (0.12.18 available)
+2025-12-19T18:31:50.8750481Z   material_color_utilities 0.11.1 (0.13.0 available)
+2025-12-19T18:31:50.8750787Z   meta 1.16.0 (1.17.0 available)
+2025-12-19T18:31:50.8751046Z   path_provider_android 2.2.10 (2.2.22 available)
+2025-12-19T18:31:50.8751351Z   path_provider_foundation 2.4.0 (2.5.1 available)
+2025-12-19T18:31:50.8751647Z   permission_handler 11.4.0 (12.0.1 available)
+2025-12-19T18:31:50.8751948Z   permission_handler_android 12.1.0 (13.0.1 available)
+2025-12-19T18:31:50.8752233Z   petitparser 6.0.2 (7.0.1 available)
+2025-12-19T18:31:50.8752494Z   platform 3.1.5 (3.1.6 available)
+2025-12-19T18:31:50.8752733Z   protobuf 3.1.0 (6.0.0 available)
+2025-12-19T18:31:50.8753268Z   record 5.2.1 (6.1.2 available)
+2025-12-19T18:31:50.8753499Z   record_linux 0.7.2 (1.2.1 available)
+2025-12-19T18:31:50.8753756Z   shared_preferences 2.5.3 (2.5.4 available)
+2025-12-19T18:31:50.8754331Z   shared_preferences_android 2.4.17 (2.4.18 available)
+2025-12-19T18:31:50.8754664Z   shared_preferences_foundation 2.5.2 (2.5.6 available)
+2025-12-19T18:31:50.8754995Z   shared_preferences_web 2.4.2 (2.4.3 available)
+2025-12-19T18:31:50.8755419Z   shelf 1.4.1 (1.4.2 available)
+2025-12-19T18:31:50.8755658Z   socket_io_client 2.0.3+1 (3.1.3 available)
+2025-12-19T18:31:50.8755921Z   socket_io_common 2.0.3 (3.1.1 available)
+2025-12-19T18:31:50.8756180Z   source_span 1.10.0 (1.10.1 available)
+2025-12-19T18:31:50.8756424Z   sqflite 2.3.3+2 (2.4.2 available)
+2025-12-19T18:31:50.8756660Z   sqflite_common 2.5.4+4 (2.5.6 available)
+2025-12-19T18:31:50.8756913Z   string_scanner 1.2.0 (1.4.1 available)
+2025-12-19T18:31:50.8757165Z   synchronized 3.3.0+3 (3.4.0 available)
+2025-12-19T18:31:50.8757415Z   term_glyph 1.2.1 (1.2.2 available)
+2025-12-19T18:31:50.8757645Z   test 1.26.2 (1.28.0 available)
+2025-12-19T18:31:50.8757877Z   test_api 0.7.6 (0.7.8 available)
+2025-12-19T18:31:50.8758108Z   test_core 0.6.11 (0.6.14 available)
+2025-12-19T18:31:50.8758346Z   typed_data 1.3.2 (1.4.0 available)
+2025-12-19T18:31:50.8758594Z   url_launcher_android 6.3.10 (6.3.28 available)
+2025-12-19T18:31:50.8758865Z   url_launcher_ios 6.3.1 (6.3.6 available)
+2025-12-19T18:31:50.8759131Z   url_launcher_linux 3.2.0 (3.2.2 available)
+2025-12-19T18:31:50.8759393Z   url_launcher_macos 3.2.1 (3.2.5 available)
+2025-12-19T18:31:50.8759767Z   url_launcher_web 2.3.3 (2.4.1 available)
+2025-12-19T18:31:50.8760047Z   url_launcher_windows 3.1.2 (3.1.5 available)
+2025-12-19T18:31:50.8760304Z   uuid 4.5.1 (4.5.2 available)
+2025-12-19T18:31:50.8760532Z   vm_service 14.2.5 (15.0.2 available)
+2025-12-19T18:31:50.8760773Z   watcher 1.1.4 (1.2.0 available)
+2025-12-19T18:31:50.8760995Z   web 1.1.0 (1.1.1 available)
+2025-12-19T18:31:50.8761219Z   win32 5.13.0 (5.15.0 available)
+2025-12-19T18:31:50.8761448Z   win32_registry 1.1.5 (2.1.0 available)
+2025-12-19T18:31:50.8761691Z   xml 6.5.0 (6.6.1 available)
+2025-12-19T18:31:50.8761908Z   yaml 3.1.2 (3.1.3 available)
+2025-12-19T18:31:50.8768608Z Got dependencies!
+2025-12-19T18:31:50.8796540Z 79 packages have newer versions incompatible with dependency constraints.
+2025-12-19T18:31:50.8797529Z Try `flutter pub outdated` for more information.
+2025-12-19T18:31:51.5404664Z Upgrading build.gradle
+2025-12-19T18:34:16.0494679Z Running Gradle task 'bundleRelease'...                          
+2025-12-19T18:34:16.0498963Z ⚠️ Keystore file not found. Tried:
+2025-12-19T18:34:16.0558761Z    - /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/android/android/app/***-keystore.jks
+2025-12-19T18:34:16.0563089Z    - /home/runner/work/lingafriq-mobile-app-clone/lingafriq-mobile-app-clone/android/***-keystore.jks
+2025-12-19T18:34:16.0564665Z ⚠️ No valid keystore found — building unsigned release (Play App Signing expected)
+2025-12-19T18:38:56.5359971Z Checking the license for package Android SDK Platform 31 in /usr/local/lib/android/sdk/licenses
+2025-12-19T18:38:56.5364050Z License for package Android SDK Platform 31 accepted.
+2025-12-19T18:38:56.5369157Z Preparing "Install Android SDK Platform 31 (revision 1)".
+2025-12-19T18:38:59.0355599Z "Install Android SDK Platform 31 (revision 1)" ready.
+2025-12-19T18:38:59.0359993Z Installing Android SDK Platform 31 in /usr/local/lib/android/sdk/platforms/android-31
+2025-12-19T18:38:59.0363424Z "Install Android SDK Platform 31 (revision 1)" complete.
+2025-12-19T18:38:59.1354139Z "Install Android SDK Platform 31 (revision 1)" finished.
+2025-12-19T18:39:42.7358657Z WARNING: [Processor] Library '/home/runner/.gradle/caches/modules-2/files-2.1/androidx.media3/media3-session/1.8.0/e28b8a1b7941dd4c4da264d5e622274e7c8e6488/media3-session-1.8.0.aar' contains references to both AndroidX and old support library. This seems like the library is partially migrated. Jetifier will try to rewrite the library anyway.
+2025-12-19T18:39:42.7365432Z  Example of androidX reference: 'androidx/media3/session/legacy/LegacyParcelableUtil'
+2025-12-19T18:39:42.7369754Z  Example of support library reference: 'android/support/v4/media/MediaDescriptionCompat'
+2025-12-19T18:39:47.4477076Z /home/runner/.pub-cache/hosted/pub.dev/flutter_webrtc-0.12.12+hotfix.1/android/src/main/java/com/cloudwebrtc/webrtc/SurfaceTextureRenderer.java:125: warning: [removal] onSurfaceDestroyed() in Callback has been deprecated and marked for removal
+2025-12-19T18:39:47.4479607Z               public void onSurfaceDestroyed() {
+2025-12-19T18:39:47.4480541Z                           ^
+2025-12-19T18:39:47.7360819Z Note: Some input files use or override a deprecated API.
+2025-12-19T18:39:47.7370917Z Note: Recompile with -Xlint:deprecation for details.
+2025-12-19T18:39:47.7381863Z Note: Some input files use unchecked or unsafe operations.
+2025-12-19T18:39:47.7388624Z Note: Recompile with -Xlint:unchecked for details.
+2025-12-19T18:39:47.7394870Z 1 warning
+2025-12-19T18:40:06.0364367Z Note: Some input files use or override a deprecated API.
+2025-12-19T18:40:06.0365563Z Note: Recompile with -Xlint:deprecation for details.
+2025-12-19T18:40:06.0366324Z Note: Some input files use unchecked or unsafe operations.
+2025-12-19T18:40:06.0367046Z Note: Recompile with -Xlint:unchecked for details.
+2025-12-19T18:40:19.4355543Z lib/providers/game_playlist_provider.dart:26:52: Error: Can't find ')' to match '('.
+2025-12-19T18:40:19.4356665Z final gamePlaylistProvider = Provider<GamePlaylist>((ref) {
+2025-12-19T18:40:19.4357286Z                                                    ^
+2025-12-19T18:40:19.4357970Z lib/providers/game_playlist_provider.dart:234:1: Error: Expected ';' after this.
+2025-12-19T18:40:19.4359765Z }
+2025-12-19T18:40:19.4361651Z ^
+2025-12-19T18:40:20.1355824Z lib/providers/ai_chat_provider_groq.dart:692:14: Error: 'targetLanguage' is already declared in this scope.
+2025-12-19T18:40:20.1361354Z   String get targetLanguage => _targetLanguage;
+2025-12-19T18:40:20.1361870Z              ^^^^^^^^^^^^^^
+2025-12-19T18:40:20.1364079Z lib/providers/ai_chat_provider_groq.dart:262:14: Context: Previous declaration of 'targetLanguage'.
+2025-12-19T18:40:20.1367041Z   String get targetLanguage => _targetLanguage;
+2025-12-19T18:40:20.1370049Z              ^^^^^^^^^^^^^^
+2025-12-19T18:40:20.1373223Z lib/providers/ai_chat_provider_groq.dart:691:14: Error: 'sourceLanguage' is already declared in this scope.
+2025-12-19T18:40:20.1376675Z   String get sourceLanguage => _sourceLanguage;
+2025-12-19T18:40:20.1379898Z              ^^^^^^^^^^^^^^
+2025-12-19T18:40:20.1383540Z lib/providers/ai_chat_provider_groq.dart:263:14: Context: Previous declaration of 'sourceLanguage'.
+2025-12-19T18:40:20.1386912Z   String get sourceLanguage => _sourceLanguage;
+2025-12-19T18:40:20.1390120Z              ^^^^^^^^^^^^^^
+2025-12-19T18:40:20.1393962Z lib/utils/pan_african_design_system.dart:287:30: Error: 'glowGreen' is already declared in this scope.
+2025-12-19T18:40:20.1397197Z   static List<BoxShadow> get glowGreen => glowGreen(0.3);
+2025-12-19T18:40:20.1400243Z                              ^^^^^^^^^
+2025-12-19T18:40:20.1403652Z lib/utils/pan_african_design_system.dart:270:26: Context: Previous declaration of 'glowGreen'.
+2025-12-19T18:40:20.1406824Z   static List<BoxShadow> glowGreen(double opacity) => [
+2025-12-19T18:40:20.1408948Z                          ^^^^^^^^^
+2025-12-19T18:40:20.9354744Z lib/providers/chat_socket_provider.dart:19:3: Error: Type 'Socket' not found.
+2025-12-19T18:40:20.9355659Z   Socket? _socket;
+2025-12-19T18:40:20.9356062Z   ^^^^^^
+2025-12-19T18:40:21.3356776Z lib/widgets/gamification/badge_gallery_widget.dart:6:1: Error: 'Badge' is imported from both 'package:flutter/src/material/badge.dart' and 'package:lingafriq/models/badge_model.dart'.
+2025-12-19T18:40:21.3358189Z import '../../models/badge_model.dart' show Badge;
+2025-12-19T18:40:21.3364295Z ^^^^^
+2025-12-19T18:40:21.4394598Z ../../../.pub-cache/hosted/pub.dev/record_linux-0.7.2/lib/record_linux.dart:12:7: Error: The non-abstract class 'RecordLinux' is missing implementations for these members:
+2025-12-19T18:40:21.4397053Z  - RecordMethodChannelPlatformInterface.startStream
+2025-12-19T18:40:21.4397703Z Try to either
+2025-12-19T18:40:21.4398142Z  - provide an implementation,
+2025-12-19T18:40:21.4398724Z  - inherit an implementation from a superclass or mixin,
+2025-12-19T18:40:21.4399318Z  - mark the class as abstract, or
+2025-12-19T18:40:21.4400060Z  - provide a 'noSuchMethod' implementation.
+2025-12-19T18:40:21.4400492Z 
+2025-12-19T18:40:21.4400771Z class RecordLinux extends RecordPlatform {
+2025-12-19T18:40:21.4401289Z       ^^^^^^^^^^^
+2025-12-19T18:40:21.4402525Z ../../../.pub-cache/hosted/pub.dev/record_platform_interface-1.4.0/lib/src/record_platform_interface.dart:46:29: Context: 'RecordMethodChannelPlatformInterface.startStream' is defined here.
+2025-12-19T18:40:21.4404415Z   Future<Stream<Uint8List>> startStream(String recorderId, RecordConfig config);
+2025-12-19T18:40:21.4405128Z                             ^^^^^^^^^^^
+2025-12-19T18:40:22.9354671Z lib/widgets/primary_text_field.dart:25:10: Error: 'onChanged' isn't an instance field of this class.
+2025-12-19T18:40:22.9356180Z     this.onChanged,
+2025-12-19T18:40:22.9357166Z          ^^^^^^^^^
+2025-12-19T18:40:27.0359539Z lib/screens/dashboard/modern_dashboard_screen.dart:34:63: Error: The getter 'isCompleted' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:40:27.0364793Z  - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:40:27.0365956Z Try correcting the name to the name of an existing getter, or defining a getter or field named 'isCompleted'.
+2025-12-19T18:40:27.0367032Z     final completedGoals = goalsProvider.goals.where((g) => g.isCompleted).length;
+2025-12-19T18:40:27.0367782Z                                                               ^^^^^^^^^^^
+2025-12-19T18:40:27.0368688Z lib/screens/dashboard/modern_dashboard_screen.dart:552:21: Error: Too many positional arguments: 0 allowed, but 4 found.
+2025-12-19T18:40:27.0369679Z Try removing the extra positional arguments.
+2025-12-19T18:40:27.0370164Z       child: InkWell(
+2025-12-19T18:40:27.0370511Z                     ^
+2025-12-19T18:40:27.0371591Z /opt/hostedtoolcache/flutter/stable-3.35.0-x64/packages/flutter/lib/src/material/ink_well.dart:1494:9: Context: Found this candidate, but the arguments don't match.
+2025-12-19T18:40:27.0372783Z   const InkWell({
+2025-12-19T18:40:27.0373113Z         ^^^^^^^
+2025-12-19T18:40:27.0392943Z lib/providers/subscription_provider.dart:122:46: Error: The argument type 'SubscriptionTier' can't be assigned to the parameter type 'String'.
+2025-12-19T18:40:27.0396983Z  - 'SubscriptionTier' is from 'package:lingafriq/providers/subscription_provider.dart' ('lib/providers/subscription_provider.dart').
+2025-12-19T18:40:27.0398388Z     final res = await api.updateSubscription(tier);
+2025-12-19T18:40:27.0399049Z                                              ^
+2025-12-19T18:40:27.1355194Z lib/providers/backend_sync_provider.dart:183:19: Error: The method 'syncTelemetry' isn't defined for the type 'ApiProvider'.
+2025-12-19T18:40:27.1356641Z  - 'ApiProvider' is from 'package:lingafriq/providers/api_provider.dart' ('lib/providers/api_provider.dart').
+2025-12-19T18:40:27.1357837Z Try correcting the name to the name of an existing method, or defining a method named 'syncTelemetry'.
+2025-12-19T18:40:27.1358637Z         await api.syncTelemetry(task.data);
+2025-12-19T18:40:27.1359171Z                   ^^^^^^^^^^^^^
+2025-12-19T18:40:27.2364615Z lib/providers/daily_goals_provider.dart:33:24: Error: The method 'containsKey' isn't defined for the type 'List<Map<String, dynamic>>'.
+2025-12-19T18:40:27.2371412Z  - 'List' is from 'dart:core'.
+2025-12-19T18:40:27.2372137Z  - 'Map' is from 'dart:core'.
+2025-12-19T18:40:27.2374294Z Try correcting the name to the name of an existing method, or defining a method named 'containsKey'.
+2025-12-19T18:40:27.2375351Z       if (backendGoals.containsKey('goals') && backendGoals.containsKey('streak')) {
+2025-12-19T18:40:27.2376474Z                        ^^^^^^^^^^^
+2025-12-19T18:40:27.2377414Z lib/providers/daily_goals_provider.dart:33:61: Error: The method 'containsKey' isn't defined for the type 'List<Map<String, dynamic>>'.
+2025-12-19T18:40:27.2378419Z  - 'List' is from 'dart:core'.
+2025-12-19T18:40:27.2378854Z  - 'Map' is from 'dart:core'.
+2025-12-19T18:40:27.2379567Z Try correcting the name to the name of an existing method, or defining a method named 'containsKey'.
+2025-12-19T18:40:27.2380856Z       if (backendGoals.containsKey('goals') && backendGoals.containsKey('streak')) {
+2025-12-19T18:40:27.2381597Z                                                             ^^^^^^^^^^^
+2025-12-19T18:40:27.2382560Z lib/providers/daily_goals_provider.dart:34:44: Error: A value of type 'String' can't be assigned to a variable of type 'int'.
+2025-12-19T18:40:27.2383636Z         final backendStreak = backendGoals['streak'] as int? ?? 0;
+2025-12-19T18:40:27.2384399Z                                            ^
+2025-12-19T18:40:27.2385293Z lib/screens/goals/daily_challenges_screen.dart:22:63: Error: The getter 'isCompleted' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:40:27.2386589Z  - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:40:27.2387819Z Try correcting the name to the name of an existing getter, or defining a getter or field named 'isCompleted'.
+2025-12-19T18:40:27.2388915Z     final completedCount = goalsProvider.goals.where((g) => g.isCompleted).length;
+2025-12-19T18:40:27.2389668Z                                                               ^^^^^^^^^^^
+2025-12-19T18:40:27.2390630Z lib/screens/goals/daily_challenges_screen.dart:25:25: Error: The getter 'isCompleted' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:40:27.2391941Z  - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:40:27.2393183Z Try correcting the name to the name of an existing getter, or defining a getter or field named 'isCompleted'.
+2025-12-19T18:40:27.2394215Z         .where((g) => g.isCompleted)
+2025-12-19T18:40:27.2394645Z                         ^^^^^^^^^^^
+2025-12-19T18:40:27.2395634Z lib/screens/goals/daily_challenges_screen.dart:26:45: Error: The getter 'xpReward' isn't defined for the type 'DailyGoal'.
+2025-12-19T18:40:27.2396918Z  - 'DailyGoal' is from 'package:lingafriq/models/daily_goal_model.dart' ('lib/models/daily_goal_model.dart').
+2025-12-19T18:40:27.2398147Z Try correcting the name to the name of an existing getter, or defining a getter or field named 'xpReward'.
+2025-12-19T18:40:27.2399051Z         .fold(0, (sum, goal) => sum + (goal.xpReward ?? 0));
+2025-12-19T18:40:27.2399493Z                                             ^^^^^^^^
+2025-12-19T18:40:27.2400077Z lib/screens/goals/daily_challenges_screen.dart:26:37: Error: A value of type 'num' can't be returned from a function with return type 'int'.
+2025-12-19T18:40:27.2400705Z         .fold(0, (sum, goal) => sum + (goal.xpReward ?? 0));
+2025-12-19T18:40:27.2401014Z                                     ^
+2025-12-19T18:40:27.2401533Z lib/screens/goals/daily_challenges_screen.dart:163:33: Error: The getter 'goals' isn't defined for the type 'BaseProviderState'.
+2025-12-19T18:40:27.2402336Z  - 'BaseProviderState' is from 'package:lingafriq/providers/base_provider.dart' ('lib/providers/base_provider.dart').
+2025-12-19T18:40:27.2403038Z Try correcting the name to the name of an existing getter, or defining a getter or field named 'goals'.
+2025-12-19T18:40:27.2403504Z                   ...dailyGoals.goals.map((goal) {
+2025-12-19T18:40:27.2403778Z                                 ^^^^^
+2025-12-19T18:40:27.2404486Z lib/providers/ai_chat_provider_groq.dart:1861:60: Error: Too few positional arguments: 1 required, 0 given.
+2025-12-19T18:40:27.2405025Z         final success = await apiNotifier.saveAiChatHistory(
+2025-12-19T18:40:27.2405351Z                                                            ^
+2025-12-19T18:40:27.2405979Z lib/providers/ai_chat_provider_groq.dart:1938:13: Error: No named parameter with the name 'mode'.
+2025-12-19T18:40:27.2406459Z             mode: _modeNameForBackend,
+2025-12-19T18:40:27.2406701Z             ^^^^
+2025-12-19T18:40:27.5358492Z lib/screens/games/lazy_game_list.dart:99:11: Error: The method '_LanguageSelector' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:40:27.5359929Z  - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:40:27.5361544Z Try correcting the name to the name of an existing method, or defining a method named '_LanguageSelector'.
+2025-12-19T18:40:27.5362328Z           _LanguageSelector(
+2025-12-19T18:40:27.5364142Z           ^^^^^^^^^^^^^^^^^
+2025-12-19T18:40:27.5365013Z lib/screens/games/lazy_game_list.dart:106:13: Error: The method '_GameSection' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:40:27.5366363Z  - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:40:27.5367599Z Try correcting the name to the name of an existing method, or defining a method named '_GameSection'.
+2025-12-19T18:40:27.5368354Z             _GameSection(
+2025-12-19T18:40:27.5368710Z             ^^^^^^^^^^^^
+2025-12-19T18:40:27.5369523Z lib/screens/games/lazy_game_list.dart:113:11: Error: The method '_GameSection' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:40:27.5370887Z  - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:40:27.5372088Z Try correcting the name to the name of an existing method, or defining a method named '_GameSection'.
+2025-12-19T18:40:27.5374361Z           _GameSection(
+2025-12-19T18:40:27.5374705Z           ^^^^^^^^^^^^
+2025-12-19T18:40:27.5375466Z lib/screens/games/lazy_game_list.dart:144:11: Error: The method '_GameSection' isn't defined for the type 'LazyGameList'.
+2025-12-19T18:40:27.5376776Z  - 'LazyGameList' is from 'package:lingafriq/screens/games/lazy_game_list.dart' ('lib/screens/games/lazy_game_list.dart').
+2025-12-19T18:40:27.5377961Z Try correcting the name to the name of an existing method, or defining a method named '_GameSection'.
+2025-12-19T18:40:27.5378692Z           _GameSection(
+2025-12-19T18:40:27.5379014Z           ^^^^^^^^^^^^
+2025-12-19T18:40:27.5379704Z lib/screens/games/language_games_screen_components.dart:219:22: Error: Member not found: 'drums_rounded'.
+2025-12-19T18:40:27.5380520Z         return Icons.drums_rounded;
+2025-12-19T18:40:27.5380914Z                      ^^^^^^^^^^^^^
+2025-12-19T18:40:27.5381645Z lib/screens/ai_chat/ai_chat_screen.dart:140:29: Error: Too many positional arguments: 2 allowed, but 3 found.
+2025-12-19T18:40:27.5382468Z Try removing the extra positional arguments.
+2025-12-19T18:40:27.5383450Z           _buildMessageInput(context, chatNotifier, chatState),
+2025-12-19T18:40:27.5384749Z                             ^
+2025-12-19T18:40:27.5386223Z lib/providers/chat_socket_provider.dart:19:3: Error: 'Socket' isn't a type.
+2025-12-19T18:40:27.5387334Z   Socket? _socket;
+2025-12-19T18:40:27.5388292Z   ^^^^^^
+2025-12-19T18:40:27.5390059Z lib/providers/chat_socket_provider.dart:45:7: Error: The method 'OptionBuilder' isn't defined for the type 'ChatSocketNotifier'.
+2025-12-19T18:40:27.5391541Z  - 'ChatSocketNotifier' is from 'package:lingafriq/providers/chat_socket_provider.dart' ('lib/providers/chat_socket_provider.dart').
+2025-12-19T18:40:27.5392834Z Try correcting the name to the name of an existing method, or defining a method named 'OptionBuilder'.
+2025-12-19T18:40:27.5396507Z       OptionBuilder()
+2025-12-19T18:40:27.5397043Z       ^^^^^^^^^^^^^
+2025-12-19T18:40:27.6353011Z lib/providers/game_provider.dart:284:99: Error: Expected ']' before this.
+2025-12-19T18:40:27.6354461Z                           '${_currentSession?.userId ?? 'user'}_${langKey}_${lesson.id}_${v.word}',
+2025-12-19T18:40:27.6355551Z                                                                                           ^
+2025-12-19T18:40:28.0354057Z lib/utils/gamification_integration.dart:298:7: Error: No named parameter with the name 'storyChaptersRead'.
+2025-12-19T18:40:28.0356428Z       storyChaptersRead: newStats['storyChaptersRead'],
+2025-12-19T18:40:28.0356980Z       ^^^^^^^^^^^^^^^^^
+2025-12-19T18:40:28.0360117Z lib/providers/hearts_provider.dart:165:24: Error: The getter 'cowries' isn't defined for the type 'BaseProviderState'.
+2025-12-19T18:40:28.0362225Z  - 'BaseProviderState' is from 'package:lingafriq/providers/base_provider.dart' ('lib/providers/base_provider.dart').
+2025-12-19T18:40:28.0364083Z Try correcting the name to the name of an existing getter, or defining a getter or field named 'cowries'.
+2025-12-19T18:40:28.0365504Z       if (gamification.cowries < HeartsConfig.cowriesCostPerRefill) {
+2025-12-19T18:40:28.0366947Z                        ^^^^^^^
+2025-12-19T18:40:28.0367874Z lib/providers/hearts_provider.dart:170:53: Error: The method 'spendCurrency' isn't defined for the type 'GamificationProvider'.
+2025-12-19T18:40:28.0369473Z  - 'GamificationProvider' is from 'package:lingafriq/providers/gamification_provider.dart' ('lib/providers/gamification_provider.dart').
+2025-12-19T18:40:28.0370850Z Try correcting the name to the name of an existing method, or defining a method named 'spendCurrency'.
+2025-12-19T18:40:28.0371823Z       await ref.read(gamificationProvider.notifier).spendCurrency(
+2025-12-19T18:40:28.0379200Z                                                     ^^^^^^^^^^^^^
+2025-12-19T18:40:28.2368459Z lib/providers/milestones_provider.dart:81:7: Error: The argument type 'Ref' can't be assigned to the parameter type 'WidgetRef'.
+2025-12-19T18:40:28.2370357Z  - 'Ref' is from 'package:riverpod/src/framework.dart' ('../../../.pub-cache/hosted/pub.dev/riverpod-3.0.3/lib/src/framework.dart').
+2025-12-19T18:40:28.2374829Z  - 'WidgetRef' is from 'package:flutter_riverpod/src/core.dart' ('../../../.pub-cache/hosted/pub.dev/flutter_riverpod-3.0.3/lib/src/core.dart').
+2025-12-19T18:40:28.2375597Z       ref,
+2025-12-19T18:40:28.2375775Z       ^
+2025-12-19T18:40:28.2376136Z lib/providers/league_provider.dart:143:9: Error: No named parameter with the name 'tier'.
+2025-12-19T18:40:28.2376584Z         tier: state.currentTier.name,
+2025-12-19T18:40:28.2376836Z         ^^^^
+2025-12-19T18:40:28.2377211Z lib/widgets/gamification/daily_challenges_widget.dart:81:38: Error: Member not found: 'medium'.
+2025-12-19T18:40:28.2377712Z         boxShadow: PanAfricanShadows.medium,
+2025-12-19T18:40:28.2377985Z                                      ^^^^^^
+2025-12-19T18:40:28.2378505Z lib/widgets/gamification/daily_challenges_widget.dart:458:42: Error: Can't use 'glowGreen' because it is declared more than once.
+2025-12-19T18:40:28.2379080Z             boxShadow: PanAfricanShadows.glowGreen,
+2025-12-19T18:40:28.2379370Z                                          ^^^^^^^^^
+2025-12-19T18:40:28.2379770Z lib/widgets/gamification/league_widget.dart:58:38: Error: Member not found: 'medium'.
+2025-12-19T18:40:28.2380208Z         boxShadow: PanAfricanShadows.medium,
+2025-12-19T18:40:28.2380464Z                                      ^^^^^^
+2025-12-19T18:40:28.2380848Z lib/widgets/gamification/hearts_widget.dart:164:38: Error: Member not found: 'medium'.
+2025-12-19T18:40:28.2381268Z         boxShadow: PanAfricanShadows.medium,
+2025-12-19T18:40:28.2381533Z                                      ^^^^^^
+2025-12-19T18:40:28.2384863Z lib/widgets/gamification/hearts_widget.dart:243:42: Error: Member not found: 'large'.
+2025-12-19T18:40:28.2386163Z             boxShadow: PanAfricanShadows.large,
+2025-12-19T18:40:28.2386857Z                                          ^^^^^
+2025-12-19T18:40:33.5352156Z Target kernel_snapshot_program failed: Exception
+2025-12-19T18:40:33.6356260Z 
+2025-12-19T18:40:33.6356804Z 
+2025-12-19T18:40:33.6357964Z FAILURE: Build failed with an exception.
+2025-12-19T18:40:33.6358457Z 
+2025-12-19T18:40:33.6359286Z * What went wrong:
+2025-12-19T18:40:33.6360184Z Execution failed for task ':app:compileFlutterBuildRelease'.
+2025-12-19T18:40:33.6361399Z > Process 'command '/opt/hostedtoolcache/flutter/stable-3.35.0-x64/bin/flutter'' finished with non-zero exit value 1
+2025-12-19T18:40:33.6362153Z 
+2025-12-19T18:40:33.6362457Z * Try:
+2025-12-19T18:40:33.6363108Z > Run with --stacktrace option to get the stack trace.
+2025-12-19T18:40:33.6365129Z > Run with --info or --debug option to get more log output.
+2025-12-19T18:40:33.6366109Z > Run with --scan to get full insights.
+2025-12-19T18:40:33.6366528Z > Get more help at https://help.gradle.org.
+2025-12-19T18:40:33.6367046Z 
+2025-12-19T18:40:33.6367829Z BUILD FAILED in 8m 41s
+2025-12-19T18:40:34.0643259Z Running Gradle task 'bundleRelease'...                            522.4s
+2025-12-19T18:40:34.0734508Z Gradle task bundleRelease failed with exit code 1
+2025-12-19T18:40:34.0803152Z ##[error]Process completed with exit code 1.

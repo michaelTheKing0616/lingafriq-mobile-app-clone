@@ -92,7 +92,7 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
                 ),
                 if (widget.onRetry != null) ...[
                   32.heightBox,
-                  FilledButton(
+                  ElevatedButton(
                     onPressed: () {
                       setState(() {
                         _hasError = false;

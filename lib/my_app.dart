@@ -34,14 +34,18 @@ class _MyAppState extends ConsumerState<MyApp> {
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(
                 textScaleFactor: 1.0,
-                // Support edge-to-edge display
+                // Support edge-to-edge display - use viewPadding instead of deprecated padding
+                viewPadding: EdgeInsets.zero,
                 padding: EdgeInsets.zero,
               ),
               child: AnnotatedRegion<SystemUiOverlayStyle>(
                 value: SystemUiOverlayStyle(
-                  statusBarColor: Colors.transparent,
+                  // Removed deprecated properties:
+                  // - statusBarColor (deprecated in Android 15)
+                  // - systemNavigationBarColor (deprecated in Android 15)
+                  // - systemNavigationBarDividerColor (deprecated in Android 15)
+                  // These are now handled automatically by the system in edge-to-edge mode
                   statusBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
-                  systemNavigationBarColor: Colors.transparent,
                   systemNavigationBarIconBrightness: context.isDarkMode ? Brightness.light : Brightness.dark,
                 ),
                 child: _Unfocus(child: child),

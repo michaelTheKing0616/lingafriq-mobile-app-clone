@@ -3,15 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/private_chat_provider.dart';
-import 'package:lingafriq/providers/chat_socket_provider.dart';
+import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
-import 'package:lingafriq/widgets/error_boundary.dart';
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -28,7 +26,9 @@ class _PrivateChatListScreenState
   @override
   void initState() {
     super.initState();
-    // Load contacts will be triggered in build method
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(privateChatProvider.notifier).loadContacts();
+    });
   }
 
   @override
@@ -39,17 +39,6 @@ class _PrivateChatListScreenState
 
   @override
   Widget build(BuildContext context) {
-    return ErrorBoundary(
-      errorMessage: 'Private Chats are temporarily unavailable',
-      onRetry: () {
-        setState(() {});
-        ref.read(privateChatProvider.notifier).loadContacts();
-      },
-      child: _buildContent(context),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
     final state = ref.watch(privateChatProvider);
     ref.watch(socketProvider);
     final socket = ref.read(socketProvider.notifier);
@@ -58,18 +47,11 @@ class _PrivateChatListScreenState
         .whereType<String>()
         .toSet();
     final currentUser = ref.watch(userProvider);
-    final isDark = context.isDarkMode;
-
-    // Load contacts if not already loaded
-    if (state.contacts.isEmpty && !state.isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(privateChatProvider.notifier).loadContacts();
-      });
-    }
 
     final contacts = state.filteredContacts
         .where((contact) => contact.id != currentUser?.id)
         .toList();
+    final isDark = context.isDarkMode;
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -109,6 +91,56 @@ class _PrivateChatListScreenState
                       ),
                     ),
                     const Spacer(),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          // Content with AppBar
+          Positioned.fill(
+            top: 15.h,
+            child: Scaffold(
+              backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                title: const Text('Private Chats'),
+                backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
+                foregroundColor: isDark ? Colors.white : Colors.black87,
+                elevation: 0,
+              ),
+              body: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: EdgeInsets.all(4.w),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        shape: const CircleBorder(),
+                      ),
+                    ),
+                    SizedBox(width: 2.w),
+                    Expanded(
+                      child: Text(
+                        'Messages',
+                        style: TextStyle(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.chat_bubble_rounded, color: Colors.white),
+                      onPressed: () {},
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        shape: const CircleBorder(),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -167,7 +199,7 @@ class _PrivateChatListScreenState
     bool isDark,
   ) {
     if (state.isLoading) {
-      return const DynamicLoadingScreen();
+      return const Center(child: CircularProgressIndicator());
     }
     
     if (state.error != null) {
@@ -182,7 +214,7 @@ class _PrivateChatListScreenState
               style: TextStyle(color: Colors.red.shade300, fontSize: 16.sp),
             ),
             SizedBox(height: 2.h),
-            FilledButton(
+            ElevatedButton(
               onPressed: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
               child: const Text('Retry'),
             ),

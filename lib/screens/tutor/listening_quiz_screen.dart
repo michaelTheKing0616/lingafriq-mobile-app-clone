@@ -100,9 +100,9 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
               );
             }),
             const SizedBox(height: 16),
-            FilledButton(
+            ElevatedButton(
               onPressed: _hasListened ? _submitAnswers : null,
-              style: FilledButton.styleFrom(
+              style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryGreen,
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),

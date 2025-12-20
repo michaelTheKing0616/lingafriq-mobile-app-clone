@@ -1,0 +1,26 @@
+﻿2025-12-19T18:31:24.3004270Z ##[group]Run version="1.6.0+92"
+2025-12-19T18:31:24.3004490Z [36;1mversion="1.6.0+92"[0m
+2025-12-19T18:31:24.3004670Z [36;1mversion_name="1.6.0"[0m
+2025-12-19T18:31:24.3004830Z [36;1mbuild_number="92"[0m
+2025-12-19T18:31:24.3004970Z [36;1m[0m
+2025-12-19T18:31:24.3005140Z [36;1m# Verify pubspec.yaml has the updated version[0m
+2025-12-19T18:31:24.3005460Z [36;1mcurrent_version=$(grep '^version:' pubspec.yaml | sed 's/version: //')[0m
+2025-12-19T18:31:24.3005770Z [36;1mif [ "$current_version" != "$version" ]; then[0m
+2025-12-19T18:31:24.3006040Z [36;1m  echo "⚠️ Version mismatch. Updating pubspec.yaml..."[0m
+2025-12-19T18:31:24.3006390Z [36;1m  sed -i '' "s/^version: .*/version: $version/" pubspec.yaml[0m
+2025-12-19T18:31:24.3006610Z [36;1mfi[0m
+2025-12-19T18:31:24.3006760Z [36;1m[0m
+2025-12-19T18:31:24.3006910Z [36;1m# Update iOS project.pbxproj file[0m
+2025-12-19T18:31:24.3007130Z [36;1m# Update MARKETING_VERSION (version name)[0m
+2025-12-19T18:31:24.3007540Z [36;1msed -i '' "s/MARKETING_VERSION = [^;]*/MARKETING_VERSION = $version_name/g" ios/Runner.xcodeproj/project.pbxproj[0m
+2025-12-19T18:31:24.3007990Z [36;1m# Update CURRENT_PROJECT_VERSION (build number)[0m
+2025-12-19T18:31:24.3008430Z [36;1msed -i '' "s/CURRENT_PROJECT_VERSION = [^;]*/CURRENT_PROJECT_VERSION = $build_number/g" ios/Runner.xcodeproj/project.pbxproj[0m
+2025-12-19T18:31:24.3008820Z [36;1m[0m
+2025-12-19T18:31:24.3009030Z [36;1mecho "📦 Updated iOS version: $version (build number: $build_number)"[0m
+2025-12-19T18:31:24.3038370Z shell: /bin/bash -e {0}
+2025-12-19T18:31:24.3038540Z env:
+2025-12-19T18:31:24.3038760Z   FLUTTER_ROOT: /Users/runner/hostedtoolcache/flutter/stable-3.35.0-arm64
+2025-12-19T18:31:24.3039050Z   PUB_CACHE: /Users/runner/.pub-cache
+2025-12-19T18:31:24.3039250Z ##[endgroup]
+2025-12-19T18:31:24.3351100Z ⚠️ Version mismatch. Updating pubspec.yaml...
+2025-12-19T18:31:24.3437960Z 📦 Updated iOS version: 1.6.0+92 (build number: 92)

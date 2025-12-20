@@ -3,15 +3,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
-import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DailyGoalsScreen extends ConsumerStatefulWidget {
@@ -33,16 +30,6 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ErrorBoundary(
-      errorMessage: 'Daily Goals are temporarily unavailable',
-      onRetry: () {
-        ref.read(dailyGoalsProvider.notifier).refreshGoals();
-      },
-      child: _buildContent(context),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
     final goalsNotifier = ref.watch(dailyGoalsProvider.notifier);
     final goals = ref.watch(dailyGoalsProvider.notifier).goals;
     final streak = ref.watch(dailyGoalsProvider.notifier).currentStreak;
@@ -317,20 +304,19 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
     // Navigate to the appropriate module based on goal type
     switch (goalType) {
       case 'lessons':
-        // Show language selector for lessons
-        _showLanguageSelectorForLessons(context);
+        // Switch to courses tab where lessons are displayed
+        ref.read(tabIndexProvider.notifier).setIndex(1);
+        Navigator.pop(context); // Close daily goals screen
         break;
       case 'quizzes':
         // Show language selector, then navigate to quiz
         _showLanguageSelectorForQuiz(context);
         break;
       case 'games':
-        navigation.navigateTo(const GamesScreen());
+        navigation.naviateTo(const GamesScreen());
         break;
       case 'chat_minutes':
-        navigation.navigateTo(const AiChatLanguageSetupScreen(
-          initialMode: PolieMode.translation,
-        ));
+        navigation.naviateTo(const AiChatScreen());
         break;
       case 'words_learned':
         // Navigate to vocabulary/words screen
@@ -379,64 +365,6 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
     }
   }
 
-  void _showLanguageSelectorForLessons(BuildContext context) async {
-    try {
-      // Fetch languages
-      final languages = await ref.read(apiProvider.notifier).getLanguages();
-      if (!mounted) return;
-
-      // Show bottom sheet to select language
-      showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (context) => Container(
-          decoration: BoxDecoration(
-            color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Select Language for Lessons',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: context.adaptive,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              ...languages.results.take(5).map((language) => ListTile(
-                leading: Icon(Icons.book, color: AppColors.primaryGreen),
-                title: Text(
-                  language.name,
-                  style: TextStyle(color: context.adaptive),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context); // Close daily goals
-                  ref.read(navigationProvider).navigateTo(
-                    LessonsListScreen(language: language),
-                  );
-                },
-              )),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-      );
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load languages: $e')),
-        );
-      }
-    }
-  }
-
   void _showLanguageSelectorForQuiz(BuildContext context) async {
     try {
       // Fetch languages
@@ -476,7 +404,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pop(context); // Close daily goals
-                  ref.read(navigationProvider).navigateTo(
+                  ref.read(navigationProvider).naviateTo(
                     TakeQuizScreen(language: language),
                   );
                 },

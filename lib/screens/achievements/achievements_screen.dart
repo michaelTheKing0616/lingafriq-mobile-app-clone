@@ -5,7 +5,6 @@ import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
-import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AchievementsScreen extends ConsumerWidget {
@@ -13,16 +12,6 @@ class AchievementsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ErrorBoundary(
-      errorMessage: 'Achievements are temporarily unavailable',
-      onRetry: () {
-        // Retry by rebuilding
-      },
-      child: _buildContent(context, ref),
-    );
-  }
-
-  Widget _buildContent(BuildContext context, WidgetRef ref) {
     final achievementsNotifier = ref.watch(achievementsProvider.notifier);
     final achievements = ref.watch(achievementsProvider.notifier).achievements;
     final totalXP = ref.watch(achievementsProvider.notifier).totalXP;
@@ -63,28 +52,16 @@ class AchievementsScreen extends ConsumerWidget {
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.of(context).pop(),
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: IconButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: const CircleBorder(),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                     const Icon(
                       Icons.emoji_events_rounded,

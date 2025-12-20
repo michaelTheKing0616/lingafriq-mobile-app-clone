@@ -38,7 +38,7 @@ class AiChatProvider extends BaseProvider {
   
   // OpenAI API Configuration
   // TODO: Move this to environment variables or secure storage
-  static const String _apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with actual API key
+  static const String _apiKey = 'YOUR_OPENAI_API_KEY_HERE'; // Replace with actual API key
   static const String _apiUrl = 'https://api.openai.com/v1/chat/completions';
   
   String _selectedLanguage = 'English'; // Default language

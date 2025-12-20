@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -152,7 +151,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
           score: _correctAnswers,
         );
         if (gameSuccess) {
-          await ProgressIntegration.onGameCompleted(ref as Ref, wordsLearned: _correctAnswers, pointsEarned: points);
+          await ProgressIntegration.onGameCompleted(ref, wordsLearned: _correctAnswers);
           ref.read(userProvider.notifier).addPoints(points);
         }
         

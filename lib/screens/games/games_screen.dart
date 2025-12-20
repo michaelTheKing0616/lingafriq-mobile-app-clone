@@ -11,6 +11,8 @@ import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
+import 'package:lingafriq/screens/games/speed_challenge_game.dart';
+import 'package:lingafriq/screens/games/pronunciation_game.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -33,37 +35,69 @@ class GamesScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
+                SafeArea(
+                  bottom: false,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top + 8,
                     ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
                         children: [
-                          Text(
-                            'Language Games',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold,
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back, color: Colors.white),
+                            onPressed: () => Navigator.of(context).pop(),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                          const SizedBox(width: 8),
+                          Builder(
+                            builder: (context) => IconButton(
+                              icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
                             ),
                           ),
-                          Text(
-                            'Learn through play',
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontSize: 14.sp,
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Language Games',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Learn through play',
+                                  style: TextStyle(
+                                    color: Colors.white.withOpacity(0.9),
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                          const SizedBox(width: 16),
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
                           ),
                         ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -101,7 +135,7 @@ class GamesScreen extends ConsumerWidget {
                           return _GameLanguageCard(
                             language: language,
                             onTap: () {
-                              ref.read(navigationProvider).navigateTo(
+                              ref.read(navigationProvider).naviateTo(
                                 GameTypesScreen(language: language),
                               );
                             },
@@ -195,6 +229,12 @@ class GameTypesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: Text('Games - ${language.name}'),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -238,22 +278,17 @@ class GameTypesScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _GameTypeCard(
-              icon: Icons.edit_rounded,
-              title: 'Fill in the Blank',
-              description: 'Complete sentences with missing words',
-              color: AppColors.accentGold,
-              onTap: () {
-                // Navigate to fill in the blank game
-              },
-            ),
-            const SizedBox(height: 12),
-            _GameTypeCard(
               icon: Icons.volume_up_rounded,
               title: 'Pronunciation Practice',
               description: 'Listen and repeat words correctly',
               color: AppColors.accentOrange,
               onTap: () {
-                // Navigate to pronunciation game
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PronunciationGame(language: language),
+                  ),
+                );
               },
             ),
             const SizedBox(height: 12),
@@ -263,7 +298,12 @@ class GameTypesScreen extends StatelessWidget {
               description: 'Answer questions as fast as you can',
               color: AppColors.oceanBlue,
               onTap: () {
-                // Navigate to speed challenge game
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SpeedChallengeGame(language: language),
+                  ),
+                );
               },
             ),
           ],
