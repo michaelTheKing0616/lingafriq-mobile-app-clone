@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 class ListeningQuizScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> passageData;
@@ -17,7 +17,6 @@ class ListeningQuizScreen extends ConsumerStatefulWidget {
 }
 
 class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
-  final FlutterTts _tts = FlutterTts();
   bool _hasListened = false;
   final Map<int, String?> _selectedAnswers = {};
   final Map<int, TextEditingController> _textControllers = {};
@@ -25,17 +24,11 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
   @override
   void initState() {
     super.initState();
-    _initTTS();
-  }
-
-  Future<void> _initTTS() async {
-    await _tts.setLanguage('en-US');
-    await _tts.setSpeechRate(0.5);
   }
 
   @override
   void dispose() {
-    _tts.stop();
+    ref.read(ttsProvider.notifier).stop();
     for (var controller in _textControllers.values) {
       controller.dispose();
     }
@@ -44,7 +37,11 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
 
   Future<void> _playPassage() async {
     final passage = widget.passageData['passage'] as String? ?? '';
-    await _tts.speak(passage);
+    final languageName = (widget.passageData['language'] as String?) ?? 'english';
+    await ref.read(ttsProvider.notifier).speak(
+          passage,
+          languageName: languageName,
+        );
     setState(() {
       _hasListened = true;
     });
