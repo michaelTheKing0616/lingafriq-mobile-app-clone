@@ -74,8 +74,8 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
                     // Navigate to chapter details
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => _ChapterDetailScreen(chapter: chapter),
+                      SmoothPageRoute(
+                        child: _ChapterDetailScreen(chapter: chapter),
                       ),
                     );
                   }

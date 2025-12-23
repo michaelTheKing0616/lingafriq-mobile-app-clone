@@ -227,8 +227,8 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
     // After language is selected, it will load the scoped chat history (mode × language)
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => AiChatLanguageSetupScreen(initialMode: mode),
+      SmoothPageRoute(
+        child: AiChatLanguageSetupScreen(initialMode: mode),
       ),
     );
   }

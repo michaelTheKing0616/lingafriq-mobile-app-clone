@@ -6,6 +6,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
@@ -98,8 +99,8 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => const PrivateChatListScreen(),
+                SmoothPageRoute(
+                  child: const PrivateChatListScreen(),
                 ),
               );
             },
@@ -323,8 +324,8 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
             }
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (_) => PrivateChatScreen(contact: contact),
+              SmoothPageRoute(
+                child: PrivateChatScreen(contact: contact),
               ),
             );
           },

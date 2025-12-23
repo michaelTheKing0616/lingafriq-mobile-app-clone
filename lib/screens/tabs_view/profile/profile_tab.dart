@@ -10,6 +10,7 @@ import 'package:lingafriq/screens/tabs_view/profile/suggest_language_screen.dart
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
+import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../../../providers/auth_provider.dart';
@@ -48,6 +49,11 @@ class ProfileTab extends HookConsumerWidget {
             ),
             Column(
               children: [
+                // Currency Display
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: CurrencyDisplayWidget(compact: false),
+                ),
                 if (user?.rank != null)
                   _ProfileItem(
                     title: "",

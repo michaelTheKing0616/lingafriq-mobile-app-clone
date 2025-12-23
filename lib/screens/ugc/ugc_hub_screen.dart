@@ -5,6 +5,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen.dart';
 import 'package:lingafriq/screens/ugc/create_quiz_screen.dart';
 import 'package:lingafriq/screens/ugc/create_story_screen.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Hub screen for User-Generated Content
@@ -59,7 +60,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               onTap: () async {
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreateLessonScreen()),
+                  SmoothPageRoute(child: const CreateLessonScreen()),
                 );
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -82,7 +83,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               onTap: () async {
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreateQuizScreen()),
+                  SmoothPageRoute(child: const CreateQuizScreen()),
                 );
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -105,7 +106,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               onTap: () async {
                 final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const CreateStoryScreen()),
+                  SmoothPageRoute(child: const CreateStoryScreen()),
                 );
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(

@@ -33,7 +33,12 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
     
     final onboardingNotifier = ref.read(onboardingProvider.notifier);
     
-    return Scaffold(
+    final isLoading = useState(false);
+    
+    return LoadingOverlay(
+      isLoading: isLoading.value,
+      message: 'Loading...',
+      child: Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Stack(
@@ -509,7 +514,7 @@ class _ElderScreen extends HookConsumerWidget {
   }
 }
 
-// Placeholder screens for remaining steps - will be implemented similarly
+// Weaver Screen - Language and Level Selection Step
 class _WeaverScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
@@ -526,7 +531,7 @@ class _WeaverScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String?>(null);
     final selectedLevel = useState<String?>(null);
     
-    final languages = ['Swahili', 'Yoruba', 'Amharic', 'Zulu', 'Hausa', 'Igbo'];
+    final languages = ['Swahili', 'Yoruba', 'Amharic', 'Zulu', 'Hausa', 'Igbo', 'Nigerian Pidgin English'];
     final levels = ['beginner', 'intermediate', 'advanced'];
     
     return Container(
@@ -669,7 +674,7 @@ class _WeaverScreen extends HookConsumerWidget {
   }
 }
 
-// Placeholder for remaining screens - implementing core structure
+// Rhythm Master Screen - Daily Practice Duration Selection Step
 class _RhythmMasterScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
@@ -1331,6 +1336,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

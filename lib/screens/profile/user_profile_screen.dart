@@ -8,6 +8,7 @@ import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/gamification/level_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/streak_display_widget.dart';
@@ -283,7 +284,7 @@ class UserProfileScreen extends ConsumerWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                        SmoothPageRoute(child: const SettingsScreen()),
                       );
                     },
                     isDark: isDark,
