@@ -230,8 +230,8 @@ class GameTypesScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => WordMatchGame(language: language),
+                  SmoothPageRoute(
+                    child: WordMatchGame(language: language),
                   ),
                 );
               },

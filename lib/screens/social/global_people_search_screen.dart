@@ -5,6 +5,8 @@ import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 
@@ -193,8 +195,8 @@ class _GlobalPeopleSearchScreenState
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => PrivateChatScreen(contact: contact),
+            SmoothPageRoute(
+              child: PrivateChatScreen(contact: contact),
             ),
           );
         },

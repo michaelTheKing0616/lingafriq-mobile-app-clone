@@ -6,6 +6,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -422,8 +423,8 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
           // Navigate to lesson detail screen
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => LessonDetailScreen(
+            SmoothPageRoute(
+              child: LessonDetailScreen(
                 lesson: lesson,
                 language: language,
                 level: level,

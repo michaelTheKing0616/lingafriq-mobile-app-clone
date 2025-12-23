@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -294,8 +295,8 @@ class _PrivateChatListScreenState
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (_) => PrivateChatScreen(contact: contact),
+                SmoothPageRoute(
+                  child: PrivateChatScreen(contact: contact),
                 ),
               );
             },

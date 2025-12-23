@@ -18,6 +18,10 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../../utils/api.dart';
 import '../../../widgets/delete_account_dialogue.dart';
 import '../../../services/account_service.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/utils/api_service.dart';
 
 class ProfileEditScreen extends HookConsumerWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);
@@ -25,10 +29,13 @@ class ProfileEditScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final firstnameController = useTextEditingController(text: user?.first_name);
-    final lastNameController = useTextEditingController(text: user?.last_name);
+    final firstnameController = useTextEditingController(text: user?.first_name ?? '');
+    final lastNameController = useTextEditingController(text: user?.last_name ?? '');
+    final globalIdController = useTextEditingController(text: user?.global_id ?? user?.username ?? '');
     final selectedCountry = useState<String?>(user?.nationality);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
+    final isUpdatingHandle = useState(false);
+    final handleError = useState<String?>(null);
 
     return LoadingOverlayPro(
       isLoading: isLoading,
@@ -81,6 +88,37 @@ class ProfileEditScreen extends HookConsumerWidget {
               hintText: "Enter your Last name",
               validator: Validators.emptyValidator,
               textInputAction: TextInputAction.next,
+            ),
+            12.heightBox,
+            
+            // Global ID / Handle Editor
+            PanAfricanTextField(
+              controller: globalIdController,
+              label: 'Your Handle (global_id)',
+              hint: 'e.g., your_handle',
+              prefixIcon: Icons.alternate_email,
+              helperText: 'This is your unique identifier. Use it to find you in chat (@your_handle).',
+              errorText: handleError.value,
+              onChanged: (value) {
+                handleError.value = null;
+                // Remove @ if user types it
+                if (value.startsWith('@')) {
+                  globalIdController.value = TextEditingValue(
+                    text: value.substring(1),
+                    selection: TextSelection.collapsed(offset: value.length - 1),
+                  );
+                }
+                // Validate format: alphanumeric and underscore only, 3-30 chars
+                if (value.isNotEmpty) {
+                  if (value.length < 3) {
+                    handleError.value = 'Handle must be at least 3 characters';
+                  } else if (value.length > 30) {
+                    handleError.value = 'Handle must be 30 characters or less';
+                  } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
+                    handleError.value = 'Handle can only contain letters, numbers, and underscores';
+                  }
+                }
+              },
             ),
             12.heightBox,
             IgnorePointer(

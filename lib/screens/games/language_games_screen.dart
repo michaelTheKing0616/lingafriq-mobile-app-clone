@@ -10,6 +10,7 @@ import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/screens/games/lazy_game_list.dart';
 import 'language_games_screen_components.dart';
 import 'game_router.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Modern Language Games Screen - Based on Figma Make Design

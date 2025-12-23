@@ -317,8 +317,8 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) => const AiChatLanguageSetupScreen(
+                            SmoothPageRoute(
+                              child: const AiChatLanguageSetupScreen(
                                 initialMode: PolieMode.translation,
                               ),
                             ),
@@ -334,7 +334,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const DailyChallengesScreen()),
+                            SmoothPageRoute(child: const DailyChallengesScreen()),
                           );
                         },
                       ),
@@ -347,7 +347,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const LanguageGamesScreen()),
+                            SmoothPageRoute(child: const LanguageGamesScreen()),
                           );
                         },
                       ),
@@ -384,7 +384,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const GlobalChatScreen()),
+                            SmoothPageRoute(child: const GlobalChatScreen()),
                           );
                         },
                       ),
@@ -395,7 +395,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const CultureMagazineScreen()),
+                            SmoothPageRoute(child: const CultureMagazineScreen()),
                           );
                         },
                       ),
@@ -406,7 +406,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const GlobalProgressScreen()),
+                            SmoothPageRoute(child: const GlobalProgressScreen()),
                           );
                         },
                       ),
@@ -417,7 +417,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const ProgressDashboardScreen()),
+                            SmoothPageRoute(child: const ProgressDashboardScreen()),
                           );
                         },
                       ),

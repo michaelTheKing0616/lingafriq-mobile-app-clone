@@ -11,7 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 /// Minimum time to show loading screen so users can read facts
-const Duration kMinLoadingDisplayTime = Duration(seconds: 4);
+/// Intelligently configured to allow users to read facts comfortably
+const Duration kMinLoadingDisplayTime = Duration(seconds: 5); // Increased for better readability
+
+/// Time between fact rotations (for longer loading operations)
+const Duration kFactRotationInterval = Duration(seconds: 6);
 
 /// Dynamic loading screen with rotating African cultural content
 /// Based on the design concept with:
@@ -168,7 +172,7 @@ class _DynamicLoadingScreenState
     });
     
     // Rotate facts for longer loading times
-    _factTimer = Timer.periodic(const Duration(seconds: 6), (_) {
+    _factTimer = Timer.periodic(kFactRotationInterval, (_) {
       if (mounted) {
         setState(() {
           _factIndex = (_factIndex + 1) % _fallbackFacts.length;
