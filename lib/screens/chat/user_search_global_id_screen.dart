@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -58,10 +60,10 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
           }
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Search failed: ${e.toString()}')),
-        );
         searchResults.value = [];
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       } finally {
         isSearching.value = false;
       }
@@ -170,7 +172,7 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
                               ],
                             ),
                           )
-                        : ListView.builder(
+                        : OptimizedListView.builder(
                             padding: EdgeInsets.all(PanAfricanSpacing.lg),
                             itemCount: searchResults.value.length,
                             itemBuilder: (context, index) {

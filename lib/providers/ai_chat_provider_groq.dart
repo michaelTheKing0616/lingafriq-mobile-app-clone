@@ -18,6 +18,11 @@ import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
 import '../services/telemetry_service.dart';
 import '../services/env_config.dart';
 import '../utils/supported_languages.dart';
+import '../services/ai/conversation_context_manager.dart';
+import '../services/ai/conversation_practice_enhancer.dart';
+import '../services/error/error_recovery_service.dart';
+import '../services/monitoring/performance_analytics.dart';
+import '../utils/conversation_integration_helper.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -250,6 +255,12 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   
   // Backend sync debouncing
   DateTime? _lastBackendSync;
+
+  // Conversation enhancement services
+  final ConversationContextManager _contextManager = ConversationContextManager();
+  final ConversationPracticeEnhancer _practiceEnhancer = ConversationPracticeEnhancer();
+  final ErrorRecoveryService _errorRecovery = ErrorRecoveryService();
+  final PerformanceAnalytics _performanceAnalytics = PerformanceAnalytics();
 
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
@@ -739,7 +750,28 @@ Make reviews efficient and rewarding.''';
     state = state.copyWith(isLoading: true);
     
     // Use system prompt override if provided (for content generation)
-    final effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
+    var effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
+    
+    // Enhance system prompt with conversation practice features
+    final conversationId = '${_mode}_${_selectedLanguage}_${_sourceLanguage}';
+    final flowState = _practiceEnhancer.analyzeConversationFlow(
+      messages: _messages.map((m) => {'role': m.role, 'content': m.content}).toList(),
+      currentMessage: sanitizedMessage,
+    );
+    
+    if (effectiveSystemPrompt != null && effectiveSystemPrompt.isNotEmpty) {
+      final previousContext = _contextManager.getConversationInsights(conversationId);
+      effectiveSystemPrompt = _practiceEnhancer.getEnhancedPrompt(
+        conversationId: conversationId,
+        flowState: flowState,
+        basePrompt: effectiveSystemPrompt!,
+        currentTopic: previousContext['topics']?.isNotEmpty == true 
+            ? (previousContext['topics'] as List).first 
+            : null,
+        userLevel: previousContext['user_level'] as String?,
+        previousContext: previousContext.isNotEmpty ? previousContext : null,
+      );
+    }
     
     // Use Hybrid Polie if enabled and appropriate for the task
     if (_useHybridPolie && _hybridOrchestrator != null) {
@@ -786,6 +818,12 @@ Make reviews efficient and rewarding.''';
           _messages.add(assistantMsg);
           state = state.copyWith();
           await _saveChatHistory();
+          
+          // Save conversation context
+          await _contextManager.saveConversationContext(
+            conversationId: conversationId,
+            messages: _messages.map((m) => {'role': m.role, 'content': m.content}).toList(),
+          );
           
           // Add tutor prompts if in tutor mode
           if (_tutorMode && !_userInterrupt) {
@@ -918,10 +956,33 @@ Make reviews efficient and rewarding.''';
           throw Exception('No valid messages after validation. Please try again.');
         }
         
+        // Enhance conversation context with intelligent management
+        final enhancedMessagesList = await _contextManager.getConversationContext(
+          conversationId: conversationId,
+          currentMessages: messagesList,
+          systemPrompt: effectiveSystemPrompt ?? '',
+          maxTokens: 2000, // Groq token limit consideration
+        );
+        
+        // Use enhanced context (which may include summary)
+        // Extract messages from enhanced context (excluding system prompt as it's added separately)
+        messagesList = enhancedMessagesList
+            .where((m) => m['role'] != 'system')
+            .toList();
+        
         // Limit messages array to last 20 messages (to avoid token limits)
         // Groq has token limits, so we keep recent conversation context
         if (messagesList.length > 20) {
           messagesList.removeRange(0, messagesList.length - 20);
+        }
+        
+        // Update effective system prompt if enhanced context added a summary
+        final enhancedSystemPrompt = enhancedMessagesList
+            .where((m) => m['role'] == 'system')
+            .map((m) => m['content'] as String)
+            .join('\n\n');
+        if (enhancedSystemPrompt.isNotEmpty) {
+          effectiveSystemPrompt = enhancedSystemPrompt;
         }
         
         // Log the final message structure for debugging
@@ -944,9 +1005,18 @@ Make reviews efficient and rewarding.''';
         
         // Track request start time for performance metrics
         final requestStartTime = DateTime.now();
+        final performanceTrackingId = _performanceAnalytics.startTracking(
+          operationName: 'groq_api_call',
+          metadata: {
+            'model': currentModel,
+            'message_count': messagesList.length,
+            'mode': _mode.toString(),
+          },
+        );
         
-        // Enhanced request with timeout and better error handling
-        final response = await _dio.post(
+        // Enhanced request with timeout, error recovery, and better error handling
+        final response = await _errorRecovery.executeWithRecovery(
+          operation: () => _dio.post(
           _groqUrl,
           cancelToken: cancelToken,
           options: Options(
@@ -979,6 +1049,23 @@ Make reviews efficient and rewarding.''';
           const Duration(seconds: 90), // Overall timeout
           onTimeout: () {
             throw TimeoutException('Request timed out. Please check your connection and try again.');
+          },
+        ),
+          maxRetries: 3,
+          operationName: 'groq_api_request',
+          shouldRetry: (error) {
+            // Retry on network errors and timeouts
+            return error is DioException || error is TimeoutException;
+          },
+        );
+        
+        // Stop performance tracking
+        _performanceAnalytics.stopTracking(
+          trackingId: performanceTrackingId,
+          operationName: 'groq_api_call',
+          additionalMetadata: {
+            'status_code': response.statusCode,
+            'duration_ms': DateTime.now().difference(requestStartTime).inMilliseconds,
           },
         );
         

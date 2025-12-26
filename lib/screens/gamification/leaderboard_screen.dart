@@ -5,6 +5,9 @@ import '../../providers/socket_provider.dart';
 import '../../models/leaderboard_entry_model.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 
 /// Leaderboard screen with tribe, country, and global rankings
 class LeaderboardScreen extends ConsumerStatefulWidget {
@@ -142,7 +145,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
       );
     }
 
-    return ListView.builder(
+    return OptimizedListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: entries.length,
       itemBuilder: (context, index) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
@@ -12,6 +13,8 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/gamification/level_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/streak_display_widget.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -105,12 +108,28 @@ class UserProfileScreen extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          child: CircleAvatar(
-                            radius: 12.w,
-                            backgroundColor: Colors.white,
-                            backgroundImage: user?.avatar != null
-                                ? NetworkImage(user!.avatar!)
-                                : null,
+                          child: user?.avatar != null
+                              ? ClipOval(
+                                  child: LazyImage(
+                                    imageUrl: user!.avatar!,
+                                    width: 24.w,
+                                    height: 24.w,
+                                    placeholder: CircleAvatar(
+                                      radius: 12.w,
+                                      backgroundColor: Colors.white,
+                                      child: Text(
+                                        (user.username ?? 'U')[0].toUpperCase(),
+                                        style: TextStyle(
+                                          color: const Color(0xFFCE1126),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : CircleAvatar(
+                                  radius: 12.w,
+                                  backgroundColor: Colors.white,
                             child: user?.avatar == null
                                 ? Text(
                                     (user?.username ?? 'U')[0].toUpperCase(),

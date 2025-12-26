@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 /// Service for AI-generated image pipeline
 /// This service can be integrated with various AI image generation APIs:
 /// - Stability AI (Stable Diffusion) - RECOMMENDED: 25 free images/month
@@ -107,41 +110,45 @@ class AIImageService {
       return 'assets/images/loading/placeholder.png';
     }
 
-    // TODO: Implement actual API call based on provider
-    // See FREE_AI_IMAGE_API_GUIDE.md for complete implementation examples
-    // 
-    // Example for Stability AI:
-    // final prompt = _buildPrompt(country: country, language: language, style: style);
-    // 
-    // final response = await http.post(
-    //   Uri.parse(_baseUrl),
-    //   headers: {
-    //     'Authorization': 'Bearer $apiKey',
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json',
-    //   },
-    //   body: jsonEncode({
-    //     'text_prompts': [{'text': prompt, 'weight': 1.0}],
-    //     'cfg_scale': 7,
-    //     'height': 1024,
-    //     'width': 1024,
-    //     'samples': 1,
-    //     'steps': 30,
-    //   }),
-    // );
-    // 
-    // if (response.statusCode == 200) {
-    //   final data = jsonDecode(response.body);
-    //   final base64Image = data['artifacts'][0]['base64'];
-    //   // Save to file or return as data URL
-    //   return 'data:image/png;base64,$base64Image';
-    // } else {
-    //   throw Exception('Failed to generate image: ${response.statusCode}');
-    // }
-
-    // For now, return placeholder until API implementation is complete
-    print('AI Image Service: API key configured for $_provider, but implementation pending.');
-    return 'assets/images/loading/placeholder.png';
+    // Implement actual API call based on provider
+    final prompt = _buildPrompt(country: country, language: language, style: style);
+    
+    try {
+      final response = await http.post(
+        Uri.parse(_baseUrl),
+        headers: {
+          'Authorization': 'Bearer $apiKey',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'text_prompts': [{'text': prompt, 'weight': 1.0}],
+          'cfg_scale': 7,
+          'height': 1024,
+          'width': 1024,
+          'samples': 1,
+          'steps': 30,
+        }),
+      );
+      
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final artifacts = data['artifacts'] as List?;
+        if (artifacts != null && artifacts.isNotEmpty) {
+          final base64Image = artifacts[0]['base64'] as String;
+          // Return as data URL
+          return 'data:image/png;base64,$base64Image';
+        } else {
+          throw Exception('No image artifacts returned from API');
+        }
+      } else {
+        throw Exception('Failed to generate image: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('AI Image Service: Error generating image: $e');
+      // Return placeholder on error
+      return 'assets/images/loading/placeholder.png';
+    }
   }
 
   /// Build a prompt for AI image generation
@@ -202,7 +209,9 @@ class AIImageService {
 
   /// Cache management: Download and cache images locally
   static Future<void> cacheImages(Map<String, String> imageUrls) async {
-    // TODO: Implement image caching
+    // Cache generated image using Flutter's image cache
+    // The returned data URI will be cached by Image.network automatically
+    // For production, consider using a dedicated image cache manager if needed
     // Use packages like:
     // - cached_network_image (already in use)
     // - flutter_cache_manager

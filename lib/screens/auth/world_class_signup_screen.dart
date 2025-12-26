@@ -13,6 +13,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/validators.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 
@@ -711,16 +712,22 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                   "image_url": kAvatarsList.keys.last,
                 };
 
-                // Store credentials
-                await storage.storeCredentials(
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                  username: usernameController.text.trim(),
-                  firstName: firstNameController.text.trim(),
-                  lastName: lastNameController.text.trim(),
-                );
+                try {
+                  // Store credentials
+                  await storage.storeCredentials(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                    username: usernameController.text.trim(),
+                    firstName: firstNameController.text.trim(),
+                    lastName: lastNameController.text.trim(),
+                  );
 
-                await ref.read(authProvider.notifier).register(registerData);
+                  await ref.read(authProvider.notifier).register(registerData);
+                } catch (e) {
+                  if (context.mounted) {
+                    ErrorHandler.showError(context, e);
+                  }
+                }
               }
             },
             child: Container(

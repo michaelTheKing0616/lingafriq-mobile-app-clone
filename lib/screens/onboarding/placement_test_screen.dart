@@ -7,6 +7,8 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -29,22 +31,25 @@ class PlacementTestScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> generateTest() async {
-      try {
-        final response = await ApiService.get(
-          '/onboarding/placement-test/generate',
-          queryParameters: {'language': language},
-        );
+      await safeAsync(
+        context: context,
+        operation: () async {
+          final response = await ApiService.get(
+            '/onboarding/placement-test/generate',
+            queryParameters: {'language': language},
+          );
 
-        if (response.statusCode == 200) {
-          test.value = response.data['data'];
-          isGenerating.value = false;
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to generate test: ${e.toString()}')),
-        );
-        isGenerating.value = false;
-      }
+          if (response.statusCode == 200) {
+            test.value = response.data['data'];
+            isGenerating.value = false;
+          } else {
+            throw Exception('Failed to generate test');
+          }
+        },
+        errorContext: 'generateTest',
+        showError: true,
+      );
+      isGenerating.value = false;
     }
 
     Future<void> submitTest() async {
@@ -56,34 +61,36 @@ class PlacementTestScreen extends HookConsumerWidget {
       }
 
       isLoading.value = true;
-      try {
-        final answerList = (test.value?['questions'] as List).asMap().entries.map((entry) {
-          return {
-            'question_id': (entry.value as Map)['id'],
-            'answer': answers.value[entry.key] ?? '',
-          };
-        }).toList();
+      await safeAsync(
+        context: context,
+        operation: () async {
+          final answerList = (test.value?['questions'] as List).asMap().entries.map((entry) {
+            return {
+              'question_id': (entry.value as Map)['id'],
+              'answer': answers.value[entry.key] ?? '',
+            };
+          }).toList();
 
-        final response = await ApiService.post(
-          '/onboarding/placement-test/submit',
-          data: {
-            'test_id': test.value?['test_id'],
-            'language': language,
-            'answers': answerList,
-            'test_questions': test.value?['questions'],
-          },
-        );
+          final response = await ApiService.post(
+            '/onboarding/placement-test/submit',
+            data: {
+              'test_id': test.value?['test_id'],
+              'language': language,
+              'answers': answerList,
+              'test_questions': test.value?['questions'],
+            },
+          );
 
-        if (response.statusCode == 200) {
-          result.value = response.data['data'];
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to submit test: ${e.toString()}')),
-        );
-      } finally {
-        isLoading.value = false;
-      }
+          if (response.statusCode == 200) {
+            result.value = response.data['data'];
+          } else {
+            throw Exception('Failed to submit test');
+          }
+        },
+        errorContext: 'submitTest',
+        showError: true,
+      );
+      isLoading.value = false;
     }
 
     useEffect(() {

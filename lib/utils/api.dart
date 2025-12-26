@@ -1,8 +1,19 @@
+import 'package:lingafriq/services/env_config.dart';
+
 class Api {
+  // Use environment configuration for backend URL
+  // Defaults to http://api.lingafriq.com/ if BACKEND_URL is not set
+  // For production, set BACKEND_URL via --dart-define during build
+  static String get baseurl {
+    final envUrl = EnvConfig.backendBaseUrl;
+    // Ensure URL ends with slash
+    return envUrl.endsWith('/') ? envUrl : '$envUrl/';
+  }
+  
+  // Legacy commented URLs for reference
   // static const String baseurl = "http://34.121.156.251:8000/";
   // static const String baseurl = "http://34.67.162.25:8000/";
   // static const String baseurl = "http://64.227.113.179:8000/";
-  static const String baseurl = "http://admin.lingafriq.com/";
   static const String register = "accounts/auth/users/";
   static const String login = "accounts/auth/jwt/create/";
   static const String userInfo = "accounts/auth/users/me/";
@@ -70,4 +81,100 @@ class Api {
   // static String completeRandomWordQuiz(languageId, questionId) =>
   //     "/random_quiz/$languageId/questions/$questionId/word_ques_detail";
   //History Quiz End
+
+  // Gamification API endpoints
+  static const String gamificationBase = 'api/gamification/';
+  static const String xpAward = '${gamificationBase}xp/award';
+  static const String xpTotal = '${gamificationBase}xp/total';
+  static const String badges = '${gamificationBase}badges/';
+  static String userBadges(String userId) => '${gamificationBase}badges/users/$userId';
+  static const String launchEvents = '${gamificationBase}launch-events/';
+  static String launchEventJoin(String eventId) => '${gamificationBase}launch-events/join';
+  static String launchEventLeaderboard(String eventId) => '${gamificationBase}launch-events/$eventId/leaderboard';
+  static const String ubuntuDonate = '${gamificationBase}ubuntu/donate';
+  static const String dailyChallenges = '${gamificationBase}advanced/challenges';
+  static const String league = '${gamificationBase}advanced/league';
+  static const String leagueLeaderboard = '${gamificationBase}advanced/league/leaderboard';
+  static const String milestones = '${gamificationBase}advanced/milestones';
+  
+  // Tribes API endpoints
+  static const String tribes = 'api/tribes';
+  static String tribeDetails(String id) => 'api/tribes/$id';
+  static String tribeJoin(String id) => 'api/tribes/$id/join';
+  static String tribeLeave(String id) => 'api/tribes/$id/leave';
+  static String tribeActivity(String id) => 'api/tribes/$id/activity';
+  static String tribeDepositXP(String id) => 'api/tribes/$id/deposit-xp';
+  
+  // Currency API endpoints
+  static const String currencyBalance = '${gamificationBase}currency/balance';
+  static const String currencyAward = '${gamificationBase}currency/award';
+  static const String currencySpend = '${gamificationBase}currency/spend';
+  static const String currencyTransfer = '${gamificationBase}currency/transfer';
+  static const String currencyTribeDeposit = '${gamificationBase}currency/tribe/deposit';
+  
+  // Culture Magazine API endpoints
+  static const String cultureMagazine = 'culture-magazine/';
+  static String cultureArticles({bool? published}) => 'culture-magazine/articles${published != null ? '?published=$published' : ''}';
+  static String cultureArticle(String id) => 'culture-magazine/articles/$id';
+  
+  // Media API endpoints
+  static const String media = 'media/';
+  static String mediaGenerateLesson(String mediaId) => 'media/generate-lesson';
+  
+  // Chat API endpoints
+  static const String chatGlobal = 'chat/global';
+  static const String chatPrivate = 'chat/private';
+  
+  // Media API endpoints  
+  static String mediaUpload() => 'media/upload';
+  static String mediaTranscribe() => 'media/transcribe';
+  static String mediaDetails(String mediaId) => 'media/$mediaId';
+  
+  // User Content API endpoints
+  static const String userContent = 'api/user-content/';
+  
+  // Marketplace API endpoints
+  static const String marketplace = 'api/marketplace/';
+  static String marketplaceItems({String? category}) => 'api/marketplace/items${category != null ? '?category=$category' : ''}';
+  
+  // Villages API endpoints
+  static const String villages = 'api/villages';
+  static String villageByLanguage(String lang) => 'api/villages/$lang';
+  static String villageLivekitToken(String lang) => 'api/villages/$lang/livekit-token';
+  
+  // Journey API endpoints
+  static String journeyNodes(String campaign) => 'api/journey/$campaign/nodes';
+  static String journeyNode(String campaign, String nodeId) => 'api/journey/$campaign/node/$nodeId';
+  static String journeyNodeStart(String campaign, String nodeId) => 'api/journey/$campaign/node/$nodeId/start';
+  static String journeyNodeComplete(String campaign, String nodeId) => 'api/journey/$campaign/node/$nodeId/complete';
+  static String journeyUserProgress(String userId) => 'api/journey/$userId/progress';
+  
+  // Games API endpoints
+  static const String games = 'games';
+  static const String gameSessionStart = 'api/games/session/start';
+  static String gameSessionTurn(String sessionId) => 'api/games/session/$sessionId/turn';
+  static String gameSessionComplete(String sessionId) => 'api/games/session/$sessionId/complete';
+  
+  // Leaderboard API endpoints
+  static const String leaderboards = 'api/leaderboards';
+  static String leaderboardByType(String type) => 'api/leaderboards/$type';
+  static String userLeaderboardRanks(String userId) => 'api/leaderboards/user/$userId/ranks';
+  
+  // Competitions API endpoints
+  static const String competitions = 'api/competitions';
+  static String competitionDetails(String id) => 'api/competitions/$id';
+  
+  // User Search API endpoints
+  static String searchUsersByHandle(String handle) => 'accounts/auth/users/search?handle=$handle';
+  
+  // Connections API endpoints
+  static const String connections = 'connections';
+  static const String connectionsSearch = 'connections/search';
+  static String connectionRequest() => 'connections/request';
+  static String connectionAccept(String connectionId) => 'connections/$connectionId/accept';
+  static String connectionReject(String connectionId) => 'connections/$connectionId';
+  static String connectionBlock() => 'connections/block';
+  static String connectionUnblock() => 'connections/unblock';
+  static const String connectionsPending = 'connections/pending';
+  static const String connectionsBlocked = 'connections/blocked';
 }

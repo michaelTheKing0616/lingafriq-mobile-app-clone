@@ -10,6 +10,8 @@ import 'user_provider.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
 import '../services/gamification/events_service.dart';
+import '../utils/api_service.dart';
+import '../utils/api.dart';
 
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
@@ -199,7 +201,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (_gamification.ubuntuStreakActive) {
         // Ubuntu mode: donate lessons instead of breaking
         debugPrint('Ubuntu streak: Donating lessons to help others');
-        // TODO: Implement lesson donation
+        await _donateLessonsToCommunity();
       }
       newStreak = 1;
     }
@@ -443,6 +445,35 @@ class GamificationProvider extends Notifier<BaseProviderState>
       ));
     } catch (e) {
       debugPrint('Error queuing gamification sync: $e');
+    }
+  }
+
+  /// Donate lessons to community when Ubuntu streak would break
+  Future<void> _donateLessonsToCommunity() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final api = ref.read(apiProvider.notifier);
+      final response = await api.post(
+        Api.ubuntuDonate,
+        data: {
+          'streakBefore': _gamification.dailyStreak,
+          'donatedLessons': 1, // Donate 1 lesson per broken streak
+          'language': user.learningLanguage ?? 'yoruba',
+        },
+      );
+
+      if (response != null && response.statusCode == 200) {
+        debugPrint('Successfully donated lesson to community via Ubuntu streak');
+        // Award small XP bonus for donation
+        await awardXP('ubuntu_donation', multiplier: 0.5);
+      } else {
+        debugPrint('Failed to donate lesson: ${response?.statusCode}');
+      }
+    } catch (e) {
+      debugPrint('Error donating lesson to community: $e');
+      // Don't throw - this is a nice-to-have feature, don't break the streak logic
     }
   }
 

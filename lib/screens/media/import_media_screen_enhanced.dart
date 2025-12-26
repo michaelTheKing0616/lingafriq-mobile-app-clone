@@ -5,10 +5,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'import_media_dialogs.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
@@ -59,7 +63,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       try {
         // Upload file
         final uploadResponse = await ApiService.uploadFile(
-          '/media/upload',
+          Api.mediaUpload(),
           selectedFile.value!.path!,
           additionalData: {
             'title': selectedFile.value!.name,
@@ -73,7 +77,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           // Start transcription
           isTranscribing.value = true;
           final transcribeResponse = await ApiService.post(
-            '/media/transcribe',
+            Api.mediaTranscribe(),
             data: {
               'mediaId': mediaId,
               'language': languageController.text,
@@ -99,7 +103,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       for (int i = 0; i < 30; i++) {
         await Future.delayed(Duration(seconds: 2));
         try {
-          final response = await ApiService.get('/media/$mediaId');
+          final response = await ApiService.get(Api.mediaDetails(mediaId));
 
           if (response.statusCode == 200) {
             final media = response.data['data'];
@@ -132,7 +136,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       isGeneratingLesson.value = true;
       try {
         final response = await ApiService.post(
-          '/media/generate-lesson',
+          Api.mediaGenerateLesson(mediaId),
           data: {
             'mediaId': transcriptionResult.value!['mediaId'],
             'language': languageController.text,
@@ -164,7 +168,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-      body: Container(
+        body: Container(
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface

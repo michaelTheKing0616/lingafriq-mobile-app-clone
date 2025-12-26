@@ -76,31 +76,17 @@ class DialogProvider {
       return;
     }
 
-    if (e is! DioError) {
-      _log(e.runtimeType.toString());
-      await showPlatformDialogue(
-        title: 'Error',
-        content: SelectableText(e.toString()),
-      );
-      return;
-    }
+    // Use ErrorConverter for consistent error handling
+    final appError = ErrorConverter.toAppError(e);
+    final userMessage = ErrorConverter.getUserMessage(appError);
 
-    final error = e as DioError;
-    final status = error.response?.statusCode?.toString() ?? "";
-
-    if (error.type == DioErrorType.badResponse) {
-      final data = error.response?.data;
-
-      if (data is Map && data.keys.isNotEmpty) {
-        final error = data[data.keys.first];
-        await showPlatformDialogue(
-          title: "Error $status",
-          content: SelectableText(
-            error is List ? error.first.toString() : error.toString(),
-          ),
-        );
-        return;
-      }
+    await showPlatformDialogue(
+      title: appError is ApiError && appError.statusCode != null
+          ? "Error ${appError.statusCode}"
+          : "Error",
+      content: SelectableText(userMessage),
+    );
+    return;
 
       await showPlatformDialogue(
         title: "Error $status",

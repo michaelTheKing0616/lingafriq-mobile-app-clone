@@ -58,7 +58,17 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<ProfileModel> login(Map<String, String> data) async {
     try {
       final res = await ref.read(client).post(Api.login, data: data);
-      if (res.statusCode != 200) throw res.data;
+      if (res.statusCode != 200) {
+        // Convert to structured error
+        final error = ErrorConverter.toAppError(
+          DioError(
+            requestOptions: RequestOptions(path: Api.login),
+            response: res,
+            type: DioErrorType.response,
+          ),
+        );
+        throw error;
+      }
       token = res.data['access'];
 
       final email = data['email'] as String;
@@ -756,6 +766,53 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       res.statusCode.log();
       res.data.toString().log();
       if (res.statusCode != 200) throw res.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Get AI-curated loading screen content
+  /// Returns a LoadingScreenContent object with fact, image, and cultural information
+  Future<Map<String, dynamic>> getLoadingScreenContent({
+    String? country,
+    String? language,
+    String? lastContentId,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+      if (country != null) queryParams['country'] = country;
+      if (language != null) queryParams['language'] = language;
+      if (lastContentId != null) queryParams['lastContentId'] = lastContentId;
+
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/v1/loading-screen/content',
+        queryParameters: queryParams.isEmpty ? null : queryParams,
+      );
+
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Search users by handle (global_id)
+  Future<List<Map<String, dynamic>>> searchUsersByHandle(String handle) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.searchUsersByHandle(handle),
+      );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return List<Map<String, dynamic>>.from(data);
+      } else if (data is Map && data.containsKey('result')) {
+        final result = data['result'];
+        if (result is List) {
+          return List<Map<String, dynamic>>.from(result);
+        }
+      }
+      return [];
     } catch (e) {
       rethrow;
     }

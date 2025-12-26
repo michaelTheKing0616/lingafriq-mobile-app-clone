@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -48,10 +49,10 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
           isLoading.value = false;
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to join classroom: ${e.toString()}')),
-        );
         isLoading.value = false;
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 

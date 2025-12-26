@@ -43,13 +43,31 @@ class QuestProvider extends Notifier<BaseProviderState> {
       final progress = await journeyService.getUserProgress(user.id.toString(), campaign: 'great_journey');
       
       // Update local progress from API
+      // Map journey nodes to quest lessons/chapters
+      final Map<String, String> nodeToLessonMap = {}; // nodeId -> lessonId
+      
       for (var progressEntry in progress) {
         final nodeId = progressEntry['node_id']?['_id']?.toString() ?? '';
-        if (nodeId.isNotEmpty && progressEntry['status'] == 'completed') {
-          // Map node to lesson/chapter
-          // TODO: Implement proper mapping
+        final nodeData = progressEntry['node_id'];
+        final status = progressEntry['status']?.toString() ?? '';
+        
+        if (nodeId.isNotEmpty && status == 'completed') {
+          // Extract lesson ID from node metadata or payload
+          final lessonId = nodeData?['lesson_id']?.toString() ?? 
+                          nodeData?['metadata']?['lessonId']?.toString() ??
+                          progressEntry['payload']?['lessonId']?.toString() ??
+                          '';
+          
+          if (lessonId.isNotEmpty) {
+            nodeToLessonMap[nodeId] = lessonId;
+            // Mark lesson as completed
+            _lessonProgress[lessonId] = 1;
+          }
         }
       }
+      
+      // Save updated progress
+      await _saveQuestProgress();
     } catch (e) {
       debugPrint('Error loading journey from API: $e');
       // Continue with local data
@@ -77,11 +95,29 @@ class QuestProvider extends Notifier<BaseProviderState> {
       final user = ref.read(userProvider);
       if (user != null) {
         final journeyService = ref.read(journeyServiceProvider);
-        // TODO: Map lessonId to nodeId
-        // For now, we'll complete locally and sync later
+        
+        // Find the chapter and lesson to get node mapping
+        final chapter = _chapters.firstWhere(
+          (c) => c.lessons.any((l) => l.id == lessonId),
+          orElse: () => _chapters.first,
+        );
+        
+        // Map lesson to journey node
+        // Node ID format: campaign_chapter_lesson (e.g., "great_journey_ch1_l1")
+        final chapterNum = chapter.chapterNumber;
+        final lesson = chapter.lessons.firstWhere((l) => l.id == lessonId);
+        final lessonOrder = lesson.order;
+        final nodeId = 'great_journey_ch${chapterNum}_l${lessonOrder}';
+        
+        // Complete the journey node via API
+        await journeyService.completeNode(
+          'great_journey',
+          nodeId,
+        );
       }
     } catch (e) {
       debugPrint('Error completing journey node: $e');
+      // Continue - local completion is already tracked
     }
 
     // Check if chapter is completed

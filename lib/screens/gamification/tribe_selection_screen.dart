@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/user_provider.dart';
@@ -33,19 +36,29 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
       final tribesService = ref.read(tribesServiceProvider);
       final user = ref.read(userProvider);
       
-      // TODO: Implement get all tribes endpoint
-      // For now, use static list
-      _availableTribes = Tribes.allTribes.map((name) => {
-        'name': name,
-        'id': name.toLowerCase().replaceAll(' ', '_'),
+      // Fetch tribes from API
+      final tribes = await tribesService.getAllTribes();
+      _availableTribes = tribes.map((tribe) => {
+        'name': tribe['name'] as String,
+        'id': tribe['id'] as String,
+        'slug': tribe['slug'] as String?,
+        'members_count': tribe['members_count'] as int?,
+        'language_tag': tribe['language_tag'] as String?,
       }).toList();
       
       // Get user's current tribe if exists
       if (user != null) {
-        // TODO: Get user's tribe from API
+        final userTribes = await tribesService.getUserTribes(user.id.toString());
+        if (userTribes.isNotEmpty) {
+          _currentTribeId = userTribes.first['tribe_id'] as String?;
+        }
       }
     } catch (e) {
-      debugPrint('Error loading tribes: $e');
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
+      // Fallback to empty list on error
+      _availableTribes = [];
     } finally {
       setState(() => _isLoading = false);
     }
@@ -71,14 +84,8 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error joining tribe: $e');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to join tribe: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        ErrorHandler.showError(context, e);
       }
     } finally {
       setState(() => _isLoading = false);
@@ -135,7 +142,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
           ),
         ],
       ),
-      body: ListView(
+      body: OptimizedListView(
         padding: const EdgeInsets.all(16),
         children: [
           Card(

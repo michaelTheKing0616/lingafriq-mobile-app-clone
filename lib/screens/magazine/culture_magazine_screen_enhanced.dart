@@ -30,7 +30,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
-          '/culture-magazine',
+          Api.cultureMagazine,
           queryParameters: selectedCategory.value != null
               ? {'category': selectedCategory.value}
               : null,
@@ -183,7 +183,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     return Container(
       height: 50.h,
       padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
-      child: ListView.builder(
+      child: OptimizedListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
@@ -341,124 +341,4 @@ class _ArticleCard extends StatelessWidget {
   }
 }
 
-// _ArticleDetailScreen moved to culture_magazine_enhanced_features.dart as ArticleDetailEnhanced
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final readingProgress = useState(0.0);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(article['title'] ?? 'Article'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Article Content
-            Text(
-              showTranslation && article['translated_content'] != null
-                  ? article['translated_content']
-                  : article['content'] ?? '',
-              style: PanAfricanTypography.bodyLarge(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.xl),
-
-            // Vocabulary Section
-            if (article['vocabulary'] != null)
-              _buildVocabularySection(context, article['vocabulary'], isDark),
-
-            // Cultural Context
-            _buildCulturalContextSection(context, article, isDark),
-
-            // Related Articles
-            _buildRelatedArticlesSection(context, isDark),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildVocabularySection(
-    BuildContext context,
-    dynamic vocabulary,
-    bool isDark,
-  ) {
-    if (vocabulary is! List || vocabulary.isEmpty) return SizedBox.shrink();
-
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: ExpansionTile(
-        title: Text('Vocabulary'),
-        children: [
-          Padding(
-            padding: EdgeInsets.all(PanAfricanSpacing.md),
-            child: Column(
-              children: (vocabulary as List).map((vocab) {
-                final v = vocab as Map<String, dynamic>;
-                return ListTile(
-                  title: Text(v['word'] ?? ''),
-                  subtitle: Text(v['meaning'] ?? ''),
-                  trailing: v['example'] != null
-                      ? IconButton(
-                          icon: Icon(Icons.info_outline),
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: Text('Example'),
-                                content: Text(v['example']),
-                              ),
-                            );
-                          },
-                        )
-                      : null,
-                );
-              }).toList(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCulturalContextSection(
-    BuildContext context,
-    Map<String, dynamic> article,
-    bool isDark,
-  ) {
-    return Card(
-      color: PanAfricanColors.primaryContainer.withOpacity(0.3),
-      child: ListTile(
-        leading: Icon(Icons.public, color: PanAfricanColors.primary),
-        title: Text('Cultural Context'),
-        subtitle: Text(
-          'Learn more about the cultural significance of this topic',
-        ),
-        trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-        onTap: () {
-          // Show cultural context via Polie Tutor Mode
-        },
-      ),
-    );
-  }
-
-  Widget _buildRelatedArticlesSection(BuildContext context, bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Related Articles',
-          style: PanAfricanTypography.titleLarge(context),
-        ),
-        SizedBox(height: PanAfricanSpacing.md),
-        // Related articles list
-      ],
-    );
-  }
-}
 

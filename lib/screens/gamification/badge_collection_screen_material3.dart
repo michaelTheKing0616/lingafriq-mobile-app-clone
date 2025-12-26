@@ -4,6 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 /// Beautiful Material 3 Badge Collection Screen
@@ -105,7 +108,7 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
                         ],
                       ),
                     )
-                  : GridView.builder(
+                  : OptimizedListView.builder(
                       padding: EdgeInsets.all(PanAfricanSpacing.lg),
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,

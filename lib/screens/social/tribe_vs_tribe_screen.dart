@@ -4,6 +4,7 @@ import '../../providers/gamification_services_provider.dart';
 import '../../providers/socket_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../services/gamification/competitions_service.dart';
+import '../../utils/error_handler.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import '../../providers/tribe_vs_tribe_provider.dart';
@@ -56,8 +57,9 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
         await _loadCompetitionResults();
       }
     } catch (e) {
-      debugPrint('Error loading competitions: $e');
-      // Fallback to local provider
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
     } finally {
       setState(() => _isLoading = false);
     }
@@ -76,7 +78,9 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
         _competitionResults = results['results'] ?? [];
       });
     } catch (e) {
-      debugPrint('Error loading competition results: $e');
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
     }
   }
 

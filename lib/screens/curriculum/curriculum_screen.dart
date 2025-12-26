@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
@@ -32,9 +34,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
       await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading curriculum: $e')),
-        );
+        ErrorHandler.showError(context, e);
       }
     }
   }
@@ -223,7 +223,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
   Widget _buildLevelsView(BuildContext context, String language, bool isDark) {
     final levels = ref.read(curriculumProvider.notifier).getLevelsForLanguage(language);
 
-    return ListView.builder(
+    return OptimizedListView.builder(
       padding: EdgeInsets.all(16.sp),
       itemCount: levels.length,
       itemBuilder: (context, index) {

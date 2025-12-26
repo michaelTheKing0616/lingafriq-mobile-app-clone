@@ -37,26 +37,28 @@ class TutorStoryModeScreen extends HookConsumerWidget {
       }
 
       isLoading.value = true;
-      try {
-        final response = await ApiService.post(
-          AppConfig.tutorStory,
-          data: {
-            'theme': themeController.text,
-            'language': selectedLanguage.value.name,
-            'userLevel': userLevel.value,
-          },
-        );
+      await safeAsync(
+        context: context,
+        operation: () async {
+          final response = await ApiService.post(
+            AppConfig.tutorStory,
+            data: {
+              'theme': themeController.text,
+              'language': selectedLanguage.value.name,
+              'userLevel': userLevel.value,
+            },
+          );
 
-        if (response.statusCode == 200) {
-          storyResult.value = response.data;
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Story generation failed: ${e.toString()}')),
-        );
-      } finally {
-        isLoading.value = false;
-      }
+          if (response.statusCode == 200) {
+            storyResult.value = response.data;
+          } else {
+            throw Exception('Failed to generate story');
+          }
+        },
+        errorContext: 'generateStory',
+        showError: true,
+      );
+      isLoading.value = false;
     }
 
     return LoadingOverlay(

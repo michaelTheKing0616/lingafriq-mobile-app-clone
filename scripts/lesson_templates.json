@@ -1,0 +1,453 @@
+{
+  "yoruba": {
+    "A0": {
+      "sounds_tones": [
+        {"text": "a", "ipa": "a", "tone_pattern": ["mid"], "translation": "vowel sound a", "usage_context": "pronunciation", "cultural_note": "Basic vowel in Yoruba"},
+        {"text": "á", "ipa": "á", "tone_pattern": ["high"], "translation": "high tone a", "usage_context": "pronunciation", "cultural_note": "High tone changes meaning"},
+        {"text": "à", "ipa": "à", "tone_pattern": ["low"], "translation": "low tone a", "usage_context": "pronunciation", "cultural_note": "Low tone changes meaning"},
+        {"text": "e", "ipa": "e", "tone_pattern": ["mid"], "translation": "vowel sound e", "usage_context": "pronunciation"},
+        {"text": "é", "ipa": "é", "tone_pattern": ["high"], "translation": "high tone e", "usage_context": "pronunciation"},
+        {"text": "è", "ipa": "è", "tone_pattern": ["low"], "translation": "low tone e", "usage_context": "pronunciation"},
+        {"text": "ẹ", "ipa": "ɛ", "tone_pattern": ["mid"], "translation": "open e sound", "usage_context": "pronunciation"},
+        {"text": "ẹ́", "ipa": "ɛ́", "tone_pattern": ["high"], "translation": "high tone ẹ", "usage_context": "pronunciation"},
+        {"text": "ẹ̀", "ipa": "ɛ̀", "tone_pattern": ["low"], "translation": "low tone ẹ", "usage_context": "pronunciation"},
+        {"text": "i", "ipa": "i", "tone_pattern": ["mid"], "translation": "vowel sound i", "usage_context": "pronunciation"},
+        {"text": "í", "ipa": "í", "tone_pattern": ["high"], "translation": "high tone i", "usage_context": "pronunciation"},
+        {"text": "ì", "ipa": "ì", "tone_pattern": ["low"], "translation": "low tone i", "usage_context": "pronunciation"},
+        {"text": "o", "ipa": "o", "tone_pattern": ["mid"], "translation": "vowel sound o", "usage_context": "pronunciation"},
+        {"text": "ó", "ipa": "ó", "tone_pattern": ["high"], "translation": "high tone o", "usage_context": "pronunciation"},
+        {"text": "ò", "ipa": "ò", "tone_pattern": ["low"], "translation": "low tone o", "usage_context": "pronunciation"},
+        {"text": "ọ", "ipa": "ɔ", "tone_pattern": ["mid"], "translation": "open o sound", "usage_context": "pronunciation"},
+        {"text": "ọ́", "ipa": "ɔ́", "tone_pattern": ["high"], "translation": "high tone ọ", "usage_context": "pronunciation"},
+        {"text": "ọ̀", "ipa": "ɔ̀", "tone_pattern": ["low"], "translation": "low tone ọ", "usage_context": "pronunciation"},
+        {"text": "u", "ipa": "u", "tone_pattern": ["mid"], "translation": "vowel sound u", "usage_context": "pronunciation"},
+        {"text": "ú", "ipa": "ú", "tone_pattern": ["high"], "translation": "high tone u", "usage_context": "pronunciation"},
+        {"text": "ù", "ipa": "ù", "tone_pattern": ["low"], "translation": "low tone u", "usage_context": "pronunciation"}
+      ]
+    },
+    "A1": {
+      "greetings": [
+        {
+          "text": "Ẹ káàárọ̀",
+          "ipa": "ɛ̀ káː rɔ̀",
+          "tone_pattern": ["low", "high", "low"],
+          "translation": "Good morning",
+          "usage_context": "formal",
+          "cultural_note": "Used before noon as a respectful greeting",
+          "example_sentences": [
+            {"text": "Ẹ káàárọ̀, báwo ni?", "translation": "Good morning, how are you?"}
+          ],
+          "related_words": ["ẹ kú ìrọ̀lẹ́", "ẹ kú ọ̀sán"]
+        },
+        {
+          "text": "Ẹ kú ìrọ̀lẹ́",
+          "ipa": "ɛ̀ kú ìrɔ̀lɛ́",
+          "tone_pattern": ["low", "high", "low", "high"],
+          "translation": "Good afternoon",
+          "usage_context": "formal",
+          "cultural_note": "Used in the afternoon"
+        },
+        {
+          "text": "Ẹ kú ọ̀sán",
+          "ipa": "ɛ̀ kú ɔ̀sán",
+          "tone_pattern": ["low", "high", "low", "high"],
+          "translation": "Good evening",
+          "usage_context": "formal",
+          "cultural_note": "Used in the evening"
+        },
+        {
+          "text": "Báwo ni?",
+          "ipa": "báwó ni",
+          "tone_pattern": ["high", "high", "mid"],
+          "translation": "How are you?",
+          "usage_context": "informal"
+        },
+        {
+          "text": "Ó dàbọ̀",
+          "ipa": "ó dàbɔ̀",
+          "tone_pattern": ["high", "low", "low"],
+          "translation": "Goodbye",
+          "usage_context": "general"
+        }
+      ],
+      "introductions": [
+        {
+          "text": "Orúkọ mi ni...",
+          "ipa": "orúkɔ mi ni",
+          "tone_pattern": ["high", "high", "mid", "mid"],
+          "translation": "My name is...",
+          "usage_context": "conversation",
+          "example_sentences": [
+            {"text": "Orúkọ mi ni Ade", "translation": "My name is Ade"}
+          ]
+        },
+        {
+          "text": "Mo wá láti...",
+          "ipa": "mo wá láti",
+          "tone_pattern": ["mid", "high", "high", "mid"],
+          "translation": "I am from...",
+          "usage_context": "conversation"
+        },
+        {
+          "text": "Ẹ káàbọ̀",
+          "ipa": "ɛ̀ káːbɔ̀",
+          "tone_pattern": ["low", "high", "low"],
+          "translation": "Welcome",
+          "usage_context": "general"
+        }
+      ],
+      "numbers": [
+        {"text": "oókan", "ipa": "óːkàn", "tone_pattern": ["high", "low"], "translation": "one", "usage_context": "vocabulary"},
+        {"text": "èjì", "ipa": "èdʒì", "tone_pattern": ["low", "low"], "translation": "two", "usage_context": "vocabulary"},
+        {"text": "ẹ̀ta", "ipa": "ɛ̀tá", "tone_pattern": ["low", "high"], "translation": "three", "usage_context": "vocabulary"},
+        {"text": "ẹ̀rin", "ipa": "ɛ̀rĩ", "tone_pattern": ["low", "mid"], "translation": "four", "usage_context": "vocabulary"},
+        {"text": "àrún", "ipa": "àrún", "tone_pattern": ["low", "high"], "translation": "five", "usage_context": "vocabulary"},
+        {"text": "ẹ̀fà", "ipa": "ɛ̀fà", "tone_pattern": ["low", "low"], "translation": "six", "usage_context": "vocabulary"},
+        {"text": "èje", "ipa": "èdʒé", "tone_pattern": ["low", "high"], "translation": "seven", "usage_context": "vocabulary"},
+        {"text": "ẹ̀jọ", "ipa": "ɛ̀dʒɔ", "tone_pattern": ["low", "mid"], "translation": "eight", "usage_context": "vocabulary"},
+        {"text": "ẹ̀sàn", "ipa": "ɛ̀sã", "tone_pattern": ["low", "mid"], "translation": "nine", "usage_context": "vocabulary"},
+        {"text": "ẹ̀wá", "ipa": "ɛ̀wá", "tone_pattern": ["low", "high"], "translation": "ten", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "igbo": {
+    "A0": {
+      "sounds_tones": [
+        {"text": "a", "ipa": "a", "tone_pattern": ["low"], "translation": "vowel sound a", "usage_context": "pronunciation"},
+        {"text": "á", "ipa": "á", "tone_pattern": ["high"], "translation": "high tone a", "usage_context": "pronunciation"},
+        {"text": "à", "ipa": "à", "tone_pattern": ["low"], "translation": "low tone a", "usage_context": "pronunciation"},
+        {"text": "ụ", "ipa": "ʊ", "tone_pattern": ["low"], "translation": "vowel sound ụ", "usage_context": "pronunciation"},
+        {"text": "ụ́", "ipa": "ʊ́", "tone_pattern": ["high"], "translation": "high tone ụ", "usage_context": "pronunciation"}
+      ]
+    },
+    "A1": {
+      "greetings": [
+        {
+          "text": "Ndewo",
+          "ipa": "ndɛ́wɔ̀",
+          "tone_pattern": ["high", "low"],
+          "translation": "Hello",
+          "usage_context": "general",
+          "cultural_note": "Common greeting in Igbo"
+        },
+        {
+          "text": "Ụtụtụ ọma",
+          "ipa": "ʊ̀tʊ̀ ɔ́má",
+          "tone_pattern": ["low", "high"],
+          "translation": "Good morning",
+          "usage_context": "general"
+        },
+        {
+          "text": "Kedu?",
+          "ipa": "kɛdú",
+          "tone_pattern": ["mid", "high"],
+          "translation": "How are you?",
+          "usage_context": "informal"
+        }
+      ],
+      "numbers": [
+        {"text": "otu", "ipa": "otu", "tone_pattern": ["low"], "translation": "one", "usage_context": "vocabulary"},
+        {"text": "abụọ", "ipa": "abʊɔ", "tone_pattern": ["low"], "translation": "two", "usage_context": "vocabulary"},
+        {"text": "atọ", "ipa": "atɔ", "tone_pattern": ["low"], "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "swahili": {
+    "A0": {
+      "sounds_tones": [
+        {"text": "a", "ipa": "a", "translation": "vowel sound a", "usage_context": "pronunciation"},
+        {"text": "e", "ipa": "e", "translation": "vowel sound e", "usage_context": "pronunciation"},
+        {"text": "i", "ipa": "i", "translation": "vowel sound i", "usage_context": "pronunciation"}
+      ]
+    },
+    "A1": {
+      "greetings": [
+        {
+          "text": "Habari yako?",
+          "ipa": "haˈbaɾi ˈjaːko",
+          "translation": "How are you?",
+          "usage_context": "conversation",
+          "cultural_note": "Common greeting"
+        },
+        {
+          "text": "Hujambo",
+          "ipa": "huˈdʒambo",
+          "translation": "Hello (to one person)",
+          "usage_context": "conversation"
+        },
+        {
+          "text": "Hamjambo",
+          "ipa": "hamˈdʒambo",
+          "translation": "Hello (to multiple people)",
+          "usage_context": "conversation"
+        },
+        {
+          "text": "Habari za asubuhi",
+          "ipa": "haˈbaɾi za asuˈbuhi",
+          "translation": "Good morning",
+          "usage_context": "formal"
+        }
+      ],
+      "numbers": [
+        {"text": "moja", "ipa": "moʄa", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "mbili", "ipa": "mbili", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "tatu", "ipa": "tatu", "translation": "three", "usage_context": "vocabulary"},
+        {"text": "nne", "ipa": "nːe", "translation": "four", "usage_context": "vocabulary"},
+        {"text": "tano", "ipa": "tano", "translation": "five", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "hausa": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "Sannu",
+          "ipa": "sanːu",
+          "translation": "Hello",
+          "usage_context": "general",
+          "cultural_note": "Common greeting in Hausa"
+        },
+        {
+          "text": "Ina kwana?",
+          "ipa": "ina kwana",
+          "translation": "How did you sleep?",
+          "usage_context": "informal",
+          "cultural_note": "Common morning greeting"
+        },
+        {
+          "text": "Lafiya lau",
+          "ipa": "lafija lau",
+          "translation": "I'm fine, thanks",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "daya", "ipa": "daja", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "biyu", "ipa": "biju", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "uku", "ipa": "uku", "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "amharic": {
+    "A0": {
+      "sounds_tones": [
+        {"text": "አ", "ipa": "ʔa", "transliteration": "ä", "translation": "Amharic letter 'ä'", "usage_context": "pronunciation"},
+        {"text": "በ", "ipa": "bə", "transliteration": "be", "translation": "Amharic letter 'be'", "usage_context": "pronunciation"}
+      ]
+    },
+    "A1": {
+      "greetings": [
+        {
+          "text": "ሰላም",
+          "ipa": "səlam",
+          "transliteration": "Selam",
+          "translation": "Hello / Peace",
+          "usage_context": "general",
+          "cultural_note": "Universal greeting in Amharic"
+        },
+        {
+          "text": "እንዴት ነህ?",
+          "ipa": "əndet nəh",
+          "transliteration": "Endet neh?",
+          "translation": "How are you? (to male)",
+          "usage_context": "conversation",
+          "cultural_note": "Gender-sensitive greeting"
+        },
+        {
+          "text": "እንዴት ነሽ?",
+          "ipa": "əndet nəʃ",
+          "transliteration": "Endet nesh?",
+          "translation": "How are you? (to female)",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "አንድ", "ipa": "and", "transliteration": "and", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "ሁለት", "ipa": "hulət", "transliteration": "hulet", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "ሦስት", "ipa": "sost", "transliteration": "sost", "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "pidgin": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "How you dey?",
+          "translation": "How are you?",
+          "usage_context": "informal",
+          "cultural_note": "Used informally across Nigeria"
+        },
+        {
+          "text": "Wetin dey happen?",
+          "translation": "What's happening?",
+          "usage_context": "informal"
+        },
+        {
+          "text": "How far?",
+          "translation": "How are things?",
+          "usage_context": "informal"
+        }
+      ],
+      "numbers": [
+        {"text": "one", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "two", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "three", "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "zulu": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "Sawubona",
+          "ipa": "sawuˈbona",
+          "translation": "Hello",
+          "usage_context": "general",
+          "cultural_note": "Common Zulu greeting"
+        },
+        {
+          "text": "Unjani?",
+          "ipa": "uˈnʄani",
+          "translation": "How are you?",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "kunye", "ipa": "kuˈɲe", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "kubili", "ipa": "kuˈbili", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "kuthathu", "ipa": "kutʰatʰu", "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "xhosa": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "Molo",
+          "ipa": "moˈlo",
+          "translation": "Hello",
+          "usage_context": "general",
+          "cultural_note": "Common Xhosa greeting"
+        },
+        {
+          "text": "Unjani?",
+          "ipa": "uˈnʄani",
+          "translation": "How are you?",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "inye", "ipa": "iˈɲe", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "zimbini", "ipa": "ziˈmbini", "translation": "two", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "twi": {
+    "A0": {
+      "sounds_tones": [
+        {"text": "a", "ipa": "a", "tone_pattern": ["low"], "translation": "vowel sound a", "usage_context": "pronunciation"},
+        {"text": "á", "ipa": "á", "tone_pattern": ["high"], "translation": "high tone a", "usage_context": "pronunciation"}
+      ]
+    },
+    "A1": {
+      "greetings": [
+        {
+          "text": "Akwaaba",
+          "ipa": "akwaˈba",
+          "tone_pattern": ["low", "high"],
+          "translation": "Welcome",
+          "usage_context": "general",
+          "cultural_note": "Common Twi greeting"
+        },
+        {
+          "text": "Ɛte sɛn?",
+          "ipa": "ɛtɛ sɛn",
+          "tone_pattern": ["mid", "high"],
+          "translation": "How are you?",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "baako", "ipa": "baːko", "tone_pattern": ["low"], "translation": "one", "usage_context": "vocabulary"},
+        {"text": "mmienu", "ipa": "mːienu", "tone_pattern": ["low"], "translation": "two", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "afrikaans": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "Hallo",
+          "ipa": "haˈlo",
+          "translation": "Hello",
+          "usage_context": "general"
+        },
+        {
+          "text": "Goeie môre",
+          "ipa": "xui̯ə mɔrə",
+          "translation": "Good morning",
+          "usage_context": "formal"
+        },
+        {
+          "text": "Hoe gaan dit?",
+          "ipa": "hu xaːn dət",
+          "translation": "How are you?",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "een", "ipa": "eːn", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "twee", "ipa": "tveː", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "drie", "ipa": "dri", "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "wolof": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "Salaam aleekum",
+          "ipa": "salaːm aleːkum",
+          "translation": "Peace be upon you",
+          "usage_context": "formal",
+          "cultural_note": "Common Islamic greeting in Wolof"
+        },
+        {
+          "text": "Naka nga def?",
+          "ipa": "naka ŋa def",
+          "translation": "How are you?",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "benn", "ipa": "benn", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "ñaar", "ipa": "ɲaːr", "translation": "two", "usage_context": "vocabulary"}
+      ]
+    }
+  },
+  "somali": {
+    "A1": {
+      "greetings": [
+        {
+          "text": "Salaam",
+          "ipa": "salaːm",
+          "translation": "Hello / Peace",
+          "usage_context": "general",
+          "cultural_note": "Common greeting in Somali"
+        },
+        {
+          "text": "Iska warran?",
+          "ipa": "iska warːan",
+          "translation": "How are you?",
+          "usage_context": "conversation"
+        }
+      ],
+      "numbers": [
+        {"text": "kow", "ipa": "kow", "translation": "one", "usage_context": "vocabulary"},
+        {"text": "laba", "ipa": "laba", "translation": "two", "usage_context": "vocabulary"},
+        {"text": "saddex", "ipa": "sadːeʐ", "translation": "three", "usage_context": "vocabulary"}
+      ]
+    }
+  }
+}
+

@@ -16,6 +16,7 @@ class ProfileModel {
   final bool agree_to_privacy_terms;
   final String? avater;
   final int completed_point;
+  final String? global_id; // User's unique handle/identifier
   ProfileModel({
     required this.id,
     required this.email,
@@ -28,6 +29,7 @@ class ProfileModel {
     required this.agree_to_privacy_terms,
     required this.avater,
     required this.completed_point,
+    this.global_id,
   });
 
   ProfileModel copyWith({
@@ -42,6 +44,7 @@ class ProfileModel {
     bool? agree_to_privacy_terms,
     String? avater,
     int? completed_point,
+    String? global_id,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -55,6 +58,7 @@ class ProfileModel {
       agree_to_privacy_terms: agree_to_privacy_terms ?? this.agree_to_privacy_terms,
       avater: avater ?? this.avater,
       completed_point: completed_point ?? this.completed_point,
+      global_id: global_id ?? this.global_id,
     );
   }
 
@@ -74,6 +78,9 @@ class ProfileModel {
       result.addAll({'avater': avater});
     }
     result.addAll({'completed_point': completed_point});
+    if (global_id != null) {
+      result.addAll({'global_id': global_id});
+    }
 
     return result;
   }
@@ -96,6 +103,7 @@ class ProfileModel {
       nationality: map['nationality'] ?? '',
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       avater: map['avater'],
+      global_id: map['global_id'],
       completed_point: map['completed_point'] is String
           ? num.parse(map['completed_point']).toInt()
           : map['completed_point']?.toInt() ?? 0,

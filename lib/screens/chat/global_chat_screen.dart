@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
@@ -6,6 +7,8 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -40,19 +43,25 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
   }
 
   void _initializeSocket() {
-    try {
-      final user = ref.read(userProvider);
-      if (user != null) {
-        final socket = ref.read(socketProvider.notifier);
-        socket.connect(
-          user.id.toString(),
-          user.username,
-        );
-        socket.joinRoom(_selectedRoom);
-        socket.setActiveRoom(_selectedRoom);
-      }
-    } catch (e) {
-      debugPrint('Error initializing socket: $e');
+    final user = ref.read(userProvider);
+    if (user != null) {
+      safeAsyncSilent(
+        operation: () async {
+          final socket = ref.read(socketProvider.notifier);
+          socket.connect(
+            user.id.toString(),
+            user.username,
+          );
+          socket.joinRoom(_selectedRoom);
+          socket.setActiveRoom(_selectedRoom);
+        },
+        errorContext: 'initializeSocket',
+        onError: (e) {
+          if (mounted) {
+            ErrorHandler.showError(context, e);
+          }
+        },
+      );
     }
   }
 
@@ -220,7 +229,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                       height: 60.sp,
                       color: isDark ? const Color(0xFF1F3527) : Colors.white,
                       padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                      child: ListView.builder(
+                      child: OptimizedListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: onlineUsers.length,
                         itemBuilder: (context, index) {
@@ -304,7 +313,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                                   ],
                                 ),
                               )
-                            : ListView.builder(
+                            : OptimizedListView.builder(
                                 controller: _scrollController,
                                 padding: EdgeInsets.all(16.sp),
                                 itemCount: messages.length,
@@ -367,22 +376,28 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                           child: IconButton(
                             onPressed: user != null && isConnected && _messageController.text.isNotEmpty
                                 ? () {
-                                    ref.read(socketProvider.notifier).sendMessage(
-                                      _selectedRoom,
-                                      _messageController.text,
-                                      user.id.toString(),
-                                      user.username,
-                                    );
-                                    _messageController.clear();
-                                    Future.delayed(const Duration(milliseconds: 100), () {
-                                      if (_scrollController.hasClients) {
-                                        _scrollController.animateTo(
-                                          _scrollController.position.maxScrollExtent,
-                                          duration: const Duration(milliseconds: 300),
-                                          curve: Curves.easeOut,
-                                        );
+                                    try {
+                                      ref.read(socketProvider.notifier).sendMessage(
+                                        _selectedRoom,
+                                        _messageController.text,
+                                        user.id.toString(),
+                                        user.username,
+                                      );
+                                      _messageController.clear();
+                                      Future.delayed(const Duration(milliseconds: 100), () {
+                                        if (_scrollController.hasClients) {
+                                          _scrollController.animateTo(
+                                            _scrollController.position.maxScrollExtent,
+                                            duration: const Duration(milliseconds: 300),
+                                            curve: Curves.easeOut,
+                                          );
+                                        }
+                                      });
+                                    } catch (e) {
+                                      if (mounted) {
+                                        ErrorHandler.showError(context, e);
                                       }
-                                    });
+                                    }
                                   }
                                 : null,
                             icon: const Icon(

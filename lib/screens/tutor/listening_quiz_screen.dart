@@ -4,6 +4,8 @@ import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 
 class ListeningQuizScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> passageData;
@@ -36,15 +38,23 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
   }
 
   Future<void> _playPassage() async {
-    final passage = widget.passageData['passage'] as String? ?? '';
-    final languageName = (widget.passageData['language'] as String?) ?? 'english';
-    await ref.read(ttsProvider.notifier).speak(
-          passage,
-          languageName: languageName,
-        );
-    setState(() {
-      _hasListened = true;
-    });
+    await safeAsync(
+      context: context,
+      operation: () async {
+        final passage = widget.passageData['passage'] as String? ?? '';
+        final languageName = (widget.passageData['language'] as String?) ?? 'english';
+        await ref.read(ttsProvider.notifier).speak(
+              passage,
+              languageName: languageName,
+            );
+        if (mounted) {
+          setState(() {
+            _hasListened = true;
+          });
+        }
+      },
+      errorContext: 'playPassage',
+    );
   }
 
   @override
@@ -174,13 +184,19 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
   }
 
   Future<void> _submitAnswers() async {
-    // Evaluate answers and show results
-    // This would call the provider's evaluateOpenAnswer method
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Answers submitted!')),
-      );
-    }
+    await safeAsync(
+      context: context,
+      operation: () async {
+        // Evaluate answers and show results
+        // This would call the provider's evaluateOpenAnswer method
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Answers submitted!')),
+          );
+        }
+      },
+      errorContext: 'submitAnswers',
+    );
   }
 }
 

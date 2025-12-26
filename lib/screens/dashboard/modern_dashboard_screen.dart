@@ -14,6 +14,9 @@ import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -82,12 +85,28 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  radius: 24,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: user?.avatar != null
-                                      ? NetworkImage(user!.avatar!)
-                                      : null,
+                                user?.avatar != null
+                                    ? ClipOval(
+                                        child: LazyImage(
+                                          imageUrl: user!.avatar!,
+                                          width: 48,
+                                          height: 48,
+                                          placeholder: CircleAvatar(
+                                            radius: 24,
+                                            backgroundColor: Colors.white,
+                                            child: Text(
+                                              (user.username ?? 'U')[0].toUpperCase(),
+                                              style: TextStyle(
+                                                color: const Color(0xFFCE1126),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: Colors.white,
                                   child: user?.avatar == null
                                       ? Text(
                                           (user?.username ?? 'U')[0].toUpperCase(),
