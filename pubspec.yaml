@@ -71,7 +71,7 @@ dependencies:
   local_auth_ios: ^1.0.4
   # Error Tracking & Monitoring
   sentry_flutter: ^7.0.0
-  package_info_plus: ^5.0.0
+  package_info_plus: ^8.0.0
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1
