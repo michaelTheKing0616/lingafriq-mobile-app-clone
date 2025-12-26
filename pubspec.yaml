@@ -48,7 +48,7 @@ dependencies:
   # better_player: ^0.0.84 
   just_audio: ^0.10.5
   flutter_inappwebview: ^6.1.5 
-  intl: ^0.20.2 
+  intl: ^0.20.2
   url_launcher: ^6.3.2
   firebase_core: ^4.2.1
   firebase_messaging: ^16.0.4
@@ -67,8 +67,6 @@ dependencies:
   # Auth & Security
   flutter_secure_storage: ^9.2.2
   local_auth: ^2.3.0
-  local_auth_android: ^1.0.5
-  local_auth_ios: ^1.0.4
   # Error Tracking & Monitoring
   sentry_flutter: ^7.0.0
   package_info_plus: ^9.0.0
