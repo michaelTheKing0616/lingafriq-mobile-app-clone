@@ -4,6 +4,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'dart:convert';
 import 'dart:math';
 
@@ -259,7 +260,7 @@ class SmartRecommendationsService {
 
       // Fetch games
       try {
-        final gamesResponse = await ApiService.get('/games');
+        final gamesResponse = await ApiService.get(Api.games);
         if (gamesResponse.statusCode == 200 && gamesResponse.data['data'] != null) {
           final games = List<Map<String, dynamic>>.from(gamesResponse.data['data']);
           allContent.addAll(games.map((game) => {
@@ -282,7 +283,7 @@ class SmartRecommendationsService {
       // Fetch culture articles
       try {
         final articlesResponse = await ApiService.get(
-          '/culture-magazine/articles',
+          Api.cultureArticles(published: true),
           queryParameters: {
             'published': true,
             if (language != null) 'country': language,

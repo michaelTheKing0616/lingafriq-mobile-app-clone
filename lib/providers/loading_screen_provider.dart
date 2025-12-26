@@ -36,13 +36,26 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     
     if (useBackend) {
       try {
-        // Try to load from backend
-        final contentData = await ref.read(apiProvider.notifier).getLoadingScreenContent();
+        // Get last viewed content ID for variety
+        final lastId = _prefs.getString(_lastContentKey);
+        
+        // Try to load from backend with parameters for variety
+        final contentData = await ref.read(apiProvider.notifier).getLoadingScreenContent(
+          lastContentId: lastId,
+        );
         final content = LoadingScreenContent.fromJson(contentData);
         state = content;
         
         // Save to local preferences as backup
         await _prefs.setString(_lastContentKey, content.id);
+        
+        // Track viewed content
+        final viewedIds = _prefs.getStringList(_viewedContentKey) ?? [];
+        final updatedViewed = [...viewedIds, content.id];
+        if (updatedViewed.length > 20) {
+          updatedViewed.removeAt(0);
+        }
+        await _prefs.setStringList(_viewedContentKey, updatedViewed);
         return;
       } catch (e) {
         // Backend failed, fall back to local content
@@ -82,8 +95,9 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     // Save to preferences
     _prefs.setString(_lastContentKey, selected.id);
     final updatedViewed = [...viewedIds, selected.id];
-    // Keep only last 5 viewed to allow rotation
-    if (updatedViewed.length > 5) {
+    // Keep only last 20 viewed to allow more variety and avoid repetition
+    // With 40+ facts, keeping 20 viewed ensures good rotation
+    if (updatedViewed.length > 20) {
       updatedViewed.removeAt(0);
     }
     _prefs.setStringList(_viewedContentKey, updatedViewed);
@@ -123,15 +137,37 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     }
   }
 
-  /// Future: Fetch AI-generated image URL
-  /// This can be integrated with an AI image generation service
+  /// Fetch AI-generated image URL from backend
+  /// Uses the loading screen image generation endpoint
   Future<String> fetchAIGeneratedImage({
     required String country,
     required String language,
   }) async {
-    // TODO: Implement AI image generation API call
-    // Example: Use DALL-E, Midjourney API, or custom AI service
-    // For now, return placeholder
+    try {
+      // Use the prompt from the current content's fact
+      final prompt = state.fact;
+      
+      if (prompt.isEmpty) {
+        return 'assets/images/loading/placeholder.png';
+      }
+
+      // Call backend image generation endpoint via ApiService
+      final response = await ApiService.get(
+        '${AppConfig.apiBaseUrl}/loading-screen/image/${Uri.encodeComponent(prompt)}',
+        queryParameters: {
+          'country': country,
+          'language': language,
+        },
+      );
+
+      if (response.statusCode == 200 && response.data['imageUrl'] != null) {
+        return response.data['imageUrl'] as String;
+      }
+    } catch (e) {
+      print('Failed to generate AI image: $e');
+    }
+    
+    // Fallback to placeholder
     return 'assets/images/loading/placeholder.png';
   }
 }

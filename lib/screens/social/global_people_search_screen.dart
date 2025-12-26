@@ -68,8 +68,11 @@ class _GlobalPeopleSearchScreenState
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = 'Unable to search people right now.';
+        _error = null;
       });
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
     }
   }
 
@@ -97,7 +100,9 @@ class _GlobalPeopleSearchScreenState
               ),
               child: TextField(
                 controller: _searchController,
-                onChanged: _runSearch,
+                onChanged: (value) {
+                  _searchDebouncer.run(() => _runSearch(value));
+                },
                 decoration: InputDecoration(
                   hintText: 'Search by @handle...',
                   prefixIcon: const Icon(Icons.alternate_email_rounded),
@@ -130,7 +135,7 @@ class _GlobalPeopleSearchScreenState
                       ),
                     ),
                   )
-                : ListView.builder(
+                : OptimizedListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                     itemCount: _results.length,
                     itemBuilder: (context, index) {

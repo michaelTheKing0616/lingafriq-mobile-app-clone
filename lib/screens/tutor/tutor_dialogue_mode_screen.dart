@@ -6,6 +6,8 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:uuid/uuid.dart';
@@ -50,37 +52,39 @@ class TutorDialogueModeScreen extends HookConsumerWidget {
       });
 
       isLoading.value = true;
-      try {
-        final response = await ApiService.post(
-          AppConfig.tutorDialogue,
-          data: {
-            'message': userMessage['text'],
-            'sessionId': sessionId,
-            'language': selectedLanguage.value.name,
-            'context': messages.value
-                .map((m) => {'role': m['sender'], 'content': m['text']})
-                .toList(),
-          },
-        );
+      await safeAsync(
+        context: context,
+        operation: () async {
+          final response = await ApiService.post(
+            AppConfig.tutorDialogue,
+            data: {
+              'message': userMessage['text'],
+              'sessionId': sessionId,
+              'language': selectedLanguage.value.name,
+              'context': messages.value
+                  .map((m) => {'role': m['sender'], 'content': m['text']})
+                  .toList(),
+            },
+          );
 
-        if (response.statusCode == 200) {
-          final polieMessage = {
-            'id': const Uuid().v4(),
-            'text': response.data['response'] ?? response.data['message'] ?? '',
-            'sender': 'polie',
-            'timestamp': DateTime.now(),
-            'corrections': response.data['corrections'],
-            'hints': response.data['hints'],
-          };
-          messages.value = [...messages.value, polieMessage];
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send message: ${e.toString()}')),
-        );
-      } finally {
-        isLoading.value = false;
-      }
+          if (response.statusCode == 200) {
+            final polieMessage = {
+              'id': const Uuid().v4(),
+              'text': response.data['response'] ?? response.data['message'] ?? '',
+              'sender': 'polie',
+              'timestamp': DateTime.now(),
+              'corrections': response.data['corrections'],
+              'hints': response.data['hints'],
+            };
+            messages.value = [...messages.value, polieMessage];
+          } else {
+            throw Exception('Failed to send message');
+          }
+        },
+        errorContext: 'sendMessage',
+        showError: true,
+      );
+      isLoading.value = false;
     }
 
     return LoadingOverlay(

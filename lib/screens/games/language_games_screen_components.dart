@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import '../../models/game/game_session_model.dart';
 import '../../utils/african_theme.dart';
 import '../../utils/design_system.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Language Selector Widget

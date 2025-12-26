@@ -6,6 +6,8 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 
@@ -26,25 +28,27 @@ class TutorAssessModeScreen extends HookConsumerWidget {
 
     Future<void> assessProficiency() async {
       isLoading.value = true;
-      try {
-        final response = await ApiService.post(
-          AppConfig.tutorAssess,
-          data: {
-            'language': selectedLanguage.value.name,
-            'assessmentType': assessmentType.value,
-          },
-        );
+      await safeAsync(
+        context: context,
+        operation: () async {
+          final response = await ApiService.post(
+            AppConfig.tutorAssess,
+            data: {
+              'language': selectedLanguage.value.name,
+              'assessmentType': assessmentType.value,
+            },
+          );
 
-        if (response.statusCode == 200) {
-          assessmentResult.value = response.data;
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Assessment failed: ${e.toString()}')),
-        );
-      } finally {
-        isLoading.value = false;
-      }
+          if (response.statusCode == 200) {
+            assessmentResult.value = response.data;
+          } else {
+            throw Exception('Failed to generate assessment');
+          }
+        },
+        errorContext: 'assessProficiency',
+        showError: true,
+      );
+      isLoading.value = false;
     }
 
     return LoadingOverlay(

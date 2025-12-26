@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../providers/quest_provider.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/user_provider.dart';
@@ -59,7 +62,7 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
+      body: OptimizedListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: chapters.length,
         itemBuilder: (context, index) {
@@ -266,8 +269,8 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
         });
       }
     } catch (e) {
-      debugPrint('Error generating story/lessons: $e');
       if (mounted) {
+        ErrorHandler.showError(context, e);
         setState(() {
           _errorMessage = 'Failed to generate story. Please try again.';
           _isGeneratingStory = false;
@@ -333,7 +336,7 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
           ),
         ],
       ),
-      body: ListView(
+      body: OptimizedListView(
         padding: const EdgeInsets.all(16),
         children: [
           // Chapter header with generated story

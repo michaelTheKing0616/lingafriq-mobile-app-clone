@@ -11,6 +11,9 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class ModernOnboardingScreen extends HookConsumerWidget {

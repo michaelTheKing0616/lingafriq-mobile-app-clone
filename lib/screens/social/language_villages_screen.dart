@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/language_village_provider.dart';
 import '../../models/language_village_model.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 
 /// Language Villages Screen - Voice rooms for target-language-only practice
 class LanguageVillagesScreen extends ConsumerWidget {
@@ -67,7 +70,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
       );
     }
 
-    return ListView.builder(
+    return OptimizedListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: villages.length,
       itemBuilder: (context, index) {
@@ -75,19 +78,25 @@ class LanguageVillagesScreen extends ConsumerWidget {
         return _VillageCard(
           village: village,
           onJoin: () async {
-            final success = await ref
-                .read(languageVillageProvider.notifier)
-                .joinVillage(village.id);
-            if (context.mounted) {
-              if (success) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Joined ${village.name}!')),
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Village is full')),
-                );
-              }
+            await safeAsync(
+              context: context,
+              operation: () async {
+                final success = await ref
+                    .read(languageVillageProvider.notifier)
+                    .joinVillage(village.id);
+                if (context.mounted) {
+                  if (success) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Joined ${village.name}!')),
+                    );
+                  } else {
+                    throw Exception('Failed to join village');
+                  }
+                }
+              },
+              errorContext: 'joinVillage',
+              showError: true,
+            );
             }
           },
         );
@@ -133,7 +142,14 @@ class LanguageVillagesScreen extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.exit_to_app),
                     onPressed: () async {
-                      await ref.read(languageVillageProvider.notifier).leaveVillage();
+                      await safeAsync(
+                        context: context,
+                        operation: () async {
+                          await ref.read(languageVillageProvider.notifier).leaveVillage();
+                        },
+                        errorContext: 'leaveVillage',
+                        showError: true,
+                      );
                     },
                   ),
                 ],
@@ -252,16 +268,19 @@ class LanguageVillagesScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () async {
-              final success = await ref
-                  .read(languageVillageProvider.notifier)
-                  .createVillage(
-                    name: nameController.text,
-                    language: languageController.text,
-                    description: descriptionController.text,
-                  );
-              if (context.mounted) {
-                Navigator.pop(context);
-                if (success) {
+              await safeAsync(
+                context: context,
+                operation: () async {
+                  final success = await ref
+                      .read(languageVillageProvider.notifier)
+                      .createVillage(
+                        name: nameController.text,
+                        language: languageController.text,
+                        description: descriptionController.text,
+                      );
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Village created!')),
                   );

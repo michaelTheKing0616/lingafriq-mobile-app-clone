@@ -7,6 +7,8 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
@@ -22,13 +24,21 @@ class UserConnectionsScreen extends ConsumerStatefulWidget {
 
 class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
   String _searchQuery = '';
+  late final Debouncer _searchDebouncer;
 
   @override
   void initState() {
     super.initState();
+    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeSocket();
     });
+  }
+
+  @override
+  void dispose() {
+    _searchDebouncer.dispose();
+    super.dispose();
   }
 
   void _initializeSocket() {
@@ -41,7 +51,9 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         );
       }
     } catch (e) {
-      debugPrint('Error initializing socket: $e');
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
     }
   }
 
@@ -115,8 +127,10 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
             color: isDark ? const Color(0xFF1F3527) : Colors.white,
             child: TextField(
               onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
+                _searchDebouncer.run(() {
+                  setState(() {
+                    _searchQuery = value;
+                  });
                 });
               },
               decoration: InputDecoration(
@@ -229,9 +243,10 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                               ],
                             ),
                           )
-                        : ListView.builder(
+                        : OptimizedListView(
                             padding: EdgeInsets.all(16.sp),
                             itemCount: filteredUsers.length,
+                            itemExtent: 80.sp, // Approximate item height for better performance
                             itemBuilder: (context, index) {
                               final user = filteredUsers[index];
                               final isCurrentUser = user['userId'] == currentUser.id.toString();

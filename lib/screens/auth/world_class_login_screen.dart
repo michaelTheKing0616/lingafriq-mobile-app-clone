@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/validators.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/screens/auth/world_class_signup_screen.dart';
 import 'package:lingafriq/screens/auth/forgot_password_screen.dart';
 
@@ -400,18 +401,24 @@ class WorldClassLoginScreen extends HookConsumerWidget {
 
         HapticFeedback.lightImpact();
 
-        // Store credentials for auto-fill
-        await storage.storeCredentials(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
+        try {
+          // Store credentials for auto-fill
+          await storage.storeCredentials(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          );
 
-        // Login
-        await ref.read(authProvider.notifier).login(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim(),
-              storeCredentials: true,
-            );
+          // Login
+          await ref.read(authProvider.notifier).login(
+                email: emailController.text.trim(),
+                password: passwordController.text.trim(),
+                storeCredentials: true,
+              );
+        } catch (e) {
+          if (context.mounted) {
+            ErrorHandler.showError(context, e);
+          }
+        }
       },
       child: Container(
         height: 56.h,
@@ -474,16 +481,22 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             );
 
             if (authenticated) {
-              final credentials = await storage.getStoredCredentials();
-              if (credentials != null && credentials.password != null) {
-                emailController.text = credentials.email;
-                passwordController.text = credentials.password!;
-                
-                await ref.read(authProvider.notifier).login(
-                      email: credentials.email,
-                      password: credentials.password!,
-                      storeCredentials: true,
-                    );
+              try {
+                final credentials = await storage.getStoredCredentials();
+                if (credentials != null && credentials.password != null) {
+                  emailController.text = credentials.email;
+                  passwordController.text = credentials.password!;
+                  
+                  await ref.read(authProvider.notifier).login(
+                        email: credentials.email,
+                        password: credentials.password!,
+                        storeCredentials: true,
+                      );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ErrorHandler.showError(context, e);
+                }
               }
             }
           },

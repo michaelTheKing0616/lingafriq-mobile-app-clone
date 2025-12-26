@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 

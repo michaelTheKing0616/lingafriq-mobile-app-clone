@@ -5,6 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/services/auth/biometric_auth.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
@@ -71,8 +74,14 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           style: PanAfricanTypography.bodySmall(context)),
                       value: isDark.value,
                       onChanged: (value) async {
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool('dark_mode', value);
+                        await safeAsync(
+                          context: context,
+                          operation: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setBool('dark_mode', value);
+                          },
+                          errorContext: 'toggleDarkMode',
+                        );
                         setState(() {
                           isDark.value = value;
                         });
@@ -417,7 +426,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               ),
               SizedBox(height: PanAfricanSpacing.md),
               Expanded(
-                child: ListView.builder(
+                child: OptimizedListView.builder(
                   shrinkWrap: true,
                   itemCount: languages.length,
                   itemBuilder: (context, index) {

@@ -8,6 +8,9 @@ import '../../providers/hearts_provider.dart';
 import '../../services/lazy_game_loader.dart';
 import '../../services/telemetry_service.dart';
 import '../../utils/gamification_integration.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

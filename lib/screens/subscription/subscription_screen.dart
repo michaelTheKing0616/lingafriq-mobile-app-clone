@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/animated/animated_button.dart';
 import 'package:lingafriq/widgets/animated/animated_card.dart';
 import 'package:flutter_animate/flutter_animate.dart';

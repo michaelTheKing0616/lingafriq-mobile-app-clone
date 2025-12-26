@@ -10,6 +10,9 @@ import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/api_provider.dart';
 import '../../services/review/intelligent_review_service.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../widgets/material3/haptic_button.dart';
 
 class GamifiedReviewScreen extends ConsumerStatefulWidget {

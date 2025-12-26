@@ -6,6 +6,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
+import '../screens/auth/world_class_login_screen.dart';
 import '../screens/onboarding/onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
@@ -24,9 +25,17 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> navigateBasedOnCondition() async {
+    // Check if onboarding has been seen first
+    final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
+    
+    if (!isOnboardingSeen) {
+      ref.read(navigationProvider).naviateOffAll(const OnboardingScreen());
+      return;
+    }
+
     final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
     if (emailAndPassword == null) {
-      ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+      ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
       return;
     }
 
@@ -43,7 +52,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return;
     }
 
-    ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+    ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
   }
 
   Future<ProfileModel?> login({

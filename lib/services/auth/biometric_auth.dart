@@ -1,0 +1,68 @@
+/// Biometric Authentication - Fingerprint/Face ID authentication
+/// Provides secure biometric authentication using local_auth package
+
+import 'package:local_auth/local_auth.dart';
+import 'package:flutter/services.dart';
+
+class BiometricAuth {
+  static final LocalAuthentication _auth = LocalAuthentication();
+
+  /// Check if device supports biometric authentication
+  static Future<bool> isAvailable() async {
+    try {
+      final isAvailable = await _auth.canCheckBiometrics;
+      final isDeviceSupported = await _auth.isDeviceSupported();
+      return isAvailable || isDeviceSupported;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Get available biometric types
+  static Future<List<BiometricType>> getAvailableBiometrics() async {
+    try {
+      return await _auth.getAvailableBiometrics();
+    } catch (e) {
+      return [];
+    }
+  }
+
+  /// Authenticate using biometrics
+  static Future<bool> authenticate({
+    String localizedReason = 'Please authenticate to continue',
+    bool useErrorDialogs = true,
+    bool stickyAuth = true,
+  }) async {
+    try {
+      return await _auth.authenticate(
+        localizedReason: localizedReason,
+        options: AuthenticationOptions(
+          useErrorDialogs: useErrorDialogs,
+          stickyAuth: stickyAuth,
+          biometricOnly: false,
+        ),
+      );
+    } on PlatformException catch (e) {
+      // Handle platform-specific errors
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Stop authentication (if in progress)
+  static Future<bool> stopAuthentication() async {
+    try {
+      return await _auth.stopAuthentication();
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Check if biometrics are enabled in settings
+  static Future<bool> isBiometricsEnabled() async {
+    final prefs = await _auth.isDeviceSupported();
+    return prefs;
+  }
+}
+

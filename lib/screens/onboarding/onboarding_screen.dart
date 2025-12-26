@@ -6,6 +6,9 @@ import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 
 import '../../providers/api_provider.dart';
 

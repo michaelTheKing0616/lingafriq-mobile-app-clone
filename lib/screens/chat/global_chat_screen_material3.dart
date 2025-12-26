@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -31,7 +32,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     Future<void> loadMessages() async {
       try {
         final response = await ApiService.get(
-          '/chat/global',
+          Api.chatGlobal,
           queryParameters: {
             'channel': selectedChannel.value,
             'limit': 50,
@@ -54,7 +55,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       isLoading.value = true;
       try {
         final response = await ApiService.post(
-          '/chat/global',
+          Api.chatGlobal,
           data: {
             'message': messageController.text,
             'channel': selectedChannel.value,
@@ -66,9 +67,9 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           loadMessages();
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send message: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       } finally {
         isLoading.value = false;
       }
@@ -84,19 +85,19 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
       message: 'Sending message...',
       child: Scaffold(
         appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Global Chat'),
-            Text(
-              '#${selectedChannel.value}',
-              style: PanAfricanTypography.bodySmall(context),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Global Chat'),
+              Text(
+                '#${selectedChannel.value}',
+                style: PanAfricanTypography.bodySmall(context),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
           IconButton(
             icon: Icon(Icons.person_search),
             onPressed: () {
@@ -171,7 +172,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                       ),
                     ),
                     Expanded(
-                      child: ListView.builder(
+                      child: OptimizedListView.builder(
                         itemCount: channels.value.length,
                         itemBuilder: (context, index) {
                           final channel = channels.value[index];
@@ -235,7 +236,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                               ],
                             ),
                           )
-                        : ListView.builder(
+                        : OptimizedListView.builder(
                             controller: scrollController,
                             padding: EdgeInsets.all(PanAfricanSpacing.md),
                             itemCount: messages.value.length,

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -50,9 +53,9 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
           qualityBadges.value = _extractBadges(response.data['data']);
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Validation failed: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -78,15 +81,15 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
         );
 
         if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Lesson created successfully!')),
-          );
-          Navigator.pop(context);
+          if (context.mounted) {
+            ErrorHandler.showSuccess(context, 'Lesson created successfully!');
+            Navigator.pop(context);
+          }
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to create lesson: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       } finally {
         isSubmitting.value = false;
       }

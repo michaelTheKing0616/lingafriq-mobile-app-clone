@@ -78,5 +78,43 @@ class TribesService {
       rethrow;
     }
   }
+
+  /// Get all available tribes
+  Future<List<Map<String, dynamic>>> getAllTribes({String? languageTag}) async {
+    try {
+      final queryParams = <String, dynamic>{};
+      if (languageTag != null) {
+        queryParams['language_tag'] = languageTag;
+      }
+      
+      final response = await _dio.get(
+        '${Api.baseurl}api/tribes',
+        queryParameters: queryParams.isEmpty ? null : queryParams,
+      );
+      
+      if (response.data['success'] == true && response.data['data'] != null) {
+        return List<Map<String, dynamic>>.from(response.data['data']);
+      }
+      return [];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Get user's tribes (tribes the user is a member of)
+  Future<List<Map<String, dynamic>>> getUserTribes(String userId) async {
+    try {
+      // Get all tribes and filter by membership
+      // Note: In production, this should be a dedicated endpoint like /api/tribes/user/:userId
+      // For now, we'll get all tribes and the client will need to check membership separately
+      // This is a placeholder - backend should provide /api/tribes/user/:userId endpoint
+      final allTribes = await getAllTribes();
+      // Without a dedicated endpoint, we can't efficiently get user's tribes
+      // Return empty list - this should be implemented on backend
+      return [];
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 

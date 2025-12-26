@@ -61,12 +61,21 @@ class ProfileEditScreen extends HookConsumerWidget {
                 if (selectedAvatar == null) return;
 
                 final updatedUser = user.copyWith(avater: selectedAvatar);
-                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                ref.read(userProvider.notifier).overrideUser(updatedUser);
-
-                Navigator.of(context).pop();
-                HapticFeedback.lightImpact();
-                VxToast.show(context, msg: 'Avatar updated');
+                await safeAsync(
+                  context: context,
+                  operation: () async {
+                    await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                    ref.read(userProvider.notifier).overrideUser(updatedUser);
+                    
+                    if (context.mounted) {
+                      Navigator.of(context).pop();
+                      HapticFeedback.lightImpact();
+                      VxToast.show(context, msg: 'Avatar updated');
+                    }
+                  },
+                  errorContext: 'updateAvatar',
+                  showError: true,
+                );
               },
             ).centered(),
             24.heightBox,

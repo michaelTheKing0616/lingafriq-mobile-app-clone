@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
@@ -10,6 +11,8 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -25,16 +28,19 @@ class PrivateChatListScreen extends ConsumerStatefulWidget {
 class _PrivateChatListScreenState
     extends ConsumerState<PrivateChatListScreen> {
   final TextEditingController _searchController = TextEditingController();
+  late final Debouncer _searchDebouncer;
 
   @override
   void initState() {
     super.initState();
+    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
     // Load contacts will be triggered in build method
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 
@@ -134,8 +140,8 @@ class _PrivateChatListScreenState
                     ),
                     child: TextField(
                       controller: _searchController,
-                      onChanged: (value) =>
-                          ref.read(privateChatProvider.notifier).search(value),
+                      onChanged: (value) => _searchDebouncer.run(() =>
+                          ref.read(privateChatProvider.notifier).search(value)),
                       decoration: InputDecoration(
                         hintText: 'Search by name, email, or language...',
                         prefixIcon: const Icon(Icons.search),
@@ -208,7 +214,7 @@ class _PrivateChatListScreenState
       );
     }
     
-    return ListView.builder(
+    return OptimizedListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 4.w),
       itemCount: contacts.length,
       itemBuilder: (context, index) {

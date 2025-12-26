@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';

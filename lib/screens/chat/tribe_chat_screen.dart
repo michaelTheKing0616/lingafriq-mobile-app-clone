@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -42,9 +43,9 @@ class TribeChatScreen extends HookConsumerWidget {
           messages.value = List<Map<String, dynamic>>.from(response.data['data']);
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load messages: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -58,7 +59,9 @@ class TribeChatScreen extends HookConsumerWidget {
           members.value = List<Map<String, dynamic>>.from(response.data['data']);
         }
       } catch (e) {
-        // Handle error
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -79,9 +82,9 @@ class TribeChatScreen extends HookConsumerWidget {
           loadMessages();
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send message: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       } finally {
         isLoading.value = false;
       }
@@ -148,7 +151,7 @@ class TribeChatScreen extends HookConsumerWidget {
                               ],
                             ),
                           )
-                        : ListView.builder(
+                        : OptimizedListView.builder(
                             controller: scrollController,
                             padding: EdgeInsets.all(PanAfricanSpacing.md),
                             itemCount: messages.value.length,
@@ -243,7 +246,7 @@ class TribeChatScreen extends HookConsumerWidget {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
+                    child: OptimizedListView.builder(
                       itemCount: members.value.length,
                       itemBuilder: (context, index) {
                         final member = members.value[index];

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';\nimport 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,6 +9,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 
 /// Community Chat (Language Villages) with Material 3 Design
 class CommunityChatScreen extends HookConsumerWidget {
@@ -44,9 +46,9 @@ class CommunityChatScreen extends HookConsumerWidget {
           messages.value = List<Map<String, dynamic>>.from(response.data['data']);
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load messages: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -67,9 +69,9 @@ class CommunityChatScreen extends HookConsumerWidget {
           loadMessages();
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send message: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       } finally {
         isLoading.value = false;
       }
@@ -138,7 +140,7 @@ class CommunityChatScreen extends HookConsumerWidget {
                         ],
                       ),
                     )
-                  : ListView.builder(
+                  : OptimizedListView.builder(
                       controller: scrollController,
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       itemCount: messages.value.length,

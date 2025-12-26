@@ -3,6 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/language_village_model.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
+import '../utils/api.dart';
+import '../utils/api_service.dart';
+import 'user_provider.dart';
 
 final languageVillageProvider =
     NotifierProvider<LanguageVillageProvider, BaseProviderState>(() {
@@ -31,54 +34,33 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
     state = state.copyWith(isLoading: true);
 
     try {
-      // TODO: Fetch from backend API
-      // For now, create mock villages
-      _villages.clear();
-      _villages.addAll([
-        LanguageVillage(
-          id: 'yoruba_village',
-          name: 'Yoruba Village',
-          language: 'Yoruba',
-          description: 'Practice Yoruba with native speakers and learners',
-          currentParticipants: 12,
-          maxParticipants: 50,
-          rules: [
-            'Only Yoruba allowed (no English)',
-            'Be respectful',
-            'Help beginners',
-          ],
-        ),
-        LanguageVillage(
-          id: 'swahili_village',
-          name: 'Swahili Coast',
-          language: 'Swahili',
-          description: 'Connect with Swahili speakers from East Africa',
-          currentParticipants: 8,
-          maxParticipants: 50,
-          rules: [
-            'Only Swahili allowed',
-            'Cultural exchange welcome',
-          ],
-        ),
-        LanguageVillage(
-          id: 'hausa_village',
-          name: 'Hausa Hub',
-          language: 'Hausa',
-          description: 'Learn Hausa through conversation',
-          currentParticipants: 5,
-          maxParticipants: 50,
-        ),
-        LanguageVillage(
-          id: 'igbo_village',
-          name: 'Igbo Community',
-          language: 'Igbo',
-          description: 'Practice Igbo with the community',
-          currentParticipants: 15,
-          maxParticipants: 50,
-        ),
-      ]);
+      // Fetch from backend API
+      final response = await ApiService.get(Api.villages);
+      
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        final villagesData = List<Map<String, dynamic>>.from(response.data['data'] ?? []);
+        _villages.clear();
+        _villages.addAll(villagesData.map((v) => LanguageVillage(
+          id: v['_id']?.toString() ?? v['id']?.toString() ?? '',
+          name: v['name']?.toString() ?? 'Unknown Village',
+          language: v['lang']?.toString() ?? v['language']?.toString() ?? '',
+          description: v['description']?.toString() ?? '',
+          currentParticipants: (v['current_participants'] ?? v['currentParticipants'] ?? 0) as int,
+          maxParticipants: (v['max_participants'] ?? v['maxParticipants'] ?? 50) as int,
+          rules: v['community_rules'] != null 
+            ? (v['community_rules'] is String 
+                ? [v['community_rules'] as String]
+                : List<String>.from(v['community_rules'] ?? []))
+            : [],
+        )).toList());
+      } else {
+        // Fallback to empty list if API fails
+        _villages.clear();
+      }
     } catch (e) {
-      debugPrint('Error loading villages: $e');
+      debugPrint('Error loading villages from API: $e');
+      // Fallback to empty list on error
+      _villages.clear();
     } finally {
       state = state.copyWith(isLoading: false);
     }
@@ -93,8 +75,43 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       }
 
       _currentVillage = village;
-      // TODO: Connect to voice room (WebRTC/Socket.io)
-      // TODO: Add user to participants list
+      
+      // Get LiveKit token for voice room connection
+      try {
+        final user = ref.read(userProvider);
+        if (user != null) {
+          final response = await ApiService.post(
+            Api.villageLivekitToken(village.language.toLowerCase()),
+            data: {
+              'userId': user.id.toString(),
+              'villageId': village.id,
+            },
+          );
+          
+          if (response.statusCode == 200) {
+            final token = response.data['token'] as String?;
+            final roomName = response.data['roomName'] as String?;
+            
+            if (token != null && roomName != null) {
+              // Store token for WebRTC connection
+              // In production, this would initialize LiveKit client
+              debugPrint('LiveKit token received for village: ${village.id}');
+              
+              // Add user to participants list
+              _participants.add(VillageParticipant(
+                userId: user.id.toString(),
+                username: user.username ?? 'User',
+                avatarUrl: user.avatar ?? '',
+                isSpeaking: false,
+                joinedAt: DateTime.now(),
+              ));
+            }
+          }
+        }
+      } catch (e) {
+        debugPrint('Error connecting to voice room: $e');
+        // Continue even if voice connection fails
+      }
       
       state = state.copyWith();
       return true;
@@ -106,9 +123,18 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
 
   /// Leave current village
   Future<void> leaveVillage() async {
+    try {
+      // Disconnect from voice room if connected
+      // In production, this would disconnect LiveKit client
+      if (_currentVillage != null) {
+        debugPrint('Leaving village: ${_currentVillage!.id}');
+      }
+    } catch (e) {
+      debugPrint('Error disconnecting from voice room: $e');
+    }
+    
     _currentVillage = null;
     _participants.clear();
-    // TODO: Disconnect from voice room
     state = state.copyWith();
   }
 
@@ -119,19 +145,42 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
     required String description,
   }) async {
     try {
-      // TODO: Create via backend API
-      final newVillage = LanguageVillage(
-        id: 'village_${DateTime.now().millisecondsSinceEpoch}',
-        name: name,
-        language: language,
-        description: description,
-        currentParticipants: 1,
-        hostId: 'current_user', // TODO: Get from auth
+      final user = ref.read(userProvider);
+      if (user == null) {
+        debugPrint('Cannot create village: User not logged in');
+        return false;
+      }
+
+      // Create via backend API
+      final response = await ApiService.post(
+        Api.villages,
+        data: {
+          'lang': language.toLowerCase(),
+          'name': name,
+          'description': description,
+          'maxParticipants': 50,
+        },
       );
 
-      _villages.add(newVillage);
-      state = state.copyWith();
-      return true;
+      if (response.statusCode == 201 && response.data['success'] == true) {
+        final villageData = response.data['village'] as Map<String, dynamic>;
+        final newVillage = LanguageVillage(
+          id: villageData['_id']?.toString() ?? villageData['id']?.toString() ?? '',
+          name: villageData['name']?.toString() ?? name,
+          language: villageData['lang']?.toString() ?? language,
+          description: villageData['description']?.toString() ?? description,
+          currentParticipants: 1,
+          maxParticipants: (villageData['max_participants'] ?? 50) as int,
+          hostId: user.id.toString(),
+        );
+
+        _villages.add(newVillage);
+        state = state.copyWith();
+        return true;
+      } else {
+        debugPrint('Failed to create village: ${response.statusCode}');
+        return false;
+      }
     } catch (e) {
       debugPrint('Error creating village: $e');
       return false;

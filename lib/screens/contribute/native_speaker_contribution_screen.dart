@@ -7,6 +7,9 @@ import '../../services/polie_content_generator.dart';
 import '../../widgets/voice/pronunciation_feedback_widget.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/api_provider.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 
 /// Recording Prompt Model
 class RecordingPrompt {

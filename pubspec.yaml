@@ -54,7 +54,24 @@ dependencies:
   firebase_messaging: ^16.0.4
   flutter_local_notifications: ^19.5.0
   change_app_package_name: ^1.5.0
-  flutter_animate: ^4.5.2 
+  flutter_animate: ^4.5.2
+  uuid: ^4.5.1
+  google_fonts: ^6.2.1
+  file_picker: ^8.1.2 
+  # Offline & Background Services
+  connectivity_plus: ^5.0.2
+  workmanager: ^0.5.2
+  archive: ^3.4.9
+  crypto: ^3.0.5
+  encrypt: ^5.0.3
+  # Auth & Security
+  flutter_secure_storage: ^9.2.2
+  local_auth: ^2.3.0
+  local_auth_android: ^1.0.5
+  local_auth_ios: ^1.0.4
+  # Error Tracking & Monitoring
+  sentry_flutter: ^7.0.0
+  package_info_plus: ^5.0.0
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1

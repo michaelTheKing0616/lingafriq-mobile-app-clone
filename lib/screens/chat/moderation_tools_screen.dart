@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -38,9 +40,9 @@ class ModerationToolsScreen extends HookConsumerWidget {
           flaggedMessages.value = List<Map<String, dynamic>>.from(response.data['data']);
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to load flagged messages: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       } finally {
         isLoading.value = false;
       }
@@ -61,13 +63,13 @@ class ModerationToolsScreen extends HookConsumerWidget {
         );
 
         loadFlaggedMessages();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Message ${action}d successfully')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showSuccess(context, 'Message ${action}d successfully');
+        }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Moderation failed: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -120,7 +122,7 @@ class ModerationToolsScreen extends HookConsumerWidget {
                       ],
                     ),
                   )
-                : ListView.builder(
+                : OptimizedListView.builder(
                     padding: EdgeInsets.all(PanAfricanSpacing.lg),
                     itemCount: flaggedMessages.value.length,
                     itemBuilder: (context, index) {

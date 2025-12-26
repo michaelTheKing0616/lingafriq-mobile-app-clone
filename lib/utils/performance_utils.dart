@@ -41,7 +41,17 @@ class Throttler {
   }
 }
 
-/// Cache helper for simple key-value caching
+/// DEPRECATED: Use simple_cache.dart SimpleCache singleton instead
+/// 
+/// This generic cache is kept for backward compatibility but should be migrated
+/// to the consolidated SimpleCache singleton which has:
+/// - LRU eviction
+/// - Timer-based cleanup
+/// - Statistics
+/// - Better memory management
+/// 
+/// Migration: Replace `SimpleCache<K, V>()` with `SimpleCache()` and convert keys to String
+@Deprecated('Use simple_cache.dart SimpleCache singleton instead')
 class SimpleCache<K, V> {
   final Map<K, _CacheEntry<V>> _cache = {};
   final Duration defaultTtl;
@@ -88,7 +98,11 @@ class _CacheEntry<V> {
   _CacheEntry({required this.value, required this.expiresAt});
 }
 
-/// Optimized list builder with item extent for better performance
+/// DEPRECATED: Use widgets/performance/optimized_list_view.dart instead
+/// 
+/// This version is kept for backward compatibility but the consolidated version
+/// in widgets/performance/optimized_list_view.dart has more features.
+@Deprecated('Use widgets/performance/optimized_list_view.dart OptimizedListView instead')
 class OptimizedListView extends StatelessWidget {
   final int itemCount;
   final Widget Function(BuildContext, int) itemBuilder;
@@ -117,7 +131,11 @@ class OptimizedListView extends StatelessWidget {
   }
 }
 
-/// Lazy image loader with placeholder
+/// DEPRECATED: Use widgets/performance/lazy_image.dart instead
+/// 
+/// This version is kept for backward compatibility but the consolidated version
+/// in widgets/performance/lazy_image.dart uses cached_network_image for better performance.
+@Deprecated('Use widgets/performance/lazy_image.dart LazyImage instead')
 class LazyImage extends StatelessWidget {
   final String? imageUrl;
   final Widget? placeholder;

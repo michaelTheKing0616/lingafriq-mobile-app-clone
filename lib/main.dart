@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,6 +25,8 @@ import 'services/auth/biometric_auth.dart';
 // Localization & Features
 import 'services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'services/advanced/smart_recommendations.dart';
+import 'services/monitoring/sentry_service.dart';
+import 'config/secrets_manager.dart';
 import 'utils/performance_utils.dart';
 
 void main() async {
@@ -82,6 +85,27 @@ void main() async {
     await SmartRecommendationsService().initialize();
   } catch (e) {
     print('Error initializing localization services: $e');
+  }
+
+  // Initialize Secrets Manager and Sentry
+  try {
+    await SecretsManager().initialize();
+    
+    // Initialize Sentry for error tracking
+    final sentryDsn = SecretsManager().sentryDsn;
+    if (sentryDsn != null && sentryDsn.isNotEmpty) {
+      await SentryService().initialize(
+        dsn: sentryDsn,
+        environment: kDebugMode ? 'development' : 'production',
+        enablePerformanceMonitoring: true,
+      );
+      print('Sentry initialized successfully');
+    } else {
+      print('Sentry DSN not configured, skipping initialization');
+    }
+  } catch (e) {
+    print('Error initializing monitoring services: $e');
+    // Don't fail app startup if monitoring fails
   }
 
   runApp(ProviderScope(

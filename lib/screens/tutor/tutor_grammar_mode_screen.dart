@@ -6,6 +6,8 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 
@@ -34,26 +36,28 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
       }
 
       isLoading.value = true;
-      try {
-        final response = await ApiService.post(
-          AppConfig.tutorGrammar,
-          data: {
-            'topic': topicController.text,
-            'language': selectedLanguage.value.name,
-            'userLevel': userLevel.value,
-          },
-        );
+      await safeAsync(
+        context: context,
+        operation: () async {
+          final response = await ApiService.post(
+            AppConfig.tutorGrammar,
+            data: {
+              'topic': topicController.text,
+              'language': selectedLanguage.value.name,
+              'userLevel': userLevel.value,
+            },
+          );
 
-        if (response.statusCode == 200) {
-          grammarResult.value = response.data;
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to get grammar explanation: ${e.toString()}')),
-        );
-      } finally {
-        isLoading.value = false;
-      }
+          if (response.statusCode == 200) {
+            grammarResult.value = response.data;
+          } else {
+            throw Exception('Failed to get grammar explanation');
+          }
+        },
+        errorContext: 'explainGrammar',
+        showError: true,
+      );
+      isLoading.value = false;
     }
 
     return LoadingOverlay(

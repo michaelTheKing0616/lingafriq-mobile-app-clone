@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -9,6 +11,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'placement_test_screen.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 
 /// Enhanced 9-Step Onboarding Flow with Beautiful Material 3 + Pan-African Design
 class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
@@ -174,7 +177,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
         data: data,
       );
     } catch (e) {
-      // Handle error
+      // Error handling done by calling context if available
     }
   }
 }
@@ -214,9 +217,9 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 
         onNext({'proficiency_language': selectedLanguage.value});
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -345,9 +348,9 @@ class _Step2LearningLanguage extends HookConsumerWidget {
           ),
         );
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
       }
     }
 
@@ -465,9 +468,9 @@ class _Step3AgeCategory extends HookConsumerWidget {
             );
             onNext({'age_category': selected.value});
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed: ${e.toString()}')),
-            );
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
         },
       ),
@@ -485,7 +488,7 @@ class _Step3AgeCategory extends HookConsumerWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
+          child: OptimizedListView.builder(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             itemCount: options.length,
             itemBuilder: (context, index) {
@@ -574,9 +577,9 @@ class _Step4LearningReasons extends HookConsumerWidget {
             );
             onNext({'learning_reasons': selected.value.toList()});
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed: ${e.toString()}')),
-            );
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
         },
       ),
@@ -594,7 +597,7 @@ class _Step4LearningReasons extends HookConsumerWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
+          child: OptimizedListView.builder(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             itemCount: options.length,
             itemBuilder: (context, index) {
@@ -665,9 +668,9 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
             );
             onNext({'primary_goal': selected.value});
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed: ${e.toString()}')),
-            );
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
         },
       ),
@@ -685,7 +688,7 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
+          child: OptimizedListView.builder(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             itemCount: options.length,
             itemBuilder: (context, index) {
@@ -762,9 +765,9 @@ class _Step6LearningStyle extends HookConsumerWidget {
             );
             onNext({'learning_style': selected.value});
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed: ${e.toString()}')),
-            );
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
         },
       ),
@@ -782,7 +785,7 @@ class _Step6LearningStyle extends HookConsumerWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
+          child: OptimizedListView.builder(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             itemCount: options.length,
             itemBuilder: (context, index) {
@@ -859,9 +862,9 @@ class _Step7PacePreference extends HookConsumerWidget {
             );
             onNext({'pace_preference': selected.value});
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed: ${e.toString()}')),
-            );
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
         },
       ),
@@ -879,7 +882,7 @@ class _Step7PacePreference extends HookConsumerWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
+          child: OptimizedListView.builder(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             itemCount: options.length,
             itemBuilder: (context, index) {
@@ -956,9 +959,9 @@ class _Step8AppTone extends HookConsumerWidget {
             );
             onNext({'app_tone': selected.value});
           } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed: ${e.toString()}')),
-            );
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
         },
       ),
@@ -976,7 +979,7 @@ class _Step8AppTone extends HookConsumerWidget {
     return Column(
       children: [
         Expanded(
-          child: ListView.builder(
+          child: OptimizedListView.builder(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             itemCount: options.length,
             itemBuilder: (context, index) {
