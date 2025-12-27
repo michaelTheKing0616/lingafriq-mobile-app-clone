@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/src/state_notifier_provider/state_notifier.dart';
+import 'package:riverpod/riverpod.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../services/sound_effects_service.dart';
 
