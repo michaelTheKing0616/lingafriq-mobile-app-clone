@@ -236,29 +236,29 @@ class SentryService {
     if (!_initialized) return;
 
     try {
+      // Map string level to SentryLevel enum
+      SentryLevel sentryLevel;
+      switch ((level ?? 'info').toLowerCase()) {
+        case 'debug':
+          sentryLevel = SentryLevel.debug;
+          break;
+        case 'info':
+          sentryLevel = SentryLevel.info;
+          break;
+        case 'warning':
+          sentryLevel = SentryLevel.warning;
+          break;
+        case 'error':
+          sentryLevel = SentryLevel.error;
+          break;
+        case 'fatal':
+          sentryLevel = SentryLevel.fatal;
+          break;
+        default:
+          sentryLevel = SentryLevel.info;
+      }
+      
       Sentry.addBreadcrumb(
-        // Map string level to SentryLevel enum
-        SentryLevel sentryLevel;
-        switch ((level ?? 'info').toLowerCase()) {
-          case 'debug':
-            sentryLevel = SentryLevel.debug;
-            break;
-          case 'info':
-            sentryLevel = SentryLevel.info;
-            break;
-          case 'warning':
-            sentryLevel = SentryLevel.warning;
-            break;
-          case 'error':
-            sentryLevel = SentryLevel.error;
-            break;
-          case 'fatal':
-            sentryLevel = SentryLevel.fatal;
-            break;
-          default:
-            sentryLevel = SentryLevel.info;
-        }
-        
         Breadcrumb(
           message: message,
           category: category,
@@ -298,7 +298,8 @@ class SentryService {
   }
 
   /// Start performance transaction
-  ITransaction? startTransaction(
+  /// Returns a transaction that can be used to finish the transaction
+  dynamic startTransaction(
     String name,
     String operation, {
     Map<String, dynamic>? data,
@@ -306,11 +307,15 @@ class SentryService {
     if (!_initialized) return null;
 
     try {
-      return Sentry.startTransaction(
-        name,
-        operation,
-        bindToScope: true,
-      );
+      // In Sentry 7.20.2, startTransaction returns an ITransaction
+      // Using dynamic to avoid type issues - transaction will have finish() method
+      final transaction = Sentry.startTransaction(name, operation);
+      if (transaction != null) {
+        Sentry.configureScope((scope) {
+          scope.setTransaction(transaction);
+        });
+      }
+      return transaction;
     } catch (e) {
       debugPrint('Failed to start transaction in Sentry: $e');
       return null;
@@ -327,14 +332,14 @@ class SentryService {
     if (!_initialized) return;
 
     try {
-      await Sentry.captureUserFeedback(
-        SentryUserFeedback(
-          eventId: eventId != null ? SentryId.fromId(eventId) : null,
-          name: name,
-          email: email,
-          comments: comments,
-        ),
+      // Create user feedback with proper eventId handling
+      final feedback = SentryUserFeedback(
+        eventId: eventId != null ? SentryId.fromId(eventId) : const SentryId.empty(),
+        name: name,
+        email: email,
+        comments: comments,
       );
+      await Sentry.captureUserFeedback(feedback);
     } catch (e) {
       debugPrint('Failed to capture user feedback in Sentry: $e');
     }
@@ -345,7 +350,8 @@ class SentryService {
     if (!_initialized) return;
 
     try {
-      await Sentry.flush(timeout: timeout);
+      // In Sentry 7.20.2, use close() instead of flush()
+      await Sentry.close(timeout: timeout);
     } catch (e) {
       debugPrint('Failed to flush Sentry: $e');
     }

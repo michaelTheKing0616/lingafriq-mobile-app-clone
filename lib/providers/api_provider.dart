@@ -47,13 +47,13 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {
     try {
-      if (!refreshToken) {
+      if (refreshToken == null || refreshToken.isEmpty) {
         // Try to get from shared preferences
         final prefs = await ref.read(sharedPreferencesProvider);
         refreshToken = await prefs.getRefreshToken();
       }
       
-      if (!refreshToken) {
+      if (refreshToken == null || refreshToken.isEmpty) {
         return null;
       }
 
@@ -118,7 +118,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       refreshToken = res.data['refresh'];
 
       // Store tokens
-      if (token && refreshToken) {
+      if (token != null && token.isNotEmpty && refreshToken != null && refreshToken.isNotEmpty) {
         final prefs = await ref.read(sharedPreferencesProvider);
         await prefs.storeAuthTokens(token!, refreshToken!);
       }

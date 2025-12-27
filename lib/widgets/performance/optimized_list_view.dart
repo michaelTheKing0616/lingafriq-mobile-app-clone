@@ -71,6 +71,7 @@ class OptimizedListView extends StatelessWidget {
     ScrollPhysics? physics,
     double cacheExtent = 250.0,
     SliverGridDelegate? gridDelegate,
+    Axis scrollDirection = Axis.vertical,
   }) {
     // If gridDelegate is provided, return a GridView instead
     if (gridDelegate != null) {
@@ -83,6 +84,22 @@ class OptimizedListView extends StatelessWidget {
         shrinkWrap: shrinkWrap,
         physics: physics,
         gridDelegate: gridDelegate,
+        scrollDirection: scrollDirection,
+      );
+    }
+    
+    // Create a wrapper that supports scrollDirection
+    if (scrollDirection == Axis.horizontal) {
+      return _OptimizedListViewHorizontal(
+        key: key,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+        padding: padding,
+        controller: controller,
+        itemExtent: itemExtent,
+        shrinkWrap: shrinkWrap,
+        physics: physics,
+        cacheExtent: cacheExtent,
       );
     }
     
@@ -100,6 +117,57 @@ class OptimizedListView extends StatelessWidget {
   }
 }
 
+/// Internal horizontal ListView wrapper
+class _OptimizedListViewHorizontal extends StatelessWidget {
+  final int itemCount;
+  final IndexedWidgetBuilder itemBuilder;
+  final EdgeInsetsGeometry? padding;
+  final ScrollController? controller;
+  final double? itemExtent;
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
+  final double cacheExtent;
+
+  const _OptimizedListViewHorizontal({
+    Key? key,
+    required this.itemCount,
+    required this.itemBuilder,
+    this.padding,
+    this.controller,
+    this.itemExtent,
+    this.shrinkWrap = false,
+    this.physics,
+    this.cacheExtent = 250.0,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (itemExtent != null) {
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+        padding: padding,
+        controller: controller,
+        itemExtent: itemExtent,
+        shrinkWrap: shrinkWrap,
+        physics: physics,
+        cacheExtent: cacheExtent,
+      );
+    } else {
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+        padding: padding,
+        controller: controller,
+        shrinkWrap: shrinkWrap,
+        physics: physics,
+        cacheExtent: cacheExtent,
+      );
+    }
+  }
+
 /// Internal GridView wrapper for OptimizedListView.builder with gridDelegate
 class _OptimizedGridView extends StatelessWidget {
   final int itemCount;
@@ -109,6 +177,7 @@ class _OptimizedGridView extends StatelessWidget {
   final bool shrinkWrap;
   final ScrollPhysics? physics;
   final SliverGridDelegate gridDelegate;
+  final Axis scrollDirection;
 
   const _OptimizedGridView({
     Key? key,
@@ -119,11 +188,13 @@ class _OptimizedGridView extends StatelessWidget {
     this.shrinkWrap = false,
     this.physics,
     required this.gridDelegate,
+    this.scrollDirection = Axis.vertical,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      scrollDirection: scrollDirection,
       itemCount: itemCount,
       itemBuilder: itemBuilder,
       padding: padding,
