@@ -73,13 +73,9 @@ class CacheEncryptionService {
   CacheEncryptionService._internal();
 
   Future<void> initialize() async {
-    // CacheEncryption uses static methods, but we can verify key generation
-    try {
-      // Access will generate key if needed
-      await CacheEncryption.encrypt('test');
-    } catch (e) {
-      // Ignore - key generation will happen on first use
-    }
+    // CacheEncryption uses static methods
+    // Key generation happens lazily on first use via _getKey()
+    // No initialization needed - the static class handles it internally
   }
 }
 

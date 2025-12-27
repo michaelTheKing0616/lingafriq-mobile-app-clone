@@ -7,13 +7,8 @@ class CredentialStorageService {
   CredentialStorageService._internal();
 
   Future<void> initialize() async {
-    // CredentialStorage uses static methods, no initialization needed
-    // But we can verify storage is accessible
-    try {
-      await CredentialStorage.getUsername();
-    } catch (e) {
-      // Storage not accessible, but continue
-    }
+    // CredentialStorage uses FlutterSecureStorage which initializes on first use
+    // No explicit initialization needed - storage is ready when accessed
   }
 }
 
