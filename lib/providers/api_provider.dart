@@ -1100,11 +1100,14 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Update milestone stats
-  Future<bool> updateMilestoneStats(Map<String, dynamic> stats) async {
+  Future<bool> updateMilestoneStats(String milestoneId, int value) async {
     try {
       final res = await ref.read(client).post(
-        Api.milestones,
-        data: stats,
+        '${Api.baseurl}${Api.milestones}',
+        data: {
+          'milestoneId': milestoneId,
+          'value': value,
+        },
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
