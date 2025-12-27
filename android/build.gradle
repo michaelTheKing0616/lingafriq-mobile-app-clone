@@ -38,10 +38,17 @@ subprojects {
                 if (!namespace) {
                     namespace project.group
                 }
+                
+                // ✅ Enforce Java 17 for all subprojects to match Kotlin JVM target
+                // This fixes JVM target compatibility issues between Java and Kotlin
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
             }
         }
         
-        // ✅ Enforce minimum Kotlin language version 1.8 for all subprojects
+        // ✅ Enforce minimum Kotlin language version 1.8 and JVM target 17 for all subprojects
         // This fixes sentry_flutter and other plugins that may use older Kotlin versions
         project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
             kotlinOptions {
