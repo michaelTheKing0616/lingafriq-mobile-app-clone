@@ -106,10 +106,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (res.statusCode != 200) {
         // Convert to structured error
         final error = ErrorConverter.toAppError(
-          DioError(
+          DioException(
             requestOptions: RequestOptions(path: Api.login),
             response: res,
-            type: DioErrorType.response,
+            type: DioExceptionType.badResponse,
           ),
         );
         throw error;
