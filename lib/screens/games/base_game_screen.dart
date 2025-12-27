@@ -135,7 +135,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     );
 
     // If incorrect, check hearts system
-    if (result == GameResult.wrong) {
+    if (result == GameResult.incorrect) {
       final canContinue = await GamificationIntegration.of(ref).onMistake();
       if (!canContinue && mounted) {
         _showOutOfHeartsDialog();

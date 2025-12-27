@@ -113,10 +113,28 @@ class SentryService {
         hint: context != null ? Hint.withMap(context) : null,
         withScope: (scope) {
           if (level != null) {
-            scope.level = SentryLevel.values.firstWhere(
-              (l) => l.name.toLowerCase() == level.toLowerCase(),
-              orElse: () => SentryLevel.error,
-            );
+            // Map string level to SentryLevel enum
+            SentryLevel? sentryLevel;
+            switch (level.toLowerCase()) {
+              case 'debug':
+                sentryLevel = SentryLevel.debug;
+                break;
+              case 'info':
+                sentryLevel = SentryLevel.info;
+                break;
+              case 'warning':
+                sentryLevel = SentryLevel.warning;
+                break;
+              case 'error':
+                sentryLevel = SentryLevel.error;
+                break;
+              case 'fatal':
+                sentryLevel = SentryLevel.fatal;
+                break;
+              default:
+                sentryLevel = SentryLevel.error;
+            }
+            scope.level = sentryLevel;
           }
           
           if (context != null) {
@@ -138,12 +156,31 @@ class SentryService {
     if (!_initialized) return;
 
     try {
+      // Map string level to SentryLevel enum
+      SentryLevel sentryLevel;
+      switch (level.toLowerCase()) {
+        case 'debug':
+          sentryLevel = SentryLevel.debug;
+          break;
+        case 'info':
+          sentryLevel = SentryLevel.info;
+          break;
+        case 'warning':
+          sentryLevel = SentryLevel.warning;
+          break;
+        case 'error':
+          sentryLevel = SentryLevel.error;
+          break;
+        case 'fatal':
+          sentryLevel = SentryLevel.fatal;
+          break;
+        default:
+          sentryLevel = SentryLevel.info;
+      }
+      
       await Sentry.captureMessage(
         message,
-        level: SentryLevel.values.firstWhere(
-          (l) => l.name.toLowerCase() == level.toLowerCase(),
-          orElse: () => SentryLevel.info,
-        ),
+        level: sentryLevel,
         hint: context != null ? Hint.withMap(context) : null,
       );
     } catch (e) {
@@ -200,13 +237,32 @@ class SentryService {
 
     try {
       Sentry.addBreadcrumb(
+        // Map string level to SentryLevel enum
+        SentryLevel sentryLevel;
+        switch ((level ?? 'info').toLowerCase()) {
+          case 'debug':
+            sentryLevel = SentryLevel.debug;
+            break;
+          case 'info':
+            sentryLevel = SentryLevel.info;
+            break;
+          case 'warning':
+            sentryLevel = SentryLevel.warning;
+            break;
+          case 'error':
+            sentryLevel = SentryLevel.error;
+            break;
+          case 'fatal':
+            sentryLevel = SentryLevel.fatal;
+            break;
+          default:
+            sentryLevel = SentryLevel.info;
+        }
+        
         Breadcrumb(
           message: message,
           category: category,
-          level: SentryLevel.values.firstWhere(
-            (l) => l.name.toLowerCase() == (level ?? 'info').toLowerCase(),
-            orElse: () => SentryLevel.info,
-          ),
+          level: sentryLevel,
           data: data,
         ),
       );
@@ -242,7 +298,7 @@ class SentryService {
   }
 
   /// Start performance transaction
-  ISentryTransaction? startTransaction(
+  ITransaction? startTransaction(
     String name,
     String operation, {
     Map<String, dynamic>? data,
@@ -272,8 +328,8 @@ class SentryService {
 
     try {
       await Sentry.captureUserFeedback(
-        UserFeedback(
-          eventId: eventId ?? SentryId.empty(),
+        SentryUserFeedback(
+          eventId: eventId != null ? SentryId.fromId(eventId) : null,
           name: name,
           email: email,
           comments: comments,
@@ -289,7 +345,7 @@ class SentryService {
     if (!_initialized) return;
 
     try {
-      await Sentry.close(timeout: timeout);
+      await Sentry.flush(timeout: timeout);
     } catch (e) {
       debugPrint('Failed to flush Sentry: $e');
     }

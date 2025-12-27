@@ -33,6 +33,7 @@ class PanAfricanColors {
   
   /// Gold - Representing African wealth, sunsets, and success
   static const Color secondary = Color(0xFFF7CB46);
+  static const Color secondaryLight = Color(0xFFFFF3CD);
   static const Color secondaryDark = Color(0xFFE8A817);
   static const Color secondaryContainer = Color(0xFFFFF3CD);
   static const Color onSecondaryContainer = Color(0xFF5C4A00);
@@ -86,11 +87,13 @@ class PanAfricanColors {
   // ═══════════════════════════════════════════════════════════════════════════
   
   // Light Mode
+  static const Color surface = Color(0xFFFAFAFA);
   static const Color surfaceLight = Color(0xFFFAFAFA);
   static const Color surfaceContainerLight = Color(0xFFF0F2F0);
   static const Color surfaceContainerHighLight = Color(0xFFE8EBE8);
   static const Color cardLight = Color(0xFFFFFFFF);
   static const Color borderLight = Color(0xFFE0E4E0);
+  static const Color outline = Color(0xFFE0E4E0);
   
   // Dark Mode
   static const Color surfaceDark = Color(0xFF0D1810);
@@ -103,6 +106,9 @@ class PanAfricanColors {
   // TEXT COLORS
   // ═══════════════════════════════════════════════════════════════════════════
   
+  static const Color textPrimary = Color(0xFF0D1B12);
+  static const Color textSecondary = Color(0xFF4A5D52);
+  static const Color textDark = Color(0xFF0D1B12);
   static const Color textPrimaryLight = Color(0xFF0D1B12);
   static const Color textSecondaryLight = Color(0xFF4A5D52);
   static const Color textDisabledLight = Color(0xFF9CA8A0);
@@ -257,6 +263,15 @@ class PanAfricanShadows {
   static List<BoxShadow> glowGreen(double opacity) => [
     BoxShadow(
       color: PanAfricanColors.primary.withOpacity(opacity),
+      blurRadius: 20,
+      spreadRadius: 2,
+    ),
+  ];
+  
+  /// Generic glow method
+  static List<BoxShadow> glow(Color color) => [
+    BoxShadow(
+      color: color.withOpacity(0.3),
       blurRadius: 20,
       spreadRadius: 2,
     ),

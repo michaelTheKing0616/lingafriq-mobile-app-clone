@@ -20,6 +20,9 @@ import 'services/offline/cache_compression.dart';
 import 'services/offline/cache_encryption.dart';
 import 'services/offline/offline_analytics.dart';
 // Auth Services
+import 'services/auth/credential_storage_service.dart';
+import 'services/auth/biometric_auth_service.dart';
+// Auth Services
 import 'services/auth/credential_storage.dart';
 import 'services/auth/biometric_auth.dart';
 // Localization & Features

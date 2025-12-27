@@ -10,4 +10,17 @@ class AppColors {
   static const Color bottomBarOrange = Color(0xffC7463A);
   static const Color red = Color(0xffC4413A);
   static const Color accentGold = Color(0xffFFD700);
+  
+  // Additional colors for compatibility
+  static const Color stitchPrimary = Color(0xFF1B7340); // Pan-African green
+  static const Color success = Color(0xFF2ECC71);
+  static const Color surfaceDark = Color(0xFF0D1810);
+  static const Color surfaceLight = Color(0xFFFAFAFA);
+  static const Color stitchCardDark = Color(0xFF1F3527);
+  static const Color stitchCardLight = Color(0xFFFFFFFF);
+  static const Color stitchBorderDark = Color(0xFF2A4A35);
+  static const Color stitchBorderLight = Color(0xFFE0E4E0);
+  static const Color stitchTextDark = Color(0xFF0D1B12);
+  static const Color stitchTextLight = Color(0xFFF4F6F5);
+  static const Color accentOrange = Color(0xFFEB8937);
 }

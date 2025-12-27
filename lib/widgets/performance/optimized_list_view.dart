@@ -58,6 +58,81 @@ class OptimizedListView extends StatelessWidget {
       );
     }
   }
+
+  /// Factory constructor for builder pattern (backward compatibility)
+  factory OptimizedListView.builder({
+    Key? key,
+    required int itemCount,
+    required IndexedWidgetBuilder itemBuilder,
+    EdgeInsetsGeometry? padding,
+    ScrollController? controller,
+    double? itemExtent,
+    bool shrinkWrap = false,
+    ScrollPhysics? physics,
+    double cacheExtent = 250.0,
+    SliverGridDelegate? gridDelegate,
+  }) {
+    // If gridDelegate is provided, return a GridView instead
+    if (gridDelegate != null) {
+      return _OptimizedGridView(
+        key: key,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+        padding: padding,
+        controller: controller,
+        shrinkWrap: shrinkWrap,
+        physics: physics,
+        gridDelegate: gridDelegate,
+      );
+    }
+    
+    return OptimizedListView(
+      key: key,
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      padding: padding,
+      controller: controller,
+      itemExtent: itemExtent,
+      shrinkWrap: shrinkWrap,
+      physics: physics,
+      cacheExtent: cacheExtent,
+    );
+  }
+}
+
+/// Internal GridView wrapper for OptimizedListView.builder with gridDelegate
+class _OptimizedGridView extends StatelessWidget {
+  final int itemCount;
+  final IndexedWidgetBuilder itemBuilder;
+  final EdgeInsetsGeometry? padding;
+  final ScrollController? controller;
+  final bool shrinkWrap;
+  final ScrollPhysics? physics;
+  final SliverGridDelegate gridDelegate;
+
+  const _OptimizedGridView({
+    Key? key,
+    required this.itemCount,
+    required this.itemBuilder,
+    this.padding,
+    this.controller,
+    this.shrinkWrap = false,
+    this.physics,
+    required this.gridDelegate,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      padding: padding,
+      controller: controller,
+      shrinkWrap: shrinkWrap,
+      physics: physics,
+      gridDelegate: gridDelegate,
+    );
+  }
 }
 
 /// Optimized ListView with separators

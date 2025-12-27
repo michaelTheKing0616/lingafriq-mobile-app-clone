@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'dart:io';
 
 class ErrorHandler {
   /// Get user-friendly error message from exception
@@ -197,5 +198,115 @@ class TimeoutException implements Exception {
   
   @override
   String toString() => message;
+}
+
+/// Base error class for application errors
+abstract class AppError implements Exception {
+  final String message;
+  final dynamic originalError;
+  
+  AppError(this.message, [this.originalError]);
+  
+  @override
+  String toString() => message;
+}
+
+/// API-specific error
+class ApiError extends AppError {
+  final int? statusCode;
+  final Map<String, dynamic>? responseData;
+  
+  ApiError(String message, {this.statusCode, this.responseData, dynamic originalError})
+      : super(message, originalError);
+}
+
+/// Error converter utility
+class ErrorConverter {
+  /// Convert any error to AppError
+  static AppError toAppError(dynamic error) {
+    if (error is AppError) {
+      return error;
+    }
+    
+    if (error is DioException) {
+      return _fromDioError(error);
+    }
+    
+    if (error is FormatException) {
+      return AppError('Invalid data format. Please try again.', error);
+    }
+    
+    if (error is TimeoutException) {
+      return AppError('Request timed out. Please check your connection and try again.', error);
+    }
+    
+    if (error is SocketException) {
+      return AppError('No internet connection. Please check your network settings.', error);
+    }
+    
+    // Generic error
+    final message = error?.toString() ?? 'An unexpected error occurred. Please try again.';
+    return AppError(message, error);
+  }
+  
+  /// Convert DioException to ApiError
+  static ApiError _fromDioError(DioException error) {
+    final statusCode = error.response?.statusCode;
+    final responseData = error.response?.data is Map
+        ? Map<String, dynamic>.from(error.response!.data)
+        : null;
+    
+    String message;
+    
+    switch (error.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        message = 'Connection timed out. Please check your internet connection.';
+        break;
+        
+      case DioExceptionType.badResponse:
+        if (statusCode == 401) {
+          message = 'Authentication failed. Please log in again.';
+        } else if (statusCode == 403) {
+          message = 'You don\'t have permission to perform this action.';
+        } else if (statusCode == 404) {
+          message = 'The requested resource was not found.';
+        } else if (statusCode == 500) {
+          message = 'Server error. Please try again later.';
+        } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {
+          message = responseData?['message'] as String? ??
+                    responseData?['error'] as String? ??
+                    responseData?['detail'] as String? ??
+                    'Request failed. Please try again.';
+        } else {
+          message = 'Server error. Please try again later.';
+        }
+        break;
+        
+      case DioExceptionType.cancel:
+        message = 'Request was cancelled.';
+        break;
+        
+      case DioExceptionType.connectionError:
+        message = 'No internet connection. Please check your network settings.';
+        break;
+        
+      case DioExceptionType.badCertificate:
+        message = 'Security certificate error. Please try again.';
+        break;
+        
+      case DioExceptionType.unknown:
+      default:
+        message = 'Network error. Please check your connection and try again.';
+    }
+    
+    return ApiError(message, statusCode: statusCode, responseData: responseData, originalError: error);
+  }
+  
+  /// Get user-friendly error message from AppError
+  static String getUserMessage(AppError error) {
+    return error.message;
+  }
 }
 

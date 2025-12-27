@@ -66,3 +66,39 @@ class CacheEncryption {
   }
 }
 
+/// Service wrapper for CacheEncryption
+class CacheEncryptionService {
+  static final CacheEncryptionService _instance = CacheEncryptionService._internal();
+  factory CacheEncryptionService() => _instance;
+  CacheEncryptionService._internal();
+
+  Future<void> initialize() async {
+    // CacheEncryption uses static methods
+    // Key generation happens lazily on first use via _getKey()
+    // No initialization needed - the static class handles it internally
+  }
+
+  /// Check if encryption is enabled
+  Future<bool> isEncryptionEnabled() async {
+    try {
+      // Try to encrypt a test string - if it works, encryption is enabled
+      await CacheEncryption.encrypt('test');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Encrypt data
+  Future<String> encrypt(String plainText) => CacheEncryption.encrypt(plainText);
+  
+  /// Decrypt data
+  Future<String> decrypt(String encryptedData) => CacheEncryption.decrypt(encryptedData);
+  
+  /// Encrypt JSON data
+  Future<String> encryptJson(Map<String, dynamic> json) => CacheEncryption.encryptJson(json);
+  
+  /// Decrypt JSON data
+  Future<Map<String, dynamic>> decryptJson(String encryptedData) => CacheEncryption.decryptJson(encryptedData);
+}
+

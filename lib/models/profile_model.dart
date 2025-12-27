@@ -17,6 +17,9 @@ class ProfileModel {
   final String? avater;
   final int completed_point;
   final String? global_id; // User's unique handle/identifier
+  final String? level; // User's learning level (A0, A1, A2, etc.)
+  final String? learningLanguage; // Currently learning language code
+  
   ProfileModel({
     required this.id,
     required this.email,
@@ -30,6 +33,8 @@ class ProfileModel {
     required this.avater,
     required this.completed_point,
     this.global_id,
+    this.level,
+    this.learningLanguage,
   });
 
   ProfileModel copyWith({
@@ -45,6 +50,8 @@ class ProfileModel {
     String? avater,
     int? completed_point,
     String? global_id,
+    String? level,
+    String? learningLanguage,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -59,6 +66,8 @@ class ProfileModel {
       avater: avater ?? this.avater,
       completed_point: completed_point ?? this.completed_point,
       global_id: global_id ?? this.global_id,
+      level: level ?? this.level,
+      learningLanguage: learningLanguage ?? this.learningLanguage,
     );
   }
 
@@ -80,6 +89,12 @@ class ProfileModel {
     result.addAll({'completed_point': completed_point});
     if (global_id != null) {
       result.addAll({'global_id': global_id});
+    }
+    if (level != null) {
+      result.addAll({'level': level});
+    }
+    if (learningLanguage != null) {
+      result.addAll({'learning_language': learningLanguage});
     }
 
     return result;
@@ -104,6 +119,8 @@ class ProfileModel {
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       avater: map['avater'],
       global_id: map['global_id'],
+      level: map['level']?.toString(),
+      learningLanguage: map['learning_language']?.toString() ?? map['learningLanguage']?.toString(),
       completed_point: map['completed_point'] is String
           ? num.parse(map['completed_point']).toInt()
           : map['completed_point']?.toInt() ?? 0,

@@ -42,3 +42,14 @@ class CacheCompression {
   }
 }
 
+/// Service wrapper for CacheCompression
+class CacheCompressionService {
+  static final CacheCompressionService _instance = CacheCompressionService._internal();
+  factory CacheCompressionService() => _instance;
+  CacheCompressionService._internal();
+
+  Future<void> initialize() async {
+    // CacheCompression uses static methods, no initialization needed
+  }
+}
+

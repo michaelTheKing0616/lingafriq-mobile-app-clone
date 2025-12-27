@@ -3,17 +3,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Edit Transcription Dialog
-class _EditTranscriptionDialog extends StatefulWidget {
+class EditTranscriptionDialog extends StatefulWidget {
   final String initialText;
   final Function(String) onSave;
 
-  const _EditTranscriptionDialog({
+  const EditTranscriptionDialog({
+    Key? key,
     required this.initialText,
     required this.onSave,
-  });
+  }) : super(key: key);
 
   @override
-  State<_EditTranscriptionDialog> createState() => _EditTranscriptionDialogState();
+  State<EditTranscriptionDialog> createState() => _EditTranscriptionDialogState();
 }
 
 class _EditTranscriptionDialogState extends State<EditTranscriptionDialog> {
@@ -23,13 +24,6 @@ class _EditTranscriptionDialogState extends State<EditTranscriptionDialog> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialText);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
   }
 
   @override
@@ -82,13 +76,14 @@ class CustomizeTranscriptionDialog extends StatefulWidget {
   final String transcription;
   final Function(Map<String, dynamic>) onCustomize;
 
-  const _CustomizeTranscriptionDialog({
+  const CustomizeTranscriptionDialog({
+    Key? key,
     required this.transcription,
     required this.onCustomize,
-  });
+  }) : super(key: key);
 
   @override
-  State<_CustomizeTranscriptionDialog> createState() => _CustomizeTranscriptionDialogState();
+  State<CustomizeTranscriptionDialog> createState() => _CustomizeTranscriptionDialogState();
 }
 
 class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDialog> {

@@ -135,7 +135,7 @@ enum GameResult {
   incorrect,
   partial,
   timeout,
-  skipped,
+  skipped;
 }
 
 /// Game Type Enum
