@@ -868,4 +868,156 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
+
+  // Stub methods for gamification and progress tracking
+  Future<Map<String, dynamic>> getDailyGoals() async {
+    try {
+      final res = await ref.read(client).get(Api.baseurl + 'gamification/daily-goals');
+      return res.data ?? {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  Future<void> syncGamification(Map<String, dynamic> data) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/sync', data: data);
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> saveAiChatHistory(Map<String, dynamic> chatData) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'ai-chat/history', data: chatData);
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> updateDailyGoal(String goalId, Map<String, dynamic> progress) async {
+    try {
+      await ref.read(client).patch(Api.baseurl + 'gamification/daily-goals/$goalId', data: progress);
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> updateUserPoints(int points) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/points', data: {'points': points});
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<Map<String, dynamic>> getProgressMetrics() async {
+    try {
+      final res = await ref.read(client).get(Api.baseurl + 'gamification/progress');
+      return res.data ?? {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  Future<void> updateProgressMetrics(Map<String, dynamic> metrics) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/progress', data: metrics);
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getAchievements() async {
+    try {
+      final res = await ref.read(client).get(Api.baseurl + 'gamification/achievements');
+      return List<Map<String, dynamic>>.from(res.data ?? []);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> unlockAchievement(String achievementId) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/achievements/$achievementId/unlock');
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> updateXP(int xp) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/xp', data: {'xp': xp});
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> updateChallengeProgress(String challengeId, Map<String, dynamic> progress) async {
+    try {
+      await ref.read(client).patch(Api.baseurl + 'gamification/challenges/$challengeId', data: progress);
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> updateMilestoneStats(Map<String, dynamic> stats) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/milestones', data: stats);
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> addLeagueXP(int xp) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/league/xp', data: {'xp': xp});
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> useHeart() async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/hearts/use');
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> refillHearts() async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/hearts/refill');
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<void> toggleChallengeMode(bool enabled) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'gamification/challenge-mode', data: {'enabled': enabled});
+    } catch (e) {
+      // Silently fail
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getLeaderboard({String? category}) async {
+    try {
+      final url = category != null 
+          ? Api.baseurl + 'gamification/leaderboard?category=$category'
+          : Api.baseurl + 'gamification/leaderboard';
+      final res = await ref.read(client).get(url);
+      return List<Map<String, dynamic>>.from(res.data ?? []);
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<void> sendTelemetry(List<Map<String, dynamic>> events) async {
+    try {
+      await ref.read(client).post(Api.baseurl + 'telemetry', data: {'events': events});
+    } catch (e) {
+      // Silently fail
+    }
+  }
 }
