@@ -2,19 +2,20 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
 
+/// Conversation flow states
+enum ConversationFlow {
+  greeting,
+  introduction,
+  topicDiscussion,
+  questionAnswer,
+  roleplay,
+  wrapUp,
+}
+
 /// World-class conversation practice enhancer
 /// Provides natural dialogue flows, context retention, personality consistency
 /// Comparable to Duolingo Max conversation practice
 class ConversationPracticeEnhancer {
-  /// Conversation flow states
-  enum ConversationFlow {
-    greeting,
-    introduction,
-    topicDiscussion,
-    questionAnswer,
-    roleplay,
-    wrapUp,
-  }
 
   /// Conversation context tracker
   final Map<String, ConversationContext> _conversationContexts = {};

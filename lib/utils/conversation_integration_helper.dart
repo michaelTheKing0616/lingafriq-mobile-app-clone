@@ -35,7 +35,7 @@ class ConversationIntegrationHelper {
   /// Get enhanced prompt with conversation practice features
   static String getEnhancedPrompt({
     required String conversationId,
-    required ConversationPracticeEnhancer.ConversationFlow flowState,
+    required ConversationFlow flowState,
     required String basePrompt,
     String? currentTopic,
     String? userLevel,
@@ -52,7 +52,7 @@ class ConversationIntegrationHelper {
   }
 
   /// Analyze conversation flow
-  static ConversationPracticeEnhancer.ConversationFlow analyzeFlow({
+  static ConversationFlow analyzeFlow({
     required List<Map<String, dynamic>> messages,
     required String currentMessage,
   }) {
@@ -65,7 +65,7 @@ class ConversationIntegrationHelper {
   /// Get conversation suggestions
   static List<String> getSuggestions({
     required String conversationId,
-    required ConversationPracticeEnhancer.ConversationFlow flowState,
+    required ConversationFlow flowState,
     String? currentTopic,
     String? userLevel,
   }) {
