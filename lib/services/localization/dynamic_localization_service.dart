@@ -13,7 +13,13 @@ enum AppLanguage {
   igbo('ig', 'Igbo'),
   swahili('sw', 'Kiswahili'),
   zulu('zu', 'isiZulu'),
-  xhosa('xh', 'isiXhosa');
+  xhosa('xh', 'isiXhosa'),
+  amharic('am', 'አማርኛ'),
+  twi('tw', 'Twi'),
+  afrikaans('af', 'Afrikaans'),
+  pidgin('pcm', 'Nigerian Pidgin'),
+  wolof('wo', 'Wolof'),
+  somali('so', 'Soomaali');
 
   final String code;
   final String name;
@@ -25,11 +31,16 @@ class DynamicLocalizationService {
   static AppLanguage _currentLanguage = AppLanguage.english;
   static Locale _currentLocale = const Locale('en');
 
-  /// Initialize localization service
+  /// Initialize localization service (static)
   static Future<void> initialize() async {
     final prefs = await SharedPreferences.getInstance();
     final languageCode = prefs.getString(_prefKey) ?? 'en';
     await setLanguage(languageCode);
+  }
+
+  /// Initialize localization service (instance method)
+  Future<void> initialize() async {
+    await DynamicLocalizationService.initialize();
   }
 
   /// Get current language
@@ -38,7 +49,7 @@ class DynamicLocalizationService {
   /// Get current locale
   static Locale get currentLocale => _currentLocale;
 
-  /// Set app language
+  /// Set app language (static)
   static Future<void> setLanguage(String languageCode) async {
     final language = AppLanguage.values.firstWhere(
       (lang) => lang.code == languageCode,
@@ -54,6 +65,15 @@ class DynamicLocalizationService {
 
     // Update Intl locale
     Intl.defaultLocale = languageCode;
+  }
+
+  /// Set app language (instance method)
+  Future<void> setLanguage(dynamic language) async {
+    if (language is String) {
+      await DynamicLocalizationService.setLanguage(language);
+    } else if (language is AppLanguage) {
+      await DynamicLocalizationService.setLanguage(language.code);
+    }
   }
 
   /// Get all supported languages

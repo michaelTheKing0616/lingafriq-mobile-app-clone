@@ -91,3 +91,14 @@ class OfflineAnalytics {
   }
 }
 
+/// Service wrapper for OfflineAnalytics
+class OfflineAnalyticsService {
+  static final OfflineAnalyticsService _instance = OfflineAnalyticsService._internal();
+  factory OfflineAnalyticsService() => _instance;
+  OfflineAnalyticsService._internal();
+
+  Future<void> initialize() async {
+    // OfflineAnalytics uses static methods, no initialization needed
+  }
+}
+

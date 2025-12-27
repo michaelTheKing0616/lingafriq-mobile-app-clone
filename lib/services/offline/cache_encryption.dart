@@ -66,3 +66,20 @@ class CacheEncryption {
   }
 }
 
+/// Service wrapper for CacheEncryption
+class CacheEncryptionService {
+  static final CacheEncryptionService _instance = CacheEncryptionService._internal();
+  factory CacheEncryptionService() => _instance;
+  CacheEncryptionService._internal();
+
+  Future<void> initialize() async {
+    // CacheEncryption uses static methods, but we can verify key generation
+    try {
+      // Access will generate key if needed
+      await CacheEncryption.encrypt('test');
+    } catch (e) {
+      // Ignore - key generation will happen on first use
+    }
+  }
+}
+

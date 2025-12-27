@@ -13,7 +13,7 @@ class OfflineService {
   OfflineService._internal();
 
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
   bool _isOnline = true;
   final List<Function()> _syncQueue = [];
   bool _isSyncing = false;
@@ -22,13 +22,13 @@ class OfflineService {
   Future<void> initialize() async {
     // Check initial connectivity
     final result = await _connectivity.checkConnectivity();
-    _isOnline = result.any((r) => r != ConnectivityResult.none);
+    _isOnline = result != ConnectivityResult.none;
 
     // Listen to connectivity changes
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
-      (List<ConnectivityResult> results) {
+      (ConnectivityResult result) {
         final wasOnline = _isOnline;
-        _isOnline = results.any((r) => r != ConnectivityResult.none);
+        _isOnline = result != ConnectivityResult.none;
         
         if (!wasOnline && _isOnline) {
           // Just came online - trigger sync

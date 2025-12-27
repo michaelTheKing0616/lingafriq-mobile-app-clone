@@ -46,13 +46,13 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
 
   Future<void> _checkConnectivity() async {
     final result = await Connectivity().checkConnectivity();
-    final isOnline = result.any((r) => r != ConnectivityResult.none);
+    final isOnline = result != ConnectivityResult.none;
     _updateStatus(isOnline);
   }
 
   void _listenToConnectivity() {
-    Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> results) {
-      final isOnline = results.any((r) => r != ConnectivityResult.none);
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      final isOnline = result != ConnectivityResult.none;
       _updateStatus(isOnline);
     });
   }

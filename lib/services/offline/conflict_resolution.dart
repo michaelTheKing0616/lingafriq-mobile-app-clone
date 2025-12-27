@@ -78,3 +78,14 @@ class ConflictResolution {
   }
 }
 
+/// Service wrapper for ConflictResolution
+class ConflictResolutionService {
+  static final ConflictResolutionService _instance = ConflictResolutionService._internal();
+  factory ConflictResolutionService() => _instance;
+  ConflictResolutionService._internal();
+
+  Future<void> initialize() async {
+    // ConflictResolution uses static methods, no initialization needed
+  }
+}
+

@@ -55,3 +55,14 @@ class SelectiveSync {
   }
 }
 
+/// Service wrapper for SelectiveSync
+class SelectiveSyncService {
+  static final SelectiveSyncService _instance = SelectiveSyncService._internal();
+  factory SelectiveSyncService() => _instance;
+  SelectiveSyncService._internal();
+
+  Future<void> initialize() async {
+    // SelectiveSync uses static methods, no initialization needed
+  }
+}
+
