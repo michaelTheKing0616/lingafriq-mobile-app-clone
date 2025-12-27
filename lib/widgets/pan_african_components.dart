@@ -403,6 +403,69 @@ class _PanAfricanCardState extends State<PanAfricanCard>
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// INTERACTIVE WIDGETS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Scale on tap widget - provides scale animation on tap
+class ScaleOnTap extends StatefulWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final double scale;
+  final Duration duration;
+
+  const ScaleOnTap({
+    Key? key,
+    required this.child,
+    this.onTap,
+    this.scale = 0.95,
+    this.duration = const Duration(milliseconds: 100),
+  }) : super(key: key);
+
+  @override
+  State<ScaleOnTap> createState() => _ScaleOnTapState();
+}
+
+class _ScaleOnTapState extends State<ScaleOnTap>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: widget.duration,
+      vsync: this,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: widget.scale).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => _controller.forward(),
+      onTapUp: (_) {
+        _controller.reverse();
+        widget.onTap?.call();
+      },
+      onTapCancel: () => _controller.reverse(),
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: widget.child,
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // INPUTS
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -418,6 +481,7 @@ class PanAfricanTextField extends StatelessWidget {
   final IconData? suffixIcon;
   final VoidCallback? onSuffixTap;
   final String? errorText;
+  final String? helperText;
 
   const PanAfricanTextField({
     Key? key,
@@ -431,6 +495,7 @@ class PanAfricanTextField extends StatelessWidget {
     this.suffixIcon,
     this.onSuffixTap,
     this.errorText,
+    this.helperText,
   }) : super(key: key);
 
   @override
@@ -454,6 +519,7 @@ class PanAfricanTextField extends StatelessWidget {
               )
             : null,
         errorText: errorText,
+        helperText: helperText,
         filled: true,
         fillColor: isDark
             ? PanAfricanColors.surfaceContainerDark
