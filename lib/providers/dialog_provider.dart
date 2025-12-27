@@ -86,29 +86,16 @@ class DialogProvider {
           : "Error",
       content: SelectableText(userMessage),
     );
-    return;
-
-      await showPlatformDialogue(
-        title: "Error $status",
-        content: SelectableText(data?.toString() ?? ""),
-      );
-      return;
-    }
-
-    await showPlatformDialogue(
-      title: "Error $status",
-      content: SelectableText(error.message ?? '', maxLines: 5),
-    );
   }
 
-  void showSuccessSnackBar() {
+  void showSuccessSnackBar({String? message}) {
     final context = ref.read(navigationProvider).navigatorKey.currentContext;
     if (context == null) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(e is String ? e.toString() : ''),
+          content: Text(message ?? 'Success'),
           duration: const Duration(seconds: 2),
           backgroundColor: Colors.green,
         ),

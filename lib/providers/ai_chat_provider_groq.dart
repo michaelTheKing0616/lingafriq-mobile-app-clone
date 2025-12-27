@@ -628,9 +628,6 @@ Make reviews efficient and rewarding.''';
     state = state.copyWith();
   }
 
-  String get sourceLanguage => _sourceLanguage;
-  String get targetLanguage => _targetLanguage;
-
   Future<void> setMode(PolieMode mode) async {
     if (_mode == mode) return;
     
