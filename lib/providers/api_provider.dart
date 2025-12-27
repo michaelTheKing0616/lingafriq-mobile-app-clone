@@ -41,6 +41,50 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   String? token;
+  String? refreshToken;
+
+  /// Refresh access token using refresh token
+  Future<String?> refreshAccessToken() async {
+    try {
+      if (!refreshToken) {
+        // Try to get from shared preferences
+        final prefs = await ref.read(sharedPreferencesProvider);
+        refreshToken = await prefs.getRefreshToken();
+      }
+      
+      if (!refreshToken) {
+        return null;
+      }
+
+      final res = await ref.read(client).post(
+        Api.refreshToken,
+        data: { 'refreshToken': refreshToken },
+      );
+
+      if (res.statusCode == 200 && (res.data['accessToken'] || res.data['access'])) {
+        // Handle both formats: backend returns 'accessToken' and 'refreshToken'
+        token = res.data['accessToken'] ?? res.data['access'];
+        refreshToken = res.data['refreshToken'] ?? res.data['refresh'] ?? refreshToken;
+        
+        // Store tokens
+        final prefs = await ref.read(sharedPreferencesProvider);
+        await prefs.storeAuthTokens(token!, refreshToken!);
+        
+        return token;
+      }
+      return null;
+    } catch (e) {
+      token = null;
+      refreshToken = null;
+      return null;
+    }
+  }
+
+  /// Clear stored tokens
+  void clearToken() {
+    token = null;
+    refreshToken = null;
+  }
 
   Future<void> register(FormData registerData) async {
     try {
@@ -69,7 +113,14 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         );
         throw error;
       }
-      token = res.data['access'];
+      token = res.data['access'] ?? res.data['token'];
+      refreshToken = res.data['refresh'];
+
+      // Store tokens
+      if (token && refreshToken) {
+        final prefs = await ref.read(sharedPreferencesProvider);
+        await prefs.storeAuthTokens(token!, refreshToken!);
+      }
 
       final email = data['email'] as String;
       ProfileModel? user = await ref.read(sharedPreferencesProvider).getUser(email);

@@ -15,7 +15,8 @@ class Api {
   // static const String baseurl = "http://34.67.162.25:8000/";
   // static const String baseurl = "http://64.227.113.179:8000/";
   static const String register = "accounts/auth/users/";
-  static const String login = "accounts/auth/jwt/create/";
+  static const String login = "accounts/auth/login";
+  static const String refreshToken = "accounts/auth/refresh";
   static const String userInfo = "accounts/auth/users/me/";
   static const String registerFcmDevice = "devices/";
   static String unRegisterFcmDevice(String token) => "devices/$token/";

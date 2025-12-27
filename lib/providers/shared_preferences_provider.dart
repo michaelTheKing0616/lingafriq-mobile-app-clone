@@ -13,6 +13,34 @@ class SharedPreferencesProvider {
 
   final emailKey = 'email';
   final passwordKey = 'password';
+  final accessTokenKey = 'auth_token';
+  final refreshTokenKey = 'refresh_token';
+
+  /// Store authentication tokens
+  Future<void> storeAuthTokens(String accessToken, String refreshToken) async {
+    await Future.wait([
+      prefs.setString(accessTokenKey, accessToken),
+      prefs.setString(refreshTokenKey, refreshToken),
+    ]);
+  }
+
+  /// Get access token
+  String? getAccessToken() {
+    return prefs.getString(accessTokenKey);
+  }
+
+  /// Get refresh token
+  Future<String?> getRefreshToken() async {
+    return prefs.getString(refreshTokenKey);
+  }
+
+  /// Clear authentication tokens
+  Future<void> clearAuthTokens() async {
+    await Future.wait([
+      prefs.remove(accessTokenKey),
+      prefs.remove(refreshTokenKey),
+    ]);
+  }
 
   Future<void> storeEmailAndPassword(String email, String password) async {
     final emailStoreFuture = prefs.setString(emailKey, email);

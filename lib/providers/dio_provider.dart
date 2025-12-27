@@ -36,10 +36,13 @@ class _DioLogger extends Interceptor {
       return;
     }
 
-    if (!options.headers.containsKey("Authorization")) {
-      final token = ref.read(apiProvider.notifier).token;
-      if (token != null) {
-        options.headers.addAll({"Authorization": "JWT $token"});
+    // Exclude auth endpoints from token addition
+    if (![Api.register, Api.login, Api.resetPassword, Api.refreshToken].contains(options.path)) {
+      if (!options.headers.containsKey("Authorization")) {
+        final token = ref.read(apiProvider.notifier).token;
+        if (token != null) {
+          options.headers.addAll({"Authorization": "Bearer $token"});
+        }
       }
     }
 
@@ -53,10 +56,38 @@ class _DioLogger extends Interceptor {
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioError err, ErrorInterceptorHandler handler) async {
     _log(
       'Api call error\n${err.requestOptions.uri.toString()}\n${err.requestOptions.path}\n${err.response?.statusCode}\n${err.response?.statusMessage}\n${err.response?.data},',
     );
+    
+      // Handle 401 Unauthorized - attempt token refresh
+      if (err.response?.statusCode == 401 && err.requestOptions.path != Api.refreshToken) {
+        final requestOptions = err.requestOptions;
+        
+        // Skip refresh if already retried
+        if (!requestOptions.extra.containsKey('_retry')) {
+          requestOptions.extra['_retry'] = true;
+          
+          try {
+            // Attempt to refresh token
+            final apiProviderNotifier = ref.read(apiProvider.notifier);
+            final newAccessToken = await apiProviderNotifier.refreshAccessToken();
+            
+            if (newAccessToken != null) {
+              // Update token and retry request
+              requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+              final response = await ref.read(client).fetch(requestOptions);
+              return handler.resolve(response);
+            }
+          } catch (refreshError) {
+            _log('Token refresh failed: $refreshError');
+            // If refresh fails, clear token and let error propagate
+            ref.read(apiProvider.notifier).clearToken();
+          }
+        }
+      }
+    
     super.onError(err, handler);
   }
 
