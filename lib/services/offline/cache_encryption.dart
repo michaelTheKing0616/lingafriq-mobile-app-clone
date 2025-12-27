@@ -82,15 +82,23 @@ class CacheEncryptionService {
   Future<bool> isEncryptionEnabled() async {
     try {
       // Check if encryption key exists (means encryption is enabled)
-      final key = await _storage.read(key: _keyName);
+      final key = await CacheEncryption._storage.read(key: CacheEncryption._keyName);
       return key != null && key.isNotEmpty;
     } catch (e) {
       return false;
     }
   }
+
+  /// Encrypt data
+  Future<String> encrypt(String plainText) => CacheEncryption.encrypt(plainText);
   
-  // Access to private _storage for isEncryptionEnabled
-  static const _storage = FlutterSecureStorage();
-  static const _keyName = 'cache_encryption_key';
+  /// Decrypt data
+  Future<String> decrypt(String encryptedData) => CacheEncryption.decrypt(encryptedData);
+  
+  /// Encrypt JSON data
+  Future<String> encryptJson(Map<String, dynamic> json) => CacheEncryption.encryptJson(json);
+  
+  /// Decrypt JSON data
+  Future<Map<String, dynamic>> decryptJson(String encryptedData) => CacheEncryption.decryptJson(encryptedData);
 }
 
