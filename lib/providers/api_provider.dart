@@ -21,6 +21,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/extensions.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 
 import '../history_quiz/models/history_quiz_response.dart';
 import '../language_quiz/models/language_quiz_lesson_model.dart';

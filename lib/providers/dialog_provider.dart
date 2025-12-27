@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'navigation_provider.dart';
+import '../utils/error_handler.dart';
 
 final dialogProvider = Provider.autoDispose.family<DialogProvider, Object?>((ref, Object? error) {
   return DialogProvider(ref.container, error);
