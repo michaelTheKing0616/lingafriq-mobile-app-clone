@@ -81,9 +81,9 @@ class CacheEncryptionService {
   /// Check if encryption is enabled
   Future<bool> isEncryptionEnabled() async {
     try {
-      // Check if encryption key exists (means encryption is enabled)
-      final key = await CacheEncryption._storage.read(key: CacheEncryption._keyName);
-      return key != null && key.isNotEmpty;
+      // Try to encrypt a test string - if it works, encryption is enabled
+      await CacheEncryption.encrypt('test');
+      return true;
     } catch (e) {
       return false;
     }

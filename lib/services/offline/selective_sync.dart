@@ -15,6 +15,7 @@ enum SyncCategory {
   chat, // Added for settings screen compatibility
   achievements, // Added for settings screen compatibility
   content, // Added for settings screen compatibility
+  settings, // Added for settings screen compatibility
 }
 
 /// Sync preference model
