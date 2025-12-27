@@ -444,7 +444,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                             (e) => e.name == value,
                             orElse: () => AppLanguage.english,
                           );
-                          await localizationService.setLanguage(appLang);
+                          await DynamicLocalizationService.setLanguage(appLang.code);
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

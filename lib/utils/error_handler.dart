@@ -220,6 +220,11 @@ class ApiError extends AppError {
       : super(message, originalError);
 }
 
+/// Generic AppError implementation
+class _GenericAppError extends AppError {
+  _GenericAppError(String message, [dynamic originalError]) : super(message, originalError);
+}
+
 /// Error converter utility
 class ErrorConverter {
   /// Convert any error to AppError
@@ -233,20 +238,20 @@ class ErrorConverter {
     }
     
     if (error is FormatException) {
-      return AppError('Invalid data format. Please try again.', error);
+      return _GenericAppError('Invalid data format. Please try again.', error);
     }
     
     if (error is TimeoutException) {
-      return AppError('Request timed out. Please check your connection and try again.', error);
+      return _GenericAppError('Request timed out. Please check your connection and try again.', error);
     }
     
     if (error is SocketException) {
-      return AppError('No internet connection. Please check your network settings.', error);
+      return _GenericAppError('No internet connection. Please check your network settings.', error);
     }
     
     // Generic error
     final message = error?.toString() ?? 'An unexpected error occurred. Please try again.';
-    return AppError(message, error);
+    return _GenericAppError(message, error);
   }
   
   /// Convert DioException to ApiError
