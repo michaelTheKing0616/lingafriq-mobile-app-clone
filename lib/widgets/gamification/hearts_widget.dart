@@ -14,11 +14,13 @@ import '../../utils/pan_african_design_system.dart';
 class HeartsWidget extends ConsumerStatefulWidget {
   final bool compact;
   final VoidCallback? onTap;
+  final bool showRefill;
 
   const HeartsWidget({
     Key? key,
     this.compact = false,
     this.onTap,
+    this.showRefill = true,
   }) : super(key: key);
 
   @override
