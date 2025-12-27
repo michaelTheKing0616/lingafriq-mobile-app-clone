@@ -77,5 +77,20 @@ class CacheEncryptionService {
     // Key generation happens lazily on first use via _getKey()
     // No initialization needed - the static class handles it internally
   }
+
+  /// Check if encryption is enabled
+  Future<bool> isEncryptionEnabled() async {
+    try {
+      // Check if encryption key exists (means encryption is enabled)
+      final key = await _storage.read(key: _keyName);
+      return key != null && key.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  // Access to private _storage for isEncryptionEnabled
+  static const _storage = FlutterSecureStorage();
+  static const _keyName = 'cache_encryption_key';
 }
 
