@@ -38,11 +38,6 @@ class DynamicLocalizationService {
     await setLanguage(languageCode);
   }
 
-  /// Initialize localization service (instance method)
-  Future<void> initialize() async {
-    await DynamicLocalizationService.initialize();
-  }
-
   /// Get current language
   static AppLanguage get currentLanguage => _currentLanguage;
 
@@ -67,15 +62,6 @@ class DynamicLocalizationService {
     Intl.defaultLocale = languageCode;
   }
 
-  /// Set app language (instance method)
-  Future<void> setLanguage(dynamic language) async {
-    if (language is String) {
-      await DynamicLocalizationService.setLanguage(language);
-    } else if (language is AppLanguage) {
-      await DynamicLocalizationService.setLanguage(language.code);
-    }
-  }
-
   /// Get all supported languages
   static List<AppLanguage> getSupportedLanguages() {
     return AppLanguage.values;
@@ -92,5 +78,24 @@ class DynamicLocalizationService {
   static TextDirection getTextDirection() {
     return isRTL(_currentLanguage.code) ? TextDirection.rtl : TextDirection.ltr;
   }
+
+  // Instance methods that delegate to static methods
+  Future<void> initialize() async {
+    await DynamicLocalizationService.initialize();
+  }
+
+  Future<void> setLanguage(dynamic language) async {
+    if (language is String) {
+      await DynamicLocalizationService.setLanguage(language);
+    } else if (language is AppLanguage) {
+      await DynamicLocalizationService.setLanguage(language.code);
+    }
+  }
+
+  AppLanguage get currentLanguage => DynamicLocalizationService.currentLanguage;
+  Locale get currentLocale => DynamicLocalizationService.currentLocale;
+  List<AppLanguage> getSupportedLanguages() => DynamicLocalizationService.getSupportedLanguages();
+  bool isRTL(String? languageCode) => DynamicLocalizationService.isRTL(languageCode);
+  TextDirection getTextDirection() => DynamicLocalizationService.getTextDirection();
 }
 

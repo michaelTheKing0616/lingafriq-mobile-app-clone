@@ -89,6 +89,7 @@ class Api {
   static const String xpTotal = '${gamificationBase}xp/total';
   static const String badges = '${gamificationBase}badges/';
   static String userBadges(String userId) => '${gamificationBase}badges/users/$userId';
+  static String userGamification(String userId) => '${gamificationBase}users/$userId';
   static const String launchEvents = '${gamificationBase}launch-events/';
   static String launchEventJoin(String eventId) => '${gamificationBase}launch-events/join';
   static String launchEventLeaderboard(String eventId) => '${gamificationBase}launch-events/$eventId/leaderboard';

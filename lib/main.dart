@@ -76,13 +76,13 @@ void main() async {
   // Initialize Localization & Features
   try {
     final localizationService = DynamicLocalizationService();
-    await localizationService.initialize();
+    await DynamicLocalizationService.initialize();
     
     // Detect device language and set as default
     final deviceLocale = Platform.localeName.split('_').first.toLowerCase();
     final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
     if (detectedLanguage != null) {
-      await localizationService.setLanguage(detectedLanguage);
+      await DynamicLocalizationService.setLanguage(detectedLanguage);
     }
     
     await SmartRecommendationsService().initialize();

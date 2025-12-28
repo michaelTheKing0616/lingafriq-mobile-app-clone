@@ -47,13 +47,13 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {
     try {
-      if (!refreshToken) {
+      if (refreshToken == null || refreshToken.isEmpty) {
         // Try to get from shared preferences
         final prefs = await ref.read(sharedPreferencesProvider);
         refreshToken = await prefs.getRefreshToken();
       }
       
-      if (!refreshToken) {
+      if (refreshToken == null || refreshToken.isEmpty) {
         return null;
       }
 
@@ -118,7 +118,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       refreshToken = res.data['refresh'];
 
       // Store tokens
-      if (token && refreshToken) {
+      if (token != null && token.isNotEmpty && refreshToken != null && refreshToken.isNotEmpty) {
         final prefs = await ref.read(sharedPreferencesProvider);
         await prefs.storeAuthTokens(token!, refreshToken!);
       }
@@ -1100,11 +1100,14 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Update milestone stats
-  Future<bool> updateMilestoneStats(Map<String, dynamic> stats) async {
+  Future<bool> updateMilestoneStats(String milestoneId, int value) async {
     try {
       final res = await ref.read(client).post(
-        Api.milestones,
-        data: stats,
+        '${Api.baseurl}${Api.milestones}',
+        data: {
+          'milestoneId': milestoneId,
+          'value': value,
+        },
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {

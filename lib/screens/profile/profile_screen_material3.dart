@@ -12,6 +12,7 @@ import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen.dart';
 import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';

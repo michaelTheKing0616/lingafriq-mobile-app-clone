@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod/riverpod.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../services/sound_effects_service.dart';
 
@@ -27,15 +28,27 @@ class XPGainEvent {
   }) : timestamp = timestamp ?? DateTime.now();
 }
 
+/// State class for XP Gain Overlay
+class XPGainOverlayState {
+  final List<XPGainEvent> events;
+  
+  XPGainOverlayState({List<XPGainEvent>? events}) : events = events ?? [];
+  
+  XPGainOverlayState copyWith({List<XPGainEvent>? events}) {
+    return XPGainOverlayState(events: events ?? this.events);
+  }
+}
+
 /// Provider for managing XP gain events
-final xpGainOverlayProvider = StateNotifierProvider<XPGainOverlayNotifier, List<XPGainEvent>>((ref) {
-  return XPGainOverlayNotifier(ref);
+final xpGainOverlayProvider = NotifierProvider<XPGainOverlayNotifier, XPGainOverlayState>(() {
+  return XPGainOverlayNotifier();
 });
 
-class XPGainOverlayNotifier extends StateNotifier<List<XPGainEvent>> {
-  final Ref _ref;
-  
-  XPGainOverlayNotifier(this._ref) : super([]);
+class XPGainOverlayNotifier extends Notifier<XPGainOverlayState> {
+  @override
+  XPGainOverlayState build() {
+    return XPGainOverlayState();
+  }
   
   /// Show XP gain overlay
   void showXPGain({
@@ -55,13 +68,13 @@ class XPGainOverlayNotifier extends StateNotifier<List<XPGainEvent>> {
       newTitle: newTitle,
     );
     
-    state = [...state, event];
+    state = state.copyWith(events: [...state.events, event]);
     
     // Play sound
     if (isLevelUp) {
-      _ref.read(soundEffectsProvider).playLevelUp();
+      ref.read(soundEffectsProvider).playLevelUp();
     } else {
-      _ref.read(soundEffectsProvider).playXPGain(amount);
+      ref.read(soundEffectsProvider).playXPGain(amount);
     }
     
     // Auto-remove after animation
@@ -71,11 +84,11 @@ class XPGainOverlayNotifier extends StateNotifier<List<XPGainEvent>> {
   }
   
   void removeEvent(XPGainEvent event) {
-    state = state.where((e) => e != event).toList();
+    state = state.copyWith(events: state.events.where((e) => e != event).toList());
   }
   
   void clearAll() {
-    state = [];
+    state = XPGainOverlayState();
   }
 }
 
@@ -93,7 +106,8 @@ class XPGainOverlayWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final events = ref.watch(xpGainOverlayProvider);
+    final overlayState = ref.watch(xpGainOverlayProvider);
+    final events = overlayState.events;
 
     return Stack(
       children: [
