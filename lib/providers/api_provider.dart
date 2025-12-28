@@ -49,7 +49,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       if (refreshToken == null || refreshToken.isEmpty) {
         // Try to get from shared preferences
-        final prefs = await ref.read(sharedPreferencesProvider);
+        final prefs = ref.read(sharedPreferencesProvider);
         refreshToken = await prefs.getRefreshToken();
       }
       
@@ -68,7 +68,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         refreshToken = res.data['refreshToken'] ?? res.data['refresh'] ?? refreshToken;
         
         // Store tokens
-        final prefs = await ref.read(sharedPreferencesProvider);
+        final prefs = ref.read(sharedPreferencesProvider);
         await prefs.storeAuthTokens(token!, refreshToken!);
         
         return token;
@@ -119,24 +119,25 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       // Store tokens
       if (token != null && token.isNotEmpty && refreshToken != null && refreshToken.isNotEmpty) {
-        final prefs = await ref.read(sharedPreferencesProvider);
+        final prefs = ref.read(sharedPreferencesProvider);
         await prefs.storeAuthTokens(token!, refreshToken!);
       }
 
       final email = data['email'] as String;
-      ProfileModel? user = await ref.read(sharedPreferencesProvider).getUser(email);
+      final prefs = ref.read(sharedPreferencesProvider);
+      ProfileModel? user = await prefs.getUser(email);
 
       if (user == null || user.email != email) {
         final userInfo = await getUserInfo();
         user = await getProfileUser(userInfo.id);
 
-        await ref.read(sharedPreferencesProvider).storeUser(user, userInfo.email);
+        await prefs.storeUser(user, userInfo.email);
       }
 
       getUserInfo().then((userInfo) async {
         user = await getProfileUser(userInfo.id);
         ref.read(userProvider.notifier).overrideUser(user);
-        await ref.read(sharedPreferencesProvider).storeUser(user!, userInfo.email);
+        await prefs.storeUser(user!, userInfo.email);
       });
 
       return user!;
@@ -937,6 +938,23 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Get experiments configuration (feature flags and variants)
+  Future<Map<String, dynamic>> getExperimentsConfig() async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/experiments/config',
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return {'flags': {}, 'variants': {}};
+    } catch (e) {
+      debugPrint('Error getting experiments config: $e');
+      // Return default empty config on error
+      return {'flags': {}, 'variants': {}};
+    }
+  }
+
   /// Get daily goals for the current user
   Future<Map<String, dynamic>> getDailyGoals() async {
     try {
@@ -1214,6 +1232,104 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     } catch (e) {
       debugPrint('Error in POST $path: $e');
       return null;
+    }
+  }
+
+  /// Sync game session to backend
+  Future<bool> syncGameSession(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/games/session/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing game session: $e');
+      return false;
+    }
+  }
+
+  /// Sync game SRS (Spaced Repetition System) data to backend
+  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/games/srs/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing game SRS: $e');
+      return false;
+    }
+  }
+
+  /// Sync AI chat history to backend
+  Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/ai-chat/history/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat history: $e');
+      return false;
+    }
+  }
+
+  /// Sync AI chat SRS data to backend
+  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/ai-chat/srs/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing AI chat SRS: $e');
+      return false;
+    }
+  }
+
+  /// Sync progress metrics to backend
+  Future<bool> syncProgress(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}progress/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing progress: $e');
+      return false;
+    }
+  }
+
+  /// Sync onboarding data to backend
+  Future<bool> syncOnboarding(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/onboarding/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing onboarding: $e');
+      return false;
+    }
+  }
+
+  /// Sync telemetry events to backend
+  Future<bool> syncTelemetry(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/telemetry/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error syncing telemetry: $e');
+      return false;
     }
   }
 }

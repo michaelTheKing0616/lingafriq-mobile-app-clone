@@ -30,13 +30,60 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
   Future<void> _syncWithBackend() async {
     try {
       final backendGoals = await ref.read(apiProvider.notifier).getDailyGoals();
-      if (backendGoals.containsKey('goals') && backendGoals.containsKey('streak')) {
+      if (backendGoals.containsKey('streak')) {
         final backendStreak = backendGoals['streak'] as int? ?? 0;
         if (backendStreak > _currentStreak) {
           _currentStreak = backendStreak;
           await _saveStreak();
         }
-        // TODO: Sync individual goals if needed
+      }
+      
+      // Sync individual goals if available from backend
+      if (backendGoals.containsKey('goals') && backendGoals['goals'] is List) {
+        final backendGoalsList = backendGoals['goals'] as List;
+        final today = DateTime.now();
+        final todayStart = DateTime(today.year, today.month, today.day);
+        
+        for (var backendGoal in backendGoalsList) {
+          if (backendGoal is Map<String, dynamic>) {
+            final goalType = backendGoal['type']?.toString();
+            final backendProgress = (backendGoal['progress'] ?? backendGoal['current'] ?? 0).toInt();
+            final backendTarget = (backendGoal['target'] ?? 0).toInt();
+            
+            if (goalType != null) {
+              // Find matching local goal and sync if backend has more progress
+              final localGoalIndex = _goals.indexWhere(
+                (g) => g.type == goalType && 
+                       g.date.year == today.year && 
+                       g.date.month == today.month && 
+                       g.date.day == today.day,
+              );
+              
+              if (localGoalIndex >= 0) {
+                final localGoal = _goals[localGoalIndex];
+                if (backendProgress > localGoal.current) {
+                  _goals[localGoalIndex] = localGoal.copyWith(
+                    current: backendProgress.clamp(0, backendTarget),
+                    completed: backendProgress >= backendTarget,
+                  );
+                }
+              } else if (backendProgress > 0) {
+                // Create goal from backend data if it doesn't exist locally
+                _goals.add(DailyGoal(
+                  id: _goals.length + 1,
+                  type: goalType,
+                  target: backendTarget > 0 ? backendTarget : _getDefaultTarget(goalType),
+                  current: backendProgress,
+                  date: todayStart,
+                  completed: backendProgress >= backendTarget,
+                ));
+              }
+            }
+          }
+        }
+        
+        // Save synced goals
+        await _saveGoals();
       }
     } catch (e) {
       debugPrint('Error syncing daily goals with backend: $e');

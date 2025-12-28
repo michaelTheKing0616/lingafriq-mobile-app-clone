@@ -1,7 +1,12 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/utils/api.dart';
+import 'package:dio/dio.dart';
 
 /// Provider for managing offline content downloads
 class OfflineContentNotifier extends Notifier<OfflineContentState> {
@@ -36,24 +41,75 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
     state = state.copyWith(isDownloading: true, downloadProgress: 0.0);
 
     try {
-      // Simulate download progress
-      for (int i = 0; i <= 100; i += 10) {
-        await Future.delayed(const Duration(milliseconds: 200));
-        state = state.copyWith(downloadProgress: i / 100);
-      }
-
-      // Download language pack (audio, images, text)
       final appDir = await getApplicationDocumentsDirectory();
       final languageDir = Directory('${appDir.path}/offline/$language');
       await languageDir.create(recursive: true);
+
+      // Get download manifest from backend
+      final client = ref.read(dioProvider);
+      final manifestResponse = await client.get(
+        '${Api.baseurl}api/v1/offline/content/$language/manifest',
+      );
+
+      if (manifestResponse.statusCode != 200) {
+        throw Exception('Failed to get download manifest');
+      }
+
+      final manifest = manifestResponse.data as Map<String, dynamic>;
+      final files = List<Map<String, dynamic>>.from(manifest['files'] ?? []);
+      final totalSize = (manifest['totalSize'] as num?)?.toInt() ?? 0;
+
+      int downloadedBytes = 0;
+
+      // Download each file
+      for (int i = 0; i < files.length; i++) {
+        final file = files[i];
+        final url = file['url'] as String;
+        final path = file['path'] as String;
+        final size = (file['size'] as num?)?.toInt() ?? 0;
+
+        // Create subdirectories if needed
+        final filePath = '${languageDir.path}/$path';
+        final fileDir = Directory(filePath.substring(0, filePath.lastIndexOf('/')));
+        if (!fileDir.existsSync()) {
+          await fileDir.create(recursive: true);
+        }
+
+        // Download file using Dio client for better error handling
+        try {
+          final fileResponse = await client.get(
+            url,
+            options: Options(
+              responseType: ResponseType.bytes,
+              followRedirects: true,
+            ),
+          );
+
+          if (fileResponse.statusCode != 200) {
+            debugPrint('Failed to download file: $url (status: ${fileResponse.statusCode})');
+            continue; // Skip failed files but continue with others
+          }
+
+          // Save file
+          final fileFile = File(filePath);
+          await fileFile.writeAsBytes(fileResponse.data as List<int>);
+        } catch (e) {
+          debugPrint('Error downloading file $url: $e');
+          continue; // Skip failed files but continue with others
+        }
+
+        downloadedBytes += size;
+        final progress = totalSize > 0 ? downloadedBytes / totalSize : (i + 1) / files.length;
+        state = state.copyWith(downloadProgress: progress.clamp(0.0, 1.0));
+      }
 
       // Save downloaded language
       final prefs = await SharedPreferences.getInstance();
       final languages = List<String>.from(state.downloadedLanguages)..add(language);
       await prefs.setStringList('downloaded_languages', languages);
 
-      // Update size (estimate: ~50MB per language)
-      final newSize = state.totalSize + 50 * 1024 * 1024;
+      // Update size
+      final newSize = state.totalSize + totalSize;
       await prefs.setInt('offline_content_size', newSize);
 
       state = state.copyWith(
@@ -63,8 +119,10 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
         downloadProgress: 1.0,
       );
     } catch (e) {
+      debugPrint('Error downloading language: $e');
       state = state.copyWith(isDownloading: false);
-      rethrow;
+      // Don't rethrow - allow user to retry
+      throw Exception('Failed to download language pack. Please check your connection and try again.');
     }
   }
 
@@ -74,18 +132,62 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
     state = state.copyWith(isDownloading: true, downloadProgress: 0.0);
 
     try {
-      // Simulate download
-      for (int i = 0; i <= 100; i += 20) {
-        await Future.delayed(const Duration(milliseconds: 100));
-        state = state.copyWith(downloadProgress: i / 100);
+      final appDir = await getApplicationDocumentsDirectory();
+      final gameDir = Directory('${appDir.path}/offline/games/$gameId');
+      await gameDir.create(recursive: true);
+
+      // Get game download manifest from backend
+      final client = ref.read(dioProvider);
+      final manifestResponse = await client.get(
+        '${Api.baseurl}api/v1/offline/games/$gameId/manifest',
+      );
+
+      if (manifestResponse.statusCode != 200) {
+        throw Exception('Failed to get game download manifest');
+      }
+
+      final manifest = manifestResponse.data as Map<String, dynamic>;
+      final files = List<Map<String, dynamic>>.from(manifest['files'] ?? []);
+      final totalSize = (manifest['totalSize'] as num?)?.toInt() ?? 5 * 1024 * 1024; // Default 5MB
+
+      int downloadedBytes = 0;
+
+      // Download each file
+      for (int i = 0; i < files.length; i++) {
+        final file = files[i];
+        final url = file['url'] as String;
+        final path = file['path'] as String;
+        final size = (file['size'] as num?)?.toInt() ?? 0;
+
+        // Create subdirectories if needed
+        final filePath = '${gameDir.path}/$path';
+        final fileDir = Directory(filePath.substring(0, filePath.lastIndexOf('/')));
+        if (!fileDir.existsSync()) {
+          await fileDir.create(recursive: true);
+        }
+
+        // Download file
+        final fileResponse = await http.get(Uri.parse(url));
+        if (fileResponse.statusCode != 200) {
+          debugPrint('Failed to download game file: $url');
+          continue; // Skip failed files but continue with others
+        }
+
+        // Save file
+        final fileFile = File(filePath);
+        await fileFile.writeAsBytes(fileResponse.bodyBytes);
+
+        downloadedBytes += size;
+        final progress = totalSize > 0 ? downloadedBytes / totalSize : (i + 1) / files.length;
+        state = state.copyWith(downloadProgress: progress.clamp(0.0, 1.0));
       }
 
       final prefs = await SharedPreferences.getInstance();
       final games = List<String>.from(state.downloadedGames)..add(gameId);
       await prefs.setStringList('downloaded_games', games);
 
-      // Update size (estimate: ~5MB per game)
-      final newSize = state.totalSize + 5 * 1024 * 1024;
+      // Update size
+      final newSize = state.totalSize + totalSize;
       await prefs.setInt('offline_content_size', newSize);
 
       state = state.copyWith(
@@ -95,8 +197,10 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
         downloadProgress: 1.0,
       );
     } catch (e) {
+      debugPrint('Error downloading game: $e');
       state = state.copyWith(isDownloading: false);
-      rethrow;
+      // Don't rethrow - allow user to retry
+      throw Exception('Failed to download game. Please check your connection and try again.');
     }
   }
 

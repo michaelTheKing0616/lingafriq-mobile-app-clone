@@ -8,8 +8,10 @@ import '../providers/gamification_provider.dart';
 import '../providers/api_provider.dart';
 import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
+import '../providers/dio_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
+import '../utils/api.dart';
 import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 
@@ -207,18 +209,75 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Load cards for a game
+  /// Attempts to load from backend API, falls back to curated local data
   Future<List<PhraseCard>> _loadCardsForGame({
     required String language,
     String? level,
     int count = 10,
   }) async {
-    // TODO: Load from backend API or local database
-    // For now, generate mock cards
     final cards = <PhraseCard>[];
 
-    // Mock data - in production, load from API
-    final mockCards = _generateMockCards(language, level, count);
-    cards.addAll(mockCards);
+    // Try to load from backend API
+    try {
+      final queryParams = <String, dynamic>{
+        'language': language,
+        'count': count,
+      };
+      if (level != null) queryParams['level'] = level;
+
+      final response = await ref.read(client).get(
+        '${Api.baseurl}api/games/cards',
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode == 200 && response.data is List) {
+        final dataList = response.data as List;
+        for (var item in dataList) {
+          if (item is Map<String, dynamic>) {
+            try {
+              cards.add(PhraseCard(
+                cardId: item['id'] ?? item['card_id'] ?? 'card_${cards.length}',
+                language: item['language'] ?? language,
+                text: item['text'] ?? item['phrase'] ?? '',
+                ascii: item['ascii'] ?? item['text'] ?? '',
+                gloss: item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '',
+                level: item['level'] ?? level ?? 'A0',
+                tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${item['id'] ?? cards.length}'] ?? SRSState(),
+              ));
+            } catch (e) {
+              debugPrint('Error parsing card from API: $e');
+              continue;
+            }
+          }
+        }
+
+        // If we got cards from API, apply diacritics enforcement and return
+        if (cards.isNotEmpty) {
+          for (var i = 0; i < cards.length; i++) {
+            final card = cards[i];
+            final enforced = DiacriticsEnforcer.enforceWithMetadata(
+              card.text,
+              language,
+              enableFuzzy: true,
+              fuzzyThreshold: 0.75,
+            );
+
+            if (enforced['changed'] == true) {
+              cards[i] = card.copyWith(text: enforced['text'] as String);
+            }
+          }
+          return cards;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading cards from API, using fallback: $e');
+      // Continue to fallback
+    }
+
+    // Fallback to curated local data
+    final fallbackCards = _generateFallbackCards(language, level, count);
+    cards.addAll(fallbackCards);
 
     // Apply diacritics enforcement to all cards
     for (var i = 0; i < cards.length; i++) {
@@ -238,8 +297,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return cards;
   }
 
-  /// Generate mock cards (replace with API call)
-  List<PhraseCard> _generateMockCards(String language, String? level, int count) {
+  /// Generate curated fallback cards (used when API is unavailable)
+  List<PhraseCard> _generateFallbackCards(String language, String? level, int count) {
     final cards = <PhraseCard>[];
     final lang = language.toLowerCase();
 

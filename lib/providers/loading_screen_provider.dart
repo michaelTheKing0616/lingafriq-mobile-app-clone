@@ -1,8 +1,11 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Provider for managing loading screen content
@@ -151,20 +154,24 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
         return 'assets/images/loading/placeholder.png';
       }
 
-      // Call backend image generation endpoint via ApiService
-      final response = await ApiService.get(
-        '${AppConfig.apiBaseUrl}/loading-screen/image/${Uri.encodeComponent(prompt)}',
+      // Call backend image generation endpoint via API client
+      final response = await ref.read(client).get(
+        '${Api.baseurl}api/v1/loading-screen/image/${Uri.encodeComponent(prompt)}',
         queryParameters: {
           'country': country,
           'language': language,
         },
       );
 
-      if (response.statusCode == 200 && response.data['imageUrl'] != null) {
-        return response.data['imageUrl'] as String;
+      if (response.statusCode == 200 && response.data is Map) {
+        final data = response.data as Map<String, dynamic>;
+        final imageUrl = data['imageUrl'] ?? data['image_url'] ?? data['url'];
+        if (imageUrl != null && imageUrl is String) {
+          return imageUrl;
+        }
       }
     } catch (e) {
-      print('Failed to generate AI image: $e');
+      debugPrint('Failed to generate AI image: $e');
     }
     
     // Fallback to placeholder

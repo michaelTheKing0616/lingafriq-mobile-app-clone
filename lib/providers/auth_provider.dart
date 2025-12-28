@@ -69,7 +69,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
       if (storeCredentials) {
-        await ref.read(sharedPreferencesProvider).storeEmailAndPassword(email, password);
+        final prefs = ref.read(sharedPreferencesProvider);
+        await prefs.storeEmailAndPassword(email, password);
         ref.read(apiProvider.notifier).accountUpdate();
         await Future.delayed(const Duration(seconds: 3));
         state = state.copyWith(isLoading: false);
@@ -156,7 +157,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   // }
 
   Future<void> signOut({bool deleteAccount = false}) async {
-    await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.removeEmailAndPassword();
     "Delete Account $deleteAccount".log('signout');
     if (deleteAccount == false) {
       await ref.read(apiProvider.notifier).unregisterDevice();

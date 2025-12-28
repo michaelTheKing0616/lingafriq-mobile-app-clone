@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'gamification_provider.dart';
 
 /// Provider for managing push notifications
 class NotificationNotifier extends Notifier<NotificationState> {
@@ -120,7 +121,13 @@ class NotificationNotifier extends Notifier<NotificationState> {
 
   int _getCurrentStreak() {
     // Get current streak from gamification provider
-    return 7; // Placeholder
+    try {
+      final gamification = ref.read(gamificationProvider.notifier).gamification;
+      return gamification.dailyStreak;
+    } catch (e) {
+      // Fallback to 0 if gamification provider is not available
+      return 0;
+    }
   }
 
   void updateReminderTime(Time time) {
