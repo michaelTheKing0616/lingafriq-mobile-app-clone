@@ -76,26 +76,8 @@ class DynamicLocalizationService {
 
   /// Get text direction for current language
   static TextDirection getTextDirection() {
+    // TextDirection.rtl and TextDirection.ltr are enum values, not properties
     return isRTL(_currentLanguage.code) ? TextDirection.rtl : TextDirection.ltr;
   }
-
-  // Instance methods that delegate to static methods
-  Future<void> initialize() async {
-    await DynamicLocalizationService.initialize();
-  }
-
-  Future<void> setLanguage(dynamic language) async {
-    if (language is String) {
-      await DynamicLocalizationService.setLanguage(language);
-    } else if (language is AppLanguage) {
-      await DynamicLocalizationService.setLanguage(language.code);
-    }
-  }
-
-  AppLanguage get currentLanguage => DynamicLocalizationService.currentLanguage;
-  Locale get currentLocale => DynamicLocalizationService.currentLocale;
-  List<AppLanguage> getSupportedLanguages() => DynamicLocalizationService.getSupportedLanguages();
-  bool isRTL(String? languageCode) => DynamicLocalizationService.isRTL(languageCode);
-  TextDirection getTextDirection() => DynamicLocalizationService.getTextDirection();
 }
 
