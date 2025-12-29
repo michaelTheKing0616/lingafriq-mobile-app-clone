@@ -7,6 +7,8 @@ import '../../services/review/intelligent_review_service.dart';
 import '../../screens/review/gamified_review_screen.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../providers/progress_tracking_provider.dart';
+import '../../providers/daily_challenges_provider.dart';
 
 class ReviewPromptWidget extends ConsumerStatefulWidget {
   final Widget child;
@@ -47,8 +49,14 @@ class _ReviewPromptWidgetState extends ConsumerState<ReviewPromptWidget> {
     final gamificationModel = ref.read(gamificationProvider.notifier).gamification;
     final sessionCount = gamificationModel.xp ~/ 100; // Approximate from XP
     final streakDays = gamificationModel.dailyStreak;
-    final lessonsCompleted = 0; // TODO: Get from lesson provider
-    final gamesPlayed = 0; // TODO: Get from game provider
+    
+    // Get lessons completed from progress tracking (estimate from time spent)
+    final progressMetrics = ref.read(progressTrackingProvider.notifier).metrics;
+    final lessonsCompleted = (progressMetrics.timeByActivity['lessons'] ?? 0.0).toInt();
+    
+    // Get games played from progress tracking (estimate from time spent)
+    final gamesPlayed = (progressMetrics.timeByActivity['games'] ?? 0.0).toInt();
+    
     final lastActiveDate = gamificationModel.lastLogin ?? DateTime.now();
 
     // Check if should show

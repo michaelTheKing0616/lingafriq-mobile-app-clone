@@ -49,10 +49,19 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                 return {
                   'week': index + 1,
                   'title': unit.title,
-                  'lessons': unit.lessons.map((lesson) => {
-                    'id': lesson.id,
-                    'title': lesson.title,
-                    'completed': false, // TODO: Load from completion status
+                  'lessons': unit.lessons.map((lesson) {
+                    // Check completion status from curriculum provider
+                    final curriculumNotifier = ref.read(curriculumProvider.notifier);
+                    final isCompleted = curriculumNotifier.isLessonCompleted(
+                      selectedLanguage.value,
+                      selectedLevel.value,
+                      lesson.id,
+                    );
+                    return {
+                      'id': lesson.id,
+                      'title': lesson.title,
+                      'completed': isCompleted,
+                    };
                   }).toList(),
                 };
               }).toList();

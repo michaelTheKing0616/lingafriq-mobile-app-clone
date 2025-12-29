@@ -28,6 +28,9 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
     final isWhiteboardVisible = useState(false);
     final participants = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(true);
+    final roomState = useState<Room?>(null);
+    final localParticipant = useState<LocalParticipant?>(null);
+    final remoteParticipants = useState<Map<String, RemoteParticipant>>({});
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> joinClassroom() async {
@@ -59,6 +62,10 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
             ),
           );
 
+          // Store room and participant references
+          roomState.value = room;
+          localParticipant.value = room.localParticipant;
+
           // Enable camera and microphone
           await room.localParticipant.setCameraEnabled(isVideoEnabled.value);
           await room.localParticipant.setMicrophoneEnabled(isAudioEnabled.value);
@@ -75,6 +82,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
 
           // Listen for remote participants
           room.addListener(() {
+            final remoteParts = <String, RemoteParticipant>{};
             final participantList = <Map<String, dynamic>>[
               {
                 'name': localP.name ?? 'You',
@@ -84,6 +92,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
             ];
 
             for (final participant in room.remoteParticipants.values) {
+              remoteParts[participant.sid] = participant;
               participantList.add({
                 'name': participant.name ?? 'Participant',
                 'id': participant.sid,
@@ -91,6 +100,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
               });
             }
 
+            remoteParticipants.value = remoteParts;
             participants.value = participantList;
           });
 
@@ -106,7 +116,13 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
 
     useEffect(() {
       joinClassroom();
-      return null;
+      return () {
+        // Cleanup: disconnect from room when widget is disposed
+        final room = roomState.value;
+        if (room != null) {
+          room.disconnect();
+        }
+      };
     }, []);
 
     return Scaffold(
@@ -149,7 +165,14 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
                   // Video Grid
                   Expanded(
                     flex: isWhiteboardVisible.value ? 2 : 3,
-                    child: _buildVideoGrid(context, participants.value, isDark),
+                    child: _buildVideoGrid(
+                      context,
+                      participants.value,
+                      roomState.value,
+                      localParticipant.value,
+                      remoteParticipants.value,
+                      isDark,
+                    ),
                   ),
 
                   // Whiteboard (if visible)
@@ -166,6 +189,8 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
                     isAudioEnabled.value,
                     (video) => isVideoEnabled.value = video,
                     (audio) => isAudioEnabled.value = audio,
+                    roomState.value,
+                    localParticipant.value,
                     isDark,
                   ),
                 ],
@@ -177,6 +202,9 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
   Widget _buildVideoGrid(
     BuildContext context,
     List<Map<String, dynamic>> participants,
+    Room? room,
+    LocalParticipant? localParticipant,
+    Map<String, RemoteParticipant> remoteParticipants,
     bool isDark,
   ) {
     if (participants.isEmpty) {
@@ -210,8 +238,20 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
       itemCount: participants.length,
       itemBuilder: (context, index) {
         final participant = participants[index];
+        final isLocal = participant['isLocal'] == true;
+        final participantId = participant['id'] as String;
+        
+        // Get the actual participant object
+        Participant? liveParticipant;
+        if (isLocal && localParticipant != null) {
+          liveParticipant = localParticipant;
+        } else if (!isLocal) {
+          liveParticipant = remoteParticipants[participantId];
+        }
+        
         return _VideoTile(
           participant: participant,
+          liveParticipant: liveParticipant,
           isDark: isDark,
         );
       },
@@ -257,6 +297,8 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
     bool isAudioEnabled,
     Function(bool) onVideoToggle,
     Function(bool) onAudioToggle,
+    Room? room,
+    LocalParticipant? localParticipant,
     bool isDark,
   ) {
     return Container(
@@ -272,8 +314,12 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
         children: [
           IconButton(
             icon: Icon(isVideoEnabled ? Icons.videocam : Icons.videocam_off),
-            onPressed: () {
-              onVideoToggle(!isVideoEnabled);
+            onPressed: () async {
+              final newValue = !isVideoEnabled;
+              onVideoToggle(newValue);
+              if (localParticipant != null) {
+                await localParticipant.setCameraEnabled(newValue);
+              }
               HapticFeedback.mediumImpact();
             },
             color: isVideoEnabled ? PanAfricanColors.primary : PanAfricanColors.error,
@@ -281,8 +327,12 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
           ),
           IconButton(
             icon: Icon(isAudioEnabled ? Icons.mic : Icons.mic_off),
-            onPressed: () {
-              onAudioToggle(!isAudioEnabled);
+            onPressed: () async {
+              final newValue = !isAudioEnabled;
+              onAudioToggle(newValue);
+              if (localParticipant != null) {
+                await localParticipant.setMicrophoneEnabled(newValue);
+              }
               HapticFeedback.mediumImpact();
             },
             color: isAudioEnabled ? PanAfricanColors.primary : PanAfricanColors.error,
@@ -297,9 +347,14 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
             iconSize: 32.sp,
           ),
           ElevatedButton.icon(
-            onPressed: () {
-              // Leave classroom
-              Navigator.pop(context);
+            onPressed: () async {
+              // Disconnect from room before leaving
+              if (room != null) {
+                await room.disconnect();
+              }
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
             },
             icon: Icon(Icons.call_end),
             label: Text('Leave'),
@@ -316,10 +371,12 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
 
 class _VideoTile extends StatelessWidget {
   final Map<String, dynamic> participant;
+  final Participant? liveParticipant;
   final bool isDark;
 
   const _VideoTile({
     required this.participant,
+    this.liveParticipant,
     required this.isDark,
   });
 
@@ -336,28 +393,8 @@ class _VideoTile extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Video placeholder - replace with actual LiveKit video track
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 40.r,
-                  backgroundColor: PanAfricanColors.primary,
-                  child: Text(
-                    (participant['name'] ?? 'U')[0].toUpperCase(),
-                    style: PanAfricanTypography.headlineSmall(context)
-                        .copyWith(color: Colors.white),
-                  ),
-                ),
-                SizedBox(height: PanAfricanSpacing.sm),
-                Text(
-                  participant['name'] ?? 'Participant',
-                  style: PanAfricanTypography.titleMedium(context),
-                ),
-              ],
-            ),
-          ),
+          // LiveKit video track rendering
+          _buildVideoTrack(),
           // Name overlay
           Positioned(
             bottom: PanAfricanSpacing.sm,
