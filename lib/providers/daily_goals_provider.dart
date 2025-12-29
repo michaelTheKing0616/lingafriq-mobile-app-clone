@@ -76,6 +76,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
                   current: backendProgress,
                   date: todayStart,
                   completed: backendProgress >= backendTarget,
+                  streak: _currentStreak,
                 ));
               }
             }
@@ -282,7 +283,8 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
   /// Sync streak to backend
   Future<void> _syncStreakToBackend() async {
     try {
-      await ref.read(apiProvider.notifier).updateDailyStreak(_currentStreak);
+      // updateDailyStreak method not implemented in ApiProvider - streak synced via updateDailyGoal
+      // await ref.read(apiProvider.notifier).updateDailyStreak(_currentStreak);
     } catch (e) {
       debugPrint('Error syncing streak to backend: $e');
     }

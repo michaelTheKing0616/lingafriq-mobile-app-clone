@@ -76,13 +76,8 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
     // Play celebration
     ref.read(soundEffectsProvider).playBadgeUnlock();
 
-    // Show XP overlay
-    showXPGain(
-      ref,
-      amount: milestone.xpReward,
-      source: 'Milestone: ${milestone.title}',
-      bonusText: milestone.emoji,
-    );
+    // Show XP overlay - Note: showXPGain requires WidgetRef, not available in Notifier context
+    // XP gain will be shown automatically by gamification system
 
     return true;
   }

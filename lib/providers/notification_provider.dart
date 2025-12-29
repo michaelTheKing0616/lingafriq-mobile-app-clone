@@ -3,6 +3,28 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'gamification_provider.dart';
 
+/// Time class for notification scheduling
+/// Represents a time of day with hour, minute, and second
+class Time {
+  final int hour;
+  final int minute;
+  final int second;
+
+  const Time(this.hour, this.minute, [this.second = 0]);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Time &&
+          runtimeType == other.runtimeType &&
+          hour == other.hour &&
+          minute == other.minute &&
+          second == other.second;
+
+  @override
+  int get hashCode => hour.hashCode ^ minute.hashCode ^ second.hashCode;
+}
+
 /// Provider for managing push notifications
 class NotificationNotifier extends Notifier<NotificationState> {
   final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
@@ -14,7 +36,7 @@ class NotificationNotifier extends Notifier<NotificationState> {
       streakRemindersEnabled: true,
       dailyGoalRemindersEnabled: true,
       achievementAlertsEnabled: true,
-      reminderTime: const Time(9, 0), // 9 AM default
+      reminderTime: const Time(9, 0, 0), // 9 AM default
     );
   }
 
@@ -57,7 +79,6 @@ class NotificationNotifier extends Notifier<NotificationState> {
         iOS: DarwinNotificationDetails(),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }
@@ -79,7 +100,6 @@ class NotificationNotifier extends Notifier<NotificationState> {
         iOS: DarwinNotificationDetails(),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }

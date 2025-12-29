@@ -22,9 +22,6 @@ import 'services/offline/offline_analytics.dart';
 // Auth Services
 import 'services/auth/credential_storage_service.dart';
 import 'services/auth/biometric_auth_service.dart';
-// Auth Services
-import 'services/auth/credential_storage.dart';
-import 'services/auth/biometric_auth.dart';
 // Localization & Features
 import 'services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'services/advanced/smart_recommendations.dart';
@@ -75,14 +72,13 @@ void main() async {
 
   // Initialize Localization & Features
   try {
-    final localizationService = DynamicLocalizationService();
     await DynamicLocalizationService.initialize();
     
     // Detect device language and set as default
     final deviceLocale = Platform.localeName.split('_').first.toLowerCase();
     final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
     if (detectedLanguage != null) {
-      await DynamicLocalizationService.setLanguage(detectedLanguage);
+      await DynamicLocalizationService.setLanguage(detectedLanguage.code);
     }
     
     await SmartRecommendationsService().initialize();

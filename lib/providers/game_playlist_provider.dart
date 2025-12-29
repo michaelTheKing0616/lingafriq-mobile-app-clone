@@ -231,6 +231,5 @@ final gamePlaylistProvider = Provider<GamePlaylist>((ref) {
     secondary: secondary,
     rationale: rationale,
   );
-}
-
+});
 

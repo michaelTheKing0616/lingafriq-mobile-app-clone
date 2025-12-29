@@ -35,13 +35,16 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
             .setTransports(['websocket', 'polling'])
             .setAuth({'token': token ?? ''})
             .enableAutoConnect()
-            .setReconnection(true)
             .setReconnectionAttempts(5)
             .setReconnectionDelay(1000)
             .setReconnectionDelayMax(5000)
             .setTimeout(20000)
             .build(),
       );
+    } catch (e) {
+      debugPrint('Error initializing socket: $e');
+      return;
+    }
 
     _socket!.onConnect((_) {
       _isConnected = true;

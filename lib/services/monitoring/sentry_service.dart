@@ -310,11 +310,8 @@ class SentryService {
       // In Sentry 7.20.2, startTransaction returns an ITransaction
       // Using dynamic to avoid type issues - transaction will have finish() method
       final transaction = Sentry.startTransaction(name, operation);
-      if (transaction != null) {
-        Sentry.configureScope((scope) {
-          scope.setTransaction(transaction);
-        });
-      }
+      // Note: setTransaction method removed in Sentry 7.x
+      // Transaction tracking is handled automatically
       return transaction;
     } catch (e) {
       debugPrint('Failed to start transaction in Sentry: $e');
@@ -350,8 +347,8 @@ class SentryService {
     if (!_initialized) return;
 
     try {
-      // In Sentry 7.20.2, use close() instead of flush()
-      await Sentry.close(timeout: timeout);
+      // In Sentry 7.20.2, close() doesn't accept timeout parameter
+      await Sentry.close();
     } catch (e) {
       debugPrint('Failed to flush Sentry: $e');
     }

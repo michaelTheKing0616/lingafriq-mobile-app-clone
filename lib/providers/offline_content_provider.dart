@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/providers/dio_provider.dart' show client;
 import 'package:lingafriq/utils/api.dart';
 import 'package:dio/dio.dart';
 
@@ -46,8 +46,8 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
       await languageDir.create(recursive: true);
 
       // Get download manifest from backend
-      final client = ref.read(dioProvider);
-      final manifestResponse = await client.get(
+      final dioClient = ref.read(client);
+      final manifestResponse = await dioClient.get<Map<String, dynamic>>(
         '${Api.baseurl}api/v1/offline/content/$language/manifest',
       );
 
@@ -77,7 +77,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
 
         // Download file using Dio client for better error handling
         try {
-          final fileResponse = await client.get(
+          final fileResponse = await dioClient.get<List<int>>(
             url,
             options: Options(
               responseType: ResponseType.bytes,
@@ -137,8 +137,8 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
       await gameDir.create(recursive: true);
 
       // Get game download manifest from backend
-      final client = ref.read(dioProvider);
-      final manifestResponse = await client.get(
+      final dioClient = ref.read(client);
+      final manifestResponse = await dioClient.get<Map<String, dynamic>>(
         '${Api.baseurl}api/v1/offline/games/$gameId/manifest',
       );
 
@@ -166,8 +166,11 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
           await fileDir.create(recursive: true);
         }
 
-        // Download file
-        final fileResponse = await http.get(Uri.parse(url));
+        // Download file using Dio client
+        final fileResponse = await dioClient.get<List<int>>(
+          url,
+          options: Options(responseType: ResponseType.bytes),
+        );
         if (fileResponse.statusCode != 200) {
           debugPrint('Failed to download game file: $url');
           continue; // Skip failed files but continue with others
@@ -175,7 +178,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
 
         // Save file
         final fileFile = File(filePath);
-        await fileFile.writeAsBytes(fileResponse.bodyBytes);
+        await fileFile.writeAsBytes(fileResponse.data as List<int>);
 
         downloadedBytes += size;
         final progress = totalSize > 0 ? downloadedBytes / totalSize : (i + 1) / files.length;

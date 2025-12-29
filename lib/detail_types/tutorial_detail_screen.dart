@@ -21,7 +21,7 @@ class TutorialDetailScreen extends ConsumerWidget {
   final String endpointToHit;
   final bool isCompleted;
   const TutorialDetailScreen({
-    Key? key,
+    super.key,
     required this.title,
     required this.text,
     required this.audio,
@@ -29,7 +29,7 @@ class TutorialDetailScreen extends ConsumerWidget {
     required this.image,
     required this.endpointToHit,
     this.isCompleted = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

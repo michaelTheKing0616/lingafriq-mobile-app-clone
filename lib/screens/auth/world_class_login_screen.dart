@@ -479,19 +479,19 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             HapticFeedback.lightImpact();
             
             final authenticated = await biometricAuth.authenticate(
-              reason: 'Use biometric to sign in',
+              localizedReason: 'Use biometric to sign in',
             );
 
             if (authenticated) {
               try {
                 final credentials = await storage.getStoredCredentials();
-                if (credentials != null && credentials.password != null) {
-                  emailController.text = credentials.email;
-                  passwordController.text = credentials.password!;
+                if (credentials != null && credentials['password'] != null) {
+                  emailController.text = credentials['email'] ?? '';
+                  passwordController.text = credentials['password'] ?? '';
                   
                   await ref.read(authProvider.notifier).login(
-                        email: credentials.email,
-                        password: credentials.password!,
+                        email: credentials['email'] ?? '',
+                        password: credentials['password'] ?? '',
                         storeCredentials: true,
                       );
                 }

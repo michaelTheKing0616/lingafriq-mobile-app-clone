@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../services/error/error_recovery_service.dart';
-import '../errors/app_exceptions.dart';
 import 'package:flutter/foundation.dart';
+import '../../services/error/error_recovery_service.dart';
 
 /// API Client wrapper with automatic error recovery
 /// Use this instead of Dio directly for automatic retry and offline handling
@@ -29,7 +28,7 @@ class ApiClientWithRecovery {
         onReceiveProgress: onReceiveProgress,
       ),
       operationName: 'GET $path',
-      fallbackValue: fallbackValue != null ? () => Response(
+      fallbackValue: fallbackValue != null ? Response<T>(
         requestOptions: RequestOptions(path: path),
         statusCode: 200,
         data: fallbackValue(),
@@ -59,7 +58,7 @@ class ApiClientWithRecovery {
         onReceiveProgress: onReceiveProgress,
       ),
       operationName: 'POST $path',
-      fallbackValue: fallbackValue != null ? () => Response(
+      fallbackValue: fallbackValue != null ? Response<T>(
         requestOptions: RequestOptions(path: path),
         statusCode: 200,
         data: fallbackValue(),
@@ -89,7 +88,7 @@ class ApiClientWithRecovery {
         onReceiveProgress: onReceiveProgress,
       ),
       operationName: 'PUT $path',
-      fallbackValue: fallbackValue != null ? () => Response(
+      fallbackValue: fallbackValue != null ? Response<T>(
         requestOptions: RequestOptions(path: path),
         statusCode: 200,
         data: fallbackValue(),
@@ -115,7 +114,7 @@ class ApiClientWithRecovery {
         cancelToken: cancelToken,
       ),
       operationName: 'DELETE $path',
-      fallbackValue: fallbackValue != null ? () => Response(
+      fallbackValue: fallbackValue != null ? Response<T>(
         requestOptions: RequestOptions(path: path),
         statusCode: 200,
         data: fallbackValue(),

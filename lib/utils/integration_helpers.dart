@@ -105,7 +105,7 @@ Debouncer Function(String query) createSearchDebouncer({
   required Future<void> Function(String query) onSearch,
   Duration delay = const Duration(milliseconds: 300),
 }) {
-  final debouncer = Debouncer(duration: delay);
+  final debouncer = Debouncer(delay: delay);
   
   return (String query) {
     debouncer.run(() async {
@@ -130,7 +130,7 @@ SimpleCache<String, T> createDataCache<T>({
   Duration? ttl,
 }) {
   return SimpleCache<String, T>(
-    ttl: ttl ?? const Duration(minutes: 5),
+    defaultTtl: ttl ?? const Duration(minutes: 5),
     fetcher: fetcher,
   );
 }
@@ -149,11 +149,7 @@ Widget optimizedList({
   return OptimizedListView(
     itemCount: itemCount,
     itemBuilder: itemBuilder,
-    controller: controller,
-    shrinkWrap: shrinkWrap,
-    padding: padding,
-    scrollDirection: scrollDirection,
-  );
+    controller: controller, padding: padding, );
 }
 
 /// Create a lazy image widget

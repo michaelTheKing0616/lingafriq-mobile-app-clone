@@ -15,7 +15,7 @@ final lightTheme = ThemeData(
   canvasColor: Colors.white,
   scaffoldBackgroundColor: Colors.white,
   cardColor: AppColors.filledLight,
-  dividerColor: Colors.black.withOpacity(0.12),
+  dividerColor: Colors.black.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -68,7 +68,7 @@ final darkTheme = ThemeData(
   canvasColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
   cardColor: AppColors.filledDark,
-  dividerColor: Colors.white.withOpacity(0.12),
+  dividerColor: Colors.white.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,

@@ -380,6 +380,29 @@ class GamificationProvider extends Notifier<BaseProviderState>
     state = state.copyWith();
   }
 
+  /// Spend currency (deduct from current balance)
+  Future<bool> spendCurrency({
+    required int cowries,
+    int? ngwenya,
+    int? ancestralBeads,
+  }) async {
+    // Check if user has enough currency
+    if (_gamification.cowries < cowries) return false;
+    if (ngwenya != null && _gamification.ngwenya < ngwenya) return false;
+    if (ancestralBeads != null && _gamification.ancestralBeads < ancestralBeads) return false;
+
+    // Deduct currency
+    _gamification = _gamification.copyWith(
+      cowries: _gamification.cowries - cowries,
+      ngwenya: ngwenya != null ? _gamification.ngwenya - ngwenya : _gamification.ngwenya,
+      ancestralBeads: ancestralBeads != null ? _gamification.ancestralBeads - ancestralBeads : _gamification.ancestralBeads,
+    );
+    await _saveGamification();
+    await _syncToBackend();
+    state = state.copyWith();
+    return true;
+  }
+
   /// Enable Ubuntu streak (never break - help others if you do)
   Future<void> enableUbuntuStreak() async {
     _gamification = _gamification.copyWith(ubuntuStreakActive: true);

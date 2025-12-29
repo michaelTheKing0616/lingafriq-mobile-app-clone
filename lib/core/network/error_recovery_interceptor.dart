@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
-import '../../services/error/error_recovery_service.dart';
-import '../errors/app_exceptions.dart';
 import 'package:flutter/foundation.dart';
+import '../../services/error/error_recovery_service.dart';
 
 /// Dio Interceptor for automatic error recovery
 /// Applies retry logic, offline handling, and graceful degradation to all API calls
@@ -22,7 +21,13 @@ class ErrorRecoveryInterceptor extends Interceptor {
           operation: () async {
             // Retry using the same dio instance by creating a new request
             final options = err.requestOptions;
-            final dio = Dio(options.baseOptions);
+            final dio = Dio(BaseOptions(
+              baseUrl: options.baseUrl,
+              connectTimeout: options.connectTimeout,
+              receiveTimeout: options.receiveTimeout,
+              sendTimeout: options.sendTimeout,
+              headers: options.headers,
+            ));
             
             return await dio.request(
               options.path,
@@ -89,7 +94,7 @@ class ErrorRecoveryInterceptor extends Interceptor {
       }
 
       // Don't retry on 4xx client errors (except 429)
-      if (statusCode >= 400 && statusCode < 500) {
+      if (statusCode != null && statusCode >= 400 && statusCode < 500) {
         return false;
       }
     }

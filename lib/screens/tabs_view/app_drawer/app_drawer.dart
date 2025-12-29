@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
@@ -26,6 +27,7 @@ import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawer extends HookConsumerWidget {
@@ -34,7 +36,7 @@ class AppDrawer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = useState(Theme.of(context).brightness == Brightness.dark);
-    final currentUser = ref.watch(authProvider);
+    final currentUser = ref.watch(userProvider);
 
     Future<void> toggleDarkMode() async {
       final prefs = await SharedPreferences.getInstance();

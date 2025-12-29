@@ -6,6 +6,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Full-screen language picker for Polie
@@ -36,15 +37,26 @@ class _AiChatLanguageSetupScreenState
   }
 
   Future<void> _selectLanguage(String language) async {
-    final chat = ref.read(groqChatProvider.notifier);
-    // Prime mode and language before entering chat
-    // This will load the scoped chat history for this mode × language combination
-    await chat.setMode(_mode);
-    await chat.setLanguageDirection('English', language);
-    await chat.setLanguage(language);
     if (!mounted) return;
-    // Navigate to chat screen with scoped history loaded
-    await ref.read(navigationProvider).navigateTo(const AiChatScreen());
+    
+    await safeAsync(
+      context: context,
+      operation: () async {
+        final chat = ref.read(groqChatProvider.notifier);
+        // Prime mode and language before entering chat
+        // This will load the scoped chat history for this mode × language combination
+        await chat.setMode(_mode);
+        await chat.setLanguageDirection('English', language);
+        await chat.setLanguage(language);
+        if (!mounted) return;
+        // Navigate to chat screen with scoped history loaded
+        Navigator.push(
+          context,
+          SmoothPageRoute(child: const AiChatScreen()),
+        );
+      },
+      errorContext: 'AI Chat Language Setup',
+    );
   }
 
   @override
@@ -108,7 +120,7 @@ class _AiChatLanguageSetupScreenState
                     color: isDark ? const Color(0xFF1E3325) : const Color(0xFFF5F7F5),
                     borderRadius: BorderRadius.circular(DesignSystem.radiusL),
                     border: Border.all(
-                      color: const Color(0xFF00A86B).withOpacity(0.3),
+                      color: const Color(0xFF00A86B).withValues(alpha: 0.3),
                     ),
                   ),
                   child: Row(
@@ -168,7 +180,7 @@ class _AiChatLanguageSetupScreenState
                           borderRadius:
                               BorderRadius.circular(DesignSystem.radiusXL),
                           border: Border.all(
-                            color: const Color(0xFF00A86B).withOpacity(0.2),
+                            color: const Color(0xFF00A86B).withValues(alpha: 0.2),
                             width: 1.2,
                           ),
                           boxShadow: DesignSystem.shadowMedium,

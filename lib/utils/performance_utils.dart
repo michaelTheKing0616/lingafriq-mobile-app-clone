@@ -55,8 +55,13 @@ class Throttler {
 class SimpleCache<K, V> {
   final Map<K, _CacheEntry<V>> _cache = {};
   final Duration defaultTtl;
+  final Future<V> Function(K key)? fetcher;
 
-  SimpleCache({this.defaultTtl = const Duration(hours: 1)});
+  SimpleCache({
+    this.defaultTtl = const Duration(hours: 1),
+    Duration? ttl,
+    this.fetcher,
+  }) : defaultTtl = ttl ?? const Duration(hours: 1);
 
   void set(K key, V value, {Duration? ttl}) {
     _cache[key] = _CacheEntry(
@@ -118,6 +123,25 @@ class OptimizedListView extends StatelessWidget {
     this.controller,
     this.padding,
   }) : super(key: key);
+
+  /// Factory constructor for builder pattern compatibility
+  static Widget builder({
+    Key? key,
+    required int itemCount,
+    required Widget Function(BuildContext, int) itemBuilder,
+    double? itemExtent,
+    ScrollController? controller,
+    EdgeInsetsGeometry? padding,
+  }) {
+    return OptimizedListView(
+      key: key,
+      itemCount: itemCount,
+      itemBuilder: itemBuilder,
+      itemExtent: itemExtent,
+      controller: controller,
+      padding: padding,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -7,14 +7,14 @@ import 'package:intl/intl.dart';
 
 enum AppLanguage {
   english('en', 'English'),
-  french('fr', 'Français'),
-  yoruba('yo', 'Yorùbá'),
+  french('fr', 'FranÃ§ais'),
+  yoruba('yo', 'YorÃ¹bÃ¡'),
   hausa('ha', 'Hausa'),
   igbo('ig', 'Igbo'),
   swahili('sw', 'Kiswahili'),
   zulu('zu', 'isiZulu'),
   xhosa('xh', 'isiXhosa'),
-  amharic('am', 'አማርኛ'),
+  amharic('am', 'áŠ áˆ›áˆ­áŠ›'),
   twi('tw', 'Twi'),
   afrikaans('af', 'Afrikaans'),
   pidgin('pcm', 'Nigerian Pidgin'),
@@ -74,10 +74,13 @@ class DynamicLocalizationService {
     return false;
   }
 
-  /// Get text direction for current language
+  /// Get text direction for current language  
   static TextDirection getTextDirection() {
-    // TextDirection.rtl and TextDirection.ltr are enum values, not properties
-    return isRTL(_currentLanguage.code) ? TextDirection.rtl : TextDirection.ltr;
+    final bool isRightToLeft = isRTL(_currentLanguage.code);
+    if (isRightToLeft) {
+      return TextDirection.rtl;
+    }
+    return TextDirection.ltr;
   }
 }
 

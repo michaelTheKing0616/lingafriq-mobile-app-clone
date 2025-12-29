@@ -419,7 +419,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: 8.h),
-        _buildPasswordStrengthIndicator(controller.text, isDark),
+        _buildPasswordStrengthIndicator(context, controller.text, isDark),
       ],
     );
   }
@@ -520,7 +520,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildPasswordStrengthIndicator(String password, bool isDark) {
+  Widget _buildPasswordStrengthIndicator(BuildContext context, String password, bool isDark) {
     if (password.isEmpty) return SizedBox.shrink();
 
     int strength = 0;

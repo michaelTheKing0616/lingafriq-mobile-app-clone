@@ -47,13 +47,13 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {
     try {
-      if (refreshToken == null || refreshToken.isEmpty) {
+      if ((refreshToken?.isEmpty ?? true)) {
         // Try to get from shared preferences
         final prefs = ref.read(sharedPreferencesProvider);
         refreshToken = await prefs.getRefreshToken();
       }
       
-      if (refreshToken == null || refreshToken.isEmpty) {
+      if ((refreshToken?.isEmpty ?? true)) {
         return null;
       }
 
@@ -118,7 +118,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       refreshToken = res.data['refresh'];
 
       // Store tokens
-      if (token != null && token.isNotEmpty && refreshToken != null && refreshToken.isNotEmpty) {
+      if ((token?.isNotEmpty ?? false) && (refreshToken?.isNotEmpty ?? false)) {
         final prefs = ref.read(sharedPreferencesProvider);
         await prefs.storeAuthTokens(token!, refreshToken!);
       }
@@ -994,6 +994,60 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     } catch (e) {
       debugPrint('Error saving AI chat history: $e');
       return false;
+    }
+  }
+
+  /// Get AI chat history from backend
+  /// Returns list of message maps, or null if not found/error
+  Future<List<Map<String, dynamic>>?> getAiChatHistory({
+    required String mode,
+    required String languageCode,
+  }) async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/ai-chat/history',
+        queryParameters: {
+          'mode': mode,
+          'language_code': languageCode,
+        },
+      );
+      
+      if (res.statusCode == 200 && res.data != null) {
+        // Backend should return: { "messages": [...] } or directly [...]
+        if (res.data is Map && res.data['messages'] != null) {
+          final messages = res.data['messages'] as List;
+          return messages.map((m) => m as Map<String, dynamic>).toList();
+        } else if (res.data is List) {
+          return (res.data as List).map((m) => m as Map<String, dynamic>).toList();
+        }
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting AI chat history: $e');
+      return null;
+    }
+  }
+
+  /// Get user gamification data from backend
+  /// Returns gamification data map, or null if not found/error
+  Future<Map<String, dynamic>?> getGamification(String userId) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.userGamification(userId),
+      );
+      
+      if (res.statusCode == 200 && res.data != null) {
+        if (res.data is Map) {
+          return res.data as Map<String, dynamic>;
+        } else if (res.data is List && (res.data as List).isNotEmpty) {
+          // Backend might return a list with single item
+          return (res.data as List).first as Map<String, dynamic>;
+        }
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error getting gamification: $e');
+      return null;
     }
   }
 

@@ -251,7 +251,7 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
 
   Future<void> _syncXPToBackend() async {
     try {
-      await ref.read(apiProvider.notifier).updateXP(_totalXP, _level);
+      await ref.read(apiProvider.notifier).updateXP(_totalXP);
     } catch (e) {
       debugPrint('Error syncing XP to backend: $e');
     }

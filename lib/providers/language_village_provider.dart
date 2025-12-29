@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/language_village_model.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
-import 'dio_provider.dart';
+import 'dio_provider.dart' show client;
 import '../utils/api.dart';
 import 'user_provider.dart';
 
@@ -35,8 +35,8 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
 
     try {
       // Fetch from backend API
-      final client = ref.read(dioProvider);
-      final response = await client.get('${Api.baseurl}${Api.villages}');
+      final dioClient = ref.read(client);
+      final response = await dioClient.get('${Api.baseurl}${Api.villages}');
       
       if (response.statusCode == 200) {
         final responseData = response.data;
@@ -85,8 +85,8 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       try {
         final user = ref.read(userProvider);
         if (user != null) {
-          final client = ref.read(dioProvider);
-          final response = await client.post(
+          final dioClient = ref.read(client);
+          final response = await dioClient.post(
             '${Api.baseurl}${Api.villageLivekitToken(village.language.toLowerCase())}',
             data: {
               'userId': user.id.toString(),
@@ -108,7 +108,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
               _participants.add(VillageParticipant(
                 userId: user.id.toString(),
                 username: user.username ?? 'User',
-                avatarUrl: user.avatar ?? '',
+                avatar: user.avater,
                 isSpeaking: false,
                 joinedAt: DateTime.now(),
               ));
@@ -159,8 +159,8 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       }
 
       // Create via backend API
-      final client = ref.read(dioProvider);
-      final response = await client.post(
+      final dioClient = ref.read(client);
+      final response = await dioClient.post(
         '${Api.baseurl}${Api.villages}',
         data: {
           'lang': language.toLowerCase(),

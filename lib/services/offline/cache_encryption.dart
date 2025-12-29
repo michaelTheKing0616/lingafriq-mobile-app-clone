@@ -100,5 +100,18 @@ class CacheEncryptionService {
   
   /// Decrypt JSON data
   Future<Map<String, dynamic>> decryptJson(String encryptedData) => CacheEncryption.decryptJson(encryptedData);
+  
+  /// Set encryption enabled state (stores preference)
+  Future<void> setEncryptionEnabled(bool enabled) async {
+    const storage = FlutterSecureStorage();
+    await storage.write(key: 'cache_encryption_enabled', value: enabled.toString());
+  }
+  
+  /// Check if encryption is enabled from preferences
+  Future<bool> getEncryptionEnabled() async {
+    const storage = FlutterSecureStorage();
+    final value = await storage.read(key: 'cache_encryption_enabled');
+    return value == 'true';
+  }
 }
 

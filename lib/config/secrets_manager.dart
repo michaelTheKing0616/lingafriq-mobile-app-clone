@@ -1,3 +1,7 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 /// Secrets Management Service
 /// Secure API key and secret management
 /// 
@@ -9,11 +13,6 @@
 /// - CI/CD integration ready
 /// 
 /// Production-ready implementation (December 2025)
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 
 /// Secrets Manager
 /// 
@@ -183,7 +182,6 @@ class SecretsManager {
   Future<void> rotateSecret(String key, String newValue) async {
     if (!_initialized) await initialize();
 
-    final oldValue = _secrets[key];
     await setSecret(key, newValue, secure: true);
 
     debugPrint('Secret rotated: $key (old value removed)');
