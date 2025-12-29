@@ -8,7 +8,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
-// import 'package:livekit_client/livekit_client.dart'; // Uncomment when LiveKit SDK is added
+import 'package:livekit_client/livekit_client.dart';
 
 /// LiveKit Classroom Chat with Video/Audio and Whiteboard
 class ClassroomChatLiveKitScreen extends HookConsumerWidget {
@@ -41,10 +41,58 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
           final token = response.data['data']['token'];
           final url = response.data['data']['url'] ?? AppConfig.liveKitUrl;
 
-          // TODO: Initialize LiveKit Room with token and URL
-          // final room = await Room.connect(url, token);
-          // await room.localParticipant?.setCameraEnabled(isVideoEnabled.value);
-          // await room.localParticipant?.setMicrophoneEnabled(isAudioEnabled.value);
+          // Initialize LiveKit Room with token and URL
+          final room = Room();
+          await room.connect(
+            url,
+            token,
+            roomOptions: const RoomOptions(
+              defaultAudioOptions: AudioCaptureOptions(
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+              ),
+              defaultVideoOptions: VideoCaptureOptions(
+                resolution: VideoPreset.h720.resolution,
+                fps: 30,
+              ),
+            ),
+          );
+
+          // Enable camera and microphone
+          await room.localParticipant.setCameraEnabled(isVideoEnabled.value);
+          await room.localParticipant.setMicrophoneEnabled(isAudioEnabled.value);
+
+          // Track participants
+          final localP = room.localParticipant;
+          participants.value = [
+            {
+              'name': localP.name ?? 'You',
+              'id': localP.sid,
+              'isLocal': true,
+            },
+          ];
+
+          // Listen for remote participants
+          room.addListener(() {
+            final participantList = <Map<String, dynamic>>[
+              {
+                'name': localP.name ?? 'You',
+                'id': localP.sid,
+                'isLocal': true,
+              },
+            ];
+
+            for (final participant in room.remoteParticipants.values) {
+              participantList.add({
+                'name': participant.name ?? 'Participant',
+                'id': participant.sid,
+                'isLocal': false,
+              });
+            }
+
+            participants.value = participantList;
+          });
 
           isLoading.value = false;
         }

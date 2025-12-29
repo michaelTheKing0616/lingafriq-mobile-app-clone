@@ -220,7 +220,15 @@ class _PrivateChatListScreenState
       itemBuilder: (context, index) {
         final contact = contacts[index];
         final isOnline = onlineIds.contains(contact.id.toString());
-        final unreadCount = 0; // TODO: Get from contact model
+        // Get unread count from chat socket provider for this contact's room
+        final chatSocketNotifier = ref.read(socketProvider.notifier);
+        final roomId = _buildRoomId(ref.read(userProvider)?.id ?? 0, contact.id);
+        final roomMessages = chatSocketNotifier.messagesForRoom(roomId);
+        final currentUserId = ref.read(userProvider)?.id.toString();
+        final unreadCount = roomMessages.where((msg) => 
+          msg['userId'] != currentUserId && 
+          (msg['read'] == null || msg['read'] == false)
+        ).length;
         
         return Container(
           margin: EdgeInsets.only(bottom: 2.h),
@@ -277,7 +285,7 @@ class _PrivateChatListScreenState
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '2m ago', // TODO: Format from timestamp
+                  _formatTime(_getLastMessageTimestamp(roomMessages)),
                   style: TextStyle(
                     fontSize: 11.sp,
                     color: isDark ? Colors.white70 : Colors.black54,
@@ -406,6 +414,33 @@ class _ContactTile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _buildRoomId(int userId1, int userId2) {
+    final ids = [userId1, userId2]..sort();
+    return 'private_${ids[0]}_${ids[1]}';
+  }
+
+  String? _getLastMessageTimestamp(List<Map<String, dynamic>> messages) {
+    if (messages.isEmpty) return null;
+    final lastMessage = messages.last;
+    return lastMessage['timestamp']?.toString();
+  }
+
+  String _formatTime(String? timestamp) {
+    if (timestamp == null || timestamp.isEmpty) return '';
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'just now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
+      if (diff.inDays < 1) return '${diff.inHours}h ago';
+      if (diff.inDays < 7) return '${diff.inDays}d ago';
+      return '${date.day}/${date.month}/${date.year}';
+    } catch (_) {
+      return '';
+    }
   }
 }
 
