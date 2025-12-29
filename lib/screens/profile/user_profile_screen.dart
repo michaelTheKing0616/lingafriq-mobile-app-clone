@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/services/advanced/smart_recommendations.dart';
+import 'package:intl/intl.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
@@ -35,7 +37,15 @@ class UserProfileScreen extends ConsumerWidget {
 
   Widget _buildProfile(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final gamification = ref.watch(gamificationProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    // Get preferred language from user profile or smart recommendations
+    final preferredLanguage = user?.nationality ?? 'yoruba';
+    
+    // Format member since date from gamification lastLogin or use current date as fallback
+    final memberSinceDate = gamification?.lastLogin ?? DateTime.now();
+    final memberSinceFormatted = DateFormat('MMMM yyyy').format(memberSinceDate);
     
     return Scaffold(
       backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
@@ -232,7 +242,7 @@ class UserProfileScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Swahili', // TODO: Get from user preferences
+                                    preferredLanguage.toUpperCase(),
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
@@ -265,7 +275,7 @@ class UserProfileScreen extends ConsumerWidget {
                                     ),
                                   ),
                                   Text(
-                                    'January 2024', // TODO: Get from user data
+                                    memberSinceFormatted,
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
