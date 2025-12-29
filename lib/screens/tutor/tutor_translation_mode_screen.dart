@@ -21,7 +21,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
     final textController = useTextEditingController();
     final sourceLanguage = useState<AppLanguage>(AppLanguage.english);
     final targetLanguage = useState<AppLanguage>(AppLanguage.yoruba);
-    final translationType = useState<'literal' | 'adaptive'>('adaptive');
+    final translationType = useState<String>('adaptive');
     final isLoading = useState(false);
     final translationResult = useState<Map<String, dynamic>?>(null);
     final localizationService = useMemoized(() => DynamicLocalizationService());

@@ -50,22 +50,16 @@ class _TabsViewState extends ConsumerState<TabsView> {
     return Scaffold(
       key: scaffoldKey,
       drawer: const AppDrawer(),
-      body: Column(
-        children: [
-          OfflineIndicator(),
-          Expanded(
-            child: IndexedStack(
-              index: index,
-              children: const [
-                HomeTab(),
-                CoursesTab(),
-               // Center(),
-                 StandingsTab(),
-                ProfileTab(),
-              ],
-            ),
-          ),
-        ],
+      body: OfflineIndicator(
+        child: IndexedStack(
+          index: index,
+          children: const [
+            HomeTab(),
+            CoursesTab(),
+            StandingsTab(),
+            ProfileTab(),
+          ],
+        ),
       ),
       bottomNavigationBar: const _BottomNavigationBar(),
     );

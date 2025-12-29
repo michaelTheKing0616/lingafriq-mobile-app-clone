@@ -32,7 +32,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
       return timer.listen((_) {}).cancel;
     }, []);
 
-    return Scaffold(
+    return OfflineIndicator(
+      child: Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark

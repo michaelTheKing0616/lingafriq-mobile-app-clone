@@ -9,22 +9,63 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/curriculum_provider.dart';
 
 /// Beautiful Material 3 Curriculum Screen
 class CurriculumScreenMaterial3 extends HookConsumerWidget {
-  const CurriculumScreenMaterial3({Key? key}) : super(key: key);
+  const CurriculumScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLanguage = useState('yoruba');
     final selectedLevel = useState('A1');
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isLoading = useState(false);
+    final error = useState<String?>(null);
 
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu'];
     final levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
-    // Mock curriculum data - replace with actual provider
+    // Load curriculum data from provider
+    final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
     final weeks = useState<List<Map<String, dynamic>>>([]);
+
+    // Load lessons when language/level changes
+    useEffect(() {
+      safeAsync(() async {
+        isLoading.value = true;
+        error.value = null;
+        try {
+          // Try to load from curriculum provider first
+          if (curriculum != null) {
+            final languageData = curriculum.languages[selectedLanguage.value];
+            final levelData = languageData?[selectedLevel.value];
+            if (levelData != null) {
+              // Convert curriculum units to weeks format
+              weeks.value = levelData.asMap().entries.map((entry) {
+                final index = entry.key;
+                final unit = entry.value;
+                return {
+                  'week': index + 1,
+                  'title': unit.title,
+                  'lessons': unit.lessons.map((lesson) => {
+                    'id': lesson.id,
+                    'title': lesson.title,
+                    'completed': false, // TODO: Load from completion status
+                  }).toList(),
+                };
+              }).toList();
+            }
+          }
+        } catch (e) {
+          error.value = ErrorHandler.getErrorMessage(e);
+        } finally {
+          isLoading.value = false;
+        }
+      });
+      return null;
+    }, [selectedLanguage.value, selectedLevel.value, curriculum]);
 
     return Scaffold(
       appBar: AppBar(
@@ -113,41 +154,99 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
 
             // Curriculum Content
             Expanded(
-              child: weeks.value.isEmpty
+              child: isLoading.value
                   ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.menu_book_outlined,
-                            size: 64.sp,
-                            color: PanAfricanColors.neutralMedium,
-                          ),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'No curriculum available',
-                            style: PanAfricanTypography.bodyLarge(context),
-                          ),
-                        ],
+                      child: CircularProgressIndicator(
+                        color: PanAfricanColors.primary,
                       ),
                     )
-                  : OptimizedListView.builder(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      itemCount: weeks.value.length,
-                      itemBuilder: (context, index) {
-                        final week = weeks.value[index];
-                        return _WeekCard(
-                          week: week,
-                          isDark: isDark,
-                          onTap: () {
-                            // Navigate to week details
-                          },
+                  : error.value != null
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                size: 64.sp,
+                                color: PanAfricanColors.error,
+                              ),
+                              SizedBox(height: PanAfricanSpacing.md),
+                              Text(
+                                error.value!,
+                                style: PanAfricanTypography.bodyLarge(context),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: PanAfricanSpacing.md),
+                              ElevatedButton(
+                                onPressed: () {
+                                  safeAsync(() async {
+                                    isLoading.value = true;
+                                    error.value = null;
+                                    await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                    isLoading.value = false;
+                                  });
+                                },
+                                child: Text('Retry'),
+                              ),
+                            ],
+                          ),
                         )
-                            .animate(delay: (index * 50).ms)
-                            .fadeIn(duration: 300.ms)
-                            .slideY(begin: 0.2);
-                      },
-                    ),
+                      : weeks.value.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.menu_book_outlined,
+                                    size: 64.sp,
+                                    color: PanAfricanColors.neutralMedium,
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  Text(
+                                    'No curriculum available',
+                                    style: PanAfricanTypography.bodyLarge(context),
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      safeAsync(() async {
+                                        isLoading.value = true;
+                                        await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                        isLoading.value = false;
+                                      });
+                                    },
+                                    child: Text('Load Curriculum'),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : OptimizedListView.builder(
+                              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                              itemCount: weeks.value.length,
+                              itemBuilder: (context, index) {
+                                final week = weeks.value[index];
+                                return _WeekCard(
+                                  week: week,
+                                  isDark: isDark,
+                                  onTap: () {
+                                    // Navigate to week details
+                                    if (week['lessons'] != null && (week['lessons'] as List).isNotEmpty) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LessonDetailScreen(
+                                            lessonId: (week['lessons'] as List)[0]['id'] ?? 0,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
+                                    .animate(delay: (index * 50).ms)
+                                    .fadeIn(duration: 300.ms)
+                                    .slideY(begin: 0.2);
+                              },
+                            ),
             ),
           ],
         ),

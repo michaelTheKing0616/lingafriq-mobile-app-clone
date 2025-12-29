@@ -36,12 +36,7 @@ class AIChatScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Load chat history for this language×mode combination
-    useEffect(() {
-      _loadChatHistory();
-      return null;
-    }, []);
-
+    // Load chat history function
     Future<void> _loadChatHistory() async {
       try {
         final response = await ApiService.get(
@@ -60,6 +55,12 @@ class AIChatScreen extends HookConsumerWidget {
         // For other errors, we could show a message but it's not critical
       }
     }
+
+    // Load chat history for this language×mode combination
+    useEffect(() {
+      _loadChatHistory();
+      return null;
+    }, []);
 
     Future<void> sendMessage() async {
       if (messageController.text.isEmpty) return;
@@ -385,7 +386,12 @@ class _MessageBubble extends StatelessWidget {
             ),
             // Show additional data based on mode
             if (!isUser && message['data'] != null)
-              _buildModeSpecificContent(context, mode, message['data'], isDark),
+              Builder(
+                builder: (_) {
+                  final content = _buildModeSpecificContent(context, mode, message['data'], isDark);
+                  return content ?? const SizedBox.shrink();
+                },
+              ),
           ],
         ),
       ),

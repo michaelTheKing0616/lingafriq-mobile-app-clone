@@ -872,7 +872,7 @@ Make reviews efficient and rewarding.''';
         // - system messages are passed separately (not in messages array for some models)
         // - For Groq, we can include system in messages array, but it's cleaner to pass separately
         
-        final messagesList = <Map<String, dynamic>>[];
+        var messagesList = <Map<String, dynamic>>[];
         
         // Filter messages by current mode and language to create scoped chat bodies
         // This ensures each mode × language combination has its own conversation history
@@ -1866,11 +1866,11 @@ Return only JSON.
       // Use backend API directly for chat history
       try {
         final apiNotifier = ref.read(apiProvider.notifier);
-        final success = await apiNotifier.saveAiChatHistory(
-          mode: _modeNameForBackend,
-          languageCode: _languageCodeForBackend,
-          messages: _messages.map((m) => m.toJson()).toList(),
-        );
+        final success = await apiNotifier.saveAiChatHistory({
+          'mode': _modeNameForBackend,
+          'language_code': _languageCodeForBackend,
+          'messages': _messages.map((m) => m.toJson()).toList(),
+        });
         if (success) {
           debugPrint('Chat history synced to backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
         }
@@ -1950,9 +1950,15 @@ Return only JSON.
           if (backendHistory != null && backendHistory.isNotEmpty) {
             _messages.clear();
             _messages.addAll(
-              backendHistory.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
+              backendHistory.map((json) => ChatMessage.fromJson(json)),
             );
-            debugPrint('Loaded ${_messages.length} messages from backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+            final modeName = _mode == PolieMode.translation ? "Translation" 
+                : _mode == PolieMode.tutor ? "Tutor"
+                : _mode == PolieMode.roleplay ? "Roleplay"
+                : _mode == PolieMode.conversation ? "Conversation"
+                : _mode == PolieMode.vocab ? "Vocab"
+                : "Review";
+            debugPrint('Loaded ${_messages.length} messages from backend: $modeName × $_languageCodeForBackend');
             state = state.copyWith();
             
             // Also save to local storage for offline access

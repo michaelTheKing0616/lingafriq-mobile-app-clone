@@ -2,9 +2,16 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-///Override provider in provider scope
+/// Shared Preferences Provider - manages local storage
+/// This provider is overridden in main.dart with an actual instance
+/// The default implementation will throw if not overridden (should not happen in production)
 final sharedPreferencesProvider = Provider<SharedPreferencesProvider>((ref) {
-  throw UnimplementedError();
+  // This should never be reached in production as it's overridden in main.dart
+  // However, we provide a fallback that will throw a descriptive error
+  throw StateError(
+    'sharedPreferencesProvider must be overridden in ProviderScope. '
+    'This should be done in main.dart during app initialization.'
+  );
 });
 
 class SharedPreferencesProvider {
@@ -52,7 +59,7 @@ class SharedPreferencesProvider {
     await prefs.setString(emailKey, user.toJson());
   }
 
-  Future<ProfileModel?> getUser(emailKey) async {
+  Future<ProfileModel?> getUser(String emailKey) async {
     final userJson = prefs.getString(emailKey);
     if (userJson == null) return null;
     return ProfileModel.fromJson(userJson);

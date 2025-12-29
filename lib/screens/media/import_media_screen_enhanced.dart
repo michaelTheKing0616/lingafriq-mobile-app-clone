@@ -507,7 +507,6 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           ),
         ],
       ),
-    ),
     );
   }
 

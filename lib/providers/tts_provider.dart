@@ -78,11 +78,13 @@ class TTSProvider extends BaseProvider {
     }
   }
 
-  @override
-  void dispose() {
-    unawaited(_playerSub?.cancel());
-    unawaited(_player.dispose());
-    super.dispose();
+  /// Clean up resources
+  /// Note: Notifier providers don't have a dispose method in Riverpod 2.0
+  /// Resources are cleaned up when the provider is no longer referenced
+  /// This method can be called manually if needed
+  Future<void> cleanup() async {
+    await _playerSub?.cancel();
+    await _player.dispose();
   }
 }
 

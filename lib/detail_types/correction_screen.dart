@@ -35,14 +35,14 @@ class CorrectionScreen extends StatefulHookConsumerWidget {
   final bool isCompleted;
 
   const CorrectionScreen({
-    Key? key,
+    super.key,
     required this.title,
     required this.wordCorrections,
     required this.endpointToHit,
     required this.score,
     this.isTakeQuiz = false,
     this.isCompleted = false,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<CorrectionScreen> createState() => _CorrectionScreenState();
@@ -276,9 +276,9 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
 class _ChoicesSheet extends ConsumerWidget {
   final List<Map<String, String?>> selected;
   const _ChoicesSheet({
-    Key? key,
+    super.key,
     required this.selected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

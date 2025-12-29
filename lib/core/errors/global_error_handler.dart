@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'app_exceptions.dart';
 
 /// Global error handler widget
@@ -9,9 +8,9 @@ class GlobalErrorHandler extends StatefulWidget {
   final Widget child;
 
   const GlobalErrorHandler({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<GlobalErrorHandler> createState() => _GlobalErrorHandlerState();
@@ -65,12 +64,12 @@ class ErrorBoundary extends StatelessWidget {
   final VoidCallback? onRetry;
 
   const ErrorBoundary({
-    Key? key,
+    super.key,
     required this.child,
     this.fallback,
     this.errorMessage,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +78,7 @@ class ErrorBoundary extends StatelessWidget {
       builder: (context) {
         try {
           return child;
-        } catch (e, stack) {
+        } catch (e) {
           final exception = ExceptionHandler.handleError(e);
           final userMessage = ExceptionHandler.getUserFriendlyMessage(exception);
 

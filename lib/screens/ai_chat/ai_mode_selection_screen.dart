@@ -8,7 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'ai_chat_screen.dart';
+import 'ai_chat_screen_new.dart';
 
 /// Beautiful Material 3 Mode Selection Screen
 class AIModeSelectionScreen extends StatelessWidget {

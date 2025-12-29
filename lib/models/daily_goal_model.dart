@@ -52,5 +52,27 @@ class DailyGoal {
 
   String toJson() => jsonEncode(toMap());
   factory DailyGoal.fromJson(String json) => DailyGoal.fromMap(jsonDecode(json));
+
+  DailyGoal copyWith({
+    int? id,
+    String? type,
+    int? target,
+    int? current,
+    DateTime? date,
+    bool? completed,
+    int? streak,
+    DateTime? lastCompletedDate,
+  }) {
+    return DailyGoal(
+      id: id ?? this.id,
+      type: type ?? this.type,
+      target: target ?? this.target,
+      current: current ?? this.current,
+      date: date ?? this.date,
+      completed: completed ?? this.completed,
+      streak: streak ?? this.streak,
+      lastCompletedDate: lastCompletedDate ?? this.lastCompletedDate,
+    );
+  }
 }
 

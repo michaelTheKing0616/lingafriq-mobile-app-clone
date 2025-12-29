@@ -79,7 +79,7 @@ class _IntegratedScreenExampleState extends State<IntegratedScreenExample>
       }
 
       // Load from API with error recovery
-      final result = await safeOperation<List<String>>(
+      final result = await safeAsyncOperation<List<String>>(
         operation: () async {
           // Simulate API call
           await Future.delayed(const Duration(seconds: 1));

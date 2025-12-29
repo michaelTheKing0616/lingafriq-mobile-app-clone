@@ -7,14 +7,14 @@ import 'package:intl/intl.dart';
 
 enum AppLanguage {
   english('en', 'English'),
-  french('fr', 'Français'),
-  yoruba('yo', 'Yorùbá'),
+  french('fr', 'FranÃ§ais'),
+  yoruba('yo', 'YorÃ¹bÃ¡'),
   hausa('ha', 'Hausa'),
   igbo('ig', 'Igbo'),
   swahili('sw', 'Kiswahili'),
   zulu('zu', 'isiZulu'),
   xhosa('xh', 'isiXhosa'),
-  amharic('am', 'አማርኛ'),
+  amharic('am', 'áŠ áˆ›áˆ­áŠ›'),
   twi('tw', 'Twi'),
   afrikaans('af', 'Afrikaans'),
   pidgin('pcm', 'Nigerian Pidgin'),
@@ -74,28 +74,13 @@ class DynamicLocalizationService {
     return false;
   }
 
-  /// Get text direction for current language
+  /// Get text direction for current language  
   static TextDirection getTextDirection() {
-    return isRTL(_currentLanguage.code) ? TextDirection.rtl : TextDirection.ltr;
-  }
-
-  // Instance methods that delegate to static methods
-  Future<void> initialize() async {
-    await DynamicLocalizationService.initialize();
-  }
-
-  Future<void> setLanguage(dynamic language) async {
-    if (language is String) {
-      await DynamicLocalizationService.setLanguage(language);
-    } else if (language is AppLanguage) {
-      await DynamicLocalizationService.setLanguage(language.code);
+    final bool isRightToLeft = isRTL(_currentLanguage.code);
+    if (isRightToLeft) {
+      return TextDirection.rtl;
     }
+    return TextDirection.ltr;
   }
-
-  AppLanguage get currentLanguage => DynamicLocalizationService.currentLanguage;
-  Locale get currentLocale => DynamicLocalizationService.currentLocale;
-  List<AppLanguage> getSupportedLanguages() => DynamicLocalizationService.getSupportedLanguages();
-  bool isRTL(String? languageCode) => DynamicLocalizationService.isRTL(languageCode);
-  TextDirection getTextDirection() => DynamicLocalizationService.getTextDirection();
 }
 

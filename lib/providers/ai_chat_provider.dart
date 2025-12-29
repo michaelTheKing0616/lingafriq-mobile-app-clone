@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
+import '../services/env_config.dart';
 
 final aiChatProvider = NotifierProvider<AiChatProvider, BaseProviderState>(() {
   return AiChatProvider();
@@ -37,8 +38,23 @@ class AiChatProvider extends BaseProvider {
   final Dio _dio = Dio();
   
   // OpenAI API Configuration
-  // TODO: Move this to environment variables or secure storage
-  static const String _apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with actual API key
+  // Uses centralized EnvConfig for API key management
+  static String get _apiKey {
+    // Try OpenAI key from environment
+    const openAiKey = String.fromEnvironment('OPENAI_API_KEY', defaultValue: '');
+    if (openAiKey.isNotEmpty) return openAiKey;
+    
+    // Fallback: Check if Groq is configured (alternative AI provider)
+    if (EnvConfig.isGroqConfigured) {
+      // Note: This provider is designed for OpenAI, but Groq can be used as fallback
+      // For production, prefer using GroqChatProvider which is optimized for Groq
+      return EnvConfig.groqApiKey;
+    }
+    
+    // Return empty string if not configured - will throw error on use
+    return '';
+  }
+  
   static const String _apiUrl = 'https://api.openai.com/v1/chat/completions';
   
   String _selectedLanguage = 'English'; // Default language
@@ -89,6 +105,13 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
   Future<String> sendMessage(String userMessage) async {
     if (userMessage.trim().isEmpty) {
       throw Exception('Message cannot be empty');
+    }
+    
+    // Validate API key is configured
+    if (_apiKey.isEmpty) {
+      throw Exception(
+        'AI API key is not configured. Please configure OPENAI_API_KEY or use GroqChatProvider instead.'
+      );
     }
 
     // Add user message to chat

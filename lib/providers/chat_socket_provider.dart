@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/gamification/socket_service.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -23,24 +24,48 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   }
 
   void _initializeSocket() {
-    final token = ref.read(apiProvider.notifier).token;
-    final apiBaseUrl = Api.baseurl.replaceFirst('http://', '').replaceFirst('https://', '');
-    
-    _socket = IO.io(
-      'http://$apiBaseUrl',
-      IO.OptionBuilder()
-          .setTransports(['websocket', 'polling'])
-          .setAuth({'token': token})
-          .enableAutoConnect()
-          .build(),
-    );
+    try {
+      final token = ref.read(apiProvider.notifier).token;
+      // Use the base URL directly - socket.io client handles protocol conversion
+      final baseUrl = Api.baseurl.replaceAll(RegExp(r'/$'), ''); // Remove trailing slashes
+      
+      _socket = IO.io(
+        baseUrl,
+        IO.OptionBuilder()
+            .setTransports(['websocket', 'polling'])
+            .setAuth({'token': token ?? ''})
+            .enableAutoConnect()
+            .setReconnectionAttempts(5)
+            .setReconnectionDelay(1000)
+            .setReconnectionDelayMax(5000)
+            .setTimeout(20000)
+            .build(),
+      );
+    } catch (e) {
+      debugPrint('Error initializing socket: $e');
+      return;
+    }
 
     _socket!.onConnect((_) {
       _isConnected = true;
       state = state.copyWith(isConnected: true);
+      debugPrint('Chat socket connected');
     });
 
     _socket!.onDisconnect((_) {
+      _isConnected = false;
+      state = state.copyWith(isConnected: false);
+      debugPrint('Chat socket disconnected');
+    });
+    
+    _socket!.onError((error) {
+      debugPrint('Chat socket error: $error');
+      _isConnected = false;
+      state = state.copyWith(isConnected: false);
+    });
+    
+    _socket!.onConnectError((error) {
+      debugPrint('Chat socket connection error: $error');
       _isConnected = false;
       state = state.copyWith(isConnected: false);
     });
@@ -72,8 +97,16 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   }
 
   void connect(String userId, String username) {
-    if (!_isConnected) {
-      _socket?.connect();
+    try {
+      if (!_isConnected && _socket != null) {
+        _socket!.connect();
+        debugPrint('Attempting to connect chat socket for user: $userId');
+      } else if (_socket == null) {
+        // Reinitialize if socket is null
+        _initializeSocket();
+      }
+    } catch (e) {
+      debugPrint('Error connecting chat socket: $e');
     }
   }
 
@@ -97,21 +130,33 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   }
 
   void sendMessage(String room, String message, String userId, String username) {
-    final messageData = {
-      'room': room,
-      'message': message,
-      'userId': userId,
-      'username': username,
-      'timestamp': DateTime.now().toIso8601String(),
-    };
-    _socket?.emit('message', messageData);
-    
-    if (!_roomMessages.containsKey(room)) {
-      _roomMessages[room] = [];
+    if (!_isConnected || _socket == null) {
+      debugPrint('Cannot send message: Socket not connected');
+      return;
     }
-    _roomMessages[room]!.add(messageData);
-    _messages.add(messageData);
-    state = state.copyWith(messages: List.from(_messages));
+    
+    try {
+      final messageData = {
+        'room': room,
+        'message': message,
+        'userId': userId,
+        'username': username,
+        'timestamp': DateTime.now().toIso8601String(),
+      };
+      
+      _socket!.emit('message', messageData);
+      
+      // Optimistically add to local state for immediate UI feedback
+      if (!_roomMessages.containsKey(room)) {
+        _roomMessages[room] = [];
+      }
+      _roomMessages[room]!.add(messageData);
+      _messages.add(messageData);
+      state = state.copyWith(messages: List.from(_messages));
+    } catch (e) {
+      debugPrint('Error sending message: $e');
+      // Don't update state if send fails - server will not receive it
+    }
   }
 
   List<Map<String, dynamic>> messagesForRoom(String room) {
@@ -123,7 +168,14 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   bool get isConnected => _isConnected;
 
   void dispose() {
-    _socket?.disconnect();
+    try {
+      _socket?.disconnect();
+      _socket?.dispose();
+      _socket = null;
+      _isConnected = false;
+    } catch (e) {
+      debugPrint('Error disposing chat socket: $e');
+    }
   }
 }
 

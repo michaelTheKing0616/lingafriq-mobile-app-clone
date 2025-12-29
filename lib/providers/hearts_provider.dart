@@ -160,16 +160,18 @@ class HeartsNotifier extends Notifier<HeartsState> {
   /// Refill hearts (with cowries or ads)
   Future<bool> refillHearts({bool useCowries = true}) async {
     if (useCowries) {
-      // Check if user has enough cowries
-      final gamification = ref.read(gamificationProvider);
+      // Check if user has enough cowries and deduct
+      final gamificationNotifier = ref.read(gamificationProvider.notifier);
+      final gamification = gamificationNotifier.gamification;
       if (gamification.cowries < HeartsConfig.cowriesCostPerRefill) {
         return false;
       }
 
       // Deduct cowries
-      await ref.read(gamificationProvider.notifier).spendCurrency(
+      final success = await gamificationNotifier.spendCurrency(
         cowries: HeartsConfig.cowriesCostPerRefill,
       );
+      if (!success) return false;
     }
 
     // Refill hearts

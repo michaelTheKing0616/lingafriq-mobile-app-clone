@@ -7,7 +7,6 @@ import 'gamification_provider.dart';
 import 'gamification_services_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
-import '../services/gamification/journey_service.dart';
 import '../utils/progress_integration.dart';
 
 final questProvider = NotifierProvider<QuestProvider, BaseProviderState>(() {

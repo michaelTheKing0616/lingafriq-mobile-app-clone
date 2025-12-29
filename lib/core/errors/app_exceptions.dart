@@ -1,7 +1,7 @@
+import 'package:dio/dio.dart';
+
 /// Application-level exceptions
 /// Centralized error handling for the app
-
-import 'package:dio/dio.dart';
 
 /// Base exception class
 abstract class AppException implements Exception {
@@ -156,7 +156,6 @@ class ExceptionHandler {
         );
 
       case DioExceptionType.unknown:
-      default:
         return NetworkException(
           'Network error: ${error.message ?? 'Unknown error'}',
           originalError: error,

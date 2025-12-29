@@ -22,7 +22,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
 
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans', 'pidgin'];
     final categories = ['All', 'Vocabulary', 'Grammar', 'Pronunciation', 'Cultural'];
-    final selectedSection = useState<'core' | 'cultural'>('core');
+    final selectedSection = useState<String>('core');
 
     // ALL 35+ GAMES PROPERLY CATEGORIZED
     final coreGames = [
@@ -55,12 +55,12 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       {'name': 'Phrase Sniper', 'description': 'Target phrases', 'category': 'Vocabulary', 'icon': Icons.center_focus_strong, 'type': 'phraseSniper'},
       {'name': 'Liar Liar', 'description': 'Detect truth', 'category': 'Grammar', 'icon': Icons.psychology, 'type': 'liarLiar'},
       {'name': 'Village Quest', 'description': 'Adventure quest', 'category': 'Cultural', 'icon': Icons.explore, 'type': 'villageQuest'},
-      {'name': 'Accent Puzzle', 'description': 'Decode accents', 'category': 'Pronunciation', 'icon': Icons.puzzle, 'type': 'accentPuzzle'},
+                {'name': 'Accent Puzzle', 'description': 'Decode accents', 'category': 'Pronunciation', 'icon': Icons.extension, 'type': 'accentPuzzle'},
       {'name': 'Flashcard Safari', 'description': 'Safari vocabulary', 'category': 'Vocabulary', 'icon': Icons.flash_on, 'type': 'flashcardSafari'},
       {'name': 'Tongue Twister', 'description': 'Master twisters', 'category': 'Pronunciation', 'icon': Icons.speed, 'type': 'tongueTwister'},
       {'name': 'Emoji Translator', 'description': 'Translate emojis', 'category': 'Vocabulary', 'icon': Icons.emoji_emotions, 'type': 'emojiTranslator'},
       {'name': 'Rhythm Typing', 'description': 'Type to rhythm', 'category': 'Vocabulary', 'icon': Icons.keyboard, 'type': 'rhythmTyping'},
-      {'name': 'Elders Blessings', 'description': 'Learn blessings', 'category': 'Cultural', 'icon': Icons.hands, 'type': 'eldersBlessings'},
+                {'name': 'Elders Blessings', 'description': 'Learn blessings', 'category': 'Cultural', 'icon': Icons.favorite, 'type': 'eldersBlessings'},
       {'name': 'Multilingual Relay', 'description': 'Language relay', 'category': 'Cultural', 'icon': Icons.swap_horiz, 'type': 'multilingualRelay'},
       {'name': 'Cultural Etiquette', 'description': 'Learn etiquette', 'category': 'Cultural', 'icon': Icons.groups, 'type': 'culturalEtiquette'},
       {'name': 'Drum Word Match', 'description': 'Match drum patterns', 'category': 'Cultural', 'icon': Icons.music_note, 'type': 'drumWordMatch'},

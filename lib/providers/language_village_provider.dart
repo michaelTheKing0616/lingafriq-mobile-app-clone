@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/language_village_model.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
+import 'dio_provider.dart' show client;
 import '../utils/api.dart';
-import '../utils/api_service.dart';
 import 'user_provider.dart';
 
 final languageVillageProvider =
@@ -35,10 +35,15 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
 
     try {
       // Fetch from backend API
-      final response = await ApiService.get(Api.villages);
+      final dioClient = ref.read(client);
+      final response = await dioClient.get('${Api.baseurl}${Api.villages}');
       
-      if (response.statusCode == 200 && response.data['success'] == true) {
-        final villagesData = List<Map<String, dynamic>>.from(response.data['data'] ?? []);
+      if (response.statusCode == 200) {
+        final responseData = response.data;
+        final data = responseData is Map<String, dynamic> && responseData.containsKey('data')
+            ? responseData['data']
+            : (responseData is List ? responseData : responseData);
+        final villagesData = List<Map<String, dynamic>>.from(data is List ? data : [data]);
         _villages.clear();
         _villages.addAll(villagesData.map((v) => LanguageVillage(
           id: v['_id']?.toString() ?? v['id']?.toString() ?? '',
@@ -80,17 +85,19 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       try {
         final user = ref.read(userProvider);
         if (user != null) {
-          final response = await ApiService.post(
-            Api.villageLivekitToken(village.language.toLowerCase()),
+          final dioClient = ref.read(client);
+          final response = await dioClient.post(
+            '${Api.baseurl}${Api.villageLivekitToken(village.language.toLowerCase())}',
             data: {
               'userId': user.id.toString(),
               'villageId': village.id,
             },
           );
           
-          if (response.statusCode == 200) {
-            final token = response.data['token'] as String?;
-            final roomName = response.data['roomName'] as String?;
+          if (response.statusCode == 200 && response.data is Map) {
+            final data = response.data as Map<String, dynamic>;
+            final token = data['token'] as String?;
+            final roomName = data['roomName'] as String?;
             
             if (token != null && roomName != null) {
               // Store token for WebRTC connection
@@ -101,7 +108,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
               _participants.add(VillageParticipant(
                 userId: user.id.toString(),
                 username: user.username ?? 'User',
-                avatarUrl: user.avatar ?? '',
+                avatar: user.avater,
                 isSpeaking: false,
                 joinedAt: DateTime.now(),
               ));
@@ -152,8 +159,9 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       }
 
       // Create via backend API
-      final response = await ApiService.post(
-        Api.villages,
+      final dioClient = ref.read(client);
+      final response = await dioClient.post(
+        '${Api.baseurl}${Api.villages}',
         data: {
           'lang': language.toLowerCase(),
           'name': name,
@@ -162,8 +170,9 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
         },
       );
 
-      if (response.statusCode == 201 && response.data['success'] == true) {
-        final villageData = response.data['village'] as Map<String, dynamic>;
+      if (response.statusCode == 201 && response.data is Map) {
+        final responseData = response.data as Map<String, dynamic>;
+        final villageData = responseData['village'] ?? responseData;
         final newVillage = LanguageVillage(
           id: villageData['_id']?.toString() ?? villageData['id']?.toString() ?? '',
           name: villageData['name']?.toString() ?? name,

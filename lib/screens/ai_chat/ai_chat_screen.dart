@@ -53,11 +53,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
       _scrollToBottom();
     } catch (e) {
       if (mounted) {
-        ref.read(dialogProvider('')).showPlatformDialogue(
-              title: 'Error',
-              content: Text(e.toString()),
-              action1Text: 'OK',
-            );
+        ErrorHandler.showError(context, e);
       }
     }
   }
@@ -138,7 +134,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 ? _buildEmptyState(context)
                 : _buildChatMessages(context, chatNotifier),
           ),
-          _buildMessageInput(context, chatNotifier, chatState),
+          _buildMessageInput(context, chatNotifier),
         ],
       ),
     );
