@@ -590,23 +590,27 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             action: SnackBarAction(
               label: 'View',
               onPressed: () {
-                // TODO: Navigate to lesson detail screen when available
-                // For now, show the generated content
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Generated Lesson'),
-                    content: SingleChildScrollView(
-                      child: Text(lessonContent['content']?.toString() ?? 'Lesson content generated.'),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text('Close'),
-                      ),
-                    ],
-                  ),
-                );
+                // Navigate to lesson detail screen if lesson ID is available
+                final lessonId = lessonContent['lesson_id']?.toString();
+                if (lessonId != null) {
+                  Navigator.pushNamed(
+                    context,
+                    '/lesson-detail',
+                    arguments: {'lessonId': lessonId},
+                  ).catchError((e) {
+                    // Fallback to curriculum screen if lesson detail route doesn't exist
+                    Navigator.pushNamed(
+                      context,
+                      '/curriculum',
+                    );
+                  });
+                } else {
+                  // Navigate to curriculum screen to view all lessons
+                  Navigator.pushNamed(
+                    context,
+                    '/curriculum',
+                  );
+                }
               },
             ),
           ),

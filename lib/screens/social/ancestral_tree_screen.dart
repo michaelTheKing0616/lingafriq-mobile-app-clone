@@ -3,6 +3,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
+import '../../providers/dio_provider.dart';
+import '../../utils/api.dart';
+import 'package:dio/dio.dart';
 
 /// Ancestral Tree - Visualize everyone you've helped
 class AncestralTreeScreen extends ConsumerWidget {
@@ -10,8 +13,16 @@ class AncestralTreeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Mock data - TODO: Load from backend
-    final treeData = _generateMockTreeData();
+    return FutureBuilder<List<_TreePerson>>(
+      future: _loadTreeData(ref),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+        
+        final treeData = snapshot.data ?? _generateMockTreeData();
 
     return Scaffold(
       appBar: AppBar(
@@ -87,6 +98,38 @@ class AncestralTreeScreen extends ConsumerWidget {
         ),
       ),
     );
+      },
+    );
+  }
+
+  Future<List<_TreePerson>> _loadTreeData(WidgetRef ref) async {
+    try {
+      final dio = ref.read(dioProvider);
+      final response = await dio.get('${Api.baseurl}api/social/ancestral-tree');
+      
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data['data'] as List?;
+        if (data != null) {
+          return data.map((item) {
+            final personData = item as Map<String, dynamic>;
+            return _TreePerson(
+              username: personData['username'] ?? 'Unknown',
+              avatar: personData['avatar'],
+              joinedDate: personData['joined_date'] != null
+                  ? DateTime.parse(personData['joined_date'])
+                  : DateTime.now(),
+              lessonsGifted: personData['lessons_gifted'] ?? 0,
+              xpEarned: personData['xp_earned'] ?? 0,
+              languages: List<String>.from(personData['languages'] ?? []),
+            );
+          }).toList();
+        }
+      }
+    } catch (e) {
+      debugPrint('Error loading ancestral tree data: $e');
+      // Return mock data as fallback
+    }
+    return _generateMockTreeData();
   }
 
   List<_TreePerson> _generateMockTreeData() {

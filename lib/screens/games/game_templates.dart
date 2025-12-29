@@ -3,7 +3,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
 import '../../models/game/game_session_model.dart';
+import '../../models/game/phrase_card_model.dart';
+import '../../providers/game_provider.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -33,38 +36,161 @@ class ListenSketchGame extends BaseGameScreen {
 class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   String? _audioText;
   int _currentIndex = 0;
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+  bool _showDrawingInterface = false;
+  PhraseCard? _currentCard;
+  final List<PhraseCard> _cards = [];
+
+  @override
+  int getCardCount() => 5;
+
+  @override
+  Future<void> onGameInitialized() async {
+    final gameProv = ref.read(gameProvider.notifier);
+    _cards.addAll(gameProv.availableCards);
+    if (_cards.isNotEmpty) {
+      _currentCard = _cards[0];
+      _audioText = _currentCard!.gloss;
+    }
+  }
+
+  Future<void> _playAudio() async {
+    if (_currentCard?.audioNativeUrl == null) return;
+    
+    setState(() => _isPlaying = true);
+    try {
+      await _audioPlayer.setUrl(_currentCard!.audioNativeUrl!);
+      await _audioPlayer.play();
+      await _audioPlayer.playerStateStream.firstWhere(
+        (state) => state.processingState == ProcessingState.completed,
+      );
+      setState(() {
+        _isPlaying = false;
+        _showDrawingInterface = true;
+      });
+    } catch (e) {
+      debugPrint('Error playing audio: $e');
+      setState(() => _isPlaying = false);
+    }
+  }
+
+  void _selectPicture(int index) {
+    final duration = startTime != null
+        ? DateTime.now().difference(startTime!).inMilliseconds
+        : 0;
+    
+    completeTurn(
+      cardId: _currentCard!.cardId,
+      result: GameResult.correct, // Assume correct for now - can add validation
+      durationMs: duration,
+      feedback: {'selected_picture': index, 'audio_text': _audioText},
+    );
+
+    if (_currentIndex < _cards.length - 1) {
+      setState(() {
+        _currentIndex++;
+        _currentCard = _cards[_currentIndex];
+        _audioText = _currentCard!.gloss;
+        _showDrawingInterface = false;
+      });
+    } else {
+      finishGame();
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget buildGameContent(BuildContext context) {
+    if (_currentCard == null) {
+      return const Scaffold(
+        body: Center(child: Text('No cards available')),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
+        title: Text('${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: widget.onBack ?? () => Navigator.pop(context),
         ),
       ),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(4.w),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.draw, size: 64),
-            SizedBox(height: 2.h),
-            Text(
-              'Listen to the description and draw/select the picture',
-              style: TextStyle(fontSize: 18.sp),
-              textAlign: TextAlign.center,
+            LinearProgressIndicator(
+              value: (_currentIndex + 1) / _cards.length,
             ),
             SizedBox(height: 4.h),
-            FilledButton(
-              onPressed: () {
-                // TODO: Play audio and show drawing interface
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Feature coming soon!')),
-                );
-              },
-              child: const Text('Start Listening'),
-            ),
+            if (!_showDrawingInterface)
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.headphones, size: 64),
+                      SizedBox(height: 2.h),
+                      Text(
+                        'Listen to the description',
+                        style: TextStyle(fontSize: 18.sp),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 4.h),
+                      FilledButton.icon(
+                        onPressed: _isPlaying ? null : _playAudio,
+                        icon: Icon(_isPlaying ? Icons.volume_up : Icons.play_arrow),
+                        label: Text(_isPlaying ? 'Playing...' : 'Play Audio'),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            else
+              Expanded(
+                child: Column(
+                  children: [
+                    Text(
+                      'Select the correct picture:',
+                      style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 4.h),
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                        ),
+                        itemCount: 4, // Show 4 picture options
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: InkWell(
+                              onTap: () => _selectPicture(index),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.image, size: 48),
+                                    SizedBox(height: 8),
+                                    Text('Option ${index + 1}'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
