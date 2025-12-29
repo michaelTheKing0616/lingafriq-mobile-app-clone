@@ -6,8 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
-import 'package:lingafriq/screens/auth/login_screen.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -66,10 +66,10 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                       onGetStarted: () async {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         ref.read(apiProvider.notifier).regiserDevice();
-                        ref.read(navigationProvider).navigateOffAll(const TabsView());
+                        ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
                       },
                       onLogin: () {
-                        ref.read(navigationProvider).navigateTo(const LoginScreen());
+                        ref.read(navigationProvider).navigateTo(const WorldClassLoginScreen());
                       },
                     );
                   default:

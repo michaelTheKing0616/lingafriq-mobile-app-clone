@@ -2,12 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/world_class_login_screen.dart';
-import '../screens/onboarding/onboarding_screen.dart';
+import '../screens/onboarding/onboarding_screen_material3.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
@@ -29,7 +29,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
     
     if (!isOnboardingSeen) {
-      ref.read(navigationProvider).naviateOffAll(const OnboardingScreen());
+      ref.read(navigationProvider).naviateOffAll(const OnboardingScreenMaterial3());
       return;
     }
 
@@ -48,7 +48,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     if (user is ProfileModel) {
       ref.read(userProvider.notifier).overrideUser(user);
       await ref.read(apiProvider.notifier).regiserDevice();
-      ref.read(navigationProvider).naviateOffAll(const TabsView());
+      ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
       return;
     }
 
