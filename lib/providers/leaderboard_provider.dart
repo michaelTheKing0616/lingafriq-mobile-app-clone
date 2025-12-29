@@ -108,7 +108,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       await _cacheLeaderboards();
     } catch (e) {
       debugPrint('Error fetching leaderboards: $e');
-      // Fallback to mock data on error
+      // Fallback to cached data or mock data only if no cache available
       final gamification = ref.read(gamificationProvider.notifier).gamification;
       final user = ref.read(userProvider);
 

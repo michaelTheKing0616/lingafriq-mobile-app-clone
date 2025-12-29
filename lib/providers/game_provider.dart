@@ -297,7 +297,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return cards;
   }
 
-  /// Generate curated fallback cards (used when API is unavailable)
+  /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)
   List<PhraseCard> _generateFallbackCards(String language, String? level, int count) {
     final cards = <PhraseCard>[];
     final lang = language.toLowerCase();
