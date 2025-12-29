@@ -76,6 +76,8 @@ dependencies:
   audioplayers: ^6.1.0
   # Networking
   socket_io_client: ^2.0.3+1
+  # Real-time Communication
+  livekit_client: ^1.2.0
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1

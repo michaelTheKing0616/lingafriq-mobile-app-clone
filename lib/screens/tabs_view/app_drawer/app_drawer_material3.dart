@@ -20,6 +20,10 @@ import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
+import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
+import 'package:lingafriq/screens/chat/tribe_chat_screen_material3.dart';
+import 'package:lingafriq/screens/chat/community_chat_screen_material3.dart';
+import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
@@ -234,6 +238,56 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: GlobalChatScreenMaterial3()),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.chat_bubble_outline,
+                        label: 'Private Chat',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: PrivateChatListScreen()),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.group_outlined,
+                        label: 'Tribe Chat',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: TribeChatScreenMaterial3()),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.people_outline,
+                        label: 'Community Chat',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: CommunityChatScreenMaterial3()),
+                          );
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.school_outlined,
+                        label: 'Live Classroom',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: LiveClassroomScreenMaterial3(),
+                            ),
                           );
                         },
                         isDark: isDark,
