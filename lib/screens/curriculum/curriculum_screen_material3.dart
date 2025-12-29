@@ -154,41 +154,99 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
 
             // Curriculum Content
             Expanded(
-              child: weeks.value.isEmpty
+              child: isLoading.value
                   ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.menu_book_outlined,
-                            size: 64.sp,
-                            color: PanAfricanColors.neutralMedium,
-                          ),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'No curriculum available',
-                            style: PanAfricanTypography.bodyLarge(context),
-                          ),
-                        ],
+                      child: CircularProgressIndicator(
+                        color: PanAfricanColors.primary,
                       ),
                     )
-                  : OptimizedListView.builder(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      itemCount: weeks.value.length,
-                      itemBuilder: (context, index) {
-                        final week = weeks.value[index];
-                        return _WeekCard(
-                          week: week,
-                          isDark: isDark,
-                          onTap: () {
-                            // Navigate to week details
-                          },
+                  : error.value != null
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                size: 64.sp,
+                                color: PanAfricanColors.error,
+                              ),
+                              SizedBox(height: PanAfricanSpacing.md),
+                              Text(
+                                error.value!,
+                                style: PanAfricanTypography.bodyLarge(context),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(height: PanAfricanSpacing.md),
+                              ElevatedButton(
+                                onPressed: () {
+                                  safeAsync(() async {
+                                    isLoading.value = true;
+                                    error.value = null;
+                                    await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                    isLoading.value = false;
+                                  });
+                                },
+                                child: Text('Retry'),
+                              ),
+                            ],
+                          ),
                         )
-                            .animate(delay: (index * 50).ms)
-                            .fadeIn(duration: 300.ms)
-                            .slideY(begin: 0.2);
-                      },
-                    ),
+                      : weeks.value.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.menu_book_outlined,
+                                    size: 64.sp,
+                                    color: PanAfricanColors.neutralMedium,
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  Text(
+                                    'No curriculum available',
+                                    style: PanAfricanTypography.bodyLarge(context),
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      safeAsync(() async {
+                                        isLoading.value = true;
+                                        await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                        isLoading.value = false;
+                                      });
+                                    },
+                                    child: Text('Load Curriculum'),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : OptimizedListView.builder(
+                              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                              itemCount: weeks.value.length,
+                              itemBuilder: (context, index) {
+                                final week = weeks.value[index];
+                                return _WeekCard(
+                                  week: week,
+                                  isDark: isDark,
+                                  onTap: () {
+                                    // Navigate to week details
+                                    if (week['lessons'] != null && (week['lessons'] as List).isNotEmpty) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => LessonDetailScreen(
+                                            lessonId: (week['lessons'] as List)[0]['id'] ?? 0,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                )
+                                    .animate(delay: (index * 50).ms)
+                                    .fadeIn(duration: 300.ms)
+                                    .slideY(begin: 0.2);
+                              },
+                            ),
             ),
           ],
         ),
