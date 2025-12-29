@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
+import '../../providers/ai_chat_provider_groq.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -39,7 +40,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
     });
   }
 
-  void _addSentence() {
+  Future<void> _addSentence() async {
     final sentence = _sentenceController.text.trim();
     if (sentence.isEmpty) return;
 
@@ -49,16 +50,40 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
       _currentTurn++;
     });
 
-    // Evaluate grammar (mock)
+    // Evaluate grammar using AI chat provider
+    GameResult result = GameResult.correct;
+    Map<String, dynamic> feedback = {'sentence': sentence, 'turn': _currentTurn};
+    
+    try {
+      final aiChatProvider = ref.read(aiChatProviderGroq.notifier);
+      final grammarCheck = await aiChatProvider.grammarCheck(widget.language, sentence);
+      
+      if (!grammarCheck.passed) {
+        result = grammarCheck.errors.isEmpty 
+            ? GameResult.partial 
+            : GameResult.incorrect;
+        feedback['grammar_errors'] = grammarCheck.errors;
+        feedback['grammar_score'] = grammarCheck.score;
+        feedback['suggestions'] = grammarCheck.suggestions;
+      } else {
+        feedback['grammar_score'] = grammarCheck.score;
+      }
+    } catch (e) {
+      debugPrint('Grammar check error: $e');
+      // If grammar check fails, accept the sentence but note the error
+      result = GameResult.partial;
+      feedback['grammar_check_error'] = 'Unable to verify grammar';
+    }
+
     final duration = startTime != null
         ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
 
     completeTurn(
       cardId: 'story_turn_$_currentTurn',
-      result: GameResult.correct, // TODO: Real grammar check
+      result: result,
       durationMs: duration,
-      feedback: {'sentence': sentence, 'turn': _currentTurn},
+      feedback: feedback,
     );
 
     if (_currentTurn >= _maxTurns) {
