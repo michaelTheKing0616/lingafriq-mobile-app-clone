@@ -28,5 +28,9 @@ class AppConfig {
 
   // Media endpoints
   static const String media = 'media/';
+  
+  // Chat & LiveKit endpoints
+  static String chatClassroomToken(String roomId) => 'api/chat/classroom/$roomId/token';
+  static const String liveKitUrl = 'wss://lingafriq.livekit.cloud';
 }
 
