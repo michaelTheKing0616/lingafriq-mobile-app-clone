@@ -357,7 +357,7 @@ class QuizItem extends HookWidget {
               onSelect.call(value!);
             },
           );
-        }).toList(),
+        }),
         Divider(
           height: 0,
           color: context.adaptive8,

@@ -86,7 +86,7 @@ class QuizAnswersScreen extends ConsumerWidget {
                     quiz: currentQuiz,
                     onSelect: (_) {},
                   );
-                }).toList(),
+                }),
                 SafeArea(
                   top: false,
                   child: Row(
