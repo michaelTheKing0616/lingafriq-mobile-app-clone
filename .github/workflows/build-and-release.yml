@@ -100,12 +100,6 @@ jobs:
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
 
-      - name: 🗑️ Remove flutter_webrtc plugin
-        run: |
-          chmod +x scripts/remove_webrtc_plugin.sh
-          ./scripts/remove_webrtc_plugin.sh
-          echo "✅ Removed flutter_webrtc from plugin registry"
-
       - name: 🔢 Use incremented version
         run: |
           version="${{ needs.increment-version.outputs.version }}"
@@ -126,6 +120,19 @@ jobs:
 
       - name: 🧱 Clean build cache
         run: flutter clean
+
+      - name: 🗑️ Remove flutter_webrtc plugin (after clean)
+        run: |
+          # Remove plugin after flutter clean regenerates plugin files
+          chmod +x scripts/remove_webrtc_plugin.sh
+          ./scripts/remove_webrtc_plugin.sh
+          echo "✅ Removed flutter_webrtc from plugin registry"
+          # Verify removal
+          if grep -q "flutter_webrtc" .flutter-plugins 2>/dev/null; then
+            echo "⚠️ Warning: flutter_webrtc still found in .flutter-plugins"
+          else
+            echo "✅ Confirmed: flutter_webrtc removed from .flutter-plugins"
+          fi
 
       - name: 🔄 Clear Gradle cache (fix 403 errors)
         run: |
