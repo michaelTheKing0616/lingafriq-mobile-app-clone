@@ -42,8 +42,25 @@ allprojects {
 // ✅ Ensure clean build directory structure
 rootProject.buildDir = '../build'
 
+// Exclude flutter_webrtc project before it's evaluated
+gradle.beforeProject { project ->
+    if (project.name == 'flutter_webrtc') {
+        project.tasks.configureEach { task ->
+            task.enabled = false
+        }
+    }
+}
+
 subprojects {
     afterEvaluate { project ->
+        // Exclude flutter_webrtc plugin entirely (uses deprecated embedding API)
+        if (project.name == 'flutter_webrtc') {
+            project.tasks.all { task ->
+                task.enabled = false
+            }
+            return
+        }
+        
         if (project.hasProperty('android')) {
             project.android {
                 // ✅ Ensure every submodule has a namespace (Gradle 8+ requirement)
