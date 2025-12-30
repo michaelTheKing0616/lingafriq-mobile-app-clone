@@ -37,3 +37,18 @@ plugins {
 
 rootProject.name = rootProject.name ?: "mobile-app"
 include ":app"
+
+// Exclude flutter_webrtc plugin from build (uses deprecated embedding API)
+// We use livekit_client instead which uses dart_webrtc
+def flutterPluginLoader = gradle.includedBuilds.find { it.name == 'flutter-tools' }
+if (flutterPluginLoader != null) {
+    gradle.projectsLoaded {
+        rootProject.allprojects { project ->
+            if (project.name == 'flutter_webrtc') {
+                project.tasks.all { task ->
+                    task.enabled = false
+                }
+            }
+        }
+    }
+}
