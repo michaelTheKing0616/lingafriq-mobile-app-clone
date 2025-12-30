@@ -8,8 +8,12 @@ buildscript {
     }
 
     repositories {
+        // Try Google first (often has better availability)
         google()
         mavenCentral()
+        // Add alternative repositories for better reliability
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://repo1.maven.org/maven2' }
         gradlePluginPortal()
     }
 
@@ -22,8 +26,16 @@ buildscript {
 
 allprojects {
     repositories {
+        // Try Google first (often has better availability and mirrors)
         google()
+        // Add Maven Central with explicit URL as fallback
         mavenCentral()
+        maven { url 'https://repo1.maven.org/maven2' }
+        // Add alternative repositories for better reliability
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        // Aliyun mirror (often more reliable in CI/CD environments)
+        maven { url 'https://maven.aliyun.com/repository/public' }
     }
 }
 

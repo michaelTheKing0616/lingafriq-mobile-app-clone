@@ -127,8 +127,24 @@ jobs:
       - name: 🧱 Clean build cache
         run: flutter clean
 
+      - name: 🔄 Clear Gradle cache (fix 403 errors)
+        run: |
+          cd android
+          ./gradlew clean --refresh-dependencies || true
+          # Clear Gradle cache to avoid stale artifacts
+          rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
+          cd ..
+
       - name: 🏗️ Build AAB (Release)
-        run: flutter build appbundle --release --split-debug-info=build/symbols
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
+        run: |
+          flutter build appbundle --release --split-debug-info=build/symbols || \
+          (echo "⚠️ Build failed, retrying with clean cache..." && \
+           cd android && ./gradlew clean && cd .. && \
+           flutter clean && \
+           flutter pub get && \
+           flutter build appbundle --release --split-debug-info=build/symbols)
 
       - name: 🚚 Package AAB and mapping file
         run: |
