@@ -40,14 +40,16 @@ include ":app"
 
 // Exclude flutter_webrtc plugin from build (uses deprecated embedding API)
 // We use livekit_client instead which uses dart_webrtc
-def flutterPluginLoader = gradle.includedBuilds.find { it.name == 'flutter-tools' }
-if (flutterPluginLoader != null) {
-    gradle.projectsLoaded {
-        rootProject.allprojects { project ->
-            if (project.name == 'flutter_webrtc') {
-                project.tasks.all { task ->
-                    task.enabled = false
-                }
+gradle.projectsLoaded {
+    rootProject.allprojects { project ->
+        if (project.name == 'flutter_webrtc' || project.path.contains('flutter_webrtc')) {
+            project.tasks.all { task ->
+                task.enabled = false
+            }
+            // Apply exclusion script if it exists
+            def excludeScript = file("${rootProject.projectDir}/exclude_webrtc.gradle")
+            if (excludeScript.exists()) {
+                project.apply from: excludeScript
             }
         }
     }

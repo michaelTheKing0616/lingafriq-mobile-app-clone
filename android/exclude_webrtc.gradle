@@ -1,0 +1,23 @@
+// Exclude flutter_webrtc plugin from compilation
+// This file is applied in settings.gradle to prevent the deprecated API errors
+
+// Disable all tasks for flutter_webrtc plugin
+project.tasks.all { task ->
+    if (task.name.contains('flutter_webrtc') || 
+        task.name.contains('FlutterWebRTC') ||
+        task.name.contains('webrtc')) {
+        task.enabled = false
+    }
+}
+
+// Exclude from Java compilation
+tasks.withType(JavaCompile) {
+    exclude '**/flutter_webrtc/**'
+    exclude '**/FlutterWebRTCPlugin.java'
+}
+
+// Exclude from Kotlin compilation  
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+    exclude '**/flutter_webrtc/**'
+}
+
