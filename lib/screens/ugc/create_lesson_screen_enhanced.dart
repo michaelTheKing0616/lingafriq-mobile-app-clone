@@ -131,7 +131,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                 Navigator.push(
                   context,
                   SmoothPageRoute(
-                    builder: (context) => UGCValidationFeedbackScreen(
+                    child: UGCValidationFeedbackScreen(
                       contentId: 'draft',
                       contentType: 'lesson',
                     ),
@@ -300,7 +300,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                               Navigator.push(
                                 context,
                                 SmoothPageRoute(
-                                  builder: (context) => UGCValidationFeedbackScreen(
+                                  child: UGCValidationFeedbackScreen(
                                     contentId: 'draft',
                                     contentType: 'lesson',
                                   ),

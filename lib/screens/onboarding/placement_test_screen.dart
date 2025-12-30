@@ -7,8 +7,8 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -53,7 +53,8 @@ class PlacementTestScreen extends HookConsumerWidget {
     }
 
     Future<void> submitTest() async {
-      if (answers.value.length < (test.value?['questions'] as List?)?.length ?? 0) {
+      final questionsLength = (test.value?['questions'] as List?)?.length ?? 0;
+      if (answers.value.length < questionsLength) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Please answer all questions')),
         );
@@ -136,25 +137,25 @@ class PlacementTestScreen extends HookConsumerWidget {
       isLoading: isLoadingOverlay.value,
       message: 'Loading test...',
       child: Scaffold(
-      appBar: AppBar(
-        title: Text('Placement Test'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
+        appBar: AppBar(
+          title: Text('Placement Test'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        child: SafeArea(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark
+                ? PanAfricanGradients.darkSurface
+                : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      PanAfricanColors.surfaceLight,
+                      PanAfricanColors.surfaceContainerLight,
+                    ],
+                  ),
+          ),
+          child: SafeArea(
           child: Column(
             children: [
               // Progress
@@ -295,6 +296,7 @@ class PlacementTestScreen extends HookConsumerWidget {
             ],
           ),
         ),
+        ),
       ),
     );
   }
@@ -426,10 +428,9 @@ class PlacementTestScreen extends HookConsumerWidget {
                 ],
               ),
             );
-          }),
+          }).toList(),
         ],
       ),
-    ),
     );
   }
 }

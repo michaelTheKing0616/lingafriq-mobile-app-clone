@@ -66,9 +66,9 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             // Topic Input
             TextField(
               controller: topicController,
@@ -313,6 +313,8 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
             }),
           ],
         ],
+      ),
+        ),
       ),
     );
   }

@@ -65,8 +65,6 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
-          ),
-        );
       } finally {
         isRecording.value = false;
         isLoading.value = false;
@@ -79,9 +77,9 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             // Text Input
             TextField(
               controller: textController,
@@ -168,9 +166,9 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                 isDark,
               ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
           ],
+          ),
         ),
       ),
-    );
     );
   }
 

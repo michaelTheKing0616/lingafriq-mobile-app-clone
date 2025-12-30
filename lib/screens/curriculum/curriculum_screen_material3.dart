@@ -33,31 +33,33 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
 
     // Load lessons when language/level changes
     useEffect(() {
-      safeAsync(() async {
-        isLoading.value = true;
-        error.value = null;
-        try {
-          // Try to load from curriculum provider first
-          if (curriculum != null) {
-            final languageData = curriculum.languages[selectedLanguage.value];
-            final levelData = languageData?[selectedLevel.value];
-            if (levelData != null) {
-              // Convert curriculum units to weeks format
-              weeks.value = levelData.asMap().entries.map((entry) {
-                final index = entry.key;
-                final unit = entry.value;
-                return {
-                  'week': index + 1,
-                  'title': unit.title,
-                  'lessons': unit.lessons.map((lesson) {
-                    // Check completion status from curriculum provider
-                    final curriculumNotifier = ref.read(curriculumProvider.notifier);
-                    final isCompleted = curriculumNotifier.isLessonCompleted(
-                      selectedLanguage.value,
-                      selectedLevel.value,
-                      lesson.id,
-                    );
-                    return {
+      safeAsync(
+        context: context,
+        operation: () async {
+          isLoading.value = true;
+          error.value = null;
+          try {
+            // Try to load from curriculum provider first
+            if (curriculum != null) {
+              final languageData = curriculum.languages[selectedLanguage.value];
+              final levelData = languageData?[selectedLevel.value];
+              if (levelData != null) {
+                // Convert curriculum units to weeks format
+                weeks.value = levelData.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final unit = entry.value;
+                  return {
+                    'week': index + 1,
+                    'title': unit.title,
+                    'lessons': unit.lessons.map((lesson) {
+                      // Check completion status from curriculum provider
+                      final curriculumNotifier = ref.read(curriculumProvider.notifier);
+                      final isCompleted = curriculumNotifier.isLessonCompleted(
+                        selectedLanguage.value,
+                        selectedLevel.value,
+                        lesson.id,
+                      );
+                      return {
                       'id': lesson.id,
                       'title': lesson.title,
                       'completed': isCompleted,
@@ -72,7 +74,8 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
         } finally {
           isLoading.value = false;
         }
-      });
+        },
+      );
       return null;
     }, [selectedLanguage.value, selectedLevel.value, curriculum]);
 
@@ -188,12 +191,15 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                               SizedBox(height: PanAfricanSpacing.md),
                               ElevatedButton(
                                 onPressed: () {
-                                  safeAsync(() async {
-                                    isLoading.value = true;
-                                    error.value = null;
-                                    await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
-                                    isLoading.value = false;
-                                  });
+                                  safeAsync(
+                                    context: context,
+                                    operation: () async {
+                                      isLoading.value = true;
+                                      error.value = null;
+                                      await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                      isLoading.value = false;
+                                    },
+                                  );
                                 },
                                 child: Text('Retry'),
                               ),
@@ -218,11 +224,14 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                   SizedBox(height: PanAfricanSpacing.md),
                                   ElevatedButton(
                                     onPressed: () {
-                                      safeAsync(() async {
-                                        isLoading.value = true;
-                                        await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
-                                        isLoading.value = false;
-                                      });
+                                      safeAsync(
+                                        context: context,
+                                        operation: () async {
+                                          isLoading.value = true;
+                                          await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                          isLoading.value = false;
+                                        },
+                                      );
                                     },
                                     child: Text('Load Curriculum'),
                                   ),

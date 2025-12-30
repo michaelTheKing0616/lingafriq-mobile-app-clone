@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,8 +33,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
 
     return OfflineIndicator(
       child: Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
+        body: Container(
+          decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
@@ -43,8 +42,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         child: SafeArea(
           child: Column(
             children: [
-              // Offline Indicator
-              OfflineIndicator(),
               // Header
               _buildHeader(context, greeting.value, isDark),
               
@@ -85,6 +82,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );
@@ -258,7 +256,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         SizedBox(height: PanAfricanSpacing.md),
         Container(
           height: 120.h,
-          child: OptimizedListView.builder(
+          child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: 5,
             itemBuilder: (context, index) {
