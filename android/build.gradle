@@ -42,9 +42,9 @@ allprojects {
 // ✅ Ensure clean build directory structure
 rootProject.buildDir = '../build'
 
-// Exclude flutter_webrtc project before it's evaluated
+// Exclude deprecated plugins before they're evaluated
 gradle.beforeProject { project ->
-    if (project.name == 'flutter_webrtc') {
+    if (project.name == 'flutter_webrtc' || project.name == 'workmanager') {
         project.tasks.configureEach { task ->
             task.enabled = false
         }
@@ -55,6 +55,14 @@ subprojects {
     afterEvaluate { project ->
         // Exclude flutter_webrtc plugin entirely (uses deprecated embedding API)
         if (project.name == 'flutter_webrtc') {
+            project.tasks.all { task ->
+                task.enabled = false
+            }
+            return
+        }
+        
+        // Exclude workmanager plugin (uses deprecated embedding API)
+        if (project.name == 'workmanager') {
             project.tasks.all { task ->
                 task.enabled = false
             }

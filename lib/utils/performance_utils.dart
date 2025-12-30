@@ -58,7 +58,6 @@ class SimpleCache<K, V> {
   final Future<V> Function(K key)? fetcher;
 
   SimpleCache({
-    this.defaultTtl = const Duration(hours: 1),
     Duration? ttl,
     this.fetcher,
   }) : defaultTtl = ttl ?? const Duration(hours: 1);
@@ -132,7 +131,28 @@ class OptimizedListView extends StatelessWidget {
     double? itemExtent,
     ScrollController? controller,
     EdgeInsetsGeometry? padding,
+    bool shrinkWrap = false,
+    ScrollPhysics? physics,
+    double cacheExtent = 250.0,
+    SliverGridDelegate? gridDelegate,
+    Axis scrollDirection = Axis.vertical,
   }) {
+    // Import and use the optimized_list_view version which supports scrollDirection
+    // Note: This method should redirect to the widget in optimized_list_view.dart
+    // For now, return basic ListView for backward compatibility
+    if (scrollDirection == Axis.horizontal) {
+      return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: itemCount,
+        itemBuilder: itemBuilder,
+        padding: padding,
+        controller: controller,
+        itemExtent: itemExtent,
+        shrinkWrap: shrinkWrap,
+        physics: physics,
+        cacheExtent: cacheExtent,
+      );
+    }
     return OptimizedListView(
       key: key,
       itemCount: itemCount,

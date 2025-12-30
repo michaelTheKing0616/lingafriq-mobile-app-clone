@@ -51,6 +51,32 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       }
     }
 
+    Future<void> _pollTranscription(String mediaId) async {
+      for (int i = 0; i < 30; i++) {
+        await Future.delayed(Duration(seconds: 2));
+        try {
+          final response = await ApiService.get(Api.mediaDetails(mediaId));
+
+          if (response.statusCode == 200) {
+            final media = response.data['data'];
+            if (media['processing_status'] == 'completed' && media['transcription'] != null) {
+              transcriptionResult.value = {
+                'transcription': media['transcription'],
+                'translation': media['translation'],
+                'mediaId': mediaId,
+              };
+              showTranscriptionPreview.value = true;
+              break;
+            } else if (media['processing_status'] == 'failed') {
+              throw Exception('Transcription failed');
+            }
+          }
+        } catch (e) {
+          // Continue polling
+        }
+      }
+    }
+
     Future<void> uploadAndTranscribe() async {
       if (selectedFile.value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -99,32 +125,6 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       }
     }
 
-    Future<void> _pollTranscription(String mediaId) async {
-      for (int i = 0; i < 30; i++) {
-        await Future.delayed(Duration(seconds: 2));
-        try {
-          final response = await ApiService.get(Api.mediaDetails(mediaId));
-
-          if (response.statusCode == 200) {
-            final media = response.data['data'];
-            if (media['processing_status'] == 'completed' && media['transcription'] != null) {
-              transcriptionResult.value = {
-                'transcription': media['transcription'],
-                'translation': media['translation'],
-                'mediaId': mediaId,
-              };
-              showTranscriptionPreview.value = true;
-              break;
-            } else if (media['processing_status'] == 'failed') {
-              throw Exception('Transcription failed');
-            }
-          }
-        } catch (e) {
-          // Continue polling
-        }
-      }
-    }
-
     Future<void> generateLesson() async {
       if (transcriptionResult.value == null) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,7 +136,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       isGeneratingLesson.value = true;
       try {
         final response = await ApiService.post(
-          Api.mediaGenerateLesson(mediaId),
+          Api.mediaGenerateLesson(transcriptionResult.value!['mediaId']),
           data: {
             'mediaId': transcriptionResult.value!['mediaId'],
             'language': languageController.text,
@@ -169,7 +169,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           elevation: 0,
         ),
         body: Container(
-        decoration: BoxDecoration(
+          decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
               : LinearGradient(
@@ -180,8 +180,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     PanAfricanColors.surfaceContainerLight,
                   ],
                 ),
-        ),
-        child: SafeArea(
+          ),
+          child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
@@ -248,6 +248,9 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     showTranscriptionPreview.value,
                     (show) => showTranscriptionPreview.value = show,
                     isDark,
+                    (updatedResult) {
+                      transcriptionResult.value = updatedResult;
+                    },
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
 
                 // Edit Transcription Button
@@ -298,6 +301,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
               ],
             ),
           ),
+        ),
         ),
       ),
     );
@@ -355,6 +359,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     bool isExpanded,
     Function(bool) onToggle,
     bool isDark,
+    Function(Map<String, dynamic>) onUpdateResult,
   ) {
     return Card(
       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -405,10 +410,10 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           builder: (context) => EditTranscriptionDialog(
                             initialText: result['transcription'] ?? '',
                             onSave: (editedText) {
-                              transcriptionResult.value = {
+                              onUpdateResult({
                                 ...result,
                                 'transcription': editedText,
-                              };
+                              });
                             },
                           ),
                         );

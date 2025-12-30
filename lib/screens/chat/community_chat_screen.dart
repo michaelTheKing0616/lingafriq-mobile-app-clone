@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/performance_utils.dart';\nimport 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -8,8 +7,9 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
-import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Community Chat (Language Villages) with Material 3 Design
 class CommunityChatScreen extends HookConsumerWidget {
@@ -87,19 +87,19 @@ class CommunityChatScreen extends HookConsumerWidget {
       message: 'Sending message...',
       child: Scaffold(
         appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(villageName),
-            Text(
-              'Language Village',
-              style: PanAfricanTypography.bodySmall(context),
-            ),
-          ],
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(villageName),
+              Text(
+                'Language Village',
+                style: PanAfricanTypography.bodySmall(context),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -200,6 +200,7 @@ class CommunityChatScreen extends HookConsumerWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

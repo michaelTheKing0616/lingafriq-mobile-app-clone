@@ -153,6 +153,36 @@ class ApiService {
     }
   }
 
+  /// Upload file with multipart/form-data
+  static Future<Response> uploadFile(
+    String path,
+    String filePath, {
+    Map<String, dynamic>? additionalData,
+    String fileFieldName = 'file',
+    Options? options,
+  }) async {
+    if (!_initialized) await initialize();
+    try {
+      final formDataMap = <String, dynamic>{
+        fileFieldName: await MultipartFile.fromFile(filePath),
+      };
+      if (additionalData != null) {
+        formDataMap.addAll(additionalData);
+      }
+      final formData = FormData.fromMap(formDataMap);
+
+      return await _dio.post(
+        path,
+        data: formData,
+        options: options ?? Options(
+          contentType: 'multipart/form-data',
+        ),
+      );
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
   /// Handle Dio errors and convert to user-friendly messages
   static Exception _handleError(DioException error) {
     String message = 'An error occurred';

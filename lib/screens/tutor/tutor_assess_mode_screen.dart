@@ -57,9 +57,9 @@ class TutorAssessModeScreen extends HookConsumerWidget {
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             Text(
               'Proficiency Assessment',
               style: PanAfricanTypography.headlineMedium(context),
@@ -278,6 +278,8 @@ class TutorAssessModeScreen extends HookConsumerWidget {
             }),
           ],
         ],
+      ),
+        ),
       ),
     );
   }

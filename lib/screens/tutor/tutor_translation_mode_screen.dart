@@ -84,9 +84,9 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
             // Translation Type Toggle
             _buildTranslationTypeToggle(
               context,
@@ -312,6 +312,8 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
             }),
           ],
         ],
+      ),
+        ),
       ),
     );
   }

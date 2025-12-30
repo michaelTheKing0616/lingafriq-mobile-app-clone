@@ -167,6 +167,7 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
       );
     }
   }
+}
 
 /// Internal GridView wrapper for OptimizedListView.builder with gridDelegate
 class _OptimizedGridView extends StatelessWidget {

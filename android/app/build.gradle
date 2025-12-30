@@ -153,14 +153,17 @@ flutter {
 // Exclude from all configurations
 configurations.all {
     exclude group: 'com.cloudwebrtc', module: 'webrtc'
+    // Note: workmanager exclusion handled at project level
 }
 
-// Disable all tasks related to flutter_webrtc
+// Disable all tasks related to deprecated plugins
 afterEvaluate {
     project.tasks.all { task ->
         if (task.name.contains('flutter_webrtc') || 
             task.name.contains('FlutterWebRTC') || 
-            task.path.contains(':flutter_webrtc')) {
+            task.path.contains(':flutter_webrtc') ||
+            task.name.contains('workmanager') ||
+            task.path.contains(':workmanager')) {
             task.enabled = false
             task.actions.clear()
         }
@@ -171,7 +174,9 @@ afterEvaluate {
 project.tasks.whenTaskAdded { task ->
     if (task.name.contains('flutter_webrtc') || 
         task.name.contains('FlutterWebRTC') || 
-        task.path.contains(':flutter_webrtc')) {
+        task.path.contains(':flutter_webrtc') ||
+        task.name.contains('workmanager') ||
+        task.path.contains(':workmanager')) {
         task.enabled = false
         task.actions.clear()
     }

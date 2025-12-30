@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 
 import '../utils/api.dart';
 
@@ -39,7 +40,20 @@ class _DioLogger extends Interceptor {
     // Exclude auth endpoints from token addition
     if (![Api.register, Api.login, Api.resetPassword, Api.refreshToken].contains(options.path)) {
       if (!options.headers.containsKey("Authorization")) {
-        final token = ref.read(apiProvider.notifier).token;
+        var token = ref.read(apiProvider.notifier).token;
+        // Fallback to SharedPreferences if token is null (handles app restart scenarios)
+        if (token == null) {
+          try {
+            final prefs = ref.read(sharedPreferencesProvider);
+            token = prefs.getAccessToken();
+            // Update api_provider token if found in SharedPreferences
+            if (token != null) {
+              ref.read(apiProvider.notifier).token = token;
+            }
+          } catch (e) {
+            // Silently fail - no token available
+          }
+        }
         if (token != null) {
           options.headers.addAll({"Authorization": "Bearer $token"});
         }

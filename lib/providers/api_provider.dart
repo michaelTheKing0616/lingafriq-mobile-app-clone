@@ -38,11 +38,28 @@ final apiProvider = NotifierProvider<ApiProvider, BaseProviderState>(() {
 class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   @override
   BaseProviderState build() {
+    // Load tokens from SharedPreferences on initialization
+    // This ensures tokens are available if the app was previously logged in
+    _loadTokensFromStorage();
     return BaseProviderState();
   }
 
   String? token;
   String? refreshToken;
+
+  /// Load tokens from SharedPreferences on provider initialization
+  void _loadTokensFromStorage() {
+    try {
+      final prefs = ref.read(sharedPreferencesProvider);
+      token = prefs.getAccessToken();
+      // Refresh token is async, but we can't await in build()
+      // It will be loaded when needed via refreshAccessToken()
+    } catch (e) {
+      // Silently fail - tokens might not exist yet (user not logged in)
+      token = null;
+      refreshToken = null;
+    }
+  }
 
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {

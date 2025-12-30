@@ -29,7 +29,6 @@ class LoadingOverlay extends StatelessWidget {
             ? AlwaysStoppedAnimation<Color>(progressIndicatorColor!)
             : null,
       ),
-      overlayColor: color ?? Colors.black54,
       child: child,
     );
   }
