@@ -14,8 +14,12 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
+        // Try Google first (often has better availability)
         google()
         mavenCentral()
+        // Add alternative repositories for better reliability
+        maven { url 'https://repo1.maven.org/maven2' }
+        maven { url 'https://jitpack.io' }
         gradlePluginPortal()
     }
 }

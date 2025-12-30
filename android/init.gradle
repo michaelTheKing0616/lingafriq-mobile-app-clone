@@ -1,0 +1,24 @@
+// Gradle init script to handle repository failures and retries
+// This script helps with 403 errors from Maven Central by adding fallback repositories
+
+allprojects {
+    repositories {
+        // Primary repositories (tried first)
+        google()
+        mavenCentral()
+        
+        // Fallback repositories (used if primary fails)
+        maven { 
+            url 'https://repo1.maven.org/maven2'
+            // Allow insecure connections if needed (not recommended for production)
+            // isAllowInsecureProtocol = false
+        }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        
+        // Additional mirrors
+        maven { url 'https://maven.aliyun.com/repository/public' } // Aliyun mirror (often more reliable in CI)
+        maven { url 'https://plugins.gradle.org/m2' }
+    }
+}
+
