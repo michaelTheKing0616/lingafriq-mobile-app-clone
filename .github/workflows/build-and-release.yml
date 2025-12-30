@@ -100,6 +100,12 @@ jobs:
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
 
+      - name: 🗑️ Remove flutter_webrtc plugin
+        run: |
+          chmod +x scripts/remove_webrtc_plugin.sh
+          ./scripts/remove_webrtc_plugin.sh
+          echo "✅ Removed flutter_webrtc from plugin registry"
+
       - name: 🔢 Use incremented version
         run: |
           version="${{ needs.increment-version.outputs.version }}"
@@ -178,6 +184,12 @@ jobs:
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
+
+      - name: 🗑️ Remove flutter_webrtc plugin
+        run: |
+          chmod +x scripts/remove_webrtc_plugin.sh
+          ./scripts/remove_webrtc_plugin.sh
+          echo "✅ Removed flutter_webrtc from plugin registry"
 
       - name: 🔐 Setup iOS Code Signing
         env:

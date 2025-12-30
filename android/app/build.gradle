@@ -145,3 +145,17 @@ dependencies {
 flutter {
     source '../..'
 }
+
+// Exclude flutter_webrtc plugin from compilation (uses deprecated embedding API)
+// We use livekit_client instead which uses dart_webrtc
+// This prevents the "cannot find symbol Registrar" compilation errors
+project.tasks.whenTaskAdded { task ->
+    if (task.name.contains('flutter_webrtc') || task.name.contains('FlutterWebRTC')) {
+        task.enabled = false
+    }
+}
+
+// Also exclude from configurations
+configurations.all {
+    exclude group: 'com.cloudwebrtc', module: 'webrtc'
+}
