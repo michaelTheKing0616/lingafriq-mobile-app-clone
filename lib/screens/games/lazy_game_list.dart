@@ -92,13 +92,13 @@ class LazyGameList extends HookConsumerWidget {
       child: Column(
         children: [
           // Language selector
-          _LanguageSelector(
+          LanguageSelector(
             selectedLanguage: selectedLanguage,
             onLanguageChanged: onLanguageChanged,
           ),
           SizedBox(height: 2.h),
           // Core Games Section with Lazy Loading
-          _GameSection(
+          GameSection(
             title: 'Core Games',
             games: visibleCoreGames,
             onGameSelected: onGameSelected,
@@ -129,7 +129,7 @@ class LazyGameList extends HookConsumerWidget {
             ),
           SizedBox(height: 2.h),
           // Cultural Games Section with Lazy Loading
-          _GameSection(
+          GameSection(
             title: 'Cultural Games',
             games: visibleCulturalGames,
             onGameSelected: onGameSelected,

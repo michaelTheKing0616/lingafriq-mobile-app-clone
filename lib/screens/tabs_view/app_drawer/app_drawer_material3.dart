@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
@@ -17,6 +18,7 @@ import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
+import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
@@ -25,6 +27,7 @@ import 'package:lingafriq/screens/chat/tribe_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/community_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
+import 'package:lingafriq/screens/social_audio/room_discovery_screen.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Modern Pan-African App Drawer with Future-Forward Styling
@@ -34,7 +37,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final currentUser = ref.watch(authProvider);
+    final currentUser = ref.watch(userProvider);
 
     Future<void> toggleDarkMode() async {
       final prefs = await SharedPreferences.getInstance();
@@ -158,12 +161,12 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.chat,
-                        label: 'AI Assistant',
+                        label: 'AI Assistant (Polie)',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: AILanguageSelectionScreen()),
+                            SmoothPageRoute(child: PolieModeSelectionScreen()),
                           );
                         },
                         isDark: isDark,
@@ -261,7 +264,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: TribeChatScreenMaterial3()),
+                            SmoothPageRoute(child: TribeChatScreenMaterial3(
+                              tribeId: 'default',
+                              tribeName: 'My Tribe',
+                            )),
                           );
                         },
                         isDark: isDark,
@@ -273,7 +279,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: CommunityChatScreenMaterial3()),
+                            SmoothPageRoute(child: CommunityChatScreenMaterial3(
+                              villageId: 'default',
+                              villageName: 'My Village',
+                            )),
                           );
                         },
                         isDark: isDark,
@@ -296,8 +305,22 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         icon: PanAfricanIcons.community,
                         label: 'Language Villages',
                         onTap: () {
-                          // Navigate to villages
                           Navigator.pop(context);
+                          // Navigate to villages
+                        },
+                        isDark: isDark,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.radio,
+                        label: 'Practice Rooms',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RoomDiscoveryScreen(),
+                            ),
+                          );
                         },
                         isDark: isDark,
                       ),
@@ -305,8 +328,8 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         icon: PanAfricanIcons.tribe,
                         label: 'My Tribes',
                         onTap: () {
-                          // Navigate to tribes
                           Navigator.pop(context);
+                          // Navigate to tribes
                         },
                         isDark: isDark,
                       ),

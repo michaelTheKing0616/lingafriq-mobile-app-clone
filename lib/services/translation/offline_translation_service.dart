@@ -217,16 +217,26 @@ class OfflineTranslationService {
     }
 
     // Use local translation model (would be implemented with ML Kit or similar)
-    // For now, return a placeholder that indicates offline translation
+    // Offline translation fallback
     // In production, this would use:
-    // - ML Kit Translate API (on-device)
-    // - Custom NLLB-200 model (quantized, on-device)
-    // - TensorFlow Lite model
+    // - ML Kit Translate API (on-device) - primary
+    // - Custom NLLB-200 model (quantized, on-device) - fallback
+    // - TensorFlow Lite model - final fallback
     
+    // For now, return cached translation if available, otherwise return original
+    // This ensures the app doesn't break when offline
+    final cached = await _getCachedTranslation(text, sourceLanguage, targetLanguage);
+    if (cached != null) {
+      return cached;
+    }
+    
+    // If no cache, return original text with low confidence
+    // This allows the app to continue functioning offline
     final result = {
-      'translated_text': text, // Placeholder - would be actual translation
-      'confidence': 0.85,
-      'model': 'nllb-200-offline',
+      'translated_text': text, // Return original when offline and no cache
+      'confidence': 0.3, // Low confidence indicates fallback
+      'model': 'offline-fallback',
+      'is_fallback': true,
     };
 
     // Cache the result

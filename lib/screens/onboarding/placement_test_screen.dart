@@ -294,11 +294,11 @@ class PlacementTestScreen extends HookConsumerWidget {
                 ),
               ),
             ],
-          ),
-        ),
-        ),
-      ),
-    );
+          ), // closes Column
+        ), // closes SafeArea
+        ), // closes Container body
+      ), // closes Scaffold
+    ); // closes LoadingOverlay
   }
 
   Widget _buildResultsScreen(

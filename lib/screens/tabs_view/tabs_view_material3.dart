@@ -4,14 +4,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/firebase_messaging_provider.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer_material3.dart';
-import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart';
+import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show HomeTabMaterial3, languagesProvider;
 import 'package:lingafriq/screens/tabs_view/courses/courses_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/standings/standings_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
-import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
 
 class TabIndexNotifier extends Notifier<int> {
   @override

@@ -15,6 +15,7 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/services/user_generated_content_service.dart';
 
 /// Enhanced Import Media Screen with Transcription Preview, Lesson Generation Preview, Edit/Customize
 class ImportMediaScreenEnhanced extends HookConsumerWidget {
@@ -103,9 +104,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           // Start transcription
           isTranscribing.value = true;
           final transcribeResponse = await ApiService.post(
-            Api.mediaTranscribe(),
+            Api.mediaTranscribe(mediaId),
             data: {
-              'mediaId': mediaId,
               'language': languageController.text,
             },
           );
@@ -135,10 +135,10 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
       isGeneratingLesson.value = true;
       try {
+        final mediaId = transcriptionResult.value!['mediaId'];
         final response = await ApiService.post(
-          Api.mediaGenerateLesson(transcriptionResult.value!['mediaId']),
+          Api.mediaGenerateLesson(mediaId),
           data: {
-            'mediaId': transcriptionResult.value!['mediaId'],
             'language': languageController.text,
             'userLevel': 'A1',
           },
@@ -492,15 +492,90 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   children: [
                     TextButton.icon(
                       onPressed: () {
-                        // Edit lesson
+                        // Show edit dialog
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Edit Lesson'),
+                            content: Text('Lesson editing will be available in a future update.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
                       },
                       icon: Icon(Icons.edit),
                       label: Text('Edit'),
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),
                     ElevatedButton.icon(
-                      onPressed: () {
-                        // Save lesson
+                      onPressed: () async {
+                        // Save lesson to backend
+                        try {
+                          final ugcService = ref.read(userGeneratedContentServiceProvider);
+                          
+                          // Convert sections to content string
+                          final sections = lesson['sections'] as List? ?? [];
+                          final contentString = sections.map((s) {
+                            final sec = s as Map<String, dynamic>;
+                            return '${sec['type']}: ${sec['content']}';
+                          }).join('\n\n');
+
+                          final result = await ugcService.createLesson(
+                            language: languageController.text,
+                            title: lesson['title']?.toString() ?? 'Generated Lesson',
+                            content: contentString,
+                            description: 'Lesson generated from imported media',
+                            tags: ['imported', 'media-generated'],
+                          );
+
+                          if (result != null) {
+                            // Link media to lesson
+                            if (transcriptionResult.value?['mediaId'] != null) {
+                              try {
+                                await ApiService.post(
+                                  'media/${transcriptionResult.value!['mediaId']}/link-lesson',
+                                  data: {
+                                    'lesson_id': result['id'],
+                                  },
+                                );
+                              } catch (e) {
+                                // Non-critical error
+                                debugPrint('Failed to link media to lesson: $e');
+                              }
+                            }
+
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Lesson saved successfully!'),
+                                  backgroundColor: Colors.green,
+                                  action: SnackBarAction(
+                                    label: 'View',
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              );
+                              Navigator.pop(context);
+                            }
+                          } else {
+                            throw Exception('Failed to save lesson');
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to save lesson: ${e.toString()}'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
                       },
                       icon: Icon(Icons.save),
                       label: Text('Save Lesson'),

@@ -72,7 +72,7 @@ class PronunciationService {
         phonemeErrors: [],
         wordErrors: [],
         alignment: {},
-        feedback: 'Pronunciation analysis is temporarily unavailable. Your audio was recorded successfully. Please try again.',
+        feedback: 'Unable to analyze pronunciation. Your audio was recorded successfully. Please check your connection and try again.',
         model: 'fallback',
         error: e.toString(),
         phonemeScore: 0.7,

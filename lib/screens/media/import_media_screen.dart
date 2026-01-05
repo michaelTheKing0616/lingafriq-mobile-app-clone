@@ -39,7 +39,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Media Import is temporarily unavailable',
+      errorMessage: 'Unable to load media import. Please check your connection and try again.',
       onRetry: () {
         setState(() {});
       },

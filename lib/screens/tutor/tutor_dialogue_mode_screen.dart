@@ -231,6 +231,7 @@ class TutorDialogueModeScreen extends HookConsumerWidget {
           ),
         ],
       ),
+    ), // closes LoadingOverlay
     );
   }
 }

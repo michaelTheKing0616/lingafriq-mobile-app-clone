@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../providers/language_village_provider.dart';
 import '../../models/language_village_model.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../screens/chat/live_classroom_screen_material3.dart';
+import 'package:flutter/services.dart';
 
 /// Language Villages Screen - Voice rooms for target-language-only practice
 class LanguageVillagesScreen extends ConsumerWidget {
@@ -97,7 +101,6 @@ class LanguageVillagesScreen extends ConsumerWidget {
               errorContext: 'joinVillage',
               showError: true,
             );
-            }
           },
         );
       },
@@ -198,27 +201,13 @@ class LanguageVillagesScreen extends ConsumerWidget {
               ],
             ),
           ),
-        // Participants (placeholder for voice room UI)
+        // Voice Room UI
         Expanded(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.mic, size: 64, color: Colors.grey),
-                const SizedBox(height: 16),
-                Text(
-                  'Voice Room',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Voice room integration coming soon',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.grey,
-                      ),
-                ),
-              ],
-            ),
+          child: _VoiceRoomView(
+            village: currentVillage,
+            onLeave: () {
+              villageProvider.leaveVillage();
+            },
           ),
         ),
       ],
@@ -340,6 +329,172 @@ class _VillageCard extends StatelessWidget {
               : onJoin,
           child: const Text('Join'),
         ),
+      ),
+    );
+  }
+}
+
+/// Voice Room View Widget
+class _VoiceRoomView extends ConsumerStatefulWidget {
+  final LanguageVillage village;
+  final VoidCallback onLeave;
+
+  const _VoiceRoomView({
+    required this.village,
+    required this.onLeave,
+  });
+
+  @override
+  ConsumerState<_VoiceRoomView> createState() => _VoiceRoomViewState();
+}
+
+class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
+  bool _isMuted = false;
+  bool _isVideoEnabled = true;
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        gradient: isDark
+            ? PanAfricanGradients.darkSurface
+            : PanAfricanGradients.forest,
+      ),
+      child: Column(
+        children: [
+          // Header
+          Container(
+            padding: EdgeInsets.all(4.w),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? PanAfricanColors.surfaceContainerDark
+                  : PanAfricanColors.surfaceContainerLight,
+              boxShadow: PanAfricanShadows.sm,
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.village.name,
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        '${widget.village.currentParticipants}/${widget.village.maxParticipants} participants',
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: widget.onLeave,
+                  tooltip: 'Leave Room',
+                ),
+              ],
+            ),
+          ),
+          // Participants grid
+          Expanded(
+            child: GridView.builder(
+              padding: EdgeInsets.all(4.w),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 4.w,
+                mainAxisSpacing: 4.h,
+              ),
+              itemCount: widget.village.currentParticipants,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                    boxShadow: PanAfricanShadows.sm,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatar(
+                        radius: 30.r,
+                        backgroundColor: PanAfricanColors.primary,
+                        child: Text(
+                          'P${index + 1}',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.sp,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        'Participant ${index + 1}',
+                        style: TextStyle(fontSize: 12.sp),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          // Controls
+          Container(
+            padding: EdgeInsets.all(4.w),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? PanAfricanColors.surfaceContainerDark
+                  : PanAfricanColors.surfaceContainerLight,
+              boxShadow: PanAfricanShadows.md,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                IconButton(
+                  icon: Icon(_isMuted ? Icons.mic_off : Icons.mic),
+                  iconSize: 32.sp,
+                  color: _isMuted ? Colors.red : PanAfricanColors.primary,
+                  onPressed: () {
+                    setState(() => _isMuted = !_isMuted);
+                    HapticFeedback.lightImpact();
+                  },
+                  tooltip: _isMuted ? 'Unmute' : 'Mute',
+                ),
+                IconButton(
+                  icon: Icon(_isVideoEnabled ? Icons.videocam : Icons.videocam_off),
+                  iconSize: 32.sp,
+                  color: _isVideoEnabled ? PanAfricanColors.primary : Colors.grey,
+                  onPressed: () {
+                    setState(() => _isVideoEnabled = !_isVideoEnabled);
+                    HapticFeedback.lightImpact();
+                  },
+                  tooltip: _isVideoEnabled ? 'Turn off video' : 'Turn on video',
+                ),
+                FilledButton.icon(
+                  onPressed: () {
+                    // Navigate to full classroom view
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LiveClassroomScreenMaterial3(
+                          roomId: widget.village.id,
+                          roomName: widget.village.name,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.fullscreen),
+                  label: const Text('Full View'),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

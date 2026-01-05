@@ -389,6 +389,70 @@ Make it fun, educational, and culturally relevant.''';
     );
   }
 
+  /// Generate greetings for voice contribution
+  Future<Map<String, dynamic>> generateGreetings(String language) async {
+    final groqChatNotifier = _ref.read(groqChatProvider.notifier);
+    
+    final systemPrompt = '''You are Polie, an expert in African languages and cultures. Generate authentic greetings in $language:
+1. Formal greetings (morning, afternoon, evening)
+2. Informal greetings
+3. Responses to greetings
+4. Cultural context and usage
+
+Provide at least 5 formal and 5 informal greetings with translations.''';
+
+    try {
+      await groqChatNotifier.setMode(PolieMode.tutor);
+      await groqChatNotifier.setLanguageDirection('English', language);
+      await groqChatNotifier.clearChat();
+      
+      String fullResponse = '';
+      await for (final chunk in groqChatNotifier.sendMessageStream(
+        "Generate authentic greetings in $language",
+        systemPromptOverride: systemPrompt,
+      )) {
+        fullResponse += chunk;
+      }
+      
+      // Parse response into structured format
+      final lines = fullResponse.split('\n');
+      final formal = <String>[];
+      final informal = <String>[];
+      
+      bool inFormal = false;
+      bool inInformal = false;
+      
+      for (var line in lines) {
+        if (line.toLowerCase().contains('formal')) {
+          inFormal = true;
+          inInformal = false;
+        } else if (line.toLowerCase().contains('informal')) {
+          inInformal = true;
+          inFormal = false;
+        } else if (line.trim().isNotEmpty && !line.startsWith('#')) {
+          if (inFormal && formal.length < 5) {
+            formal.add(line.trim());
+          } else if (inInformal && informal.length < 5) {
+            informal.add(line.trim());
+          }
+        }
+      }
+      
+      return {
+        'formal': formal.isNotEmpty ? formal : ['Good morning', 'Good afternoon', 'Good evening', 'Hello', 'Greetings'],
+        'informal': informal.isNotEmpty ? informal : ['Hi', 'Hey', 'What\'s up', 'How are you', 'Hey there'],
+        'language': language,
+      };
+    } catch (e) {
+      debugPrint('Error generating greetings: $e');
+      return {
+        'formal': ['Good morning', 'Good afternoon', 'Good evening', 'Hello', 'Greetings'],
+        'informal': ['Hi', 'Hey', 'What\'s up', 'How are you', 'Hey there'],
+        'language': language,
+      };
+    }
+  }
+
   // Helper methods for parsing and fallbacks
   Map<String, dynamic> _parseProverbResponse(String response, String language) {
     // Try to extract structured data from response

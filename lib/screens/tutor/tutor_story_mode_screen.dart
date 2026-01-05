@@ -118,6 +118,7 @@ class TutorStoryModeScreen extends HookConsumerWidget {
           ),
         ),
       ),
+    ), // closes LoadingOverlay
     );
   }
 

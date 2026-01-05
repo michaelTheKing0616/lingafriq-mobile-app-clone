@@ -8,6 +8,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -304,6 +305,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ],
         ),
       ),
+    ), // closes LoadingOverlay
     );
   }
 }

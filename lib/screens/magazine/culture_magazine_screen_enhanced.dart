@@ -7,6 +7,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,7 +31,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
-          Api.cultureMagazine,
+          AppConfig.cultureMagazine,
           queryParameters: selectedCategory.value != null
               ? {'category': selectedCategory.value}
               : null,
@@ -205,7 +206,6 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
           );
         },
       ),
-    ),
     );
   }
 }

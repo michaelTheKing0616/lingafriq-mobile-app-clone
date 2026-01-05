@@ -15,6 +15,7 @@ class User {
   final String ranks;
   final String points;
   final String level;
+  final String? global_id; // Global handle for user identification
   User({
     required this.id,
     required this.email,
@@ -28,6 +29,7 @@ class User {
     required this.ranks,
     required this.points,
     required this.level,
+    this.global_id,
   });
 
   User copyWith({
@@ -43,6 +45,7 @@ class User {
     String? ranks,
     String? points,
     String? level,
+    String? global_id,
   }) {
     return User(
       id: id ?? this.id,
@@ -57,6 +60,7 @@ class User {
       ranks: ranks ?? this.ranks,
       points: points ?? this.points,
       level: level ?? this.level,
+      global_id: global_id ?? this.global_id,
     );
   }
 
@@ -75,6 +79,9 @@ class User {
     }
     if (avater != null) {
       result.addAll({'avater': avater});
+    }
+    if (global_id != null) {
+      result.addAll({'global_id': global_id});
     }
     result.addAll({'ranks': ranks});
     result.addAll({'points': points});
@@ -110,6 +117,7 @@ class User {
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       image_url: map['image_url'],
       avater: map['avater'],
+      global_id: map['global_id'],
       ranks: map['ranks'] ?? '',
       points: map['points'] ?? '',
       level: map['level'] ?? '',
@@ -122,7 +130,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, image_url: $image_url, avater: $avater, ranks: $ranks, points: $points, level: $level)';
+    return 'User(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, image_url: $image_url, avater: $avater, global_id: $global_id, ranks: $ranks, points: $points, level: $level)';
   }
 
   @override
@@ -139,6 +147,7 @@ class User {
         other.agree_to_privacy_terms == agree_to_privacy_terms &&
         other.image_url == image_url &&
         other.avater == avater &&
+        other.global_id == global_id &&
         other.ranks == ranks &&
         other.points == points &&
         other.level == level;
@@ -155,6 +164,7 @@ class User {
         agree_to_privacy_terms.hashCode ^
         image_url.hashCode ^
         avater.hashCode ^
+        global_id.hashCode ^
         ranks.hashCode ^
         points.hashCode ^
         level.hashCode;

@@ -235,7 +235,6 @@ class SmartRecommendationsService {
         final lessonsResponse = await ApiService.get(
           '/lessons',
           queryParameters: language != null ? {'language': language} : null,
-          requireAuth: true,
         );
         if (lessonsResponse.statusCode == 200 && lessonsResponse.data['data'] != null) {
           final lessons = List<Map<String, dynamic>>.from(lessonsResponse.data['data']);

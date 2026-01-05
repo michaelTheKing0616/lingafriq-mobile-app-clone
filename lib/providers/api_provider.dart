@@ -64,13 +64,13 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {
     try {
-      if ((refreshToken?.isEmpty ?? true)) {
+      if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
         // Try to get from shared preferences
         final prefs = ref.read(sharedPreferencesProvider);
         refreshToken = await prefs.getRefreshToken();
       }
       
-      if ((refreshToken?.isEmpty ?? true)) {
+      if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
         return null;
       }
 
@@ -1401,6 +1401,229 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     } catch (e) {
       debugPrint('Error syncing telemetry: $e');
       return false;
+    }
+  }
+
+  /// Search chat messages
+  Future<List<Map<String, dynamic>>> searchChatMessages({
+    required String query,
+    String? room,
+    String type = 'all',
+    int limit = 100,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'q': query,
+        'type': type,
+        'limit': limit,
+      };
+      if (room != null) {
+        queryParams['room'] = room;
+      }
+      
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/chat/search',
+        queryParameters: queryParams,
+      );
+      
+      if (res.statusCode == 200 && res.data is List) {
+        return List<Map<String, dynamic>>.from(res.data);
+      } else if (res.statusCode == 200 && res.data is Map && res.data['results'] is List) {
+        return List<Map<String, dynamic>>.from(res.data['results']);
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error searching chat messages: $e');
+      return [];
+    }
+  }
+
+  /// Submit voice contribution
+  Future<bool> submitVoiceContribution({
+    required String userId,
+    required String promptId,
+    required String language,
+    required String category,
+    required String promptText,
+    required String audioPath,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'user_id': userId,
+        'prompt_id': promptId,
+        'language': language,
+        'category': category,
+        'prompt_text': promptText,
+        'audio': await MultipartFile.fromFile(audioPath),
+      });
+      
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/voice/contributions',
+        data: formData,
+      );
+      
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error submitting voice contribution: $e');
+      return false;
+    }
+  }
+
+  // ========== SOCIAL AUDIO API METHODS ==========
+
+  /// Get social audio rooms
+  Future<Response?> getSocialAudioRooms({
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioRooms}',
+        queryParameters: queryParameters,
+      );
+    } catch (e) {
+      debugPrint('Error getting social audio rooms: $e');
+      return null;
+    }
+  }
+
+  /// Get social audio room by ID
+  Future<Response?> getSocialAudioRoom(String roomId) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioRoom(roomId)}',
+      );
+    } catch (e) {
+      debugPrint('Error getting social audio room: $e');
+      return null;
+    }
+  }
+
+  /// Create social audio room
+  Future<Response?> createSocialAudioRoom(Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRooms}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error creating social audio room: $e');
+      return null;
+    }
+  }
+
+  /// Join social audio room
+  Future<Response?> joinSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRoomJoin(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error joining social audio room: $e');
+      return null;
+    }
+  }
+
+  /// Leave social audio room
+  Future<Response?> leaveSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRoomLeave(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error leaving social audio room: $e');
+      return null;
+    }
+  }
+
+  /// Update social audio room status
+  Future<Response?> updateSocialAudioRoomStatus(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).patch(
+        '${Api.baseurl}${Api.socialAudioRoomStatus(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error updating social audio room status: $e');
+      return null;
+    }
+  }
+
+  /// Get social audio room participants
+  Future<Response?> getSocialAudioRoomParticipants(String roomId) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioRoomParticipants(roomId)}',
+      );
+    } catch (e) {
+      debugPrint('Error getting social audio room participants: $e');
+      return null;
+    }
+  }
+
+  /// Moderate social audio room
+  Future<Response?> moderateSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRoomModerate(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error moderating social audio room: $e');
+      return null;
+    }
+  }
+
+  /// Follow user for social audio
+  Future<Response?> followSocialAudioUser(String userId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioFollowUser(userId)}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error following social audio user: $e');
+      return null;
+    }
+  }
+
+  /// Unfollow user for social audio
+  Future<Response?> unfollowSocialAudioUser(String userId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).delete(
+        '${Api.baseurl}${Api.socialAudioUnfollowUser(userId)}',
+        data: data,
+      );
+    } catch (e) {
+      debugPrint('Error unfollowing social audio user: $e');
+      return null;
+    }
+  }
+
+  /// Get following list for social audio
+  Future<Response?> getSocialAudioFollowingList(Map<String, dynamic>? queryParameters) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioFollowingList}',
+        queryParameters: queryParameters,
+      );
+    } catch (e) {
+      debugPrint('Error getting social audio following list: $e');
+      return null;
+    }
+  }
+
+  /// Get followers list for social audio
+  Future<Response?> getSocialAudioFollowersList(Map<String, dynamic>? queryParameters) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioFollowers}',
+        queryParameters: queryParameters,
+      );
+    } catch (e) {
+      debugPrint('Error getting social audio followers list: $e');
+      return null;
     }
   }
 }

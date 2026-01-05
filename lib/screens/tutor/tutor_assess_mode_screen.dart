@@ -6,7 +6,6 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
@@ -156,9 +155,10 @@ class TutorAssessModeScreen extends HookConsumerWidget {
                 isDark,
               ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
           ],
-        ),
-      ),
-    );
+        ), // closes Column
+      ), // closes SingleChildScrollView
+    ), // closes Container
+  ); // closes LoadingOverlay
   }
 
   Widget _buildAssessmentResult(
@@ -277,11 +277,10 @@ class TutorAssessModeScreen extends HookConsumerWidget {
               );
             }),
           ],
-        ],
-      ),
-        ),
-      ),
-    );
+        ], // closes Column children
+      ), // closes Column
+    ), // closes Container
+    ); // closes LoadingOverlay
   }
 }
 

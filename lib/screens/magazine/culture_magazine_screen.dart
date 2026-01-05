@@ -103,7 +103,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Cultural Magazine is temporarily unavailable',
+      errorMessage: 'Unable to load cultural magazine. Please check your connection and try again.',
       onRetry: () {
         setState(() {});
       },

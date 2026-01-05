@@ -30,7 +30,7 @@ class UserProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Profile temporarily unavailable',
+      errorMessage: 'Unable to load profile. Please check your connection and try again.',
       child: _buildProfile(context, ref),
     );
   }

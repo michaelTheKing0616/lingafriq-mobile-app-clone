@@ -31,7 +31,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Settings temporarily unavailable',
+      errorMessage: 'Unable to load settings. Please check your connection and try again.',
       child: _buildSettings(context),
     );
   }

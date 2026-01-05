@@ -18,6 +18,7 @@ class AIChatScreen extends HookConsumerWidget {
   final String languageName;
   final String mode;
   final String modeName;
+  final dynamic initialScenario; // RoleplayEntry for roleplay mode
 
   const AIChatScreen({
     Key? key,
@@ -25,6 +26,7 @@ class AIChatScreen extends HookConsumerWidget {
     required this.languageName,
     required this.mode,
     required this.modeName,
+    this.initialScenario,
   }) : super(key: key);
 
   @override
@@ -237,13 +239,18 @@ class AIChatScreen extends HookConsumerWidget {
           ],
         ),
       ),
+    ), // closes LoadingOverlay
     );
   }
 
   String _getEndpointForMode(String mode) {
     switch (mode) {
+      case 'tutor':
+        return '/polie/tutor';
       case 'translate':
         return '/polie/tutor/translate';
+      case 'review':
+        return '/polie/tutor/review';
       case 'explain':
         return '/polie/tutor/explain';
       case 'pronunciation':
@@ -261,17 +268,37 @@ class AIChatScreen extends HookConsumerWidget {
 
   Map<String, dynamic> _getDataForMode(String mode, String text) {
     switch (mode) {
+      case 'tutor':
+        return {
+          'message': text,
+          'language': language,
+          'mode': 'tutor',
+          'sessionId': 'session_${DateTime.now().millisecondsSinceEpoch}',
+        };
       case 'translate':
         return {
           'text': text,
           'sourceLang': 'english',
           'targetLang': language,
         };
+      case 'review':
+        return {
+          'message': text,
+          'language': language,
+          'mode': 'review',
+          'sessionId': 'session_${DateTime.now().millisecondsSinceEpoch}',
+        };
       case 'explain':
         return {
           'topic': text,
           'language': language,
           'userLevel': 'A1',
+        };
+      case 'pronunciation':
+        return {
+          'text': text,
+          'language': language,
+          'mode': 'pronunciation',
         };
       case 'story':
         return {
@@ -297,12 +324,18 @@ class AIChatScreen extends HookConsumerWidget {
 
   String _extractResponseFromMode(String mode, Map<String, dynamic> data) {
     switch (mode) {
+      case 'tutor':
+        return data['response'] ?? data['message'] ?? data['explanation'] ?? '';
       case 'translate':
-        return data['translation'] ?? data['adaptiveTranslation'] ?? '';
+        return data['translation'] ?? data['adaptiveTranslation'] ?? data['response'] ?? '';
+      case 'review':
+        return data['review'] ?? data['response'] ?? data['message'] ?? '';
       case 'explain':
-        return data['canonicalRule'] ?? '';
+        return data['canonicalRule'] ?? data['explanation'] ?? data['response'] ?? '';
+      case 'pronunciation':
+        return data['pronunciation'] ?? data['feedback'] ?? data['response'] ?? '';
       case 'story':
-        return data['story'] ?? '';
+        return data['story'] ?? data['response'] ?? '';
       case 'dialogue':
         return data['response'] ?? data['message'] ?? '';
       case 'assess':

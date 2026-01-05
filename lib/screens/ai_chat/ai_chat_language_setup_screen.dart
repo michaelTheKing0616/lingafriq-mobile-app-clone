@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
@@ -14,11 +14,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AiChatLanguageSetupScreen extends ConsumerStatefulWidget {
   final PolieMode initialMode;
   final VoidCallback? onBack;
+  final Function(String language, String languageName)? onLanguageSelected;
 
   const AiChatLanguageSetupScreen({
     Key? key,
     this.initialMode = PolieMode.translation,
     this.onBack,
+    this.onLanguageSelected,
   }) : super(key: key);
 
   @override
@@ -39,24 +41,30 @@ class _AiChatLanguageSetupScreenState
   Future<void> _selectLanguage(String language) async {
     if (!mounted) return;
     
-    await safeAsync(
-      context: context,
-      operation: () async {
-        final chat = ref.read(groqChatProvider.notifier);
-        // Prime mode and language before entering chat
-        // This will load the scoped chat history for this mode × language combination
-        await chat.setMode(_mode);
-        await chat.setLanguageDirection('English', language);
-        await chat.setLanguage(language);
-        if (!mounted) return;
-        // Navigate to chat screen with scoped history loaded
-        Navigator.push(
-          context,
-          SmoothPageRoute(child: const AiChatScreen()),
-        );
-      },
-      errorContext: 'AI Chat Language Setup',
-    );
+    try {
+      final chat = ref.read(groqChatProvider.notifier);
+      // Prime mode and language before entering chat
+      // This will load the scoped chat history for this mode × language combination
+      await chat.setMode(_mode);
+      await chat.setLanguageDirection('English', language);
+      await chat.setLanguage(language);
+      if (!mounted) return;
+      
+      // If callback provided, call it (for roleplay scenario selection)
+      if (widget.onLanguageSelected != null) {
+        widget.onLanguageSelected!(language, language);
+        return;
+      }
+      
+      // Otherwise, navigate to chat screen with scoped history loaded
+      Navigator.push(
+        context,
+        SmoothPageRoute(child: const AiChatScreen()),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ErrorHandler.showError(context, e);
+    }
   }
 
   @override
@@ -65,7 +73,7 @@ class _AiChatLanguageSetupScreenState
     final languages = ref.read(groqChatProvider.notifier).supportedLanguageOptions;
 
     return ErrorBoundary(
-      errorMessage: 'AI Chat setup is temporarily unavailable',
+      errorMessage: 'Unable to load AI Chat setup. Please check your connection and try again.',
       onRetry: () => setState(() {}),
       child: Scaffold(
         backgroundColor: isDark ? const Color(0xFF0F1F15) : Colors.white,

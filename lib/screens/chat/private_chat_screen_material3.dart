@@ -84,24 +84,24 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
       message: 'Sending message...',
       child: Scaffold(
         appBar: AppBar(
-        title: Row(
-          children: [
-            CircleAvatar(
-              radius: 18.r,
-              backgroundColor: PanAfricanColors.primary,
-              child: Text(
-                otherUserName[0].toUpperCase(),
-                style: PanAfricanTypography.labelSmall(context)
-                    .copyWith(color: Colors.white),
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 18.r,
+                backgroundColor: PanAfricanColors.primary,
+                child: Text(
+                  otherUserName[0].toUpperCase(),
+                  style: PanAfricanTypography.labelSmall(context)
+                      .copyWith(color: Colors.white),
+                ),
               ),
-            ),
-            SizedBox(width: PanAfricanSpacing.sm),
-            Text(otherUserName),
-          ],
+              SizedBox(width: PanAfricanSpacing.sm),
+              Text(otherUserName),
+            ],
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark

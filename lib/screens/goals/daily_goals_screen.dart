@@ -9,6 +9,7 @@ import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
+import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -36,7 +37,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Daily Goals are temporarily unavailable',
+      errorMessage: 'Unable to load daily goals. Please check your connection and try again.',
       onRetry: () {
         ref.read(dailyGoalsProvider.notifier).refreshGoals();
       },
@@ -336,8 +337,11 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
         break;
       case 'words_learned':
         // Navigate to vocabulary/words screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Vocabulary feature coming soon')),
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const VocabularyScreen(),
+          ),
         );
         break;
       default:

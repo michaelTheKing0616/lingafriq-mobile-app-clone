@@ -12,6 +12,7 @@
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:dio/dio.dart';
 import '../../providers/dio_provider.dart';
 import '../../utils/api.dart';
 import '../../core/network/api_client_with_recovery.dart';
@@ -345,6 +346,4 @@ class PronunciationAnalysisService {
     return samples;
   }
 }
-
-import 'package:dio/dio.dart';
 

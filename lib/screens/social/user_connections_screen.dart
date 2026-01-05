@@ -60,7 +60,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'User connections are temporarily unavailable',
+      errorMessage: 'Unable to load user connections. Please check your connection and try again.',
       onRetry: () {
         setState(() {});
         _initializeSocket();
