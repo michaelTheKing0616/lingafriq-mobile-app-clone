@@ -10,6 +10,7 @@ import 'user_provider.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
 import '../services/gamification/events_service.dart';
+import '../services/rive_gamification_service.dart';
 import '../utils/api_service.dart';
 import '../utils/api.dart';
 
@@ -111,6 +112,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
         cowries: _gamification.cowries + levelUpBonus,
       );
       debugPrint('Level up! New level: $newLevel - $newTitle');
+      
+      // React with Rive
+      try {
+        ref.read(riveGamificationServiceProvider).reactToLevelUp(newLevel: newLevel);
+      } catch (e) {
+        debugPrint('Rive service not available: $e');
+      }
       
       // Emit level up event
       await _emitEvent('level_up', {
@@ -223,6 +231,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
     // Award XP for daily check-in
     await awardXP('daily_checkin');
 
+    // React with Rive
+    try {
+      ref.read(riveGamificationServiceProvider).reactToDailyCheckIn(streak: newStreak);
+    } catch (e) {
+      debugPrint('Rive service not available: $e');
+    }
+
     await _saveGamification();
     await _checkBadges();
     await _syncToBackend();
@@ -266,6 +281,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     await _saveGamification();
     await _syncToBackend();
+
+    // React with Rive
+    try {
+      ref.read(riveGamificationServiceProvider).reactToBadgeUnlock();
+    } catch (e) {
+      debugPrint('Rive service not available: $e');
+    }
 
     state = state.copyWith();
     debugPrint('Badge unlocked: ${badge.name}');

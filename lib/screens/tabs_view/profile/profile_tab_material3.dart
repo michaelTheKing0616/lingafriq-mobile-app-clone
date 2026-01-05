@@ -11,6 +11,7 @@ import 'package:lingafriq/screens/tabs_view/profile/suggest_language_screen.dart
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';

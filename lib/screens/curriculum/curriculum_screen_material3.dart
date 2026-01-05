@@ -11,6 +11,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
+import 'package:lingafriq/models/curriculum_model.dart';
 
 /// Beautiful Material 3 Curriculum Screen
 class CurriculumScreenMaterial3 extends HookConsumerWidget {
@@ -70,7 +71,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
             }
           }
         } catch (e) {
-          error.value = ErrorHandler.getErrorMessage(e);
+          error.value = ErrorHandler.getUserFriendlyError(e);
         } finally {
           isLoading.value = false;
         }
@@ -249,11 +250,20 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                   onTap: () {
                                     // Navigate to week details
                                     if (week['lessons'] != null && (week['lessons'] as List).isNotEmpty) {
+                                      final lessonData = (week['lessons'] as List)[0];
+                                      final lesson = CurriculumLesson(
+                                        id: lessonData['id']?.toString() ?? '',
+                                        title: lessonData['title'] ?? 'Lesson',
+                                        vocab: lessonData['vocab'] ?? [],
+                                        exercises: (lessonData['exercises'] as List?)?.map((e) => CurriculumExercise.fromMap(e)).toList() ?? [],
+                                      );
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => LessonDetailScreen(
-                                            lessonId: (week['lessons'] as List)[0]['id'] ?? 0,
+                                            lesson: lesson,
+                                            language: selectedLanguage.value,
+                                            level: selectedLevel.value,
                                           ),
                                         ),
                                       );

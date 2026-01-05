@@ -11,7 +11,6 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
@@ -47,7 +46,7 @@ class _PrivateChatListScreenState
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Private Chats are temporarily unavailable',
+      errorMessage: 'Unable to load private chats. Please check your connection and try again.',
       onRetry: () {
         setState(() {});
         ref.read(privateChatProvider.notifier).loadContacts();
@@ -319,6 +318,33 @@ class _PrivateChatListScreenState
       },
     );
   }
+
+  String _buildRoomId(int userId1, int userId2) {
+    final ids = [userId1, userId2]..sort();
+    return 'private_${ids[0]}_${ids[1]}';
+  }
+
+  String? _getLastMessageTimestamp(List<Map<String, dynamic>> messages) {
+    if (messages.isEmpty) return null;
+    final lastMessage = messages.last;
+    return lastMessage['timestamp']?.toString();
+  }
+
+  String _formatTime(String? timestamp) {
+    if (timestamp == null || timestamp.isEmpty) return '';
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'just now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
+      if (diff.inDays < 1) return '${diff.inHours}h ago';
+      if (diff.inDays < 7) return '${diff.inDays}d ago';
+      return '${date.day}/${date.month}/${date.year}';
+    } catch (_) {
+      return '';
+    }
+  }
 }
 
 class _ContactTile extends StatelessWidget {
@@ -414,33 +440,6 @@ class _ContactTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _buildRoomId(int userId1, int userId2) {
-    final ids = [userId1, userId2]..sort();
-    return 'private_${ids[0]}_${ids[1]}';
-  }
-
-  String? _getLastMessageTimestamp(List<Map<String, dynamic>> messages) {
-    if (messages.isEmpty) return null;
-    final lastMessage = messages.last;
-    return lastMessage['timestamp']?.toString();
-  }
-
-  String _formatTime(String? timestamp) {
-    if (timestamp == null || timestamp.isEmpty) return '';
-    try {
-      final date = DateTime.parse(timestamp);
-      final now = DateTime.now();
-      final diff = now.difference(date);
-      if (diff.inMinutes < 1) return 'just now';
-      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-      if (diff.inDays < 1) return '${diff.inHours}h ago';
-      if (diff.inDays < 7) return '${diff.inDays}d ago';
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (_) {
-      return '';
-    }
   }
 }
 

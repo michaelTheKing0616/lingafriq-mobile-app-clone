@@ -31,7 +31,7 @@ class ProgressIntegration {
     
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('lessons', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('lessons', {'progress': 1});
     } catch (e) {
       // Silently fail - local state is updated
     }
@@ -87,7 +87,7 @@ class ProgressIntegration {
     
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('quizzes', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('quizzes', {'progress': 1});
     } catch (e) {
       // Silently fail
     }
@@ -128,7 +128,7 @@ class ProgressIntegration {
     
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('games', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('games', {'progress': 1});
     } catch (e) {
       // Silently fail
     }
@@ -259,7 +259,7 @@ class ProgressIntegration {
 
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('stories', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('stories', {'progress': 1});
     } catch (e) {
       // Silently fail
     }

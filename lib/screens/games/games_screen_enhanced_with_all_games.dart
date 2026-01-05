@@ -23,7 +23,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLanguage = useState<AppLanguage>(AppLanguage.yoruba);
     final selectedCategory = useState<String?>(null);
-    final selectedSection = useState<'core' | 'cultural'>('core');
+    final selectedSection = useState<String>('core');
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final availableLanguages = AppLanguage.values;
@@ -246,7 +246,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
         'name': 'Accent Puzzle',
         'description': 'Decode accents',
         'category': 'Pronunciation',
-        'icon': Icons.puzzle,
+        'icon': Icons.extension,
         'color': PanAfricanColors.ankaraPurple,
       },
       {
@@ -286,7 +286,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
         'name': 'Elders Blessings',
         'description': 'Learn blessings',
         'category': 'Cultural',
-        'icon': Icons.hands,
+        'icon': Icons.favorite,
         'color': PanAfricanColors.kenteBlue,
       },
       {

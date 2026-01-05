@@ -13,6 +13,7 @@ import 'package:lingafriq/screens/ugc/ugc_validation_feedback_screen.dart';
 import 'package:lingafriq/screens/ugc/ugc_quality_badges_widget.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Enhanced Create Lesson Screen with Validation Feedback and Quality Badges
 class CreateLessonScreenEnhanced extends HookConsumerWidget {
@@ -30,6 +31,23 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans'];
+
+    List<String> _extractBadges(Map<String, dynamic>? validation) {
+      if (validation == null) return [];
+      final badges = <String>[];
+      
+      if (validation['grammarCheck']?['passed'] == true) {
+        badges.add('grammatically_perfect');
+      }
+      if (validation['culturalCheck']?['passed'] == true) {
+        badges.add('culturally_authentic');
+      }
+      if (validation['canonicalCheck']?['passed'] == true) {
+        badges.add('canonical_form');
+      }
+      
+      return badges;
+    }
 
     Future<void> validateContent() async {
       if (contentController.text.isEmpty) {
@@ -94,23 +112,6 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
       } finally {
         isSubmitting.value = false;
       }
-    }
-
-    List<String> _extractBadges(Map<String, dynamic>? validation) {
-      if (validation == null) return [];
-      final badges = <String>[];
-      
-      if (validation['grammarCheck']?['passed'] == true) {
-        badges.add('grammatically_perfect');
-      }
-      if (validation['culturalCheck']?['passed'] == true) {
-        badges.add('culturally_authentic');
-      }
-      if (validation['canonicalCheck']?['passed'] == true) {
-        badges.add('canonical_form');
-      }
-      
-      return badges;
     }
 
     final isLoading = useState(false);

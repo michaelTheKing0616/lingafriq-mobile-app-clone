@@ -8,11 +8,11 @@ import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Language Selector Widget
-class _LanguageSelector extends StatelessWidget {
+class LanguageSelector extends StatelessWidget {
   final String selectedLanguage;
   final Function(String) onLanguageChanged;
 
-  const _LanguageSelector({
+  const LanguageSelector({
     required this.selectedLanguage,
     required this.onLanguageChanged,
   });
@@ -71,12 +71,12 @@ class _LanguageSelector extends StatelessWidget {
 }
 
 /// Game Section Widget
-class _GameSection extends StatelessWidget {
+class GameSection extends StatelessWidget {
   final String title;
   final List<GameType> games;
   final Function(GameType) onGameSelected;
 
-  const _GameSection({
+  const GameSection({
     required this.title,
     required this.games,
     required this.onGameSelected,
@@ -219,7 +219,7 @@ class _GameSection extends StatelessWidget {
       case GameType.proverbUnlocker:
         return Icons.lightbulb_rounded;
       case GameType.drumRhythmShadowing:
-        return Icons.drums_rounded;
+        return Icons.music_note;
       case GameType.clanLineageStoryBuilder:
         return Icons.account_tree_rounded;
       case GameType.marketBargainingSimulator:

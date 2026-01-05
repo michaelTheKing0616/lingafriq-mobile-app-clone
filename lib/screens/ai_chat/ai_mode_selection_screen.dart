@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,6 +22,13 @@ class AIModeSelectionScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> modes = const [
     {
+      'id': 'tutor',
+      'title': 'Tutor',
+      'description': 'Personalized AI tutor for all your questions',
+      'icon': Icons.school,
+      'color': 0xFF1B7340, // primary
+    },
+    {
       'id': 'translate',
       'title': 'Translation',
       'description': 'Translate text with grammar notes',
@@ -30,11 +36,18 @@ class AIModeSelectionScreen extends StatelessWidget {
       'color': 0xFF1CB0F6, // kenteBlue
     },
     {
+      'id': 'review',
+      'title': 'Review',
+      'description': 'Review and practice what you\'ve learned',
+      'icon': Icons.refresh,
+      'color': 0xFF9B59B6, // purple
+    },
+    {
       'id': 'explain',
       'title': 'Grammar',
       'description': 'Learn grammar rules and examples',
       'icon': Icons.menu_book,
-      'color': 0xFF1B7340, // primary
+      'color': 0xFF16A085, // kitengeTeal
     },
     {
       'id': 'pronunciation',
@@ -55,7 +68,7 @@ class AIModeSelectionScreen extends StatelessWidget {
       'title': 'Dialogue',
       'description': 'Practice conversations',
       'icon': Icons.chat_bubble_outline,
-      'color': 0xFF16A085, // kitengeTeal
+      'color': 0xFF3498DB, // blue
     },
     {
       'id': 'assess',

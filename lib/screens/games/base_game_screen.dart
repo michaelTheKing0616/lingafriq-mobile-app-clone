@@ -12,6 +12,8 @@ import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
+import '../../widgets/rive_global_guide.dart';
+import '../../games/animation/rive_asset_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Base class for all game screens - handles common functionality
@@ -211,6 +213,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       await GamificationIntegration.of(ref).onGameComplete(
         xpEarned: xpEarned,
         wordsLearned: wordsLearned,
+        accuracy: endedSession.accuracy,
       );
 
       if (mounted) {
@@ -311,7 +314,21 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             onPressed: widget.onBack ?? () => Navigator.pop(context),
           ),
         ),
-        body: const Center(child: CircularProgressIndicator()),
+        body: Stack(
+          children: [
+            const Center(child: CircularProgressIndicator()),
+            // Rive guide in corner
+            Positioned(
+              top: 16,
+              right: 16,
+              child: RiveGlobalGuide(
+                width: 80.w,
+                height: 80.h,
+                showInCorner: true,
+              ),
+            ),
+          ],
+        ),
       );
     }
 
@@ -324,25 +341,53 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             onPressed: widget.onBack ?? () => Navigator.pop(context),
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error, size: 64, color: Colors.red),
-              const SizedBox(height: 16),
-              Text('Error: $_error'),
-              const SizedBox(height: 16),
+        body: Stack(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Error: $_error'),
+                  const SizedBox(height: 16),
                   FilledButton(
                     onPressed: _initializeGame,
                     child: const Text('Retry'),
                   ),
-            ],
-          ),
+                ],
+              ),
+            ),
+            // Rive guide in corner
+            Positioned(
+              top: 16,
+              right: 16,
+              child: RiveGlobalGuide(
+                width: 80.w,
+                height: 80.h,
+                showInCorner: true,
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    return buildGameContent(context);
+    return Stack(
+      children: [
+        buildGameContent(context),
+        // Rive guide in corner for all games
+        Positioned(
+          top: 16,
+          right: 16,
+          child: RiveGlobalGuide(
+            width: 80.w,
+            height: 80.h,
+            showInCorner: true,
+          ),
+        ),
+      ],
+    );
   }
 
   /// Override to build the actual game UI

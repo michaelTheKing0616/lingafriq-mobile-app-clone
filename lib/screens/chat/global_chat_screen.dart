@@ -68,7 +68,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Global Chat is temporarily unavailable',
+      errorMessage: 'Unable to load global chat. Please check your connection and try again.',
       onRetry: () {
         setState(() {});
         _initializeSocket();

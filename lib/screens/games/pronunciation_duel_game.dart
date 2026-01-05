@@ -95,7 +95,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
 
   Future<void> _scorePronunciation(String audioPath) async {
     try {
-      final dio = ref.read(dioProvider);
+      final dio = ref.read(client);
       final audioFile = File(audioPath);
       if (!await audioFile.exists()) {
         throw Exception('Audio file not found');
@@ -106,10 +106,15 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       // Create a lesson item from the current card for pronunciation analysis
       final lessonItem = LessonItem(
         id: _currentCard!.cardId,
-        text: _currentCard!.text,
+        language: widget.language,
         languageCode: widget.language,
+        level: 'A1',
+        category: 'vocabulary',
         type: 'word',
-        gloss: _currentCard!.gloss,
+        text: _currentCard!.text,
+        translation: _currentCard!.gloss ?? _currentCard!.text,
+        difficulty: 0.5,
+        qualityScore: 0.0,
       );
 
       final pronunciationService = PronunciationAnalysisService(dio);

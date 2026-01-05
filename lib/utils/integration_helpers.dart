@@ -101,7 +101,7 @@ Future<T?> safeAsyncSilent<T>({
 /// // In TextField onChanged:
 /// searchDebouncer(query);
 /// ```
-Debouncer Function(String query) createSearchDebouncer({
+void Function(String query) createSearchDebouncer({
   required Future<void> Function(String query) onSearch,
   Duration delay = const Duration(milliseconds: 300),
 }) {
@@ -130,7 +130,7 @@ SimpleCache<String, T> createDataCache<T>({
   Duration? ttl,
 }) {
   return SimpleCache<String, T>(
-    defaultTtl: ttl ?? const Duration(minutes: 5),
+    ttl: ttl ?? const Duration(minutes: 5),
     fetcher: fetcher,
   );
 }
@@ -262,7 +262,7 @@ Future<T?> safeNavigate<T>({
 }) async {
   try {
     if (replace) {
-      return await Navigator.pushReplacement<T>(
+      return await Navigator.pushReplacement<T, void>(
         context,
         MaterialPageRoute(builder: (_) => destination),
       );

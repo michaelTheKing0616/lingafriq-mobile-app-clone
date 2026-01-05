@@ -200,9 +200,9 @@ class CommunityChatScreen extends HookConsumerWidget {
             ),
           ],
         ),
-      ),
-      ),
-    );
+      ), // closes Scaffold body Container
+    ), // closes Scaffold
+  ); // closes LoadingOverlay
   }
 }
 

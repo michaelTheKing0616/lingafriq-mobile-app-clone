@@ -16,7 +16,7 @@ class ProgressDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Progress Dashboard is temporarily unavailable',
+      errorMessage: 'Unable to load progress dashboard. Please check your connection and try again.',
       onRetry: () {
         // Rebuild
       },

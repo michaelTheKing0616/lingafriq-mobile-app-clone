@@ -121,7 +121,7 @@ class Api {
   
   // Media API endpoints
   static const String media = 'media/';
-  static String mediaGenerateLesson(String mediaId) => 'media/generate-lesson';
+  static String mediaGenerateLesson(String mediaId) => 'media/$mediaId/generate-lesson';
   
   // Chat API endpoints
   static const String chatGlobal = 'chat/global';
@@ -129,7 +129,7 @@ class Api {
   
   // Media API endpoints  
   static String mediaUpload() => 'media/upload';
-  static String mediaTranscribe() => 'media/transcribe';
+  static String mediaTranscribe(String mediaId) => 'media/$mediaId/transcribe';
   static String mediaDetails(String mediaId) => 'media/$mediaId';
   
   // User Content API endpoints
@@ -179,4 +179,28 @@ class Api {
   static String connectionUnblock() => 'connections/unblock';
   static const String connectionsPending = 'connections/pending';
   static const String connectionsBlocked = 'connections/blocked';
+  
+  // Social Audio API endpoints
+  static const String socialAudioBase = 'api/social-audio/';
+  static const String socialAudioRooms = '${socialAudioBase}rooms';
+  static String socialAudioRoom(String roomId) => '${socialAudioBase}rooms/$roomId';
+  static String socialAudioRoomJoin(String roomId) => '${socialAudioBase}rooms/$roomId/join';
+  static String socialAudioRoomLeave(String roomId) => '${socialAudioBase}rooms/$roomId/leave';
+  static String socialAudioRoomStatus(String roomId) => '${socialAudioBase}rooms/$roomId/status';
+  static String socialAudioRoomSpeakers(String roomId) => '${socialAudioBase}rooms/$roomId/speakers';
+  static String socialAudioRoomModerate(String roomId) => '${socialAudioBase}rooms/$roomId/moderate';
+  static const String socialAudioRoomsUser = '${socialAudioBase}rooms/user';
+  static const String socialAudioRoomsScheduled = '${socialAudioBase}rooms/scheduled';
+  static String socialAudioRoomParticipants(String roomId) => '${socialAudioBase}rooms/$roomId/participants';
+  static String socialAudioRoomHistory(String roomId) => '${socialAudioBase}rooms/$roomId/history';
+  static String socialAudioRoomLearningSummary(String roomId) => '${socialAudioBase}rooms/$roomId/learning-summary';
+  static const String socialAudioFollowing = '${socialAudioBase}following';
+  static String socialAudioFollowUser(String userId) => '${socialAudioBase}following/$userId';
+  static String socialAudioUnfollowUser(String userId) => '${socialAudioBase}following/$userId';
+  static const String socialAudioFollowers = '${socialAudioBase}followers';
+  static const String socialAudioFollowingList = '${socialAudioBase}following/list';
+  static const String socialAudioLearningTrack = '${socialAudioBase}learning/track';
+  static const String socialAudioLearningWords = '${socialAudioBase}learning/words';
+  static const String socialAudioLearningPronunciation = '${socialAudioBase}learning/pronunciation';
+  static const String socialAudioLearningStats = '${socialAudioBase}learning/stats';
 }

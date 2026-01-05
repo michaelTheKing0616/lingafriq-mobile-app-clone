@@ -10,9 +10,9 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # followed by an optional build number separated by a +.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
+# In Android, build-name is used as versionName and build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# In iOS, build-name is used as CFBundleShortVersionString and build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.6.0+115
@@ -21,10 +21,10 @@ environment:
   sdk: ">=3.3.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
-# To automatically upgrade your package dependencies to the latest versions
-# consider running `flutter pub upgrade --major-versions`. Alternatively,
-# dependencies can be manually updated by changing the version numbers below to
-# the latest version available on pub.dev. To see which dependencies have newer
+# To automatically upgrade your package dependencies, consider running
+# `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below
+# to the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
@@ -78,6 +78,14 @@ dependencies:
   socket_io_client: ^2.0.3+1
   # Real-time Communication
   livekit_client: ^1.2.0
+  # Game Engine & Animation
+  rive: ^0.12.4
+  flame: ^1.18.0
+  # Audio Analysis
+  pitch_detector: ^0.1.0
+  speech_to_text: ^7.0.0
+  # Haptic Feedback
+  flutter_vibrate: ^1.2.0
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1
@@ -108,6 +116,7 @@ flutter:
     - assets/images/
     - assets/alphabets/
     - assets/fonts/
+    - assets/rive/
 
 
 

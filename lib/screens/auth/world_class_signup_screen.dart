@@ -718,7 +718,6 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                   await storage.storeCredentials(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
-                    username: usernameController.text.trim(),
                     firstName: firstNameController.text.trim(),
                     lastName: lastNameController.text.trim(),
                   );

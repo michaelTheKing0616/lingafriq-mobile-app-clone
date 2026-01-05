@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 /// Beautiful Material 3 Games Screen
 class GamesScreenMaterial3 extends HookConsumerWidget {
@@ -22,7 +23,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
 
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans', 'pidgin'];
     final categories = ['All', 'Vocabulary', 'Grammar', 'Pronunciation', 'Cultural'];
-    final selectedSection = useState<String>('core');
+    final selectedSection = useState('core');
 
     // ALL 35+ GAMES PROPERLY CATEGORIZED
     final coreGames = [
@@ -157,7 +158,8 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                     ),
                   ),
                 ],
-              ).paddingSymmetric(horizontal: PanAfricanSpacing.md),
+              ),
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
             ),
 
             // Category Filters

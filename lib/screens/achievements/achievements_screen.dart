@@ -17,7 +17,7 @@ class AchievementsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Achievements are temporarily unavailable',
+      errorMessage: 'Unable to load achievements. Please check your connection and try again.',
       onRetry: () {
         // Retry by rebuilding
       },

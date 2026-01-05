@@ -9,6 +9,7 @@ import '../providers/api_provider.dart';
 import '../providers/user_provider.dart';
 import '../widgets/gamification/xp_gain_overlay.dart';
 import '../services/sound_effects_service.dart';
+import '../services/rive_gamification_service.dart';
 import '../models/daily_challenge_model.dart';
 
 /// Gamification Integration Helper
@@ -60,6 +61,10 @@ class _GamificationHelper {
     int timeSpentMinutes = 0,
   }) async {
     debugPrint('[Gamification] Lesson complete: XP=$xpEarned, words=$wordsLearned');
+    
+    // React with Rive
+    _ref.read(riveGamificationServiceProvider).reactToLessonComplete();
+    _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
     
     // Show XP overlay
     showXPGain(_ref, amount: xpEarned, source: 'Lesson Complete');
@@ -122,6 +127,10 @@ class _GamificationHelper {
   }) async {
     debugPrint('[Gamification] Quiz complete: score=$score, XP=$xpEarned, perfect=$isPerfect');
     
+    // React with Rive
+    _ref.read(riveGamificationServiceProvider).reactToQuizComplete(isPerfect: isPerfect);
+    _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
+    
     // Show XP overlay with bonus text for perfect
     showXPGain(
       _ref,
@@ -174,8 +183,16 @@ class _GamificationHelper {
   Future<void> onGameComplete({
     required int xpEarned,
     int wordsLearned = 0,
+    double? accuracy,
   }) async {
     debugPrint('[Gamification] Game complete: XP=$xpEarned');
+    
+    // React with Rive
+    if (accuracy != null) {
+      _ref.read(riveGamificationServiceProvider).reactToGameComplete(accuracy: accuracy);
+    } else {
+      _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
+    }
     
     // Show XP overlay
     showXPGain(_ref, amount: xpEarned, source: 'Game Complete');
@@ -354,6 +371,9 @@ class _GamificationHelper {
   Future<bool> onMistake() async {
     final heartsState = _ref.read(heartsProvider);
     
+    // React with Rive
+    _ref.read(riveGamificationServiceProvider).reactToMistake();
+    
     // If challenge mode is off or unlimited, always continue
     if (!heartsState.challengeModeEnabled || heartsState.isUnlimited) {
       return true;
@@ -410,5 +430,12 @@ class _GamificationHelper {
 /// ```
 mixin GamificationMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   _GamificationHelper get gamify => _GamificationHelper(ref);
+}
+
+/// Static helper for non-ConsumerWidget contexts
+class GamificationIntegration {
+  static _GamificationHelper of(WidgetRef ref) {
+    return _GamificationHelper(ref);
+  }
 }
 

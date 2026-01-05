@@ -76,7 +76,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        ref.read(navigationProvider).naviateOffAll(const OnboardingScreen());
+        ref.read(navigationProvider).naviateOffAll(OnboardingScreenMaterial3());
         return user;
       }
       return user;

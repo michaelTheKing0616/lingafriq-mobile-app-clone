@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';

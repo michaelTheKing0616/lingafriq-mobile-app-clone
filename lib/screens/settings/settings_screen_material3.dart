@@ -82,9 +82,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           },
                           errorContext: 'toggleDarkMode',
                         );
-                        setState(() {
-                          isDark.value = value;
-                        });
+                        isDark.value = value;
                         HapticFeedback.mediumImpact();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -180,9 +178,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           HapticFeedback.mediumImpact();
                           if (value) {
                             // Test biometric
-                            final biometricAuth = BiometricAuthService();
-                            final authenticated = await biometricAuth.authenticate(
-                              reason: 'Enable biometric authentication',
+                            final authenticated = await BiometricAuth.authenticate(
+                              localizedReason: 'Enable biometric authentication',
                             );
                             if (authenticated) {
                               final prefs = await SharedPreferences.getInstance();
@@ -233,7 +230,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           ),
                         );
                       },
-                      secondary: Icon(Icons.encrypt, color: PanAfricanColors.primary),
+                      secondary: Icon(Icons.lock, color: PanAfricanColors.primary),
                       activeColor: PanAfricanColors.primary,
                     ),
                   ],
@@ -470,8 +467,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     ValueNotifier<String?> type,
     ValueNotifier<bool?> enabled,
   ) async {
-    final biometricAuth = BiometricAuthService();
-    final isAvailable = await biometricAuth.isAvailable();
+    final isAvailable = await BiometricAuth.isAvailable();
     available.value = isAvailable;
     
     if (isAvailable) {
@@ -494,7 +490,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
   void _showSyncSettings(BuildContext context, WidgetRef ref) async {
     final selectiveSync = SelectiveSyncService();
     await selectiveSync.initialize();
-    final preferences = selectiveSync.getAllPreferences();
+    final preferences = await selectiveSync.getAllPreferences();
 
     showModalBottomSheet(
       context: context,
@@ -593,14 +589,20 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         return 'Profile';
       case SyncCategory.lessons:
         return 'Lessons';
+      case SyncCategory.quizzes:
+        return 'Quizzes';
+      case SyncCategory.progress:
+        return 'Progress';
+      case SyncCategory.media:
+        return 'Media';
+      case SyncCategory.cultureMagazine:
+        return 'Culture Magazine';
       case SyncCategory.games:
         return 'Games';
       case SyncCategory.chat:
         return 'Chat';
       case SyncCategory.achievements:
         return 'Achievements';
-      case SyncCategory.progress:
-        return 'Progress';
       case SyncCategory.content:
         return 'Content';
       case SyncCategory.settings:

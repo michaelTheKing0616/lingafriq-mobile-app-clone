@@ -55,7 +55,7 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
     Map<String, dynamic> feedback = {'sentence': sentence, 'turn': _currentTurn};
     
     try {
-      final aiChatProvider = ref.read(aiChatProviderGroq.notifier);
+      final aiChatProvider = ref.read(groqChatProvider.notifier);
       final grammarCheck = await aiChatProvider.grammarCheck(widget.language, sentence);
       
       if (!grammarCheck.passed) {

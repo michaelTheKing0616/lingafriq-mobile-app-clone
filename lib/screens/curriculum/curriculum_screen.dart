@@ -42,7 +42,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Comprehensive Curriculum is temporarily unavailable',
+      errorMessage: 'Unable to load curriculum. Please check your connection and try again.',
       onRetry: () {
         _loadCurriculum();
       },

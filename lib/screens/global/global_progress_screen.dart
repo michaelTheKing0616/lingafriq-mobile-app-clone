@@ -32,7 +32,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Global Progress data is temporarily unavailable',
+      errorMessage: 'Unable to load global progress data. Please check your connection and try again.',
       onRetry: () {
         ref.read(leaderboardProvider.notifier).getProfiles();
       },

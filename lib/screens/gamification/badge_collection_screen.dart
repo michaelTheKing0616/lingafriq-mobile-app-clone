@@ -115,11 +115,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           ),
           // Badge grid
           Expanded(
-            child: OptimizedListView(
-              gridDelegate: gridDelegate,
-              itemCount: itemCount,
-              itemBuilder: itemBuilder,
-            ).grid(
+            child: OptimizedListView.builder(
               padding: const EdgeInsets.all(16),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

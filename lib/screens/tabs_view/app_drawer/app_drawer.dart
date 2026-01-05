@@ -27,7 +27,6 @@ import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawer extends HookConsumerWidget {

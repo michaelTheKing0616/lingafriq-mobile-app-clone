@@ -215,17 +215,12 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
   Widget _buildLanguageSelector(
     BuildContext context,
     String label,
-    TextEditingController controller,
+    ValueNotifier<AppLanguage> selectedLanguageNotifier,
+    List<AppLanguage> availableLanguages,
     bool isDark,
   ) {
-    final languages = [
-      'yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'xhosa', 'amharic', 
-      'twi', 'afrikaans', 'pidgin', 'wolof', 'somali', 'english'
-    ];
-    final selectedLanguage = useState(controller.text);
-
-    return DropdownButtonFormField<String>(
-      value: selectedLanguage.value.isNotEmpty ? selectedLanguage.value : languages.first,
+    return DropdownButtonFormField<AppLanguage>(
+      value: selectedLanguageNotifier.value,
       decoration: InputDecoration(
         labelText: label,
         border: OutlineInputBorder(
@@ -236,19 +231,18 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
             ? PanAfricanColors.surfaceContainerDark
             : PanAfricanColors.surfaceContainerLight,
       ),
-      items: languages.map((lang) {
-        return DropdownMenuItem<String>(
+      items: availableLanguages.map((lang) {
+        return DropdownMenuItem<AppLanguage>(
           value: lang,
           child: Text(
-            lang.substring(0, 1).toUpperCase() + lang.substring(1),
+            lang.name.substring(0, 1).toUpperCase() + lang.name.substring(1),
             style: PanAfricanTypography.bodyMedium(context),
           ),
         );
       }).toList(),
       onChanged: (value) {
         if (value != null) {
-          selectedLanguage.value = value;
-          controller.text = value;
+          selectedLanguageNotifier.value = value;
         }
       },
     );
@@ -311,11 +305,10 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
               );
             }),
           ],
-        ],
-      ),
-        ),
-      ),
-    );
+        ],  // closes Column children
+      ),  // closes Column
+    ),  // closes Container
+    );  // closes LoadingOverlay
   }
 }
 

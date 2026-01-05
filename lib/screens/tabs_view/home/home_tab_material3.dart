@@ -19,6 +19,7 @@ import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/search_languages_page.dart';
@@ -94,7 +95,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SearchLanguagesPage(),
+                          builder: (context) => SearchLanguagesPage(),
                         ),
                       );
                     },
@@ -243,7 +244,7 @@ class _LanguageCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 child: CachedNetworkImage(
-                  imageUrl: language.flag ?? '',
+                  imageUrl: language.background ?? '',
                   width: 60.w,
                   height: 60.w,
                   fit: BoxFit.cover,
