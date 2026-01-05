@@ -82,7 +82,7 @@ dependencies:
   rive: ^0.12.4
   flame: ^1.18.0
   # Audio Analysis
-  pitch_detector: ^0.1.0
+  # pitch_detector: ^0.1.0  # Package not available on pub.dev - removed
   speech_to_text: ^7.0.0
   # Haptic Feedback
   flutter_vibrate: ^1.2.0
