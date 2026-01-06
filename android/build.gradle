@@ -149,7 +149,10 @@ subprojects {
 
     // Keep each module's build output organized under root /build/
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-    project.evaluationDependsOn(':app')
+    // ❌ REMOVED: evaluationDependsOn(':app') causes circular dependency issues
+    // This forces evaluation of :app during subproject configuration, which triggers
+    // NDK validation before the build is ready, causing build failures.
+    // The app project will be evaluated naturally when needed during the build process.
 }
 
 // ✅ Clean task
