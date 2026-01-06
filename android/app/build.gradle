@@ -24,12 +24,48 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+// Check for NDK availability before configuring android block
+// This prevents build failures if NDK installation is incomplete
+def ndkVersionToUse = null
+def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+if (sdkDir) {
+    def ndkDir = file("${sdkDir}/ndk/27.0.12077973")
+    def sourceProperties = file("${ndkDir}/source.properties")
+    if (ndkDir.exists() && sourceProperties.exists()) {
+        ndkVersionToUse = "27.0.12077973"
+        println("✅ NDK 27.0.12077973 found and will be used")
+    } else {
+        println("⚠️ NDK 27.0.12077973 not found or incomplete at ${ndkDir.absolutePath}")
+        println("   Build will continue without explicit NDK version")
+    }
+} else {
+    // Try to get SDK from local.properties as fallback
+    def sdkPath = localProperties.getProperty('sdk.dir')
+    if (sdkPath) {
+        def ndkDir = file("${sdkPath}/ndk/27.0.12077973")
+        def sourceProperties = file("${ndkDir}/source.properties")
+        if (ndkDir.exists() && sourceProperties.exists()) {
+            ndkVersionToUse = "27.0.12077973"
+            println("✅ NDK 27.0.12077973 found via local.properties")
+        }
+    }
+    if (!ndkVersionToUse) {
+        println("⚠️ Android SDK location not found - skipping NDK version specification")
+        println("   Build will use default NDK if available")
+    }
+}
+
 android {
     namespace = "com.cracklog.lingafriq"
 
     // Fix for AndroidX + SDK36 plugin requirements
     compileSdk = 36
-    ndkVersion "27.0.12077973"
+    
+    // Only set NDK version if it's available and properly installed
+    // This prevents build failures when NDK installation is incomplete
+    if (ndkVersionToUse) {
+        ndkVersion ndkVersionToUse
+    }
 
     defaultConfig {
         applicationId "com.cracklog.lingafriq"
@@ -39,6 +75,8 @@ android {
         versionName flutterVersionName
         
         // Support 16KB page size (required for Android 15+)
+        // Configure NDK ABI filters - this is safe even if NDK isn't installed
+        // Flutter plugins will handle native library inclusion if needed
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
