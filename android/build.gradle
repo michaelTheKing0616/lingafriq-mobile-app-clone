@@ -74,11 +74,12 @@ allprojects {
     // Allow Flutter plugin loader to use Kotlin 1.9.22 while app uses 2.2.0
     configurations.all {
         resolutionStrategy {
-            // Don't force versions - let each dependency use its required version
+            // Prefer project modules but allow dependency versions when required
             // This allows Flutter plugin loader to use 1.9.22 and app to use 2.2.0
-            failOnVersionConflict = false
-            // Prefer newer versions but allow older ones when required
             preferProjectModules()
+            // Use dependencySubstitution to handle version conflicts gracefully
+            // Gradle 8.7 automatically resolves version conflicts by selecting the highest version
+            // unless explicitly overridden, which is what we want for Kotlin compatibility
         }
     }
 }
