@@ -38,6 +38,39 @@ buildscript {
     }
 }
 
+// Configure NDK version at root level so all subprojects can use it
+// Check for available NDK versions before configuring projects
+def rootNdkVersion = null
+def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+if (!sdkDir) {
+    def localProps = new Properties()
+    def localPropsFile = file('local.properties')
+    if (localPropsFile.exists()) {
+        localPropsFile.withReader('UTF-8') { reader -> localProps.load(reader) }
+        sdkDir = localProps.getProperty('sdk.dir')
+    }
+}
+
+if (sdkDir) {
+    // Check for rive_common's preferred NDK version first (26.1.10909125)
+    def riveNdkDir = file("${sdkDir}/ndk/26.1.10909125")
+    def riveSourceProperties = file("${riveNdkDir}/source.properties")
+    if (riveNdkDir.exists() && riveSourceProperties.exists()) {
+        rootNdkVersion = "26.1.10909125"
+        println("✅ Root NDK 26.1.10909125 found (required by rive_common)")
+    } else {
+        // Fallback to app's preferred NDK version (27.0.12077973)
+        def appNdkDir = file("${sdkDir}/ndk/27.0.12077973")
+        def appSourceProperties = file("${appNdkDir}/source.properties")
+        if (appNdkDir.exists() && appSourceProperties.exists()) {
+            rootNdkVersion = "27.0.12077973"
+            println("✅ Root NDK 27.0.12077973 found")
+        } else {
+            println("⚠️ No NDK found at root level - plugins requiring NDK may fail")
+        }
+    }
+}
+
 allprojects {
     repositories {
         // Google Maven repository first - mirrors Maven Central and more reliable
@@ -126,6 +159,19 @@ subprojects {
                 compileOptions {
                     sourceCompatibility JavaVersion.VERSION_17
                     targetCompatibility JavaVersion.VERSION_17
+                }
+                
+                // ✅ Configure NDK for plugins that require it (e.g., rive_common)
+                // Use the root NDK version if available
+                if (rootNdkVersion) {
+                    try {
+                        ndkVersion rootNdkVersion
+                        println("✅ Configured NDK ${rootNdkVersion} for ${project.name}")
+                    } catch (Exception e) {
+                        println("⚠️ Could not set NDK version for ${project.name}: ${e.message}")
+                    }
+                } else {
+                    println("⚠️ No NDK available for ${project.name} - plugins requiring NDK may fail")
                 }
             }
         }

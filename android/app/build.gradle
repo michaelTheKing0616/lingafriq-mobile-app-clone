@@ -26,33 +26,38 @@ if (keystorePropertiesFile.exists()) {
 
 // Check for NDK availability before configuring android block
 // This prevents build failures if NDK installation is incomplete
+// Check for multiple NDK versions: 26.1.10909125 (for rive_common) and 27.0.12077973 (for app)
 def ndkVersionToUse = null
 def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
-if (sdkDir) {
-    def ndkDir = file("${sdkDir}/ndk/27.0.12077973")
-    def sourceProperties = file("${ndkDir}/source.properties")
-    if (ndkDir.exists() && sourceProperties.exists()) {
-        ndkVersionToUse = "27.0.12077973"
-        println("✅ NDK 27.0.12077973 found and will be used")
-    } else {
-        println("⚠️ NDK 27.0.12077973 not found or incomplete at ${ndkDir.absolutePath}")
-        println("   Build will continue without explicit NDK version")
-    }
-} else {
+if (!sdkDir) {
     // Try to get SDK from local.properties as fallback
-    def sdkPath = localProperties.getProperty('sdk.dir')
-    if (sdkPath) {
-        def ndkDir = file("${sdkPath}/ndk/27.0.12077973")
-        def sourceProperties = file("${ndkDir}/source.properties")
-        if (ndkDir.exists() && sourceProperties.exists()) {
+    sdkDir = localProperties.getProperty('sdk.dir')
+}
+
+if (sdkDir) {
+    // Check for rive_common's preferred NDK version first (26.1.10909125)
+    def riveNdkDir = file("${sdkDir}/ndk/26.1.10909125")
+    def riveSourceProperties = file("${riveNdkDir}/source.properties")
+    if (riveNdkDir.exists() && riveSourceProperties.exists()) {
+        ndkVersionToUse = "26.1.10909125"
+        println("✅ NDK 26.1.10909125 found (required by rive_common) and will be used")
+    } else {
+        // Fallback to app's preferred NDK version (27.0.12077973)
+        def appNdkDir = file("${sdkDir}/ndk/27.0.12077973")
+        def appSourceProperties = file("${appNdkDir}/source.properties")
+        if (appNdkDir.exists() && appSourceProperties.exists()) {
             ndkVersionToUse = "27.0.12077973"
-            println("✅ NDK 27.0.12077973 found via local.properties")
+            println("✅ NDK 27.0.12077973 found and will be used")
+        } else {
+            println("⚠️ NDK not found - checked versions:")
+            println("   - 26.1.10909125 (required by rive_common) at ${riveNdkDir.absolutePath}")
+            println("   - 27.0.12077973 (preferred for app) at ${appNdkDir.absolutePath}")
+            println("   Build will continue - plugins requiring NDK may fail")
         }
     }
-    if (!ndkVersionToUse) {
-        println("⚠️ Android SDK location not found - skipping NDK version specification")
-        println("   Build will use default NDK if available")
-    }
+} else {
+    println("⚠️ Android SDK location not found - skipping NDK version specification")
+    println("   Build will use default NDK if available")
 }
 
 android {
