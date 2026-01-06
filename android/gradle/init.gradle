@@ -1,0 +1,26 @@
+// Gradle init script to configure repositories for all builds including included builds
+// This ensures the :gradle project (Flutter plugin loader) can access dependencies
+
+allprojects {
+    repositories {
+        // Google Maven repository first - mirrors Maven Central and more reliable
+        // This helps avoid 403 errors from Maven Central
+        google()
+        // Maven Central - official repository (fallback)
+        mavenCentral()
+        // JitPack for GitHub-based dependencies
+        maven { url 'https://jitpack.io' }
+        // Gradle plugin portal
+        gradlePluginPortal()
+    }
+}
+
+// Configure buildscript repositories for all builds
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
