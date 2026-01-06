@@ -10,10 +10,25 @@ buildscript {
     repositories {
         // Google Maven repository first - mirrors Maven Central and more reliable
         google()
-        // Maven Central - official repository
-        mavenCentral()
-        // Gradle plugin portal for plugins
+        
+        // Official Gradle plugin portal for plugins
         gradlePluginPortal()
+        
+        // Maven Central - use explicit URL to avoid 403 errors from old URLs
+        // Use repo1.maven.org instead of repo.maven.apache.org
+        maven {
+            name = "Maven Central"
+            url = uri("https://repo1.maven.org/maven2")
+        }
+        
+        // Fallback: standard mavenCentral() (uses repo1.maven.org internally)
+        mavenCentral()
+        
+        // Additional fallback repositories
+        maven {
+            name = "Sonatype Snapshots"
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+        }
     }
 
     dependencies {
@@ -27,11 +42,30 @@ allprojects {
     repositories {
         // Google Maven repository first - mirrors Maven Central and more reliable
         google()
-        // Maven Central - official repository
+        
+        // Official Gradle plugin portal for plugins
+        gradlePluginPortal()
+        
+        // Maven Central - use explicit URL to avoid 403 errors from old URLs
+        // Use repo1.maven.org instead of repo.maven.apache.org
+        maven {
+            name = "Maven Central"
+            url = uri("https://repo1.maven.org/maven2")
+        }
+        
+        // Fallback: standard mavenCentral() (uses repo1.maven.org internally)
         mavenCentral()
+        
+        // Additional fallback repositories
+        maven {
+            name = "Sonatype Snapshots"
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+        }
+        
         // JitPack for GitHub-based dependencies
         maven { 
-            url 'https://jitpack.io'
+            name = "JitPack"
+            url = uri("https://jitpack.io")
         }
     }
     
