@@ -12,8 +12,23 @@ buildscript {
         google()
         mavenCentral()
         // Add alternative repositories for better reliability
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://repo1.maven.org/maven2' }
+        maven { 
+            url 'https://jitpack.io'
+            allowInsecureProtocol = false
+        }
+        maven { 
+            url 'https://repo1.maven.org/maven2'
+            allowInsecureProtocol = false
+        }
+        // Add JetBrains repository for Kotlin dependencies
+        maven { 
+            url 'https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven'
+            allowInsecureProtocol = false
+        }
+        maven { 
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            allowInsecureProtocol = false
+        }
         gradlePluginPortal()
     }
 
@@ -30,12 +45,41 @@ allprojects {
         google()
         // Add Maven Central with explicit URL as fallback
         mavenCentral()
-        maven { url 'https://repo1.maven.org/maven2' }
+        maven { 
+            url 'https://repo1.maven.org/maven2'
+            allowInsecureProtocol = false
+        }
         // Add alternative repositories for better reliability
-        maven { url 'https://jitpack.io' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { 
+            url 'https://jitpack.io'
+            allowInsecureProtocol = false
+        }
+        maven { 
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            allowInsecureProtocol = false
+        }
+        // Add JetBrains repository for Kotlin dependencies
+        maven { 
+            url 'https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven'
+            allowInsecureProtocol = false
+        }
         // Aliyun mirror (often more reliable in CI/CD environments)
-        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { 
+            url 'https://maven.aliyun.com/repository/public'
+            allowInsecureProtocol = false
+        }
+    }
+    
+    // Configure dependency resolution to handle Kotlin version conflicts
+    // Allow Flutter plugin loader to use Kotlin 1.9.22 while app uses 2.2.0
+    configurations.all {
+        resolutionStrategy {
+            // Don't force versions - let each dependency use its required version
+            // This allows Flutter plugin loader to use 1.9.22 and app to use 2.2.0
+            failOnVersionConflict = false
+            // Prefer newer versions but allow older ones when required
+            preferProjectModules()
+        }
     }
 }
 

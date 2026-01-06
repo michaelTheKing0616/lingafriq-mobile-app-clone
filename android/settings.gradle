@@ -18,9 +18,33 @@ pluginManagement {
         google()
         mavenCentral()
         // Add alternative repositories for better reliability
-        maven { url 'https://repo1.maven.org/maven2' }
-        maven { url 'https://jitpack.io' }
+        maven { 
+            url 'https://repo1.maven.org/maven2'
+            allowInsecureProtocol = false
+        }
+        maven { 
+            url 'https://jitpack.io'
+            allowInsecureProtocol = false
+        }
+        // Add JetBrains repository for Kotlin dependencies
+        maven { 
+            url 'https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven'
+            allowInsecureProtocol = false
+        }
+        maven { 
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+            allowInsecureProtocol = false
+        }
         gradlePluginPortal()
+    }
+    
+    resolutionStrategy {
+        eachPlugin {
+            // Force Kotlin version resolution to use compatible versions
+            if (requested.id.id == 'dev.flutter.flutter-plugin-loader') {
+                useVersion('1.0.0')
+            }
+        }
     }
 }
 
@@ -36,6 +60,7 @@ plugins {
     id "com.google.gms.google-services" version "4.4.2" apply false
 
     // ✅ Upgrade Kotlin to 2.2.0 (matches latest Flutter-compatible stdlib)
+    // Note: Flutter plugin loader may require Kotlin 1.9.x internally, but we use 2.2.0 for app code
     id "org.jetbrains.kotlin.android" version "2.2.0" apply false
 }
 
