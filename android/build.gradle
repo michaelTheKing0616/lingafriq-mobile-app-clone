@@ -154,6 +154,24 @@ subprojects {
                     namespace project.group
                 }
                 
+                // ✅ Enforce minSdk 21 for all subprojects (required by NDK 26.1.10909125)
+                // NDK 26.1.10909125 requires minSdk 21+, but some plugins may have lower minSdk
+                // The android.ndk.suppressMinSdkVersionError=21 in gradle.properties suppresses the error
+                // We also set the experimental property here as a backup
+                defaultConfig {
+                    // Try to ensure minSdk is at least 21, but rely on suppress property if not possible
+                    try {
+                        // Access minSdkVersion property if it exists
+                        def minSdk = project.android.defaultConfig.minSdkVersion
+                        if (minSdk != null && minSdk instanceof Integer && minSdk < 21) {
+                            project.android.defaultConfig.minSdkVersion 21
+                            println("✅ Updated minSdkVersion to 21 for ${project.name}")
+                        }
+                    } catch (Exception e) {
+                        // Suppress property in gradle.properties will handle this
+                    }
+                }
+                
                 // ✅ Enforce Java 17 for all subprojects to match Kotlin JVM target
                 // This fixes JVM target compatibility issues between Java and Kotlin
                 compileOptions {
@@ -173,6 +191,10 @@ subprojects {
                 } else {
                     println("⚠️ No NDK available for ${project.name} - plugins requiring NDK may fail")
                 }
+                
+                // ✅ Suppress NDK minSdk version error (already set in gradle.properties, but ensure it's applied)
+                // This allows plugins with lower minSdk to work with NDK 26.1.10909125
+                experimentalProperties["android.ndk.suppressMinSdkVersionError"] = "21"
             }
         }
         
