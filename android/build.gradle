@@ -122,6 +122,7 @@ rootProject.buildDir = '../build'
 // Exclude deprecated plugins before they're evaluated
 gradle.beforeProject { project ->
     if (project.name == 'flutter_webrtc' || project.name == 'workmanager') {
+        // Disable all tasks for excluded plugins
         project.tasks.configureEach { task ->
             task.enabled = false
         }
@@ -131,6 +132,42 @@ gradle.beforeProject { project ->
 
 subprojects {
     afterEvaluate { project ->
+        // ✅ FIRST: Set compileSdk 36 for ALL projects (including excluded ones)
+        // This must happen before plugins try to access SDK platforms
+        if (project.hasProperty('android')) {
+            try {
+                project.android {
+                    def currentCompileSdk = compileSdk
+                    if (currentCompileSdk == null) {
+                        compileSdk = 36
+                        println("✅ Set compileSdk to 36 for ${project.name} (was null)")
+                    } else if (currentCompileSdk instanceof Integer && currentCompileSdk < 36) {
+                        compileSdk = 36
+                        println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
+                    } else if (currentCompileSdk instanceof String) {
+                        try {
+                            def sdkInt = currentCompileSdk.toInteger()
+                            if (sdkInt < 36) {
+                                compileSdk = 36
+                                println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
+                            }
+                        } catch (Exception e) {
+                            compileSdk = 36
+                            println("✅ Set compileSdk to 36 for ${project.name} (was non-numeric: ${currentCompileSdk})")
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                // If we can't check or set compileSdk, try to set it directly
+                try {
+                    project.android.compileSdk = 36
+                    println("✅ Set compileSdk to 36 for ${project.name} (fallback)")
+                } catch (Exception e2) {
+                    println("⚠️ Could not set compileSdk for ${project.name}: ${e2.message}")
+                }
+            }
+        }
+        
         // Exclude flutter_webrtc plugin entirely (uses deprecated embedding API)
         if (project.name == 'flutter_webrtc') {
             project.tasks.all { task ->
@@ -154,39 +191,6 @@ subprojects {
                     namespace project.group
                 }
                 
-                // ✅ Enforce compileSdk 36 for all subprojects (same as app)
-                // This prevents plugins from requiring older SDK platforms (like Platform 30)
-                // and ensures all plugins use the same SDK version
-                try {
-                    def currentCompileSdk = compileSdk
-                    if (currentCompileSdk == null) {
-                        compileSdk = 36
-                        println("✅ Set compileSdk to 36 for ${project.name} (was null)")
-                    } else if (currentCompileSdk instanceof Integer && currentCompileSdk < 36) {
-                        compileSdk = 36
-                        println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
-                    } else if (currentCompileSdk instanceof String) {
-                        try {
-                            def sdkInt = currentCompileSdk.toInteger()
-                            if (sdkInt < 36) {
-                                compileSdk = 36
-                                println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
-                            }
-                        } catch (Exception e) {
-                            // If it's not a number, try to set it anyway
-                            compileSdk = 36
-                            println("✅ Set compileSdk to 36 for ${project.name} (was non-numeric: ${currentCompileSdk})")
-                        }
-                    }
-                } catch (Exception e) {
-                    // If we can't check or set compileSdk, try to set it directly
-                    try {
-                        compileSdk = 36
-                        println("✅ Set compileSdk to 36 for ${project.name} (fallback)")
-                    } catch (Exception e2) {
-                        println("⚠️ Could not set compileSdk for ${project.name}: ${e2.message}")
-                    }
-                }
                 
                 // ✅ Enforce minSdk 21 for all subprojects (required by NDK 26.1.10909125)
                 // NDK 26.1.10909125 requires minSdk 21+, but some plugins may have lower minSdk
