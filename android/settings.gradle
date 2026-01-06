@@ -14,33 +14,17 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
-        // Try Google first (often has better availability)
-        google()
-        mavenCentral()
-        // Add alternative repositories for better reliability
-        maven { 
-            url 'https://repo1.maven.org/maven2'
-            allowInsecureProtocol = false
-        }
-        maven { 
-            url 'https://jitpack.io'
-            allowInsecureProtocol = false
-        }
-        // Add JetBrains repository for Kotlin dependencies
-        maven { 
-            url 'https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven'
-            allowInsecureProtocol = false
-        }
-        maven { 
-            url 'https://oss.sonatype.org/content/repositories/snapshots'
-            allowInsecureProtocol = false
-        }
+        // Official Gradle plugin portal - must be first for plugin resolution
         gradlePluginPortal()
+        // Google Maven repository - reliable and fast
+        google()
+        // Maven Central - official repository
+        mavenCentral()
     }
     
     resolutionStrategy {
         eachPlugin {
-            // Force Kotlin version resolution to use compatible versions
+            // Force Flutter plugin loader version
             if (requested.id.id == 'dev.flutter.flutter-plugin-loader') {
                 useVersion('1.0.0')
             }
