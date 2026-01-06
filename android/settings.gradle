@@ -14,11 +14,11 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
-        // Official Gradle plugin portal - must be first for plugin resolution
-        gradlePluginPortal()
-        // Google Maven repository - reliable and fast
+        // Google Maven repository first - mirrors Maven Central and more reliable
         google()
-        // Maven Central - official repository
+        // Official Gradle plugin portal for plugins
+        gradlePluginPortal()
+        // Maven Central - official repository (fallback)
         mavenCentral()
     }
     
