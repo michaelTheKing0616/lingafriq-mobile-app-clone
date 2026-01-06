@@ -1,5 +1,6 @@
 // Gradle init script to configure repositories for all builds including included builds
 // This ensures the :gradle project (Flutter plugin loader) can access dependencies
+// This script runs before any build, including included builds from Flutter tools
 
 settingsEvaluated { settings ->
     // Configure repositories for all projects including included builds
@@ -8,12 +9,31 @@ settingsEvaluated { settings ->
             // Google Maven repository first - mirrors Maven Central and more reliable
             // This helps avoid 403 errors from Maven Central
             google()
-            // Maven Central - official repository (fallback)
-            mavenCentral()
-            // JitPack for GitHub-based dependencies
-            maven { url 'https://jitpack.io' }
+            
             // Gradle plugin portal
             gradlePluginPortal()
+            
+            // Maven Central - use explicit URL to avoid 403 errors from old URLs
+            // Use repo1.maven.org instead of repo.maven.apache.org
+            maven {
+                name = "Maven Central"
+                url = uri("https://repo1.maven.org/maven2")
+            }
+            
+            // Fallback: standard mavenCentral() (uses repo1.maven.org internally)
+            mavenCentral()
+            
+            // JitPack for GitHub-based dependencies
+            maven { 
+                name = "JitPack"
+                url = uri("https://jitpack.io")
+            }
+            
+            // Sonatype snapshots (fallback)
+            maven {
+                name = "Sonatype Snapshots"
+                url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+            }
         }
     }
 }
@@ -24,8 +44,16 @@ projectsLoaded { gradle ->
         project.buildscript {
             repositories {
                 google()
-                mavenCentral()
+                
                 gradlePluginPortal()
+                
+                // Maven Central - use explicit URL to avoid 403 errors
+                maven {
+                    name = "Maven Central"
+                    url = uri("https://repo1.maven.org/maven2")
+                }
+                
+                mavenCentral()
             }
         }
     }
