@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
+import 'rive_asset_loader.dart';
 
 /// Rive character guide controller
 /// Controls the animated guide character that appears in all games

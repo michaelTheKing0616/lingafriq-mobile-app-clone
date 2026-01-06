@@ -74,6 +74,29 @@ class OfflineService {
     }
   }
 
+  /// Get cache statistics
+  Future<Map<String, dynamic>> getCacheStats() async {
+    final prefs = await SharedPreferences.getInstance();
+    final keys = prefs.getKeys();
+    return {
+      'totalKeys': keys.length,
+      'cacheSize': 'N/A', // Would need to calculate actual size
+      'lastSync': prefs.getString('last_sync') ?? 'Never',
+    };
+  }
+
+  /// Clear cache
+  Future<void> clearCache(String? cacheType) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (cacheType == null) {
+      // Clear all cache
+      await prefs.clear();
+    } else {
+      // Clear specific cache type (implementation depends on cache structure)
+      debugPrint('Clearing cache type: $cacheType');
+    }
+  }
+
   /// Dispose resources
   void dispose() {
     _connectivitySubscription?.cancel();

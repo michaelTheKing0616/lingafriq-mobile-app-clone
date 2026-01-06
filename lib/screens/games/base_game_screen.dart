@@ -138,7 +138,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
     // If incorrect, check hearts system
     if (result == GameResult.incorrect) {
-      final canContinue = await GamificationIntegration.of(ref).onMistake();
+      final canContinue = await GamificationIntegrationHelper.of(ref).onMistake();
       if (!canContinue && mounted) {
         _showOutOfHeartsDialog();
         return false;
@@ -183,7 +183,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           ),
           FilledButton.icon(
             onPressed: () async {
-              final success = await GamificationIntegration.of(ref).refillHearts();
+              final success = await GamificationIntegrationHelper.of(ref).refillHearts();
               if (success && mounted) {
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -210,7 +210,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       final wordsLearned = endedSession.correctCount;
 
       // Award gamification
-      await GamificationIntegration.of(ref).onGameComplete(
+      await GamificationIntegrationHelper.of(ref).onGameComplete(
         xpEarned: xpEarned,
         wordsLearned: wordsLearned,
         accuracy: endedSession.accuracy,

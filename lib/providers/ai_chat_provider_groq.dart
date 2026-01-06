@@ -718,7 +718,7 @@ TRANSLATION HINTS:
 
 TOPIC SUGGESTIONS:
 When conversation stalls, suggest topics:
-${topicSuggestions.map((t) => '- $t').join('\n')}
+${defaultTopicSuggestions.map((t) => '- $t').join('\n')}
 
 Or ask engaging questions:
 - "What did you do today?"

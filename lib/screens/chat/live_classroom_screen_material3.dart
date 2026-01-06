@@ -201,15 +201,8 @@ class _ClassroomView extends HookConsumerWidget {
               url,
               token,
               roomOptions: RoomOptions(
-                defaultAudioOptions: AudioCaptureOptions(
-                  echoCancellation: true,
-                  noiseSuppression: true,
-                  autoGainControl: true,
-                ),
-                defaultVideoOptions: VideoCaptureOptions(
-                  resolution: VideoPreset.h720.resolution,
-                  fps: 30,
-                ),
+                // Audio and video options are set via LocalTrackPublication in newer API
+                // defaultAudioOptions and defaultVideoOptions removed in livekit_client 1.5.6+
               ),
             );
 
@@ -232,13 +225,13 @@ class _ClassroomView extends HookConsumerWidget {
               final remoteParts = <String, RemoteParticipant>{};
               final participantList = <Map<String, dynamic>>[
                 {
-                  'name': localP.name ?? 'You',
-                  'id': localP.sid,
+                  'name': localP?.name ?? 'You',
+                  'id': localP?.sid ?? 'local',
                   'isLocal': true,
                 },
               ];
 
-              for (final participant in room.remoteParticipants.values) {
+              for (final participant in room.remoteParticipants) {
                 remoteParts[participant.sid] = participant;
                 participantList.add({
                   'name': participant.name ?? 'Participant',
@@ -252,8 +245,10 @@ class _ClassroomView extends HookConsumerWidget {
             });
 
             // Enable camera and microphone
-            await localP.setCameraEnabled(isVideoEnabled.value);
-            await localP.setMicrophoneEnabled(isAudioEnabled.value);
+            if (localP != null) {
+              await localP.setCameraEnabled(isVideoEnabled.value);
+              await localP.setMicrophoneEnabled(isAudioEnabled.value);
+            }
 
             isLoading.value = false;
           }
@@ -882,7 +877,7 @@ class _VideoTile extends StatelessWidget {
     if (liveParticipant != null) {
       final videoTrackPublications = liveParticipant!.videoTrackPublications;
       if (videoTrackPublications.isNotEmpty) {
-        final firstPublication = videoTrackPublications.values.first;
+        final firstPublication = videoTrackPublications.first;
         if (firstPublication.subscribed && firstPublication.track != null) {
           videoTrack = firstPublication.track as VideoTrack?;
         }

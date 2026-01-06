@@ -159,7 +159,6 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                   ),
                 ],
               ),
-              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
             ),
 
             // Category Filters

@@ -11,6 +11,7 @@ import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary

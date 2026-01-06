@@ -58,13 +58,14 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
       final aiChatProvider = ref.read(groqChatProvider.notifier);
       final grammarCheck = await aiChatProvider.grammarCheck(widget.language, sentence);
       
-      if (!grammarCheck.passed) {
+      if (grammarCheck.score < 0.8 || grammarCheck.errors.isNotEmpty) {
         result = grammarCheck.errors.isEmpty 
             ? GameResult.partial 
             : GameResult.incorrect;
         feedback['grammar_errors'] = grammarCheck.errors;
         feedback['grammar_score'] = grammarCheck.score;
-        feedback['suggestions'] = grammarCheck.suggestions;
+        feedback['corrected'] = grammarCheck.corrected;
+        feedback['suggestions'] = grammarCheck.errors.map((e) => e['suggestion'] ?? e['message'] ?? '').where((s) => s.isNotEmpty).toList();
       } else {
         feedback['grammar_score'] = grammarCheck.score;
       }

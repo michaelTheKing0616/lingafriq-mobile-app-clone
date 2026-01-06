@@ -279,8 +279,7 @@ class TutorAssessModeScreen extends HookConsumerWidget {
           ],
         ], // closes Column children
       ), // closes Column
-    ), // closes Container
-    ); // closes LoadingOverlay
+    ); // closes Container
   }
 }
 

@@ -8,6 +8,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/data/roleplay_dataset.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/ai_chat/ai_chat_screen_with_tracking.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -151,12 +152,13 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
         Navigator.push(
           context,
           SmoothPageRoute(
-            child: AIChatScreen(
-              language: language,
-              languageName: languageName,
-              mode: 'roleplay',
-              modeName: 'Roleplay',
-            ),
+            child: AIChatScreenWithTracking(
+                language: language,
+                languageName: languageName,
+                mode: 'roleplay',
+                modeName: 'Roleplay',
+                initialScenario: scenario,
+              ),
           ),
         );
       }

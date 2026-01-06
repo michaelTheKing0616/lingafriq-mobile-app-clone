@@ -74,7 +74,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
-        gradient: PanAfricanGradients.primaryGreen,
+        gradient: PanAfricanGradients.forest,
         borderRadius: PanAfricanRadius.roundBR,
       ),
       child: Row(
@@ -163,7 +163,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
         borderRadius: PanAfricanRadius.lgBR,
-        boxShadow: PanAfricanShadows.medium,
+        boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -242,7 +242,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
           decoration: BoxDecoration(
             color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
             borderRadius: PanAfricanRadius.xlBR,
-            boxShadow: PanAfricanShadows.large,
+            boxShadow: PanAfricanShadows.lg,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

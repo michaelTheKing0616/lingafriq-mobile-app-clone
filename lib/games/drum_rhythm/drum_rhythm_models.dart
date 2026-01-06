@@ -1,3 +1,4 @@
+import 'dart:math';
 /// Drum Rhythm game models
 class DrumRhythmContent {
   final String pattern;
@@ -29,7 +30,7 @@ class DrumRhythmContent {
     final options = [correctWord, ...distractors];
     // Shuffle for UI variety - this is just presentation, not correctness logic
     final random = DateTime.now().millisecondsSinceEpoch;
-    options.shuffle((random % 1000000).toInt());
+    options.shuffle(Random((random % 1000000).toInt()));
 
     return DrumRhythmContent(
       pattern: pattern,
@@ -56,4 +57,5 @@ class DrumRhythmInput {
 
   DrumRhythmInput({required this.selectedWord});
 }
+
 

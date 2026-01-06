@@ -89,7 +89,7 @@ class GameSession {
       language: language,
       level: level,
       startTime: startTime,
-      turns: turns.map((t) => t.toGameTurn()).toList(),
+      turns: turns.map((t) => t.toGameTurn(cardId: '')).toList(), // cardId should be provided by caller
       metadata: metadata,
     );
   }

@@ -119,7 +119,7 @@ class _BadgeCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                _getBadgeIcon(badge.category),
+                _getBadgeIcon(badge.category.name),
                 size: 32.sp,
                 color: isUnlocked
                     ? AppColors.accentGold
