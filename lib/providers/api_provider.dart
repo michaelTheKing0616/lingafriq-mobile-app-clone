@@ -1334,6 +1334,136 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Create user-generated lesson
+  Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}lessons',
+        data: data,
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data};
+      }
+      throw Exception('Failed to create lesson: ${res.statusCode}');
+    } catch (e) {
+      debugPrint('Error creating UGC lesson: $e');
+      rethrow;
+    }
+  }
+
+  /// Create user-generated quiz
+  Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}quizzes',
+        data: data,
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data};
+      }
+      throw Exception('Failed to create quiz: ${res.statusCode}');
+    } catch (e) {
+      debugPrint('Error creating UGC quiz: $e');
+      rethrow;
+    }
+  }
+
+  /// Create user-generated story
+  Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}stories',
+        data: data,
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data};
+      }
+      throw Exception('Failed to create story: ${res.statusCode}');
+    } catch (e) {
+      debugPrint('Error creating UGC story: $e');
+      rethrow;
+    }
+  }
+
+  /// Share user-generated content
+  Future<bool> shareUgcContent({
+    required String contentId,
+    required String contentType,
+    List<String>? userIds,
+  }) async {
+    try {
+      final data = {
+        'content_id': contentId,
+        'content_type': contentType,
+        if (userIds != null && userIds.isNotEmpty) 'user_ids': userIds,
+      };
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}share',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error sharing UGC content: $e');
+      return false;
+    }
+  }
+
+  /// Get user-generated content
+  Future<List<Map<String, dynamic>>> getUserContent({
+    String? language,
+    String? contentType,
+  }) async {
+    try {
+      final queryParams = <String, String>{};
+      if (language != null) queryParams['language'] = language;
+      if (contentType != null) queryParams['type'] = contentType;
+      
+      final queryString = queryParams.isEmpty 
+          ? '' 
+          : '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}';
+      
+      final res = await ref.read(client).get(
+        '${Api.baseurl}${Api.userContent}content$queryString',
+      );
+      if (res.statusCode == 200) {
+        if (res.data is List) {
+          return List<Map<String, dynamic>>.from(res.data);
+        } else if (res.data is Map && res.data['results'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['results']);
+        } else if (res.data is Map && res.data['content'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['content']);
+        }
+      }
+      return [];
+    } catch (e) {
+      debugPrint('Error getting user content: $e');
+      return [];
+    }
+  }
+
+  /// Rate user-generated content
+  Future<bool> rateUgcContent({
+    required String contentId,
+    required int rating,
+    String? review,
+  }) async {
+    try {
+      final data = {
+        'content_id': contentId,
+        'rating': rating,
+        if (review != null && review.isNotEmpty) 'review': review,
+      };
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}rate',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      debugPrint('Error rating UGC content: $e');
+      return false;
+    }
+  }
+
   /// Sync AI chat history to backend
   Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
     try {

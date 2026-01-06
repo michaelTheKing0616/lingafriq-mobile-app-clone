@@ -60,7 +60,7 @@ class OptimizedListView extends StatelessWidget {
   }
 
   /// Factory constructor for builder pattern (backward compatibility)
-  factory OptimizedListView.builder({
+  static Widget builder({
     Key? key,
     required int itemCount,
     required IndexedWidgetBuilder itemBuilder,

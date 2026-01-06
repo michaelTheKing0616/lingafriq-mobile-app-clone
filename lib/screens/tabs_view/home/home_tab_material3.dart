@@ -22,7 +22,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
-import 'package:lingafriq/screens/tabs_view/home/search_languages_page.dart';
+import 'package:lingafriq/screens/language/search_languages_page.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import '../../../detail_types/introduction_screen.dart';
 
@@ -95,7 +95,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SearchLanguagesPage(),
+                          builder: (context) => const SearchLanguagesPage(),
                         ),
                       );
                     },

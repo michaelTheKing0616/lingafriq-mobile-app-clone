@@ -246,11 +246,14 @@ class PronunciationAnalysisService {
   }) async {
     final client = ApiClientWithRecovery(_dio);
 
-    final formData = FormData.fromBytes(audioData, filename: 'pronunciation.wav');
-    formData.fields.addAll([
-      MapEntry('lesson_item_id', lessonItem.id),
-      MapEntry('text', lessonItem.text),
-      MapEntry('language_code', lessonItem.languageCode),
+    final formData = FormData.fromMap({
+      'audio': MultipartFile.fromBytes(
+        audioData,
+        filename: 'pronunciation.wav',
+      ),
+      'lesson_item_id': lessonItem.id,
+      'text': lessonItem.text,
+      'language_code': lessonItem.languageCode,
       MapEntry('ipa', lessonItem.ipa ?? ''),
       MapEntry('enable_phoneme_analysis', enablePhonemeAnalysis.toString()),
     ]);

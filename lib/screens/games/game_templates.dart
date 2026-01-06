@@ -1322,7 +1322,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
       final tempDir = await getTemporaryDirectory();
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       _recordingPath = '${tempDir.path}/karaoke_$timestamp.m4a';
-      await _recorder.start(const RecordConfig(), path: _recordingPath);
+      await _recorder.start(const RecordConfig(), path: _recordingPath!);
     }
   }
 

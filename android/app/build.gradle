@@ -29,7 +29,7 @@ android {
 
     // Fix for AndroidX + SDK36 plugin requirements
     compileSdk = 36
-    ndkVersion "26.1.10909125"
+    ndkVersion "27.0.12077973"
 
     defaultConfig {
         applicationId "com.cracklog.lingafriq"
@@ -179,5 +179,23 @@ project.tasks.whenTaskAdded { task ->
         task.path.contains(':workmanager')) {
         task.enabled = false
         task.actions.clear()
+    }
+}
+
+// Workaround for flutter_vibrate AndroidManifest.xml issue
+// Remove package attribute from plugin's manifest during merge
+android.applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        def processManifestTask = project.tasks.findByName("process${variant.name.capitalize()}Manifest")
+        if (processManifestTask != null) {
+            processManifestTask.doFirst {
+                def manifestFile = file("${buildDir}/intermediates/merged_manifests/${variant.name}/AndroidManifest.xml")
+                if (manifestFile.exists()) {
+                    def manifestContent = manifestFile.text
+                    manifestContent = manifestContent.replaceAll('package="flutter.plugins.vibrate"', '')
+                    manifestFile.write(manifestContent)
+                }
+            }
+        }
     }
 }

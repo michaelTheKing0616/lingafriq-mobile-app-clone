@@ -405,7 +405,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     WidgetRef ref,
   ) async {
     final localizationService = DynamicLocalizationService();
-    await localizationService.initialize();
+    await DynamicLocalizationService.initialize();
     
     final languages = AppLanguage.values.map((lang) => lang.name).toList();
 
@@ -471,9 +471,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     available.value = isAvailable;
     
     if (isAvailable) {
-      final biometrics = await biometricAuth.getAvailableBiometrics();
+      final biometrics = await BiometricAuth.getAvailableBiometrics();
       if (biometrics.isNotEmpty) {
-        type.value = biometricAuth.getBiometricTypeName(biometrics.first);
+        type.value = BiometricAuth.getBiometricTypeName(biometrics.first);
       }
       
       final prefs = await SharedPreferences.getInstance();

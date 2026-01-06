@@ -11,6 +11,7 @@ import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math';
+import '../../games/drum_rhythm/drum_rhythm_screen.dart';
 
 // Export separate game implementations
 export 'cultural/clan_story_game.dart';

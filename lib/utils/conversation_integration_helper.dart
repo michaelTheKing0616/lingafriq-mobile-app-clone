@@ -13,23 +13,27 @@ class ConversationIntegrationHelper {
 
   /// Get enhanced conversation context with intelligent management
   static Future<List<Map<String, dynamic>>> getEnhancedContext({
+    required BuildContext context,
     required String conversationId,
     required List<Map<String, dynamic>> currentMessages,
     required String systemPrompt,
     int? maxTokens,
   }) async {
-    return await safeAsync(
+    final result = await safeAsync<List<Map<String, dynamic>>>(
+      context: context,
       operation: () => _contextManager.getConversationContext(
         conversationId: conversationId,
         currentMessages: currentMessages,
         systemPrompt: systemPrompt,
         maxTokens: maxTokens,
       ),
-      defaultValue: [
-        if (systemPrompt.isNotEmpty) {'role': 'system', 'content': systemPrompt},
-        ...currentMessages,
-      ],
+      showError: false,
     );
+    
+    return result ?? [
+      if (systemPrompt.isNotEmpty) {'role': 'system', 'content': systemPrompt},
+      ...currentMessages,
+    ];
   }
 
   /// Get enhanced prompt with conversation practice features
@@ -94,21 +98,29 @@ class ConversationIntegrationHelper {
 
   /// Save conversation context
   static Future<void> saveContext({
+    required BuildContext context,
     required String conversationId,
     required List<Map<String, dynamic>> messages,
   }) async {
     await safeAsync(
+      context: context,
       operation: () => _contextManager.saveConversationContext(
         conversationId: conversationId,
         messages: messages,
       ),
+      showError: false,
     );
   }
 
   /// Clear conversation context
-  static Future<void> clearContext(String conversationId) async {
+  static Future<void> clearContext({
+    required BuildContext context,
+    required String conversationId,
+  }) async {
     await safeAsync(
+      context: context,
       operation: () => _contextManager.clearConversationContext(conversationId),
+      showError: false,
     );
   }
 

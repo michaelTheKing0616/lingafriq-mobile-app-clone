@@ -293,9 +293,12 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 if (showLessonPreview.value && lessonResult.value != null)
                   _buildLessonPreview(
                     context,
+                    ref,
                     lessonResult.value!,
                     showLessonPreview.value,
                     (show) => showLessonPreview.value = show,
+                    languageController,
+                    transcriptionResult,
                     isDark,
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
               ],
@@ -449,9 +452,12 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
   Widget _buildLessonPreview(
     BuildContext context,
+    WidgetRef ref,
     Map<String, dynamic> lesson,
     bool isExpanded,
     Function(bool) onToggle,
+    TextEditingController languageController,
+    ValueNotifier<Map<String, dynamic>?> transcriptionResult,
     bool isDark,
   ) {
     return Card(

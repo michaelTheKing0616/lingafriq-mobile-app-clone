@@ -106,7 +106,8 @@ class TutorStoryModeScreen extends HookConsumerWidget {
                     : _buildStoryInput(
                         context,
                         themeController,
-                        languageController,
+                        selectedLanguage,
+                        availableLanguages,
                         userLevel.value,
                         (level) => userLevel.value = level,
                         isLoading.value,
@@ -211,8 +212,8 @@ class TutorStoryModeScreen extends HookConsumerWidget {
           Row(
             children: [
               Expanded(
-                child: TextField(
-                  value: languageController.text.isNotEmpty ? languageController.text : 'yoruba',
+                child: DropdownButtonFormField<AppLanguage>(
+                  value: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(
@@ -223,15 +224,19 @@ class TutorStoryModeScreen extends HookConsumerWidget {
                         ? PanAfricanColors.surfaceContainerDark
                         : PanAfricanColors.surfaceContainerLight,
                   ),
-                  items: [
-                    'yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'xhosa', 
-                    'amharic', 'twi', 'afrikaans', 'pidgin', 'wolof', 'somali', 'english'
-                  ].map((lang) => DropdownMenuItem<String>(
-                    value: lang,
-                    child: Text(lang.substring(0, 1).toUpperCase() + lang.substring(1)),
-                  )).toList(),
+                  items: availableLanguages.map((lang) {
+                    return DropdownMenuItem<AppLanguage>(
+                      value: lang,
+                      child: Text(
+                        lang.displayName,
+                        style: PanAfricanTypography.bodyLarge(context),
+                      ),
+                    );
+                  }).toList(),
                   onChanged: (value) {
-                    if (value != null) languageController.text = value;
+                    if (value != null) {
+                      selectedLanguage.value = value;
+                    }
                   },
                 ),
               ),
@@ -362,7 +367,7 @@ class _VocabularyDrawer extends StatelessWidget {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(PanAfricanRadius.lg),
         ),
@@ -462,7 +467,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
