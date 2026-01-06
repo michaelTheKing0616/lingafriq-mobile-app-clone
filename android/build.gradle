@@ -154,6 +154,40 @@ subprojects {
                     namespace project.group
                 }
                 
+                // ✅ Enforce compileSdk 36 for all subprojects (same as app)
+                // This prevents plugins from requiring older SDK platforms (like Platform 30)
+                // and ensures all plugins use the same SDK version
+                try {
+                    def currentCompileSdk = compileSdk
+                    if (currentCompileSdk == null) {
+                        compileSdk = 36
+                        println("✅ Set compileSdk to 36 for ${project.name} (was null)")
+                    } else if (currentCompileSdk instanceof Integer && currentCompileSdk < 36) {
+                        compileSdk = 36
+                        println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
+                    } else if (currentCompileSdk instanceof String) {
+                        try {
+                            def sdkInt = currentCompileSdk.toInteger()
+                            if (sdkInt < 36) {
+                                compileSdk = 36
+                                println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
+                            }
+                        } catch (Exception e) {
+                            // If it's not a number, try to set it anyway
+                            compileSdk = 36
+                            println("✅ Set compileSdk to 36 for ${project.name} (was non-numeric: ${currentCompileSdk})")
+                        }
+                    }
+                } catch (Exception e) {
+                    // If we can't check or set compileSdk, try to set it directly
+                    try {
+                        compileSdk = 36
+                        println("✅ Set compileSdk to 36 for ${project.name} (fallback)")
+                    } catch (Exception e2) {
+                        println("⚠️ Could not set compileSdk for ${project.name}: ${e2.message}")
+                    }
+                }
+                
                 // ✅ Enforce minSdk 21 for all subprojects (required by NDK 26.1.10909125)
                 // NDK 26.1.10909125 requires minSdk 21+, but some plugins may have lower minSdk
                 // The android.ndk.suppressMinSdkVersionError=21 in gradle.properties suppresses the error
