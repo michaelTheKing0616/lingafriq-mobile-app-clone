@@ -173,7 +173,8 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           ],
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildTranslationTypeToggle(
