@@ -254,7 +254,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
           ? allWords.where((w) => w.category == category).toList()
           : allWords;
     } catch (e) {
-      StructuredLogger.error('Error loading vocabulary words', error: e, context: {'language': language, 'category': category});
+      StructuredLogger().error('Error loading vocabulary words', error: e, context: {'language': language, 'category': category});
     } finally {
       isLoading.value = false;
     }
@@ -269,7 +269,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
       await service.recordReview(word.word, word.language, isCorrect);
       HapticFeedback.mediumImpact();
     } catch (e) {
-      StructuredLogger.error('Error recording vocabulary review', error: e, context: {'word': word.word, 'language': word.language, 'isCorrect': isCorrect});
+      StructuredLogger().error('Error recording vocabulary review', error: e, context: {'word': word.word, 'language': word.language, 'isCorrect': isCorrect});
     }
   }
 
