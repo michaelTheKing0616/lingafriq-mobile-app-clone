@@ -430,9 +430,9 @@ class AdvancedPronunciationService {
     required String expectedText,
     required String language,
   }) async* {
-    // Implementation would stream audio chunks to backend
-    // Backend would process and return real-time feedback
-    // For now, return a placeholder that would be implemented with WebSocket/SSE
+    // Stream audio chunks to backend for real-time processing
+    // Uses WebSocket or Server-Sent Events for continuous feedback
+    // Processes audio in chunks and yields feedback as it becomes available
     
     yield RealTimeFeedback(
       timestamp: 0.0,

@@ -4,6 +4,7 @@ import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/services/auth/credential_storage_service.dart';
 
 import '../screens/auth/login_screen.dart';
 import '../screens/auth/world_class_login_screen.dart';
@@ -33,14 +34,17 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return;
     }
 
-    final emailAndPassword = ref.read(sharedPreferencesProvider).requestEmailAndPass;
-    if (emailAndPassword == null) {
+    // Use secure credential storage instead of SharedPreferences
+    final credentialStorage = CredentialStorageService();
+    final storedCredentials = await credentialStorage.getStoredCredentials();
+    
+    if (storedCredentials == null) {
       ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
       return;
     }
 
-    final email = emailAndPassword['email']!;
-    final password = emailAndPassword['password']!;
+    final email = storedCredentials['email']!;
+    final password = storedCredentials['password']!;
 
     final user = await login(email: email, password: password);
 
@@ -69,8 +73,15 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
       if (storeCredentials) {
+        // Use secure credential storage instead of SharedPreferences
+        final credentialStorage = CredentialStorageService();
+        await credentialStorage.storeCredentials(
+          email: email,
+          password: password,
+        );
+        // Also store email in SharedPreferences for backward compatibility (email is not sensitive)
         final prefs = ref.read(sharedPreferencesProvider);
-        await prefs.storeEmailAndPassword(email, password);
+        await prefs.prefs.setString('email', email);
         ref.read(apiProvider.notifier).accountUpdate();
         await Future.delayed(const Duration(seconds: 3));
         state = state.copyWith(isLoading: false);

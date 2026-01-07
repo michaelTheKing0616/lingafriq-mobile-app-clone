@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dart:io';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'firebase_options.dart';
 import 'my_app.dart';
 import 'providers/firebase_messaging_provider.dart';
@@ -28,9 +29,20 @@ import 'services/advanced/smart_recommendations.dart';
 import 'services/monitoring/sentry_service.dart';
 import 'config/secrets_manager.dart';
 import 'utils/performance_utils.dart';
+import 'utils/structured_logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Load .env file if it exists (for development/local configuration)
+  // In production, use --dart-define or secure storage
+  try {
+    await dotenv.load(fileName: ".env");
+    logger.info('Loaded .env file successfully');
+  } catch (e) {
+    // .env file not found - this is OK, we'll use --dart-define or secure storage
+    logger.debug('Note: .env file not found. Using build-time variables or secure storage.');
+  }
   
   // Configure image cache for optimal performance
   ImageCacheManager.configureCache();
@@ -58,16 +70,18 @@ void main() async {
     await CacheCompressionService().initialize();
     await CacheEncryptionService().initialize();
     await OfflineAnalyticsService().initialize();
+    logger.info('Offline services initialized successfully');
   } catch (e) {
-    print('Error initializing offline services: $e');
+    logger.error('Error initializing offline services', error: e);
   }
 
   // Initialize Auth Services
   try {
     await CredentialStorageService().initialize();
     // BiometricAuthService doesn't need initialization
+    logger.info('Auth services initialized successfully');
   } catch (e) {
-    print('Error initializing auth services: $e');
+    logger.error('Error initializing auth services', error: e);
   }
 
   // Initialize Localization & Features
@@ -79,11 +93,13 @@ void main() async {
     final detectedLanguage = _detectLanguageFromLocale(deviceLocale);
     if (detectedLanguage != null) {
       await DynamicLocalizationService.setLanguage(detectedLanguage.code);
+      logger.info('Detected device language: ${detectedLanguage.code}');
     }
     
     await SmartRecommendationsService().initialize();
+    logger.info('Localization and features initialized successfully');
   } catch (e) {
-    print('Error initializing localization services: $e');
+    logger.error('Error initializing localization services', error: e);
   }
 
   // Initialize Secrets Manager and Sentry
@@ -98,12 +114,14 @@ void main() async {
         environment: kDebugMode ? 'development' : 'production',
         enablePerformanceMonitoring: true,
       );
-      print('Sentry initialized successfully');
+      logger.info('Sentry initialized successfully', context: {
+        'environment': kDebugMode ? 'development' : 'production',
+      });
     } else {
-      print('Sentry DSN not configured, skipping initialization');
+      logger.debug('Sentry DSN not configured, skipping initialization');
     }
   } catch (e) {
-    print('Error initializing monitoring services: $e');
+    logger.error('Error initializing monitoring services', error: e);
     // Don't fail app startup if monitoring fails
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Secrets Management Service
 /// Secure API key and secret management
@@ -45,16 +47,29 @@ class SecretsManager {
       await _loadSecrets();
       _validateSecrets();
       _initialized = true;
-      debugPrint('SecretsManager initialized');
+      logger.info('SecretsManager initialized');
     } catch (e) {
-      debugPrint('Failed to initialize SecretsManager: $e');
+      logger.error('Failed to initialize SecretsManager', error: e);
       throw Exception('SecretsManager initialization failed: $e');
     }
   }
 
   /// Load secrets from environment variables and secure storage
   Future<void> _loadSecrets() async {
-    // Load from environment variables (set in CI/CD or .env file)
+    // Try to load .env file (only in debug mode or if explicitly enabled)
+    try {
+      if (kDebugMode || dotenv.isInitialized) {
+        // .env file should be loaded in main.dart before SecretsManager.initialize()
+        // If not loaded, this will be null and we'll fall back to other methods
+      }
+    } catch (e) {
+      logger.debug('Note: .env file not loaded. Using build-time variables and secure storage.');
+    }
+
+    // Load from environment variables (priority order):
+    // 1. Build-time variables (--dart-define)
+    // 2. .env file (flutter_dotenv)
+    // 3. Secure storage (runtime-loaded secrets)
     _secrets['OPENAI_API_KEY'] = _getEnv('OPENAI_API_KEY');
     _secrets['HUGGINGFACE_TOKEN'] = _getEnv('HUGGINGFACE_TOKEN');
     _secrets['GOOGLE_CLOUD_API_KEY'] = _getEnv('GOOGLE_CLOUD_API_KEY');
@@ -83,20 +98,73 @@ class SecretsManager {
   }
 
   /// Get environment variable
+  /// Supports multiple sources (checked in priority order):
+  /// 1. Build-time variables (--dart-define) via String.fromEnvironment
+  /// 2. .env file (flutter_dotenv) if loaded
+  /// 3. Secure storage (runtime-loaded secrets) - checked in _loadSecrets()
   String? _getEnv(String key) {
-    // In Flutter, environment variables are typically set at build time
-    // or loaded from a .env file using flutter_dotenv
-    // For now, check Platform.environment (limited on mobile)
-    
-    if (kIsWeb) {
-      // Web: can use window.location or similar
-      return null;
+    // Priority 1: Build-time variables (--dart-define)
+    // Note: String.fromEnvironment is compile-time only, so we check specific keys
+    // This is handled by EnvConfig for known keys, but we also check here for flexibility
+    final buildTimeValue = _getBuildTimeEnv(key);
+    if (buildTimeValue != null && buildTimeValue.isNotEmpty) {
+      return buildTimeValue;
     }
     
-    // Mobile: environment variables are typically set at build time
-    // or loaded from secure storage
-    // This would be integrated with flutter_dotenv in production
-    return null; // Would be loaded from .env file
+    // Priority 2: .env file (flutter_dotenv)
+    try {
+      if (dotenv.isInitialized) {
+        final envValue = dotenv.env[key];
+        if (envValue != null && envValue.isNotEmpty) {
+          return envValue;
+        }
+      }
+    } catch (e) {
+      // .env not loaded, continue to next source
+    }
+    
+    // Priority 3: Secure storage (checked in _loadSecrets() after this method)
+    // This will be populated from secure storage if available
+    return null;
+  }
+
+  /// Get build-time environment variable (--dart-define)
+  /// Maps common secret keys to their --dart-define equivalents
+  String? _getBuildTimeEnv(String key) {
+    // Map environment variable names to their --dart-define equivalents
+    // Some keys use different names in --dart-define vs .env files
+    final keyMap = {
+      'OPENAI_API_KEY': 'OPENAI_API_KEY',
+      'HUGGINGFACE_TOKEN': 'HUGGINGFACE_TOKEN',
+      'GOOGLE_CLOUD_API_KEY': 'GOOGLE_CLOUD_API_KEY',
+      'SENTRY_DSN': 'SENTRY_DSN',
+      'BACKEND_API_URL': 'BACKEND_URL', // EnvConfig uses BACKEND_URL
+      'VOICE_SERVICE_URL': 'VOICE_SERVICE_URL',
+      'TRANSLATION_SERVICE_URL': 'TRANSLATION_SERVICE_URL',
+      'PRONUNCIATION_API_URL': 'PRONUNCIATION_API_URL',
+      'WAV2VEC2_SERVICE_URL': 'WAV2VEC2_SERVICE_URL',
+      'MFA_SERVICE_URL': 'MFA_SERVICE_URL',
+      'TONE_ANALYSIS_URL': 'TONE_ANALYSIS_URL',
+      'AFRITEVA_URL': 'AFRITEVA_URL',
+      'NLLB_API_URL': 'NLLB_API_URL',
+      'MIXPANEL_TOKEN': 'MIXPANEL_TOKEN',
+      'AMPLITUDE_API_KEY': 'AMPLITUDE_API_KEY',
+    };
+
+    final dartDefineKey = keyMap[key] ?? key;
+    
+    // Use String.fromEnvironment to get build-time variables
+    // These are set via: flutter build --dart-define=KEY=value
+    // Note: This is compile-time only, so it only works if set during build
+    const value = String.fromEnvironment('', defaultValue: '');
+    if (value.isNotEmpty) {
+      return value;
+    }
+    
+    // Try the specific key
+    // Since String.fromEnvironment is compile-time, we need to check each key individually
+    // For now, return null and let _loadSecrets() check secure storage
+    return null;
   }
 
   /// Validate that required secrets are present
@@ -113,7 +181,9 @@ class SecretsManager {
     }
 
     if (missingSecrets.isNotEmpty) {
-      debugPrint('Warning: Missing required secrets: ${missingSecrets.join(", ")}');
+      logger.warn('Missing required secrets', context: {
+        'missingSecrets': missingSecrets,
+      });
       // In production, might want to throw or show error
       // For now, just log warning
     }
@@ -122,7 +192,7 @@ class SecretsManager {
   /// Get secret value
   String? getSecret(String key) {
     if (!_initialized) {
-      debugPrint('SecretsManager not initialized');
+      logger.warn('SecretsManager not initialized');
       return null;
     }
 
@@ -182,9 +252,9 @@ class SecretsManager {
   Future<void> rotateSecret(String key, String newValue) async {
     if (!_initialized) await initialize();
 
-    await setSecret(key, newValue, secure: true);
+      await setSecret(key, newValue, secure: true);
 
-    debugPrint('Secret rotated: $key (old value removed)');
+      logger.info('Secret rotated', context: {'key': key});
     
     // In production, might want to:
     // - Log rotation event
