@@ -1,3 +1,8 @@
+import 'game_engine.dart';
+import 'game_session.dart';
+import 'game_result.dart';
+import 'game_turn_context.dart';
+
 /// Core Game Interface
 /// All games must implement this interface to use the GameKit framework
 abstract class Game<TContent, TInput> {

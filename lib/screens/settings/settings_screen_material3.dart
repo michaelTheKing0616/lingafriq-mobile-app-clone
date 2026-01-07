@@ -548,11 +548,11 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Total Files: ${stats.fileCount}'),
+              Text('Total Files: ${stats['fileCount'] ?? 0}'),
               SizedBox(height: 8.h),
-              Text('Total Size: ${stats.formattedSize}'),
+              Text('Total Size: ${stats['formattedSize'] ?? '0 B'}'),
               SizedBox(height: 8.h),
-              Text('Pending Sync: ${stats.queueSize} operations'),
+              Text('Pending Sync: ${stats['queueSize'] ?? 0} operations'),
             ],
           ),
           actions: [

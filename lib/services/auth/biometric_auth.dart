@@ -64,5 +64,23 @@ class BiometricAuth {
     final prefs = await _auth.isDeviceSupported();
     return prefs;
   }
+
+  /// Get human-readable name for biometric type
+  static String getBiometricTypeName(BiometricType type) {
+    switch (type) {
+      case BiometricType.face:
+        return 'Face ID';
+      case BiometricType.fingerprint:
+        return 'Fingerprint';
+      case BiometricType.strong:
+        return 'Strong Biometric';
+      case BiometricType.weak:
+        return 'Weak Biometric';
+      case BiometricType.iris:
+        return 'Iris';
+      default:
+        return 'Biometric';
+    }
+  }
 }
 

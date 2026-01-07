@@ -337,7 +337,6 @@ class _ArticleCard extends StatelessWidget {
           ],
         ),
       ),
-    ),
     );
   }
 }
