@@ -92,8 +92,10 @@ dependencies:
   flutter_dotenv: ^5.1.0
 
 dependency_overrides:
-  # Fix record_linux compatibility issue
+  # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0
+  # Exclude Linux platform if record_linux still has issues
+  # This will prevent Linux builds but allow Android/iOS to work
 
 
 dev_dependencies:

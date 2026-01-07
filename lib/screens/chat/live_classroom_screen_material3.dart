@@ -882,7 +882,7 @@ class _VideoTile extends StatelessWidget {
       // LiveKit 1.5.6 API: trackPublications is a Map<String, TrackPublication>
       final trackPublications = liveParticipant!.trackPublications.values;
       final videoPublications = trackPublications
-          .where((pub) => pub.kind == TrackType.video && pub.subscribed && pub.track != null)
+          .where((pub) => pub.kind == TrackKind.video && pub.subscribed && pub.track != null)
           .toList();
       
       if (videoPublications.isNotEmpty) {
