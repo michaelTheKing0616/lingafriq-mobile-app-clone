@@ -187,7 +187,7 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
       final p = await service.loadProgress();
       progress.value = p;
     } catch (e) {
-      StructuredLogger.error('Error loading roleplay progress', error: e, context: {'language': language});
+      StructuredLogger().error('Error loading roleplay progress', error: e, context: {'language': language});
     } finally {
       isLoading.value = false;
     }

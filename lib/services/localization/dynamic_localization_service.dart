@@ -80,8 +80,9 @@ class DynamicLocalizationService {
   /// Get text direction for current language  
   static TextDirection getTextDirection() {
     final bool isRightToLeft = isRTL(_currentLanguage.code);
-    // TextDirection is an enum with values rtl and ltr
-    return isRightToLeft ? TextDirection.rtl : TextDirection.ltr;
+    // TextDirection enum - use direct enum value access
+    // TextDirection has two values: rtl (index 0) and ltr (index 1)
+    return isRightToLeft ? TextDirection.values[0] : TextDirection.values[1];
   }
 }
 
