@@ -24,6 +24,9 @@ enum AppLanguage {
   final String code;
   final String name;
   const AppLanguage(this.code, this.name);
+  
+  /// Display name for the language (alias for name)
+  String get displayName => name;
 }
 
 class DynamicLocalizationService {

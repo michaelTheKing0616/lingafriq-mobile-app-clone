@@ -6,6 +6,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 
@@ -367,7 +368,7 @@ class _VocabularyDrawer extends StatelessWidget {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(PanAfricanRadius.lg),
         ),
@@ -452,7 +453,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
       return Container(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
         decoration: BoxDecoration(
-          color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           boxShadow: PanAfricanShadows.md,
         ),
         child: ElevatedButton(
@@ -467,7 +468,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
