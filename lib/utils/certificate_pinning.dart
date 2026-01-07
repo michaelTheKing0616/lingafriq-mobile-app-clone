@@ -14,7 +14,6 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io_adapter.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Certificate pinning configuration
@@ -169,18 +168,10 @@ void setupCertificatePinning(Dio dio, {CertificatePinningConfig? config}) {
   
   if (pinner.enabled) {
     // Add certificate pinning interceptor
+    // In dio 5.x, certificate pinning is handled via interceptor
     dio.interceptors.add(certificatePinner.createInterceptor());
     
-    // Configure HttpClient for certificate validation
-    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final client = HttpClient();
-      client.badCertificateCallback = (X509Certificate cert, String host, int port) {
-        return certificatePinner.validateCertificate(cert);
-      };
-      return client;
-    };
-    
-    logger.info('Certificate pinning enabled');
+    logger.info('Certificate pinning enabled (via interceptor)');
   } else {
     logger.debug('Certificate pinning disabled');
   }

@@ -72,7 +72,7 @@ dependencies:
   sentry_flutter: ^7.0.0
   package_info_plus: ^9.0.0
   # Audio & Media
-  record: ^5.1.2
+  record: ^5.2.1  # Updated to fix record_linux compatibility
   audioplayers: ^6.1.0
   # Networking
   socket_io_client: ^2.0.3+1
@@ -91,9 +91,11 @@ dependencies:
   # Environment Variables
   flutter_dotenv: ^5.1.0
 
-# dependency_overrides:
-#   fwfh_text_style: ^2.22.8+1
-#   file: ^6.1.4
+dependency_overrides:
+  # Fix record_linux compatibility issue - update to latest compatible version
+  record_platform_interface: ^1.4.0
+  # Exclude Linux platform if record_linux still has issues
+  # This will prevent Linux builds but allow Android/iOS to work
 
 
 dev_dependencies:

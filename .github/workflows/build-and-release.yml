@@ -85,6 +85,15 @@ jobs:
         with:
           flutter-version: '3.35.0'
 
+      - name: 🔧 Install CMake (required for rive_common native builds)
+        run: |
+          # Install CMake via apt (Ubuntu) - must be before SDK installation
+          sudo apt-get update
+          sudo apt-get install -y cmake
+          # Verify CMake installation
+          cmake --version
+          echo "✅ CMake installed successfully"
+
       - name: 🛠️ Configure Android SDK
         run: |
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
@@ -95,7 +104,7 @@ jobs:
       - name: 🧩 Install Android SDK components
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125"
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125" "cmake;3.22.1"
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get

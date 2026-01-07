@@ -368,7 +368,7 @@ class _VocabularyDrawer extends StatelessWidget {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(PanAfricanRadius.lg),
         ),
@@ -468,7 +468,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
