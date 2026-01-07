@@ -482,7 +482,7 @@ class _ScenarioProgressCard extends StatelessWidget {
                     style: PanAfricanTypography.bodySmall(context),
                   ),
                   SizedBox(width: PanAfricanSpacing.md),
-                  Icon(Icons.target, size: 16.sp, color: PanAfricanColors.primary),
+                  Icon(Icons.flag, size: 16.sp, color: PanAfricanColors.primary),
                   SizedBox(width: PanAfricanSpacing.xs),
                   Text(
                     '${(scenario.averageAccuracy * 100).toStringAsFixed(0)}%',

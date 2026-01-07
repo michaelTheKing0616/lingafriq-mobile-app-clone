@@ -80,10 +80,7 @@ class DynamicLocalizationService {
   /// Get text direction for current language  
   static TextDirection getTextDirection() {
     final bool isRightToLeft = isRTL(_currentLanguage.code);
-    if (isRightToLeft) {
-      return TextDirection.rtl;
-    }
-    return TextDirection.ltr;
+    return isRightToLeft ? TextDirection.rtl : TextDirection.ltr;
   }
 }
 

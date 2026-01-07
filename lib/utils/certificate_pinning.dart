@@ -14,6 +14,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io_adapter.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Certificate pinning configuration
