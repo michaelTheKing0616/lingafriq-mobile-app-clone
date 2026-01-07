@@ -184,10 +184,34 @@ subprojects {
             return
         }
         
+        // Fix flutter_vibrate AndroidManifest.xml package attribute issue
+        // Process manifest before merge to remove package attribute
+        if (project.name == 'flutter_vibrate' && project.hasProperty('android')) {
+            project.android.libraryVariants.all { variant ->
+                def processManifestTask = project.tasks.findByName("process${variant.name.capitalize()}Manifest")
+                if (processManifestTask != null) {
+                    processManifestTask.doFirst {
+                        def manifestFile = file("${project.projectDir}/src/main/AndroidManifest.xml")
+                        if (manifestFile.exists()) {
+                            def manifestContent = manifestFile.text
+                            if (manifestContent.contains('package="flutter.plugins.vibrate"')) {
+                                manifestContent = manifestContent.replaceAll('package="flutter.plugins.vibrate"', '')
+                                manifestFile.write(manifestContent)
+                                println("✅ Removed package attribute from flutter_vibrate AndroidManifest.xml")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         if (project.hasProperty('android')) {
             project.android {
                 // ✅ Ensure every submodule has a namespace (Gradle 8+ requirement)
-                if (!namespace) {
+                // For flutter_vibrate, set namespace explicitly to prevent package attribute issues
+                if (project.name == 'flutter_vibrate') {
+                    namespace = 'flutter.plugins.vibrate'
+                } else if (!namespace) {
                     namespace project.group
                 }
                 

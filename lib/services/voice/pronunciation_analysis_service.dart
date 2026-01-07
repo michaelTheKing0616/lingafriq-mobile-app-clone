@@ -254,9 +254,9 @@ class PronunciationAnalysisService {
       'lesson_item_id': lessonItem.id,
       'text': lessonItem.text,
       'language_code': lessonItem.languageCode,
-      MapEntry('ipa', lessonItem.ipa ?? ''),
-      MapEntry('enable_phoneme_analysis', enablePhonemeAnalysis.toString()),
-    ]);
+      'ipa': lessonItem.ipa ?? '',
+      'enable_phoneme_analysis': enablePhonemeAnalysis.toString(),
+    });
 
     if (lessonItem.tonePattern != null) {
       formData.fields.add(MapEntry('tone_pattern', lessonItem.tonePattern!.join(',')));

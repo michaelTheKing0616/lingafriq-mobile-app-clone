@@ -86,6 +86,8 @@ dependencies:
   speech_to_text: ^7.0.0
   # Haptic Feedback
   flutter_vibrate: ^1.2.0
+  # Charts & Visualization
+  fl_chart: ^0.69.0
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1

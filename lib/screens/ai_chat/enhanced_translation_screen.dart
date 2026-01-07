@@ -289,7 +289,7 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     }
     
     // Pattern 2: Look for text in quotes after "translation"
-    final quotePattern = RegExp(r'["\']([^"\']+)["\']');
+    final quotePattern = RegExp(r'''["']([^"']+)["']''');
     for (final line in lines) {
       if (line.toLowerCase().contains('translation')) {
         final match = quotePattern.firstMatch(line);
@@ -353,7 +353,7 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     
     // If no structured alternatives found, try to extract from response
     if (alternatives.isEmpty) {
-      final quotePattern = RegExp(r'["\']([^"\']+)["\']');
+      final quotePattern = RegExp(r'''["']([^"']+)["']''');
       final matches = quotePattern.allMatches(response);
       for (final match in matches.skip(1).take(5)) {
         alternatives.add(TranslationAlternative(
