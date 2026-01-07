@@ -231,13 +231,16 @@ class _ClassroomView extends HookConsumerWidget {
                 },
               ];
 
-              for (final participant in room.remoteParticipants.values) {
-                remoteParts[participant.sid] = participant;
-                participantList.add({
-                  'name': participant.name ?? 'Participant',
-                  'id': participant.sid,
-                  'isLocal': false,
-                });
+              // Iterate through all participants and filter remote ones
+              for (final participant in room.participants.values) {
+                if (participant is RemoteParticipant) {
+                  remoteParts[participant.sid] = participant;
+                  participantList.add({
+                    'name': participant.name ?? 'Participant',
+                    'id': participant.sid,
+                    'isLocal': false,
+                  });
+                }
               }
 
               remoteParticipants.value = remoteParts;
@@ -875,12 +878,16 @@ class _VideoTile extends StatelessWidget {
     // Find video track from participant
     VideoTrack? videoTrack;
     if (liveParticipant != null) {
-      final videoTrackPublications = liveParticipant!.videoTrackPublications.values.toList();
-      if (videoTrackPublications.isNotEmpty) {
-        final firstPublication = videoTrackPublications.first;
-        if (firstPublication.subscribed && firstPublication.track != null) {
-          videoTrack = firstPublication.track as VideoTrack?;
-        }
+      // Get video track publications from participant
+      // LiveKit 1.5.6 API: trackPublications is a Map<String, TrackPublication>
+      final trackPublications = liveParticipant!.trackPublications.values;
+      final videoPublications = trackPublications
+          .where((pub) => pub.kind == TrackType.video && pub.subscribed && pub.track != null)
+          .toList();
+      
+      if (videoPublications.isNotEmpty) {
+        final firstPublication = videoPublications.first;
+        videoTrack = firstPublication.track as VideoTrack?;
       }
     }
 

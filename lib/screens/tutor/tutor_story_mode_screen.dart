@@ -453,7 +453,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
       return Container(
         padding: EdgeInsets.all(PanAfricanSpacing.md),
         decoration: BoxDecoration(
-          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           boxShadow: PanAfricanShadows.md,
         ),
         child: ElevatedButton(

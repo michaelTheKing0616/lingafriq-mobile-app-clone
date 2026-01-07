@@ -421,7 +421,6 @@ class _Flashcard extends StatelessWidget {
                   SizedBox(height: PanAfricanSpacing.md),
                   Text(
                     _getWordExample(word)!,
-                    style: PanAfricanTypography.bodyMedium(context),
                     textAlign: TextAlign.center,
                     style: PanAfricanTypography.bodyMedium(context)?.copyWith(
                       fontStyle: FontStyle.italic,
