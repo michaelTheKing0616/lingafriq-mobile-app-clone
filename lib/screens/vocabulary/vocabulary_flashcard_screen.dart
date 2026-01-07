@@ -8,6 +8,7 @@ import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Visual Flashcard Screen for Vocabulary
 /// Interactive flashcards with swipe gestures, animations, and progress tracking
@@ -253,7 +254,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
           ? allWords.where((w) => w.category == category).toList()
           : allWords;
     } catch (e) {
-      debugPrint('Error loading words: $e');
+      StructuredLogger.error('Error loading vocabulary words', error: e, context: {'language': language, 'category': category});
     } finally {
       isLoading.value = false;
     }
@@ -268,7 +269,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
       await service.recordReview(word.word, word.language, isCorrect);
       HapticFeedback.mediumImpact();
     } catch (e) {
-      debugPrint('Error recording review: $e');
+      StructuredLogger.error('Error recording vocabulary review', error: e, context: {'word': word.word, 'language': word.language, 'isCorrect': isCorrect});
     }
   }
 
