@@ -127,8 +127,46 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=app/upload-keystore.jks" >> android/key.properties
 
-      - name: 🧱 Clean build cache
-        run: flutter clean
+      - name: 🧹 Comprehensive Cache Clearing (Before Build)
+        run: |
+          echo "🧹 Starting comprehensive cache clearing..."
+          
+          # 1. Flutter clean - removes build artifacts
+          echo "📦 Step 1: Flutter clean..."
+          flutter clean || true
+          
+          # 2. Clear Flutter pub cache (if needed)
+          echo "📦 Step 2: Clearing Flutter pub cache..."
+          flutter pub cache repair || true
+          
+          # 3. Remove build directories
+          echo "🗑️ Step 3: Removing build directories..."
+          rm -rf build/ || true
+          rm -rf .dart_tool/ || true
+          rm -rf .flutter-plugins || true
+          rm -rf .flutter-plugins-dependencies || true
+          rm -rf .packages || true
+          
+          # 4. Clear Gradle cache
+          echo "🔄 Step 4: Clearing Gradle cache..."
+          cd android || exit 0
+          ./gradlew clean --refresh-dependencies || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
+          rm -rf ~/.gradle/caches/transforms-* || true
+          rm -rf ~/.gradle/daemon || true
+          cd ..
+          
+          # 5. Clear Android build cache
+          echo "📱 Step 5: Clearing Android build cache..."
+          rm -rf android/.gradle || true
+          rm -rf android/app/build || true
+          rm -rf android/build || true
+          
+          # 6. Get fresh dependencies
+          echo "📥 Step 6: Getting fresh dependencies..."
+          flutter pub get
+          
+          echo "✅ Cache clearing complete!"
 
       - name: 🗑️ Remove flutter_webrtc plugin (after clean)
         run: |
@@ -143,22 +181,16 @@ jobs:
             echo "✅ Confirmed: flutter_webrtc removed from .flutter-plugins"
           fi
 
-      - name: 🔄 Clear Gradle cache (fix 403 errors)
-        run: |
-          cd android
-          ./gradlew clean --refresh-dependencies || true
-          # Clear Gradle cache to avoid stale artifacts
-          rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
-          cd ..
-
       - name: 🏗️ Build AAB (Release)
         env:
-          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=true"
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false"
         run: |
+          echo "🏗️ Starting AAB build..."
           flutter build appbundle --release --split-debug-info=build/symbols || \
-          (echo "⚠️ Build failed, retrying with clean cache..." && \
-           cd android && ./gradlew clean && cd .. && \
+          (echo "⚠️ Build failed, performing deep clean and retry..." && \
            flutter clean && \
+           rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true && \
+           cd android && ./gradlew clean --refresh-dependencies && cd .. && \
            flutter pub get && \
            flutter build appbundle --release --split-debug-info=build/symbols)
 

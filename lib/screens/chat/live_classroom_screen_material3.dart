@@ -881,8 +881,9 @@ class _VideoTile extends StatelessWidget {
       // Get video track publications from participant
       // LiveKit 1.5.6 API: trackPublications is a Map<String, TrackPublication>
       final trackPublications = liveParticipant!.trackPublications.values;
+      // Filter for video tracks - check if track is VideoTrack type
       final videoPublications = trackPublications
-          .where((pub) => pub.kind == TrackKind.video && pub.subscribed && pub.track != null)
+          .where((pub) => pub.subscribed && pub.track != null && pub.track is VideoTrack)
           .toList();
       
       if (videoPublications.isNotEmpty) {

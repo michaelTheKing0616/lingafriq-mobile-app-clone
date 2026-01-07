@@ -8,6 +8,7 @@ import 'package:lingafriq/services/roleplay_progress_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Roleplay Progress Dashboard
 /// Shows comprehensive progress tracking, statistics, and recommendations
@@ -186,7 +187,7 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
       final p = await service.loadProgress();
       progress.value = p;
     } catch (e) {
-      debugPrint('Error loading progress: $e');
+      StructuredLogger.error('Error loading roleplay progress', error: e, context: {'language': language});
     } finally {
       isLoading.value = false;
     }

@@ -368,7 +368,7 @@ class _VocabularyDrawer extends StatelessWidget {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(PanAfricanRadius.lg),
         ),
