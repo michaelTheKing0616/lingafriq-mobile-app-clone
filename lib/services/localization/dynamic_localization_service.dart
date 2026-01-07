@@ -3,7 +3,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
+import 'dart:ui' as ui show TextDirection;
 
 enum AppLanguage {
   english('en', 'English'),
@@ -78,11 +79,10 @@ class DynamicLocalizationService {
   }
 
   /// Get text direction for current language  
-  static TextDirection getTextDirection() {
+  static ui.TextDirection getTextDirection() {
     final bool isRightToLeft = isRTL(_currentLanguage.code);
-    // TextDirection enum - use direct enum value access
-    // TextDirection has two values: rtl (index 0) and ltr (index 1)
-    return isRightToLeft ? TextDirection.values[0] : TextDirection.values[1];
+    // Use dart:ui TextDirection to avoid conflict with intl package
+    return isRightToLeft ? ui.TextDirection.rtl : ui.TextDirection.ltr;
   }
 }
 
