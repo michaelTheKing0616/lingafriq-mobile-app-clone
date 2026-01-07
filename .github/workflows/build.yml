@@ -19,6 +19,13 @@ jobs:
           flutter-version: '3.35.0'
           channel: 'stable'
       
+      - name: 🔧 Install CMake (required for rive_common native builds)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake
+          cmake --version
+          echo "✅ CMake installed successfully"
+      
       - name: Install dependencies
         run: flutter pub get
       
