@@ -392,9 +392,6 @@ class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
   }
 }
 
-// Import the new implementation
-import '../../games/drum_rhythm/drum_rhythm_screen.dart';
-
 /// Clan Lineage Story Builder Game
 class ClanStoryGame extends BaseGameScreen {
   const ClanStoryGame({
