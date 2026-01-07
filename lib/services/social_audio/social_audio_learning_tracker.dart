@@ -5,6 +5,7 @@ import '../../providers/api_provider.dart';
 import '../../providers/dio_provider.dart';
 import '../../utils/api.dart';
 import '../../providers/user_provider.dart';
+import '../../models/social_audio/social_audio_room_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Social Audio Learning Tracker - Tracks learning progress in social audio sessions

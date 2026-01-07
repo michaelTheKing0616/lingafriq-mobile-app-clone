@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../services/localization/dynamic_localization_service.dart';
+import '../../widgets/pan_african_app_bar.dart';
 
 /// Search Languages Page - Allows users to search and select languages
 class SearchLanguagesPage extends HookConsumerWidget {

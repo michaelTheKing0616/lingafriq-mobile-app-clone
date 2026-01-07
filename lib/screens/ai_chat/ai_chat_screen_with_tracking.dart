@@ -47,7 +47,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final messages = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(false);
     final scrollController = useScrollController();
-    final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref));
+    final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref as Ref));
     final integrationService = ref.read(aiChatIntegrationServiceProvider);
     final conversationService = ref.read(conversationAnalyticsServiceProvider);
     final tutorService = ref.read(tutorProgressServiceProvider);
@@ -210,7 +210,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
       // Record conversation session
       if (mode == 'conversation') {
-        final fluencyScore = conversationService.calculateConversationFluency(
+        final fluencyScore = integrationService.calculateConversationFluency(
           messageCount: messageCount.value,
           wordCount: wordCount.value,
           errorCount: errors.value,

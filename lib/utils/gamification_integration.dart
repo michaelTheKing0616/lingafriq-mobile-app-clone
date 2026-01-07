@@ -99,7 +99,7 @@ class _GamificationHelper {
     final newStats = {
       'lessonsCompleted': gamification.lessonsCompleted + 1,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -168,7 +168,7 @@ class _GamificationHelper {
     final newStats = {
       'quizzesCompleted': gamification.quizzesCompleted + 1,
       'perfectQuizzes': isPerfect ? gamification.perfectQuizzes + 1 : gamification.perfectQuizzes,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
     };
     
@@ -222,7 +222,7 @@ class _GamificationHelper {
     final newStats = {
       'gamesPlayed': gamification.gamesPlayed + 1,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -253,7 +253,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'wordsLearned': gamification.wordsLearned + count,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -283,7 +283,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'polieMessages': gamification.polieMessages + 1,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -311,7 +311,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'storyChaptersRead': gamification.storyChaptersRead + 1,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -358,7 +358,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'voiceContributions': gamification.voiceContributions + 1,
-      'totalXP': gamification.totalXP + xpEarned,
+      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(

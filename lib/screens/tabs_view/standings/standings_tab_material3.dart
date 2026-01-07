@@ -55,8 +55,6 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                     },
                     tooltip: 'Menu',
                   ),
-                ],
-                actions: [
                   Image.asset(
                     Images.goldBar,
                     height: 0.1.sh,

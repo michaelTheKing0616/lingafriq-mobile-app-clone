@@ -1,4 +1,5 @@
 import '../../models/game/game_session_model.dart' as backend;
+import 'game_result.dart';
 
 /// Extended game session with performance tracking
 class GameSession {

@@ -16,6 +16,18 @@ class UserGamificationModel {
   final Map<String, int> questProgress; // questId -> progress
   final DateTime? lastLogin;
   final bool ubuntuStreakActive; // Never break - help others if you do
+  
+  // Additional progress tracking properties
+  final int lessonsCompleted;
+  final int wordsLearned;
+  final int totalXP; // Alias for xp, kept for backward compatibility
+  final String? currentLanguage;
+  final int quizzesCompleted;
+  final int perfectQuizzes;
+  final int gamesPlayed;
+  final int polieMessages;
+  final int storyChaptersRead;
+  final int voiceContributions;
 
   UserGamificationModel({
     this.xp = 0,
@@ -34,6 +46,16 @@ class UserGamificationModel {
     this.questProgress = const {},
     this.lastLogin,
     this.ubuntuStreakActive = false,
+    this.lessonsCompleted = 0,
+    this.wordsLearned = 0,
+    this.totalXP = 0,
+    this.currentLanguage,
+    this.quizzesCompleted = 0,
+    this.perfectQuizzes = 0,
+    this.gamesPlayed = 0,
+    this.polieMessages = 0,
+    this.storyChaptersRead = 0,
+    this.voiceContributions = 0,
   });
 
   UserGamificationModel copyWith({
@@ -53,6 +75,16 @@ class UserGamificationModel {
     Map<String, int>? questProgress,
     DateTime? lastLogin,
     bool? ubuntuStreakActive,
+    int? lessonsCompleted,
+    int? wordsLearned,
+    int? totalXP,
+    String? currentLanguage,
+    int? quizzesCompleted,
+    int? perfectQuizzes,
+    int? gamesPlayed,
+    int? polieMessages,
+    int? storyChaptersRead,
+    int? voiceContributions,
   }) {
     return UserGamificationModel(
       xp: xp ?? this.xp,
@@ -71,6 +103,16 @@ class UserGamificationModel {
       questProgress: questProgress ?? this.questProgress,
       lastLogin: lastLogin ?? this.lastLogin,
       ubuntuStreakActive: ubuntuStreakActive ?? this.ubuntuStreakActive,
+      lessonsCompleted: lessonsCompleted ?? this.lessonsCompleted,
+      wordsLearned: wordsLearned ?? this.wordsLearned,
+      totalXP: totalXP ?? this.totalXP,
+      currentLanguage: currentLanguage ?? this.currentLanguage,
+      quizzesCompleted: quizzesCompleted ?? this.quizzesCompleted,
+      perfectQuizzes: perfectQuizzes ?? this.perfectQuizzes,
+      gamesPlayed: gamesPlayed ?? this.gamesPlayed,
+      polieMessages: polieMessages ?? this.polieMessages,
+      storyChaptersRead: storyChaptersRead ?? this.storyChaptersRead,
+      voiceContributions: voiceContributions ?? this.voiceContributions,
     );
   }
 
@@ -91,6 +133,16 @@ class UserGamificationModel {
         'questProgress': questProgress,
         'lastLogin': lastLogin?.toIso8601String(),
         'ubuntuStreakActive': ubuntuStreakActive,
+        'lessonsCompleted': lessonsCompleted,
+        'wordsLearned': wordsLearned,
+        'totalXP': totalXP,
+        'currentLanguage': currentLanguage,
+        'quizzesCompleted': quizzesCompleted,
+        'perfectQuizzes': perfectQuizzes,
+        'gamesPlayed': gamesPlayed,
+        'polieMessages': polieMessages,
+        'storyChaptersRead': storyChaptersRead,
+        'voiceContributions': voiceContributions,
       };
 
   factory UserGamificationModel.fromJson(Map<String, dynamic> json) =>
@@ -121,6 +173,16 @@ class UserGamificationModel {
             ? DateTime.parse(json['lastLogin'] as String)
             : null,
         ubuntuStreakActive: json['ubuntuStreakActive'] as bool? ?? false,
+        lessonsCompleted: json['lessonsCompleted'] as int? ?? 0,
+        wordsLearned: json['wordsLearned'] as int? ?? 0,
+        totalXP: json['totalXP'] as int? ?? json['xp'] as int? ?? 0,
+        currentLanguage: json['currentLanguage'] as String?,
+        quizzesCompleted: json['quizzesCompleted'] as int? ?? 0,
+        perfectQuizzes: json['perfectQuizzes'] as int? ?? 0,
+        gamesPlayed: json['gamesPlayed'] as int? ?? 0,
+        polieMessages: json['polieMessages'] as int? ?? 0,
+        storyChaptersRead: json['storyChaptersRead'] as int? ?? 0,
+        voiceContributions: json['voiceContributions'] as int? ?? 0,
       );
 }
 

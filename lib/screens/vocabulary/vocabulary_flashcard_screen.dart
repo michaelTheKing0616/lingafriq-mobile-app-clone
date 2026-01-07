@@ -146,7 +146,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                         );
                       },
                       child: _Flashcard(
-                        key: ValueKey(currentWord.id),
+                        key: ValueKey('${currentWord.word}_${currentWord.language}'),
                         word: currentWord,
                         isFlipped: isFlipped.value,
                         showAnswer: showAnswer.value,
@@ -265,7 +265,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
     bool isCorrect,
   ) async {
     try {
-      await service.recordReview(word.id, isCorrect);
+      await service.recordReview(word.word, word.language, isCorrect);
       HapticFeedback.mediumImpact();
     } catch (e) {
       debugPrint('Error recording review: $e');
@@ -337,6 +337,31 @@ class _Flashcard extends StatelessWidget {
     required this.isDark,
   }) : super(key: key);
 
+  String _getWordMeaning(WordMastery word) {
+    // Try to get meaning from metadata
+    if (word.metadata != null && word.metadata!['meaning'] != null) {
+      return word.metadata!['meaning'] as String;
+    }
+    // Fallback: return a placeholder
+    return 'Translation for ${word.word}';
+  }
+
+  String? _getWordExample(WordMastery word) {
+    // Try to get example from metadata
+    if (word.metadata != null && word.metadata!['example'] != null) {
+      return word.metadata!['example'] as String;
+    }
+    return null;
+  }
+
+  String? _getWordPronunciation(WordMastery word) {
+    // Try to get pronunciation from metadata
+    if (word.metadata != null && word.metadata!['pronunciation'] != null) {
+      return word.metadata!['pronunciation'] as String;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -398,7 +423,9 @@ class _Flashcard extends StatelessWidget {
                     _getWordExample(word)!,
                     style: PanAfricanTypography.bodyMedium(context),
                     textAlign: TextAlign.center,
-                    fontStyle: FontStyle.italic,
+                    style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ],
                 if (_getWordPronunciation(word) != null) ...[

@@ -10,13 +10,13 @@ import '../providers/user_provider.dart';
 import 'base_provider.dart';
 
 final socialAudioServiceProvider = Provider<SocialAudioService>((ref) {
-  final api = ref.read(apiProvider);
+  final api = ref.read(apiProvider.notifier);
   final dio = ref.read(client);
   return SocialAudioService(api, dio);
 });
 
 final socialAudioLearningTrackerProvider = Provider<SocialAudioLearningTracker>((ref) {
-  final api = ref.read(apiProvider);
+  final api = ref.read(apiProvider.notifier);
   final dio = ref.read(client);
   return SocialAudioLearningTracker(api, dio);
 });

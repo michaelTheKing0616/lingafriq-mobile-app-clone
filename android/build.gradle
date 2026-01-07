@@ -184,27 +184,6 @@ subprojects {
             return
         }
         
-        // Fix flutter_vibrate AndroidManifest.xml package attribute issue
-        // Process manifest before merge to remove package attribute
-        if (project.name == 'flutter_vibrate' && project.hasProperty('android')) {
-            project.android.libraryVariants.all { variant ->
-                def processManifestTask = project.tasks.findByName("process${variant.name.capitalize()}Manifest")
-                if (processManifestTask != null) {
-                    processManifestTask.doFirst {
-                        def manifestFile = file("${project.projectDir}/src/main/AndroidManifest.xml")
-                        if (manifestFile.exists()) {
-                            def manifestContent = manifestFile.text
-                            if (manifestContent.contains('package="flutter.plugins.vibrate"')) {
-                                manifestContent = manifestContent.replaceAll('package="flutter.plugins.vibrate"', '')
-                                manifestFile.write(manifestContent)
-                                println("✅ Removed package attribute from flutter_vibrate AndroidManifest.xml")
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
         if (project.hasProperty('android')) {
             project.android {
                 // ✅ Ensure every submodule has a namespace (Gradle 8+ requirement)
@@ -213,6 +192,32 @@ subprojects {
                     namespace = 'flutter.plugins.vibrate'
                 } else if (!namespace) {
                     namespace project.group
+                }
+                
+                // Fix flutter_vibrate AndroidManifest.xml package attribute issue
+                // The plugin's manifest has a deprecated package attribute
+                // We set namespace explicitly above, and use manifest merger properties to ignore the package attribute
+                if (project.name == 'flutter_vibrate') {
+                    // Try to modify the manifest source before it's processed
+                    project.afterEvaluate {
+                        def sourceManifest = file("${project.projectDir}/src/main/AndroidManifest.xml")
+                        if (sourceManifest.exists()) {
+                            try {
+                                def manifestContent = sourceManifest.text
+                                if (manifestContent.contains('package="flutter.plugins.vibrate"')) {
+                                    // Create backup and modify
+                                    def backupManifest = file("${project.buildDir}/AndroidManifest.xml.backup")
+                                    backupManifest.write(manifestContent)
+                                    manifestContent = manifestContent.replaceAll('package="flutter.plugins.vibrate"', '')
+                                    sourceManifest.write(manifestContent)
+                                    println("✅ Removed package attribute from flutter_vibrate AndroidManifest.xml")
+                                }
+                            } catch (Exception e) {
+                                println("⚠️ Could not modify flutter_vibrate manifest: ${e.message}")
+                                println("   Namespace is set, which should handle the package attribute")
+                            }
+                        }
+                    }
                 }
                 
                 

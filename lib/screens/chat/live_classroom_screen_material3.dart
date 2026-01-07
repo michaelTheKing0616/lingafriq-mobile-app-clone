@@ -231,7 +231,7 @@ class _ClassroomView extends HookConsumerWidget {
                 },
               ];
 
-              for (final participant in room.remoteParticipants) {
+              for (final participant in room.remoteParticipants.values) {
                 remoteParts[participant.sid] = participant;
                 participantList.add({
                   'name': participant.name ?? 'Participant',
@@ -875,7 +875,7 @@ class _VideoTile extends StatelessWidget {
     // Find video track from participant
     VideoTrack? videoTrack;
     if (liveParticipant != null) {
-      final videoTrackPublications = liveParticipant!.videoTrackPublications;
+      final videoTrackPublications = liveParticipant!.videoTrackPublications.values.toList();
       if (videoTrackPublications.isNotEmpty) {
         final firstPublication = videoTrackPublications.first;
         if (firstPublication.subscribed && firstPublication.track != null) {
