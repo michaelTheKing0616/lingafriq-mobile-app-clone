@@ -49,10 +49,17 @@ class SharedPreferencesProvider {
     ]);
   }
 
+  /// Store email and password
+  /// SECURITY: Password should NOT be stored in SharedPreferences (plain text)
+  /// This method is kept for backward compatibility but should be migrated to FlutterSecureStorage
+  /// Use CredentialStorageService.storeCredentials() instead for secure storage
+  @Deprecated('Use CredentialStorageService.storeCredentials() instead for secure password storage')
   Future<void> storeEmailAndPassword(String email, String password) async {
+    // Store email in SharedPreferences (acceptable for email)
     final emailStoreFuture = prefs.setString(emailKey, email);
-    final passwordStoreFuture = prefs.setString(passwordKey, password);
-    await Future.wait([emailStoreFuture, passwordStoreFuture]);
+    // SECURITY WARNING: Password storage removed - use FlutterSecureStorage via CredentialStorageService
+    // Password is no longer stored in SharedPreferences to prevent security vulnerability
+    await emailStoreFuture;
   }
 
   Future<void> storeUser(ProfileModel user, String emailKey) async {
@@ -76,8 +83,15 @@ class SharedPreferencesProvider {
     return email;
   }
 
+  /// Get email and password
+  /// SECURITY: This method is deprecated. Passwords should be retrieved from FlutterSecureStorage.
+  /// Use CredentialStorageService.getStoredCredentials() instead.
+  @Deprecated('Use CredentialStorageService.getStoredCredentials() instead for secure password retrieval')
   Map<String, String>? get getEmailAndPassword {
     final email = prefs.getString(emailKey);
+    // SECURITY: Password no longer stored in SharedPreferences
+    // This method will return null if password is not in SharedPreferences
+    // Migrate to CredentialStorageService.getStoredCredentials()
     final password = prefs.getString(passwordKey);
     if (email == null || password == null) {
       return null;
@@ -85,8 +99,15 @@ class SharedPreferencesProvider {
     return {emailKey: email, passwordKey: password};
   }
 
+  /// Request email and password
+  /// SECURITY: This method is deprecated. Passwords should be retrieved from FlutterSecureStorage.
+  /// Use CredentialStorageService.getStoredCredentials() instead.
+  @Deprecated('Use CredentialStorageService.getStoredCredentials() instead for secure password retrieval')
   Map<String, dynamic>? get requestEmailAndPass {
     final email = prefs.getString(emailKey);
+    // SECURITY: Password no longer stored in SharedPreferences
+    // This method will return null if password is not in SharedPreferences
+    // Migrate to CredentialStorageService.getStoredCredentials()
     final password = prefs.getString(passwordKey);
     if (email == null || password == null) {
       return null;
@@ -94,9 +115,19 @@ class SharedPreferencesProvider {
     return {"email": email, "password": password};
   }
 
+  /// Get email and password (deprecated)
+  /// SECURITY: This method is deprecated. Passwords should be retrieved from FlutterSecureStorage.
+  /// Use CredentialStorageService.getStoredCredentials() instead.
+  @Deprecated('Use CredentialStorageService.getStoredCredentials() instead for secure password retrieval')
   _EmailAndPassword get emailAndPassword {
-    final email = prefs.getString(emailKey)!;
-    final password = prefs.getString(passwordKey)!;
+    final email = prefs.getString(emailKey);
+    // SECURITY: Password no longer stored in SharedPreferences
+    // This will throw if password is not available
+    // Migrate to CredentialStorageService.getStoredCredentials()
+    final password = prefs.getString(passwordKey);
+    if (email == null || password == null) {
+      throw StateError('Email and password not found. Migrate to CredentialStorageService.getStoredCredentials()');
+    }
     return _EmailAndPassword(email, password);
   }
 

@@ -40,8 +40,9 @@ class EnvConfig {
   /// IMPORTANT: Update this default to your actual backend API URL
   /// Set via: --dart-define=BACKEND_URL=https://api.lingafriq.com during build
   /// If using nginx reverse proxy, ensure it points to the backend port (e.g., http://localhost:4000)
+  /// SECURITY: Default uses HTTPS for production security
   static String get backendBaseUrl {
-    const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'http://api.lingafriq.com');
+    const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://api.lingafriq.com');
     return url;
   }
   

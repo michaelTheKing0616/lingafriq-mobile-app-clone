@@ -3,6 +3,9 @@
 
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter/foundation.dart';
+import 'offline_service.dart';
+import 'sync_operations.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 class BackgroundSyncService {
   static final BackgroundSyncService _instance = BackgroundSyncService._internal();
@@ -38,12 +41,36 @@ class BackgroundSyncService {
 }
 
 /// Background sync callback
+/// This is called by WorkManager when a periodic background sync task is triggered
 @pragma('vm:entry-point')
 void backgroundSyncCallback() {
   Workmanager().executeTask((task, inputData) async {
-    // Implement background sync logic here
-    // Sync user progress, lessons, etc.
-    return Future.value(true);
+    try {
+      logger.info('Periodic background sync task started', context: {'task': task});
+      
+      // Get the offline service instance
+      final offlineService = OfflineService();
+      
+      // Check if device is online
+      if (!offlineService.isOnline) {
+        logger.debug('Device is offline, skipping periodic background sync');
+        return Future.value(false);
+      }
+      
+      // Trigger sync of pending changes
+      // This will process any queued sync operations
+      await offlineService.syncPendingChanges();
+      
+      // Sync specific data types
+      final syncOps = SyncOperations();
+      await syncOps.syncAll();
+      
+      logger.info('Periodic background sync task completed successfully');
+      return Future.value(true);
+    } catch (e) {
+      logger.error('Periodic background sync task failed', error: e);
+      return Future.value(false);
+    }
   });
 }
 

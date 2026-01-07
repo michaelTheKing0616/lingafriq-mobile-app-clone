@@ -375,8 +375,9 @@ class OfflineTranslationService {
     required String targetLanguage,
   }) async {
     // Model sizes vary, but typically 50-200MB for quantized models
-    // This would be fetched from the model metadata
-    return 100 * 1024 * 1024; // 100MB placeholder
+    // Default size estimate for NLLB-200 quantized models
+    // In production, this would be fetched from model metadata or configuration
+    return 100 * 1024 * 1024; // 100MB default estimate
   }
 
   /// Get supported language pairs

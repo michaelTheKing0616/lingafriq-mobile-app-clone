@@ -88,6 +88,8 @@ dependencies:
   flutter_vibrate: ^1.2.0
   # Charts & Visualization
   fl_chart: ^0.69.0
+  # Environment Variables
+  flutter_dotenv: ^5.1.0
 
 # dependency_overrides:
 #   fwfh_text_style: ^2.22.8+1

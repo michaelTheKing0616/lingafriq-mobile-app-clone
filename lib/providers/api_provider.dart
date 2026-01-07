@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history/models/history_response.dart';
 import 'package:lingafriq/history/models/section_history_model.dart';
@@ -30,6 +30,7 @@ import '../lessons/models/lesson_response.dart';
 import '../lessons/models/section_lesson_model.dart';
 import '../models/user.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final apiProvider = NotifierProvider<ApiProvider, BaseProviderState>(() {
   return ApiProvider();
@@ -910,7 +911,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error awarding XP: $e');
+      logger.error('Error awarding XP', error: e);
       return false;
     }
   }
@@ -925,7 +926,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return null;
     } catch (e) {
-      debugPrint('Error getting user XP: $e');
+      logger.error('Error getting user XP', error: e);
       return null;
     }
   }
@@ -950,7 +951,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error recording learner activity: $e');
+      logger.error('Error recording learner activity', error: e);
       return false;
     }
   }
@@ -966,7 +967,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return {'flags': {}, 'variants': {}};
     } catch (e) {
-      debugPrint('Error getting experiments config: $e');
+      logger.error('Error getting experiments config', error: e);
       // Return default empty config on error
       return {'flags': {}, 'variants': {}};
     }
@@ -981,7 +982,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return {};
     } catch (e) {
-      debugPrint('Error getting daily goals: $e');
+      logger.error('Error getting daily goals', error: e);
       return {};
     }
   }
@@ -995,7 +996,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing gamification: $e');
+      logger.error('Error syncing gamification', error: e);
       return false;
     }
   }
@@ -1009,7 +1010,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error saving AI chat history: $e');
+      logger.error('Error saving AI chat history', error: e);
       return false;
     }
   }
@@ -1040,7 +1041,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return null;
     } catch (e) {
-      debugPrint('Error getting AI chat history: $e');
+      logger.error('Error getting AI chat history', error: e);
       return null;
     }
   }
@@ -1063,7 +1064,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return null;
     } catch (e) {
-      debugPrint('Error getting gamification: $e');
+      logger.error('Error getting gamification', error: e);
       return null;
     }
   }
@@ -1077,7 +1078,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 204;
     } catch (e) {
-      debugPrint('Error updating daily goal: $e');
+      logger.error('Error updating daily goal', error: e);
       return false;
     }
   }
@@ -1091,7 +1092,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error updating user points: $e');
+      logger.error('Error updating user points', error: e);
       return false;
     }
   }
@@ -1107,7 +1108,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return {};
     } catch (e) {
-      debugPrint('Error getting progress metrics: $e');
+      logger.error('Error getting progress metrics', error: e);
       return {};
     }
   }
@@ -1121,7 +1122,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error updating progress metrics: $e');
+      logger.error('Error updating progress metrics', error: e);
       return false;
     }
   }
@@ -1139,7 +1140,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return [];
     } catch (e) {
-      debugPrint('Error getting achievements: $e');
+      logger.error('Error getting achievements', error: e);
       return [];
     }
   }
@@ -1152,7 +1153,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error unlocking achievement: $e');
+      logger.error('Error unlocking achievement', error: e);
       return false;
     }
   }
@@ -1169,7 +1170,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         amount: xp,
       );
     } catch (e) {
-      debugPrint('Error updating XP: $e');
+      logger.error('Error updating XP', error: e);
       return false;
     }
   }
@@ -1183,7 +1184,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 204;
     } catch (e) {
-      debugPrint('Error updating challenge progress: $e');
+      logger.error('Error updating challenge progress', error: e);
       return false;
     }
   }
@@ -1200,7 +1201,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error updating milestone stats: $e');
+      logger.error('Error updating milestone stats', error: e);
       return false;
     }
   }
@@ -1214,7 +1215,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error adding league XP: $e');
+      logger.error('Error adding league XP', error: e);
       return false;
     }
   }
@@ -1227,7 +1228,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error using heart: $e');
+      logger.error('Error using heart', error: e);
       return false;
     }
   }
@@ -1240,7 +1241,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error refilling hearts: $e');
+      logger.error('Error refilling hearts', error: e);
       return false;
     }
   }
@@ -1254,7 +1255,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error toggling challenge mode: $e');
+      logger.error('Error toggling challenge mode', error: e);
       return false;
     }
   }
@@ -1277,7 +1278,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return [];
     } catch (e) {
-      debugPrint('Error getting leaderboard: $e');
+      logger.error('Error getting leaderboard', error: e);
       return [];
     }
   }
@@ -1291,7 +1292,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error sending telemetry: $e');
+      logger.error('Error sending telemetry', error: e);
       return false;
     }
   }
@@ -1301,7 +1302,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       return await ref.read(client).post(path, data: data);
     } catch (e) {
-      debugPrint('Error in POST $path: $e');
+      logger.error('Error in POST request', error: e, context: {'path': path});
       return null;
     }
   }
@@ -1315,7 +1316,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing game session: $e');
+      logger.error('Error syncing game session', error: e);
       return false;
     }
   }
@@ -1329,7 +1330,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing game SRS: $e');
+      logger.error('Error syncing game SRS', error: e);
       return false;
     }
   }
@@ -1346,7 +1347,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       throw Exception('Failed to create lesson: ${res.statusCode}');
     } catch (e) {
-      debugPrint('Error creating UGC lesson: $e');
+      logger.error('Error creating UGC lesson', error: e);
       rethrow;
     }
   }
@@ -1363,7 +1364,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       throw Exception('Failed to create quiz: ${res.statusCode}');
     } catch (e) {
-      debugPrint('Error creating UGC quiz: $e');
+      logger.error('Error creating UGC quiz', error: e);
       rethrow;
     }
   }
@@ -1380,7 +1381,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       throw Exception('Failed to create story: ${res.statusCode}');
     } catch (e) {
-      debugPrint('Error creating UGC story: $e');
+      logger.error('Error creating UGC story', error: e);
       rethrow;
     }
   }
@@ -1403,7 +1404,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error sharing UGC content: $e');
+      logger.error('Error sharing UGC content', error: e);
       return false;
     }
   }
@@ -1436,7 +1437,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return [];
     } catch (e) {
-      debugPrint('Error getting user content: $e');
+      logger.error('Error getting user content', error: e);
       return [];
     }
   }
@@ -1459,7 +1460,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error rating UGC content: $e');
+      logger.error('Error rating UGC content', error: e);
       return false;
     }
   }
@@ -1473,7 +1474,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing AI chat history: $e');
+      logger.error('Error syncing AI chat history', error: e);
       return false;
     }
   }
@@ -1487,7 +1488,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing AI chat SRS: $e');
+      logger.error('Error syncing AI chat SRS', error: e);
       return false;
     }
   }
@@ -1501,7 +1502,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing progress: $e');
+      logger.error('Error syncing progress', error: e);
       return false;
     }
   }
@@ -1515,7 +1516,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing onboarding: $e');
+      logger.error('Error syncing onboarding', error: e);
       return false;
     }
   }
@@ -1529,7 +1530,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error syncing telemetry: $e');
+      logger.error('Error syncing telemetry', error: e);
       return false;
     }
   }
@@ -1563,7 +1564,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       return [];
     } catch (e) {
-      debugPrint('Error searching chat messages: $e');
+      logger.error('Error searching chat messages', error: e);
       return [];
     }
   }
@@ -1594,7 +1595,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error submitting voice contribution: $e');
+      logger.error('Error submitting voice contribution', error: e);
       return false;
     }
   }
@@ -1611,7 +1612,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         queryParameters: queryParameters,
       );
     } catch (e) {
-      debugPrint('Error getting social audio rooms: $e');
+      logger.error('Error getting social audio rooms', error: e);
       return null;
     }
   }
@@ -1623,7 +1624,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         '${Api.baseurl}${Api.socialAudioRoom(roomId)}',
       );
     } catch (e) {
-      debugPrint('Error getting social audio room: $e');
+      logger.error('Error getting social audio room', error: e);
       return null;
     }
   }
@@ -1636,7 +1637,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error creating social audio room: $e');
+      logger.error('Error creating social audio room', error: e);
       return null;
     }
   }
@@ -1649,7 +1650,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error joining social audio room: $e');
+      logger.error('Error joining social audio room', error: e);
       return null;
     }
   }
@@ -1662,7 +1663,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error leaving social audio room: $e');
+      logger.error('Error leaving social audio room', error: e);
       return null;
     }
   }
@@ -1675,7 +1676,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error updating social audio room status: $e');
+      logger.error('Error updating social audio room status', error: e);
       return null;
     }
   }
@@ -1687,7 +1688,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         '${Api.baseurl}${Api.socialAudioRoomParticipants(roomId)}',
       );
     } catch (e) {
-      debugPrint('Error getting social audio room participants: $e');
+      logger.error('Error getting social audio room participants', error: e);
       return null;
     }
   }
@@ -1700,7 +1701,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error moderating social audio room: $e');
+      logger.error('Error moderating social audio room', error: e);
       return null;
     }
   }
@@ -1713,7 +1714,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error following social audio user: $e');
+      logger.error('Error following social audio user', error: e);
       return null;
     }
   }
@@ -1726,7 +1727,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: data,
       );
     } catch (e) {
-      debugPrint('Error unfollowing social audio user: $e');
+      logger.error('Error unfollowing social audio user', error: e);
       return null;
     }
   }
@@ -1739,7 +1740,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         queryParameters: queryParameters,
       );
     } catch (e) {
-      debugPrint('Error getting social audio following list: $e');
+      logger.error('Error getting social audio following list', error: e);
       return null;
     }
   }
@@ -1752,7 +1753,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         queryParameters: queryParameters,
       );
     } catch (e) {
-      debugPrint('Error getting social audio followers list: $e');
+      logger.error('Error getting social audio followers list', error: e);
       return null;
     }
   }

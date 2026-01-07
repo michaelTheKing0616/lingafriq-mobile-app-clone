@@ -5,6 +5,10 @@ import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/rate_limiter.dart';
+import 'package:lingafriq/utils/certificate_pinning.dart';
+import 'package:lingafriq/utils/security_headers_validator.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 class ApiService {
   static late Dio _dio;
@@ -29,16 +33,57 @@ class ApiService {
       },
     ));
 
-    // Add interceptors for auth token and error handling
+    // Setup certificate pinning (production only)
+    setupCertificatePinning(_dio);
+
+    // Add security headers validation interceptor
+    _dio.interceptors.add(securityHeadersValidator.createInterceptor());
+
+    // Add interceptors for auth token, rate limiting, and error handling
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
+        // Rate limiting check
+        final endpoint = options.path.split('/').first; // Extract endpoint category
+        if (isRateLimited(endpoint)) {
+          final info = getRateLimitInfo(endpoint);
+          logger.warn('Rate limit exceeded', context: {
+            'endpoint': endpoint,
+            'info': info,
+          });
+          return handler.reject(
+            DioException(
+              requestOptions: options,
+              type: DioExceptionType.connectionError,
+              error: 'Rate limit exceeded. Please try again later.',
+            ),
+          );
+        }
+
         // Add auth token if available
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString('auth_token') ?? prefs.getString('access_token');
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
+        
+        logger.debug('API request', context: {
+          'method': options.method,
+          'path': options.path,
+          'endpoint': endpoint,
+        });
+        
         return handler.next(options);
+      },
+      onResponse: (response, handler) {
+        // Validate security headers
+        securityHeadersValidator.validateHeaders(response);
+        
+        logger.debug('API response', context: {
+          'statusCode': response.statusCode,
+          'path': response.requestOptions.path,
+        });
+        
+        return handler.next(response);
       },
       onError: (error, handler) {
         // Handle 401 unauthorized - clear token and redirect to login
@@ -48,6 +93,19 @@ class ApiService {
             prefs.remove('access_token');
           });
         }
+        
+        // Handle 429 rate limit
+        if (error.response?.statusCode == 429) {
+          logger.warn('Rate limit exceeded from server', context: {
+            'path': error.requestOptions.path,
+          });
+        }
+        
+        logger.error('API error', error: error, context: {
+          'statusCode': error.response?.statusCode,
+          'path': error.requestOptions.path,
+        });
+        
         return handler.next(error);
       },
     ));
