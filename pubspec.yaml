@@ -94,8 +94,15 @@ dependencies:
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0
-  # Exclude Linux platform if record_linux still has issues
-  # This will prevent Linux builds but allow Android/iOS to work
+
+# Exclude Linux platform to avoid record_linux compatibility issues
+# This will prevent Linux builds but allow Android/iOS to work
+platforms:
+  android:
+  ios:
+  web:
+  macos:
+  windows:
 
 
 dev_dependencies:
