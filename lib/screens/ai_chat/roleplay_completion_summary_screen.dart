@@ -308,7 +308,7 @@ class _ScoreCard extends StatelessWidget {
                 _MetricItem(
                   label: 'Accuracy',
                   value: '${(accuracy * 100).toStringAsFixed(0)}%',
-                  icon: Icons.target,
+                  icon: Icons.flag,
                   color: PanAfricanColors.success,
                 ),
                 _MetricItem(

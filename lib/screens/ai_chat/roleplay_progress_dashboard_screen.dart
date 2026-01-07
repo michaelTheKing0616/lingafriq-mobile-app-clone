@@ -253,7 +253,7 @@ class _OverallStatsCard extends StatelessWidget {
                 _StatItem(
                   label: 'Accuracy',
                   value: '${(progress.averageAccuracy * 100).toStringAsFixed(0)}%',
-                  icon: Icons.target,
+                  icon: Icons.flag,
                   color: PanAfricanColors.primary,
                 ),
                 _StatItem(

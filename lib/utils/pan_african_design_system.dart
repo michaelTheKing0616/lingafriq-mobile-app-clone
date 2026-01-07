@@ -52,6 +52,9 @@ class PanAfricanColors {
   // ACCENT COLORS - African Textiles Inspired
   // ═══════════════════════════════════════════════════════════════════════════
   
+  /// Accent color - Using secondary gold for vibrant accents
+  static const Color accent = secondary;
+  
   /// Kente Red
   static const Color kenteRed = Color(0xFFC4413A);
   /// Kente Blue
