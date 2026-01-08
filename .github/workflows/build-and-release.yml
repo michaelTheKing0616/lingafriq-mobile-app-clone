@@ -192,13 +192,17 @@ jobs:
           GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false"
         run: |
           echo "🏗️ Starting AAB build..."
-          flutter build appbundle --release --split-debug-info=build/symbols || \
+          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log || \
           (echo "⚠️ Build failed, performing deep clean and retry..." && \
-           flutter clean && \
-           rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true && \
-           cd android && ./gradlew clean --refresh-dependencies && cd .. && \
-           flutter pub get && \
-           flutter build appbundle --release --split-debug-info=build/symbols)
+           echo "📋 Last 100 lines of build log:" && \
+           tail -n 100 build.log || true && \
+           echo "📋 Full error details:" && \
+           flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tail -n 200 || \
+           (flutter clean && \
+            rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true && \
+            cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd .. && \
+            flutter pub get && \
+            flutter build appbundle --release --split-debug-info=build/symbols --verbose))
 
       - name: 🚚 Package AAB and mapping file
         run: |
