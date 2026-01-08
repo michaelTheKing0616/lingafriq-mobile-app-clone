@@ -211,6 +211,22 @@ afterEvaluate {
             task.actions.clear()
         }
     }
+    
+    // Configure checkReleaseAarMetadata to skip flutter_webrtc
+    project.tasks.matching { 
+        it.name == 'checkReleaseAarMetadata' || 
+        it.name == 'checkDebugAarMetadata' 
+    }.all { task ->
+        task.doFirst {
+            // Create missing flutter_webrtc AAR metadata directory to prevent errors
+            def webrtcMetadataDir = file("${project.rootProject.buildDir}/flutter_webrtc/intermediates/aar_metadata/release/writeReleaseAarMetadata")
+            webrtcMetadataDir.mkdirs()
+            def webrtcMetadataFile = file("${webrtcMetadataDir}/aar-metadata.properties")
+            if (!webrtcMetadataFile.exists()) {
+                webrtcMetadataFile.write("# flutter_webrtc excluded from build\n")
+            }
+        }
+    }
 }
 
 // Also disable tasks when they're added
