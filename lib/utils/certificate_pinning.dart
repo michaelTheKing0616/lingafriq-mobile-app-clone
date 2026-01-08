@@ -14,6 +14,7 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Certificate pinning configuration
@@ -164,16 +165,32 @@ final certificatePinner = CertificatePinner();
 
 /// Setup certificate pinning for Dio client
 void setupCertificatePinning(Dio dio, {CertificatePinningConfig? config}) {
-  final pinner = CertificatePinningConfig.defaultConfig;
+  final pinnerConfig = config ?? CertificatePinningConfig.defaultConfig;
+  final pinner = CertificatePinner(config: pinnerConfig);
   
-  if (pinner.enabled) {
-    // Add certificate pinning interceptor
-    // In dio 5.x, certificate pinning is handled via interceptor
-    dio.interceptors.add(certificatePinner.createInterceptor());
+  if (pinnerConfig.enabled) {
+    // Configure HttpClient with certificate validation callback
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+      client.badCertificateCallback = (cert, host, port) {
+        // Validate certificate using our pinner
+        final isValid = pinner.validateCertificate(cert);
+        if (!isValid) {
+          logger.error('Certificate pinning validation failed', context: {
+            'host': host,
+            'port': port,
+          });
+        }
+        return isValid;
+      };
+      return client;
+    };
     
-    logger.info('Certificate pinning enabled (via interceptor)');
+    // Add interceptor for additional error handling
+    dio.interceptors.add(pinner.createInterceptor());
+    
+    logger.info('Certificate pinning enabled with ${pinnerConfig.publicKeyHashes.length} pinned hashes');
   } else {
-    logger.debug('Certificate pinning disabled');
+    logger.debug('Certificate pinning disabled - set CERTIFICATE_PIN_HASHES to enable');
   }
 }
 
