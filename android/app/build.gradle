@@ -252,6 +252,32 @@ project.tasks.whenTaskAdded { task ->
         task.enabled = false
         task.actions.clear()
     }
+    
+    // Handle AAR metadata tasks for excluded plugins
+    if (task.name == 'checkReleaseAarMetadata' || task.name == 'checkDebugAarMetadata') {
+        task.doFirst {
+            // List of excluded plugins that need AAR metadata files created
+            def excludedPlugins = ['flutter_webrtc', 'workmanager']
+            
+            excludedPlugins.each { pluginName ->
+                // Create missing AAR metadata directories for excluded plugins
+                def releaseMetadataDir = file("${project.rootProject.buildDir}/${pluginName}/intermediates/aar_metadata/release/writeReleaseAarMetadata")
+                releaseMetadataDir.mkdirs()
+                def releaseMetadataFile = file("${releaseMetadataDir}/aar-metadata.properties")
+                if (!releaseMetadataFile.exists()) {
+                    releaseMetadataFile.write("# ${pluginName} excluded from build\n")
+                }
+                
+                // Also create debug version
+                def debugMetadataDir = file("${project.rootProject.buildDir}/${pluginName}/intermediates/aar_metadata/debug/writeDebugAarMetadata")
+                debugMetadataDir.mkdirs()
+                def debugMetadataFile = file("${debugMetadataDir}/aar-metadata.properties")
+                if (!debugMetadataFile.exists()) {
+                    debugMetadataFile.write("# ${pluginName} excluded from build\n")
+                }
+            }
+        }
+    }
 }
 
 // Workaround for flutter_vibrate AndroidManifest.xml issue
