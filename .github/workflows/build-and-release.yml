@@ -191,23 +191,17 @@ jobs:
           
           # flutter_webrtc stub
           mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
-          cat > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml << 'EOF'
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cloudwebrtc.webrtc">
-    <application />
-</manifest>
-EOF
+          echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc">' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          echo '    <application />' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          echo '</manifest>' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
           
           # workmanager stub
           mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
-          cat > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml << 'EOF'
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="be.tramckrijte.workmanager">
-    <application />
-</manifest>
-EOF
+          echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager">' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          echo '    <application />' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          echo '</manifest>' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
           
           echo "✅ Both plugins removed and stubbed successfully"
           ls -la build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/ || true
