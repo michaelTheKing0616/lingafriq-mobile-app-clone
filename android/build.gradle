@@ -205,8 +205,11 @@ subprojects {
                             try {
                                 def manifestContent = sourceManifest.text
                                 if (manifestContent.contains('package="flutter.plugins.vibrate"')) {
+                                    // Ensure build directory exists before creating backup
+                                    project.buildDir.mkdirs()
                                     // Create backup and modify
                                     def backupManifest = file("${project.buildDir}/AndroidManifest.xml.backup")
+                                    backupManifest.parentFile.mkdirs() // Ensure parent directory exists
                                     backupManifest.write(manifestContent)
                                     manifestContent = manifestContent.replaceAll('package="flutter.plugins.vibrate"', '')
                                     sourceManifest.write(manifestContent)
