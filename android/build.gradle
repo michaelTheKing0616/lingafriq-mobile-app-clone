@@ -126,6 +126,19 @@ gradle.beforeProject { project ->
         project.tasks.configureEach { task ->
             task.enabled = false
         }
+        // Prevent AAR metadata generation for excluded plugins
+        project.afterEvaluate {
+            project.tasks.matching { 
+                it.name.contains('AarMetadata') || 
+                it.name.contains('aarMetadata') ||
+                it.name.contains('checkReleaseAarMetadata') ||
+                it.name.contains('checkDebugAarMetadata') ||
+                it.name.contains('writeReleaseAarMetadata') ||
+                it.name.contains('writeDebugAarMetadata')
+            }.all {
+                enabled = false
+            }
+        }
     }
 }
 
@@ -169,9 +182,21 @@ subprojects {
         }
         
         // Exclude flutter_webrtc plugin entirely (uses deprecated embedding API)
+        // Also prevent AAR metadata generation to avoid build errors
         if (project.name == 'flutter_webrtc') {
             project.tasks.all { task ->
                 task.enabled = false
+            }
+            // Explicitly disable AAR metadata tasks to prevent checkReleaseAarMetadata failure
+            project.tasks.matching { 
+                it.name.contains('AarMetadata') || 
+                it.name.contains('aarMetadata') ||
+                it.name.contains('checkReleaseAarMetadata') ||
+                it.name.contains('checkDebugAarMetadata') ||
+                it.name.contains('writeReleaseAarMetadata') ||
+                it.name.contains('writeDebugAarMetadata')
+            }.all {
+                enabled = false
             }
             return
         }
