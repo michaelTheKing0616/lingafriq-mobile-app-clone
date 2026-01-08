@@ -257,13 +257,33 @@ project.tasks.whenTaskAdded { task ->
     }
 }
 
-// Workaround for flutter_vibrate AndroidManifest.xml issue
-// Remove package attribute from plugin's manifest during merge
+// Workaround for manifest merger issues with excluded plugins
+// Prevent manifest merger from processing excluded plugins (flutter_webrtc, workmanager)
 android.applicationVariants.all { variant ->
     variant.outputs.all { output ->
+        // Fix for flutter_webrtc and workmanager: ensure manifest merger skips them
         def processManifestTask = project.tasks.findByName("process${variant.name.capitalize()}Manifest")
         if (processManifestTask != null) {
             processManifestTask.doFirst {
+                // Create empty manifests for excluded plugins to prevent FileNotFoundException
+                // Path is relative to project root (mobile-app-main), not android/app
+                def excludedPlugins = ['flutter_webrtc', 'workmanager']
+                excludedPlugins.each { pluginName ->
+                    // Root build directory is at project root: mobile-app-main/build/
+                    def manifestDir = file("${rootProject.projectDir.parent}/build/${pluginName}/intermediates/merged_manifest/${variant.name}/process${variant.name.capitalize()}Manifest")
+                    def manifestFile = new File(manifestDir, 'AndroidManifest.xml')
+                    if (!manifestFile.exists()) {
+                        manifestDir.mkdirs()
+                        manifestFile.text = '''<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="excluded.plugin">
+    <!-- Placeholder manifest for excluded plugin -->
+</manifest>'''
+                        println("✅ Created placeholder manifest for ${pluginName} at ${manifestFile.absolutePath}")
+                    }
+                }
+                
+                // Workaround for flutter_vibrate AndroidManifest.xml issue
+                // Remove package attribute from plugin's manifest during merge
                 def manifestFile = file("${buildDir}/intermediates/merged_manifests/${variant.name}/AndroidManifest.xml")
                 if (manifestFile.exists()) {
                     def manifestContent = manifestFile.text
