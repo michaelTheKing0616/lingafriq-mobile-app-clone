@@ -168,24 +168,50 @@ jobs:
           
           echo "✅ Cache clearing complete!"
 
-      - name: 🗑️ Remove flutter_webrtc plugin (after clean)
+      - name: 🗑️ Remove excluded plugins and create stubs
         run: |
-          echo "🗑️ Removing flutter_webrtc completely..."
-          # Remove plugin after flutter clean regenerates plugin files
+          echo "🗑️ Removing flutter_webrtc and workmanager completely..."
+          
+          # Remove plugins after flutter clean regenerates plugin files
           chmod +x scripts/remove_webrtc_plugin.sh
           ./scripts/remove_webrtc_plugin.sh
           
-          # Remove ALL possible flutter_webrtc references and build artifacts
+          # Remove ALL possible build artifacts for BOTH plugins
           rm -rf build/flutter_webrtc || true
+          rm -rf build/workmanager || true
           rm -rf android/.gradle/caches/transforms-*/flutter_webrtc || true
+          rm -rf android/.gradle/caches/transforms-*/workmanager || true
           rm -rf android/app/build/intermediates/flutter_webrtc || true
+          rm -rf android/app/build/intermediates/workmanager || true
           rm -rf ~/.gradle/caches/modules-2/files-2.1/*/flutter_webrtc || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1/*/workmanager || true
           
-          # Create empty directory to prevent Gradle from looking for it
+          # Create stub manifests for BOTH plugins to prevent Gradle errors
+          echo "📝 Creating stub manifests for excluded plugins..."
+          
+          # flutter_webrtc stub
           mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
-          echo '<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc" />' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          cat > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml << 'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cloudwebrtc.webrtc">
+    <application />
+</manifest>
+EOF
           
-          echo "✅ flutter_webrtc completely removed and stubbed"
+          # workmanager stub
+          mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
+          cat > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml << 'EOF'
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="be.tramckrijte.workmanager">
+    <application />
+</manifest>
+EOF
+          
+          echo "✅ Both plugins removed and stubbed successfully"
+          ls -la build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/ || true
+          ls -la build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/ || true
 
       - name: 🏗️ Build AAB (Release)
         env:
