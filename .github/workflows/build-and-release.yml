@@ -170,32 +170,32 @@ jobs:
 
       - name: 🗑️ Remove flutter_webrtc plugin (after clean)
         run: |
+          echo "🗑️ Removing flutter_webrtc completely..."
           # Remove plugin after flutter clean regenerates plugin files
           chmod +x scripts/remove_webrtc_plugin.sh
           ./scripts/remove_webrtc_plugin.sh
-          echo "✅ Removed flutter_webrtc from plugin registry"
-          # Verify removal
-          if grep -q "flutter_webrtc" .flutter-plugins 2>/dev/null; then
-            echo "⚠️ Warning: flutter_webrtc still found in .flutter-plugins"
-          else
-            echo "✅ Confirmed: flutter_webrtc removed from .flutter-plugins"
-          fi
-          # Remove flutter_webrtc build artifacts to prevent Gradle errors
-          echo "🧹 Removing flutter_webrtc build artifacts..."
+          
+          # Remove ALL possible flutter_webrtc references and build artifacts
           rm -rf build/flutter_webrtc || true
           rm -rf android/.gradle/caches/transforms-*/flutter_webrtc || true
           rm -rf android/app/build/intermediates/flutter_webrtc || true
-          echo "✅ flutter_webrtc build artifacts removed"
+          rm -rf ~/.gradle/caches/modules-2/files-2.1/*/flutter_webrtc || true
+          
+          # Create empty directory to prevent Gradle from looking for it
+          mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
+          echo '<?xml version="1.0" encoding="utf-8"?><manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc" />' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
+          
+          echo "✅ flutter_webrtc completely removed and stubbed"
 
       - name: 🏗️ Build AAB (Release)
         env:
-          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false"
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false -Dorg.gradle.console=plain"
         run: |
           echo "🏗️ Starting AAB build..."
           set +e  # Don't exit on error immediately
           
-          # First attempt
-          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log
+          # First attempt (reduced verbosity - only show warnings and errors)
+          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built)" | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           
           if [ $BUILD_EXIT_CODE -eq 0 ]; then
@@ -212,9 +212,9 @@ jobs:
           cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
           flutter pub get
           
-          # Second attempt
+          # Second attempt (reduced verbosity)
           echo "🏗️ Retrying build after clean..."
-          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build-retry.log
+          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built)" | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           
           if [ $BUILD_EXIT_CODE -eq 0 ]; then
@@ -365,9 +365,11 @@ jobs:
           cd ios
           # Remove Podfile.lock to force regeneration with correct Firebase versions
           rm -f Podfile.lock
-          # Update CocoaPods repo and install dependencies
-          pod repo update
-          pod install --repo-update
+          # Update CocoaPods repo and install dependencies (reduced verbosity)
+          echo "📦 Updating CocoaPods repo..."
+          pod repo update --silent
+          echo "📦 Installing pods..."
+          pod install --repo-update --silent
           cd ..
 
       - name: 🏗️ Build iOS Archive (Release)
@@ -375,14 +377,14 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
         run: |
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            # Build signed IPA
+            # Build signed IPA (reduced verbosity - only show important messages)
             echo "🔐 Building signed IPA..."
-            flutter build ipa --release --split-debug-info=build/symbols
+            flutter build ipa --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built|Xcode build done)"
           else
             # Build archive without signing (for manual signing later)
             echo "⚠️ No signing credentials found. Building archive without signing..."
             echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols
+            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built|Xcode build done)"
           fi
 
       - name: 🚚 Package iOS build with version
