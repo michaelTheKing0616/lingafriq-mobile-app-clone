@@ -212,18 +212,31 @@ afterEvaluate {
         }
     }
     
-    // Configure checkReleaseAarMetadata to skip flutter_webrtc
+    // Configure checkReleaseAarMetadata to skip excluded plugins (flutter_webrtc, workmanager)
     project.tasks.matching { 
         it.name == 'checkReleaseAarMetadata' || 
         it.name == 'checkDebugAarMetadata' 
     }.all { task ->
         task.doFirst {
-            // Create missing flutter_webrtc AAR metadata directory to prevent errors
-            def webrtcMetadataDir = file("${project.rootProject.buildDir}/flutter_webrtc/intermediates/aar_metadata/release/writeReleaseAarMetadata")
-            webrtcMetadataDir.mkdirs()
-            def webrtcMetadataFile = file("${webrtcMetadataDir}/aar-metadata.properties")
-            if (!webrtcMetadataFile.exists()) {
-                webrtcMetadataFile.write("# flutter_webrtc excluded from build\n")
+            // List of excluded plugins that need AAR metadata files created
+            def excludedPlugins = ['flutter_webrtc', 'workmanager']
+            
+            excludedPlugins.each { pluginName ->
+                // Create missing AAR metadata directories for excluded plugins
+                def releaseMetadataDir = file("${project.rootProject.buildDir}/${pluginName}/intermediates/aar_metadata/release/writeReleaseAarMetadata")
+                releaseMetadataDir.mkdirs()
+                def releaseMetadataFile = file("${releaseMetadataDir}/aar-metadata.properties")
+                if (!releaseMetadataFile.exists()) {
+                    releaseMetadataFile.write("# ${pluginName} excluded from build\n")
+                }
+                
+                // Also create debug version
+                def debugMetadataDir = file("${project.rootProject.buildDir}/${pluginName}/intermediates/aar_metadata/debug/writeDebugAarMetadata")
+                debugMetadataDir.mkdirs()
+                def debugMetadataFile = file("${debugMetadataDir}/aar-metadata.properties")
+                if (!debugMetadataFile.exists()) {
+                    debugMetadataFile.write("# ${pluginName} excluded from build\n")
+                }
             }
         }
     }
