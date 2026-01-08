@@ -180,6 +180,12 @@ jobs:
           else
             echo "✅ Confirmed: flutter_webrtc removed from .flutter-plugins"
           fi
+          # Remove flutter_webrtc build artifacts to prevent Gradle errors
+          echo "🧹 Removing flutter_webrtc build artifacts..."
+          rm -rf build/flutter_webrtc || true
+          rm -rf android/.gradle/caches/transforms-*/flutter_webrtc || true
+          rm -rf android/app/build/intermediates/flutter_webrtc || true
+          echo "✅ flutter_webrtc build artifacts removed"
 
       - name: 🏗️ Build AAB (Release)
         env:
