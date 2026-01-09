@@ -171,9 +171,14 @@ jobs:
           rm -rf .flutter-plugins || true
           rm -rf .flutter-plugins-dependencies || true
           
-          # 7. Get fresh dependencies (will regenerate plugin files WITHOUT removed plugins)
+          # 7. Get fresh dependencies (will regenerate plugin files)
           echo "📥 Step 7: Getting fresh dependencies..."
           flutter pub get
+          
+          # 8. Fix GeneratedPluginRegistrant.java (flutter pub get always regenerates it)
+          echo "🔧 Step 8: Fixing GeneratedPluginRegistrant.java..."
+          chmod +x scripts/fix_plugin_registrant.sh
+          ./scripts/fix_plugin_registrant.sh
           
           echo "✅ Cache clearing complete!"
 
@@ -318,8 +323,13 @@ jobs:
           rm -rf .flutter-plugins || true
           rm -rf .flutter-plugins-dependencies || true
           
-          # Now regenerate WITHOUT removed plugins
+          # Now regenerate plugins
           flutter pub get
+          
+          # Fix GeneratedPluginRegistrant.java (flutter pub get always regenerates it)
+          echo "🔧 Fixing GeneratedPluginRegistrant.java after retry..."
+          chmod +x scripts/fix_plugin_registrant.sh
+          ./scripts/fix_plugin_registrant.sh
           
           # Recreate stubs after clean (they were deleted!)
           create_stub_manifests
