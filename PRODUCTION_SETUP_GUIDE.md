@@ -43,7 +43,134 @@ REDIS_PORT=6379       # ✅ Already configured
 - ✅ Reduced server load
 - ✅ Prevent XSS attacks from uploaded files
 
-#### Option A: Cloudflare R2 (FREE - 10GB/month)
+#### Option A: DigitalOcean Spaces (Recommended - $5/month for 250GB + CDN)
+
+**Why DigitalOcean Spaces?**
+- ✅ Built-in CDN (global edge locations)
+- ✅ S3-compatible API (easy integration)
+- ✅ Very affordable ($5/month flat rate)
+- ✅ 250GB storage + 1TB bandwidth included
+- ✅ Easy to use, great documentation
+
+**Step 1**: Create DigitalOcean Space
+```bash
+# Go to: https://cloud.digitalocean.com/spaces
+# Click: "Create a Space"
+# Choose:
+#   - Region: Choose closest to your users (e.g., NYC3, SFO3, AMS3)
+#   - Space name: lingafriq-uploads
+#   - Enable CDN: YES (important!)
+#   - File Listing: Restrict File Listing (for security)
+# Click: "Create Space"
+```
+
+**Step 2**: Get Access Keys
+```bash
+# In DigitalOcean Dashboard:
+# API > Spaces Keys > Generate New Key
+# Name: lingafriq-backend
+# Copy: Access Key and Secret Key (save securely!)
+```
+
+**Step 3**: Configure CORS (Allow uploads from your app)
+```bash
+# In your Space settings:
+# Settings > CORS Configurations > Add
+# Allowed Origins: https://lingafriq.com, https://www.lingafriq.com
+# Allowed Methods: GET, PUT, POST, DELETE
+# Allowed Headers: *
+# Save
+```
+
+**Step 4**: Add to Backend `.env`
+```bash
+# DigitalOcean Spaces Configuration
+CDN_PROVIDER=digitalocean-spaces
+SPACES_ENDPOINT=https://nyc3.digitaloceanspaces.com  # Change region as needed
+SPACES_BUCKET=lingafriq-uploads
+SPACES_REGION=nyc3  # or sfo3, ams3, sgp1, etc.
+SPACES_ACCESS_KEY=your_access_key_here
+SPACES_SECRET_KEY=your_secret_key_here
+
+# CDN URL (automatically provided by DigitalOcean)
+CDN_DOMAIN=https://lingafriq-uploads.nyc3.cdn.digitaloceanspaces.com
+```
+
+**Step 5**: Install AWS SDK (Spaces is S3-compatible)
+```bash
+cd /path/to/node-backend-main
+npm install @aws-sdk/client-s3 @aws-sdk/s3-request-presigner
+```
+
+**Step 6**: Update Backend Upload Code
+Create `src/config/spaces.config.ts`:
+```typescript
+import { S3Client } from '@aws-sdk/client-s3';
+import { getLogger } from '../utils/logger.js';
+
+const logger = getLogger('spaces');
+
+const spacesEndpoint = process.env.SPACES_ENDPOINT || 'https://nyc3.digitaloceanspaces.com';
+const spacesRegion = process.env.SPACES_REGION || 'nyc3';
+const spacesAccessKey = process.env.SPACES_ACCESS_KEY;
+const spacesSecretKey = process.env.SPACES_SECRET_KEY;
+
+if (!spacesAccessKey || !spacesSecretKey) {
+  logger.warn('DigitalOcean Spaces credentials not configured');
+}
+
+export const spacesClient = new S3Client({
+  endpoint: spacesEndpoint,
+  region: spacesRegion,
+  credentials: {
+    accessKeyId: spacesAccessKey!,
+    secretAccessKey: spacesSecretKey!,
+  },
+  forcePathStyle: false, // Use virtual-hosted-style URLs
+});
+
+export const SPACES_BUCKET = process.env.SPACES_BUCKET || 'lingafriq-uploads';
+export const CDN_DOMAIN = process.env.CDN_DOMAIN || `https://${SPACES_BUCKET}.${spacesRegion}.cdn.digitaloceanspaces.com`;
+```
+
+**Step 7**: Test Upload
+```bash
+# Create test upload endpoint in your backend
+# Example: POST /api/media/upload
+curl -X POST http://localhost:4000/api/media/upload \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -F "file=@test-image.jpg"
+
+# Should return URL like:
+# https://lingafriq-uploads.nyc3.cdn.digitaloceanspaces.com/uploads/abc123.jpg
+```
+
+**Step 8**: Custom Domain (Optional)
+```bash
+# In DigitalOcean Spaces:
+# Settings > Custom Domain
+# Add: uploads.lingafriq.com
+# Update DNS:
+#   CNAME: uploads.lingafriq.com → lingafriq-uploads.nyc3.cdn.digitaloceanspaces.com
+# Wait for DNS propagation (5-30 minutes)
+```
+
+**Cost Breakdown**:
+- **$5/month** flat rate
+- Includes 250GB storage
+- Includes 1TB outbound bandwidth
+- Additional storage: $0.02/GB
+- Additional bandwidth: $0.01/GB
+
+**Comparison**:
+- Cheaper than AWS S3 for small-medium usage
+- Built-in CDN (no extra cost)
+- Simpler pricing than Cloudflare R2
+- Better than local storage for production
+
+---
+
+#### Option B: Cloudflare R2 (FREE - 10GB/month)
 
 **Step 1**: Create Cloudflare R2 Account
 ```bash
@@ -83,7 +210,7 @@ CDN_DOMAIN=https://lingafriq-uploads.r2.cloudflarestorage.com
 # Target: lingafriq-uploads.r2.cloudflarestorage.com
 ```
 
-#### Option B: AWS S3 Free Tier (5GB)
+#### Option C: AWS S3 Free Tier (5GB)
 
 **Step 1**: Create S3 Bucket
 ```bash
@@ -121,7 +248,7 @@ AWS_ACCESS_KEY_ID=your_access_key_here
 AWS_SECRET_ACCESS_KEY=your_secret_key_here
 ```
 
-#### Option C: Local File Server (For Testing)
+#### Option D: Local File Server (For Testing)
 
 **Step 1**: Create uploads directory
 ```bash
