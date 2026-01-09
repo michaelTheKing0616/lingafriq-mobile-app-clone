@@ -223,6 +223,7 @@ jobs:
             mkdir -p build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease
             mkdir -p build/flutter_webrtc/intermediates/aar_metadata/release
             mkdir -p build/flutter_webrtc/intermediates/library_manifest/release
+            mkdir -p build/flutter_webrtc/intermediates/symbol_list_with_package_name/release/generateReleaseRFile
             
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc">' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
@@ -238,15 +239,19 @@ jobs:
             echo '  <minCompileSdk>21</minCompileSdk>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
             echo '</aar-metadata>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
             
-            # Library manifest (may be needed)
+            # Library manifest
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc" />' >> build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
+            
+            # R file symbol table (package-aware-r.txt)
+            touch build/flutter_webrtc/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
             
             # workmanager stubs
             mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
             mkdir -p build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease
             mkdir -p build/workmanager/intermediates/aar_metadata/release
             mkdir -p build/workmanager/intermediates/library_manifest/release
+            mkdir -p build/workmanager/intermediates/symbol_list_with_package_name/release/generateReleaseRFile
             
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager">' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
@@ -266,15 +271,17 @@ jobs:
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager" />' >> build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
             
+            # R file symbol table (package-aware-r.txt)
+            touch build/workmanager/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
+            
             echo "✅ Complete stub structure created for both plugins"
           }
           
           # Create stubs before first build
           create_stub_manifests
           
-          # First attempt (FULL OUTPUT for debugging)
-          echo "⚠️ TEMPORARY: Full verbose output to debug build failure"
-          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log
+          # First attempt (reduced verbosity - only show warnings and errors)
+          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built)" | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           
           if [ $BUILD_EXIT_CODE -eq 0 ]; then
@@ -294,10 +301,9 @@ jobs:
           # Recreate stubs after clean (they were deleted!)
           create_stub_manifests
           
-          # Second attempt (FULL OUTPUT for debugging)
+          # Second attempt (reduced verbosity)
           echo "🏗️ Retrying build after clean..."
-          echo "⚠️ TEMPORARY: Full verbose output to debug build failure"
-          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build-retry.log
+          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built)" | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           
           if [ $BUILD_EXIT_CODE -eq 0 ]; then
