@@ -214,25 +214,37 @@ jobs:
           echo "🏗️ Starting AAB build..."
           set +e  # Don't exit on error immediately
           
-          # Function to create stub manifests (needed after any clean operation)
+          # Function to create complete stub structure (needed after any clean operation)
           create_stub_manifests() {
-            echo "📝 Creating stub manifests for excluded plugins..."
+            echo "📝 Creating complete stub structure for excluded plugins..."
             
-            # flutter_webrtc stub
+            # flutter_webrtc stubs
             mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
+            mkdir -p build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease
+            mkdir -p build/flutter_webrtc/intermediates/aar_metadata/release
+            
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc">' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '    <application />' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '</manifest>' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             
-            # workmanager stub
+            echo '{"navigationElements":[]}' > build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
+            echo '<?xml version="1.0" encoding="utf-8"?><metadata />' > build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
+            
+            # workmanager stubs
             mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
+            mkdir -p build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease
+            mkdir -p build/workmanager/intermediates/aar_metadata/release
+            
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager">' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '    <application />' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '</manifest>' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             
-            echo "✅ Stub manifests created"
+            echo '{"navigationElements":[]}' > build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
+            echo '<?xml version="1.0" encoding="utf-8"?><metadata />' > build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
+            
+            echo "✅ Complete stub structure created for both plugins"
           }
           
           # Create stubs before first build
