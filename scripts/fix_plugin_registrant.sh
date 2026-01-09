@@ -11,15 +11,20 @@ fi
 
 echo "🔧 Fixing GeneratedPluginRegistrant.java..."
 
+# Use perl for more reliable in-place editing (works on both Linux and Mac)
 # Comment out flutter_webrtc registration
-sed -i 's/flutterEngine\.getPlugins()\.add(new com\.cloudwebrtc\.webrtc\.FlutterWebRTCPlugin());/\/\/ flutterEngine.getPlugins().add(new com.cloudwebrtc.webrtc.FlutterWebRTCPlugin()); \/\/ COMMENTED - Build issue, LiveKit handles WebRTC internally/g' "$REGISTRANT_FILE"
+perl -i -pe 's/(\s+)flutterEngine\.getPlugins\(\)\.add\(new com\.cloudwebrtc\.webrtc\.FlutterWebRTCPlugin\(\)\);/$1\/\/ flutterEngine.getPlugins().add(new com.cloudwebrtc.webrtc.FlutterWebRTCPlugin()); \/\/ COMMENTED/g' "$REGISTRANT_FILE"
 
-sed -i 's/Log\.e(TAG, "Error registering plugin flutter_webrtc.*/\/\/ Log.e(TAG, "Error registering plugin flutter_webrtc..."); \/\/ COMMENTED/g' "$REGISTRANT_FILE"
+perl -i -pe 's/(\s+)Log\.e\(TAG, "Error registering plugin flutter_webrtc.*/$1\/\/ Log.e(TAG, "Error registering plugin flutter_webrtc..."); \/\/ COMMENTED/g' "$REGISTRANT_FILE"
 
 # Comment out workmanager registration
-sed -i 's/flutterEngine\.getPlugins()\.add(new dev\.fluttercommunity\.workmanager\.WorkmanagerPlugin());/\/\/ flutterEngine.getPlugins().add(new dev.fluttercommunity.workmanager.WorkmanagerPlugin()); \/\/ COMMENTED - Build issue, background tasks handled differently/g' "$REGISTRANT_FILE"
+perl -i -pe 's/(\s+)flutterEngine\.getPlugins\(\)\.add\(new dev\.fluttercommunity\.workmanager\.WorkmanagerPlugin\(\)\);/$1\/\/ flutterEngine.getPlugins().add(new dev.fluttercommunity.workmanager.WorkmanagerPlugin()); \/\/ COMMENTED/g' "$REGISTRANT_FILE"
 
-sed -i 's/Log\.e(TAG, "Error registering plugin workmanager.*/\/\/ Log.e(TAG, "Error registering plugin workmanager..."); \/\/ COMMENTED/g' "$REGISTRANT_FILE"
+perl -i -pe 's/(\s+)Log\.e\(TAG, "Error registering plugin workmanager.*/$1\/\/ Log.e(TAG, "Error registering plugin workmanager..."); \/\/ COMMENTED/g' "$REGISTRANT_FILE"
 
 echo "✅ GeneratedPluginRegistrant.java fixed successfully"
+
+# Show what we changed (for debugging)
+echo "📋 Verifying changes:"
+grep -n "flutter_webrtc\|workmanager" "$REGISTRANT_FILE" | head -10 || echo "No matches found (good - means they're commented out)"
 
