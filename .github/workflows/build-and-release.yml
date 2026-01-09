@@ -222,27 +222,49 @@ jobs:
             mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
             mkdir -p build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease
             mkdir -p build/flutter_webrtc/intermediates/aar_metadata/release
+            mkdir -p build/flutter_webrtc/intermediates/library_manifest/release
             
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc">' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '    <application />' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '</manifest>' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             
-            echo '{"navigationElements":[]}' > build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
-            echo '<?xml version="1.0" encoding="utf-8"?><metadata />' > build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
+            # FIXED: navigation.json must be an ARRAY, not an object
+            echo '[]' > build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
+            
+            # FIXED: Proper aar-metadata.xml format
+            echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
+            echo '<aar-metadata>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
+            echo '  <minCompileSdk>21</minCompileSdk>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
+            echo '</aar-metadata>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
+            
+            # Library manifest (may be needed)
+            echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
+            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc" />' >> build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
             
             # workmanager stubs
             mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
             mkdir -p build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease
             mkdir -p build/workmanager/intermediates/aar_metadata/release
+            mkdir -p build/workmanager/intermediates/library_manifest/release
             
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager">' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '    <application />' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '</manifest>' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             
-            echo '{"navigationElements":[]}' > build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
-            echo '<?xml version="1.0" encoding="utf-8"?><metadata />' > build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
+            # FIXED: navigation.json must be an ARRAY
+            echo '[]' > build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
+            
+            # FIXED: Proper aar-metadata.xml format
+            echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
+            echo '<aar-metadata>' >> build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
+            echo '  <minCompileSdk>21</minCompileSdk>' >> build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
+            echo '</aar-metadata>' >> build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
+            
+            # Library manifest
+            echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
+            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager" />' >> build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
             
             echo "✅ Complete stub structure created for both plugins"
           }
