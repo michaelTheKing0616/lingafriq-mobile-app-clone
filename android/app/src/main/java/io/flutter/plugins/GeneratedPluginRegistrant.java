@@ -86,9 +86,9 @@ public final class GeneratedPluginRegistrant {
       Log.e(TAG, "Error registering plugin flutter_vibrate, flutter.plugins.vibrate.VibratePlugin", e);
     }
     try {
-      // flutterEngine.getPlugins().add(new com.cloudwebrtc.webrtc.FlutterWebRTCPlugin()); // REMOVED - not used
+      // flutterEngine.getPlugins().add(new com.cloudwebrtc.webrtc.FlutterWebRTCPlugin()); // COMMENTED - Build issue, LiveKit handles WebRTC internally
     } catch (Exception e) {
-      // Log.e(TAG, "Error registering plugin flutter_webrtc..."); // REMOVED
+      // Log.e(TAG, "Error registering plugin flutter_webrtc..."); // COMMENTED
     }
     try {
       flutterEngine.getPlugins().add(new com.ryanheise.just_audio.JustAudioPlugin());
@@ -154,6 +154,11 @@ public final class GeneratedPluginRegistrant {
       flutterEngine.getPlugins().add(new dev.fluttercommunity.plus.wakelock.WakelockPlusPlugin());
     } catch (Exception e) {
       Log.e(TAG, "Error registering plugin wakelock_plus, dev.fluttercommunity.plus.wakelock.WakelockPlusPlugin", e);
+    }
+    try {
+      // flutterEngine.getPlugins().add(new dev.fluttercommunity.workmanager.WorkmanagerPlugin()); // COMMENTED - Build issue, background tasks handled differently
+    } catch (Exception e) {
+      // Log.e(TAG, "Error registering plugin workmanager..."); // COMMENTED
     }
   }
 }
