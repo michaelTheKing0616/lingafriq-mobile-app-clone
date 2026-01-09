@@ -162,8 +162,16 @@ jobs:
           rm -rf android/app/build || true
           rm -rf android/build || true
           
-          # 6. Get fresh dependencies
-          echo "📥 Step 6: Getting fresh dependencies..."
+          # 6. DELETE GENERATED PLUGIN FILES (critical - must happen BEFORE flutter pub get)
+          echo "🗑️ Step 6: Deleting generated plugin registrant files..."
+          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
+          rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
+          rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
+          rm -rf .flutter-plugins || true
+          rm -rf .flutter-plugins-dependencies || true
+          
+          # 7. Get fresh dependencies (will regenerate plugin files WITHOUT removed plugins)
+          echo "📥 Step 7: Getting fresh dependencies..."
           flutter pub get
           
           echo "✅ Cache clearing complete!"
@@ -299,6 +307,16 @@ jobs:
           flutter clean
           rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true
           cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
+          
+          # CRITICAL: Delete generated plugin files BEFORE flutter pub get
+          echo "🗑️ Deleting generated plugin registrant files..."
+          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
+          rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
+          rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
+          rm -rf .flutter-plugins || true
+          rm -rf .flutter-plugins-dependencies || true
+          
+          # Now regenerate WITHOUT removed plugins
           flutter pub get
           
           # Recreate stubs after clean (they were deleted!)
