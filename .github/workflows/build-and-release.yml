@@ -230,7 +230,8 @@ jobs:
             echo '    <application />' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             echo '</manifest>' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
             
-            # FIXED: navigation.json must be an ARRAY, not an object
+            # navigation.json - Android Navigation component format
+            # Must be a valid JSON array (can be empty for libraries without nav graphs)
             echo '[]' > build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
             
             # FIXED: Proper aar-metadata.xml format
@@ -243,8 +244,10 @@ jobs:
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc" />' >> build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
             
-            # R file symbol table (package-aware-r.txt)
-            touch build/flutter_webrtc/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
+            # R file symbol table (package-aware-r.txt) - Must have valid format
+            # Format: <package_name>:<resource_type>/<resource_name>
+            # Even empty libraries need at least the package declaration
+            echo 'com.cloudwebrtc.webrtc' > build/flutter_webrtc/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
             
             # workmanager stubs
             mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
@@ -271,8 +274,8 @@ jobs:
             echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
             echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager" />' >> build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
             
-            # R file symbol table (package-aware-r.txt)
-            touch build/workmanager/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
+            # R file symbol table (package-aware-r.txt) - Must have valid format
+            echo 'be.tramckrijte.workmanager' > build/workmanager/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
             
             echo "✅ Complete stub structure created for both plugins"
           }
