@@ -2,26 +2,28 @@
 # Script to prevent problematic plugins from being registered
 # This removes them from .flutter-plugins BEFORE GeneratedPluginRegistrant.java is created
 
-echo "🔧 Removing problematic plugins from .flutter-plugins..."
+echo "🔧 Removing problematic plugins from Flutter plugin files..."
 
-# Debug: Check if file exists
+# Remove from .flutter-plugins-dependencies (JSON file)
+if [ -f ".flutter-plugins-dependencies" ]; then
+  echo "📁 Found .flutter-plugins-dependencies (JSON)"
+  
+  # Use perl to remove flutter_webrtc and workmanager from JSON
+  # This removes the entire plugin entry from the dependencyGraph
+  perl -i -pe 's/"flutter_webrtc":\{[^\}]*\},?//g' .flutter-plugins-dependencies
+  perl -i -pe 's/"workmanager":\{[^\}]*\},?//g' .flutter-plugins-dependencies
+  # Clean up any trailing commas that might be left
+  perl -i -pe 's/,(\s*[}\]])/$1/g' .flutter-plugins-dependencies
+  
+  echo "✅ Removed flutter_webrtc and workmanager from .flutter-plugins-dependencies"
+fi
+
+# Also remove from .flutter-plugins if it exists
 if [ -f ".flutter-plugins" ]; then
   echo "📁 Found .flutter-plugins file"
-  echo "📋 Contents before:"
-  cat .flutter-plugins | grep -E "flutter_webrtc|workmanager" || echo "  (no problematic plugins found)"
-  
-  # Remove flutter_webrtc and workmanager
   grep -v "flutter_webrtc" .flutter-plugins | grep -v "workmanager" > .flutter-plugins.tmp
   mv .flutter-plugins.tmp .flutter-plugins
-  
-  echo "📋 Contents after:"
-  cat .flutter-plugins | grep -E "flutter_webrtc|workmanager" || echo "  (successfully removed)"
   echo "✅ Removed flutter_webrtc and workmanager from .flutter-plugins"
-else
-  echo "⚠️  .flutter-plugins not found - will rely on Java file fix only"
-  echo "📁 Current directory: $(pwd)"
-  echo "📁 Files present:"
-  ls -la | grep flutter || echo "  (no flutter files)"
 fi
 
 # Also fix the Java file if it already exists (belt and suspenders approach)
