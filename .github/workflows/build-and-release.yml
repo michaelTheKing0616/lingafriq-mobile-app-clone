@@ -163,8 +163,9 @@ jobs:
           rm -rf android/build || true
           
           # 6. DELETE GENERATED PLUGIN FILES (critical - must happen BEFORE flutter pub get)
-          echo "🗑️ Step 6: Deleting generated plugin registrant files..."
-          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
+          # NOTE: We keep GeneratedPluginRegistrant.java as it's committed with fixes
+          echo "🗑️ Step 6: Deleting generated plugin metadata files..."
+          # rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true  # KEEP - committed with fixes
           rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
           rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
           rm -rf .flutter-plugins || true
@@ -309,8 +310,9 @@ jobs:
           cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
           
           # CRITICAL: Delete generated plugin files BEFORE flutter pub get
-          echo "🗑️ Deleting generated plugin registrant files..."
-          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
+          # NOTE: We keep GeneratedPluginRegistrant.java as it's committed with fixes
+          echo "🗑️ Deleting generated plugin metadata files..."
+          # rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true  # KEEP - committed with fixes
           rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
           rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
           rm -rf .flutter-plugins || true
