@@ -163,9 +163,8 @@ jobs:
           rm -rf android/build || true
           
           # 6. DELETE GENERATED PLUGIN FILES (critical - must happen BEFORE flutter pub get)
-          # NOTE: We keep GeneratedPluginRegistrant.java as it's committed with fixes
           echo "🗑️ Step 6: Deleting generated plugin metadata files..."
-          # rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true  # KEEP - committed with fixes
+          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
           rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
           rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
           rm -rf .flutter-plugins || true
@@ -175,14 +174,14 @@ jobs:
           echo "📥 Step 7: Getting fresh dependencies..."
           flutter pub get
           
-          # 8. Fix GeneratedPluginRegistrant.java (flutter pub get always regenerates it)
-          echo "🔧 Step 8: Fixing GeneratedPluginRegistrant.java..."
+          # 8. Remove problematic plugins from .flutter-plugins (BEFORE they get into GeneratedPluginRegistrant.java)
+          echo "🔧 Step 8: Removing problematic plugins from .flutter-plugins..."
           chmod +x scripts/fix_plugin_registrant.sh
           ./scripts/fix_plugin_registrant.sh
           
-          # 9. Force Gradle to recognize the changes
-          echo "🔄 Step 9: Clearing Gradle build cache to force recompilation..."
-          cd android && ./gradlew clean --no-daemon && cd ..
+          # 9. Regenerate GeneratedPluginRegistrant.java WITHOUT problematic plugins
+          echo "🔄 Step 9: Regenerating plugin registrant without problematic plugins..."
+          cd android && flutter pub get && cd ..
           
           echo "✅ Cache clearing complete!"
 
@@ -319,21 +318,24 @@ jobs:
           cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
           
           # CRITICAL: Delete generated plugin files BEFORE flutter pub get
-          # NOTE: We keep GeneratedPluginRegistrant.java as it's committed with fixes
           echo "🗑️ Deleting generated plugin metadata files..."
-          # rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true  # KEEP - committed with fixes
+          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
           rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
           rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
           rm -rf .flutter-plugins || true
           rm -rf .flutter-plugins-dependencies || true
           
-          # Now regenerate plugins
+          # Regenerate plugins
           flutter pub get
           
-          # Fix GeneratedPluginRegistrant.java (flutter pub get always regenerates it)
-          echo "🔧 Fixing GeneratedPluginRegistrant.java after retry..."
+          # Remove problematic plugins from .flutter-plugins
+          echo "🔧 Removing problematic plugins from .flutter-plugins..."
           chmod +x scripts/fix_plugin_registrant.sh
           ./scripts/fix_plugin_registrant.sh
+          
+          # Regenerate GeneratedPluginRegistrant.java WITHOUT problematic plugins
+          echo "🔄 Regenerating plugin registrant without problematic plugins..."
+          cd android && flutter pub get && cd ..
           
           # Recreate stubs after clean (they were deleted!)
           create_stub_manifests

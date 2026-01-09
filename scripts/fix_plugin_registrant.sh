@@ -1,15 +1,25 @@
 #!/bin/bash
-# Script to fix GeneratedPluginRegistrant.java after flutter pub get
-# This comments out problematic plugin registrations that cause build failures
+# Script to prevent problematic plugins from being registered
+# This removes them from .flutter-plugins BEFORE GeneratedPluginRegistrant.java is created
 
+echo "🔧 Removing problematic plugins from .flutter-plugins..."
+
+# Remove flutter_webrtc and workmanager from .flutter-plugins if it exists
+if [ -f ".flutter-plugins" ]; then
+  grep -v "flutter_webrtc" .flutter-plugins | grep -v "workmanager" > .flutter-plugins.tmp
+  mv .flutter-plugins.tmp .flutter-plugins
+  echo "✅ Removed flutter_webrtc and workmanager from .flutter-plugins"
+fi
+
+# Also fix the Java file if it already exists (belt and suspenders approach)
 REGISTRANT_FILE="android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java"
 
 if [ ! -f "$REGISTRANT_FILE" ]; then
-  echo "❌ GeneratedPluginRegistrant.java not found at $REGISTRANT_FILE"
-  exit 1
+  echo "ℹ️  GeneratedPluginRegistrant.java not found yet (will be generated clean)"
+  exit 0
 fi
 
-echo "🔧 Fixing GeneratedPluginRegistrant.java..."
+echo "🔧 Also fixing existing GeneratedPluginRegistrant.java..."
 
 # Use perl for more reliable in-place editing (works on both Linux and Mac)
 # Comment out flutter_webrtc registration
