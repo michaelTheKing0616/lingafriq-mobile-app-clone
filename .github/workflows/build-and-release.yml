@@ -300,6 +300,11 @@ jobs:
           # Create stubs before first build
           create_stub_manifests
           
+          # CRITICAL: Fix GeneratedPluginRegistrant.java RIGHT BEFORE BUILD
+          echo "🔧 Fixing GeneratedPluginRegistrant.java before build..."
+          chmod +x scripts/fix_plugin_registrant.sh
+          ./scripts/fix_plugin_registrant.sh
+          
           # First attempt - FULL VERBOSE OUTPUT
           flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
@@ -342,6 +347,12 @@ jobs:
           
           # Second attempt - FULL VERBOSE OUTPUT
           echo "🏗️ Retrying build after clean..."
+          
+          # CRITICAL: Fix GeneratedPluginRegistrant.java again before retry
+          echo "🔧 Fixing GeneratedPluginRegistrant.java before retry..."
+          chmod +x scripts/fix_plugin_registrant.sh
+          ./scripts/fix_plugin_registrant.sh
+          
           flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
           
