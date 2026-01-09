@@ -180,6 +180,10 @@ jobs:
           chmod +x scripts/fix_plugin_registrant.sh
           ./scripts/fix_plugin_registrant.sh
           
+          # 9. Force Gradle to recognize the changes
+          echo "🔄 Step 9: Clearing Gradle build cache to force recompilation..."
+          cd android && ./gradlew clean --no-daemon && cd ..
+          
           echo "✅ Cache clearing complete!"
 
       - name: 🗑️ Remove excluded plugins and create stubs
