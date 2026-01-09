@@ -61,7 +61,7 @@ dependencies:
   file_picker: ^8.1.2 
   # Offline & Background Services
   connectivity_plus: ^5.0.2
-  workmanager: ^0.5.2
+  # workmanager: ^0.5.2  # Removed - not used in production
   archive: ^3.4.9
   crypto: ^3.0.5
   encrypt: ^5.0.3
