@@ -4,11 +4,24 @@
 
 echo "🔧 Removing problematic plugins from .flutter-plugins..."
 
-# Remove flutter_webrtc and workmanager from .flutter-plugins if it exists
+# Debug: Check if file exists
 if [ -f ".flutter-plugins" ]; then
+  echo "📁 Found .flutter-plugins file"
+  echo "📋 Contents before:"
+  cat .flutter-plugins | grep -E "flutter_webrtc|workmanager" || echo "  (no problematic plugins found)"
+  
+  # Remove flutter_webrtc and workmanager
   grep -v "flutter_webrtc" .flutter-plugins | grep -v "workmanager" > .flutter-plugins.tmp
   mv .flutter-plugins.tmp .flutter-plugins
+  
+  echo "📋 Contents after:"
+  cat .flutter-plugins | grep -E "flutter_webrtc|workmanager" || echo "  (successfully removed)"
   echo "✅ Removed flutter_webrtc and workmanager from .flutter-plugins"
+else
+  echo "⚠️  .flutter-plugins not found - will rely on Java file fix only"
+  echo "📁 Current directory: $(pwd)"
+  echo "📁 Files present:"
+  ls -la | grep flutter || echo "  (no flutter files)"
 fi
 
 # Also fix the Java file if it already exists (belt and suspenders approach)
