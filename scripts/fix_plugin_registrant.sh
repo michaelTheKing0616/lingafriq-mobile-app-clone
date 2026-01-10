@@ -34,10 +34,6 @@ perl -i -pe 's/^(import dev\.fluttercommunity\.workmanager\.WorkmanagerPlugin;)/
 
 echo "✅ GeneratedPluginRegistrant.java fixed successfully"
 
-# Make file READ-ONLY to prevent flutter build from regenerating it
-chmod 444 "$REGISTRANT_FILE"
-echo "🔒 Made file read-only to prevent regeneration"
-
 # Show what we changed (for debugging)
 echo "📋 Verifying changes:"
 grep -n "flutter_webrtc\|workmanager" "$REGISTRANT_FILE" | head -15 || echo "No matches found"
