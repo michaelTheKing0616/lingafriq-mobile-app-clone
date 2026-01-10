@@ -77,7 +77,10 @@ dependencies:
   # Networking
   socket_io_client: ^2.0.3+1
   # Real-time Communication
-  livekit_client: ^1.2.0
+  # NOTE: livekit_client 1.x pulls in flutter_webrtc 0.9.x which fails to compile on modern Flutter
+  # due to the removed Android embedding v1 API (PluginRegistry.Registrar).
+  # We upgrade to a 2.x line that is compatible with modern flutter_webrtc/webrtc_interface.
+  livekit_client: ^2.1.0
   # Game Engine & Animation
   rive: ^0.12.4
   flame: ^1.18.0
@@ -94,6 +97,11 @@ dependencies:
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0
+
+  # CI/Android build fix: flutter_webrtc 0.9.x uses deprecated Android embedding v1
+  # (PluginRegistry.Registrar) and fails to compile on modern Flutter/AGP.
+  # Force a modern flutter_webrtc that supports embedding v2.
+  flutter_webrtc: ^1.2.0
 
 # Exclude Linux platform to avoid record_linux compatibility issues
 # This will prevent Linux builds but allow Android/iOS to work
