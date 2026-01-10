@@ -13,6 +13,9 @@ fi
 
 echo "📁 Found $REGISTRANT_FILE"
 
+# Make file writable first (in case it was made read-only before)
+chmod 644 "$REGISTRANT_FILE"
+
 # Use perl for reliable in-place editing (works on Linux and Mac)
 # Comment out flutter_webrtc registration
 perl -i -pe 's/^(\s+)(flutterEngine\.getPlugins\(\)\.add\(new com\.cloudwebrtc\.webrtc\.FlutterWebRTCPlugin\(\)\);)/$1\/\/ $2 \/\/ COMMENTED - Build fix/g' "$REGISTRANT_FILE"
@@ -30,6 +33,10 @@ perl -i -pe 's/^(import com\.cloudwebrtc\.webrtc\.FlutterWebRTCPlugin;)/\/\/ $1 
 perl -i -pe 's/^(import dev\.fluttercommunity\.workmanager\.WorkmanagerPlugin;)/\/\/ $1 \/\/ COMMENTED - Build fix/g' "$REGISTRANT_FILE"
 
 echo "✅ GeneratedPluginRegistrant.java fixed successfully"
+
+# Make file READ-ONLY to prevent flutter build from regenerating it
+chmod 444 "$REGISTRANT_FILE"
+echo "🔒 Made file read-only to prevent regeneration"
 
 # Show what we changed (for debugging)
 echo "📋 Verifying changes:"
