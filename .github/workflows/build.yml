@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: 🔧 Ensure Gradle wrapper is executable
+        run: |
+          chmod +x android/gradlew || true
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -48,6 +52,7 @@ jobs:
           
           # 4. Clear Gradle cache
           echo "🔄 Step 4: Clearing Gradle cache..."
+          chmod +x android/gradlew || true
           cd android || exit 0
           ./gradlew clean --refresh-dependencies || true
           rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
@@ -66,12 +71,6 @@ jobs:
           flutter pub get
           
           echo "✅ Cache clearing complete!"
-      
-      - name: Remove flutter_webrtc plugin
-        run: |
-          chmod +x scripts/remove_webrtc_plugin.sh
-          ./scripts/remove_webrtc_plugin.sh
-          echo "✅ Removed flutter_webrtc from plugin registry"
       
       - name: Build APK
         run: |

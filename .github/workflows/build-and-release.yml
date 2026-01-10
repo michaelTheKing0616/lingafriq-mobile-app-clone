@@ -74,6 +74,10 @@ jobs:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
 
+      - name: 🔧 Ensure Gradle wrapper is executable
+        run: |
+          chmod +x android/gradlew || true
+
       - name: 🧰 Setup Java
         uses: actions/setup-java@v4
         with:
@@ -149,6 +153,7 @@ jobs:
           
           # 4. Clear Gradle cache
           echo "🔄 Step 4: Clearing Gradle cache..."
+          chmod +x android/gradlew || true
           cd android || exit 0
           ./gradlew clean --refresh-dependencies || true
           rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
@@ -174,55 +179,7 @@ jobs:
           echo "📥 Step 7: Getting fresh dependencies..."
           flutter pub get
           
-          # 8. Remove problematic plugins from .flutter-plugins (BEFORE they get into GeneratedPluginRegistrant.java)
-          echo "🔧 Step 8: Removing problematic plugins from .flutter-plugins..."
-          chmod +x scripts/fix_plugin_registrant.sh
-          ./scripts/fix_plugin_registrant.sh
-          
-          # 9. Regenerate GeneratedPluginRegistrant.java WITHOUT problematic plugins
-          echo "🔄 Step 9: Regenerating plugin registrant without problematic plugins..."
-          cd android && flutter pub get && cd ..
-          
           echo "✅ Cache clearing complete!"
-
-      - name: 🗑️ Remove excluded plugins and create stubs
-        run: |
-          echo "🗑️ Removing flutter_webrtc and workmanager completely..."
-          
-          # Remove plugins after flutter clean regenerates plugin files
-          chmod +x scripts/remove_webrtc_plugin.sh
-          ./scripts/remove_webrtc_plugin.sh
-          
-          # Remove ALL possible build artifacts for BOTH plugins
-          rm -rf build/flutter_webrtc || true
-          rm -rf build/workmanager || true
-          rm -rf android/.gradle/caches/transforms-*/flutter_webrtc || true
-          rm -rf android/.gradle/caches/transforms-*/workmanager || true
-          rm -rf android/app/build/intermediates/flutter_webrtc || true
-          rm -rf android/app/build/intermediates/workmanager || true
-          rm -rf ~/.gradle/caches/modules-2/files-2.1/*/flutter_webrtc || true
-          rm -rf ~/.gradle/caches/modules-2/files-2.1/*/workmanager || true
-          
-          # Create stub manifests for BOTH plugins to prevent Gradle errors
-          echo "📝 Creating stub manifests for excluded plugins..."
-          
-          # flutter_webrtc stub
-          mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
-          echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc">' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          echo '    <application />' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          echo '</manifest>' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          
-          # workmanager stub
-          mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
-          echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager">' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          echo '    <application />' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          echo '</manifest>' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-          
-          echo "✅ Both plugins removed and stubbed successfully"
-          ls -la build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/ || true
-          ls -la build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/ || true
 
       - name: 🏗️ Build AAB (Release)
         env:
@@ -230,80 +187,7 @@ jobs:
         run: |
           echo "🏗️ Starting AAB build..."
           set +e  # Don't exit on error immediately
-          
-          # Function to create complete stub structure (needed after any clean operation)
-          create_stub_manifests() {
-            echo "📝 Creating complete stub structure for excluded plugins..."
-            
-            # flutter_webrtc stubs
-            mkdir -p build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest
-            mkdir -p build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease
-            mkdir -p build/flutter_webrtc/intermediates/aar_metadata/release
-            mkdir -p build/flutter_webrtc/intermediates/library_manifest/release
-            mkdir -p build/flutter_webrtc/intermediates/symbol_list_with_package_name/release/generateReleaseRFile
-            
-            echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc">' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            echo '    <application />' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            echo '</manifest>' >> build/flutter_webrtc/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            
-            # navigation.json - Android Navigation component format
-            # Must be a valid JSON array (can be empty for libraries without nav graphs)
-            echo '[]' > build/flutter_webrtc/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
-            
-            # FIXED: Proper aar-metadata.xml format
-            echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
-            echo '<aar-metadata>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
-            echo '  <minCompileSdk>21</minCompileSdk>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
-            echo '</aar-metadata>' >> build/flutter_webrtc/intermediates/aar_metadata/release/aar-metadata.xml
-            
-            # Library manifest
-            echo '<?xml version="1.0" encoding="utf-8"?>' > build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
-            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cloudwebrtc.webrtc" />' >> build/flutter_webrtc/intermediates/library_manifest/release/AndroidManifest.xml
-            
-            # R file symbol table (package-aware-r.txt) - Must have valid format
-            # Format: <package_name>:<resource_type>/<resource_name>
-            # Even empty libraries need at least the package declaration
-            echo 'com.cloudwebrtc.webrtc' > build/flutter_webrtc/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
-            
-            # workmanager stubs
-            mkdir -p build/workmanager/intermediates/merged_manifest/release/processReleaseManifest
-            mkdir -p build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease
-            mkdir -p build/workmanager/intermediates/aar_metadata/release
-            mkdir -p build/workmanager/intermediates/library_manifest/release
-            mkdir -p build/workmanager/intermediates/symbol_list_with_package_name/release/generateReleaseRFile
-            
-            echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager">' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            echo '    <application />' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            echo '</manifest>' >> build/workmanager/intermediates/merged_manifest/release/processReleaseManifest/AndroidManifest.xml
-            
-            # FIXED: navigation.json must be an ARRAY
-            echo '[]' > build/workmanager/intermediates/navigation_json/release/extractDeepLinksRelease/navigation.json
-            
-            # FIXED: Proper aar-metadata.xml format
-            echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
-            echo '<aar-metadata>' >> build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
-            echo '  <minCompileSdk>21</minCompileSdk>' >> build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
-            echo '</aar-metadata>' >> build/workmanager/intermediates/aar_metadata/release/aar-metadata.xml
-            
-            # Library manifest
-            echo '<?xml version="1.0" encoding="utf-8"?>' > build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
-            echo '<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="be.tramckrijte.workmanager" />' >> build/workmanager/intermediates/library_manifest/release/AndroidManifest.xml
-            
-            # R file symbol table (package-aware-r.txt) - Must have valid format
-            echo 'be.tramckrijte.workmanager' > build/workmanager/intermediates/symbol_list_with_package_name/release/generateReleaseRFile/package-aware-r.txt
-            
-            echo "✅ Complete stub structure created for both plugins"
-          }
-          
-          # Create stubs before first build
-          create_stub_manifests
-          
-          # CRITICAL: Fix GeneratedPluginRegistrant.java RIGHT BEFORE BUILD
-          echo "🔧 Fixing GeneratedPluginRegistrant.java before build..."
-          chmod +x scripts/fix_plugin_registrant.sh
-          ./scripts/fix_plugin_registrant.sh
+          chmod +x android/gradlew || true
           
           # First attempt - FULL VERBOSE OUTPUT
           flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log
@@ -320,38 +204,12 @@ jobs:
           echo "🔄 Performing deep clean and retry..."
           flutter clean
           rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true
+          chmod +x android/gradlew || true
           cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
-          
-          # CRITICAL: Delete generated plugin files BEFORE flutter pub get
-          echo "🗑️ Deleting generated plugin metadata files..."
-          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
-          rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
-          rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
-          rm -rf .flutter-plugins || true
-          rm -rf .flutter-plugins-dependencies || true
-          
-          # Regenerate plugins
           flutter pub get
-          
-          # Remove problematic plugins from .flutter-plugins
-          echo "🔧 Removing problematic plugins from .flutter-plugins..."
-          chmod +x scripts/fix_plugin_registrant.sh
-          ./scripts/fix_plugin_registrant.sh
-          
-          # Regenerate GeneratedPluginRegistrant.java WITHOUT problematic plugins
-          echo "🔄 Regenerating plugin registrant without problematic plugins..."
-          cd android && flutter pub get && cd ..
-          
-          # Recreate stubs after clean (they were deleted!)
-          create_stub_manifests
           
           # Second attempt - FULL VERBOSE OUTPUT
           echo "🏗️ Retrying build after clean..."
-          
-          # CRITICAL: Fix GeneratedPluginRegistrant.java again before retry
-          echo "🔧 Fixing GeneratedPluginRegistrant.java before retry..."
-          chmod +x scripts/fix_plugin_registrant.sh
-          ./scripts/fix_plugin_registrant.sh
           
           flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
@@ -438,12 +296,6 @@ jobs:
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
-
-      - name: 🗑️ Remove flutter_webrtc plugin
-        run: |
-          chmod +x scripts/remove_webrtc_plugin.sh
-          ./scripts/remove_webrtc_plugin.sh
-          echo "✅ Removed flutter_webrtc from plugin registry"
 
       - name: 🔐 Setup iOS Code Signing
         env:
