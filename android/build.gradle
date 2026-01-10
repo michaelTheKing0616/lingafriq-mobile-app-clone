@@ -119,30 +119,6 @@ allprojects {
 // ✅ Ensure clean build directory structure
 rootProject.buildDir = '../build'
 
-// Exclude deprecated plugins before they're evaluated
-gradle.beforeProject { project ->
-    if (project.name == 'flutter_webrtc' || project.name == 'workmanager') {
-        // Disable all tasks for excluded plugins
-        project.tasks.configureEach { task ->
-            task.enabled = false
-        }
-        // Prevent AAR metadata generation for excluded plugins
-        project.afterEvaluate {
-            project.tasks.matching { 
-                it.name.contains('AarMetadata') || 
-                it.name.contains('aarMetadata') ||
-                it.name.contains('checkReleaseAarMetadata') ||
-                it.name.contains('checkDebugAarMetadata') ||
-                it.name.contains('writeReleaseAarMetadata') ||
-                it.name.contains('writeDebugAarMetadata')
-            }.all {
-                enabled = false
-            }
-        }
-    }
-}
-
-
 subprojects {
     afterEvaluate { project ->
         // ✅ FIRST: Set compileSdk 36 for ALL projects (including excluded ones)
@@ -181,33 +157,7 @@ subprojects {
             }
         }
         
-        // Exclude flutter_webrtc plugin entirely (uses deprecated embedding API)
-        // Also prevent AAR metadata generation to avoid build errors
-        if (project.name == 'flutter_webrtc') {
-            project.tasks.all { task ->
-                task.enabled = false
-            }
-            // Explicitly disable AAR metadata tasks to prevent checkReleaseAarMetadata failure
-            project.tasks.matching { 
-                it.name.contains('AarMetadata') || 
-                it.name.contains('aarMetadata') ||
-                it.name.contains('checkReleaseAarMetadata') ||
-                it.name.contains('checkDebugAarMetadata') ||
-                it.name.contains('writeReleaseAarMetadata') ||
-                it.name.contains('writeDebugAarMetadata')
-            }.all {
-                enabled = false
-            }
-            return
-        }
-        
-        // Exclude workmanager plugin (uses deprecated embedding API)
-        if (project.name == 'workmanager') {
-            project.tasks.all { task ->
-                task.enabled = false
-            }
-            return
-        }
+        // NOTE: We keep all required plugins enabled for production builds (including WebRTC/LiveKit and Workmanager).
         
         if (project.hasProperty('android')) {
             project.android {
