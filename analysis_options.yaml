@@ -9,6 +9,12 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
+analyzer:
+  exclude:
+    # This folder is a curriculum JSON bundle; it contains one experimental Dart file
+    # (`ai_chat_provider_patched.dart`) that is not imported by the runtime app.
+    - lingafriq_full_curriculum_bundle/**/patched_provider/*.dart
+
 linter:
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`

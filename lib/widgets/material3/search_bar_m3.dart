@@ -28,7 +28,7 @@ class SearchBarM3 extends StatelessWidget {
       hintText: hintText ?? 'Search...',
       controller: controller,
       enabled: enabled,
-      autofocus: autofocus,
+      autoFocus: autofocus,
       onChanged: onChanged,
       onTap: onTap,
       leading: Icon(

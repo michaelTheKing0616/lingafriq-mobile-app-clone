@@ -163,7 +163,7 @@ class TribeVsTribeCard extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 20.h),
-              ...sortedTribes.take(3).asMap().entries.map((entry) {
+              ...sortedTribes.take(3).toList().asMap().entries.map((entry) {
                 final index = entry.key;
                 final tribe = entry.value;
                 final score = tribeScores[tribe] ?? 0;

@@ -16,11 +16,8 @@ void main() {
       final container = ProviderContainer();
       final loader = container.read(lazyGameLoaderProvider);
       
-      // Preload some common games
-      await loader.preloadCommonGames([
-        GameType.wordMatchAudio,
-        GameType.pronunciationDuel,
-      ]);
+      // Preload common games (loader defines the list internally)
+      await loader.preloadCommonGames();
       
       // Verify games are marked as loaded
       expect(loader.isGameLoaded(GameType.wordMatchAudio), isTrue);

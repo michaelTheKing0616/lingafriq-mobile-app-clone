@@ -17,6 +17,15 @@ class NavigationProvider {
     return await navigatorKey.currentState!.pushReplacement(SmoothPageRoute(child: child));
   }
 
+  /// Navigate using named routes (used by drawer/menus).
+  /// Note: Requires the app's `MaterialApp` to have matching routes / onGenerateRoute.
+  Future<T?> navigateToNamed<T>(String routeName, {Object? arguments}) async {
+    HapticFeedback.selectionClick();
+    final nav = navigatorKey.currentState;
+    if (nav == null) return null;
+    return await nav.pushNamed<T>(routeName, arguments: arguments);
+  }
+
   Future<void> pop() async {
     HapticFeedback.selectionClick();
     navigatorKey.currentState!.pop();

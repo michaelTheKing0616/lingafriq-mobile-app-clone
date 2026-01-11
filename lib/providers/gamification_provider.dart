@@ -432,6 +432,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
     state = state.copyWith();
   }
 
+  /// Toggle Ubuntu streak on/off (used by the Ubuntu card switch).
+  Future<void> setUbuntuStreakActive(bool isActive) async {
+    _gamification = _gamification.copyWith(ubuntuStreakActive: isActive);
+    await _saveGamification();
+    state = state.copyWith();
+  }
+
   /// Persistence
   Future<void> _saveGamification() async {
     try {

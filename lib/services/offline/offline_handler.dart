@@ -17,7 +17,7 @@ class SyncOperation {
   final String type;
   final Map<String, dynamic> data;
   final DateTime timestamp;
-  final int retryCount;
+  int retryCount;
   SyncStatus status;
 
   SyncOperation({
@@ -45,7 +45,7 @@ class OfflineHandler {
 
   final List<SyncOperation> _syncQueue = [];
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   bool _isOnline = true;
   bool _isSyncing = false;
   final Duration _syncInterval = const Duration(minutes: 5);
@@ -54,8 +54,8 @@ class OfflineHandler {
   /// Initialize offline handler
   Future<void> initialize() async {
     // Check initial connectivity
-    final result = await _connectivity.checkConnectivity();
-    _isOnline = _isConnected(result);
+    final results = await _connectivity.checkConnectivity();
+    _isOnline = _isConnected(results);
 
     // Listen to connectivity changes
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen((result) {
@@ -77,8 +77,8 @@ class OfflineHandler {
     }
   }
 
-  bool _isConnected(ConnectivityResult result) {
-    return result != ConnectivityResult.none;
+  bool _isConnected(List<ConnectivityResult> results) {
+    return results.any((r) => r != ConnectivityResult.none);
   }
 
   /// Check if device is online

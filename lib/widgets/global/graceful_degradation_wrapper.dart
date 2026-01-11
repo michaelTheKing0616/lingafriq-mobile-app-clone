@@ -7,7 +7,6 @@
 /// - Feature availability checks
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class GracefulDegradationWrapper extends StatelessWidget {
@@ -82,7 +81,7 @@ class _FeatureCheckWrapperState extends State<_FeatureCheckWrapper> {
     if (widget.checkConnectivity) {
       try {
         final result = await Connectivity().checkConnectivity();
-        _isOnline = result != ConnectivityResult.none;
+        _isOnline = result.any((r) => r != ConnectivityResult.none);
       } catch (e) {
         _isOnline = true; // Assume online if check fails
       }

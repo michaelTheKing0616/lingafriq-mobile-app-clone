@@ -23,4 +23,9 @@ class AppColors {
   static const Color stitchTextDark = Color(0xFF0D1B12);
   static const Color stitchTextLight = Color(0xFFF4F6F5);
   static const Color accentOrange = Color(0xFFEB8937);
+
+  /// Back-compat aliases (used by newer widgets/design system code)
+  static const Color accentGreen = stitchPrimary;
+  static const Color textPrimary = stitchTextDark;
+  static const Color textSecondary = grey;
 }

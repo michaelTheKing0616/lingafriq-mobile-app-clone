@@ -58,9 +58,11 @@ dependencies:
   flutter_animate: ^4.5.2
   uuid: ^4.5.1
   google_fonts: ^6.2.1
+  shimmer: ^3.0.0
   file_picker: ^8.1.2 
   # Offline & Background Services
-  connectivity_plus: ^5.0.2
+  # livekit_client >=2.3.x requires connectivity_plus ^6.x
+  connectivity_plus: ^6.1.5
   workmanager: ^0.5.2
   archive: ^3.4.9
   crypto: ^3.0.5
@@ -77,10 +79,9 @@ dependencies:
   # Networking
   socket_io_client: ^2.0.3+1
   # Real-time Communication
-  # NOTE: livekit_client 1.x pulls in flutter_webrtc 0.9.x which fails to compile on modern Flutter
-  # due to the removed Android embedding v1 API (PluginRegistry.Registrar).
-  # We upgrade to a 2.x line that is compatible with modern flutter_webrtc/webrtc_interface.
-  livekit_client: ^2.1.0
+  # Upgrade to a LiveKit version whose iOS podspec is compatible with flutter_webrtc 0.12.x
+  # (same WebRTC-SDK version), avoiding CocoaPods WebRTC-SDK conflicts on main.
+  livekit_client: ^2.3.6
   # Game Engine & Animation
   rive: ^0.12.4
   flame: ^1.18.0
@@ -98,10 +99,9 @@ dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0
 
-  # CI/Android build fix: flutter_webrtc 0.9.x uses deprecated Android embedding v1
-  # (PluginRegistry.Registrar) and fails to compile on modern Flutter/AGP.
-  # Force a modern flutter_webrtc that supports embedding v2.
-  flutter_webrtc: ^1.2.0
+  # Align flutter_webrtc with LiveKit iOS podspec to avoid WebRTC-SDK (=X) conflicts.
+  # Also avoids the deprecated embedding v1 Registrar compilation errors seen with flutter_webrtc 0.9.47.
+  flutter_webrtc: 0.12.12+hotfix.1
 
 # Exclude Linux platform to avoid record_linux compatibility issues
 # This will prevent Linux builds but allow Android/iOS to work

@@ -6,6 +6,7 @@
 /// - Shows sync queue status
 /// - Manual sync trigger
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../services/offline/offline_handler.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -27,6 +28,7 @@ class OfflineBanner extends StatefulWidget {
 class _OfflineBannerState extends State<OfflineBanner> {
   final OfflineHandler _offlineHandler = OfflineHandler();
   final Connectivity _connectivity = Connectivity();
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySub;
   bool _isOnline = true;
   Map<String, dynamic> _syncStatus = {};
 
@@ -34,9 +36,9 @@ class _OfflineBannerState extends State<OfflineBanner> {
   void initState() {
     super.initState();
     _checkConnectivity();
-    _connectivity.onConnectivityChanged.listen((result) {
+    _connectivitySub = _connectivity.onConnectivityChanged.listen((result) {
       setState(() {
-        _isOnline = result != ConnectivityResult.none;
+        _isOnline = result.any((r) => r != ConnectivityResult.none);
         _syncStatus = _offlineHandler.getSyncStatus();
       });
     });
@@ -48,7 +50,7 @@ class _OfflineBannerState extends State<OfflineBanner> {
   Future<void> _checkConnectivity() async {
     final result = await _connectivity.checkConnectivity();
     setState(() {
-      _isOnline = result != ConnectivityResult.none;
+      _isOnline = result.any((r) => r != ConnectivityResult.none);
       _syncStatus = _offlineHandler.getSyncStatus();
     });
   }
@@ -62,6 +64,12 @@ class _OfflineBannerState extends State<OfflineBanner> {
         _updateSyncStatus();
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _connectivitySub?.cancel();
+    super.dispose();
   }
 
   @override

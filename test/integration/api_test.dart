@@ -6,10 +6,10 @@ void main() {
   group('API Integration Tests', () {
     test('API provider initialization', () {
       final container = ProviderContainer();
-      final apiProvider = container.read(apiProvider.notifier);
+      final apiNotifier = container.read(apiProvider.notifier);
       
-      expect(apiProvider, isNotNull);
-      expect(apiProvider.token, isNull); // No token initially
+      expect(apiNotifier, isNotNull);
+      expect(apiNotifier.token, isNull); // No token initially
     });
 
     // Note: These tests require a running backend server
