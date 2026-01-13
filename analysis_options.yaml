@@ -11,9 +11,10 @@ include: package:flutter_lints/flutter.yaml
 
 analyzer:
   exclude:
-    # This folder is a curriculum JSON bundle; it contains one experimental Dart file
-    # (`ai_chat_provider_patched.dart`) that is not imported by the runtime app.
+    # Curriculum bundles are JSON assets; they contain experimental patched providers
+    # that are not part of the runtime app build.
     - lingafriq_full_curriculum_bundle/**/patched_provider/*.dart
+    - curriculum_expanded_bundle/**/patched_provider/*.dart
 
 linter:
   # The lint rules applied to this project can be customized in the

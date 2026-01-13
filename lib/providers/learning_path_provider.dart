@@ -47,14 +47,7 @@ class LearningPathNotifier extends Notifier<LearningPath> {
   
   // Ensure all supported languages have learning paths
   bool isLanguageSupported(String language) {
-    final languageKey = language.toLowerCase();
-    // Check if it's a language key (e.g., 'yoruba', 'hausa')
-    if (SupportedLanguages.allLanguages.contains(languageKey)) {
-      return true;
-    }
-    // Check if it's a language code (e.g., 'yo', 'ha')
-    final info = SupportedLanguages.getLanguageInfo(languageKey);
-    return info.isNotEmpty && info['code'] == languageKey;
+    return SupportedLanguages.isSupported(language);
   }
 
   List<LearningModule> _getCareerModules(String proficiency) {

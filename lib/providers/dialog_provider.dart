@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'navigation_provider.dart';
-import '../utils/error_handler.dart';
 
 final dialogProvider = Provider.autoDispose.family<DialogProvider, Object?>((ref, Object? error) {
   return DialogProvider(ref.container, error);
@@ -77,26 +76,53 @@ class DialogProvider {
       return;
     }
 
-    // Use ErrorConverter for consistent error handling
-    final appError = ErrorConverter.toAppError(e);
-    final userMessage = ErrorConverter.getUserMessage(appError);
+    if (e is! DioError) {
+      _log(e.runtimeType.toString());
+      await showPlatformDialogue(
+        title: 'Error',
+        content: SelectableText(e.toString()),
+      );
+      return;
+    }
+
+    final error = e as DioError;
+    final status = error.response?.statusCode?.toString() ?? "";
+
+    if (error.type == DioErrorType.badResponse) {
+      final data = error.response?.data;
+
+      if (data is Map && data.keys.isNotEmpty) {
+        final error = data[data.keys.first];
+        await showPlatformDialogue(
+          title: "Error $status",
+          content: SelectableText(
+            error is List ? error.first.toString() : error.toString(),
+          ),
+        );
+        return;
+      }
+
+      await showPlatformDialogue(
+        title: "Error $status",
+        content: SelectableText(data?.toString() ?? ""),
+      );
+      return;
+    }
 
     await showPlatformDialogue(
-      title: appError is ApiError && appError.statusCode != null
-          ? "Error ${appError.statusCode}"
-          : "Error",
-      content: SelectableText(userMessage),
+      title: "Error $status",
+      content: SelectableText(error.message ?? '', maxLines: 5),
     );
   }
 
-  void showSuccessSnackBar({String? message}) {
+  void showSuccessSnackBar() {
     final context = ref.read(navigationProvider).navigatorKey.currentContext;
     if (context == null) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(message ?? 'Success'),
+          content: Text(e is String ? e.toString() : ''),
           duration: const Duration(seconds: 2),
           backgroundColor: Colors.green,
         ),

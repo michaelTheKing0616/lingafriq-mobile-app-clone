@@ -1,249 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
-import 'api_provider.dart';
-import 'dio_provider.dart';
-import 'user_provider.dart';
-import '../utils/api.dart';
-import 'base_provider.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
-/// Subscription tier provider with backend integration
-class SubscriptionNotifier extends Notifier<SubscriptionState> {
-  @override
-  SubscriptionState build() {
-    // Load subscription status asynchronously
-    Future.microtask(() => _loadSubscriptionStatus());
-    return SubscriptionState(
-      tier: SubscriptionTier.free,
-      isActive: false,
-      expiresAt: null,
-    );
-  }
-  
-  /// Load subscription status from backend and local storage
-  Future<void> _loadSubscriptionStatus() async {
-    try {
-      // Try to load from backend first
-      final user = ref.read(userProvider);
-      if (user != null) {
-        final response = await ref.read(client).get(
-          '${Api.baseurl}api/subscriptions/status',
-        );
-        
-        if (response.statusCode == 200 && response.data is Map) {
-          final data = response.data as Map<String, dynamic>;
-          final tierStr = data['tier']?.toString().toLowerCase() ?? 'free';
-          final tier = _parseTier(tierStr);
-          final isActive = data['is_active'] as bool? ?? false;
-          final expiresAtStr = data['expires_at']?.toString();
-          
-          final subscriptionState = SubscriptionState(
-            tier: tier,
-            isActive: isActive,
-            expiresAt: expiresAtStr != null ? DateTime.parse(expiresAtStr) : null,
-          );
-          
-          state = subscriptionState;
-          await _saveSubscriptionStatus(subscriptionState);
-          return;
-        }
-      }
-      
-      // Fallback to local storage
-      await _loadFromLocalStorage();
-    } catch (e) {
-      debugPrint('Error loading subscription status: $e');
-      // Fallback to local storage on error
-      await _loadFromLocalStorage();
-    }
-  }
-  
-  /// Load subscription status from local storage
-  Future<void> _loadFromLocalStorage() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final statusJson = prefs.getString('subscription_status');
-      if (statusJson != null) {
-        final data = jsonDecode(statusJson) as Map<String, dynamic>;
-        final tierStr = data['tier']?.toString().toLowerCase() ?? 'free';
-        final tier = _parseTier(tierStr);
-        final isActive = data['is_active'] as bool? ?? false;
-        final expiresAtStr = data['expires_at']?.toString();
-        
-        state = SubscriptionState(
-          tier: tier,
-          isActive: isActive && (expiresAtStr == null || DateTime.parse(expiresAtStr).isAfter(DateTime.now())),
-          expiresAt: expiresAtStr != null ? DateTime.parse(expiresAtStr) : null,
-        );
-      }
-    } catch (e) {
-      debugPrint('Error loading subscription from local storage: $e');
-      // Keep default free tier
-    }
-  }
-  
-  /// Save subscription status to local storage
-  Future<void> _saveSubscriptionStatus(SubscriptionState status) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('subscription_status', jsonEncode({
-        'tier': status.tier.name,
-        'is_active': status.isActive,
-        'expires_at': status.expiresAt?.toIso8601String(),
-      }));
-    } catch (e) {
-      debugPrint('Error saving subscription status: $e');
-    }
-  }
-  
-  /// Parse subscription tier from string
-  SubscriptionTier _parseTier(String tierStr) {
-    switch (tierStr.toLowerCase()) {
-      case 'premium':
-        return SubscriptionTier.premium;
-      case 'family':
-        return SubscriptionTier.family;
-      case 'lifetime':
-        return SubscriptionTier.lifetime;
-      default:
-        return SubscriptionTier.free;
-    }
-  }
-
-  /// Subscribe to a subscription tier
-  /// This integrates with backend payment processing
-  Future<bool> subscribe(SubscriptionTier tier) async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) {
-        throw Exception('User must be logged in to subscribe');
-      }
-      
-      // Call backend subscription endpoint
-      final response = await ref.read(client).post(
-        '${Api.baseurl}api/subscriptions/subscribe',
-        data: {
-          'tier': tier.name,
-          'user_id': user.id.toString(),
-        },
-      );
-      
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = response.data as Map<String, dynamic>;
-        final expiresAtStr = data['expires_at']?.toString();
-        final expiresAt = expiresAtStr != null 
-            ? DateTime.parse(expiresAtStr) 
-            : (tier == SubscriptionTier.lifetime 
-                ? null 
-                : DateTime.now().add(const Duration(days: 30)));
-        
-        final newState = SubscriptionState(
-          tier: tier,
-          isActive: true,
-          expiresAt: expiresAt,
-        );
-        
-        state = newState;
-        await _saveSubscriptionStatus(newState);
-        return true;
-      } else {
-        throw Exception('Subscription failed: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('Error subscribing: $e');
-      // Return false but don't throw - let UI handle the error
-      return false;
-    }
-  }
-
-  /// Cancel current subscription
-  Future<bool> cancelSubscription() async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) {
-        throw Exception('User must be logged in to cancel subscription');
-      }
-      
-      // Call backend to cancel subscription
-      final response = await ref.read(client).post(
-        '${Api.baseurl}api/subscriptions/cancel',
-        data: {
-          'user_id': user.id.toString(),
-        },
-      );
-      
-      if (response.statusCode == 200 || response.statusCode == 204) {
-        final newState = SubscriptionState(
-          tier: SubscriptionTier.free,
-          isActive: false,
-          expiresAt: state.expiresAt, // Keep expiration date but mark as inactive
-        );
-        
-        state = newState;
-        await _saveSubscriptionStatus(newState);
-        return true;
-      } else {
-        throw Exception('Cancellation failed: ${response.statusCode}');
-      }
-    } catch (e) {
-      debugPrint('Error canceling subscription: $e');
-      // Still update local state to free tier
-      final newState = SubscriptionState(
-        tier: SubscriptionTier.free,
-        isActive: false,
-        expiresAt: null,
-      );
-      state = newState;
-      await _saveSubscriptionStatus(newState);
-      return false;
-    }
-  }
-
-  /// Check if user has access to a specific feature based on subscription tier
-  bool hasFeature(String feature) {
-    // Check if subscription is active and not expired
-    if (!state.isActive || state.isExpired) {
-      return false;
-    }
-    
-    switch (feature) {
-      case 'all_games':
-        return state.tier != SubscriptionTier.free;
-      case 'unlimited_ai':
-        return state.tier != SubscriptionTier.free;
-      case 'offline_mode':
-        return state.tier != SubscriptionTier.free;
-      case 'no_ads':
-        return state.tier != SubscriptionTier.free;
-      case 'pronunciation_scoring':
-        return state.tier != SubscriptionTier.free;
-      case 'advanced_analytics':
-        return state.tier == SubscriptionTier.premium || 
-               state.tier == SubscriptionTier.family || 
-               state.tier == SubscriptionTier.lifetime;
-      case 'family_sharing':
-        return state.tier == SubscriptionTier.family || 
-               state.tier == SubscriptionTier.lifetime;
-      case 'priority_support':
-        return state.tier == SubscriptionTier.family || 
-               state.tier == SubscriptionTier.lifetime;
-      default:
-        // Free features available to all
-        return true;
-    }
-  }
-  
-  /// Refresh subscription status from backend
-  Future<void> refresh() async {
-    await _loadSubscriptionStatus();
-  }
-}
-
-final subscriptionProvider = NotifierProvider<SubscriptionNotifier, SubscriptionState>(() {
-  return SubscriptionNotifier();
-});
-
+/// Logical subscription tiers used throughout the app.
+/// Backend `subscription.tier` uses the same enum string values.
 enum SubscriptionTier {
   free,
   premium,
@@ -255,11 +15,17 @@ class SubscriptionState {
   final SubscriptionTier tier;
   final bool isActive;
   final DateTime? expiresAt;
+  /// Approximate Polie character/token quota per day for this user.
+  /// This is populated from backend usage stats when available.
+  final int? dailyPolieLimit;
+  final int? dailyPolieUsed;
 
-  SubscriptionState({
+  const SubscriptionState({
     required this.tier,
     required this.isActive,
     this.expiresAt,
+    this.dailyPolieLimit,
+    this.dailyPolieUsed,
   });
 
   bool get isExpired {
@@ -285,12 +51,166 @@ class SubscriptionState {
       case SubscriptionTier.free:
         return 0.0;
       case SubscriptionTier.premium:
-        return 4.99;
+        return 4.99; // Individual African-market friendly price
       case SubscriptionTier.family:
-        return 9.99;
+        return 9.99; // Up to 4 family members
       case SubscriptionTier.lifetime:
         return 99.99; // One-time
     }
   }
+
+  int get remainingPolieTokens {
+    if (dailyPolieLimit == null || dailyPolieUsed == null) return 0;
+    return (dailyPolieLimit! - dailyPolieUsed!).clamp(0, dailyPolieLimit!);
+  }
+
+  /// Feature-gating helper used across the app.
+  bool hasFeature(String feature) {
+    final active = isActive && !isExpired;
+    switch (feature) {
+      case 'offline_mode':
+        return active && tier != SubscriptionTier.free;
+      case 'polie':
+        return active && tier != SubscriptionTier.free;
+      default:
+        // Conservative default: only premium+ gets unknown gated features.
+        return active && tier != SubscriptionTier.free;
+    }
+  }
 }
+
+/// Subscription tier provider
+class SubscriptionNotifier extends Notifier<SubscriptionState> {
+  @override
+  SubscriptionState build() {
+    // Load subscription status from backend when the notifier is first built.
+    _loadFromBackend();
+    return const SubscriptionState(
+      tier: SubscriptionTier.free,
+      isActive: false,
+      expiresAt: null,
+      dailyPolieLimit: null,
+      dailyPolieUsed: null,
+    );
+  }
+
+  Future<void> _loadFromBackend() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final api = ref.read(apiProvider.notifier);
+      final res = await api.getSubscription();
+
+      final tierString = (res['tier'] as String?) ?? 'free';
+      final expiresAtRaw = res['expiresAt'] as String?;
+      final isActive = res['isActive'] == true;
+      final dailyLimit = res['dailyPolieLimit'] as int?;
+      final dailyUsed = res['dailyPolieUsed'] as int?;
+
+      final tier = SubscriptionTier.values.firstWhere(
+        (t) => t.toString().split('.').last == tierString,
+        orElse: () => SubscriptionTier.free,
+      );
+
+      DateTime? expiresAt;
+      if (expiresAtRaw != null) {
+        expiresAt = DateTime.tryParse(expiresAtRaw);
+      }
+
+      state = SubscriptionState(
+        tier: tier,
+        isActive: isActive,
+        expiresAt: expiresAt,
+        dailyPolieLimit: dailyLimit,
+        dailyPolieUsed: dailyUsed,
+      );
+    } catch (_) {
+      // Fail silently; app will treat user as free tier
+    }
+  }
+
+  Future<void> subscribe(SubscriptionTier tier) async {
+    final api = ref.read(apiProvider.notifier);
+    // For now we assume payment is handled externally and we only update the tier.
+    final res = await api.updateSubscription(tier.name);
+
+    final tierString = (res['tier'] as String?) ?? 'free';
+    final expiresAtRaw = res['expiresAt'] as String?;
+    final isActive = res['isActive'] == true;
+    final dailyLimit = res['dailyPolieLimit'] as int?;
+    final dailyUsed = res['dailyPolieUsed'] as int?;
+
+    final mappedTier = SubscriptionTier.values.firstWhere(
+      (t) => t.toString().split('.').last == tierString,
+      orElse: () => SubscriptionTier.free,
+    );
+
+    DateTime? expiresAt;
+    if (expiresAtRaw != null) {
+      expiresAt = DateTime.tryParse(expiresAtRaw);
+    }
+
+    state = SubscriptionState(
+      tier: mappedTier,
+      isActive: isActive,
+      expiresAt: expiresAt,
+      dailyPolieLimit: dailyLimit,
+      dailyPolieUsed: dailyUsed,
+    );
+  }
+
+  Future<void> cancelSubscription() async {
+    final api = ref.read(apiProvider.notifier);
+    await api.cancelSubscription();
+    state = const SubscriptionState(
+      tier: SubscriptionTier.free,
+      isActive: false,
+      expiresAt: null,
+      dailyPolieLimit: null,
+      dailyPolieUsed: null,
+    );
+  }
+
+  /// Feature-gating logic inspired by top language apps, but tuned for LingAfriq.
+  bool hasFeature(String feature) {
+    final tier = state.tier;
+
+    switch (feature) {
+      case 'all_games':
+        // Free: core games only, Premium/Family/Lifetime: full game catalog
+        return tier != SubscriptionTier.free;
+      case 'unlimited_ai':
+        // Free: capped daily AI turns (enforced elsewhere), paid tiers: unlimited
+        return tier == SubscriptionTier.premium ||
+            tier == SubscriptionTier.family ||
+            tier == SubscriptionTier.lifetime;
+      case 'offline_mode':
+        // Offline downloads reserved for paying users
+        return tier == SubscriptionTier.premium ||
+            tier == SubscriptionTier.family ||
+            tier == SubscriptionTier.lifetime;
+      case 'no_ads':
+        // Only free tier sees ads
+        return tier != SubscriptionTier.free;
+      case 'pronunciation_scoring':
+        // Full MFA-based pronunciation scoring is a premium feature;
+        // free tier may get occasional trials.
+        return tier == SubscriptionTier.premium ||
+            tier == SubscriptionTier.family ||
+            tier == SubscriptionTier.lifetime;
+      case 'family_dashboard':
+        // Only family tier gets a family dashboard and multi-user tracking
+        return tier == SubscriptionTier.family;
+      default:
+        // Unknown features default to allowed
+        return true;
+    }
+  }
+}
+
+final subscriptionProvider =
+    NotifierProvider<SubscriptionNotifier, SubscriptionState>(() {
+  return SubscriptionNotifier();
+});
 

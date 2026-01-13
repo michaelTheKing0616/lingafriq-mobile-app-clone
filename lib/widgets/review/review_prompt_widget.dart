@@ -6,9 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../services/review/intelligent_review_service.dart';
 import '../../screens/review/gamified_review_screen.dart';
 import '../../providers/gamification_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../providers/progress_tracking_provider.dart';
-import '../../providers/daily_challenges_provider.dart';
+import '../../providers/user_provider.dart';
 
 class ReviewPromptWidget extends ConsumerStatefulWidget {
   final Widget child;
@@ -40,24 +39,24 @@ class _ReviewPromptWidgetState extends ConsumerState<ReviewPromptWidget> {
 
     if (!mounted) return;
 
-    final gamification = ref.read(gamificationProvider);
     final user = ref.read(userProvider);
 
-    if (user == null || gamification == null) return;
+    if (user == null) return;
 
-    // Get engagement metrics
+    // Get engagement metrics from gamification + progress tracking
     final gamificationModel = ref.read(gamificationProvider.notifier).gamification;
-    final sessionCount = gamificationModel.xp ~/ 100; // Approximate from XP
-    final streakDays = gamificationModel.dailyStreak;
-    
-    // Get lessons completed from progress tracking (estimate from time spent)
     final progressMetrics = ref.read(progressTrackingProvider.notifier).metrics;
-    final lessonsCompleted = (progressMetrics.timeByActivity['lessons'] ?? 0.0).toInt();
-    
-    // Get games played from progress tracking (estimate from time spent)
-    final gamesPlayed = (progressMetrics.timeByActivity['games'] ?? 0.0).toInt();
-    
-    final lastActiveDate = gamificationModel.lastLogin ?? DateTime.now();
+
+    final sessionCount = gamificationModel.xp ~/ 100; // Approximate sessions from XP
+    final streakDays = gamificationModel.dailyStreak;
+
+    // Approximate lessons/games from timeByActivity buckets
+    final gamesHours = progressMetrics.timeByActivity['games'] ?? 0.0;
+    final lessonsHours = progressMetrics.timeByActivity['lessons'] ?? 0.0;
+    final gamesPlayed = (gamesHours * 60.0 / 5.0).round().clamp(0, 10000); // ~5 min/game
+    final lessonsCompleted = (lessonsHours * 60.0 / 7.0).round().clamp(0, 10000); // ~7 min/lesson
+
+    final lastActiveDate = progressMetrics.lastUpdated;
 
     // Check if should show
     final shouldShow = await IntelligentReviewService.shouldShowReviewPrompt(

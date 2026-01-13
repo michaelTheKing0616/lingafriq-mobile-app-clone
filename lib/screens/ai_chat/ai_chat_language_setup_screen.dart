@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Full-screen language picker for Polie
@@ -14,13 +12,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AiChatLanguageSetupScreen extends ConsumerStatefulWidget {
   final PolieMode initialMode;
   final VoidCallback? onBack;
-  final Function(String language, String languageName)? onLanguageSelected;
 
   const AiChatLanguageSetupScreen({
     Key? key,
     this.initialMode = PolieMode.translation,
     this.onBack,
-    this.onLanguageSelected,
   }) : super(key: key);
 
   @override
@@ -39,32 +35,15 @@ class _AiChatLanguageSetupScreenState
   }
 
   Future<void> _selectLanguage(String language) async {
+    final chat = ref.read(groqChatProvider.notifier);
+    // Prime mode and language before entering chat
+    // This will load the scoped chat history for this mode × language combination
+    await chat.setMode(_mode);
+    await chat.setLanguageDirection('English', language);
+    await chat.setLanguage(language);
     if (!mounted) return;
-    
-    try {
-      final chat = ref.read(groqChatProvider.notifier);
-      // Prime mode and language before entering chat
-      // This will load the scoped chat history for this mode × language combination
-      await chat.setMode(_mode);
-      await chat.setLanguageDirection('English', language);
-      await chat.setLanguage(language);
-      if (!mounted) return;
-      
-      // If callback provided, call it (for roleplay scenario selection)
-      if (widget.onLanguageSelected != null) {
-        widget.onLanguageSelected!(language, language);
-        return;
-      }
-      
-      // Otherwise, navigate to chat screen with scoped history loaded
-      Navigator.push(
-        context,
-        SmoothPageRoute(child: const AiChatScreen()),
-      );
-    } catch (e) {
-      if (!mounted) return;
-      ErrorHandler.showError(context, e);
-    }
+    // Navigate to chat screen with scoped history loaded
+    await ref.read(navigationProvider).navigateTo(const AiChatScreen());
   }
 
   @override
@@ -73,7 +52,7 @@ class _AiChatLanguageSetupScreenState
     final languages = ref.read(groqChatProvider.notifier).supportedLanguageOptions;
 
     return ErrorBoundary(
-      errorMessage: 'Unable to load AI Chat setup. Please check your connection and try again.',
+      errorMessage: 'AI Chat setup is temporarily unavailable',
       onRetry: () => setState(() {}),
       child: Scaffold(
         backgroundColor: isDark ? const Color(0xFF0F1F15) : Colors.white,
@@ -128,7 +107,7 @@ class _AiChatLanguageSetupScreenState
                     color: isDark ? const Color(0xFF1E3325) : const Color(0xFFF5F7F5),
                     borderRadius: BorderRadius.circular(DesignSystem.radiusL),
                     border: Border.all(
-                      color: const Color(0xFF00A86B).withValues(alpha: 0.3),
+                      color: const Color(0xFF00A86B).withOpacity(0.3),
                     ),
                   ),
                   child: Row(
@@ -188,7 +167,7 @@ class _AiChatLanguageSetupScreenState
                           borderRadius:
                               BorderRadius.circular(DesignSystem.radiusXL),
                           border: Border.all(
-                            color: const Color(0xFF00A86B).withValues(alpha: 0.2),
+                            color: const Color(0xFF00A86B).withOpacity(0.2),
                             width: 1.2,
                           ),
                           boxShadow: DesignSystem.shadowMedium,

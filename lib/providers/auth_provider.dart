@@ -2,18 +2,17 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/services/auth/credential_storage_service.dart';
 
 import '../screens/auth/login_screen.dart';
-import '../screens/auth/world_class_login_screen.dart';
-import '../screens/onboarding/onboarding_screen_material3.dart';
+import '../screens/onboarding/kijiji_onboarding_screen.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
 import 'navigation_provider.dart';
 import 'shared_preferences_provider.dart';
+import '../services/secure_storage_service.dart';
 
 final authProvider = NotifierProvider<AuthProvider, BaseProviderState>(() {
   return AuthProvider();
@@ -26,37 +25,32 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<void> navigateBasedOnCondition() async {
-    // Check if onboarding has been seen first
-    final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
-    
-    if (!isOnboardingSeen) {
-      ref.read(navigationProvider).naviateOffAll(const OnboardingScreenMaterial3());
+    // World-class security: do NOT auto-login with stored passwords.
+    // Instead, use refresh tokens stored in secure storage.
+    final refreshed = await ref.read(apiProvider.notifier).refreshSession();
+    if (!refreshed) {
+      ref.read(navigationProvider).naviateOffAll(const LoginScreen());
       return;
     }
 
-    // Use secure credential storage instead of SharedPreferences
-    final credentialStorage = CredentialStorageService();
-    final storedCredentials = await credentialStorage.getStoredCredentials();
-    
-    if (storedCredentials == null) {
-      ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
-      return;
+    try {
+      final userInfo = await ref.read(apiProvider.notifier).getUserInfo();
+      final profile = await ref.read(apiProvider.notifier).getProfileUser(userInfo.id);
+      if (profile != null) {
+        ref.read(userProvider.notifier).overrideUser(profile);
+        await ref.read(apiProvider.notifier).regiserDevice();
+      }
+    } catch (_) {
+      // If profile fetch fails, still allow navigation; user can retry inside app.
     }
 
-    final email = storedCredentials['email']!;
-    final password = storedCredentials['password']!;
-
-    final user = await login(email: email, password: password);
-
-    //Login suceess, login can fail is user has changed the password in the web
-    if (user is ProfileModel) {
-      ref.read(userProvider.notifier).overrideUser(user);
-      await ref.read(apiProvider.notifier).regiserDevice();
-      ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
-      return;
+    final hasSeenOnboarding =
+        ref.read(sharedPreferencesProvider).hasSeenOnboarding;
+    if (!hasSeenOnboarding) {
+      ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
+    } else {
+      ref.read(navigationProvider).naviateOffAll(const TabsView());
     }
-
-    ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
   }
 
   Future<ProfileModel?> login({
@@ -73,21 +67,16 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
       if (storeCredentials) {
-        // Use secure credential storage instead of SharedPreferences
-        final credentialStorage = CredentialStorageService();
-        await credentialStorage.storeCredentials(
-          email: email,
-          password: password,
-        );
-        // Also store email in SharedPreferences for backward compatibility (email is not sensitive)
-        final prefs = ref.read(sharedPreferencesProvider);
-        await prefs.prefs.setString('email', email);
+        // Store only email in prefs; tokens are stored securely by ApiProvider.login().
+        await ref.read(sharedPreferencesProvider).storeEmailAndPassword(email, password);
         ref.read(apiProvider.notifier).accountUpdate();
         await Future.delayed(const Duration(seconds: 3));
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        ref.read(navigationProvider).naviateOffAll(OnboardingScreenMaterial3());
+        // New accounts: always take them through the rich Kijiji onboarding
+        // flow, which includes the placement test (with a skip option).
+        ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
         return user;
       }
       return user;
@@ -168,8 +157,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   // }
 
   Future<void> signOut({bool deleteAccount = false}) async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.removeEmailAndPassword();
+    await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
+    await SecureStorageService().clearAllTokens();
     "Delete Account $deleteAccount".log('signout');
     if (deleteAccount == false) {
       await ref.read(apiProvider.notifier).unregisterDevice();

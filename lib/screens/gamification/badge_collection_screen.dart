@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart' hide Badge;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/socket_provider.dart';
@@ -115,7 +112,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           ),
           // Badge grid
           Expanded(
-            child: OptimizedListView.builder(
+            child: GridView.builder(
               padding: const EdgeInsets.all(16),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

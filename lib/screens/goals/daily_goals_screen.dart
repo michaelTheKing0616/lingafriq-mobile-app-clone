@@ -9,11 +9,8 @@ import 'package:lingafriq/screens/games/games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
-import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -37,7 +34,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load daily goals. Please check your connection and try again.',
+      errorMessage: 'Daily Goals are temporarily unavailable',
       onRetry: () {
         ref.read(dailyGoalsProvider.notifier).refreshGoals();
       },
@@ -337,11 +334,8 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
         break;
       case 'words_learned':
         // Navigate to vocabulary/words screen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const VocabularyScreen(),
-          ),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Vocabulary feature coming soon')),
         );
         break;
       default:
@@ -386,22 +380,19 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
   }
 
   void _showLanguageSelectorForLessons(BuildContext context) async {
-    await safeAsync(
-      context: context,
-      operation: () async {
-        // Fetch languages
-        final languages = await ref.read(apiProvider.notifier).getLanguages();
-        if (!mounted) return;
+    try {
+      // Fetch languages
+      final languages = await ref.read(apiProvider.notifier).getLanguages();
+      if (!mounted) return;
 
-        // Show bottom sheet to select language
-        if (mounted) {
-          showModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (context) => Container(
-              decoration: BoxDecoration(
-                color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      // Show bottom sheet to select language
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => Container(
+          decoration: BoxDecoration(
+            color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -437,29 +428,29 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
           ),
         ),
       );
-      },
-      errorContext: 'showLanguageSelectorForLessons',
-      showError: true,
-    );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load languages: $e')),
+        );
+      }
+    }
   }
 
   void _showLanguageSelectorForQuiz(BuildContext context) async {
-    await safeAsync(
-      context: context,
-      operation: () async {
-        // Fetch languages
-        final languages = await ref.read(apiProvider.notifier).getLanguages();
-        if (!mounted) return;
+    try {
+      // Fetch languages
+      final languages = await ref.read(apiProvider.notifier).getLanguages();
+      if (!mounted) return;
 
-        // Show bottom sheet to select language
-        if (mounted) {
-          showModalBottomSheet(
-            context: context,
-            backgroundColor: Colors.transparent,
-            builder: (context) => Container(
-              decoration: BoxDecoration(
-                color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+      // Show bottom sheet to select language
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        builder: (context) => Container(
+          decoration: BoxDecoration(
+            color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -495,10 +486,13 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
           ),
         ),
       );
-      },
-      errorContext: 'showLanguageSelectorForQuiz',
-      showError: true,
-    );
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load languages: $e')),
+        );
+      }
+    }
   }
 }
 

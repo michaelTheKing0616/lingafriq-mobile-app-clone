@@ -6,7 +6,6 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/validators.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:lingafriq/widgets/title_logo.dart';
@@ -44,31 +43,15 @@ class ForgotPasswordScreen extends HookConsumerWidget {
               PrimaryButton(
                 onTap: () async {
                   if (!formKey.currentState!.validate()) return;
-                  try {
-                    final result =
-                        await ref.read(apiProvider.notifier).resetPassword(emailController.text.trim());
-                    if (result != true) {
-                      if (context.mounted) {
-                        ErrorHandler.showError(
-                          context,
-                          Exception('Failed to reset password. Please try again.'),
-                        );
-                      }
-                      return;
-                    }
-                    if (context.mounted) {
-                      await ref.read(dialogProvider('')).showPlatformDialogue(
-                          title: "Reset Password",
-                          content: Text(
-                            "An email with instructions to reset your password has been sent to ${emailController.text.trim()}",
-                          ));
-                      Navigator.of(context).pop();
-                    }
-                  } catch (e) {
-                    if (context.mounted) {
-                      ErrorHandler.showError(context, e);
-                    }
-                  }
+                  final result =
+                      await ref.read(apiProvider.notifier).resetPassword(emailController.text.trim());
+                  if (result != true) return;
+                  await ref.read(dialogProvider('')).showPlatformDialogue(
+                      title: "Reset Password",
+                      content: Text(
+                        "An email with instructions to reset your password has been sent to ${emailController.text.trim()}",
+                      ));
+                  Navigator.of(context).pop();
                 },
                 text: "Reset Password",
               ),

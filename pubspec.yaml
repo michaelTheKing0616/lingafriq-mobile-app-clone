@@ -1,4 +1,4 @@
-name: lingafriq
+﻿name: lingafriq
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -60,6 +60,7 @@ dependencies:
   google_fonts: ^6.2.1
   shimmer: ^3.0.0
   file_picker: ^8.1.2 
+  webview_flutter: ^4.10.0
   # Offline & Background Services
   # livekit_client >=2.3.x requires connectivity_plus ^6.x
   connectivity_plus: ^6.1.5
@@ -88,6 +89,7 @@ dependencies:
   # Audio Analysis
   # pitch_detector: ^0.1.0  # Package not available on pub.dev - removed
   speech_to_text: ^7.0.0
+  permission_handler: ^11.3.1
   # Haptic Feedback
   flutter_vibrate: ^1.2.0
   # Charts & Visualization

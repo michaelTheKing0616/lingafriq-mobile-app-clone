@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/providers/tts_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
 
 class ListeningQuizScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> passageData;
@@ -19,6 +18,7 @@ class ListeningQuizScreen extends ConsumerStatefulWidget {
 }
 
 class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
+  final FlutterTts _tts = FlutterTts();
   bool _hasListened = false;
   final Map<int, String?> _selectedAnswers = {};
   final Map<int, TextEditingController> _textControllers = {};
@@ -26,11 +26,23 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
   @override
   void initState() {
     super.initState();
+    _initTTS();
+  }
+
+  Future<void> _initTTS() async {
+    await _tts.setLanguage('en-US');
+    await _tts.setSpeechRate(0.5);
   }
 
   @override
   void dispose() {
-    ref.read(ttsProvider.notifier).stop();
+    // Stop any playing TTS
+    try {
+      final tts = ref.read(ttsProvider.notifier);
+      tts.stop();
+    } catch (e) {
+      // Ignore if provider not available
+    }
     for (var controller in _textControllers.values) {
       controller.dispose();
     }
@@ -38,23 +50,26 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
   }
 
   Future<void> _playPassage() async {
-    await safeAsync(
-      context: context,
-      operation: () async {
-        final passage = widget.passageData['passage'] as String? ?? '';
-        final languageName = (widget.passageData['language'] as String?) ?? 'english';
-        await ref.read(ttsProvider.notifier).speak(
-              passage,
-              languageName: languageName,
-            );
-        if (mounted) {
-          setState(() {
-            _hasListened = true;
-          });
-        }
-      },
-      errorContext: 'playPassage',
-    );
+    final passage = widget.passageData['passage'] as String? ?? '';
+    if (passage.isEmpty) return;
+    
+    try {
+      final tts = ref.read(ttsProvider.notifier);
+      // Use language from widget or default to English
+      final language =
+          (widget.passageData['language'] as String?)?.toLowerCase() ?? 'english';
+      await tts.speak(passage, languageName: language);
+      
+      setState(() {
+        _hasListened = true;
+      });
+    } catch (e) {
+      debugPrint('Error playing passage: $e');
+      // Still mark as listened even if TTS fails
+      setState(() {
+        _hasListened = true;
+      });
+    }
   }
 
   @override
@@ -184,19 +199,13 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
   }
 
   Future<void> _submitAnswers() async {
-    await safeAsync(
-      context: context,
-      operation: () async {
-        // Evaluate answers and show results
-        // This would call the provider's evaluateOpenAnswer method
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Answers submitted!')),
-          );
-        }
-      },
-      errorContext: 'submitAnswers',
-    );
+    // Evaluate answers and show results
+    // This would call the provider's evaluateOpenAnswer method
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Answers submitted!')),
+      );
+    }
   }
 }
 

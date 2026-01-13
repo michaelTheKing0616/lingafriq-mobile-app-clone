@@ -165,20 +165,16 @@ class LeaguePosition {
   });
 
   factory LeaguePosition.fromJson(Map<String, dynamic> json) {
-    // Handle both String and int types for rank and weeklyXP
-    final weeklyXPValue = json['weeklyXP'];
-    final rankValue = json['rank'];
-    
     return LeaguePosition(
-      oduserId: json['userId']?.toString() ?? json['oduserId']?.toString() ?? '',
+      oduserId: json['userId'] as String,
       username: json['username'] as String,
       profilePicUrl: json['profilePicUrl'] as String?,
       tier: LeagueTier.values.firstWhere(
-        (t) => t.name == (json['tier'] is String ? json['tier'] : json['tier']?.toString()),
+        (t) => t.name == json['tier'],
         orElse: () => LeagueTier.bronze,
       ),
-      weeklyXP: weeklyXPValue is int ? weeklyXPValue : (weeklyXPValue is String ? int.tryParse(weeklyXPValue) ?? 0 : 0),
-      rank: rankValue is int ? rankValue : (rankValue is String ? int.tryParse(rankValue) ?? 0 : 0),
+      weeklyXP: json['weeklyXP'] as int? ?? 0,
+      rank: json['rank'] as int? ?? 0,
       willPromote: json['willPromote'] as bool? ?? false,
       willDemote: json['willDemote'] as bool? ?? false,
       isCurrentUser: json['isCurrentUser'] as bool? ?? false,

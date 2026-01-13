@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import '../../models/game/game_session_model.dart';
 import '../../utils/african_theme.dart';
 import '../../utils/design_system.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Language Selector Widget
-class LanguageSelector extends StatelessWidget {
+class _LanguageSelector extends StatelessWidget {
   final String selectedLanguage;
   final Function(String) onLanguageChanged;
 
-  const LanguageSelector({
+  const _LanguageSelector({
     required this.selectedLanguage,
     required this.onLanguageChanged,
   });
@@ -71,12 +68,12 @@ class LanguageSelector extends StatelessWidget {
 }
 
 /// Game Section Widget
-class GameSection extends StatelessWidget {
+class _GameSection extends StatelessWidget {
   final String title;
   final List<GameType> games;
   final Function(GameType) onGameSelected;
 
-  const GameSection({
+  const _GameSection({
     required this.title,
     required this.games,
     required this.onGameSelected,
@@ -219,7 +216,7 @@ class GameSection extends StatelessWidget {
       case GameType.proverbUnlocker:
         return Icons.lightbulb_rounded;
       case GameType.drumRhythmShadowing:
-        return Icons.music_note;
+        return Icons.music_note_rounded;
       case GameType.clanLineageStoryBuilder:
         return Icons.account_tree_rounded;
       case GameType.marketBargainingSimulator:

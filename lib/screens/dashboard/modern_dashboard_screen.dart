@@ -14,9 +14,8 @@ import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/widgets/adaptive/adaptive_learning_panel.dart';
+import 'package:lingafriq/widgets/gamification/ubuntu_card_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -31,8 +30,9 @@ class ModernDashboardScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Calculate today's goal progress
-    final completedGoals = dailyGoals.goals.where((g) => g.isCompleted).length;
-    final totalGoals = dailyGoals.goals.length;
+    final goalsProvider = ref.read(dailyGoalsProvider.notifier);
+    final completedGoals = goalsProvider.goals.where((g) => g.completed).length;
+    final totalGoals = goalsProvider.goals.length;
     final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
     
     return Scaffold(
@@ -85,28 +85,12 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                user?.avatar != null
-                                    ? ClipOval(
-                                        child: LazyImage(
-                                          imageUrl: user!.avatar!,
-                                          width: 48,
-                                          height: 48,
-                                          placeholder: CircleAvatar(
-                                            radius: 24,
-                                            backgroundColor: Colors.white,
-                                            child: Text(
-                                              (user.username ?? 'U')[0].toUpperCase(),
-                                              style: TextStyle(
-                                                color: const Color(0xFFCE1126),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        radius: 24,
-                                        backgroundColor: Colors.white,
+                                CircleAvatar(
+                                  radius: 24,
+                                  backgroundColor: Colors.white,
+                                  backgroundImage: user?.avatar != null
+                                      ? NetworkImage(user!.avatar!)
+                                      : null,
                                   child: user?.avatar == null
                                       ? Text(
                                           (user?.username ?? 'U')[0].toUpperCase(),
@@ -336,8 +320,8 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(
-                              child: const AiChatLanguageSetupScreen(
+                            MaterialPageRoute(
+                              builder: (_) => const AiChatLanguageSetupScreen(
                                 initialMode: PolieMode.translation,
                               ),
                             ),
@@ -353,7 +337,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const DailyChallengesScreen()),
+                            MaterialPageRoute(builder: (_) => const DailyChallengesScreen()),
                           );
                         },
                       ),
@@ -366,7 +350,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const LanguageGamesScreen()),
+                            MaterialPageRoute(builder: (_) => const LanguageGamesScreen()),
                           );
                         },
                       ),
@@ -403,7 +387,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const GlobalChatScreen()),
+                            MaterialPageRoute(builder: (_) => const GlobalChatScreen()),
                           );
                         },
                       ),
@@ -414,7 +398,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const CultureMagazineScreen()),
+                            MaterialPageRoute(builder: (_) => const CultureMagazineScreen()),
                           );
                         },
                       ),
@@ -425,7 +409,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const GlobalProgressScreen()),
+                            MaterialPageRoute(builder: (_) => const GlobalProgressScreen()),
                           );
                         },
                       ),
@@ -436,12 +420,22 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const ProgressDashboardScreen()),
+                            MaterialPageRoute(builder: (_) => const ProgressDashboardScreen()),
                           );
                         },
                       ),
                     ],
                   ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
+                  SizedBox(height: 3.h),
+
+                  // Adaptive Learning Panel powered by Polie + gamification
+                  const AdaptiveLearningPanel(),
+
+                  SizedBox(height: 2.h),
+
+                  // Ubuntu Streak card – opt‑in social streak protection
+                  const UbuntuCardWidget(),
+
                   SizedBox(height: 3.h),
                 ],
               ),

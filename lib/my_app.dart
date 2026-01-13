@@ -33,7 +33,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             ScreenUtil.init(context, designSize: const Size(428, 926));
             return MediaQuery(
               data: MediaQuery.of(context).copyWith(
-                textScaler: const TextScaler.linear(1.0),
+                textScaleFactor: 1.0,
                 // Support edge-to-edge display
                 padding: EdgeInsets.zero,
               ),

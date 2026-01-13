@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Pre-loader screen for games features
 /// Shown when users first access games

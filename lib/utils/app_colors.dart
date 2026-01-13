@@ -11,21 +11,24 @@ class AppColors {
   static const Color red = Color(0xffC4413A);
   static const Color accentGold = Color(0xffFFD700);
   
-  // Additional colors for compatibility
-  static const Color stitchPrimary = Color(0xFF1B7340); // Pan-African green
-  static const Color success = Color(0xFF2ECC71);
-  static const Color surfaceDark = Color(0xFF0D1810);
-  static const Color surfaceLight = Color(0xFFFAFAFA);
-  static const Color stitchCardDark = Color(0xFF1F3527);
+  // Additional color constants for design system
+  static const Color stitchPrimary = primaryGreen;
+  static const Color success = Color(0xFF22C55E);
+  static const Color accentGreen = Color(0xFF10B981);
+  static const Color accentOrange = primaryOrange;
+  static const Color surfaceDark = filledDark;
+  static const Color surfaceLight = Color(0xFFF5F5F5);
+  static const Color stitchCardDark = Color(0xFF2A2A2A);
   static const Color stitchCardLight = Color(0xFFFFFFFF);
-  static const Color stitchBorderDark = Color(0xFF2A4A35);
-  static const Color stitchBorderLight = Color(0xFFE0E4E0);
-  static const Color stitchTextDark = Color(0xFF0D1B12);
-  static const Color stitchTextLight = Color(0xFFF4F6F5);
-  static const Color accentOrange = Color(0xFFEB8937);
+  static const Color stitchBorderDark = Color(0xFF404040);
+  static const Color stitchBorderLight = Color(0xFFE0E0E0);
+  static const Color stitchTextDark = Color(0xFFFFFFFF);
+  static const Color stitchTextLight = Color(0xFF1A1A1A);
 
-  /// Back-compat aliases (used by newer widgets/design system code)
-  static const Color accentGreen = stitchPrimary;
-  static const Color textPrimary = stitchTextDark;
+  /// Back-compat aliases used throughout the app UI.
+  static const Color textPrimary = stitchTextLight;
   static const Color textSecondary = grey;
+
+  /// Accent used by some game UIs.
+  static const Color oceanBlue = Color(0xFF00A8E8);
 }

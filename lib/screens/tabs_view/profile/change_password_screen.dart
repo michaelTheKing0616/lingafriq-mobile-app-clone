@@ -8,8 +8,6 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/validators.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -83,26 +81,23 @@ class ChangePasswordScreen extends HookConsumerWidget {
                 width: 0.6.sw,
                 onTap: () async {
                   if (!formKey.currentState!.validate()) return;
-                  
-                  await safeAsync(
-                    context: context,
-                    operation: () async {
-                      final result = await ref.read(apiProvider.notifier).changePassword(
-                            currentPassword: currentPasswordController.text.trim(),
-                            newPassword: passwordController.text.trim(),
-                          );
-                      if (result == true) {
-                        ref.read(sharedPreferencesProvider).removeEmailAndPassword();
-                        ref.read(navigationProvider).pop();
-                        HapticFeedback.lightImpact();
-                        VxToast.show(context, msg: 'Password Changed');
-                      } else {
-                        throw Exception('Failed to change password');
-                      }
-                    },
-                    errorContext: 'changePassword',
-                    showError: true,
-                  );
+                  // final currentPassword =
+                  //     ref.read(sharedPreferencesProvider).emailAndPassword.password;
+                  final result = await ref.read(apiProvider.notifier).changePassword(
+                        // currentPassword: currentPassword,
+                        currentPassword: currentPasswordController.text.trim(),
+                        newPassword: passwordController.text.trim(),
+                      );
+                  if (result == true) {
+                    // await ref
+                    //     .read(dialogProvider(''))
+                    //     .showPlatformDialogue(title: "Your password has been changed");
+                    ref.read(sharedPreferencesProvider).removeEmailAndPassword();
+
+                    ref.read(navigationProvider).pop();
+                    HapticFeedback.lightImpact();
+                    VxToast.show(context, msg: 'Password Changed');
+                  }
                 },
                 text: "Change Password",
               )

@@ -1,114 +1,79 @@
-import 'dart:async';
-import 'dart:typed_data';
-
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
-
-import '../services/voice/voice_api_service.dart';
+import 'package:flutter/foundation.dart';
+import '../services/voice_service_client.dart';
 import 'base_provider.dart';
 
 final ttsProvider = NotifierProvider<TTSProvider, BaseProviderState>(() {
   return TTSProvider();
 });
 
+/// TTS Provider with intelligent language-based routing
+/// Uses voice service API to route to appropriate MMS-TTS models for authentic African language pronunciation
 class TTSProvider extends BaseProvider {
-  final AudioPlayer _player = AudioPlayer();
-  StreamSubscription<PlayerState>? _playerSub;
-  bool _isSpeaking = false;
+  final VoiceServiceClient _voiceClient = VoiceServiceClient();
+  String? _currentLanguage;
 
-  bool get isSpeaking => _isSpeaking;
-
-  @override
-  BaseProviderState build() {
-    _playerSub ??= _player.playerStateStream.listen((state) {
-      final nowSpeaking =
-          state.playing && state.processingState != ProcessingState.completed;
-      if (_isSpeaking != nowSpeaking) {
-        _isSpeaking = nowSpeaking;
-      }
-      if (state.processingState == ProcessingState.completed) {
-        _isSpeaking = false;
-      }
-    });
-    return super.build();
+  /// Initialize TTS provider
+  Future<void> init() async {
+    // Voice service client is ready to use
+    // No platform-specific setup needed
   }
 
-  /// Speak text using the backend voice service (MMS-TTS routing).
-  ///
-  /// - **languageName**: e.g. "yoruba", "hausa", "igbo", "swahili", "english"
-  Future<void> speak(
-    String text, {
-    String languageName = 'english',
-    String? voice,
-    double speed = 1.0,
-  }) async {
-    final normalizedText = text.trim();
-    if (normalizedText.isEmpty) return;
-
+  /// Speak text with intelligent language routing
+  /// 
+  /// Automatically routes to appropriate MMS-TTS model based on language:
+  /// - Yoruba → facebook/mms-tts-yor
+  /// - Igbo → facebook/mms-tts-ibo
+  /// - Swahili → facebook/mms-tts-swc
+  /// - And other African languages...
+  /// 
+  /// [word] - Text to speak
+  /// [languageName] - Language name or code (e.g., "yoruba", "igbo", "swahili")
+  ///                  If null, uses current language or defaults to English
+  Future<void> speak(String word, {String? languageName}) async {
+    if (word.isEmpty) return;
+    
     try {
-      await stop();
-
-      final bytes = await ref.read(voiceApiServiceProvider).synthesizeSpeech(
-            text: normalizedText,
-            language: languageName.trim().toLowerCase(),
-            voice: voice,
-            speed: speed,
-          );
-
-      if (bytes == null || bytes.isEmpty) {
-        debugPrint('TTS: empty audio for language=$languageName');
-        return;
-      }
-
-      await _player.setAudioSource(_BytesAudioSource(bytes));
-      await _player.play();
-      _isSpeaking = true;
+      // Use provided language or current language or default to English
+      final language = languageName ?? _currentLanguage ?? 'english';
+      _currentLanguage = language;
+      
+      await _voiceClient.stop();
+      await _voiceClient.synthesize(
+        text: word,
+        language: language,
+        onComplete: () {
+          debugPrint('TTS playback completed for: $word ($language)');
+        },
+        onError: (error) {
+          debugPrint('TTS error: $error');
+        },
+      );
     } catch (e) {
-      debugPrint('TTS speak error: $e');
+      debugPrint('Error in TTS speak: $e');
+      rethrow;
     }
   }
 
+  /// Set default language for subsequent speak calls
+  void setLanguage(String language) {
+    _currentLanguage = language.toLowerCase();
+  }
+
+  /// Stop current speech playback
   Future<void> stop() async {
     try {
-      await _player.stop();
-      _isSpeaking = false;
-    } catch (_) {
-      // ignore
+      await _voiceClient.stop();
+    } catch (e) {
+      debugPrint('Error stopping TTS: $e');
     }
   }
 
-  /// Clean up resources
-  /// Note: Notifier providers don't have a dispose method in Riverpod 2.0
-  /// Resources are cleaned up when the provider is no longer referenced
-  /// This method can be called manually if needed
-  Future<void> cleanup() async {
-    await _playerSub?.cancel();
-    await _player.dispose();
-  }
-}
-
-class _BytesAudioSource extends StreamAudioSource {
-  final Uint8List _data;
-  final String _contentType;
-
-  _BytesAudioSource(this._data, {String contentType = 'audio/wav'})
-      : _contentType = contentType;
+  /// Check if currently playing
+  bool get isPlaying => _voiceClient.isPlaying;
 
   @override
-  Future<StreamAudioResponse> request([int? start, int? end]) async {
-    final safeStart = start ?? 0;
-    final safeEnd = end ?? _data.length;
-
-    final clippedStart = safeStart.clamp(0, _data.length);
-    final clippedEnd = safeEnd.clamp(clippedStart, _data.length);
-
-    return StreamAudioResponse(
-      sourceLength: _data.length,
-      contentLength: clippedEnd - clippedStart,
-      offset: clippedStart,
-      stream: Stream.value(_data.sublist(clippedStart, clippedEnd)),
-      contentType: _contentType,
-    );
+  void dispose() {
+    _voiceClient.dispose();
   }
 }

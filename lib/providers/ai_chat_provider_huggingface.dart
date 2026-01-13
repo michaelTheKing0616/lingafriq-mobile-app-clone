@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
+import '../services/env_config.dart';
 
 /// Alternative AI Chat Provider using Hugging Face Inference API
 /// This is FREE and doesn't require a credit card (initially)
@@ -21,8 +22,8 @@ class HuggingFaceChatProvider extends BaseProvider {
   final Dio _dio = Dio();
   
   // Hugging Face Configuration
-  // Get your FREE token at: https://huggingface.co/settings/tokens
-  static const String _apiKey = 'YOUR_HUGGINGFACE_TOKEN_HERE'; // Replace with your token from GitHub Secrets or environment
+  // Token is injected via GitHub Secrets (HUGGINGFACE_TOKEN) and surfaced via EnvConfig.
+  static String get _apiKey => EnvConfig.huggingFaceToken;
   static const String _modelName = 'meta-llama/Llama-2-7b-chat-hf'; // Free model
   
   String get _apiUrl => 'https://api-inference.huggingface.co/models/$_modelName';
