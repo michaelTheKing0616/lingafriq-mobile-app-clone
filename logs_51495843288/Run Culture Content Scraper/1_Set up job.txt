@@ -1,0 +1,30 @@
+﻿2025-12-05T11:31:12.7061543Z Current runner version: '2.329.0'
+2025-12-05T11:31:12.7142636Z ##[group]Runner Image Provisioner
+2025-12-05T11:31:12.7144625Z Hosted Compute Agent
+2025-12-05T11:31:12.7145916Z Version: 20251124.448
+2025-12-05T11:31:12.7147211Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-05T11:31:12.7148998Z Build Date: 2025-11-24T21:16:26Z
+2025-12-05T11:31:12.7181428Z ##[endgroup]
+2025-12-05T11:31:12.7182671Z ##[group]Operating System
+2025-12-05T11:31:12.7184240Z Ubuntu
+2025-12-05T11:31:12.7185453Z 24.04.3
+2025-12-05T11:31:12.7186528Z LTS
+2025-12-05T11:31:12.7187656Z ##[endgroup]
+2025-12-05T11:31:12.7188844Z ##[group]Runner Image
+2025-12-05T11:31:12.7190992Z Image: ubuntu-24.04
+2025-12-05T11:31:12.7192355Z Version: 20251126.144.1
+2025-12-05T11:31:12.7194422Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-05T11:31:12.7197393Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-05T11:31:12.7220741Z ##[endgroup]
+2025-12-05T11:31:12.7223757Z ##[group]GITHUB_TOKEN Permissions
+2025-12-05T11:31:12.7227621Z Contents: read
+2025-12-05T11:31:12.7228654Z Metadata: read
+2025-12-05T11:31:12.7229940Z Packages: read
+2025-12-05T11:31:12.7230891Z ##[endgroup]
+2025-12-05T11:31:12.7234436Z Secret source: Actions
+2025-12-05T11:31:12.7236072Z Prepare workflow directory
+2025-12-05T11:31:12.8016631Z Prepare all required actions
+2025-12-05T11:31:12.8073859Z Getting action download info
+2025-12-05T11:31:13.2052275Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-05T11:31:13.7538718Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-12-05T11:31:13.9362708Z Complete job name: Run Culture Content Scraper

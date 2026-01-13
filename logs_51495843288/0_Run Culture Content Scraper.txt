@@ -1,0 +1,260 @@
+﻿2025-12-05T11:31:12.7062307Z Current runner version: '2.329.0'
+2025-12-05T11:31:12.7142721Z ##[group]Runner Image Provisioner
+2025-12-05T11:31:12.7144661Z Hosted Compute Agent
+2025-12-05T11:31:12.7145945Z Version: 20251124.448
+2025-12-05T11:31:12.7147239Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-05T11:31:12.7149031Z Build Date: 2025-11-24T21:16:26Z
+2025-12-05T11:31:12.7181500Z ##[endgroup]
+2025-12-05T11:31:12.7182706Z ##[group]Operating System
+2025-12-05T11:31:12.7184284Z Ubuntu
+2025-12-05T11:31:12.7185487Z 24.04.3
+2025-12-05T11:31:12.7186556Z LTS
+2025-12-05T11:31:12.7187688Z ##[endgroup]
+2025-12-05T11:31:12.7188870Z ##[group]Runner Image
+2025-12-05T11:31:12.7191014Z Image: ubuntu-24.04
+2025-12-05T11:31:12.7192382Z Version: 20251126.144.1
+2025-12-05T11:31:12.7194446Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-05T11:31:12.7198033Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-05T11:31:12.7220807Z ##[endgroup]
+2025-12-05T11:31:12.7223800Z ##[group]GITHUB_TOKEN Permissions
+2025-12-05T11:31:12.7227645Z Contents: read
+2025-12-05T11:31:12.7228672Z Metadata: read
+2025-12-05T11:31:12.7229958Z Packages: read
+2025-12-05T11:31:12.7230904Z ##[endgroup]
+2025-12-05T11:31:12.7234461Z Secret source: Actions
+2025-12-05T11:31:12.7236096Z Prepare workflow directory
+2025-12-05T11:31:12.8016679Z Prepare all required actions
+2025-12-05T11:31:12.8073900Z Getting action download info
+2025-12-05T11:31:13.2052320Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-05T11:31:13.7538762Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-12-05T11:31:13.9362741Z Complete job name: Run Culture Content Scraper
+2025-12-05T11:31:14.0056776Z ##[group]Run actions/checkout@v4
+2025-12-05T11:31:14.0057630Z with:
+2025-12-05T11:31:14.0058059Z   repository: LingAfrika/node-backend
+2025-12-05T11:31:14.0058838Z   token: ***
+2025-12-05T11:31:14.0059439Z   ssh-strict: true
+2025-12-05T11:31:14.0059856Z   ssh-user: git
+2025-12-05T11:31:14.0060278Z   persist-credentials: true
+2025-12-05T11:31:14.0060746Z   clean: true
+2025-12-05T11:31:14.0061164Z   sparse-checkout-cone-mode: true
+2025-12-05T11:31:14.0061652Z   fetch-depth: 1
+2025-12-05T11:31:14.0062057Z   fetch-tags: false
+2025-12-05T11:31:14.0062541Z   show-progress: true
+2025-12-05T11:31:14.0062972Z   lfs: false
+2025-12-05T11:31:14.0063350Z   submodules: false
+2025-12-05T11:31:14.0063776Z   set-safe-directory: true
+2025-12-05T11:31:14.0064497Z ##[endgroup]
+2025-12-05T11:31:14.1266979Z Syncing repository: LingAfrika/node-backend
+2025-12-05T11:31:14.1269957Z ##[group]Getting Git version info
+2025-12-05T11:31:14.1271341Z Working directory is '/home/runner/work/node-backend/node-backend'
+2025-12-05T11:31:14.1274285Z [command]/usr/bin/git version
+2025-12-05T11:31:14.1347782Z git version 2.52.0
+2025-12-05T11:31:14.1382704Z ##[endgroup]
+2025-12-05T11:31:14.1398868Z Temporarily overriding HOME='/home/runner/work/_temp/0c61de3f-182f-4a11-8759-d73bbfcc74a4' before making global git config changes
+2025-12-05T11:31:14.1402758Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-05T11:31:14.1411234Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-05T11:31:14.1466389Z Deleting the contents of '/home/runner/work/node-backend/node-backend'
+2025-12-05T11:31:14.1468272Z ##[group]Initializing the repository
+2025-12-05T11:31:14.1471936Z [command]/usr/bin/git init /home/runner/work/node-backend/node-backend
+2025-12-05T11:31:14.1608681Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-05T11:31:14.1612385Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-05T11:31:14.1614395Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-05T11:31:14.1615664Z hint: call:
+2025-12-05T11:31:14.1616351Z hint:
+2025-12-05T11:31:14.1617917Z hint: 	git config --global init.defaultBranch <name>
+2025-12-05T11:31:14.1619083Z hint:
+2025-12-05T11:31:14.1620400Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-05T11:31:14.1622229Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-05T11:31:14.1623782Z hint:
+2025-12-05T11:31:14.1624629Z hint: 	git branch -m <name>
+2025-12-05T11:31:14.1625510Z hint:
+2025-12-05T11:31:14.1626523Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-05T11:31:14.1628566Z Initialized empty Git repository in /home/runner/work/node-backend/node-backend/.git/
+2025-12-05T11:31:14.1634061Z [command]/usr/bin/git remote add origin https://github.com/LingAfrika/node-backend
+2025-12-05T11:31:14.1677869Z ##[endgroup]
+2025-12-05T11:31:14.1680200Z ##[group]Disabling automatic garbage collection
+2025-12-05T11:31:14.1682781Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-05T11:31:14.1717562Z ##[endgroup]
+2025-12-05T11:31:14.1720022Z ##[group]Setting up auth
+2025-12-05T11:31:14.1723440Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-05T11:31:14.1758258Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-05T11:31:14.2098884Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-05T11:31:14.2135051Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-05T11:31:14.2376048Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-05T11:31:14.2410842Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-05T11:31:14.2667583Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-05T11:31:14.2716111Z ##[endgroup]
+2025-12-05T11:31:14.2722547Z ##[group]Fetching the repository
+2025-12-05T11:31:14.2728948Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +b437d6f927e73e4491ec5688e73a9dbc8db91bcf:refs/remotes/origin/main
+2025-12-05T11:31:14.7635075Z From https://github.com/LingAfrika/node-backend
+2025-12-05T11:31:14.7641955Z  * [new ref]         b437d6f927e73e4491ec5688e73a9dbc8db91bcf -> origin/main
+2025-12-05T11:31:14.7682684Z ##[endgroup]
+2025-12-05T11:31:14.7684098Z ##[group]Determining the checkout info
+2025-12-05T11:31:14.7685667Z ##[endgroup]
+2025-12-05T11:31:14.7687498Z [command]/usr/bin/git sparse-checkout disable
+2025-12-05T11:31:14.7734768Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-05T11:31:14.7767608Z ##[group]Checking out the ref
+2025-12-05T11:31:14.7771122Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-05T11:31:14.8091335Z Switched to a new branch 'main'
+2025-12-05T11:31:14.8094406Z branch 'main' set up to track 'origin/main'.
+2025-12-05T11:31:14.8104827Z ##[endgroup]
+2025-12-05T11:31:14.8162581Z [command]/usr/bin/git log -1 --format=%H
+2025-12-05T11:31:14.8180188Z b437d6f927e73e4491ec5688e73a9dbc8db91bcf
+2025-12-05T11:31:14.8452826Z ##[group]Run actions/setup-node@v4
+2025-12-05T11:31:14.8453880Z with:
+2025-12-05T11:31:14.8454552Z   node-version: 18.x
+2025-12-05T11:31:14.8455293Z   cache: npm
+2025-12-05T11:31:14.8455996Z   always-auth: false
+2025-12-05T11:31:14.8456774Z   check-latest: false
+2025-12-05T11:31:14.8457779Z   token: ***
+2025-12-05T11:31:14.8458467Z ##[endgroup]
+2025-12-05T11:31:15.0407695Z Attempting to download 18.x...
+2025-12-05T11:31:15.5991638Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-05T11:31:16.2615109Z Extracting ...
+2025-12-05T11:31:16.2724057Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/75b53707-5c39-426b-877f-429335c3406f -f /home/runner/work/_temp/d7b7ebed-c075-4839-b9fd-ab220910498a
+2025-12-05T11:31:17.3683732Z Adding to the cache ...
+2025-12-05T11:31:19.4939068Z ##[group]Environment details
+2025-12-05T11:31:19.7927451Z node: v18.20.8
+2025-12-05T11:31:19.7932207Z npm: 10.8.2
+2025-12-05T11:31:19.7936874Z yarn: 1.22.22
+2025-12-05T11:31:19.7940930Z ##[endgroup]
+2025-12-05T11:31:19.7977698Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-05T11:31:19.9301602Z /home/runner/.npm
+2025-12-05T11:31:20.1085378Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T11:31:21.2320226Z Received 64730011 of 64730011 (100.0%), 67.0 MBs/sec
+2025-12-05T11:31:21.2322964Z Cache Size: ~62 MB (64730011 B)
+2025-12-05T11:31:21.2503663Z [command]/usr/bin/tar -xf /home/runner/work/_temp/109dac32-b77b-4498-b4eb-73cca1715278/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-05T11:31:21.6475916Z Cache restored successfully
+2025-12-05T11:31:21.6609923Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T11:31:21.6789983Z ##[group]Run npm ci
+2025-12-05T11:31:21.6790316Z [36;1mnpm ci[0m
+2025-12-05T11:31:21.6829439Z shell: /usr/bin/bash -e {0}
+2025-12-05T11:31:21.6829780Z ##[endgroup]
+2025-12-05T11:31:26.9326530Z npm warn deprecated @types/moment@2.13.0: This is a stub types definition for Moment (https://github.com/moment/moment). Moment provides its own type definitions, so you don't need @types/moment installed!
+2025-12-05T11:31:27.0621433Z npm warn deprecated @types/nanoid@3.0.0: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
+2025-12-05T11:31:27.0671196Z npm warn deprecated @types/mongoose-paginate-v2@1.6.5: This is a stub types definition. mongoose-paginate-v2 provides its own type definitions, so you do not need this installed.
+2025-12-05T11:31:27.0673396Z npm warn deprecated @types/mongoose@5.11.97: Mongoose publishes its own types, so you do not need to install this package.
+2025-12-05T11:31:27.1470779Z npm warn deprecated is-data-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-05T11:31:27.1479124Z npm warn deprecated is-accessor-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-05T11:31:27.1487509Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-12-05T11:31:27.2043230Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T11:31:27.2056575Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T11:31:27.2057840Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T11:31:27.2058992Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T11:31:27.2096251Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T11:31:27.2100619Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T11:31:27.2200562Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T11:31:27.2202868Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T11:31:27.2227009Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-05T11:31:27.2229617Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-05T11:31:27.2346743Z npm warn deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+2025-12-05T11:31:27.2661378Z npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+2025-12-05T11:31:27.2820146Z npm warn deprecated csurf@1.11.0: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-05T11:31:27.3064135Z npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+2025-12-05T11:31:27.3070401Z npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
+2025-12-05T11:31:27.3090930Z npm warn deprecated @babel/plugin-proposal-optional-catch-binding@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
+2025-12-05T11:31:27.3093671Z npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+2025-12-05T11:31:27.3096766Z npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+2025-12-05T11:31:27.3100360Z npm warn deprecated @babel/plugin-proposal-json-strings@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
+2025-12-05T11:31:27.3106765Z npm warn deprecated @babel/plugin-proposal-export-namespace-from@7.18.9: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-export-namespace-from instead.
+2025-12-05T11:31:27.3203766Z npm warn deprecated @babel/plugin-proposal-dynamic-import@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
+2025-12-05T11:31:27.3207016Z npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+2025-12-05T11:31:27.3848328Z npm warn deprecated @babel/plugin-proposal-logical-assignment-operators@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-logical-assignment-operators instead.
+2025-12-05T11:31:27.3862759Z npm warn deprecated @babel/plugin-proposal-class-static-block@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-static-block instead.
+2025-12-05T11:31:27.4035931Z npm warn deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+2025-12-05T11:31:27.4184435Z npm warn deprecated supertest@6.3.3: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-05T11:31:27.4317032Z npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2025-12-05T11:31:27.4767211Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-12-05T11:31:27.5121445Z npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
+2025-12-05T11:31:27.5124017Z npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+2025-12-05T11:31:27.5126057Z npm warn deprecated @babel/plugin-proposal-async-generator-functions@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
+2025-12-05T11:31:27.5907485Z npm warn deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+2025-12-05T11:31:27.6378634Z npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.6533916Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.6550821Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.6569799Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.6574890Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.6595172Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.6638665Z npm warn deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+2025-12-05T11:31:27.6901932Z npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+2025-12-05T11:31:27.6918927Z npm warn deprecated glob@7.1.6: Glob versions prior to v9 are no longer supported
+2025-12-05T11:31:27.7494756Z npm warn deprecated formidable@1.2.6: Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau
+2025-12-05T11:31:27.8541914Z npm warn deprecated multer@1.4.5-lts.1: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-12-05T11:31:27.8560825Z npm warn deprecated sane@4.1.0: some dependency vulnerabilities fixed, support for node < 10 dropped, and newer ECMAScript syntax/features added
+2025-12-05T11:31:27.8861188Z npm warn deprecated ***-p12-pem@4.0.1: Package is no longer maintained
+2025-12-05T11:31:28.5680823Z npm warn deprecated babel-merge@3.0.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2025-12-05T11:31:28.5752301Z npm warn deprecated formidable@2.1.2: ACTION REQUIRED: SWITCH TO v3 - v1 and v2 are VULNERABLE! v1 is DEPRECATED FOR OVER 2 YEARS! Use formidable@latest or try formidable-mini for fresh projects
+2025-12-05T11:31:28.8501753Z npm warn deprecated superagent@8.0.9: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-05T11:31:29.3436023Z npm warn deprecated z-schema@5.0.6: has issues with node 14
+2025-12-05T11:31:40.8153779Z 
+2025-12-05T11:31:40.8156773Z added 1399 packages, and audited 1400 packages in 19s
+2025-12-05T11:31:40.8158422Z 
+2025-12-05T11:31:40.8159758Z 116 packages are looking for funding
+2025-12-05T11:31:40.8162454Z   run `npm fund` for details
+2025-12-05T11:31:40.8903481Z 
+2025-12-05T11:31:40.8904532Z 53 vulnerabilities (11 low, 18 moderate, 17 high, 7 critical)
+2025-12-05T11:31:40.8905380Z 
+2025-12-05T11:31:40.8909438Z To address issues that do not require attention, run:
+2025-12-05T11:31:40.8912103Z   npm audit fix
+2025-12-05T11:31:40.8912328Z 
+2025-12-05T11:31:40.8912730Z To address all issues (including breaking changes), run:
+2025-12-05T11:31:40.8913288Z   npm audit fix --force
+2025-12-05T11:31:40.8913531Z 
+2025-12-05T11:31:40.8913741Z Run `npm audit` for details.
+2025-12-05T11:31:40.9493610Z ##[group]Run npm run build
+2025-12-05T11:31:40.9493903Z [36;1mnpm run build[0m
+2025-12-05T11:31:40.9528239Z shell: /usr/bin/bash -e {0}
+2025-12-05T11:31:40.9528492Z ##[endgroup]
+2025-12-05T11:31:41.0864724Z 
+2025-12-05T11:31:41.0866990Z > lingafriq_backend@1.0.0 build
+2025-12-05T11:31:41.0867852Z > tsc
+2025-12-05T11:31:41.0869992Z 
+2025-12-05T11:31:50.8303390Z ##[group]Run echo "🚀 Starting daily content scraper..."
+2025-12-05T11:31:50.8303831Z [36;1mecho "🚀 Starting daily content scraper..."[0m
+2025-12-05T11:31:50.8304543Z [36;1mnode -e "import('./dist/services/cultureScraper.service.js').then(m => m.runScraperJob()).catch(err => { console.error('Scraper error:', err); process.exit(1); })"[0m
+2025-12-05T11:31:50.8305217Z [36;1mecho "✅ Daily scraping complete!"[0m
+2025-12-05T11:31:50.8338210Z shell: /usr/bin/bash -e {0}
+2025-12-05T11:31:50.8338446Z env:
+2025-12-05T11:31:50.8338968Z   MONGODB_URI: ***
+2025-12-05T11:31:50.8339445Z   JWT_SECRET: ***
+2025-12-05T11:31:50.8339704Z   NEWS_API_KEY: ***
+2025-12-05T11:31:50.8339905Z   NODE_ENV: production
+2025-12-05T11:31:50.8340132Z ##[endgroup]
+2025-12-05T11:31:50.8394832Z 🚀 Starting daily content scraper...
+2025-12-05T11:31:51.1276495Z Starting culture content scraper...
+2025-12-05T11:31:51.1285413Z Connecting to MongoDB...
+2025-12-05T11:32:21.1420590Z Scraper error: MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+2025-12-05T11:32:21.1422194Z     at _handleConnectionErrors (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:755:11)
+2025-12-05T11:32:21.1423729Z     at NativeConnection.openUri (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:730:11)
+2025-12-05T11:32:21.1425549Z     at async Module.runScraperJob (file:///home/runner/work/node-backend/node-backend/dist/services/cultureScraper.service.js:192:9) {
+2025-12-05T11:32:21.1426583Z   reason: TopologyDescription {
+2025-12-05T11:32:21.1426994Z     type: 'Unknown',
+2025-12-05T11:32:21.1427516Z     servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-05T11:32:21.1428040Z     stale: false,
+2025-12-05T11:32:21.1428375Z     compatible: true,
+2025-12-05T11:32:21.1428776Z     heartbeatFrequencyMS: 10000,
+2025-12-05T11:32:21.1429368Z     localThresholdMS: 15,
+2025-12-05T11:32:21.1429738Z     setName: null,
+2025-12-05T11:32:21.1430075Z     maxElectionId: null,
+2025-12-05T11:32:21.1430501Z     maxSetVersion: null,
+2025-12-05T11:32:21.1430882Z     commonWireVersion: 0,
+2025-12-05T11:32:21.1431335Z     logicalSessionTimeoutMinutes: null
+2025-12-05T11:32:21.1431707Z   },
+2025-12-05T11:32:21.1431951Z   code: undefined
+2025-12-05T11:32:21.1432227Z }
+2025-12-05T11:32:21.1492213Z ##[error]Process completed with exit code 1.
+2025-12-05T11:32:21.1593514Z Post job cleanup.
+2025-12-05T11:32:21.2578356Z [command]/usr/bin/git version
+2025-12-05T11:32:21.2623028Z git version 2.52.0
+2025-12-05T11:32:21.2675380Z Temporarily overriding HOME='/home/runner/work/_temp/07f233b3-3ad8-45bb-91db-3de125014d69' before making global git config changes
+2025-12-05T11:32:21.2677569Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-05T11:32:21.2684141Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-05T11:32:21.2737013Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-05T11:32:21.2777515Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-05T11:32:21.3032828Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-05T11:32:21.3060830Z http.https://github.com/.extraheader
+2025-12-05T11:32:21.3076438Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-05T11:32:21.3113122Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-05T11:32:21.3355857Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-05T11:32:21.3398541Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-05T11:32:21.3938711Z Cleaning up orphan processes

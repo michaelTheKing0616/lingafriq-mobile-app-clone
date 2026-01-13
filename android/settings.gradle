@@ -1,0 +1,39 @@
+import java.util.Properties
+
+pluginManagement {
+    // Load flutter.sdk from local.properties
+    def flutterSdkPath = {
+        def properties = new Properties()
+        file("local.properties").withInputStream { properties.load(it) }
+        def path = properties.getProperty("flutter.sdk")
+        assert path != null : "flutter.sdk not set in local.properties"
+        return path
+    }()
+
+    // Make the Flutter plugin available
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+// Plugins block: specify plugin versions for Gradle to use when resolving plugin IDs.
+// NOTE: Do NOT give dev.flutter.flutter-gradle-plugin an AGP version number here.
+plugins {
+    id "dev.flutter.flutter-plugin-loader" version "1.0.0"
+
+    // ✅ Android Gradle Plugin (compatible with Flutter 3.27+)
+    id "com.android.application" version "8.6.0" apply false
+
+    // ✅ Google Services Plugin
+    id "com.google.gms.google-services" version "4.4.2" apply false
+
+    // ✅ Upgrade Kotlin to 2.2.0 (matches latest Flutter-compatible stdlib)
+    id "org.jetbrains.kotlin.android" version "2.2.0" apply false
+}
+
+rootProject.name = rootProject.name ?: "mobile-app"
+include ":app"

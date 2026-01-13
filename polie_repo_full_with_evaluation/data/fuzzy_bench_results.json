@@ -1,0 +1,311 @@
+{
+  "results": [
+    {
+      "in": "bawo",
+      "lang": "yoruba",
+      "out": "Báwo",
+      "changed": true,
+      "time_s": 2.3098999974990875e-05,
+      "meta": {
+        "original": "bawo",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "exact_match",
+            null
+          ]
+        ],
+        "normalized": "bawo",
+        "corrected": "Báwo",
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "bawo ni",
+      "lang": "yoruba",
+      "out": "Báwo ní",
+      "changed": true,
+      "time_s": 4.681999996591912e-06,
+      "meta": {
+        "original": "bawo ni",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "exact_match",
+            null
+          ]
+        ],
+        "normalized": "bawo ni",
+        "corrected": "Báwo ní",
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "bawoo",
+      "lang": "yoruba",
+      "out": "Báwo",
+      "changed": true,
+      "time_s": 0.00044263099999852784,
+      "meta": {
+        "original": "bawoo",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "fuzzy_match",
+            0.8888888888888888
+          ]
+        ],
+        "normalized": "bawoo",
+        "corrected": "Báwo",
+        "score": 0.8888888888888888,
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "bawo ni o",
+      "lang": "yoruba",
+      "out": "Báwo ní o",
+      "changed": true,
+      "time_s": 6.135000006679547e-06,
+      "meta": {
+        "original": "bawo ni o",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "exact_match",
+            null
+          ]
+        ],
+        "normalized": "bawo ni o",
+        "corrected": "Báwo ní o",
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "mo n ko eko",
+      "lang": "yoruba",
+      "out": "Mo ń kọ́ ẹ̀kọ́",
+      "changed": true,
+      "time_s": 4.066000002467263e-06,
+      "meta": {
+        "original": "mo n ko eko",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "exact_match",
+            null
+          ]
+        ],
+        "normalized": "mo n ko eko",
+        "corrected": "Mo ń kọ́ ẹ̀kọ́",
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "mo n ko ek0",
+      "lang": "yoruba",
+      "out": "Mo ń kọ́ ẹ̀kọ́",
+      "changed": true,
+      "time_s": 0.000450005000004694,
+      "meta": {
+        "original": "mo n ko ek0",
+        "lang": "yoruba",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "fuzzy_match",
+            0.9090909090909091
+          ]
+        ],
+        "normalized": "mo n ko ek0",
+        "corrected": "Mo ń kọ́ ẹ̀kọ́",
+        "score": 0.9090909090909091,
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "xin chao",
+      "lang": "vietnamese",
+      "out": "Xin chào",
+      "changed": true,
+      "time_s": 5.249999986745024e-06,
+      "meta": {
+        "original": "xin chao",
+        "lang": "vietnamese",
+        "steps": [
+          [
+            "exact_match",
+            null
+          ]
+        ],
+        "normalized": "xin chao",
+        "corrected": "Xin chào",
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "xin chaoo",
+      "lang": "vietnamese",
+      "out": "Xin chào",
+      "changed": true,
+      "time_s": 0.00021713699999281744,
+      "meta": {
+        "original": "xin chaoo",
+        "lang": "vietnamese",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "fuzzy_match",
+            0.9411764705882353
+          ]
+        ],
+        "normalized": "xin chaoo",
+        "corrected": "Xin chào",
+        "score": 0.9411764705882353,
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "cam on",
+      "lang": "vietnamese",
+      "out": "Cảm ơn",
+      "changed": true,
+      "time_s": 5.2900000184763485e-06,
+      "meta": {
+        "original": "cam on",
+        "lang": "vietnamese",
+        "steps": [
+          [
+            "exact_match",
+            null
+          ]
+        ],
+        "normalized": "cam on",
+        "corrected": "Cảm ơn",
+        "time_ms": 0
+      }
+    },
+    {
+      "in": "cam ơn",
+      "lang": "vietnamese",
+      "out": "Cảm ơn",
+      "changed": true,
+      "time_s": 0.0001891969999974208,
+      "meta": {
+        "original": "cam ơn",
+        "lang": "vietnamese",
+        "steps": [
+          [
+            "no_exact",
+            null
+          ],
+          [
+            "fuzzy_match",
+            0.8333333333333334
+          ]
+        ],
+        "normalized": "cam ơn",
+        "corrected": "Cảm ơn",
+        "score": 0.8333333333333334,
+        "time_ms": 0
+      }
+    }
+  ],
+  "total_time_s": 0.0015185139999971398,
+  "audit_log": [
+    {
+      "event": "diacritics_applied",
+      "lang": "yoruba",
+      "method": "exact_match",
+      "input": "bawo",
+      "output": "Báwo",
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "yoruba",
+      "method": "exact_match",
+      "input": "bawo ni",
+      "output": "Báwo ní",
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "yoruba",
+      "method": "fuzzy_match",
+      "input": "bawoo",
+      "output": "Báwo",
+      "score": 0.8888888888888888,
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "yoruba",
+      "method": "exact_match",
+      "input": "bawo ni o",
+      "output": "Báwo ní o",
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "yoruba",
+      "method": "exact_match",
+      "input": "mo n ko eko",
+      "output": "Mo ń kọ́ ẹ̀kọ́",
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "yoruba",
+      "method": "fuzzy_match",
+      "input": "mo n ko ek0",
+      "output": "Mo ń kọ́ ẹ̀kọ́",
+      "score": 0.9090909090909091,
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "vietnamese",
+      "method": "exact_match",
+      "input": "xin chao",
+      "output": "Xin chào",
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "vietnamese",
+      "method": "fuzzy_match",
+      "input": "xin chaoo",
+      "output": "Xin chào",
+      "score": 0.9411764705882353,
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "vietnamese",
+      "method": "exact_match",
+      "input": "cam on",
+      "output": "Cảm ơn",
+      "time_ms": 0
+    },
+    {
+      "event": "diacritics_applied",
+      "lang": "vietnamese",
+      "method": "fuzzy_match",
+      "input": "cam ơn",
+      "output": "Cảm ơn",
+      "score": 0.8333333333333334,
+      "time_ms": 0
+    }
+  ]
+}

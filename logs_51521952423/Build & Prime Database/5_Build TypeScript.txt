@@ -1,0 +1,33 @@
+﻿2025-12-05T11:28:42.8636318Z ##[group]Run echo "🔨 Building TypeScript..."
+2025-12-05T11:28:42.8636892Z [36;1mecho "🔨 Building TypeScript..."[0m
+2025-12-05T11:28:42.8637357Z [36;1mnpm run build[0m
+2025-12-05T11:28:42.8637734Z [36;1mecho "✅ Build complete"[0m
+2025-12-05T11:28:42.8638137Z [36;1mls -la dist/[0m
+2025-12-05T11:28:42.8673271Z shell: /usr/bin/bash -e {0}
+2025-12-05T11:28:42.8673523Z env:
+2025-12-05T11:28:42.8673704Z   NODE_VERSION: 18.x
+2025-12-05T11:28:42.8673908Z ##[endgroup]
+2025-12-05T11:28:42.8732972Z 🔨 Building TypeScript...
+2025-12-05T11:28:42.9962733Z 
+2025-12-05T11:28:42.9963711Z > lingafriq_backend@1.0.0 build
+2025-12-05T11:28:42.9964718Z > tsc
+2025-12-05T11:28:42.9967525Z 
+2025-12-05T11:28:52.1100570Z ✅ Build complete
+2025-12-05T11:28:52.1118951Z total 68
+2025-12-05T11:28:52.1120907Z drwxr-xr-x 11 runner runner 4096 Dec  5 11:28 .
+2025-12-05T11:28:52.1122930Z drwxr-xr-x 10 runner runner 4096 Dec  5 11:28 ..
+2025-12-05T11:28:52.1124379Z drwxr-xr-x  2 runner runner 4096 Dec  5 11:28 __test__
+2025-12-05T11:28:52.1125215Z -rw-r--r--  1 runner runner 1637 Dec  5 11:28 app.js
+2025-12-05T11:28:52.1125954Z -rw-r--r--  1 runner runner 1774 Dec  5 11:28 app.js.map
+2025-12-05T11:28:52.1127453Z drwxr-xr-x  3 runner runner 4096 Dec  5 11:28 controllers
+2025-12-05T11:28:52.1128209Z drwxr-xr-x  3 runner runner 4096 Dec  5 11:28 data_files
+2025-12-05T11:28:52.1128878Z drwxr-xr-x  2 runner runner 4096 Dec  5 11:28 middleware
+2025-12-05T11:28:52.1129558Z drwxr-xr-x  3 runner runner 4096 Dec  5 11:28 models
+2025-12-05T11:28:52.1130289Z drwxr-xr-x  3 runner runner 4096 Dec  5 11:28 routes
+2025-12-05T11:28:52.1130997Z -rw-r--r--  1 runner runner  761 Dec  5 11:28 server.js
+2025-12-05T11:28:52.1131686Z -rw-r--r--  1 runner runner  966 Dec  5 11:28 server.js.map
+2025-12-05T11:28:52.1132296Z drwxr-xr-x  2 runner runner 4096 Dec  5 11:28 services
+2025-12-05T11:28:52.1132699Z -rw-r--r--  1 runner runner 1895 Dec  5 11:28 setupAdmin.js
+2025-12-05T11:28:52.1133148Z -rw-r--r--  1 runner runner 1544 Dec  5 11:28 setupAdmin.js.map
+2025-12-05T11:28:52.1133584Z drwxr-xr-x  2 runner runner 4096 Dec  5 11:28 types
+2025-12-05T11:28:52.1133962Z drwxr-xr-x  3 runner runner 4096 Dec  5 11:28 utils

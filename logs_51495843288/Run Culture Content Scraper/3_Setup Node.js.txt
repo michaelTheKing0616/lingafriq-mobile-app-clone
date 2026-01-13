@@ -1,0 +1,26 @@
+﻿2025-12-05T11:31:14.8449145Z ##[group]Run actions/setup-node@v4
+2025-12-05T11:31:14.8453873Z with:
+2025-12-05T11:31:14.8454546Z   node-version: 18.x
+2025-12-05T11:31:14.8455288Z   cache: npm
+2025-12-05T11:31:14.8455991Z   always-auth: false
+2025-12-05T11:31:14.8456769Z   check-latest: false
+2025-12-05T11:31:14.8457773Z   token: ***
+2025-12-05T11:31:14.8458463Z ##[endgroup]
+2025-12-05T11:31:15.0407585Z Attempting to download 18.x...
+2025-12-05T11:31:15.5991526Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-05T11:31:16.2615035Z Extracting ...
+2025-12-05T11:31:16.2724010Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/75b53707-5c39-426b-877f-429335c3406f -f /home/runner/work/_temp/d7b7ebed-c075-4839-b9fd-ab220910498a
+2025-12-05T11:31:17.3683633Z Adding to the cache ...
+2025-12-05T11:31:19.4938994Z ##[group]Environment details
+2025-12-05T11:31:19.7927090Z node: v18.20.8
+2025-12-05T11:31:19.7932185Z npm: 10.8.2
+2025-12-05T11:31:19.7936854Z yarn: 1.22.22
+2025-12-05T11:31:19.7940914Z ##[endgroup]
+2025-12-05T11:31:19.7977675Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-05T11:31:19.9301402Z /home/runner/.npm
+2025-12-05T11:31:20.1085341Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-05T11:31:21.2320168Z Received 64730011 of 64730011 (100.0%), 67.0 MBs/sec
+2025-12-05T11:31:21.2322930Z Cache Size: ~62 MB (64730011 B)
+2025-12-05T11:31:21.2503467Z [command]/usr/bin/tar -xf /home/runner/work/_temp/109dac32-b77b-4498-b4eb-73cca1715278/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-05T11:31:21.6475870Z Cache restored successfully
+2025-12-05T11:31:21.6609872Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d

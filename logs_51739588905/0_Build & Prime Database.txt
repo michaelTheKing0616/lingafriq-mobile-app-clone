@@ -1,0 +1,671 @@
+﻿2025-12-08T23:07:23.6879423Z Current runner version: '2.329.0'
+2025-12-08T23:07:23.6915083Z ##[group]Runner Image Provisioner
+2025-12-08T23:07:23.6916377Z Hosted Compute Agent
+2025-12-08T23:07:23.6917492Z Version: 20251124.448
+2025-12-08T23:07:23.6918537Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-08T23:07:23.6919687Z Build Date: 2025-11-24T21:16:26Z
+2025-12-08T23:07:23.6920839Z ##[endgroup]
+2025-12-08T23:07:23.6921960Z ##[group]Operating System
+2025-12-08T23:07:23.6922892Z Ubuntu
+2025-12-08T23:07:23.6923849Z 24.04.3
+2025-12-08T23:07:23.6924714Z LTS
+2025-12-08T23:07:23.6925471Z ##[endgroup]
+2025-12-08T23:07:23.6926515Z ##[group]Runner Image
+2025-12-08T23:07:23.6927435Z Image: ubuntu-24.04
+2025-12-08T23:07:23.6928385Z Version: 20251126.144.1
+2025-12-08T23:07:23.6930239Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-08T23:07:23.6933356Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-08T23:07:23.6935368Z ##[endgroup]
+2025-12-08T23:07:23.6937425Z ##[group]GITHUB_TOKEN Permissions
+2025-12-08T23:07:23.6940211Z Contents: read
+2025-12-08T23:07:23.6941124Z Metadata: read
+2025-12-08T23:07:23.6942487Z Packages: read
+2025-12-08T23:07:23.6943450Z ##[endgroup]
+2025-12-08T23:07:23.6946443Z Secret source: Actions
+2025-12-08T23:07:23.6947825Z Prepare workflow directory
+2025-12-08T23:07:23.7716533Z Prepare all required actions
+2025-12-08T23:07:23.7777551Z Getting action download info
+2025-12-08T23:07:24.1739868Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-08T23:07:26.1619941Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-12-08T23:07:26.8541236Z Complete job name: Build & Prime Database
+2025-12-08T23:07:26.9334446Z ##[group]Run actions/checkout@v4
+2025-12-08T23:07:26.9335811Z with:
+2025-12-08T23:07:26.9336796Z   repository: LingAfrika/node-backend
+2025-12-08T23:07:26.9338180Z   token: ***
+2025-12-08T23:07:26.9339047Z   ssh-strict: true
+2025-12-08T23:07:26.9339923Z   ssh-user: git
+2025-12-08T23:07:26.9340803Z   persist-credentials: true
+2025-12-08T23:07:26.9341928Z   clean: true
+2025-12-08T23:07:26.9342804Z   sparse-checkout-cone-mode: true
+2025-12-08T23:07:26.9343857Z   fetch-depth: 1
+2025-12-08T23:07:26.9344687Z   fetch-tags: false
+2025-12-08T23:07:26.9345547Z   show-progress: true
+2025-12-08T23:07:26.9346429Z   lfs: false
+2025-12-08T23:07:26.9347237Z   submodules: false
+2025-12-08T23:07:26.9348106Z   set-safe-directory: true
+2025-12-08T23:07:26.9349288Z env:
+2025-12-08T23:07:26.9350055Z   NODE_VERSION: 18.x
+2025-12-08T23:07:26.9350898Z ##[endgroup]
+2025-12-08T23:07:27.0517978Z Syncing repository: LingAfrika/node-backend
+2025-12-08T23:07:27.0520691Z ##[group]Getting Git version info
+2025-12-08T23:07:27.0523324Z Working directory is '/home/runner/work/node-backend/node-backend'
+2025-12-08T23:07:27.0527033Z [command]/usr/bin/git version
+2025-12-08T23:07:27.0604688Z git version 2.52.0
+2025-12-08T23:07:27.0639607Z ##[endgroup]
+2025-12-08T23:07:27.0659681Z Temporarily overriding HOME='/home/runner/work/_temp/76f66af5-1eef-4e54-9a7e-f487cf81d8fb' before making global git config changes
+2025-12-08T23:07:27.0665408Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-08T23:07:27.0691402Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-08T23:07:27.0732622Z Deleting the contents of '/home/runner/work/node-backend/node-backend'
+2025-12-08T23:07:27.0736926Z ##[group]Initializing the repository
+2025-12-08T23:07:27.0742951Z [command]/usr/bin/git init /home/runner/work/node-backend/node-backend
+2025-12-08T23:07:27.0862653Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-08T23:07:27.0866940Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-08T23:07:27.0870445Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-08T23:07:27.0873738Z hint: call:
+2025-12-08T23:07:27.0875047Z hint:
+2025-12-08T23:07:27.0876765Z hint: 	git config --global init.defaultBranch <name>
+2025-12-08T23:07:27.0878941Z hint:
+2025-12-08T23:07:27.0881047Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-08T23:07:27.0890922Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-08T23:07:27.0893762Z hint:
+2025-12-08T23:07:27.0894976Z hint: 	git branch -m <name>
+2025-12-08T23:07:27.0896534Z hint:
+2025-12-08T23:07:27.0898625Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-08T23:07:27.0902767Z Initialized empty Git repository in /home/runner/work/node-backend/node-backend/.git/
+2025-12-08T23:07:27.0909060Z [command]/usr/bin/git remote add origin https://github.com/LingAfrika/node-backend
+2025-12-08T23:07:27.0943236Z ##[endgroup]
+2025-12-08T23:07:27.0945758Z ##[group]Disabling automatic garbage collection
+2025-12-08T23:07:27.0947917Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-08T23:07:27.0983034Z ##[endgroup]
+2025-12-08T23:07:27.0986248Z ##[group]Setting up auth
+2025-12-08T23:07:27.0992588Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-08T23:07:27.1025012Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-08T23:07:27.1402575Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-08T23:07:27.1442838Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-08T23:07:27.1671662Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-08T23:07:27.1707478Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-08T23:07:27.1956559Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-08T23:07:27.1994136Z ##[endgroup]
+2025-12-08T23:07:27.1997545Z ##[group]Fetching the repository
+2025-12-08T23:07:27.2006302Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d6e643fc434edc64224ad346776af4555b27bc2c:refs/remotes/origin/main
+2025-12-08T23:07:27.6672101Z From https://github.com/LingAfrika/node-backend
+2025-12-08T23:07:27.6673754Z  * [new ref]         d6e643fc434edc64224ad346776af4555b27bc2c -> origin/main
+2025-12-08T23:07:27.6707429Z ##[endgroup]
+2025-12-08T23:07:27.6708224Z ##[group]Determining the checkout info
+2025-12-08T23:07:27.6709508Z ##[endgroup]
+2025-12-08T23:07:27.6715376Z [command]/usr/bin/git sparse-checkout disable
+2025-12-08T23:07:27.6759293Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-08T23:07:27.6787872Z ##[group]Checking out the ref
+2025-12-08T23:07:27.6792117Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-08T23:07:27.7469057Z Switched to a new branch 'main'
+2025-12-08T23:07:27.7470282Z branch 'main' set up to track 'origin/main'.
+2025-12-08T23:07:27.7474445Z ##[endgroup]
+2025-12-08T23:07:27.7476477Z [command]/usr/bin/git log -1 --format=%H
+2025-12-08T23:07:27.7477329Z d6e643fc434edc64224ad346776af4555b27bc2c
+2025-12-08T23:07:27.7710994Z ##[group]Run actions/setup-node@v4
+2025-12-08T23:07:27.7715526Z with:
+2025-12-08T23:07:27.7715960Z   node-version: 18.x
+2025-12-08T23:07:27.7716382Z   cache: npm
+2025-12-08T23:07:27.7716769Z   always-auth: false
+2025-12-08T23:07:27.7717198Z   check-latest: false
+2025-12-08T23:07:27.7717830Z   token: ***
+2025-12-08T23:07:27.7718240Z env:
+2025-12-08T23:07:27.7718626Z   NODE_VERSION: 18.x
+2025-12-08T23:07:27.7719046Z ##[endgroup]
+2025-12-08T23:07:27.9568563Z Attempting to download 18.x...
+2025-12-08T23:07:28.6159487Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-08T23:07:29.1975772Z Extracting ...
+2025-12-08T23:07:29.2085000Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/74b0e41b-fc82-45bf-8b1c-1229ff487191 -f /home/runner/work/_temp/07362112-33e4-4e45-8ce3-4ac4fec7a255
+2025-12-08T23:07:30.2862355Z Adding to the cache ...
+2025-12-08T23:07:32.4058616Z ##[group]Environment details
+2025-12-08T23:07:32.6911697Z node: v18.20.8
+2025-12-08T23:07:32.6915516Z npm: 10.8.2
+2025-12-08T23:07:32.6917822Z yarn: 1.22.22
+2025-12-08T23:07:32.6919796Z ##[endgroup]
+2025-12-08T23:07:32.6938528Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-08T23:07:32.8112268Z /home/runner/.npm
+2025-12-08T23:07:32.9820707Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-08T23:07:34.0401235Z Received 64730011 of 64730011 (100.0%), 70.5 MBs/sec
+2025-12-08T23:07:34.0404559Z Cache Size: ~62 MB (64730011 B)
+2025-12-08T23:07:34.0442049Z [command]/usr/bin/tar -xf /home/runner/work/_temp/40048ef0-1f5b-4b4b-87db-f85d20623f0e/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-08T23:07:34.4500874Z Cache restored successfully
+2025-12-08T23:07:34.4632608Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-08T23:07:34.4807582Z ##[group]Run echo "📦 Installing dependencies..."
+2025-12-08T23:07:34.4808032Z [36;1mecho "📦 Installing dependencies..."[0m
+2025-12-08T23:07:34.4808320Z [36;1mnpm ci[0m
+2025-12-08T23:07:34.4808546Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-08T23:07:34.4846359Z shell: /usr/bin/bash -e {0}
+2025-12-08T23:07:34.4846613Z env:
+2025-12-08T23:07:34.4846805Z   NODE_VERSION: 18.x
+2025-12-08T23:07:34.4847007Z ##[endgroup]
+2025-12-08T23:07:34.4931255Z 📦 Installing dependencies...
+2025-12-08T23:07:39.4938804Z npm warn deprecated @types/moment@2.13.0: This is a stub types definition for Moment (https://github.com/moment/moment). Moment provides its own type definitions, so you don't need @types/moment installed!
+2025-12-08T23:07:39.6173105Z npm warn deprecated @types/mongoose-paginate-v2@1.6.5: This is a stub types definition. mongoose-paginate-v2 provides its own type definitions, so you do not need this installed.
+2025-12-08T23:07:39.6179536Z npm warn deprecated @types/mongoose@5.11.97: Mongoose publishes its own types, so you do not need to install this package.
+2025-12-08T23:07:39.6267366Z npm warn deprecated @types/nanoid@3.0.0: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
+2025-12-08T23:07:39.6993588Z npm warn deprecated is-data-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-08T23:07:39.7003722Z npm warn deprecated is-accessor-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-08T23:07:39.7008042Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-12-08T23:07:39.7400887Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-08T23:07:39.7406144Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-08T23:07:39.7414960Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-08T23:07:39.7421733Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-08T23:07:39.7552227Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-08T23:07:39.7559450Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-08T23:07:39.7652541Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-08T23:07:39.7662649Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-08T23:07:39.7682148Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-08T23:07:39.7689151Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-08T23:07:39.7812617Z npm warn deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+2025-12-08T23:07:39.8071872Z npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+2025-12-08T23:07:39.8267466Z npm warn deprecated csurf@1.11.0: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-08T23:07:39.8533410Z npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+2025-12-08T23:07:39.8543383Z npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
+2025-12-08T23:07:39.8546458Z npm warn deprecated @babel/plugin-proposal-optional-catch-binding@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
+2025-12-08T23:07:39.8559924Z npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+2025-12-08T23:07:39.8563294Z npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+2025-12-08T23:07:39.8578143Z npm warn deprecated @babel/plugin-proposal-export-namespace-from@7.18.9: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-export-namespace-from instead.
+2025-12-08T23:07:39.8581212Z npm warn deprecated @babel/plugin-proposal-json-strings@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
+2025-12-08T23:07:39.8590938Z npm warn deprecated @babel/plugin-proposal-dynamic-import@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
+2025-12-08T23:07:39.8594107Z npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+2025-12-08T23:07:39.9318783Z npm warn deprecated @babel/plugin-proposal-logical-assignment-operators@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-logical-assignment-operators instead.
+2025-12-08T23:07:39.9336997Z npm warn deprecated @babel/plugin-proposal-class-static-block@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-static-block instead.
+2025-12-08T23:07:39.9498051Z npm warn deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+2025-12-08T23:07:39.9598971Z npm warn deprecated supertest@6.3.3: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-08T23:07:39.9715805Z npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2025-12-08T23:07:40.0164520Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-12-08T23:07:40.0467994Z npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
+2025-12-08T23:07:40.0471854Z npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+2025-12-08T23:07:40.0476205Z npm warn deprecated @babel/plugin-proposal-async-generator-functions@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
+2025-12-08T23:07:40.1199981Z npm warn deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+2025-12-08T23:07:40.1650686Z npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.1809803Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.1815479Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.1823654Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.1831950Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.1855549Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.1957714Z npm warn deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+2025-12-08T23:07:40.2204264Z npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+2025-12-08T23:07:40.2230180Z npm warn deprecated glob@7.1.6: Glob versions prior to v9 are no longer supported
+2025-12-08T23:07:40.2993576Z npm warn deprecated formidable@1.2.6: Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau
+2025-12-08T23:07:40.4441884Z npm warn deprecated sane@4.1.0: some dependency vulnerabilities fixed, support for node < 10 dropped, and newer ECMAScript syntax/features added
+2025-12-08T23:07:40.4510229Z npm warn deprecated multer@1.4.5-lts.1: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-12-08T23:07:40.4870325Z npm warn deprecated google-p12-pem@4.0.1: Package is no longer maintained
+2025-12-08T23:07:41.4121756Z npm warn deprecated babel-merge@3.0.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2025-12-08T23:07:41.4165613Z npm warn deprecated formidable@2.1.2: ACTION REQUIRED: SWITCH TO v3 - v1 and v2 are VULNERABLE! v1 is DEPRECATED FOR OVER 2 YEARS! Use formidable@latest or try formidable-mini for fresh projects
+2025-12-08T23:07:41.7424105Z npm warn deprecated superagent@8.0.9: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-08T23:07:42.4057360Z npm warn deprecated z-schema@5.0.6: has issues with node 14
+2025-12-08T23:07:53.2955578Z 
+2025-12-08T23:07:53.2957347Z added 1399 packages, and audited 1400 packages in 19s
+2025-12-08T23:07:53.2958664Z 
+2025-12-08T23:07:53.2958945Z 116 packages are looking for funding
+2025-12-08T23:07:53.2959581Z   run `npm fund` for details
+2025-12-08T23:07:53.3597952Z 
+2025-12-08T23:07:53.3599946Z 53 vulnerabilities (11 low, 18 moderate, 17 high, 7 critical)
+2025-12-08T23:07:53.3617677Z 
+2025-12-08T23:07:53.3622374Z To address issues that do not require attention, run:
+2025-12-08T23:07:53.3622956Z   npm audit fix
+2025-12-08T23:07:53.3623171Z 
+2025-12-08T23:07:53.3623524Z To address all issues (including breaking changes), run:
+2025-12-08T23:07:53.3624067Z   npm audit fix --force
+2025-12-08T23:07:53.3624304Z 
+2025-12-08T23:07:53.3624485Z Run `npm audit` for details.
+2025-12-08T23:07:53.4134039Z ✅ Dependencies installed
+2025-12-08T23:07:53.4167716Z ##[group]Run echo "🔨 Building TypeScript..."
+2025-12-08T23:07:53.4168108Z [36;1mecho "🔨 Building TypeScript..."[0m
+2025-12-08T23:07:53.4168395Z [36;1mnpm run build[0m
+2025-12-08T23:07:53.4168621Z [36;1mecho "✅ Build complete"[0m
+2025-12-08T23:07:53.4168865Z [36;1mls -la dist/[0m
+2025-12-08T23:07:53.4201831Z shell: /usr/bin/bash -e {0}
+2025-12-08T23:07:53.4202082Z env:
+2025-12-08T23:07:53.4202264Z   NODE_VERSION: 18.x
+2025-12-08T23:07:53.4202468Z ##[endgroup]
+2025-12-08T23:07:53.4259530Z 🔨 Building TypeScript...
+2025-12-08T23:07:53.5516417Z 
+2025-12-08T23:07:53.5517381Z > lingafriq_backend@1.0.0 build
+2025-12-08T23:07:53.5519232Z > tsc
+2025-12-08T23:07:53.5519424Z 
+2025-12-08T23:08:03.9869797Z ✅ Build complete
+2025-12-08T23:08:03.9886215Z total 68
+2025-12-08T23:08:03.9887919Z drwxr-xr-x 11 runner runner 4096 Dec  8 23:07 .
+2025-12-08T23:08:03.9889639Z drwxr-xr-x 10 runner runner 4096 Dec  8 23:07 ..
+2025-12-08T23:08:03.9893251Z drwxr-xr-x  2 runner runner 4096 Dec  8 23:07 __test__
+2025-12-08T23:08:03.9895545Z -rw-r--r--  1 runner runner 1637 Dec  8 23:08 app.js
+2025-12-08T23:08:03.9897411Z -rw-r--r--  1 runner runner 1774 Dec  8 23:08 app.js.map
+2025-12-08T23:08:03.9898089Z drwxr-xr-x  3 runner runner 4096 Dec  8 23:08 controllers
+2025-12-08T23:08:03.9898806Z drwxr-xr-x  3 runner runner 4096 Dec  8 23:07 data_files
+2025-12-08T23:08:03.9899498Z drwxr-xr-x  2 runner runner 4096 Dec  8 23:07 middleware
+2025-12-08T23:08:03.9900168Z drwxr-xr-x  4 runner runner 4096 Dec  8 23:08 models
+2025-12-08T23:08:03.9900839Z drwxr-xr-x  3 runner runner 4096 Dec  8 23:08 routes
+2025-12-08T23:08:03.9901847Z -rw-r--r--  1 runner runner  761 Dec  8 23:08 server.js
+2025-12-08T23:08:03.9902530Z -rw-r--r--  1 runner runner  966 Dec  8 23:08 server.js.map
+2025-12-08T23:08:03.9903225Z drwxr-xr-x  2 runner runner 4096 Dec  8 23:07 services
+2025-12-08T23:08:03.9903956Z -rw-r--r--  1 runner runner 1975 Dec  8 23:08 setupAdmin.js
+2025-12-08T23:08:03.9904757Z -rw-r--r--  1 runner runner 1587 Dec  8 23:08 setupAdmin.js.map
+2025-12-08T23:08:03.9905491Z drwxr-xr-x  2 runner runner 4096 Dec  8 23:07 types
+2025-12-08T23:08:03.9906156Z drwxr-xr-x  3 runner runner 4096 Dec  8 23:08 utils
+2025-12-08T23:08:03.9931203Z ##[group]Run echo "🧪 Running tests..."
+2025-12-08T23:08:03.9931834Z [36;1mecho "🧪 Running tests..."[0m
+2025-12-08T23:08:03.9932214Z [36;1mnpm test || echo "⚠️ Tests failed or not configured, continuing..."[0m
+2025-12-08T23:08:03.9964099Z shell: /usr/bin/bash -e {0}
+2025-12-08T23:08:03.9964328Z env:
+2025-12-08T23:08:03.9964505Z   NODE_VERSION: 18.x
+2025-12-08T23:08:03.9964727Z ##[endgroup]
+2025-12-08T23:08:04.0016662Z 🧪 Running tests...
+2025-12-08T23:08:04.1299937Z 
+2025-12-08T23:08:04.1300513Z > lingafriq_backend@1.0.0 test
+2025-12-08T23:08:04.1301081Z > jest --detectOpenHandles
+2025-12-08T23:08:04.1301354Z 
+2025-12-08T23:08:27.2674874Z FAIL dist/__test__/index.test.js (22.153 s)
+2025-12-08T23:08:27.2680575Z   ● Test the tests › Check if app is responding
+2025-12-08T23:08:27.2682685Z 
+2025-12-08T23:08:27.2683017Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2684387Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2685242Z 
+2025-12-08T23:08:27.2685404Z       37 |     });
+2025-12-08T23:08:27.2685851Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2687075Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2688565Z          |   ^
+2025-12-08T23:08:27.2689054Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2689699Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2690370Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2690763Z 
+2025-12-08T23:08:27.2690998Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2691869Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2692285Z 
+2025-12-08T23:08:27.2692647Z   ● Test the tests › Register New User
+2025-12-08T23:08:27.2692965Z 
+2025-12-08T23:08:27.2693251Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2694444Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2695295Z 
+2025-12-08T23:08:27.2695461Z       37 |     });
+2025-12-08T23:08:27.2695906Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2697082Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2698036Z          |   ^
+2025-12-08T23:08:27.2698488Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2699123Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2699809Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2700224Z 
+2025-12-08T23:08:27.2700473Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2701102Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2701700Z 
+2025-12-08T23:08:27.2702037Z   ● Test the tests › Login user
+2025-12-08T23:08:27.2702309Z 
+2025-12-08T23:08:27.2702583Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2703733Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2704598Z 
+2025-12-08T23:08:27.2704737Z       37 |     });
+2025-12-08T23:08:27.2705129Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2706262Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2707262Z          |   ^
+2025-12-08T23:08:27.2707743Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2708760Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2709514Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2709943Z 
+2025-12-08T23:08:27.2710178Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2710798Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2711212Z 
+2025-12-08T23:08:27.2712152Z   ● Test the tests › Check User
+2025-12-08T23:08:27.2712478Z 
+2025-12-08T23:08:27.2712755Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2713928Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2714761Z 
+2025-12-08T23:08:27.2714897Z       37 |     });
+2025-12-08T23:08:27.2715298Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2716396Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2717410Z          |   ^
+2025-12-08T23:08:27.2717880Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2718531Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2719226Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2719634Z 
+2025-12-08T23:08:27.2719857Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2720753Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2721151Z 
+2025-12-08T23:08:27.2721713Z   ● Test the tests › Get All Languages
+2025-12-08T23:08:27.2722048Z 
+2025-12-08T23:08:27.2722317Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2723480Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2724310Z 
+2025-12-08T23:08:27.2724456Z       37 |     });
+2025-12-08T23:08:27.2724906Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2726054Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2727027Z          |   ^
+2025-12-08T23:08:27.2727513Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2728153Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2728851Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2729182Z 
+2025-12-08T23:08:27.2729337Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2729690Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2729910Z 
+2025-12-08T23:08:27.2730195Z   ● Test the tests › Delete Account After all tests are run
+2025-12-08T23:08:27.2730412Z 
+2025-12-08T23:08:27.2730565Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2731229Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2731971Z 
+2025-12-08T23:08:27.2732058Z       37 |     });
+2025-12-08T23:08:27.2732380Z       38 |     it("Login user", async () => {
+2025-12-08T23:08:27.2733052Z     > 39 |         const response = await request.post("/accounts/auth/jwt/create").send({ email: "joebizzy@gmail.com ", password: formData.password });
+2025-12-08T23:08:27.2733592Z          |   ^
+2025-12-08T23:08:27.2733846Z       40 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.2734192Z       41 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.2734556Z       42 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.2734782Z 
+2025-12-08T23:08:27.2734900Z       at dist/__test__/index.test.js:39:3
+2025-12-08T23:08:27.2735240Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2735463Z 
+2025-12-08T23:08:27.2735469Z 
+2025-12-08T23:08:27.2735800Z   ● Test suite failed to run
+2025-12-08T23:08:27.2735960Z 
+2025-12-08T23:08:27.2736108Z     thrown: "Exceeded timeout of 5000 ms for a hook.
+2025-12-08T23:08:27.2736751Z     Add a timeout value to this test to increase the timeout, if this is a long-running test. See https://jestjs.io/docs/api#testname-fn-timeout."
+2025-12-08T23:08:27.2737206Z 
+2025-12-08T23:08:27.2737212Z 
+2025-12-08T23:08:27.2737223Z 
+2025-12-08T23:08:27.2737345Z       at dist/__test__/index.test.js:82:3
+2025-12-08T23:08:27.2737682Z       at Object.<anonymous> (dist/__test__/index.test.js:38:1)
+2025-12-08T23:08:27.2737900Z 
+2025-12-08T23:08:27.2738418Z Test Suites: 1 failed, 1 total
+2025-12-08T23:08:27.2739027Z Tests:       6 failed, 6 total
+2025-12-08T23:08:27.2739598Z Snapshots:   0 total
+2025-12-08T23:08:27.2740021Z Time:        22.595 s
+2025-12-08T23:08:27.2740370Z Ran all test suites.
+2025-12-08T23:08:27.4579674Z 
+2025-12-08T23:08:27.4582777Z Jest has detected the following 2 open handles potentially keeping Jest from exiting:
+2025-12-08T23:08:27.4584506Z 
+2025-12-08T23:08:27.4584958Z   ●  Timeout
+2025-12-08T23:08:27.4585160Z 
+2025-12-08T23:08:27.4586017Z       46 |         const response = await request.post("/accounts/auth/jwt/create").send({email: "joebizzy@gmail.com ", password: formData.password});
+2025-12-08T23:08:27.4587091Z       47 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.4588225Z     > 48 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.4588775Z          |                                     ^
+2025-12-08T23:08:27.4589382Z       49 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.4590041Z       50 |         cookie = response.headers['set-cookie'];
+2025-12-08T23:08:27.4590616Z       51 |         expect(cookie).toBeTruthy();
+2025-12-08T23:08:27.4590929Z 
+2025-12-08T23:08:27.4591368Z       at Topology.selectServer (node_modules/mongodb/src/sdam/topology.ts:528:26)
+2025-12-08T23:08:27.4592492Z       at Topology.connect (node_modules/mongodb/src/sdam/topology.ts:414:5)
+2025-12-08T23:08:27.4593250Z       at node_modules/mongodb/lib/mongo_client.js:108:60
+2025-12-08T23:08:27.4594006Z       at topologyConnect (node_modules/mongodb/lib/mongo_client.js:108:87)
+2025-12-08T23:08:27.4594850Z       at MongoClient.connect (node_modules/mongodb/src/mongo_client.ts:423:5)
+2025-12-08T23:08:27.4595689Z       at _createMongoClient (node_modules/mongoose/lib/connection.js:375:16)
+2025-12-08T23:08:27.4596574Z       at NativeConnection.openUri (node_modules/mongoose/lib/connection.js:260:29)
+2025-12-08T23:08:27.4597429Z       at Mongoose.connect (node_modules/mongoose/lib/index.js:161:15)
+2025-12-08T23:08:27.4598164Z       at Object.<anonymous> (src/__test__/index.test.ts:48:37)
+2025-12-08T23:08:27.4598542Z 
+2025-12-08T23:08:27.4598557Z 
+2025-12-08T23:08:27.4598812Z   ●  Timeout
+2025-12-08T23:08:27.4598998Z 
+2025-12-08T23:08:27.4599798Z       46 |         const response = await request.post("/accounts/auth/jwt/create").send({email: "joebizzy@gmail.com ", password: formData.password});
+2025-12-08T23:08:27.4600820Z       47 |         expect(response.statusCode).toBe(200);
+2025-12-08T23:08:27.4601335Z     > 48 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:27.4601945Z          |                                     ^
+2025-12-08T23:08:27.4602308Z       49 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:27.4602704Z       50 |         cookie = response.headers['set-cookie'];
+2025-12-08T23:08:27.4603053Z       51 |         expect(cookie).toBeTruthy();
+2025-12-08T23:08:27.4603247Z 
+2025-12-08T23:08:27.4603466Z       at makeConnection (node_modules/mongodb/src/cmap/connect.ts:362:14)
+2025-12-08T23:08:27.4603912Z       at connect (node_modules/mongodb/lib/cmap/connect.js:31:3)
+2025-12-08T23:08:27.4604338Z       at checkServer (node_modules/mongodb/src/sdam/monitor.ts:285:7)
+2025-12-08T23:08:27.4604793Z       at MonitorInterval.fn (node_modules/mongodb/lib/sdam/monitor.js:221:5)
+2025-12-08T23:08:27.4605543Z       at MonitorInterval._executeAndReschedule (node_modules/mongodb/src/sdam/monitor.ts:468:6)
+2025-12-08T23:08:27.4606122Z       at new MonitorInterval (node_modules/mongodb/src/sdam/monitor.ts:580:11)
+2025-12-08T23:08:27.4606596Z       at Monitor.connect (node_modules/mongodb/src/sdam/monitor.ts:140:16)
+2025-12-08T23:08:27.4607055Z       at Server.connect (node_modules/mongodb/src/sdam/server.ts:226:14)
+2025-12-08T23:08:27.4607553Z       at createAndConnectServer (node_modules/mongodb/src/sdam/topology.ts:207:3)
+2025-12-08T23:08:27.4607989Z       at node_modules/mongodb/lib/sdam/topology.js:152:7
+2025-12-08T23:08:27.4608302Z           at Array.map (<anonymous>)
+2025-12-08T23:08:27.4608690Z       at Topology.connect (node_modules/mongodb/src/sdam/topology.ts:389:29)
+2025-12-08T23:08:27.4609098Z       at node_modules/mongodb/lib/mongo_client.js:108:60
+2025-12-08T23:08:27.4609506Z       at topologyConnect (node_modules/mongodb/lib/mongo_client.js:108:87)
+2025-12-08T23:08:27.4609985Z       at MongoClient.connect (node_modules/mongodb/src/mongo_client.ts:423:5)
+2025-12-08T23:08:27.4610468Z       at _createMongoClient (node_modules/mongoose/lib/connection.js:375:16)
+2025-12-08T23:08:27.4610973Z       at NativeConnection.openUri (node_modules/mongoose/lib/connection.js:260:29)
+2025-12-08T23:08:27.4611632Z       at Mongoose.connect (node_modules/mongoose/lib/index.js:161:15)
+2025-12-08T23:08:27.4612062Z       at Object.<anonymous> (src/__test__/index.test.ts:48:37)
+2025-12-08T23:08:27.4612429Z 
+2025-12-08T23:08:47.2670742Z 
+2025-12-08T23:08:47.2672398Z   ●  Cannot log after tests are done. Did you forget to wait for something async in your test?
+2025-12-08T23:08:47.2673966Z     Attempted to log "MongooseServerSelectionError: Error: connect ECONNREFUSED 127.0.0.1:27017
+2025-12-08T23:08:47.2675652Z         at _handleConnectionErrors (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:297:11)
+2025-12-08T23:08:47.2677387Z         at NativeConnection.openUri (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/connection.js:277:11)
+2025-12-08T23:08:47.2678884Z         at Object.<anonymous> (/home/runner/work/node-backend/node-backend/dist/__test__/index.test.js:41:7) {
+2025-12-08T23:08:47.2679717Z       reason: TopologyDescription {
+2025-12-08T23:08:47.2680144Z         type: 'Unknown',
+2025-12-08T23:08:47.2680674Z         servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-08T23:08:47.2681212Z         stale: false,
+2025-12-08T23:08:47.2681744Z         compatible: true,
+2025-12-08T23:08:47.2682197Z         heartbeatFrequencyMS: 10000,
+2025-12-08T23:08:47.2682626Z         localThresholdMS: 15,
+2025-12-08T23:08:47.2683019Z         setName: null,
+2025-12-08T23:08:47.2683364Z         maxElectionId: null,
+2025-12-08T23:08:47.2683743Z         maxSetVersion: null,
+2025-12-08T23:08:47.2684119Z         commonWireVersion: 0,
+2025-12-08T23:08:47.2686558Z         logicalSessionTimeoutMinutes: null
+2025-12-08T23:08:47.2687011Z       },
+2025-12-08T23:08:47.2687310Z       code: undefined
+2025-12-08T23:08:47.2687616Z     }".
+2025-12-08T23:08:47.2687777Z 
+2025-12-08T23:08:47.2688034Z       48 |         expect(response.body.access).toBeTruthy();
+2025-12-08T23:08:47.2688677Z       49 |         expect(typeof response.body.access).toBe("string");
+2025-12-08T23:08:47.2689291Z     > 50 |         cookie = response.headers['set-cookie'];
+2025-12-08T23:08:47.2689760Z          |               ^
+2025-12-08T23:08:47.2690194Z       51 |         expect(cookie).toBeTruthy();
+2025-12-08T23:08:47.2690616Z       52 |     })
+2025-12-08T23:08:47.2690921Z       53 |
+2025-12-08T23:08:47.2691107Z 
+2025-12-08T23:08:47.2691738Z       at _handleConnectionErrors (node_modules/mongoose/lib/connection.js:297:11)
+2025-12-08T23:08:47.2692634Z       at NativeConnection.openUri (node_modules/mongoose/lib/connection.js:277:11)
+2025-12-08T23:08:47.2693355Z       at Object.<anonymous> (dist/__test__/index.test.js:41:7) {
+2025-12-08T23:08:47.2693885Z         reason: TopologyDescription {
+2025-12-08T23:08:47.2694596Z           type: 'Unknown',
+2025-12-08T23:08:47.2695138Z           servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+2025-12-08T23:08:47.2695642Z           stale: false,
+2025-12-08T23:08:47.2695992Z           compatible: true,
+2025-12-08T23:08:47.2696413Z           heartbeatFrequencyMS: 10000,
+2025-12-08T23:08:47.2696867Z           localThresholdMS: 15,
+2025-12-08T23:08:47.2697237Z           setName: null,
+2025-12-08T23:08:47.2697624Z           maxElectionId: null,
+2025-12-08T23:08:47.2698025Z           maxSetVersion: null,
+2025-12-08T23:08:47.2698433Z           commonWireVersion: 0,
+2025-12-08T23:08:47.2698891Z           logicalSessionTimeoutMinutes: null
+2025-12-08T23:08:47.2699310Z         },
+2025-12-08T23:08:47.2699599Z         code: undefined
+2025-12-08T23:08:47.2699918Z       }".
+2025-12-08T23:08:47.2700519Z       at console.log (node_modules/@jest/console/build/CustomConsole.js:141:10)
+2025-12-08T23:08:47.2701232Z       at Object.<anonymous> (src/__test__/index.test.ts:50:15)
+2025-12-08T23:08:47.2701771Z 
+2025-12-08T23:08:47.2970824Z ⚠️ Tests failed or not configured, continuing...
+2025-12-08T23:08:47.3008876Z ##[group]Run echo "=========================================="
+2025-12-08T23:08:47.3009324Z [36;1mecho "=========================================="[0m
+2025-12-08T23:08:47.3009663Z [36;1mecho "🚀 Starting Wikipedia Scraper (API Mode)"[0m
+2025-12-08T23:08:47.3009984Z [36;1mecho "=========================================="[0m
+2025-12-08T23:08:47.3010440Z [36;1mecho ""[0m
+2025-12-08T23:08:47.3010761Z [36;1mecho "This will scrape Wikipedia and POST articles to your backend API."[0m
+2025-12-08T23:08:47.3011214Z [36;1mecho "Your backend will save them to MongoDB securely."[0m
+2025-12-08T23:08:47.3011860Z [36;1mecho ""[0m
+2025-12-08T23:08:47.3012115Z [36;1mecho "  • 40+ African culture articles from Wikipedia"[0m
+2025-12-08T23:08:47.3012517Z [36;1mecho "  • Categories: tradition, cuisine, music, history, etc."[0m
+2025-12-08T23:08:47.3012955Z [36;1mecho "  • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc."[0m
+2025-12-08T23:08:47.3013337Z [36;1mecho ""[0m
+2025-12-08T23:08:47.3013507Z [36;1m[0m
+2025-12-08T23:08:47.3013694Z [36;1mif [ -z "$BACKEND_URL" ]; then[0m
+2025-12-08T23:08:47.3013989Z [36;1m  echo "❌ ERROR: BACKEND_URL secret is not set!"[0m
+2025-12-08T23:08:47.3014326Z [36;1m  echo "Please add BACKEND_URL to repository secrets"[0m
+2025-12-08T23:08:47.3014759Z [36;1m  echo "Example: https://api.lingafriq.com or https://your-backend.com"[0m
+2025-12-08T23:08:47.3015107Z [36;1m  exit 1[0m
+2025-12-08T23:08:47.3015283Z [36;1mfi[0m
+2025-12-08T23:08:47.3015448Z [36;1m[0m
+2025-12-08T23:08:47.3015629Z [36;1mif [ -z "$SCRAPER_TOKEN" ]; then[0m
+2025-12-08T23:08:47.3015921Z [36;1m  echo "❌ ERROR: SCRAPER_TOKEN secret is not set!"[0m
+2025-12-08T23:08:47.3016278Z [36;1m  echo "Please add SCRAPER_TOKEN to repository secrets"[0m
+2025-12-08T23:08:47.3016650Z [36;1m  echo "See documentation for how to generate this token"[0m
+2025-12-08T23:08:47.3016951Z [36;1m  exit 1[0m
+2025-12-08T23:08:47.3017130Z [36;1mfi[0m
+2025-12-08T23:08:47.3017303Z [36;1m[0m
+2025-12-08T23:08:47.3017483Z [36;1mecho "✅ Secrets configured"[0m
+2025-12-08T23:08:47.3017740Z [36;1mecho "✅ Backend URL: $BACKEND_URL"[0m
+2025-12-08T23:08:47.3018105Z [36;1mecho "✅ Scraper token: ${SCRAPER_TOKEN:0:20}... (truncated for security)"[0m
+2025-12-08T23:08:47.3018448Z [36;1mecho ""[0m
+2025-12-08T23:08:47.3018653Z [36;1mecho "Running scraper..."[0m
+2025-12-08T23:08:47.3018882Z [36;1mecho ""[0m
+2025-12-08T23:08:47.3019052Z [36;1m[0m
+2025-12-08T23:08:47.3019218Z [36;1mnode -e "[0m
+2025-12-08T23:08:47.3019480Z [36;1m  import('./dist/services/scraperClient.service.js')[0m
+2025-12-08T23:08:47.3019805Z [36;1m    .then(m => m.runScraperViaAPI())[0m
+2025-12-08T23:08:47.3020064Z [36;1m    .then(() => {[0m
+2025-12-08T23:08:47.3020278Z [36;1m      console.log('');[0m
+2025-12-08T23:08:47.3020571Z [36;1m      console.log('Backend API successfully populated!');[0m
+2025-12-08T23:08:47.3020873Z [36;1m      console.log('');[0m
+2025-12-08T23:08:47.3021113Z [36;1m      console.log('Test it:');[0m
+2025-12-08T23:08:47.3022058Z [36;1m      console.log('  curl ${BACKEND_URL}/culture-magazine/articles');[0m
+2025-12-08T23:08:47.3022469Z [36;1m      console.log('');[0m
+2025-12-08T23:08:47.3022711Z [36;1m      process.exit(0);[0m
+2025-12-08T23:08:47.3022932Z [36;1m    })[0m
+2025-12-08T23:08:47.3023127Z [36;1m    .catch(err => {[0m
+2025-12-08T23:08:47.3023346Z [36;1m      console.error('');[0m
+2025-12-08T23:08:47.3023643Z [36;1m      console.error('==========================================');[0m
+2025-12-08T23:08:47.3023974Z [36;1m      console.error('❌ SCRAPER ERROR:');[0m
+2025-12-08T23:08:47.3024301Z [36;1m      console.error('==========================================');[0m
+2025-12-08T23:08:47.3024606Z [36;1m      console.error(err);[0m
+2025-12-08T23:08:47.3024844Z [36;1m      console.error('');[0m
+2025-12-08T23:08:47.3025091Z [36;1m      console.error('Common issues:');[0m
+2025-12-08T23:08:47.3025394Z [36;1m      console.error('  1. Backend not running');[0m
+2025-12-08T23:08:47.3025957Z [36;1m      console.error('     → Check that your backend server is accessible');[0m
+2025-12-08T23:08:47.3026362Z [36;1m      console.error('     → Verify BACKEND_URL is correct');[0m
+2025-12-08T23:08:47.3026707Z [36;1m      console.error('  2. Invalid SCRAPER_TOKEN');[0m
+2025-12-08T23:08:47.3027186Z [36;1m      console.error('     → Regenerate token and update GitHub secret');[0m
+2025-12-08T23:08:47.3027543Z [36;1m      console.error('  3. Network timeout');[0m
+2025-12-08T23:08:47.3027889Z [36;1m      console.error('     → Check firewall rules on your backend server');[0m
+2025-12-08T23:08:47.3028218Z [36;1m      console.error('');[0m
+2025-12-08T23:08:47.3028451Z [36;1m      process.exit(0);[0m
+2025-12-08T23:08:47.3028667Z [36;1m    });[0m
+2025-12-08T23:08:47.3028929Z [36;1m" || echo "⚠️ Scraper encountered issues but workflow continues"[0m
+2025-12-08T23:08:47.3061366Z shell: /usr/bin/bash -e {0}
+2025-12-08T23:08:47.3061883Z env:
+2025-12-08T23:08:47.3062066Z   NODE_VERSION: 18.x
+2025-12-08T23:08:47.3062394Z   BACKEND_URL: ***
+2025-12-08T23:08:47.3063810Z   SCRAPER_TOKEN: ***
+2025-12-08T23:08:47.3064061Z   NEWS_API_KEY: ***
+2025-12-08T23:08:47.3064249Z   NODE_ENV: production
+2025-12-08T23:08:47.3064442Z ##[endgroup]
+2025-12-08T23:08:47.3116052Z ==========================================
+2025-12-08T23:08:47.3118046Z 🚀 Starting Wikipedia Scraper (API Mode)
+2025-12-08T23:08:47.3118597Z ==========================================
+2025-12-08T23:08:47.3118901Z 
+2025-12-08T23:08:47.3119330Z This will scrape Wikipedia and POST articles to your backend API.
+2025-12-08T23:08:47.3120043Z Your backend will save them to MongoDB securely.
+2025-12-08T23:08:47.3120392Z 
+2025-12-08T23:08:47.3120767Z   • 40+ African culture articles from Wikipedia
+2025-12-08T23:08:47.3121891Z   • Categories: tradition, cuisine, music, history, etc.
+2025-12-08T23:08:47.3122747Z   • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc.
+2025-12-08T23:08:47.3123213Z 
+2025-12-08T23:08:47.3123451Z ✅ Secrets configured
+2025-12-08T23:08:47.3124087Z ✅ Backend URL: ***
+2025-12-08T23:08:47.3124949Z ✅ Scraper token: *** (truncated for security)
+2025-12-08T23:08:47.3125320Z 
+2025-12-08T23:08:47.3125494Z Running scraper...
+2025-12-08T23:08:47.3125711Z 
+2025-12-08T23:08:47.5654877Z Starting culture content scraper (API mode)...
+2025-12-08T23:08:47.5658873Z 
+2025-12-08T23:08:47.5660949Z Testing API connection...
+2025-12-08T23:08:47.5662671Z Backend URL: ***
+2025-12-08T23:08:48.0144601Z ✓ API connection successful
+2025-12-08T23:08:48.0171937Z 
+2025-12-08T23:08:48.0172891Z Scraping Wikipedia articles...
+2025-12-08T23:08:49.7268143Z ✓ Scraped 29 articles from Wikipedia
+2025-12-08T23:08:49.7268906Z 
+2025-12-08T23:08:49.7269346Z Posting 29 articles to backend API...
+2025-12-08T23:08:49.7272401Z Posting to: ***/scraper/articles/bulk
+2025-12-08T23:08:49.7272861Z Articles count: 29
+2025-12-08T23:08:49.9928733Z Response status: 200 OK
+2025-12-08T23:08:49.9929403Z 
+2025-12-08T23:08:49.9930046Z ==========================================
+2025-12-08T23:08:49.9931260Z ✅ SCRAPER COMPLETED SUCCESSFULLY!
+2025-12-08T23:08:49.9932323Z ==========================================
+2025-12-08T23:08:49.9932937Z 
+2025-12-08T23:08:49.9933101Z Results:
+2025-12-08T23:08:49.9933530Z   • Total articles: 29
+2025-12-08T23:08:49.9933909Z   • Saved: 0
+2025-12-08T23:08:49.9934264Z   • Skipped: 29
+2025-12-08T23:08:49.9934603Z   • Errors: 0
+2025-12-08T23:08:49.9934780Z 
+2025-12-08T23:08:49.9934964Z Scraping news articles...
+2025-12-08T23:08:50.6985975Z Culture content scraper completed.
+2025-12-08T23:08:50.6987604Z 
+2025-12-08T23:08:50.6987889Z Backend API successfully populated!
+2025-12-08T23:08:50.6988193Z 
+2025-12-08T23:08:50.6989350Z Test it:
+2025-12-08T23:08:50.6990037Z   curl ***/culture-magazine/articles
+2025-12-08T23:08:50.6990352Z 
+2025-12-08T23:08:50.7105609Z ##[group]Run echo ""
+2025-12-08T23:08:50.7105914Z [36;1mecho ""[0m
+2025-12-08T23:08:50.7106155Z [36;1mecho "=========================================="[0m
+2025-12-08T23:08:50.7106451Z [36;1mecho "📊 BUILD SUMMARY"[0m
+2025-12-08T23:08:50.7106725Z [36;1mecho "=========================================="[0m
+2025-12-08T23:08:50.7106997Z [36;1mecho ""[0m
+2025-12-08T23:08:50.7107213Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-08T23:08:50.7107484Z [36;1mecho "✅ TypeScript compiled"[0m
+2025-12-08T23:08:50.7107999Z [36;1mecho "✅ Tests run (or skipped)"[0m
+2025-12-08T23:08:50.7108279Z [36;1mecho "✅ Database priming attempted"[0m
+2025-12-08T23:08:50.7108537Z [36;1mecho ""[0m
+2025-12-08T23:08:50.7108752Z [36;1mecho "📥 Built files are in: ./dist/"[0m
+2025-12-08T23:08:50.7109095Z [36;1mecho "📚 You can deploy these files to any Node.js hosting"[0m
+2025-12-08T23:08:50.7109402Z [36;1mecho ""[0m
+2025-12-08T23:08:50.7109589Z [36;1mecho "Next steps:"[0m
+2025-12-08T23:08:50.7109910Z [36;1mecho "  1. Deploy the ./dist/ folder to your server"[0m
+2025-12-08T23:08:50.7110294Z [36;1mecho "  2. Set environment variables (MONGODB_URI, JWT_SECRET)"[0m
+2025-12-08T23:08:50.7110643Z [36;1mecho "  3. Run: node dist/server.js"[0m
+2025-12-08T23:08:50.7110973Z [36;1mecho "  4. Test: curl http://your-server/healthcheck"[0m
+2025-12-08T23:08:50.7111262Z [36;1mecho ""[0m
+2025-12-08T23:08:50.7111766Z [36;1mecho "Culture Magazine API will be available at:"[0m
+2025-12-08T23:08:50.7112102Z [36;1mecho "  GET /culture-magazine/articles"[0m
+2025-12-08T23:08:50.7112371Z [36;1mecho ""[0m
+2025-12-08T23:08:50.7112585Z [36;1mecho "=========================================="[0m
+2025-12-08T23:08:50.7112867Z [36;1mecho "✅ WORKFLOW COMPLETE!"[0m
+2025-12-08T23:08:50.7113132Z [36;1mecho "=========================================="[0m
+2025-12-08T23:08:50.7145261Z shell: /usr/bin/bash -e {0}
+2025-12-08T23:08:50.7145483Z env:
+2025-12-08T23:08:50.7145656Z   NODE_VERSION: 18.x
+2025-12-08T23:08:50.7145861Z ##[endgroup]
+2025-12-08T23:08:50.7199444Z 
+2025-12-08T23:08:50.7203536Z ==========================================
+2025-12-08T23:08:50.7206027Z 📊 BUILD SUMMARY
+2025-12-08T23:08:50.7206454Z ==========================================
+2025-12-08T23:08:50.7206744Z 
+2025-12-08T23:08:50.7206978Z ✅ Dependencies installed
+2025-12-08T23:08:50.7207418Z ✅ TypeScript compiled
+2025-12-08T23:08:50.7207847Z ✅ Tests run (or skipped)
+2025-12-08T23:08:50.7208304Z ✅ Database priming attempted
+2025-12-08T23:08:50.7208554Z 
+2025-12-08T23:08:50.7208844Z 📥 Built files are in: ./dist/
+2025-12-08T23:08:50.7209480Z 📚 You can deploy these files to any Node.js hosting
+2025-12-08T23:08:50.7209708Z 
+2025-12-08T23:08:50.7209792Z Next steps:
+2025-12-08T23:08:50.7210049Z   1. Deploy the ./dist/ folder to your server
+2025-12-08T23:08:50.7210425Z   2. Set environment variables (MONGODB_URI, JWT_SECRET)
+2025-12-08T23:08:50.7210731Z   3. Run: node dist/server.js
+2025-12-08T23:08:50.7211028Z   4. Test: curl http://your-server/healthcheck
+2025-12-08T23:08:50.7211226Z 
+2025-12-08T23:08:50.7211386Z Culture Magazine API will be available at:
+2025-12-08T23:08:50.7211980Z   GET /culture-magazine/articles
+2025-12-08T23:08:50.7212148Z 
+2025-12-08T23:08:50.7212276Z ==========================================
+2025-12-08T23:08:50.7212604Z ✅ WORKFLOW COMPLETE!
+2025-12-08T23:08:50.7212861Z ==========================================
+2025-12-08T23:08:50.7265726Z Post job cleanup.
+2025-12-08T23:08:50.8823076Z Cache hit occurred on the primary key node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d, not saving cache.
+2025-12-08T23:08:50.8950690Z Post job cleanup.
+2025-12-08T23:08:50.9931864Z [command]/usr/bin/git version
+2025-12-08T23:08:50.9974976Z git version 2.52.0
+2025-12-08T23:08:51.0022629Z Temporarily overriding HOME='/home/runner/work/_temp/3a41a915-af7f-4464-a31f-de2d3d647322' before making global git config changes
+2025-12-08T23:08:51.0024318Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-08T23:08:51.0029685Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-08T23:08:51.0076353Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-08T23:08:51.0142610Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-08T23:08:51.0498577Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-08T23:08:51.0541352Z http.https://github.com/.extraheader
+2025-12-08T23:08:51.0564370Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-08T23:08:51.0615428Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-08T23:08:51.0976557Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-08T23:08:51.1027079Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-08T23:08:51.1508894Z Cleaning up orphan processes

@@ -1,0 +1,2 @@
+:root{--md-sys-color-primary:#6750A4;--md-sys-color-on-primary:#FFFFFF;--md-sys-color-surface:#FFFFFF;--md-sys-color-on-surface:#1C1B1F;}
+body{font-family:Inter, Roboto, system-ui; background:#fafafa; color:var(--md-sys-color-on-surface); margin:0; padding:0.5rem;}button{cursor:pointer}

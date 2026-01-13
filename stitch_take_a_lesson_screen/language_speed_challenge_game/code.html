@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Language Speed Challenge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .correct-answer-bg { background-color: #2bee6c; color: #102216; }
+    .correct-answer-text { color: #2bee6c; }
+    .incorrect-answer-bg { background-color: #ff5e5e; color: #ffffff; }
+    .incorrect-answer-text { color: #ff5e5e; }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#2bee6c",
+            "background-light": "#f6f8f6",
+            "background-dark": "#102216",
+            "card-light": "#ffffff",
+            "card-dark": "#1a3824",
+            "text-light-primary": "#111813",
+            "text-dark-primary": "#f6f8f6",
+            "text-light-secondary": "#6b7280",
+            "text-dark-secondary": "#9ca3af",
+            "success": "#2bee6c",
+            "error": "#ff5e5e",
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark group/design-root overflow-hidden">
+<!-- Main Game Screen -->
+<div class="flex flex-col flex-1 h-full p-4 pt-6 space-y-4">
+<!-- Header Bar -->
+<header>
+<div class="flex items-center justify-between gap-4">
+<button class="flex items-center justify-center w-12 h-12 text-text-light-primary dark:text-text-dark-primary">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+<div class="flex items-center flex-1 gap-2">
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] text-text-light-primary dark:text-text-dark-primary">5/10</h2>
+</div>
+<div class="flex items-center justify-end gap-2 text-primary">
+<span class="material-symbols-outlined text-2xl" style="color: #ff9800;">local_fire_department</span>
+<p class="text-base font-bold leading-normal tracking-[0.015em] shrink-0">120</p>
+</div>
+</div>
+<!-- Progress Bar / Timer -->
+<div class="mt-4">
+<div class="w-full rounded-full bg-primary/20 h-2.5">
+<div class="bg-primary h-2.5 rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</header>
+<!-- Challenge Area -->
+<main class="flex flex-col items-center justify-center flex-1 w-full max-w-lg mx-auto">
+<div class="flex flex-col items-stretch justify-start w-full rounded-xl bg-card-light dark:bg-card-dark shadow-lg">
+<div class="w-full bg-center bg-no-repeat bg-cover rounded-t-xl aspect-video" data-alt="Stylized vector illustration of a lion in a savanna setting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC8RbVaPwNvYne-da9Eh-G46fQopTv25eBSGe5zhA2JM9vBzAQDCgE4hqb0JaGQR0Ax72eFF6CKagQj0g1KJ3NXmvJ6IMhiX2Vkg3hXnaSFbRK4q2fifMWH2Jlp-9k-HgCCZejW6-AX1BXNkX9JX69ssROPVa7MtUcydax8FMYF8pICnTiA3PoVF-VuEyddsChMsGZfWfZVsmodq1gDcPLM3DG8-Gt6tqa4xSYOUqxHuvN7is0jXQEYrKHsuzkYdRN1ahpP74NXDMYz");'></div>
+<div class="flex flex-col items-stretch justify-center w-full min-w-72 grow gap-1 p-6 text-center">
+<p class="text-lg font-normal leading-normal text-text-light-secondary dark:text-text-dark-secondary">What is this in Swahili?</p>
+</div>
+</div>
+</main>
+<!-- Answer Options -->
+<footer class="flex justify-center w-full pb-4">
+<div class="flex flex-1 gap-3 max-w-[480px] flex-col items-stretch">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-card-light dark:bg-card-dark text-text-light-primary dark:text-text-dark-primary text-lg font-bold leading-normal tracking-[0.015em] w-full border-2 border-transparent hover:border-primary transition-colors">
+<span class="truncate">Simba</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-card-light dark:bg-card-dark text-text-light-primary dark:text-text-dark-primary text-lg font-bold leading-normal tracking-[0.015em] w-full border-2 border-transparent hover:border-primary transition-colors">
+<span class="truncate">Paka</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-card-light dark:bg-card-dark text-text-light-primary dark:text-text-dark-primary text-lg font-bold leading-normal tracking-[0.015em] w-full border-2 border-transparent hover:border-primary transition-colors">
+<span class="truncate">Mbwa</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-card-light dark:bg-card-dark text-text-light-primary dark:text-text-dark-primary text-lg font-bold leading-normal tracking-[0.015em] w-full border-2 border-transparent hover:border-primary transition-colors">
+<span class="truncate">Tembo</span>
+</button>
+</div>
+</footer>
+</div>
+<!-- Bottom Sheet Feedback (Correct Answer) -->
+<div class="absolute inset-0 flex flex-col items-stretch justify-end bg-black/40">
+<div class="flex flex-col items-stretch bg-background-light dark:bg-background-dark rounded-t-lg">
+<div class="flex items-center justify-center w-full h-5">
+<div class="w-9 h-1 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+</div>
+<div class="flex-1 p-6 pt-4 text-center">
+<div class="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-success">
+<span class="text-4xl text-black material-symbols-outlined">check</span>
+</div>
+<h3 class="text-2xl font-bold text-success">Correct!</h3>
+<p class="mt-2 text-text-light-secondary dark:text-text-dark-secondary">"Simba" is the Swahili word for Lion.</p>
+<button class="w-full mt-6 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-5 bg-primary text-black text-lg font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Continue</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

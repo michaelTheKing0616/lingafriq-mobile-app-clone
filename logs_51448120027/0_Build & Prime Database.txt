@@ -1,0 +1,574 @@
+﻿2025-12-04T15:44:32.1907560Z Current runner version: '2.329.0'
+2025-12-04T15:44:32.1985587Z ##[group]Runner Image Provisioner
+2025-12-04T15:44:32.1987279Z Hosted Compute Agent
+2025-12-04T15:44:32.1988257Z Version: 20251124.448
+2025-12-04T15:44:32.1989307Z Commit: fda5086b43ec66ade217e5fcd18146c879571177
+2025-12-04T15:44:32.1990681Z Build Date: 2025-11-24T21:16:26Z
+2025-12-04T15:44:32.1991931Z ##[endgroup]
+2025-12-04T15:44:32.1992879Z ##[group]Operating System
+2025-12-04T15:44:32.1994027Z Ubuntu
+2025-12-04T15:44:32.1994876Z 24.04.3
+2025-12-04T15:44:32.1995597Z LTS
+2025-12-04T15:44:32.1996529Z ##[endgroup]
+2025-12-04T15:44:32.1997470Z ##[group]Runner Image
+2025-12-04T15:44:32.1998587Z Image: ubuntu-24.04
+2025-12-04T15:44:32.1999492Z Version: 20251126.144.1
+2025-12-04T15:44:32.2001416Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20251126.144/images/ubuntu/Ubuntu2404-Readme.md
+2025-12-04T15:44:32.2025150Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20251126.144
+2025-12-04T15:44:32.2027545Z ##[endgroup]
+2025-12-04T15:44:32.2029579Z ##[group]GITHUB_TOKEN Permissions
+2025-12-04T15:44:32.2033109Z Contents: read
+2025-12-04T15:44:32.2033994Z Metadata: read
+2025-12-04T15:44:32.2034871Z Packages: read
+2025-12-04T15:44:32.2035887Z ##[endgroup]
+2025-12-04T15:44:32.2039315Z Secret source: Actions
+2025-12-04T15:44:32.2040468Z Prepare workflow directory
+2025-12-04T15:44:32.3241053Z Prepare all required actions
+2025-12-04T15:44:32.3313859Z Getting action download info
+2025-12-04T15:44:32.7056731Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2025-12-04T15:44:32.9811132Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2025-12-04T15:44:33.1652036Z Complete job name: Build & Prime Database
+2025-12-04T15:44:33.2344725Z ##[group]Run actions/checkout@v4
+2025-12-04T15:44:33.2345599Z with:
+2025-12-04T15:44:33.2346045Z   repository: LingAfrika/node-backend
+2025-12-04T15:44:33.2346776Z   token: ***
+2025-12-04T15:44:33.2347207Z   ssh-strict: true
+2025-12-04T15:44:33.2347616Z   ssh-user: git
+2025-12-04T15:44:33.2348050Z   persist-credentials: true
+2025-12-04T15:44:33.2348523Z   clean: true
+2025-12-04T15:44:33.2348944Z   sparse-checkout-cone-mode: true
+2025-12-04T15:44:33.2349437Z   fetch-depth: 1
+2025-12-04T15:44:33.2349840Z   fetch-tags: false
+2025-12-04T15:44:33.2350259Z   show-progress: true
+2025-12-04T15:44:33.2350678Z   lfs: false
+2025-12-04T15:44:33.2351067Z   submodules: false
+2025-12-04T15:44:33.2351496Z   set-safe-directory: true
+2025-12-04T15:44:33.2352661Z env:
+2025-12-04T15:44:33.2353063Z   NODE_VERSION: 18.x
+2025-12-04T15:44:33.2353482Z ##[endgroup]
+2025-12-04T15:44:33.3529124Z Syncing repository: LingAfrika/node-backend
+2025-12-04T15:44:33.3533745Z ##[group]Getting Git version info
+2025-12-04T15:44:33.3535142Z Working directory is '/home/runner/work/node-backend/node-backend'
+2025-12-04T15:44:33.3537267Z [command]/usr/bin/git version
+2025-12-04T15:44:33.3634574Z git version 2.52.0
+2025-12-04T15:44:33.3666200Z ##[endgroup]
+2025-12-04T15:44:33.3684233Z Temporarily overriding HOME='/home/runner/work/_temp/8d591bfb-0816-4cdb-be37-5e0dbafe449e' before making global git config changes
+2025-12-04T15:44:33.3687972Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-04T15:44:33.3700923Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-04T15:44:33.3745605Z Deleting the contents of '/home/runner/work/node-backend/node-backend'
+2025-12-04T15:44:33.3750432Z ##[group]Initializing the repository
+2025-12-04T15:44:33.3756303Z [command]/usr/bin/git init /home/runner/work/node-backend/node-backend
+2025-12-04T15:44:33.3854875Z hint: Using 'master' as the name for the initial branch. This default branch name
+2025-12-04T15:44:33.3863759Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2025-12-04T15:44:33.3864735Z hint: to use in all of your new repositories, which will suppress this warning,
+2025-12-04T15:44:33.3865826Z hint: call:
+2025-12-04T15:44:33.3866217Z hint:
+2025-12-04T15:44:33.3866713Z hint: 	git config --global init.defaultBranch <name>
+2025-12-04T15:44:33.3867304Z hint:
+2025-12-04T15:44:33.3867865Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2025-12-04T15:44:33.3868766Z hint: 'development'. The just-created branch can be renamed via this command:
+2025-12-04T15:44:33.3869471Z hint:
+2025-12-04T15:44:33.3869865Z hint: 	git branch -m <name>
+2025-12-04T15:44:33.3870327Z hint:
+2025-12-04T15:44:33.3870929Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2025-12-04T15:44:33.3872333Z Initialized empty Git repository in /home/runner/work/node-backend/node-backend/.git/
+2025-12-04T15:44:33.3879919Z [command]/usr/bin/git remote add origin https://github.com/LingAfrika/node-backend
+2025-12-04T15:44:33.3923070Z ##[endgroup]
+2025-12-04T15:44:33.3924450Z ##[group]Disabling automatic garbage collection
+2025-12-04T15:44:33.3929642Z [command]/usr/bin/git config --local gc.auto 0
+2025-12-04T15:44:33.3967973Z ##[endgroup]
+2025-12-04T15:44:33.3969145Z ##[group]Setting up auth
+2025-12-04T15:44:33.3980796Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-04T15:44:33.4015522Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-04T15:44:33.4375015Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-04T15:44:33.4411525Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-04T15:44:33.4660620Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-04T15:44:33.4698834Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-04T15:44:33.4965814Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2025-12-04T15:44:33.5008050Z ##[endgroup]
+2025-12-04T15:44:33.5011008Z ##[group]Fetching the repository
+2025-12-04T15:44:33.5020180Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d28fe12dd0177378afd23b3e1c0df23dc767a02c:refs/remotes/origin/main
+2025-12-04T15:44:33.7834230Z From https://github.com/LingAfrika/node-backend
+2025-12-04T15:44:33.7835750Z  * [new ref]         d28fe12dd0177378afd23b3e1c0df23dc767a02c -> origin/main
+2025-12-04T15:44:33.7864575Z ##[endgroup]
+2025-12-04T15:44:33.7866149Z ##[group]Determining the checkout info
+2025-12-04T15:44:33.7869486Z ##[endgroup]
+2025-12-04T15:44:33.7873994Z [command]/usr/bin/git sparse-checkout disable
+2025-12-04T15:44:33.7923071Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2025-12-04T15:44:33.7957629Z ##[group]Checking out the ref
+2025-12-04T15:44:33.7961301Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2025-12-04T15:44:33.8274558Z Switched to a new branch 'main'
+2025-12-04T15:44:33.8278949Z branch 'main' set up to track 'origin/main'.
+2025-12-04T15:44:33.8296063Z ##[endgroup]
+2025-12-04T15:44:33.8334217Z [command]/usr/bin/git log -1 --format=%H
+2025-12-04T15:44:33.8371016Z d28fe12dd0177378afd23b3e1c0df23dc767a02c
+2025-12-04T15:44:33.8627931Z ##[group]Run actions/setup-node@v4
+2025-12-04T15:44:33.8628634Z with:
+2025-12-04T15:44:33.8629042Z   node-version: 18.x
+2025-12-04T15:44:33.8629549Z   cache: npm
+2025-12-04T15:44:33.8629953Z   always-auth: false
+2025-12-04T15:44:33.8630398Z   check-latest: false
+2025-12-04T15:44:33.8631047Z   token: ***
+2025-12-04T15:44:33.8631450Z env:
+2025-12-04T15:44:33.8631995Z   NODE_VERSION: 18.x
+2025-12-04T15:44:33.8632431Z ##[endgroup]
+2025-12-04T15:44:34.1249007Z Attempting to download 18.x...
+2025-12-04T15:44:34.6234882Z Acquiring 18.20.8 - x64 from https://github.com/actions/node-versions/releases/download/18.20.8-14110393767/node-18.20.8-linux-x64.tar.gz
+2025-12-04T15:44:35.0692478Z Extracting ...
+2025-12-04T15:44:35.0695709Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/75f3e72c-fc07-48de-8fc2-00ca8a6f3476 -f /home/runner/work/_temp/b4094548-2c72-42d4-a3c7-632ef78a5d51
+2025-12-04T15:44:36.2128770Z Adding to the cache ...
+2025-12-04T15:44:38.3489073Z ##[group]Environment details
+2025-12-04T15:44:38.7217530Z node: v18.20.8
+2025-12-04T15:44:38.7219629Z npm: 10.8.2
+2025-12-04T15:44:38.7220118Z yarn: 1.22.22
+2025-12-04T15:44:38.7220832Z ##[endgroup]
+2025-12-04T15:44:38.7246089Z [command]/opt/hostedtoolcache/node/18.20.8/x64/bin/npm config get cache
+2025-12-04T15:44:38.8503836Z /home/runner/.npm
+2025-12-04T15:44:38.9647060Z Cache hit for: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-04T15:44:39.3962208Z Received 64730011 of 64730011 (100.0%), 160.8 MBs/sec
+2025-12-04T15:44:39.3967587Z Cache Size: ~62 MB (64730011 B)
+2025-12-04T15:44:39.3998735Z [command]/usr/bin/tar -xf /home/runner/work/_temp/5fe00508-a402-4142-9eb4-02ded2e4d66c/cache.tzst -P -C /home/runner/work/node-backend/node-backend --use-compress-program unzstd
+2025-12-04T15:44:39.8045415Z Cache restored successfully
+2025-12-04T15:44:39.8203087Z Cache restored from key: node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d
+2025-12-04T15:44:39.8390336Z ##[group]Run echo "📦 Installing dependencies..."
+2025-12-04T15:44:39.8390808Z [36;1mecho "📦 Installing dependencies..."[0m
+2025-12-04T15:44:39.8391108Z [36;1mnpm ci[0m
+2025-12-04T15:44:39.8391333Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-04T15:44:39.8431426Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:44:39.8432015Z env:
+2025-12-04T15:44:39.8432295Z   NODE_VERSION: 18.x
+2025-12-04T15:44:39.8432517Z ##[endgroup]
+2025-12-04T15:44:39.8524977Z 📦 Installing dependencies...
+2025-12-04T15:44:45.0876376Z npm warn deprecated @types/moment@2.13.0: This is a stub types definition for Moment (https://github.com/moment/moment). Moment provides its own type definitions, so you don't need @types/moment installed!
+2025-12-04T15:44:45.2437094Z npm warn deprecated @types/nanoid@3.0.0: This is a stub types definition. nanoid provides its own type definitions, so you do not need this installed.
+2025-12-04T15:44:45.2439975Z npm warn deprecated @types/mongoose-paginate-v2@1.6.5: This is a stub types definition. mongoose-paginate-v2 provides its own type definitions, so you do not need this installed.
+2025-12-04T15:44:45.2450029Z npm warn deprecated @types/mongoose@5.11.97: Mongoose publishes its own types, so you do not need to install this package.
+2025-12-04T15:44:45.3603823Z npm warn deprecated is-data-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-04T15:44:45.3631402Z npm warn deprecated is-accessor-descriptor@1.0.0: Please upgrade to v1.0.1
+2025-12-04T15:44:45.3649513Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+2025-12-04T15:44:45.4328935Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-04T15:44:45.4330506Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-04T15:44:45.4332488Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-04T15:44:45.4366943Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-04T15:44:45.4431365Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-04T15:44:45.4434226Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-04T15:44:45.4579382Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-04T15:44:45.4584754Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-04T15:44:45.4617770Z npm warn deprecated is-data-descriptor@0.1.4: Please upgrade to v0.1.5
+2025-12-04T15:44:45.4624176Z npm warn deprecated is-accessor-descriptor@0.1.6: Please upgrade to v0.1.7
+2025-12-04T15:44:45.4765772Z npm warn deprecated source-map-url@0.4.1: See https://github.com/lydell/source-map-url#deprecated
+2025-12-04T15:44:45.5123197Z npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+2025-12-04T15:44:45.5382574Z npm warn deprecated csurf@1.11.0: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-04T15:44:45.5764620Z npm warn deprecated @babel/plugin-proposal-unicode-property-regex@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-unicode-property-regex instead.
+2025-12-04T15:44:45.5772652Z npm warn deprecated @babel/plugin-proposal-private-methods@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-methods instead.
+2025-12-04T15:44:45.5781158Z npm warn deprecated @babel/plugin-proposal-optional-catch-binding@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-catch-binding instead.
+2025-12-04T15:44:45.5788088Z npm warn deprecated @babel/plugin-proposal-numeric-separator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-numeric-separator instead.
+2025-12-04T15:44:45.5797724Z npm warn deprecated @babel/plugin-proposal-nullish-coalescing-operator@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-nullish-coalescing-operator instead.
+2025-12-04T15:44:45.5805416Z npm warn deprecated @babel/plugin-proposal-json-strings@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-json-strings instead.
+2025-12-04T15:44:45.5812614Z npm warn deprecated @babel/plugin-proposal-export-namespace-from@7.18.9: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-export-namespace-from instead.
+2025-12-04T15:44:45.5821036Z npm warn deprecated @babel/plugin-proposal-dynamic-import@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-dynamic-import instead.
+2025-12-04T15:44:45.5825998Z npm warn deprecated @babel/plugin-proposal-class-properties@7.18.6: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-properties instead.
+2025-12-04T15:44:45.6915802Z npm warn deprecated @babel/plugin-proposal-logical-assignment-operators@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-logical-assignment-operators instead.
+2025-12-04T15:44:45.6927670Z npm warn deprecated @babel/plugin-proposal-class-static-block@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-class-static-block instead.
+2025-12-04T15:44:45.7177470Z npm warn deprecated urix@0.1.0: Please see https://github.com/lydell/urix#deprecated
+2025-12-04T15:44:45.7217062Z npm warn deprecated supertest@6.3.3: Please upgrade to supertest v7.1.3+, see release notes at https://github.com/forwardemail/supertest/releases/tag/v7.1.3 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-04T15:44:45.7512985Z npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+2025-12-04T15:44:45.8187835Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+2025-12-04T15:44:45.8702548Z npm warn deprecated @babel/plugin-proposal-private-property-in-object@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-private-property-in-object instead.
+2025-12-04T15:44:45.8707480Z npm warn deprecated @babel/plugin-proposal-optional-chaining@7.21.0: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-optional-chaining instead.
+2025-12-04T15:44:45.8746574Z npm warn deprecated @babel/plugin-proposal-async-generator-functions@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-async-generator-functions instead.
+2025-12-04T15:44:45.9539509Z npm warn deprecated resolve-url@0.2.1: https://github.com/lydell/resolve-url#deprecated
+2025-12-04T15:44:46.0222015Z npm warn deprecated glob@8.1.0: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.0421080Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.0444114Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.0476190Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.0487567Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.0525509Z npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.0581547Z npm warn deprecated source-map-resolve@0.5.3: See https://github.com/lydell/source-map-resolve#deprecated
+2025-12-04T15:44:46.0977447Z npm warn deprecated @babel/plugin-proposal-object-rest-spread@7.20.7: This proposal has been merged to the ECMAScript standard and thus this plugin is no longer maintained. Please use @babel/plugin-transform-object-rest-spread instead.
+2025-12-04T15:44:46.0985161Z npm warn deprecated glob@7.1.6: Glob versions prior to v9 are no longer supported
+2025-12-04T15:44:46.1741911Z npm warn deprecated formidable@1.2.6: Please upgrade to latest, formidable@v2 or formidable@v3! Check these notes: https://bit.ly/2ZEqIau
+2025-12-04T15:44:46.3244206Z npm warn deprecated sane@4.1.0: some dependency vulnerabilities fixed, support for node < 10 dropped, and newer ECMAScript syntax/features added
+2025-12-04T15:44:46.3346508Z npm warn deprecated multer@1.4.5-lts.1: Multer 1.x is impacted by a number of vulnerabilities, which have been patched in 2.x. You should upgrade to the latest 2.x version.
+2025-12-04T15:44:46.3844706Z npm warn deprecated ***-p12-pem@4.0.1: Package is no longer maintained
+2025-12-04T15:44:47.3775249Z npm warn deprecated babel-merge@3.0.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+2025-12-04T15:44:47.3953079Z npm warn deprecated formidable@2.1.2: ACTION REQUIRED: SWITCH TO v3 - v1 and v2 are VULNERABLE! v1 is DEPRECATED FOR OVER 2 YEARS! Use formidable@latest or try formidable-mini for fresh projects
+2025-12-04T15:44:47.7566229Z npm warn deprecated superagent@8.0.9: Please upgrade to superagent v10.2.2+, see release notes at https://github.com/forwardemail/superagent/releases/tag/v10.2.2 - maintenance is supported by Forward Email @ https://forwardemail.net
+2025-12-04T15:44:48.5932528Z npm warn deprecated z-schema@5.0.6: has issues with node 14
+2025-12-04T15:44:59.5692110Z 
+2025-12-04T15:44:59.5693191Z added 1399 packages, and audited 1400 packages in 20s
+2025-12-04T15:44:59.5693909Z 
+2025-12-04T15:44:59.5694343Z 116 packages are looking for funding
+2025-12-04T15:44:59.5696131Z   run `npm fund` for details
+2025-12-04T15:44:59.6525705Z 
+2025-12-04T15:44:59.6528352Z 52 vulnerabilities (11 low, 18 moderate, 16 high, 7 critical)
+2025-12-04T15:44:59.6530477Z 
+2025-12-04T15:44:59.6532830Z To address issues that do not require attention, run:
+2025-12-04T15:44:59.6548050Z   npm audit fix
+2025-12-04T15:44:59.6551333Z 
+2025-12-04T15:44:59.6552060Z To address all issues (including breaking changes), run:
+2025-12-04T15:44:59.6552641Z   npm audit fix --force
+2025-12-04T15:44:59.6552875Z 
+2025-12-04T15:44:59.6553081Z Run `npm audit` for details.
+2025-12-04T15:44:59.7065820Z ✅ Dependencies installed
+2025-12-04T15:44:59.7110910Z ##[group]Run echo "🔨 Building TypeScript..."
+2025-12-04T15:44:59.7111296Z [36;1mecho "🔨 Building TypeScript..."[0m
+2025-12-04T15:44:59.7111572Z [36;1mnpm run build[0m
+2025-12-04T15:44:59.7111959Z [36;1mecho "✅ Build complete"[0m
+2025-12-04T15:44:59.7112206Z [36;1mls -la dist/[0m
+2025-12-04T15:44:59.7146226Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:44:59.7146462Z env:
+2025-12-04T15:44:59.7146640Z   NODE_VERSION: 18.x
+2025-12-04T15:44:59.7146843Z ##[endgroup]
+2025-12-04T15:44:59.7203950Z 🔨 Building TypeScript...
+2025-12-04T15:44:59.8508433Z 
+2025-12-04T15:44:59.8510291Z > lingafriq_backend@1.0.0 build
+2025-12-04T15:44:59.8512698Z > tsc
+2025-12-04T15:44:59.8512935Z 
+2025-12-04T15:45:09.3419607Z ✅ Build complete
+2025-12-04T15:45:09.3439744Z total 68
+2025-12-04T15:45:09.3444029Z drwxr-xr-x 11 runner runner 4096 Dec  4 15:44 .
+2025-12-04T15:45:09.3447460Z drwxr-xr-x  9 runner runner 4096 Dec  4 15:44 ..
+2025-12-04T15:45:09.3448433Z drwxr-xr-x  2 runner runner 4096 Dec  4 15:44 __test__
+2025-12-04T15:45:09.3449106Z -rw-r--r--  1 runner runner 1637 Dec  4 15:45 app.js
+2025-12-04T15:45:09.3449809Z -rw-r--r--  1 runner runner 1774 Dec  4 15:45 app.js.map
+2025-12-04T15:45:09.3450505Z drwxr-xr-x  3 runner runner 4096 Dec  4 15:45 controllers
+2025-12-04T15:45:09.3451185Z drwxr-xr-x  3 runner runner 4096 Dec  4 15:44 data_files
+2025-12-04T15:45:09.3452853Z drwxr-xr-x  2 runner runner 4096 Dec  4 15:44 middleware
+2025-12-04T15:45:09.3453559Z drwxr-xr-x  3 runner runner 4096 Dec  4 15:45 models
+2025-12-04T15:45:09.3454235Z drwxr-xr-x  3 runner runner 4096 Dec  4 15:45 routes
+2025-12-04T15:45:09.3454951Z -rw-r--r--  1 runner runner  761 Dec  4 15:45 server.js
+2025-12-04T15:45:09.3455660Z -rw-r--r--  1 runner runner  966 Dec  4 15:45 server.js.map
+2025-12-04T15:45:09.3456383Z drwxr-xr-x  2 runner runner 4096 Dec  4 15:45 services
+2025-12-04T15:45:09.3456821Z -rw-r--r--  1 runner runner 1895 Dec  4 15:45 setupAdmin.js
+2025-12-04T15:45:09.3457273Z -rw-r--r--  1 runner runner 1544 Dec  4 15:45 setupAdmin.js.map
+2025-12-04T15:45:09.3457703Z drwxr-xr-x  2 runner runner 4096 Dec  4 15:44 types
+2025-12-04T15:45:09.3458069Z drwxr-xr-x  3 runner runner 4096 Dec  4 15:44 utils
+2025-12-04T15:45:09.3483219Z ##[group]Run echo "🧪 Running tests..."
+2025-12-04T15:45:09.3483567Z [36;1mecho "🧪 Running tests..."[0m
+2025-12-04T15:45:09.3483934Z [36;1mnpm test || echo "⚠️ Tests failed or not configured, continuing..."[0m
+2025-12-04T15:45:09.3517339Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:45:09.3517577Z env:
+2025-12-04T15:45:09.3517754Z   NODE_VERSION: 18.x
+2025-12-04T15:45:09.3517971Z ##[endgroup]
+2025-12-04T15:45:09.3573756Z 🧪 Running tests...
+2025-12-04T15:45:09.4925611Z 
+2025-12-04T15:45:09.4928237Z > lingafriq_backend@1.0.0 test
+2025-12-04T15:45:09.4933721Z > jest --detectOpenHandles
+2025-12-04T15:45:09.4934052Z 
+2025-12-04T15:45:19.5895919Z FAIL dist/__test__/index.test.js
+2025-12-04T15:45:19.5915234Z   ● Test suite failed to run
+2025-12-04T15:45:19.5915943Z 
+2025-12-04T15:45:19.5916992Z     RangeError: express-jwt: `secret` is a required option
+2025-12-04T15:45:19.5917793Z 
+2025-12-04T15:45:19.5918355Z 
+2025-12-04T15:45:19.5920045Z 
+2025-12-04T15:45:19.5921995Z       at expressjwt (node_modules/express-jwt/dist/index.js:117:11)
+2025-12-04T15:45:19.5923647Z       at Object.<anonymous> (dist/middleware/auth.middleware.js:42:57)
+2025-12-04T15:45:19.5925864Z       at Object.<anonymous> (dist/routes/language.route.js:34:30)
+2025-12-04T15:45:19.5927396Z       at Object.<anonymous> (src/routes/index.route.ts:39:6)
+2025-12-04T15:45:19.5928397Z       at Object.<anonymous> (src/app.ts:46:30)
+2025-12-04T15:45:19.5930118Z       at Object.<anonymous> (src/__test__/index.test.ts:29:16)
+2025-12-04T15:45:19.5930779Z 
+2025-12-04T15:45:19.5947091Z Test Suites: 1 failed, 1 total
+2025-12-04T15:45:19.5947952Z Tests:       0 total
+2025-12-04T15:45:19.5949610Z Snapshots:   0 total
+2025-12-04T15:45:19.5949995Z Time:        9.56 s
+2025-12-04T15:45:19.5950359Z Ran all test suites.
+2025-12-04T15:45:19.7538321Z ⚠️ Tests failed or not configured, continuing...
+2025-12-04T15:45:19.7574406Z ##[group]Run echo "=========================================="
+2025-12-04T15:45:19.7574874Z [36;1mecho "=========================================="[0m
+2025-12-04T15:45:19.7575202Z [36;1mecho "🚀 Starting Wikipedia Scraper"[0m
+2025-12-04T15:45:19.7575515Z [36;1mecho "=========================================="[0m
+2025-12-04T15:45:19.7575788Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7576071Z [36;1mecho "This will populate your MongoDB database with:"[0m
+2025-12-04T15:45:19.7576451Z [36;1mecho "  • 40+ African culture articles from Wikipedia"[0m
+2025-12-04T15:45:19.7576865Z [36;1mecho "  • Categories: tradition, cuisine, music, history, etc."[0m
+2025-12-04T15:45:19.7577306Z [36;1mecho "  • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc."[0m
+2025-12-04T15:45:19.7577656Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7577862Z [36;1mecho "Connecting to MongoDB..."[0m
+2025-12-04T15:45:19.7578113Z [36;1m[0m
+2025-12-04T15:45:19.7578338Z [36;1mif [ -z "$MONGODB_URI" ]; then[0m
+2025-12-04T15:45:19.7578635Z [36;1m  echo "❌ ERROR: MONGODB_URI secret is not set!"[0m
+2025-12-04T15:45:19.7578976Z [36;1m  echo "Please add MONGODB_URI to repository secrets"[0m
+2025-12-04T15:45:19.7579267Z [36;1m  exit 1[0m
+2025-12-04T15:45:19.7579457Z [36;1mfi[0m
+2025-12-04T15:45:19.7579621Z [36;1m[0m
+2025-12-04T15:45:19.7579797Z [36;1mif [ -z "$JWT_SECRET" ]; then[0m
+2025-12-04T15:45:19.7580078Z [36;1m  echo "❌ ERROR: JWT_SECRET secret is not set!"[0m
+2025-12-04T15:45:19.7580408Z [36;1m  echo "Please add JWT_SECRET to repository secrets"[0m
+2025-12-04T15:45:19.7580707Z [36;1m  exit 1[0m
+2025-12-04T15:45:19.7580880Z [36;1mfi[0m
+2025-12-04T15:45:19.7581042Z [36;1m[0m
+2025-12-04T15:45:19.7581224Z [36;1mecho "✅ Secrets configured"[0m
+2025-12-04T15:45:19.7581565Z [36;1mecho "✅ MongoDB URI: ${MONGODB_URI:0:20}... (truncated for security)"[0m
+2025-12-04T15:45:19.7582552Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7582873Z [36;1mecho "Running scraper..."[0m
+2025-12-04T15:45:19.7583290Z [36;1mecho ""[0m
+2025-12-04T15:45:19.7583487Z [36;1m[0m
+2025-12-04T15:45:19.7583661Z [36;1mnode -e "[0m
+2025-12-04T15:45:19.7583934Z [36;1m  import('./dist/services/cultureScraper.service.js')[0m
+2025-12-04T15:45:19.7584265Z [36;1m    .then(m => m.runScraperJob())[0m
+2025-12-04T15:45:19.7584513Z [36;1m    .then(() => {[0m
+2025-12-04T15:45:19.7584729Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7585011Z [36;1m      console.log('==========================================');[0m
+2025-12-04T15:45:19.7585365Z [36;1m      console.log('✅ SCRAPER COMPLETED SUCCESSFULLY!');[0m
+2025-12-04T15:45:19.7585714Z [36;1m      console.log('==========================================');[0m
+2025-12-04T15:45:19.7586000Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7586275Z [36;1m      console.log('Your database should now contain:');[0m
+2025-12-04T15:45:19.7586602Z [36;1m      console.log('  • Collection: articles');[0m
+2025-12-04T15:45:19.7586958Z [36;1m      console.log('  • Documents: 40+ African culture articles');[0m
+2025-12-04T15:45:19.7587361Z [36;1m      console.log('  • Source: Wikipedia (with proper attribution)');[0m
+2025-12-04T15:45:19.7587687Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7587918Z [36;1m      console.log('Test it:');[0m
+2025-12-04T15:45:19.7588302Z [36;1m      console.log('  curl https://your-backend-url/culture-magazine/articles');[0m
+2025-12-04T15:45:19.7588683Z [36;1m      console.log('');[0m
+2025-12-04T15:45:19.7588908Z [36;1m      process.exit(0);[0m
+2025-12-04T15:45:19.7589323Z [36;1m    })[0m
+2025-12-04T15:45:19.7589511Z [36;1m    .catch(err => {[0m
+2025-12-04T15:45:19.7589729Z [36;1m      console.error('');[0m
+2025-12-04T15:45:19.7590053Z [36;1m      console.error('==========================================');[0m
+2025-12-04T15:45:19.7590440Z [36;1m      console.error('❌ SCRAPER ERROR:');[0m
+2025-12-04T15:45:19.7590758Z [36;1m      console.error('==========================================');[0m
+2025-12-04T15:45:19.7591221Z [36;1m      console.error(err);[0m
+2025-12-04T15:45:19.7591469Z [36;1m      console.error('');[0m
+2025-12-04T15:45:19.7592258Z [36;1m      console.error('Common issues:');[0m
+2025-12-04T15:45:19.7592596Z [36;1m      console.error('  1. Cannot connect to MongoDB');[0m
+2025-12-04T15:45:19.7592990Z [36;1m      console.error('     → Check MongoDB Atlas network access (0.0.0.0/0)');[0m
+2025-12-04T15:45:19.7593524Z [36;1m      console.error('     → Verify connection string format');[0m
+2025-12-04T15:45:19.7593890Z [36;1m      console.error('  2. Authentication failed');[0m
+2025-12-04T15:45:19.7594307Z [36;1m      console.error('     → Check username/password in MONGODB_URI');[0m
+2025-12-04T15:45:19.7594683Z [36;1m      console.error('  3. Network timeout');[0m
+2025-12-04T15:45:19.7595053Z [36;1m      console.error('     → Wikipedia might be temporarily unreachable');[0m
+2025-12-04T15:45:19.7595402Z [36;1m      console.error('');[0m
+2025-12-04T15:45:19.7595652Z [36;1m      process.exit(0);[0m
+2025-12-04T15:45:19.7595882Z [36;1m    });[0m
+2025-12-04T15:45:19.7596154Z [36;1m" || echo "⚠️ Scraper encountered issues but workflow continues"[0m
+2025-12-04T15:45:19.7629896Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:45:19.7630137Z env:
+2025-12-04T15:45:19.7630316Z   NODE_VERSION: 18.x
+2025-12-04T15:45:19.7630894Z   MONGODB_URI: ***
+2025-12-04T15:45:19.7631109Z   JWT_SECRET: ***
+2025-12-04T15:45:19.7631340Z   NEWS_API_KEY: ***
+2025-12-04T15:45:19.7631979Z   NODE_ENV: production
+2025-12-04T15:45:19.7632201Z ##[endgroup]
+2025-12-04T15:45:19.7691502Z ==========================================
+2025-12-04T15:45:19.7693517Z 🚀 Starting Wikipedia Scraper
+2025-12-04T15:45:19.7694042Z ==========================================
+2025-12-04T15:45:19.7694355Z 
+2025-12-04T15:45:19.7694677Z This will populate your MongoDB database with:
+2025-12-04T15:45:19.7695390Z   • 40+ African culture articles from Wikipedia
+2025-12-04T15:45:19.7696128Z   • Categories: tradition, cuisine, music, history, etc.
+2025-12-04T15:45:19.7697004Z   • Countries: Nigeria, Kenya, Ghana, Ethiopia, South Africa, etc.
+2025-12-04T15:45:19.7697447Z 
+2025-12-04T15:45:19.7697625Z Connecting to MongoDB...
+2025-12-04T15:45:19.7698091Z ✅ Secrets configured
+2025-12-04T15:45:19.7698810Z ✅ MongoDB URI: mongodb://lingafriqa... (truncated for security)
+2025-12-04T15:45:19.7699168Z 
+2025-12-04T15:45:19.7699319Z Running scraper...
+2025-12-04T15:45:19.7699532Z 
+2025-12-04T15:45:20.0437713Z Starting culture content scraper...
+2025-12-04T15:45:35.9644315Z Error saving article "Yoruba people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:45:35.9646651Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:45:35.9653080Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:45:35.9653755Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:45:45.9758610Z Error saving article "Igbo people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:45:45.9761023Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:45:45.9762612Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:45:45.9763318Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:45:55.9862163Z Error saving article "Hausa people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:45:55.9864830Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:45:55.9866187Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:45:55.9868041Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:05.9974780Z Error saving article "Nigerian cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:05.9979838Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:05.9982682Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:05.9984165Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:16.0084401Z Error saving article "Nollywood": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:16.0086905Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:16.0088269Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:16.0089196Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:26.0189481Z Error saving article "Afrobeat": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:26.0191951Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:26.0193232Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:26.0193919Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:36.0299534Z Error saving article "Jollof rice": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:36.0303392Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:36.0304293Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:36.0304752Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:46.0342051Z Error saving article "Zulu people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:46.0345547Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:46.0347238Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:46.0352704Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:46:56.0408640Z Error saving article "Xhosa people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:46:56.0412001Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:46:56.0413346Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:46:56.0414049Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:06.0460036Z Error saving article "South African cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:06.0464108Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:06.0465489Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:06.0466179Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:16.0509220Z Error saving article "Kwaito": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:16.0513217Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:16.0515365Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:16.0515997Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:26.0620772Z Error saving article "Ubuntu philosophy": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:26.0624465Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:26.0627638Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:26.0628410Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:36.0732559Z Error saving article "Regional variations of barbecue": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:36.0735233Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:36.0737835Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:36.0738336Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:46.0792739Z Error saving article "Swahili culture": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:46.0795722Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:46.0797097Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:46.0797867Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:47:56.0903283Z Error saving article "Maasai people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:47:56.0906136Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:47:56.0908332Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:47:56.0909202Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:06.1013767Z Error saving article "Culture of Kenya": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:06.1017218Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:06.1018223Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:06.1018676Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:16.1124131Z Error saving article "Benga music": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:16.1127571Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:16.1128714Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:16.1129193Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:26.1235050Z Error saving article "Asante people": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:26.1237251Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:26.1238461Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:26.1238896Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:36.1343885Z Error saving article "Ghanaian cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:36.1346355Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:36.1348202Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:36.1348899Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:46.1390650Z Error saving article "Highlife": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:46.1393556Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:46.1394490Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:46.1394988Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:48:56.1498819Z Error saving article "Kente cloth": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:48:56.1502535Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:48:56.1503791Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:48:56.1504704Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:06.1609364Z Error saving article "Ethiopian cuisine": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:06.1612328Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:06.1613956Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:06.1614703Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:16.1624981Z Error saving article "Ethiopian Orthodox Tewahedo Church": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:16.1627603Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:16.1628505Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:16.1628969Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:26.1737446Z Error saving article "Geʽez": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:26.1739199Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:26.1740269Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:26.1741072Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:36.1842810Z Error saving article "Coffee ceremony of Ethiopia and Eritrea": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:36.1845561Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:36.1846942Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:36.1847722Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:46.1953087Z Error saving article "African art": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:46.1955254Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:46.1957015Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:46.1957710Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:49:56.2048214Z Error saving article "African literature": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:49:56.2051113Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:49:56.2054037Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:49:56.2055350Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:50:06.2069742Z Error saving article "Pan-Africanism": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:50:06.2072187Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:50:06.2075875Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:50:06.2076609Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:50:16.2157539Z Error saving article "Kwanzaa": MongooseError: Operation `culturearticles.findOne()` buffering timed out after 10000ms
+2025-12-04T15:50:16.2160729Z     at Timeout.<anonymous> (/home/runner/work/node-backend/node-backend/node_modules/mongoose/lib/drivers/node-mongodb-native/collection.js:185:23)
+2025-12-04T15:50:16.2162264Z     at listOnTimeout (node:internal/timers:569:17)
+2025-12-04T15:50:16.2162970Z     at process.processTimers (node:internal/timers:512:7)
+2025-12-04T15:50:16.2169977Z ✓ Scraped and saved 0 new articles
+2025-12-04T15:50:16.6445171Z ✓ Scraped and saved 0 news articles
+2025-12-04T15:50:16.6446561Z Culture content scraper completed.
+2025-12-04T15:50:16.6447913Z 
+2025-12-04T15:50:16.6448193Z ==========================================
+2025-12-04T15:50:16.6450049Z ✅ SCRAPER COMPLETED SUCCESSFULLY!
+2025-12-04T15:50:16.6450663Z ==========================================
+2025-12-04T15:50:16.6450946Z 
+2025-12-04T15:50:16.6451189Z Your database should now contain:
+2025-12-04T15:50:16.6451942Z   • Collection: articles
+2025-12-04T15:50:16.6477532Z   • Documents: 40+ African culture articles
+2025-12-04T15:50:16.6478360Z   • Source: Wikipedia (with proper attribution)
+2025-12-04T15:50:16.6478716Z 
+2025-12-04T15:50:16.6478853Z Test it:
+2025-12-04T15:50:16.6479352Z   curl https://your-backend-url/culture-magazine/articles
+2025-12-04T15:50:16.6479744Z 
+2025-12-04T15:50:16.6547273Z ##[group]Run echo ""
+2025-12-04T15:50:16.6547585Z [36;1mecho ""[0m
+2025-12-04T15:50:16.6547815Z [36;1mecho "=========================================="[0m
+2025-12-04T15:50:16.6548109Z [36;1mecho "📊 BUILD SUMMARY"[0m
+2025-12-04T15:50:16.6548365Z [36;1mecho "=========================================="[0m
+2025-12-04T15:50:16.6548621Z [36;1mecho ""[0m
+2025-12-04T15:50:16.6548830Z [36;1mecho "✅ Dependencies installed"[0m
+2025-12-04T15:50:16.6549096Z [36;1mecho "✅ TypeScript compiled"[0m
+2025-12-04T15:50:16.6549356Z [36;1mecho "✅ Tests run (or skipped)"[0m
+2025-12-04T15:50:16.6549626Z [36;1mecho "✅ Database priming attempted"[0m
+2025-12-04T15:50:16.6549872Z [36;1mecho ""[0m
+2025-12-04T15:50:16.6550078Z [36;1mecho "📥 Built files are in: ./dist/"[0m
+2025-12-04T15:50:16.6550416Z [36;1mecho "📚 You can deploy these files to any Node.js hosting"[0m
+2025-12-04T15:50:16.6550729Z [36;1mecho ""[0m
+2025-12-04T15:50:16.6550926Z [36;1mecho "Next steps:"[0m
+2025-12-04T15:50:16.6551247Z [36;1mecho "  1. Deploy the ./dist/ folder to your server"[0m
+2025-12-04T15:50:16.6551962Z [36;1mecho "  2. Set environment variables (MONGODB_URI, JWT_SECRET)"[0m
+2025-12-04T15:50:16.6552521Z [36;1mecho "  3. Run: node dist/server.js"[0m
+2025-12-04T15:50:16.6552857Z [36;1mecho "  4. Test: curl http://your-server/healthcheck"[0m
+2025-12-04T15:50:16.6553154Z [36;1mecho ""[0m
+2025-12-04T15:50:16.6553403Z [36;1mecho "Culture Magazine API will be available at:"[0m
+2025-12-04T15:50:16.6553724Z [36;1mecho "  GET /culture-magazine/articles"[0m
+2025-12-04T15:50:16.6553988Z [36;1mecho ""[0m
+2025-12-04T15:50:16.6554198Z [36;1mecho "=========================================="[0m
+2025-12-04T15:50:16.6554481Z [36;1mecho "✅ WORKFLOW COMPLETE!"[0m
+2025-12-04T15:50:16.6554743Z [36;1mecho "=========================================="[0m
+2025-12-04T15:50:16.6587562Z shell: /usr/bin/bash -e {0}
+2025-12-04T15:50:16.6587798Z env:
+2025-12-04T15:50:16.6587976Z   NODE_VERSION: 18.x
+2025-12-04T15:50:16.6588187Z ##[endgroup]
+2025-12-04T15:50:16.6646446Z 
+2025-12-04T15:50:16.6648246Z ==========================================
+2025-12-04T15:50:16.6651876Z 📊 BUILD SUMMARY
+2025-12-04T15:50:16.6652523Z ==========================================
+2025-12-04T15:50:16.6652851Z 
+2025-12-04T15:50:16.6653155Z ✅ Dependencies installed
+2025-12-04T15:50:16.6653621Z ✅ TypeScript compiled
+2025-12-04T15:50:16.6654061Z ✅ Tests run (or skipped)
+2025-12-04T15:50:16.6654531Z ✅ Database priming attempted
+2025-12-04T15:50:16.6654797Z 
+2025-12-04T15:50:16.6655138Z 📥 Built files are in: ./dist/
+2025-12-04T15:50:16.6655788Z 📚 You can deploy these files to any Node.js hosting
+2025-12-04T15:50:16.6656149Z 
+2025-12-04T15:50:16.6656282Z Next steps:
+2025-12-04T15:50:16.6656700Z   1. Deploy the ./dist/ folder to your server
+2025-12-04T15:50:16.6657247Z   2. Set environment variables (MONGODB_URI, JWT_SECRET)
+2025-12-04T15:50:16.6657556Z   3. Run: node dist/server.js
+2025-12-04T15:50:16.6657871Z   4. Test: curl http://your-server/healthcheck
+2025-12-04T15:50:16.6658074Z 
+2025-12-04T15:50:16.6658240Z Culture Magazine API will be available at:
+2025-12-04T15:50:16.6658557Z   GET /culture-magazine/articles
+2025-12-04T15:50:16.6658720Z 
+2025-12-04T15:50:16.6658847Z ==========================================
+2025-12-04T15:50:16.6659160Z ✅ WORKFLOW COMPLETE!
+2025-12-04T15:50:16.6659415Z ==========================================
+2025-12-04T15:50:16.6720627Z Post job cleanup.
+2025-12-04T15:50:16.9624038Z Cache hit occurred on the primary key node-cache-Linux-x64-npm-db446665db5091e519da563a7a026742cf56fce518adccc1321a287c68dd744d, not saving cache.
+2025-12-04T15:50:16.9717526Z Post job cleanup.
+2025-12-04T15:50:17.0763256Z [command]/usr/bin/git version
+2025-12-04T15:50:17.0808719Z git version 2.52.0
+2025-12-04T15:50:17.0858035Z Temporarily overriding HOME='/home/runner/work/_temp/0f9ab0ae-5cc8-43f1-86c2-76db79e85f40' before making global git config changes
+2025-12-04T15:50:17.0860577Z Adding repository directory to the temporary git global config as a safe directory
+2025-12-04T15:50:17.0866127Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/node-backend/node-backend
+2025-12-04T15:50:17.0916576Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2025-12-04T15:50:17.0955650Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2025-12-04T15:50:17.1217925Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2025-12-04T15:50:17.1246095Z http.https://github.com/.extraheader
+2025-12-04T15:50:17.1260277Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2025-12-04T15:50:17.1297751Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2025-12-04T15:50:17.1544498Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2025-12-04T15:50:17.1581435Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2025-12-04T15:50:17.2006493Z Cleaning up orphan processes

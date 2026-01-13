@@ -1,0 +1,5 @@
+rapidfuzz
+montreal-forced-aligner
+numpy
+flask
+pytest

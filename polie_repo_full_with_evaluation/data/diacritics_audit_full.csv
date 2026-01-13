@@ -1,0 +1,671 @@
+event,lang,method,input,output,score,time_ms
+diacritics_applied,yoruba,fuzzy_match,iamlearning,Mo ń kọ́ ẹ̀kọ́,0.9166666666666666,0
+diacritics_applied,yoruba,fuzzy_match,how are you,Báwo ní?,0.9565217391304348,0
+diacritics_applied,swahili,fuzzy_match,hell0,Hujambo,0.8,0
+diacritics_applied,portuguese,exact_match,good morning,Bom dia,,0
+diacritics_applied,portuguese,exact_match,good morning,Bom dia,,0
+diacritics_applied,spanish,fuzzy_match,g00d m0rning,Buenos días,0.75,0
+diacritics_applied,french,fuzzy_match,i ma learning,J'apprends,0.9230769230769231,0
+diacritics_applied,german,fuzzy_match,how are you,Wie geht's?,0.9565217391304348,0
+diacritics_applied,spanish,fuzzy_match,hellooo,Hola,0.8333333333333334,0
+diacritics_applied,portuguese,fuzzy_match,i @m le@rning,Estou aprendendo,0.8461538461538461,0
+diacritics_applied,hausa,fuzzy_match,hll,Sannu,0.75,0
+diacritics_applied,yoruba,exact_match,good morning,Ẹ káàrọ̀,,0
+diacritics_applied,yoruba,exact_match,good morning,Ẹ káàrọ̀,,0
+diacritics_applied,spanish,fuzzy_match,how @re you?,¿Cómo estás?,0.9166666666666666,0
+diacritics_applied,igbo,fuzzy_match,i ma learning,A na m amụta,0.9230769230769231,0
+diacritics_applied,igbo,fuzzy_match,thankyou,Daalụ,0.9411764705882353,0
+diacritics_applied,hausa,fuzzy_match,how are you???,Lafiya lau?,0.9230769230769231,0
+diacritics_applied,french,fuzzy_match,how are you???,Comment ça va?,0.9230769230769231,0
+diacritics_applied,spanish,fuzzy_match,thnk y,Gracias,0.8,0
+diacritics_applied,vietnamese,fuzzy_match,how are you,Bạn khỏe không?,0.9565217391304348,0
+diacritics_applied,portuguese,fuzzy_match,thank y0u,Obrigado/Obrigada,0.8888888888888888,0
+diacritics_applied,igbo,fuzzy_match,i @m le@rning,A na m amụta,0.8461538461538461,0
+diacritics_applied,yoruba,fuzzy_match,goodmorning,Ẹ káàrọ̀,0.9565217391304348,0
+diacritics_applied,spanish,fuzzy_match,how aare you?,¿Cómo estás?,0.96,0
+diacritics_applied,swahili,exact_match,how are you?,Habari gani?,,0
+diacritics_applied,swahili,exact_match,how are you?,Habari gani?,,0
+diacritics_applied,vietnamese,fuzzy_match,g00d m0rning,Chào buổi sáng,0.75,0
+diacritics_applied,french,exact_match,hello,Bonjour,,0
+diacritics_applied,french,exact_match,hello,Bonjour,,0
+diacritics_applied,hausa,fuzzy_match,i aam leaarning,Ina koyo,0.9285714285714286,0
+diacritics_applied,hausa,fuzzy_match,thnak you,Na gode,0.8888888888888888,0
+diacritics_applied,german,fuzzy_match,i @m le@rning,Ich lerne,0.8461538461538461,0
+diacritics_applied,yoruba,fuzzy_match,i @m le@rning,Mo ń kọ́ ẹ̀kọ́,0.8461538461538461,0
+diacritics_applied,vietnamese,fuzzy_match,i am learninggg,Tôi đang học,0.9285714285714286,0
+diacritics_applied,spanish,fuzzy_match,iamlearning,Estoy aprendiendo,0.9166666666666666,0
+diacritics_applied,swahili,fuzzy_match,g00d m0rning,Habari ya asubuhi,0.75,0
+diacritics_applied,arabic,fuzzy_match,how @re you?,كيف حالك؟,0.9166666666666666,0
+diacritics_applied,vietnamese,exact_match,hello,Xin chào,,0
+diacritics_applied,vietnamese,exact_match,hello,Xin chào,,0
+diacritics_applied,yoruba,fuzzy_match,thnak you,Ẹ ṣé,0.8888888888888888,0
+diacritics_applied,german,fuzzy_match,godo morning,Guten Morgen,0.9166666666666666,0
+diacritics_applied,yoruba,fuzzy_match,gd mrnng,Ẹ káàrọ̀,0.8,0
+diacritics_applied,yoruba,fuzzy_match,how are you???,Báwo ní?,0.9230769230769231,0
+diacritics_applied,swahili,fuzzy_match,thank y0u,Asante,0.8888888888888888,0
+diacritics_applied,yoruba,fuzzy_match,hellooo,Báwo,0.8333333333333334,0
+diacritics_applied,hausa,fuzzy_match,ho ware you?,Lafiya lau?,0.9166666666666666,0
+diacritics_applied,vietnamese,fuzzy_match,th@nk you,Cảm ơn,0.8888888888888888,0
+diacritics_applied,german,fuzzy_match,thaank you,Danke,0.9473684210526315,0
+diacritics_applied,yoruba,exact_match,how are you?,Báwo ní?,,0
+diacritics_applied,yoruba,exact_match,how are you?,Báwo ní?,,0
+diacritics_applied,vietnamese,exact_match,thank you,Cảm ơn,,0
+diacritics_applied,vietnamese,exact_match,thank you,Cảm ơn,,0
+diacritics_applied,german,fuzzy_match,hellooo,Hallo,0.8333333333333334,0
+diacritics_applied,arabic,fuzzy_match,thank youuu,شكراً,0.9,0
+diacritics_applied,vietnamese,fuzzy_match,thank y0u,Cảm ơn,0.8888888888888888,0
+diacritics_applied,arabic,fuzzy_match,thnak you,شكراً,0.8888888888888888,0
+diacritics_applied,spanish,exact_match,hello,Hola,,0
+diacritics_applied,spanish,exact_match,hello,Hola,,0
+diacritics_applied,french,fuzzy_match,good morninggg,Bonjour,0.9230769230769231,0
+diacritics_applied,vietnamese,fuzzy_match,godo morning,Chào buổi sáng,0.9166666666666666,0
+diacritics_applied,hausa,fuzzy_match,i am learninggg,Ina koyo,0.9285714285714286,0
+diacritics_applied,vietnamese,fuzzy_match,thank youuu,Cảm ơn,0.9,0
+diacritics_applied,igbo,fuzzy_match,how @re you?,Kedu?,0.9166666666666666,0
+diacritics_applied,arabic,fuzzy_match,th@nk you,شكراً,0.8888888888888888,0
+diacritics_applied,portuguese,fuzzy_match,hellooo,Olá,0.8333333333333334,0
+diacritics_applied,hausa,fuzzy_match,hellooo,Sannu,0.8333333333333334,0
+diacritics_applied,french,fuzzy_match,thank y0u,Merci,0.8888888888888888,0
+diacritics_applied,arabic,exact_match,thank you,شكراً,,0
+diacritics_applied,arabic,exact_match,thank you,شكراً,,0
+diacritics_applied,hausa,fuzzy_match,thankyou,Na gode,0.9411764705882353,0
+diacritics_applied,arabic,fuzzy_match,i aam leaarning,أنا أتعلم,0.9285714285714286,0
+diacritics_applied,arabic,fuzzy_match,godo morning,صباح الخير,0.9166666666666666,0
+diacritics_applied,vietnamese,fuzzy_match,how are you???,Bạn khỏe không?,0.9230769230769231,0
+diacritics_applied,hausa,fuzzy_match,how @re you?,Lafiya lau?,0.9166666666666666,0
+diacritics_applied,swahili,fuzzy_match,thnak you,Asante,0.8888888888888888,0
+diacritics_applied,portuguese,fuzzy_match,thank youuu,Obrigado/Obrigada,0.9,0
+diacritics_applied,yoruba,fuzzy_match,thankyou,Ẹ ṣé,0.9411764705882353,0
+diacritics_applied,spanish,fuzzy_match,how are you???,¿Cómo estás?,0.9230769230769231,0
+diacritics_applied,swahili,exact_match,thank you,Asante,,0
+diacritics_applied,swahili,exact_match,thank you,Asante,,0
+diacritics_applied,french,fuzzy_match,hellooo,Bonjour,0.8333333333333334,0
+diacritics_applied,hausa,fuzzy_match,iamlearning,Ina koyo,0.9166666666666666,0
+diacritics_applied,portuguese,fuzzy_match,h0w are y0u?,Como você está?,0.8333333333333334,0
+diacritics_applied,german,fuzzy_match,iamlearning,Ich lerne,0.9166666666666666,0
+diacritics_applied,spanish,fuzzy_match,i @m le@rning,Estoy aprendiendo,0.8461538461538461,0
+diacritics_applied,hausa,exact_match,hello,Sannu,,0
+diacritics_applied,hausa,exact_match,hello,Sannu,,0
+diacritics_applied,arabic,fuzzy_match,good morninggg,صباح الخير,0.9230769230769231,0
+diacritics_applied,french,fuzzy_match,how are you,Comment ça va?,0.9565217391304348,0
+diacritics_applied,swahili,fuzzy_match,h0w are y0u?,Habari gani?,0.8333333333333334,0
+diacritics_applied,vietnamese,fuzzy_match,i aam leaarning,Tôi đang học,0.9285714285714286,0
+diacritics_applied,igbo,fuzzy_match,hell0,Ndewo,0.8,0
+diacritics_applied,french,fuzzy_match,iamlearning,J'apprends,0.9166666666666666,0
+diacritics_applied,arabic,fuzzy_match,how are you,كيف حالك؟,0.9565217391304348,0
+diacritics_applied,igbo,fuzzy_match,h0w are y0u?,Kedu?,0.8333333333333334,0
+diacritics_applied,vietnamese,fuzzy_match,h0w are y0u?,Bạn khỏe không?,0.8333333333333334,0
+diacritics_applied,portuguese,fuzzy_match,godo morning,Bom dia,0.9166666666666666,0
+diacritics_applied,spanish,exact_match,thank you,Gracias,,0
+diacritics_applied,spanish,exact_match,thank you,Gracias,,0
+diacritics_applied,yoruba,fuzzy_match,th@nk you,Ẹ ṣé,0.8888888888888888,0
+diacritics_applied,swahili,exact_match,good morning,Habari ya asubuhi,,0
+diacritics_applied,swahili,exact_match,good morning,Habari ya asubuhi,,0
+diacritics_applied,yoruba,fuzzy_match,godo morning,Ẹ káàrọ̀,0.9166666666666666,0
+diacritics_applied,swahili,fuzzy_match,how aare you?,Habari gani?,0.96,0
+diacritics_applied,hausa,fuzzy_match,h0w are y0u?,Lafiya lau?,0.8333333333333334,0
+diacritics_applied,german,fuzzy_match,i am learninggg,Ich lerne,0.9285714285714286,0
+diacritics_applied,french,fuzzy_match,i am learninggg,J'apprends,0.9285714285714286,0
+diacritics_applied,spanish,fuzzy_match,i ma learning,Estoy aprendiendo,0.9230769230769231,0
+diacritics_applied,arabic,fuzzy_match,g00d m0rning,صباح الخير,0.75,0
+diacritics_applied,yoruba,fuzzy_match,hll,Báwo,0.75,0
+diacritics_applied,swahili,fuzzy_match,how are you,Habari gani?,0.9565217391304348,0
+diacritics_applied,yoruba,fuzzy_match,thank youuu,Ẹ ṣé,0.9,0
+diacritics_applied,hausa,fuzzy_match,hell0,Sannu,0.8,0
+diacritics_applied,portuguese,fuzzy_match,how @re you?,Como você está?,0.9166666666666666,0
+diacritics_applied,vietnamese,fuzzy_match,thaank you,Cảm ơn,0.9473684210526315,0
+diacritics_applied,vietnamese,fuzzy_match,i @m le@rning,Tôi đang học,0.8461538461538461,0
+diacritics_applied,arabic,fuzzy_match,h0w are y0u?,كيف حالك؟,0.8333333333333334,0
+diacritics_applied,portuguese,exact_match,how are you?,Como você está?,,0
+diacritics_applied,portuguese,exact_match,how are you?,Como você está?,,0
+diacritics_applied,vietnamese,fuzzy_match,ho ware you?,Bạn khỏe không?,0.9166666666666666,0
+diacritics_applied,igbo,fuzzy_match,godo morning,Ụtụtụ ọma,0.9166666666666666,0
+diacritics_applied,portuguese,fuzzy_match,hll,Olá,0.75,0
+diacritics_applied,swahili,fuzzy_match,gd mrnng,Habari ya asubuhi,0.8,0
+diacritics_applied,igbo,exact_match,hello,Ndewo,,0
+diacritics_applied,igbo,exact_match,hello,Ndewo,,0
+diacritics_applied,hausa,fuzzy_match,i ma learning,Ina koyo,0.9230769230769231,0
+diacritics_applied,vietnamese,exact_match,good morning,Chào buổi sáng,,0
+diacritics_applied,vietnamese,exact_match,good morning,Chào buổi sáng,,0
+diacritics_applied,french,fuzzy_match,i @m le@rning,J'apprends,0.8461538461538461,0
+diacritics_applied,igbo,fuzzy_match,goodmorning,Ụtụtụ ọma,0.9565217391304348,0
+diacritics_applied,arabic,fuzzy_match,goodmorning,صباح الخير,0.9565217391304348,0
+diacritics_applied,german,exact_match,i am learning,Ich lerne,,0
+diacritics_applied,german,exact_match,i am learning,Ich lerne,,0
+diacritics_applied,swahili,fuzzy_match,godo morning,Habari ya asubuhi,0.9166666666666666,0
+diacritics_applied,german,fuzzy_match,h0w are y0u?,Wie geht's?,0.8333333333333334,0
+diacritics_applied,arabic,fuzzy_match,how are you???,كيف حالك؟,0.9230769230769231,0
+diacritics_applied,spanish,fuzzy_match,hll,Hola,0.75,0
+diacritics_applied,french,fuzzy_match,hll,Bonjour,0.75,0
+diacritics_applied,german,fuzzy_match,hll,Hallo,0.75,0
+diacritics_applied,swahili,fuzzy_match,ho ware you?,Habari gani?,0.9166666666666666,0
+diacritics_applied,french,fuzzy_match,th@nk you,Merci,0.8888888888888888,0
+diacritics_applied,arabic,exact_match,i am learning,أنا أتعلم,,0
+diacritics_applied,arabic,exact_match,i am learning,أنا أتعلم,,0
+diacritics_applied,german,fuzzy_match,how are you???,Wie geht's?,0.9230769230769231,0
+diacritics_applied,yoruba,fuzzy_match,ho ware you?,Báwo ní?,0.9166666666666666,0
+diacritics_applied,igbo,fuzzy_match,thnak you,Daalụ,0.8888888888888888,0
+diacritics_applied,hausa,fuzzy_match,how aare you?,Lafiya lau?,0.96,0
+diacritics_applied,french,fuzzy_match,thnak you,Merci,0.8888888888888888,0
+diacritics_applied,german,fuzzy_match,thnk y,Danke,0.8,0
+diacritics_applied,igbo,fuzzy_match,thnk y,Daalụ,0.8,0
+diacritics_applied,spanish,fuzzy_match,thank y0u,Gracias,0.8888888888888888,0
+diacritics_applied,french,exact_match,how are you?,Comment ça va?,,0
+diacritics_applied,french,exact_match,how are you?,Comment ça va?,,0
+diacritics_applied,swahili,fuzzy_match,i aam leaarning,Ninajifunza,0.9285714285714286,0
+diacritics_applied,vietnamese,fuzzy_match,how @re you?,Bạn khỏe không?,0.9166666666666666,0
+diacritics_applied,spanish,fuzzy_match,godo morning,Buenos días,0.9166666666666666,0
+diacritics_applied,swahili,fuzzy_match,thankyou,Asante,0.9411764705882353,0
+diacritics_applied,arabic,fuzzy_match,hll,السلام عليكم,0.75,0
+diacritics_applied,igbo,fuzzy_match,how are you???,Kedu?,0.9230769230769231,0
+diacritics_applied,yoruba,fuzzy_match,i aam leaarning,Mo ń kọ́ ẹ̀kọ́,0.9285714285714286,0
+diacritics_applied,vietnamese,fuzzy_match,how aare you?,Bạn khỏe không?,0.96,0
+diacritics_applied,german,fuzzy_match,good morninggg,Guten Morgen,0.9230769230769231,0
+diacritics_applied,igbo,exact_match,how are you?,Kedu?,,0
+diacritics_applied,igbo,exact_match,how are you?,Kedu?,,0
+diacritics_applied,portuguese,fuzzy_match,how are you???,Como você está?,0.9230769230769231,0
+diacritics_applied,vietnamese,fuzzy_match,hellooo,Xin chào,0.8333333333333334,0
+diacritics_applied,hausa,fuzzy_match,gd mrnng,Ina kwana,0.8,0
+diacritics_applied,hausa,fuzzy_match,goodmorning,Ina kwana,0.9565217391304348,0
+diacritics_applied,arabic,fuzzy_match,how aare you?,كيف حالك؟,0.96,0
+diacritics_applied,vietnamese,fuzzy_match,thnk y,Cảm ơn,0.8,0
+diacritics_applied,arabic,fuzzy_match,hell0,السلام عليكم,0.8,0
+diacritics_applied,portuguese,fuzzy_match,hell0,Olá,0.8,0
+diacritics_applied,portuguese,fuzzy_match,gd mrnng,Bom dia,0.8,0
+diacritics_applied,swahili,fuzzy_match,good morninggg,Habari ya asubuhi,0.9230769230769231,0
+diacritics_applied,yoruba,fuzzy_match,i ma learning,Mo ń kọ́ ẹ̀kọ́,0.9230769230769231,0
+diacritics_applied,portuguese,fuzzy_match,goodmorning,Bom dia,0.9565217391304348,0
+diacritics_applied,french,fuzzy_match,thnk y,Merci,0.8,0
+diacritics_applied,french,fuzzy_match,goodmorning,Bonjour,0.9565217391304348,0
+diacritics_applied,igbo,fuzzy_match,g00d m0rning,Ụtụtụ ọma,0.75,0
+diacritics_applied,spanish,fuzzy_match,i aam leaarning,Estoy aprendiendo,0.9285714285714286,0
+diacritics_applied,vietnamese,fuzzy_match,good morninggg,Chào buổi sáng,0.9230769230769231,0
+diacritics_applied,portuguese,fuzzy_match,iamlearning,Estou aprendendo,0.9166666666666666,0
+diacritics_applied,french,exact_match,thank you,Merci,,0
+diacritics_applied,french,exact_match,thank you,Merci,,0
+diacritics_applied,german,exact_match,thank you,Danke,,0
+diacritics_applied,german,exact_match,thank you,Danke,,0
+diacritics_applied,hausa,exact_match,thank you,Na gode,,0
+diacritics_applied,hausa,exact_match,thank you,Na gode,,0
+diacritics_applied,swahili,fuzzy_match,thnk y,Asante,0.8,0
+diacritics_applied,igbo,fuzzy_match,thank y0u,Daalụ,0.8888888888888888,0
+diacritics_applied,hausa,fuzzy_match,th@nk you,Na gode,0.8888888888888888,0
+diacritics_applied,german,exact_match,hello,Hallo,,0
+diacritics_applied,german,exact_match,hello,Hallo,,0
+diacritics_applied,igbo,fuzzy_match,hll,Ndewo,0.75,0
+diacritics_applied,igbo,exact_match,i am learning,A na m amụta,,0
+diacritics_applied,igbo,exact_match,i am learning,A na m amụta,,0
+diacritics_applied,hausa,fuzzy_match,thaank you,Na gode,0.9473684210526315,0
+diacritics_applied,yoruba,fuzzy_match,i am learninggg,Mo ń kọ́ ẹ̀kọ́,0.9285714285714286,0
+diacritics_applied,igbo,fuzzy_match,gd mrnng,Ụtụtụ ọma,0.8,0
+diacritics_applied,arabic,fuzzy_match,hellooo,السلام عليكم,0.8333333333333334,0
+diacritics_applied,arabic,exact_match,how are you?,كيف حالك؟,,0
+diacritics_applied,arabic,exact_match,how are you?,كيف حالك؟,,0
+diacritics_applied,yoruba,fuzzy_match,thaank you,Ẹ ṣé,0.9473684210526315,0
+diacritics_applied,swahili,fuzzy_match,goodmorning,Habari ya asubuhi,0.9565217391304348,0
+diacritics_applied,swahili,fuzzy_match,i @m le@rning,Ninajifunza,0.8461538461538461,0
+diacritics_applied,swahili,exact_match,hello,Hujambo,,0
+diacritics_applied,swahili,exact_match,hello,Hujambo,,0
+diacritics_applied,igbo,fuzzy_match,thaank you,Daalụ,0.9473684210526315,0
+diacritics_applied,swahili,fuzzy_match,hellooo,Hujambo,0.8333333333333334,0
+diacritics_applied,igbo,fuzzy_match,thank youuu,Daalụ,0.9,0
+diacritics_applied,portuguese,fuzzy_match,how aare you?,Como você está?,0.96,0
+diacritics_applied,portuguese,fuzzy_match,thnk y,Obrigado/Obrigada,0.8,0
+diacritics_applied,spanish,exact_match,how are you?,¿Cómo estás?,,0
+diacritics_applied,spanish,exact_match,how are you?,¿Cómo estás?,,0
+diacritics_applied,hausa,fuzzy_match,thank y0u,Na gode,0.8888888888888888,0
+diacritics_applied,french,fuzzy_match,hell0,Bonjour,0.8,0
+diacritics_applied,arabic,fuzzy_match,ho ware you?,كيف حالك؟,0.9166666666666666,0
+diacritics_applied,swahili,fuzzy_match,i am learninggg,Ninajifunza,0.9285714285714286,0
+diacritics_applied,vietnamese,fuzzy_match,goodmorning,Chào buổi sáng,0.9565217391304348,0
+diacritics_applied,swahili,fuzzy_match,i ma learning,Ninajifunza,0.9230769230769231,0
+diacritics_applied,swahili,fuzzy_match,th@nk you,Asante,0.8888888888888888,0
+diacritics_applied,spanish,fuzzy_match,hell0,Hola,0.8,0
+diacritics_applied,vietnamese,exact_match,how are you?,Bạn khỏe không?,,0
+diacritics_applied,vietnamese,exact_match,how are you?,Bạn khỏe không?,,0
+diacritics_applied,portuguese,fuzzy_match,ho ware you?,Como você está?,0.9166666666666666,0
+diacritics_applied,arabic,fuzzy_match,gd mrnng,صباح الخير,0.8,0
+diacritics_applied,igbo,exact_match,good morning,Ụtụtụ ọma,,0
+diacritics_applied,igbo,exact_match,good morning,Ụtụtụ ọma,,0
+diacritics_applied,yoruba,exact_match,hello,Báwo,,0
+diacritics_applied,yoruba,exact_match,hello,Báwo,,0
+diacritics_applied,vietnamese,fuzzy_match,hll,Xin chào,0.75,0
+diacritics_applied,swahili,fuzzy_match,how @re you?,Habari gani?,0.9166666666666666,0
+diacritics_applied,spanish,fuzzy_match,gd mrnng,Buenos días,0.8,0
+diacritics_applied,vietnamese,fuzzy_match,hell0,Xin chào,0.8,0
+diacritics_applied,spanish,fuzzy_match,how are you,¿Cómo estás?,0.9565217391304348,0
+diacritics_applied,spanish,fuzzy_match,thank youuu,Gracias,0.9,0
+diacritics_applied,german,exact_match,how are you?,Wie geht's?,,0
+diacritics_applied,german,exact_match,how are you?,Wie geht's?,,0
+diacritics_applied,spanish,fuzzy_match,good morninggg,Buenos días,0.9230769230769231,0
+diacritics_applied,french,fuzzy_match,godo morning,Bonjour,0.9166666666666666,0
+diacritics_applied,hausa,fuzzy_match,thank youuu,Na gode,0.9,0
+diacritics_applied,arabic,fuzzy_match,thank y0u,شكراً,0.8888888888888888,0
+diacritics_applied,french,exact_match,i am learning,J'apprends,,0
+diacritics_applied,french,exact_match,i am learning,J'apprends,,0
+diacritics_applied,igbo,fuzzy_match,how aare you?,Kedu?,0.96,0
+diacritics_applied,igbo,fuzzy_match,good morninggg,Ụtụtụ ọma,0.9230769230769231,0
+diacritics_applied,french,fuzzy_match,how @re you?,Comment ça va?,0.9166666666666666,0
+diacritics_applied,arabic,fuzzy_match,iamlearning,أنا أتعلم,0.9166666666666666,0
+diacritics_applied,french,fuzzy_match,h0w are y0u?,Comment ça va?,0.8333333333333334,0
+diacritics_applied,vietnamese,fuzzy_match,iamlearning,Tôi đang học,0.9166666666666666,0
+diacritics_applied,hausa,fuzzy_match,i @m le@rning,Ina koyo,0.8461538461538461,0
+diacritics_applied,hausa,fuzzy_match,godo morning,Ina kwana,0.9166666666666666,0
+diacritics_applied,yoruba,fuzzy_match,g00d m0rning,Ẹ káàrọ̀,0.75,0
+diacritics_applied,portuguese,fuzzy_match,good morninggg,Bom dia,0.9230769230769231,0
+diacritics_applied,spanish,exact_match,good morning,Buenos días,,0
+diacritics_applied,spanish,exact_match,good morning,Buenos días,,0
+diacritics_applied,vietnamese,fuzzy_match,thnak you,Cảm ơn,0.8888888888888888,0
+diacritics_applied,igbo,fuzzy_match,i aam leaarning,A na m amụta,0.9285714285714286,0
+diacritics_applied,french,fuzzy_match,thaank you,Merci,0.9473684210526315,0
+diacritics_applied,spanish,fuzzy_match,h0w are y0u?,¿Cómo estás?,0.8333333333333334,0
+diacritics_applied,spanish,fuzzy_match,thankyou,Gracias,0.9411764705882353,0
+diacritics_applied,portuguese,fuzzy_match,thaank you,Obrigado/Obrigada,0.9473684210526315,0
+diacritics_applied,swahili,fuzzy_match,thank youuu,Asante,0.9,0
+diacritics_applied,igbo,fuzzy_match,how are you,Kedu?,0.9565217391304348,0
+diacritics_applied,vietnamese,fuzzy_match,i ma learning,Tôi đang học,0.9230769230769231,0
+diacritics_applied,german,fuzzy_match,thankyou,Danke,0.9411764705882353,0
+diacritics_applied,vietnamese,fuzzy_match,thankyou,Cảm ơn,0.9411764705882353,0
+diacritics_applied,german,fuzzy_match,goodmorning,Guten Morgen,0.9565217391304348,0
+diacritics_applied,hausa,exact_match,i am learning,Ina koyo,,0
+diacritics_applied,hausa,exact_match,i am learning,Ina koyo,,0
+diacritics_applied,french,fuzzy_match,ho ware you?,Comment ça va?,0.9166666666666666,0
+diacritics_applied,spanish,exact_match,i am learning,Estoy aprendiendo,,0
+diacritics_applied,spanish,exact_match,i am learning,Estoy aprendiendo,,0
+diacritics_applied,arabic,exact_match,good morning,صباح الخير,,0
+diacritics_applied,arabic,exact_match,good morning,صباح الخير,,0
+diacritics_applied,german,exact_match,good morning,Guten Morgen,,0
+diacritics_applied,german,exact_match,good morning,Guten Morgen,,0
+diacritics_applied,swahili,exact_match,i am learning,Ninajifunza,,0
+diacritics_applied,swahili,exact_match,i am learning,Ninajifunza,,0
+diacritics_applied,igbo,exact_match,thank you,Daalụ,,0
+diacritics_applied,igbo,exact_match,thank you,Daalụ,,0
+diacritics_applied,portuguese,exact_match,thank you,Obrigado/Obrigada,,0
+diacritics_applied,portuguese,exact_match,thank you,Obrigado/Obrigada,,0
+diacritics_applied,yoruba,exact_match,i am learning,Mo ń kọ́ ẹ̀kọ́,,0
+diacritics_applied,yoruba,exact_match,i am learning,Mo ń kọ́ ẹ̀kọ́,,0
+diacritics_applied,french,fuzzy_match,how aare you?,Comment ça va?,0.96,0
+diacritics_applied,spanish,fuzzy_match,ho ware you?,¿Cómo estás?,0.9166666666666666,0
+diacritics_applied,hausa,exact_match,good morning,Ina kwana,,0
+diacritics_applied,hausa,exact_match,good morning,Ina kwana,,0
+diacritics_applied,german,fuzzy_match,gd mrnng,Guten Morgen,0.8,0
+diacritics_applied,portuguese,fuzzy_match,i am learninggg,Estou aprendendo,0.9285714285714286,0
+diacritics_applied,arabic,fuzzy_match,i am learninggg,أنا أتعلم,0.9285714285714286,0
+diacritics_applied,spanish,fuzzy_match,thnak you,Gracias,0.8888888888888888,0
+diacritics_applied,german,fuzzy_match,thank youuu,Danke,0.9,0
+diacritics_applied,french,fuzzy_match,thank youuu,Merci,0.9,0
+diacritics_applied,igbo,fuzzy_match,th@nk you,Daalụ,0.8888888888888888,0
+diacritics_applied,portuguese,fuzzy_match,how are you,Como você está?,0.9565217391304348,0
+diacritics_applied,hausa,fuzzy_match,good morninggg,Ina kwana,0.9230769230769231,0
+diacritics_applied,yoruba,fuzzy_match,h0w are y0u?,Báwo ní?,0.8333333333333334,0
+diacritics_applied,german,fuzzy_match,i aam leaarning,Ich lerne,0.9285714285714286,0
+diacritics_applied,french,exact_match,good morning,Bonjour,,0
+diacritics_applied,french,exact_match,good morning,Bonjour,,0
+diacritics_applied,german,fuzzy_match,thnak you,Danke,0.8888888888888888,0
+diacritics_applied,german,fuzzy_match,g00d m0rning,Guten Morgen,0.75,0
+diacritics_applied,hausa,exact_match,how are you?,Lafiya lau?,,0
+diacritics_applied,hausa,exact_match,how are you?,Lafiya lau?,,0
+diacritics_applied,hausa,fuzzy_match,g00d m0rning,Ina kwana,0.75,0
+diacritics_applied,german,fuzzy_match,i ma learning,Ich lerne,0.9230769230769231,0
+diacritics_applied,vietnamese,fuzzy_match,gd mrnng,Chào buổi sáng,0.8,0
+diacritics_applied,yoruba,fuzzy_match,good morninggg,Ẹ káàrọ̀,0.9230769230769231,0
+diacritics_applied,hausa,fuzzy_match,how are you,Lafiya lau?,0.9565217391304348,0
+diacritics_applied,portuguese,fuzzy_match,g00d m0rning,Bom dia,0.75,0
+diacritics_applied,spanish,fuzzy_match,i am learninggg,Estoy aprendiendo,0.9285714285714286,0
+diacritics_applied,german,fuzzy_match,hell0,Hallo,0.8,0
+diacritics_applied,french,fuzzy_match,thankyou,Merci,0.9411764705882353,0
+diacritics_applied,portuguese,fuzzy_match,thankyou,Obrigado/Obrigada,0.9411764705882353,0
+diacritics_applied,spanish,fuzzy_match,th@nk you,Gracias,0.8888888888888888,0
+diacritics_applied,hausa,fuzzy_match,thnk y,Na gode,0.8,0
+diacritics_applied,yoruba,fuzzy_match,thank y0u,Ẹ ṣé,0.8888888888888888,0
+diacritics_applied,yoruba,fuzzy_match,thnk y,Ẹ ṣé,0.8,0
+diacritics_applied,swahili,fuzzy_match,iamlearning,Ninajifunza,0.9166666666666666,0
+diacritics_applied,vietnamese,exact_match,i am learning,Tôi đang học,,0
+diacritics_applied,vietnamese,exact_match,i am learning,Tôi đang học,,0
+diacritics_applied,arabic,fuzzy_match,i @m le@rning,أنا أتعلم,0.8461538461538461,0
+diacritics_applied,igbo,fuzzy_match,hellooo,Ndewo,0.8333333333333334,0
+diacritics_applied,portuguese,exact_match,hello,Olá,,0
+diacritics_applied,portuguese,exact_match,hello,Olá,,0
+diacritics_applied,swahili,fuzzy_match,how are you???,Habari gani?,0.9230769230769231,0
+diacritics_applied,yoruba,fuzzy_match,hell0,Báwo,0.8,0
+diacritics_applied,french,fuzzy_match,g00d m0rning,Bonjour,0.75,0
+diacritics_applied,swahili,fuzzy_match,hll,Hujambo,0.75,0
+diacritics_applied,yoruba,fuzzy_match,how @re you?,Báwo ní?,0.9166666666666666,0
+diacritics_applied,portuguese,fuzzy_match,i aam leaarning,Estou aprendendo,0.9285714285714286,0
+diacritics_applied,german,fuzzy_match,how aare you?,Wie geht's?,0.96,0
+diacritics_applied,german,fuzzy_match,ho ware you?,Wie geht's?,0.9166666666666666,0
+diacritics_applied,arabic,exact_match,hello,السلام عليكم,,0
+diacritics_applied,arabic,exact_match,hello,السلام عليكم,,0
+diacritics_applied,spanish,fuzzy_match,goodmorning,Buenos días,0.9565217391304348,0
+diacritics_applied,french,fuzzy_match,gd mrnng,Bonjour,0.8,0
+diacritics_applied,portuguese,exact_match,i am learning,Estou aprendendo,,0
+diacritics_applied,portuguese,exact_match,i am learning,Estou aprendendo,,0
+diacritics_applied,german,fuzzy_match,th@nk you,Danke,0.8888888888888888,0
+diacritics_applied,arabic,fuzzy_match,thnk y,شكراً,0.8,0
+diacritics_applied,igbo,fuzzy_match,i am learninggg,A na m amụta,0.9285714285714286,0
+diacritics_applied,portuguese,fuzzy_match,thnak you,Obrigado/Obrigada,0.8888888888888888,0
+diacritics_applied,igbo,fuzzy_match,ho ware you?,Kedu?,0.9166666666666666,0
+diacritics_applied,german,fuzzy_match,how @re you?,Wie geht's?,0.9166666666666666,0
+diacritics_applied,portuguese,fuzzy_match,i ma learning,Estou aprendendo,0.9230769230769231,0
+diacritics_applied,arabic,fuzzy_match,thankyou,شكراً,0.9411764705882353,0
+diacritics_applied,arabic,fuzzy_match,thaank you,شكراً,0.9473684210526315,0
+diacritics_applied,german,fuzzy_match,thank y0u,Danke,0.8888888888888888,0
+diacritics_applied,french,fuzzy_match,i aam leaarning,J'apprends,0.9285714285714286,0
+diacritics_applied,igbo,fuzzy_match,iamlearning,A na m amụta,0.9166666666666666,0
+diacritics_applied,spanish,fuzzy_match,thaank you,Gracias,0.9473684210526315,0
+diacritics_applied,yoruba,exact_match,thank you,Ẹ ṣé,,0
+diacritics_applied,yoruba,exact_match,thank you,Ẹ ṣé,,0
+diacritics_applied,portuguese,fuzzy_match,th@nk you,Obrigado/Obrigada,0.8888888888888888,0
+diacritics_applied,arabic,fuzzy_match,i ma learning,أنا أتعلم,0.9230769230769231,0
+diacritics_applied,yoruba,fuzzy_match,how aare you?,Báwo ní?,0.96,0
+diacritics_applied,swahili,fuzzy_match,thaank you,Asante,0.9473684210526315,0
+result_entry,yoruba,no_exact,iamlearning,Mo ń kọ́ ẹ̀kọ́,0.9166666666666666,0
+result_entry,yoruba,no_exact,how are you,Báwo ní?,0.9565217391304348,0
+result_entry,swahili,no_exact,hell0,Hujambo,0.8,0
+result_entry,portuguese,,good morning,Bom dia,,0
+result_entry,spanish,no_exact,g00d m0rning,Buenos días,0.75,0
+result_entry,french,no_exact,i ma learning,J'apprends,0.9230769230769231,0
+result_entry,german,no_exact,how are you,Wie geht's?,0.9565217391304348,0
+result_entry,spanish,no_exact,hellooo,Hola,0.8333333333333334,0
+result_entry,portuguese,no_exact,i @m le@rning,Estou aprendendo,0.8461538461538461,0
+result_entry,hausa,no_exact,hll,Sannu,0.75,0
+result_entry,yoruba,,good morning,Ẹ káàrọ̀,,0
+result_entry,spanish,no_exact,how @re you?,¿Cómo estás?,0.9166666666666666,0
+result_entry,igbo,no_exact,i ma learning,A na m amụta,0.9230769230769231,0
+result_entry,igbo,no_exact,thankyou,Daalụ,0.9411764705882353,0
+result_entry,hausa,no_exact,how are you???,Lafiya lau?,0.9230769230769231,0
+result_entry,french,no_exact,how are you???,Comment ça va?,0.9230769230769231,0
+result_entry,spanish,no_exact,thnk y,Gracias,0.8,0
+result_entry,vietnamese,no_exact,how are you,Bạn khỏe không?,0.9565217391304348,0
+result_entry,portuguese,no_exact,thank y0u,Obrigado/Obrigada,0.8888888888888888,0
+result_entry,igbo,no_exact,i @m le@rning,A na m amụta,0.8461538461538461,0
+result_entry,yoruba,no_exact,goodmorning,Ẹ káàrọ̀,0.9565217391304348,0
+result_entry,spanish,no_exact,how aare you?,¿Cómo estás?,0.96,0
+result_entry,swahili,,how are you?,Habari gani?,,0
+result_entry,vietnamese,no_exact,g00d m0rning,Chào buổi sáng,0.75,0
+result_entry,french,,hello,Bonjour,,0
+result_entry,hausa,no_exact,i aam leaarning,Ina koyo,0.9285714285714286,0
+result_entry,hausa,no_exact,thnak you,Na gode,0.8888888888888888,0
+result_entry,german,no_exact,i @m le@rning,Ich lerne,0.8461538461538461,0
+result_entry,yoruba,no_exact,i @m le@rning,Mo ń kọ́ ẹ̀kọ́,0.8461538461538461,0
+result_entry,vietnamese,no_exact,i am learninggg,Tôi đang học,0.9285714285714286,0
+result_entry,spanish,no_exact,iamlearning,Estoy aprendiendo,0.9166666666666666,0
+result_entry,swahili,no_exact,g00d m0rning,Habari ya asubuhi,0.75,0
+result_entry,arabic,no_exact,how @re you?,كيف حالك؟,0.9166666666666666,0
+result_entry,vietnamese,,hello,Xin chào,,0
+result_entry,yoruba,no_exact,thnak you,Ẹ ṣé,0.8888888888888888,0
+result_entry,german,no_exact,godo morning,Guten Morgen,0.9166666666666666,0
+result_entry,yoruba,no_exact,gd mrnng,Ẹ káàrọ̀,0.8,0
+result_entry,yoruba,no_exact,how are you???,Báwo ní?,0.9230769230769231,0
+result_entry,swahili,no_exact,thank y0u,Asante,0.8888888888888888,0
+result_entry,yoruba,no_exact,hellooo,Báwo,0.8333333333333334,0
+result_entry,hausa,no_exact,ho ware you?,Lafiya lau?,0.9166666666666666,0
+result_entry,vietnamese,no_exact,th@nk you,Cảm ơn,0.8888888888888888,0
+result_entry,german,no_exact,thaank you,Danke,0.9473684210526315,0
+result_entry,yoruba,,how are you?,Báwo ní?,,0
+result_entry,vietnamese,,thank you,Cảm ơn,,0
+result_entry,german,no_exact,hellooo,Hallo,0.8333333333333334,0
+result_entry,arabic,no_exact,thank youuu,شكراً,0.9,0
+result_entry,vietnamese,no_exact,thank y0u,Cảm ơn,0.8888888888888888,0
+result_entry,arabic,no_exact,thnak you,شكراً,0.8888888888888888,0
+result_entry,spanish,,hello,Hola,,0
+result_entry,french,no_exact,good morninggg,Bonjour,0.9230769230769231,0
+result_entry,vietnamese,no_exact,godo morning,Chào buổi sáng,0.9166666666666666,0
+result_entry,hausa,no_exact,i am learninggg,Ina koyo,0.9285714285714286,0
+result_entry,vietnamese,no_exact,thank youuu,Cảm ơn,0.9,0
+result_entry,igbo,no_exact,how @re you?,Kedu?,0.9166666666666666,0
+result_entry,arabic,no_exact,th@nk you,شكراً,0.8888888888888888,0
+result_entry,portuguese,no_exact,hellooo,Olá,0.8333333333333334,0
+result_entry,hausa,no_exact,hellooo,Sannu,0.8333333333333334,0
+result_entry,french,no_exact,thank y0u,Merci,0.8888888888888888,0
+result_entry,arabic,,thank you,شكراً,,0
+result_entry,hausa,no_exact,thankyou,Na gode,0.9411764705882353,0
+result_entry,arabic,no_exact,i aam leaarning,أنا أتعلم,0.9285714285714286,0
+result_entry,arabic,no_exact,godo morning,صباح الخير,0.9166666666666666,0
+result_entry,vietnamese,no_exact,how are you???,Bạn khỏe không?,0.9230769230769231,0
+result_entry,hausa,no_exact,how @re you?,Lafiya lau?,0.9166666666666666,0
+result_entry,swahili,no_exact,thnak you,Asante,0.8888888888888888,0
+result_entry,portuguese,no_exact,thank youuu,Obrigado/Obrigada,0.9,0
+result_entry,yoruba,no_exact,thankyou,Ẹ ṣé,0.9411764705882353,0
+result_entry,spanish,no_exact,how are you???,¿Cómo estás?,0.9230769230769231,0
+result_entry,swahili,,thank you,Asante,,0
+result_entry,french,no_exact,hellooo,Bonjour,0.8333333333333334,0
+result_entry,hausa,no_exact,iamlearning,Ina koyo,0.9166666666666666,0
+result_entry,portuguese,no_exact,h0w are y0u?,Como você está?,0.8333333333333334,0
+result_entry,german,no_exact,iamlearning,Ich lerne,0.9166666666666666,0
+result_entry,spanish,no_exact,i @m le@rning,Estoy aprendiendo,0.8461538461538461,0
+result_entry,hausa,,hello,Sannu,,0
+result_entry,arabic,no_exact,good morninggg,صباح الخير,0.9230769230769231,0
+result_entry,french,no_exact,how are you,Comment ça va?,0.9565217391304348,0
+result_entry,swahili,no_exact,h0w are y0u?,Habari gani?,0.8333333333333334,0
+result_entry,vietnamese,no_exact,i aam leaarning,Tôi đang học,0.9285714285714286,0
+result_entry,igbo,no_exact,hell0,Ndewo,0.8,0
+result_entry,french,no_exact,iamlearning,J'apprends,0.9166666666666666,0
+result_entry,arabic,no_exact,how are you,كيف حالك؟,0.9565217391304348,0
+result_entry,igbo,no_exact,h0w are y0u?,Kedu?,0.8333333333333334,0
+result_entry,vietnamese,no_exact,h0w are y0u?,Bạn khỏe không?,0.8333333333333334,0
+result_entry,portuguese,no_exact,godo morning,Bom dia,0.9166666666666666,0
+result_entry,spanish,,thank you,Gracias,,0
+result_entry,yoruba,no_exact,th@nk you,Ẹ ṣé,0.8888888888888888,0
+result_entry,swahili,,good morning,Habari ya asubuhi,,0
+result_entry,yoruba,no_exact,godo morning,Ẹ káàrọ̀,0.9166666666666666,0
+result_entry,swahili,no_exact,how aare you?,Habari gani?,0.96,0
+result_entry,hausa,no_exact,h0w are y0u?,Lafiya lau?,0.8333333333333334,0
+result_entry,german,no_exact,i am learninggg,Ich lerne,0.9285714285714286,0
+result_entry,french,no_exact,i am learninggg,J'apprends,0.9285714285714286,0
+result_entry,spanish,no_exact,i ma learning,Estoy aprendiendo,0.9230769230769231,0
+result_entry,arabic,no_exact,g00d m0rning,صباح الخير,0.75,0
+result_entry,yoruba,no_exact,hll,Báwo,0.75,0
+result_entry,swahili,no_exact,how are you,Habari gani?,0.9565217391304348,0
+result_entry,yoruba,no_exact,thank youuu,Ẹ ṣé,0.9,0
+result_entry,hausa,no_exact,hell0,Sannu,0.8,0
+result_entry,portuguese,no_exact,how @re you?,Como você está?,0.9166666666666666,0
+result_entry,vietnamese,no_exact,thaank you,Cảm ơn,0.9473684210526315,0
+result_entry,vietnamese,no_exact,i @m le@rning,Tôi đang học,0.8461538461538461,0
+result_entry,arabic,no_exact,h0w are y0u?,كيف حالك؟,0.8333333333333334,0
+result_entry,portuguese,,how are you?,Como você está?,,0
+result_entry,vietnamese,no_exact,ho ware you?,Bạn khỏe không?,0.9166666666666666,0
+result_entry,igbo,no_exact,godo morning,Ụtụtụ ọma,0.9166666666666666,0
+result_entry,portuguese,no_exact,hll,Olá,0.75,0
+result_entry,swahili,no_exact,gd mrnng,Habari ya asubuhi,0.8,0
+result_entry,igbo,,hello,Ndewo,,0
+result_entry,hausa,no_exact,i ma learning,Ina koyo,0.9230769230769231,0
+result_entry,vietnamese,,good morning,Chào buổi sáng,,0
+result_entry,french,no_exact,i @m le@rning,J'apprends,0.8461538461538461,0
+result_entry,igbo,no_exact,goodmorning,Ụtụtụ ọma,0.9565217391304348,0
+result_entry,arabic,no_exact,goodmorning,صباح الخير,0.9565217391304348,0
+result_entry,german,,i am learning,Ich lerne,,0
+result_entry,swahili,no_exact,godo morning,Habari ya asubuhi,0.9166666666666666,0
+result_entry,german,no_exact,h0w are y0u?,Wie geht's?,0.8333333333333334,0
+result_entry,arabic,no_exact,how are you???,كيف حالك؟,0.9230769230769231,0
+result_entry,spanish,no_exact,hll,Hola,0.75,0
+result_entry,french,no_exact,hll,Bonjour,0.75,0
+result_entry,german,no_exact,hll,Hallo,0.75,0
+result_entry,swahili,no_exact,ho ware you?,Habari gani?,0.9166666666666666,0
+result_entry,french,no_exact,th@nk you,Merci,0.8888888888888888,0
+result_entry,arabic,,i am learning,أنا أتعلم,,0
+result_entry,german,no_exact,how are you???,Wie geht's?,0.9230769230769231,0
+result_entry,yoruba,no_exact,ho ware you?,Báwo ní?,0.9166666666666666,0
+result_entry,igbo,no_exact,thnak you,Daalụ,0.8888888888888888,0
+result_entry,hausa,no_exact,how aare you?,Lafiya lau?,0.96,0
+result_entry,french,no_exact,thnak you,Merci,0.8888888888888888,0
+result_entry,german,no_exact,thnk y,Danke,0.8,0
+result_entry,igbo,no_exact,thnk y,Daalụ,0.8,0
+result_entry,spanish,no_exact,thank y0u,Gracias,0.8888888888888888,0
+result_entry,french,,how are you?,Comment ça va?,,0
+result_entry,swahili,no_exact,i aam leaarning,Ninajifunza,0.9285714285714286,0
+result_entry,vietnamese,no_exact,how @re you?,Bạn khỏe không?,0.9166666666666666,0
+result_entry,spanish,no_exact,godo morning,Buenos días,0.9166666666666666,0
+result_entry,swahili,no_exact,thankyou,Asante,0.9411764705882353,0
+result_entry,arabic,no_exact,hll,السلام عليكم,0.75,0
+result_entry,igbo,no_exact,how are you???,Kedu?,0.9230769230769231,0
+result_entry,yoruba,no_exact,i aam leaarning,Mo ń kọ́ ẹ̀kọ́,0.9285714285714286,0
+result_entry,vietnamese,no_exact,how aare you?,Bạn khỏe không?,0.96,0
+result_entry,german,no_exact,good morninggg,Guten Morgen,0.9230769230769231,0
+result_entry,igbo,,how are you?,Kedu?,,0
+result_entry,portuguese,no_exact,how are you???,Como você está?,0.9230769230769231,0
+result_entry,vietnamese,no_exact,hellooo,Xin chào,0.8333333333333334,0
+result_entry,hausa,no_exact,gd mrnng,Ina kwana,0.8,0
+result_entry,hausa,no_exact,goodmorning,Ina kwana,0.9565217391304348,0
+result_entry,arabic,no_exact,how aare you?,كيف حالك؟,0.96,0
+result_entry,vietnamese,no_exact,thnk y,Cảm ơn,0.8,0
+result_entry,arabic,no_exact,hell0,السلام عليكم,0.8,0
+result_entry,portuguese,no_exact,hell0,Olá,0.8,0
+result_entry,portuguese,no_exact,gd mrnng,Bom dia,0.8,0
+result_entry,swahili,no_exact,good morninggg,Habari ya asubuhi,0.9230769230769231,0
+result_entry,yoruba,no_exact,i ma learning,Mo ń kọ́ ẹ̀kọ́,0.9230769230769231,0
+result_entry,portuguese,no_exact,goodmorning,Bom dia,0.9565217391304348,0
+result_entry,french,no_exact,thnk y,Merci,0.8,0
+result_entry,french,no_exact,goodmorning,Bonjour,0.9565217391304348,0
+result_entry,igbo,no_exact,g00d m0rning,Ụtụtụ ọma,0.75,0
+result_entry,spanish,no_exact,i aam leaarning,Estoy aprendiendo,0.9285714285714286,0
+result_entry,vietnamese,no_exact,good morninggg,Chào buổi sáng,0.9230769230769231,0
+result_entry,portuguese,no_exact,iamlearning,Estou aprendendo,0.9166666666666666,0
+result_entry,french,,thank you,Merci,,0
+result_entry,german,,thank you,Danke,,0
+result_entry,hausa,,thank you,Na gode,,0
+result_entry,swahili,no_exact,thnk y,Asante,0.8,0
+result_entry,igbo,no_exact,thank y0u,Daalụ,0.8888888888888888,0
+result_entry,hausa,no_exact,th@nk you,Na gode,0.8888888888888888,0
+result_entry,german,,hello,Hallo,,0
+result_entry,igbo,no_exact,hll,Ndewo,0.75,0
+result_entry,igbo,,i am learning,A na m amụta,,0
+result_entry,hausa,no_exact,thaank you,Na gode,0.9473684210526315,0
+result_entry,yoruba,no_exact,i am learninggg,Mo ń kọ́ ẹ̀kọ́,0.9285714285714286,0
+result_entry,igbo,no_exact,gd mrnng,Ụtụtụ ọma,0.8,0
+result_entry,arabic,no_exact,hellooo,السلام عليكم,0.8333333333333334,0
+result_entry,arabic,,how are you?,كيف حالك؟,,0
+result_entry,yoruba,no_exact,thaank you,Ẹ ṣé,0.9473684210526315,0
+result_entry,swahili,no_exact,goodmorning,Habari ya asubuhi,0.9565217391304348,0
+result_entry,swahili,no_exact,i @m le@rning,Ninajifunza,0.8461538461538461,0
+result_entry,swahili,,hello,Hujambo,,0
+result_entry,igbo,no_exact,thaank you,Daalụ,0.9473684210526315,0
+result_entry,swahili,no_exact,hellooo,Hujambo,0.8333333333333334,0
+result_entry,igbo,no_exact,thank youuu,Daalụ,0.9,0
+result_entry,portuguese,no_exact,how aare you?,Como você está?,0.96,0
+result_entry,portuguese,no_exact,thnk y,Obrigado/Obrigada,0.8,0
+result_entry,spanish,,how are you?,¿Cómo estás?,,0
+result_entry,hausa,no_exact,thank y0u,Na gode,0.8888888888888888,0
+result_entry,french,no_exact,hell0,Bonjour,0.8,0
+result_entry,arabic,no_exact,ho ware you?,كيف حالك؟,0.9166666666666666,0
+result_entry,swahili,no_exact,i am learninggg,Ninajifunza,0.9285714285714286,0
+result_entry,vietnamese,no_exact,goodmorning,Chào buổi sáng,0.9565217391304348,0
+result_entry,swahili,no_exact,i ma learning,Ninajifunza,0.9230769230769231,0
+result_entry,swahili,no_exact,th@nk you,Asante,0.8888888888888888,0
+result_entry,spanish,no_exact,hell0,Hola,0.8,0
+result_entry,vietnamese,,how are you?,Bạn khỏe không?,,0
+result_entry,portuguese,no_exact,ho ware you?,Como você está?,0.9166666666666666,0
+result_entry,arabic,no_exact,gd mrnng,صباح الخير,0.8,0
+result_entry,igbo,,good morning,Ụtụtụ ọma,,0
+result_entry,yoruba,,hello,Báwo,,0
+result_entry,vietnamese,no_exact,hll,Xin chào,0.75,0
+result_entry,swahili,no_exact,how @re you?,Habari gani?,0.9166666666666666,0
+result_entry,spanish,no_exact,gd mrnng,Buenos días,0.8,0
+result_entry,vietnamese,no_exact,hell0,Xin chào,0.8,0
+result_entry,spanish,no_exact,how are you,¿Cómo estás?,0.9565217391304348,0
+result_entry,spanish,no_exact,thank youuu,Gracias,0.9,0
+result_entry,german,,how are you?,Wie geht's?,,0
+result_entry,spanish,no_exact,good morninggg,Buenos días,0.9230769230769231,0
+result_entry,french,no_exact,godo morning,Bonjour,0.9166666666666666,0
+result_entry,hausa,no_exact,thank youuu,Na gode,0.9,0
+result_entry,arabic,no_exact,thank y0u,شكراً,0.8888888888888888,0
+result_entry,french,,i am learning,J'apprends,,0
+result_entry,igbo,no_exact,how aare you?,Kedu?,0.96,0
+result_entry,igbo,no_exact,good morninggg,Ụtụtụ ọma,0.9230769230769231,0
+result_entry,french,no_exact,how @re you?,Comment ça va?,0.9166666666666666,0
+result_entry,arabic,no_exact,iamlearning,أنا أتعلم,0.9166666666666666,0
+result_entry,french,no_exact,h0w are y0u?,Comment ça va?,0.8333333333333334,0
+result_entry,vietnamese,no_exact,iamlearning,Tôi đang học,0.9166666666666666,0
+result_entry,hausa,no_exact,i @m le@rning,Ina koyo,0.8461538461538461,0
+result_entry,hausa,no_exact,godo morning,Ina kwana,0.9166666666666666,0
+result_entry,yoruba,no_exact,g00d m0rning,Ẹ káàrọ̀,0.75,0
+result_entry,portuguese,no_exact,good morninggg,Bom dia,0.9230769230769231,0
+result_entry,spanish,,good morning,Buenos días,,0
+result_entry,vietnamese,no_exact,thnak you,Cảm ơn,0.8888888888888888,0
+result_entry,igbo,no_exact,i aam leaarning,A na m amụta,0.9285714285714286,0
+result_entry,french,no_exact,thaank you,Merci,0.9473684210526315,0
+result_entry,spanish,no_exact,h0w are y0u?,¿Cómo estás?,0.8333333333333334,0
+result_entry,spanish,no_exact,thankyou,Gracias,0.9411764705882353,0
+result_entry,portuguese,no_exact,thaank you,Obrigado/Obrigada,0.9473684210526315,0
+result_entry,swahili,no_exact,thank youuu,Asante,0.9,0
+result_entry,igbo,no_exact,how are you,Kedu?,0.9565217391304348,0
+result_entry,vietnamese,no_exact,i ma learning,Tôi đang học,0.9230769230769231,0
+result_entry,german,no_exact,thankyou,Danke,0.9411764705882353,0
+result_entry,vietnamese,no_exact,thankyou,Cảm ơn,0.9411764705882353,0
+result_entry,german,no_exact,goodmorning,Guten Morgen,0.9565217391304348,0
+result_entry,hausa,,i am learning,Ina koyo,,0
+result_entry,french,no_exact,ho ware you?,Comment ça va?,0.9166666666666666,0
+result_entry,spanish,,i am learning,Estoy aprendiendo,,0
+result_entry,arabic,,good morning,صباح الخير,,0
+result_entry,german,,good morning,Guten Morgen,,0
+result_entry,swahili,,i am learning,Ninajifunza,,0
+result_entry,igbo,,thank you,Daalụ,,0
+result_entry,portuguese,,thank you,Obrigado/Obrigada,,0
+result_entry,yoruba,,i am learning,Mo ń kọ́ ẹ̀kọ́,,0
+result_entry,french,no_exact,how aare you?,Comment ça va?,0.96,0
+result_entry,spanish,no_exact,ho ware you?,¿Cómo estás?,0.9166666666666666,0
+result_entry,hausa,,good morning,Ina kwana,,0
+result_entry,german,no_exact,gd mrnng,Guten Morgen,0.8,0
+result_entry,portuguese,no_exact,i am learninggg,Estou aprendendo,0.9285714285714286,0
+result_entry,arabic,no_exact,i am learninggg,أنا أتعلم,0.9285714285714286,0
+result_entry,spanish,no_exact,thnak you,Gracias,0.8888888888888888,0
+result_entry,german,no_exact,thank youuu,Danke,0.9,0
+result_entry,french,no_exact,thank youuu,Merci,0.9,0
+result_entry,igbo,no_exact,th@nk you,Daalụ,0.8888888888888888,0
+result_entry,portuguese,no_exact,how are you,Como você está?,0.9565217391304348,0
+result_entry,hausa,no_exact,good morninggg,Ina kwana,0.9230769230769231,0
+result_entry,yoruba,no_exact,h0w are y0u?,Báwo ní?,0.8333333333333334,0
+result_entry,german,no_exact,i aam leaarning,Ich lerne,0.9285714285714286,0
+result_entry,french,,good morning,Bonjour,,0
+result_entry,german,no_exact,thnak you,Danke,0.8888888888888888,0
+result_entry,german,no_exact,g00d m0rning,Guten Morgen,0.75,0
+result_entry,hausa,,how are you?,Lafiya lau?,,0
+result_entry,hausa,no_exact,g00d m0rning,Ina kwana,0.75,0
+result_entry,german,no_exact,i ma learning,Ich lerne,0.9230769230769231,0
+result_entry,vietnamese,no_exact,gd mrnng,Chào buổi sáng,0.8,0
+result_entry,yoruba,no_exact,good morninggg,Ẹ káàrọ̀,0.9230769230769231,0
+result_entry,hausa,no_exact,how are you,Lafiya lau?,0.9565217391304348,0
+result_entry,portuguese,no_exact,g00d m0rning,Bom dia,0.75,0
+result_entry,spanish,no_exact,i am learninggg,Estoy aprendiendo,0.9285714285714286,0
+result_entry,german,no_exact,hell0,Hallo,0.8,0
+result_entry,french,no_exact,thankyou,Merci,0.9411764705882353,0
+result_entry,portuguese,no_exact,thankyou,Obrigado/Obrigada,0.9411764705882353,0
+result_entry,spanish,no_exact,th@nk you,Gracias,0.8888888888888888,0
+result_entry,hausa,no_exact,thnk y,Na gode,0.8,0
+result_entry,yoruba,no_exact,thank y0u,Ẹ ṣé,0.8888888888888888,0
+result_entry,yoruba,no_exact,thnk y,Ẹ ṣé,0.8,0
+result_entry,swahili,no_exact,iamlearning,Ninajifunza,0.9166666666666666,0
+result_entry,vietnamese,,i am learning,Tôi đang học,,0
+result_entry,arabic,no_exact,i @m le@rning,أنا أتعلم,0.8461538461538461,0
+result_entry,igbo,no_exact,hellooo,Ndewo,0.8333333333333334,0
+result_entry,portuguese,,hello,Olá,,0
+result_entry,swahili,no_exact,how are you???,Habari gani?,0.9230769230769231,0
+result_entry,yoruba,no_exact,hell0,Báwo,0.8,0
+result_entry,french,no_exact,g00d m0rning,Bonjour,0.75,0
+result_entry,swahili,no_exact,hll,Hujambo,0.75,0
+result_entry,yoruba,no_exact,how @re you?,Báwo ní?,0.9166666666666666,0
+result_entry,portuguese,no_exact,i aam leaarning,Estou aprendendo,0.9285714285714286,0
+result_entry,german,no_exact,how aare you?,Wie geht's?,0.96,0
+result_entry,german,no_exact,ho ware you?,Wie geht's?,0.9166666666666666,0
+result_entry,arabic,,hello,السلام عليكم,,0
+result_entry,spanish,no_exact,goodmorning,Buenos días,0.9565217391304348,0
+result_entry,french,no_exact,gd mrnng,Bonjour,0.8,0
+result_entry,portuguese,,i am learning,Estou aprendendo,,0
+result_entry,german,no_exact,th@nk you,Danke,0.8888888888888888,0
+result_entry,arabic,no_exact,thnk y,شكراً,0.8,0
+result_entry,igbo,no_exact,i am learninggg,A na m amụta,0.9285714285714286,0
+result_entry,portuguese,no_exact,thnak you,Obrigado/Obrigada,0.8888888888888888,0
+result_entry,igbo,no_exact,ho ware you?,Kedu?,0.9166666666666666,0
+result_entry,german,no_exact,how @re you?,Wie geht's?,0.9166666666666666,0
+result_entry,portuguese,no_exact,i ma learning,Estou aprendendo,0.9230769230769231,0
+result_entry,arabic,no_exact,thankyou,شكراً,0.9411764705882353,0
+result_entry,arabic,no_exact,thaank you,شكراً,0.9473684210526315,0
+result_entry,german,no_exact,thank y0u,Danke,0.8888888888888888,0
+result_entry,french,no_exact,i aam leaarning,J'apprends,0.9285714285714286,0
+result_entry,igbo,no_exact,iamlearning,A na m amụta,0.9166666666666666,0
+result_entry,spanish,no_exact,thaank you,Gracias,0.9473684210526315,0
+result_entry,yoruba,,thank you,Ẹ ṣé,,0
+result_entry,portuguese,no_exact,th@nk you,Obrigado/Obrigada,0.8888888888888888,0
+result_entry,arabic,no_exact,i ma learning,أنا أتعلم,0.9230769230769231,0
+result_entry,yoruba,no_exact,how aare you?,Báwo ní?,0.96,0
+result_entry,swahili,no_exact,thaank you,Asante,0.9473684210526315,0

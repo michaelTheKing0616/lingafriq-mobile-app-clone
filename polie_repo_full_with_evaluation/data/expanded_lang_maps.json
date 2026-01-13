@@ -1,0 +1,72 @@
+{
+  "yoruba": {
+    "good morning": "Ẹ káàrọ̀",
+    "thank you": "Ẹ ṣé",
+    "hello": "Báwo",
+    "i am learning": "Mo ń kọ́ ẹ̀kọ́",
+    "how are you?": "Báwo ní?"
+  },
+  "swahili": {
+    "hello": "Hujambo",
+    "how are you?": "Habari gani?",
+    "thank you": "Asante",
+    "good morning": "Habari ya asubuhi",
+    "i am learning": "Ninajifunza"
+  },
+  "french": {
+    "good morning": "Bonjour",
+    "hello": "Bonjour",
+    "how are you?": "Comment ça va?",
+    "thank you": "Merci",
+    "i am learning": "J'apprends"
+  },
+  "spanish": {
+    "how are you?": "¿Cómo estás?",
+    "i am learning": "Estoy aprendiendo",
+    "hello": "Hola",
+    "thank you": "Gracias",
+    "good morning": "Buenos días"
+  },
+  "vietnamese": {
+    "i am learning": "Tôi đang học",
+    "how are you?": "Bạn khỏe không?",
+    "hello": "Xin chào",
+    "thank you": "Cảm ơn",
+    "good morning": "Chào buổi sáng"
+  },
+  "arabic": {
+    "i am learning": "أنا أتعلم",
+    "thank you": "شكراً",
+    "how are you?": "كيف حالك؟",
+    "good morning": "صباح الخير",
+    "hello": "السلام عليكم"
+  },
+  "portuguese": {
+    "good morning": "Bom dia",
+    "thank you": "Obrigado/Obrigada",
+    "hello": "Olá",
+    "how are you?": "Como você está?",
+    "i am learning": "Estou aprendendo"
+  },
+  "german": {
+    "thank you": "Danke",
+    "good morning": "Guten Morgen",
+    "hello": "Hallo",
+    "how are you?": "Wie geht's?",
+    "i am learning": "Ich lerne"
+  },
+  "hausa": {
+    "how are you?": "Lafiya lau?",
+    "thank you": "Na gode",
+    "good morning": "Ina kwana",
+    "hello": "Sannu",
+    "i am learning": "Ina koyo"
+  },
+  "igbo": {
+    "i am learning": "A na m amụta",
+    "how are you?": "Kedu?",
+    "thank you": "Daalụ",
+    "good morning": "Ụtụtụ ọma",
+    "hello": "Ndewo"
+  }
+}

@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+##############################################################################
+##
+##  Gradle start up script for UN*X
+##
+##############################################################################
+APP_NAME="Gradle"
+APP_BASE_NAME=$(basename "$0")
+
+# Add default JVM options here if desired
+DEFAULT_JVM_OPTS=""
+
+# Resolve application directory
+APP_HOME=$(cd "${0%/*}" && pwd)
+
+# Locate Java executable
+if [ -n "$JAVA_HOME" ]; then
+    JAVA_CMD="$JAVA_HOME/bin/java"
+else
+    JAVA_CMD="java"
+fi
+
+# Set classpath for wrapper JAR
+CLASSPATH="$APP_HOME/gradle/wrapper/gradle-wrapper.jar"
+
+# Execute Gradle wrapper
+exec "$JAVA_CMD" $DEFAULT_JVM_OPTS -classpath "$CLASSPATH" org.gradle.wrapper.GradleWrapperMain "$@"
