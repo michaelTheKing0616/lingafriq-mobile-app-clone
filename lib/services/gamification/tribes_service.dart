@@ -29,11 +29,85 @@ class TribesService {
     }
   }
 
+  /// Get all non-classroom tribes from backend (for dynamic catalog)
+  Future<List<Map<String, dynamic>>> getTribes({String? languageTag}) async {
+    try {
+      final queryParams = <String, dynamic>{
+        if (languageTag != null && languageTag.isNotEmpty)
+          'language_tag': languageTag,
+      };
+      final response = await _dio.get(
+        '${Api.baseurl}api/tribes',
+        queryParameters: queryParams,
+      );
+      final data = response.data;
+      if (data is List) {
+        return List<Map<String, dynamic>>.from(data);
+      }
+      return List<Map<String, dynamic>>.from(data['data'] ?? []);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Create a new classroom tribe (teacher-owned class)
+  Future<Map<String, dynamic>> createClassroom({
+    required String name,
+    required String languageTag,
+    String? description,
+    String? emblemUrl,
+    bool allowStudentPosts = true,
+  }) async {
+    try {
+      final response = await _dio.post(
+        '${Api.baseurl}api/tribes/classrooms',
+        data: {
+          'name': name,
+          'language_tag': languageTag,
+          'description': description,
+          'emblem_url': emblemUrl,
+          'allow_student_posts': allowStudentPosts,
+        },
+      );
+      return Map<String, dynamic>.from(response.data);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   /// Get tribe details
   Future<Map<String, dynamic>> getTribe(String tribeId) async {
     try {
       final response = await _dio.get('${Api.baseurl}api/tribes/$tribeId');
       return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// List classroom tribes owned by the current user (teacher)
+  Future<List<Map<String, dynamic>>> getMyClassrooms() async {
+    try {
+      final response =
+          await _dio.get('${Api.baseurl}api/tribes/classrooms/mine');
+      final data = response.data;
+      if (data is List) {
+        return List<Map<String, dynamic>>.from(data);
+      }
+      return List<Map<String, dynamic>>.from(data['classrooms'] ?? []);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Join a classroom by join code
+  Future<Map<String, dynamic>> joinClassroomByCode(String code) async {
+    try {
+      final response = await _dio.post(
+        '${Api.baseurl}api/tribes/classrooms/join',
+        data: {'code': code},
+      );
+      return Map<String, dynamic>.from(response.data);
     } catch (e) {
       rethrow;
     }
@@ -67,6 +141,37 @@ class TribesService {
     }
   }
 
+  /// Get classroom progress dashboard for a classroom tribe
+  Future<Map<String, dynamic>> getClassroomProgress(String tribeId) async {
+    try {
+      final response =
+          await _dio.get('${Api.baseurl}api/tribes/$tribeId/progress');
+      return Map<String, dynamic>.from(response.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Create a simple classroom post (announcement or activity prompt)
+  Future<Map<String, dynamic>> createClassPost({
+    required String tribeId,
+    required String text,
+    String kind = 'announcement',
+  }) async {
+    try {
+      final response = await _dio.post(
+        '${Api.baseurl}api/tribes/$tribeId/posts',
+        data: {
+          'text': text,
+          'kind': kind,
+        },
+      );
+      return Map<String, dynamic>.from(response.data ?? {});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   /// Deposit XP to tribe
   Future<void> depositXP(String tribeId, int amount) async {
     try {
@@ -74,44 +179,6 @@ class TribesService {
         '${Api.baseurl}api/tribes/$tribeId/deposit-xp',
         data: {'amount': amount},
       );
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Get all available tribes
-  Future<List<Map<String, dynamic>>> getAllTribes({String? languageTag}) async {
-    try {
-      final queryParams = <String, dynamic>{};
-      if (languageTag != null) {
-        queryParams['language_tag'] = languageTag;
-      }
-      
-      final response = await _dio.get(
-        '${Api.baseurl}api/tribes',
-        queryParameters: queryParams.isEmpty ? null : queryParams,
-      );
-      
-      if (response.data['success'] == true && response.data['data'] != null) {
-        return List<Map<String, dynamic>>.from(response.data['data']);
-      }
-      return [];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Get user's tribes (tribes the user is a member of)
-  Future<List<Map<String, dynamic>>> getUserTribes(String userId) async {
-    try {
-      // Get all tribes and filter by membership
-      // Note: In production, this should be a dedicated endpoint like /api/tribes/user/:userId
-      // For now, we'll get all tribes and the client will need to check membership separately
-      // This is a placeholder - backend should provide /api/tribes/user/:userId endpoint
-      final allTribes = await getAllTribes();
-      // Without a dedicated endpoint, we can't efficiently get user's tribes
-      // Return empty list - this should be implemented on backend
-      return [];
     } catch (e) {
       rethrow;
     }

@@ -9,6 +9,10 @@
 .history
 .svn/
 
+# Local logs / chat history / workflow artifacts (do not commit)
+Curosr_Chat_History/
+logs_*/
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -52,10 +56,3 @@ android/key.properties
 *.jks
 upload-keystore.jks
 keystore_base64.txt
-
-# CI logs / local artifacts (do not commit)
-logs_*/
-
-# Cursor / IDE artifacts
-Curosr_Chat_History/
-.cursor/

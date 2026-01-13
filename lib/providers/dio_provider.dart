@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/shared_preferences_provider.dart';
 
 import '../utils/api.dart';
 
@@ -16,14 +15,15 @@ final client = Provider<Dio>(
       receiveTimeout: const Duration(seconds: 120),
     );
     final dio = Dio(options);
-    dio.interceptors.add(_DioLogger(ref));
+    dio.interceptors.add(_DioLogger(ref, dio));
     return dio;
   },
 );
 
 class _DioLogger extends Interceptor {
   final Ref ref;
-  _DioLogger(this.ref);
+  final Dio dio;
+  _DioLogger(this.ref, this.dio);
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _log("Api call start ${options.path} \n ${options.data ?? ''} ");
@@ -37,26 +37,10 @@ class _DioLogger extends Interceptor {
       return;
     }
 
-    // Exclude auth endpoints from token addition
-    if (![Api.register, Api.login, Api.resetPassword, Api.refreshToken].contains(options.path)) {
-      if (!options.headers.containsKey("Authorization")) {
-        var token = ref.read(apiProvider.notifier).token;
-        // Fallback to SharedPreferences if token is null (handles app restart scenarios)
-        if (token == null) {
-          try {
-            final prefs = ref.read(sharedPreferencesProvider);
-            token = prefs.getAccessToken();
-            // Update api_provider token if found in SharedPreferences
-            if (token != null) {
-              ref.read(apiProvider.notifier).token = token;
-            }
-          } catch (e) {
-            // Silently fail - no token available
-          }
-        }
-        if (token != null) {
-          options.headers.addAll({"Authorization": "Bearer $token"});
-        }
+    if (!options.headers.containsKey("Authorization")) {
+      final token = ref.read(apiProvider.notifier).token;
+      if (token != null) {
+        options.headers.addAll({"Authorization": "JWT $token"});
       }
     }
 
@@ -70,38 +54,38 @@ class _DioLogger extends Interceptor {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) async {
+  void onError(DioError err, ErrorInterceptorHandler handler) async {
     _log(
       'Api call error\n${err.requestOptions.uri.toString()}\n${err.requestOptions.path}\n${err.response?.statusCode}\n${err.response?.statusMessage}\n${err.response?.data},',
     );
-    
-      // Handle 401 Unauthorized - attempt token refresh
-      if (err.response?.statusCode == 401 && err.requestOptions.path != Api.refreshToken) {
-        final requestOptions = err.requestOptions;
-        
-        // Skip refresh if already retried
-        if (!requestOptions.extra.containsKey('_retry')) {
-          requestOptions.extra['_retry'] = true;
-          
-          try {
-            // Attempt to refresh token
-            final apiProviderNotifier = ref.read(apiProvider.notifier);
-            final newAccessToken = await apiProviderNotifier.refreshAccessToken();
-            
-            if (newAccessToken != null) {
-              // Update token and retry request
-              requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-              final response = await ref.read(client).fetch(requestOptions);
-              return handler.resolve(response);
-            }
-          } catch (refreshError) {
-            _log('Token refresh failed: $refreshError');
-            // If refresh fails, clear token and let error propagate
-            ref.read(apiProvider.notifier).clearToken();
-          }
+
+    // Auto-refresh session on 401 once, then retry the original request.
+    // Skips auth endpoints and multipart bodies (FormData) since those aren't safely replayable.
+    final status = err.response?.statusCode;
+    final req = err.requestOptions;
+    final isAuthEndpoint = [Api.register, Api.login, Api.resetPassword, Api.tokenRefresh, Api.tokenVerify]
+        .contains(req.path);
+    final alreadyRetried = req.extra['retry_401'] == true;
+
+    if (status == 401 && !alreadyRetried && !isAuthEndpoint && req.data is! FormData) {
+      try {
+        final api = ref.read(apiProvider.notifier);
+        final refreshed = await api.refreshSession();
+        final token = api.token;
+
+        if (refreshed && token != null && token.isNotEmpty) {
+          req.extra['retry_401'] = true;
+          req.headers['Authorization'] = 'JWT $token';
+
+          final response = await dio.fetch(req);
+          handler.resolve(response);
+          return;
         }
+      } catch (_) {
+        // Fall through to original error handling.
       }
-    
+    }
+
     super.onError(err, handler);
   }
 

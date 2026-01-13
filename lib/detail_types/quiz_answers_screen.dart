@@ -17,13 +17,13 @@ class QuizAnswersScreen extends ConsumerWidget {
   final String endpointToHit;
   final bool isCompleted;
   const QuizAnswersScreen({
-    super.key,
+    Key? key,
     required this.quiz,
     required this.title,
     required this.selectedAnswers,
     required this.endpointToHit,
     this.isCompleted = false,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -86,7 +86,7 @@ class QuizAnswersScreen extends ConsumerWidget {
                     quiz: currentQuiz,
                     onSelect: (_) {},
                   );
-                }),
+                }).toList(),
                 SafeArea(
                   top: false,
                   child: Row(

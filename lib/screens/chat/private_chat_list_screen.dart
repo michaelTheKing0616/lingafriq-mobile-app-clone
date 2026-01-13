@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
@@ -11,10 +10,8 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -27,26 +24,43 @@ class PrivateChatListScreen extends ConsumerStatefulWidget {
 class _PrivateChatListScreenState
     extends ConsumerState<PrivateChatListScreen> {
   final TextEditingController _searchController = TextEditingController();
-  late final Debouncer _searchDebouncer;
+
+  String _formatTime(String? timestamp) {
+    if (timestamp == null) return '';
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'just now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
+      if (diff.inDays < 1) return '${diff.inHours}h ago';
+      return '${date.day}/${date.month}/${date.year}';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  String _buildRoomId(int a, int b) {
+    final ids = [a, b]..sort();
+    return 'private_${ids[0]}_${ids[1]}';
+  }
 
   @override
   void initState() {
     super.initState();
-    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
     // Load contacts will be triggered in build method
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _searchDebouncer.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load private chats. Please check your connection and try again.',
+      errorMessage: 'Private Chats are temporarily unavailable',
       onRetry: () {
         setState(() {});
         ref.read(privateChatProvider.notifier).loadContacts();
@@ -139,8 +153,8 @@ class _PrivateChatListScreenState
                     ),
                     child: TextField(
                       controller: _searchController,
-                      onChanged: (value) => _searchDebouncer.run(() =>
-                          ref.read(privateChatProvider.notifier).search(value)),
+                      onChanged: (value) =>
+                          ref.read(privateChatProvider.notifier).search(value),
                       decoration: InputDecoration(
                         hintText: 'Search by name, email, or language...',
                         prefixIcon: const Icon(Icons.search),
@@ -213,21 +227,26 @@ class _PrivateChatListScreenState
       );
     }
     
-    return OptimizedListView.builder(
+    return ListView.builder(
       padding: EdgeInsets.symmetric(horizontal: 4.w),
       itemCount: contacts.length,
       itemBuilder: (context, index) {
-        final contact = contacts[index];
+        final PrivateChatContact contact = contacts[index] as PrivateChatContact;
         final isOnline = onlineIds.contains(contact.id.toString());
-        // Get unread count from chat socket provider for this contact's room
-        final chatSocketNotifier = ref.read(socketProvider.notifier);
-        final roomId = _buildRoomId(ref.read(userProvider)?.id ?? 0, contact.id);
-        final roomMessages = chatSocketNotifier.messagesForRoom(roomId);
-        final currentUserId = ref.read(userProvider)?.id.toString();
-        final unreadCount = roomMessages.where((msg) => 
-          msg['userId'] != currentUserId && 
-          (msg['read'] == null || msg['read'] == false)
-        ).length;
+
+        final currentUser = ref.read(userProvider);
+        final roomId = currentUser == null
+            ? ''
+            : _buildRoomId(currentUser.id, contact.id);
+
+        final socket = ref.read(socketProvider.notifier);
+        final lastMessageText =
+            roomId.isEmpty ? null : socket.lastMessageTextForRoom(roomId);
+        final lastMessageTs =
+            roomId.isEmpty ? null : socket.lastMessageTimestampForRoom(roomId);
+        final unreadCount = (roomId.isEmpty || currentUser == null)
+            ? 0
+            : socket.unreadCountForRoom(roomId, currentUser.id.toString());
         
         return Container(
           margin: EdgeInsets.only(bottom: 2.h),
@@ -244,7 +263,9 @@ class _PrivateChatListScreenState
                   radius: 24,
                   backgroundColor: AfricanTheme.primaryGreen,
                   child: Text(
-                    contact.name[0].toUpperCase(),
+                    contact.username.isNotEmpty
+                        ? contact.username[0].toUpperCase()
+                        : '?',
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -265,14 +286,14 @@ class _PrivateChatListScreenState
               ],
             ),
             title: Text(
-              contact.name,
+              contact.username,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: isDark ? Colors.white : Colors.black87,
               ),
             ),
             subtitle: Text(
-              contact.lastMessage ?? 'No messages yet',
+              lastMessageText ?? 'No messages yet',
               style: TextStyle(
                 color: isDark ? Colors.white70 : Colors.black54,
               ),
@@ -284,7 +305,7 @@ class _PrivateChatListScreenState
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  _formatTime(_getLastMessageTimestamp(roomMessages)),
+                  _formatTime(lastMessageTs),
                   style: TextStyle(
                     fontSize: 11.sp,
                     color: isDark ? Colors.white70 : Colors.black54,
@@ -308,8 +329,8 @@ class _PrivateChatListScreenState
             onTap: () {
               Navigator.push(
                 context,
-                SmoothPageRoute(
-                  child: PrivateChatScreen(contact: contact),
+                MaterialPageRoute(
+                  builder: (_) => PrivateChatScreen(contact: contact),
                 ),
               );
             },
@@ -317,33 +338,6 @@ class _PrivateChatListScreenState
         );
       },
     );
-  }
-
-  String _buildRoomId(int userId1, int userId2) {
-    final ids = [userId1, userId2]..sort();
-    return 'private_${ids[0]}_${ids[1]}';
-  }
-
-  String? _getLastMessageTimestamp(List<Map<String, dynamic>> messages) {
-    if (messages.isEmpty) return null;
-    final lastMessage = messages.last;
-    return lastMessage['timestamp']?.toString();
-  }
-
-  String _formatTime(String? timestamp) {
-    if (timestamp == null || timestamp.isEmpty) return '';
-    try {
-      final date = DateTime.parse(timestamp);
-      final now = DateTime.now();
-      final diff = now.difference(date);
-      if (diff.inMinutes < 1) return 'just now';
-      if (diff.inHours < 1) return '${diff.inMinutes}m ago';
-      if (diff.inDays < 1) return '${diff.inHours}h ago';
-      if (diff.inDays < 7) return '${diff.inDays}d ago';
-      return '${date.day}/${date.month}/${date.year}';
-    } catch (_) {
-      return '';
-    }
   }
 }
 

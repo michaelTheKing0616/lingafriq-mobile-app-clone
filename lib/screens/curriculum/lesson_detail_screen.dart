@@ -3,9 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Detailed lesson screen with AI-generated content
@@ -47,33 +44,25 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
   Future<void> _generateContent() async {
     setState(() => _isGenerating = true);
     
-    await safeAsync(
-      context: context,
-      operation: () async {
-        final curriculumService = ref.read(curriculumServiceProvider);
-        final vocabObjects = widget.lesson.vocabObjects;
-        
-        final content = await curriculumService.generateLessonContent(
-          language: widget.language,
-          level: widget.level,
-          lessonTitle: widget.lesson.title,
-          vocab: vocabObjects.map((v) => v.toMap()).toList(),
-          grammar: widget.lesson.grammar,
-          topic: widget.lesson.title,
-        );
-        
-        if (mounted) {
-          setState(() {
-            _generatedContent = content;
-            _isGenerating = false;
-          });
-        }
-      },
-      errorContext: 'generateLessonContent',
-      showError: true,
-    );
-    
-    if (mounted && _isGenerating) {
+    try {
+      final curriculumService = ref.read(curriculumServiceProvider);
+      final vocabObjects = widget.lesson.vocabObjects;
+      
+      final content = await curriculumService.generateLessonContent(
+        language: widget.language,
+        level: widget.level,
+        lessonTitle: widget.lesson.title,
+        vocab: vocabObjects.map((v) => v.toMap()).toList(),
+        grammar: widget.lesson.grammar,
+        topic: widget.lesson.title,
+      );
+      
+      setState(() {
+        _generatedContent = content;
+        _isGenerating = false;
+      });
+    } catch (e) {
+      debugPrint('Error generating content: $e');
       setState(() => _isGenerating = false);
     }
   }
@@ -129,7 +118,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
   Widget _buildVocabularyTab(bool isDark) {
     final vocab = widget.lesson.vocabObjects;
     
-    return OptimizedListView.builder(
+    return ListView.builder(
       padding: EdgeInsets.all(16.sp),
       itemCount: vocab.length,
       itemBuilder: (context, index) {
@@ -187,7 +176,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
     final grammar = widget.lesson.grammar ?? [];
     final explanations = _generatedContent?['grammar_explanations'] as List? ?? [];
     
-    return OptimizedListView.builder(
+    return ListView.builder(
       padding: EdgeInsets.all(16.sp),
       itemCount: grammar.length,
       itemBuilder: (context, index) {
@@ -234,7 +223,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
     
     final script = dialogue?.script ?? generatedDialogue?['script'] as List? ?? [];
     
-    return OptimizedListView.builder(
+    return ListView.builder(
       padding: EdgeInsets.all(16.sp),
       itemCount: script.length,
       itemBuilder: (context, index) {
@@ -284,7 +273,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
       ...generatedExercises,
     ];
     
-    return OptimizedListView.builder(
+    return ListView.builder(
       padding: EdgeInsets.all(16.sp),
       itemCount: allExercises.length,
       itemBuilder: (context, index) {

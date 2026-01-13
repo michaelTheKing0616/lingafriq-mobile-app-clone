@@ -6,7 +6,7 @@ import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -143,8 +143,8 @@ class AiChatSelectScreen extends HookConsumerWidget {
                         Navigator.pop(context); // Close language selector
                         Navigator.push(
                           context,
-                          SmoothPageRoute(
-                            child: const AiChatScreen(),
+                          MaterialPageRoute(
+                            builder: (_) => const AiChatScreen(),
                           ),
                         );
                       },
@@ -165,8 +165,8 @@ class AiChatSelectScreen extends HookConsumerWidget {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.pushReplacement(
         context,
-        SmoothPageRoute(
-          child: PolieModeSelectionScreen(onBack: onBack),
+        MaterialPageRoute(
+          builder: (_) => PolieModeSelectionScreen(onBack: onBack),
         ),
       );
     });

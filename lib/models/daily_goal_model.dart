@@ -25,6 +25,28 @@ class DailyGoal {
   bool get isToday => date.year == DateTime.now().year && 
                       date.month == DateTime.now().month && 
                       date.day == DateTime.now().day;
+  bool get isCompleted => completed;
+  int get currentProgress => current;
+  int get targetProgress => target;
+  int? get xpReward => target > 0 ? (target * 10) : null; // Calculate XP based on target
+  String get title {
+    switch (type) {
+      case 'lessons':
+        return 'Complete lessons';
+      case 'quizzes':
+        return 'Finish quizzes';
+      case 'games':
+        return 'Play games';
+      case 'chat_minutes':
+        return 'Chat with Polie';
+      case 'words_learned':
+        return 'Learn new words';
+      case 'stories':
+        return 'Read stories';
+      default:
+        return type;
+    }
+  }
 
   Map<String, dynamic> toMap() => {
     'id': id,
@@ -52,27 +74,5 @@ class DailyGoal {
 
   String toJson() => jsonEncode(toMap());
   factory DailyGoal.fromJson(String json) => DailyGoal.fromMap(jsonDecode(json));
-
-  DailyGoal copyWith({
-    int? id,
-    String? type,
-    int? target,
-    int? current,
-    DateTime? date,
-    bool? completed,
-    int? streak,
-    DateTime? lastCompletedDate,
-  }) {
-    return DailyGoal(
-      id: id ?? this.id,
-      type: type ?? this.type,
-      target: target ?? this.target,
-      current: current ?? this.current,
-      date: date ?? this.date,
-      completed: completed ?? this.completed,
-      streak: streak ?? this.streak,
-      lastCompletedDate: lastCompletedDate ?? this.lastCompletedDate,
-    );
-  }
 }
 

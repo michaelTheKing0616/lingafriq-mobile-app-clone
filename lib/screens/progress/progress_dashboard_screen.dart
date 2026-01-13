@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';
@@ -16,7 +13,7 @@ class ProgressDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load progress dashboard. Please check your connection and try again.',
+      errorMessage: 'Progress Dashboard is temporarily unavailable',
       onRetry: () {
         // Rebuild
       },

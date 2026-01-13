@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import '../../models/magic_item_model.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/gamification_services_provider.dart';
@@ -59,9 +56,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
         });
       }
     } catch (e) {
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
+      debugPrint('Error loading items: $e');
       // Fallback to local items
       setState(() {
         _availableItems = MagicItemDefinitions.allItems.map((item) => {
@@ -95,8 +90,14 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
         }
       }
     } catch (e) {
+      debugPrint('Error claiming item: $e');
       if (mounted) {
-        ErrorHandler.showError(context, e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to claim item: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } finally {
       setState(() => _isLoading = false);
@@ -123,8 +124,14 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
         }
       }
     } catch (e) {
+      debugPrint('Error using item: $e');
       if (mounted) {
-        ErrorHandler.showError(context, e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to use item: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } finally {
       setState(() => _isLoading = false);
@@ -164,7 +171,7 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
           ),
         ],
       ),
-      body: OptimizedListView(
+      body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           // Currency display

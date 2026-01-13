@@ -10,7 +10,6 @@ import 'package:lingafriq/screens/tabs_view/profile/suggest_language_screen.dart
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
-import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../../../providers/auth_provider.dart';
@@ -49,11 +48,6 @@ class ProfileTab extends HookConsumerWidget {
             ),
             Column(
               children: [
-                // Currency Display
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: CurrencyDisplayWidget(compact: false),
-                ),
                 if (user?.rank != null)
                   _ProfileItem(
                     title: "",
@@ -123,17 +117,10 @@ class ProfileTab extends HookConsumerWidget {
                     confirmation.toString().log();
                     if (confirmation is! String) return;
 
-                    final password = ref
-                        .read(sharedPreferencesProvider)
-                        .emailAndPassword
-                        .password;
-                    final data = {"current_password": password};
-                    if (confirmation != password) {
-                      await ref
-                          .read(dialogProvider(""))
-                          .showPlatformDialogue(title: "Incorrect Password");
-                      return;
-                    }
+                    // Backwards-compatible + more secure:
+                    // do NOT rely on a locally stored password (we no longer store it).
+                    // Use the password the user just entered.
+                    final data = {"current_password": confirmation};
                     final deleteResult =
                         await ref.read(apiProvider.notifier).deleteUser(data);
                     if (deleteResult != true) return;

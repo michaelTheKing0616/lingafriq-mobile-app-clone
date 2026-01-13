@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
-import 'package:lingafriq/services/advanced/smart_recommendations.dart';
-import 'package:intl/intl.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/gamification/level_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/streak_display_widget.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -30,22 +25,14 @@ class UserProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load profile. Please check your connection and try again.',
+      errorMessage: 'Profile temporarily unavailable',
       child: _buildProfile(context, ref),
     );
   }
 
   Widget _buildProfile(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final gamification = ref.watch(gamificationProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    // Get preferred language from user profile or smart recommendations
-    final preferredLanguage = user?.nationality ?? 'yoruba';
-    
-    // Format member since date from gamification lastLogin or use current date as fallback
-    final memberSinceDate = gamification?.lastLogin ?? DateTime.now();
-    final memberSinceFormatted = DateFormat('MMMM yyyy').format(memberSinceDate);
     
     return Scaffold(
       backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
@@ -118,28 +105,12 @@ class UserProfileScreen extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          child: user?.avatar != null
-                              ? ClipOval(
-                                  child: LazyImage(
-                                    imageUrl: user!.avatar!,
-                                    width: 24.w,
-                                    height: 24.w,
-                                    placeholder: CircleAvatar(
-                                      radius: 12.w,
-                                      backgroundColor: Colors.white,
-                                      child: Text(
-                                        (user.username ?? 'U')[0].toUpperCase(),
-                                        style: TextStyle(
-                                          color: const Color(0xFFCE1126),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              : CircleAvatar(
-                                  radius: 12.w,
-                                  backgroundColor: Colors.white,
+                          child: CircleAvatar(
+                            radius: 12.w,
+                            backgroundColor: Colors.white,
+                            backgroundImage: user?.avatar != null
+                                ? NetworkImage(user!.avatar!)
+                                : null,
                             child: user?.avatar == null
                                 ? Text(
                                     (user?.username ?? 'U')[0].toUpperCase(),
@@ -169,6 +140,28 @@ class UserProfileScreen extends ConsumerWidget {
                             color: Colors.white.withOpacity(0.9),
                           ),
                         ),
+                        if (user?.globalId != null) SizedBox(height: 0.5.h),
+                        if (user?.globalId != null)
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 3.w,
+                              vertical: 0.6.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(
+                                DesignSystem.radiusRound,
+                              ),
+                            ),
+                            child: Text(
+                              '@${user!.globalId}',
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: Colors.white.withOpacity(0.9),
+                                letterSpacing: 0.3,
+                              ),
+                            ),
+                          ),
                         SizedBox(height: 3.h),
                         // Gamification Stats
                         Consumer(
@@ -222,39 +215,56 @@ class UserProfileScreen extends ConsumerWidget {
                     ),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.language_rounded,
-                              color: AfricanTheme.primaryGreen,
-                              size: 20,
-                            ),
-                            SizedBox(width: 3.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Learning',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark ? Colors.white70 : Colors.black54,
-                                    ),
+                        Consumer(
+                          builder: (context, ref, _) {
+                            final onboarding = ref.watch(onboardingProvider);
+                            final selectedLang =
+                                (onboarding.selectedLanguage ?? '').trim();
+                            final displayLang = selectedLang.isNotEmpty
+                                ? selectedLang
+                                : 'Your chosen language';
+                            return Row(
+                              children: [
+                                Icon(
+                                  Icons.language_rounded,
+                                  color: AfricanTheme.primaryGreen,
+                                  size: 20,
+                                ),
+                                SizedBox(width: 3.w),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Learning',
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: isDark
+                                              ? Colors.white70
+                                              : Colors.black54,
+                                        ),
+                                      ),
+                                      Text(
+                                        displayLang,
+                                        style: TextStyle(
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold,
+                                          color: isDark
+                                              ? Colors.white
+                                              : Colors.black87,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    preferredLanguage.toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                ),
+                              ],
+                            );
+                          },
                         ),
                         Divider(height: 4.h, color: isDark ? Colors.grey[800] : Colors.grey[200]),
+                        // We currently do not receive a reliable "member since"
+                        // field from the backend user profile, so instead of
+                        // hard-coding a date we show a generic, honest label.
                         Row(
                           children: [
                             Icon(
@@ -268,18 +278,22 @@ class UserProfileScreen extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Member since',
+                                    'Member',
                                     style: TextStyle(
                                       fontSize: 12.sp,
-                                      color: isDark ? Colors.white70 : Colors.black54,
+                                      color: isDark
+                                          ? Colors.white70
+                                          : Colors.black54,
                                     ),
                                   ),
                                   Text(
-                                    memberSinceFormatted,
+                                    'Keeping your streak alive ✨',
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
+                                      color: isDark
+                                          ? Colors.white
+                                          : Colors.black87,
                                     ),
                                   ),
                                 ],
@@ -313,7 +327,7 @@ class UserProfileScreen extends ConsumerWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        SmoothPageRoute(child: const SettingsScreen()),
+                        MaterialPageRoute(builder: (_) => const SettingsScreen()),
                       );
                     },
                     isDark: isDark,

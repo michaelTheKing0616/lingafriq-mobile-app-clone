@@ -10,9 +10,8 @@ import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/screens/auth/login_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/screens/onboarding/placement_quiz_screen.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -36,12 +35,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
     
     final onboardingNotifier = ref.read(onboardingProvider.notifier);
     
-    final isLoading = useState(false);
-    
-    return LoadingOverlay(
-      isLoading: isLoading.value,
-      message: 'Loading...',
-      child: Scaffold(
+    return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
         child: Stack(
@@ -124,8 +118,8 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                       onComplete: () async {
                         await onboardingNotifier.saveOnboardingData();
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                        // Navigate to login screen (not TabsView) so user can log in
-                        // Login screen will pre-fill credentials if available
+                        // Navigate to login screen (not TabsView) so user can log in.
+                        // Login screen will pre-fill credentials if available.
                         ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                       },
                     );
@@ -517,7 +511,7 @@ class _ElderScreen extends HookConsumerWidget {
   }
 }
 
-// Weaver Screen - Language and Level Selection Step
+// Placeholder screens for remaining steps - will be implemented similarly
 class _WeaverScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
@@ -534,7 +528,7 @@ class _WeaverScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String?>(null);
     final selectedLevel = useState<String?>(null);
     
-    final languages = ['Swahili', 'Yoruba', 'Amharic', 'Zulu', 'Hausa', 'Igbo', 'Nigerian Pidgin English'];
+    final languages = ['Swahili', 'Yoruba', 'Amharic', 'Zulu', 'Hausa', 'Igbo'];
     final levels = ['beginner', 'intermediate', 'advanced'];
     
     return Container(
@@ -677,7 +671,7 @@ class _WeaverScreen extends HookConsumerWidget {
   }
 }
 
-// Rhythm Master Screen - Daily Practice Duration Selection Step
+// Placeholder for remaining screens - implementing core structure
 class _RhythmMasterScreen extends HookConsumerWidget {
   final AnimationController animationController;
   final OnboardingNotifier onboardingNotifier;
@@ -1316,30 +1310,48 @@ class _PlacementTestScreen extends HookConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(24.0),
-              child: FilledButton(
-                onPressed: () {
-                  // For now, skip placement test and complete onboarding
-                  onboardingNotifier.updatePlacementTest({'skipped': true});
-                  onComplete();
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FilledButton(
+                    onPressed: () {
+                      ref.read(navigationProvider).naviateTo(
+                            PlacementQuizScreen(
+                              onComplete: onComplete,
+                            ),
+                          );
+                    },
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: AfricanTheme.primaryGreen,
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      ),
+                    ),
+                    child: const Text(
+                      'Begin Test',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                child: const Text(
-                  'Begin Test',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
+                  const SizedBox(height: 12),
+                  TextButton(
+                    onPressed: onComplete,
+                    child: Text(
+                      'Skip for now',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.9),
+                        fontSize: 16,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
-    ),
     );
   }
 }

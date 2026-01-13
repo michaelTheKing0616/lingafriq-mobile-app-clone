@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lingafriq/providers/base_provider.dart';
+import 'base_provider.dart';
 
 final aiChatProvider = NotifierProvider<AiChatProvider, BaseProviderState>(() {
   return AiChatProvider();
@@ -20,24 +18,6 @@ class AiChatProvider extends BaseProvider {
 
   AiChatProvider() {
     _loadChatHistory();
-  }
-
-  Future<void> _loadChatHistory() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final historyJson = prefs.getString('ai_chat_history');
-      if (historyJson != null) {
-        final List<dynamic> history = jsonDecode(historyJson);
-        _messages.clear();
-        _messages.addAll(history.map((item) => ChatMessage(
-          role: item['role'] as String,
-          content: item['content'] as String,
-          timestamp: DateTime.parse(item['timestamp'] as String),
-        )));
-      }
-    } catch (e) {
-      debugPrint('Failed to load chat history: $e');
-    }
   }
 
   Future<Map<String, dynamic>> _callGrader(String promptJson, {int maxTokens = 400}) async {

@@ -6,14 +6,12 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/screens/social/global_people_search_screen.dart';
 
 class UserConnectionsScreen extends ConsumerStatefulWidget {
   const UserConnectionsScreen({Key? key}) : super(key: key);
@@ -24,21 +22,13 @@ class UserConnectionsScreen extends ConsumerStatefulWidget {
 
 class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
   String _searchQuery = '';
-  late final Debouncer _searchDebouncer;
 
   @override
   void initState() {
     super.initState();
-    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeSocket();
     });
-  }
-
-  @override
-  void dispose() {
-    _searchDebouncer.dispose();
-    super.dispose();
   }
 
   void _initializeSocket() {
@@ -51,16 +41,14 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         );
       }
     } catch (e) {
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
+      debugPrint('Error initializing socket: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load user connections. Please check your connection and try again.',
+      errorMessage: 'User connections are temporarily unavailable',
       onRetry: () {
         setState(() {});
         _initializeSocket();
@@ -106,13 +94,25 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         ),
         actions: [
           IconButton(
+            icon: const Icon(Icons.alternate_email_rounded),
+            tooltip: 'Global people search',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const GlobalPeopleSearchScreen(),
+                ),
+              );
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.lock_outline),
             tooltip: 'Private chats',
             onPressed: () {
               Navigator.push(
                 context,
-                SmoothPageRoute(
-                  child: const PrivateChatListScreen(),
+                MaterialPageRoute(
+                  builder: (_) => const PrivateChatListScreen(),
                 ),
               );
             },
@@ -127,10 +127,8 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
             color: isDark ? const Color(0xFF1F3527) : Colors.white,
             child: TextField(
               onChanged: (value) {
-                _searchDebouncer.run(() {
-                  setState(() {
-                    _searchQuery = value;
-                  });
+                setState(() {
+                  _searchQuery = value;
                 });
               },
               decoration: InputDecoration(
@@ -243,10 +241,9 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                               ],
                             ),
                           )
-                        : OptimizedListView(
+                        : ListView.builder(
                             padding: EdgeInsets.all(16.sp),
                             itemCount: filteredUsers.length,
-                            itemExtent: 80.sp, // Approximate item height for better performance
                             itemBuilder: (context, index) {
                               final user = filteredUsers[index];
                               final isCurrentUser = user['userId'] == currentUser.id.toString();
@@ -339,8 +336,8 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
             }
             Navigator.push(
               context,
-              SmoothPageRoute(
-                child: PrivateChatScreen(contact: contact),
+              MaterialPageRoute(
+                builder: (_) => PrivateChatScreen(contact: contact),
               ),
             );
           },

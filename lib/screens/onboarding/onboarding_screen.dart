@@ -4,11 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 
 import '../../providers/api_provider.dart';
 
@@ -43,7 +40,7 @@ class OnboardingScreen extends HookConsumerWidget {
               onPageChanged: (value) {
                 HapticFeedback.lightImpact();
                 if (value == 4) {
-                  ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+                  ref.read(navigationProvider).naviateOffAll(const TabsView());
                 } else {
                   ref.read(_indexProvider.notifier).setIndex(value);
                 }
@@ -132,7 +129,7 @@ You can do this by going to your profile tab, and selecting the “Feedback” o
                                     );
                                   } else {
                                     ref.read(apiProvider.notifier).regiserDevice();
-                                    ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+                                    ref.read(navigationProvider).naviateOffAll(const TabsView());
                                   }
                                 },
                                 icon: Icon(

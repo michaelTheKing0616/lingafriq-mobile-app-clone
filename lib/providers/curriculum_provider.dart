@@ -188,11 +188,6 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
     return _completionStatus[language]?[level]?[lessonId] ?? false;
   }
 
-  /// Public method to check if a lesson is completed
-  bool isLessonCompleted(String language, String level, String lessonId) {
-    return _isLessonCompleted(language, level, lessonId);
-  }
-
   bool _isUnitCompleted(String language, String level, CurriculumUnit unit) {
     return unit.lessons.every((l) => _isLessonCompleted(language, level, l.id));
   }

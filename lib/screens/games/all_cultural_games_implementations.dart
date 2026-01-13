@@ -7,9 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
@@ -20,7 +17,7 @@ import 'dart:math';
 /// Provides common patterns for all cultural games
 class CulturalGameHelper {
   static Future<Map<String, dynamic>> loadPolieContent({
-    required Ref ref,
+    required dynamic ref,
     required String gameType,
     required String language,
     String? difficulty,
@@ -199,7 +196,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
       return ErrorBoundary(
         errorMessage: error!,
         onRetry: () {
-          _initializeGame();
+          loadNewContent(gameType);
         },
         child: Center(
           child: Column(
@@ -209,7 +206,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
               SizedBox(height: 2.h),
               FilledButton(
                 onPressed: () {
-                  _initializeGame();
+                  loadNewContent(gameType);
                 },
                 child: const Text('Retry'),
               ),

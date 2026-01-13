@@ -139,17 +139,11 @@ class LeagueNotifier extends Notifier<LeagueState> {
       final user = ref.read(userProvider);
       
       // Fetch leaderboard from API
-      final responseList = await api.getLeaderboard(
-        category: '${state.currentTier.name}_weekly',
-      );
-      
-      // Convert list response to expected format
-      final response = responseList.isNotEmpty ? {'leaderboard': responseList} : null;
-      
-      if (response != null && response['leaderboard'] != null) {
-        final leaderboardData = response['leaderboard'] as List<dynamic>;
+      final leaderboardData =
+          await api.getLeaderboard(league: state.currentTier.name);
+      if (leaderboardData.isNotEmpty) {
         final leaderboard = leaderboardData
-            .map((item) => LeaguePosition.fromJson(item as Map<String, dynamic>))
+            .map((item) => LeaguePosition.fromJson(item))
             .toList();
         
         // Find user's rank

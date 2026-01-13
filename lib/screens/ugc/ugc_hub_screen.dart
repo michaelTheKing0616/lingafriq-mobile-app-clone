@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen.dart';
 import 'package:lingafriq/screens/ugc/create_quiz_screen.dart';
 import 'package:lingafriq/screens/ugc/create_story_screen.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Hub screen for User-Generated Content
@@ -60,11 +57,11 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               icon: Icons.menu_book,
               color: Colors.blue,
               onTap: () async {
-                await safeNavigate(
-                  context: context,
-                  destination: const CreateLessonScreen(),
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CreateLessonScreen()),
                 );
-                if (context.mounted && result != null) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Lesson created!'),
@@ -83,11 +80,11 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               icon: Icons.quiz,
               color: Colors.purple,
               onTap: () async {
-                final result = await safeNavigate(
-                  context: context,
-                  destination: const CreateQuizScreen(),
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CreateQuizScreen()),
                 );
-                if (context.mounted && result != null) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Quiz created!'),
@@ -106,11 +103,11 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               icon: Icons.auto_stories,
               color: Colors.orange,
               onTap: () async {
-                final result = await safeNavigate(
-                  context: context,
-                  destination: const CreateStoryScreen(),
+                final result = await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const CreateStoryScreen()),
                 );
-                if (context.mounted && result != null) {
+                if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Story created!'),

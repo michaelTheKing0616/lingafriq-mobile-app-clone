@@ -3,8 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -124,42 +122,46 @@ class CreateLessonScreen extends HookConsumerWidget {
                 
                 isSubmitting.value = true;
                 
-                await safeAsync(
-                  context: context,
-                  operation: () async {
-                    final ugcService = ref.read(userGeneratedContentServiceProvider);
-                    final tags = tagsController.text
-                        .split(',')
-                        .map((t) => t.trim())
-                        .where((t) => t.isNotEmpty)
-                        .toList();
-                    
-                    final lesson = await ugcService.createLesson(
-                      language: selectedLanguage.value,
-                      title: titleController.text,
-                      content: contentController.text,
-                      description: descriptionController.text.isEmpty
-                          ? null
-                          : descriptionController.text,
-                      tags: tags.isEmpty ? null : tags,
+                try {
+                  final ugcService = ref.read(userGeneratedContentServiceProvider);
+                  final tags = tagsController.text
+                      .split(',')
+                      .map((t) => t.trim())
+                      .where((t) => t.isNotEmpty)
+                      .toList();
+                  
+                  final lesson = await ugcService.createLesson(
+                    language: selectedLanguage.value,
+                    title: titleController.text,
+                    content: contentController.text,
+                    description: descriptionController.text.isEmpty
+                        ? null
+                        : descriptionController.text,
+                    tags: tags.isEmpty ? null : tags,
+                  );
+                  
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lesson created successfully!'),
+                        backgroundColor: AppColors.primaryGreen,
+                      ),
                     );
-                    
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Lesson created successfully!'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
-                      Navigator.of(context).pop(true);
-                    }
-                  },
-                  errorContext: 'createLesson',
-                  showError: true,
-                );
-                
-                if (context.mounted) {
-                  isSubmitting.value = false;
+                    Navigator.of(context).pop(true);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error creating lesson: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } finally {
+                  if (context.mounted) {
+                    isSubmitting.value = false;
+                  }
                 }
               },
               style: FilledButton.styleFrom(

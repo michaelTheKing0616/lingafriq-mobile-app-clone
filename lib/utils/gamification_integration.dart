@@ -9,7 +9,6 @@ import '../providers/api_provider.dart';
 import '../providers/user_provider.dart';
 import '../widgets/gamification/xp_gain_overlay.dart';
 import '../services/sound_effects_service.dart';
-import '../services/rive_gamification_service.dart';
 import '../models/daily_challenge_model.dart';
 
 /// Gamification Integration Helper
@@ -36,10 +35,10 @@ class _GamificationHelper {
   /// Sync challenge progress with backend
   Future<void> _syncChallengeProgress(String type, int amount) async {
     try {
-      // Note: updateChallengeProgress requires challengeId and progress map
-      // This is a simplified sync - in production, you'd need to get the actual challengeId
-      // For now, we'll skip the backend sync for challenge progress
-      debugPrint('[Gamification] Challenge progress sync skipped - challengeId required');
+      await _ref.read(apiProvider.notifier).updateChallengeProgress(
+        type: type,
+        amount: amount,
+      );
     } catch (e) {
       debugPrint('[Gamification] Backend sync error: $e');
     }
@@ -48,10 +47,7 @@ class _GamificationHelper {
   /// Sync milestone stats with backend
   Future<void> _syncMilestoneStats(Map<String, dynamic> stats) async {
     try {
-      // Note: updateMilestoneStats requires milestoneId (String) and value (int)
-      // This is a simplified sync - in production, you'd need to sync each milestone individually
-      // For now, we'll skip the backend sync for milestone stats
-      debugPrint('[Gamification] Milestone stats sync skipped - milestoneId required');
+      await _ref.read(apiProvider.notifier).updateMilestoneStats(stats);
     } catch (e) {
       debugPrint('[Gamification] Milestone sync error: $e');
     }
@@ -64,10 +60,6 @@ class _GamificationHelper {
     int timeSpentMinutes = 0,
   }) async {
     debugPrint('[Gamification] Lesson complete: XP=$xpEarned, words=$wordsLearned');
-    
-    // React with Rive
-    _ref.read(riveGamificationServiceProvider).reactToLessonComplete();
-    _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
     
     // Show XP overlay
     showXPGain(_ref, amount: xpEarned, source: 'Lesson Complete');
@@ -99,7 +91,7 @@ class _GamificationHelper {
     final newStats = {
       'lessonsCompleted': gamification.lessonsCompleted + 1,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -129,10 +121,6 @@ class _GamificationHelper {
     int wordsLearned = 0,
   }) async {
     debugPrint('[Gamification] Quiz complete: score=$score, XP=$xpEarned, perfect=$isPerfect');
-    
-    // React with Rive
-    _ref.read(riveGamificationServiceProvider).reactToQuizComplete(isPerfect: isPerfect);
-    _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
     
     // Show XP overlay with bonus text for perfect
     showXPGain(
@@ -168,7 +156,7 @@ class _GamificationHelper {
     final newStats = {
       'quizzesCompleted': gamification.quizzesCompleted + 1,
       'perfectQuizzes': isPerfect ? gamification.perfectQuizzes + 1 : gamification.perfectQuizzes,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
     };
     
@@ -186,16 +174,8 @@ class _GamificationHelper {
   Future<void> onGameComplete({
     required int xpEarned,
     int wordsLearned = 0,
-    double? accuracy,
   }) async {
     debugPrint('[Gamification] Game complete: XP=$xpEarned');
-    
-    // React with Rive
-    if (accuracy != null) {
-      _ref.read(riveGamificationServiceProvider).reactToGameComplete(accuracy: accuracy);
-    } else {
-      _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
-    }
     
     // Show XP overlay
     showXPGain(_ref, amount: xpEarned, source: 'Game Complete');
@@ -222,7 +202,7 @@ class _GamificationHelper {
     final newStats = {
       'gamesPlayed': gamification.gamesPlayed + 1,
       'wordsLearned': gamification.wordsLearned + wordsLearned,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -253,7 +233,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'wordsLearned': gamification.wordsLearned + count,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -283,7 +263,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'polieMessages': gamification.polieMessages + 1,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -311,10 +291,11 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'storyChaptersRead': gamification.storyChaptersRead + 1,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
+      storyChaptersRead: newStats['storyChaptersRead'],
       totalXP: newStats['totalXP'],
     );
     _syncMilestoneStats(newStats);
@@ -358,7 +339,7 @@ class _GamificationHelper {
     final gamification = _ref.read(gamificationProvider.notifier).gamification;
     final newStats = {
       'voiceContributions': gamification.voiceContributions + 1,
-      'totalXP': (gamification.totalXP > 0 ? gamification.totalXP : gamification.xp) + xpEarned,
+      'totalXP': gamification.totalXP + xpEarned,
     };
     
     await _ref.read(milestonesProvider.notifier).checkProgressMilestones(
@@ -372,9 +353,6 @@ class _GamificationHelper {
   /// Returns true if user can continue, false if out of hearts
   Future<bool> onMistake() async {
     final heartsState = _ref.read(heartsProvider);
-    
-    // React with Rive
-    _ref.read(riveGamificationServiceProvider).reactToMistake();
     
     // If challenge mode is off or unlimited, always continue
     if (!heartsState.challengeModeEnabled || heartsState.isUnlimited) {
@@ -409,7 +387,7 @@ class _GamificationHelper {
   /// Toggle challenge mode
   Future<void> toggleChallengeMode(bool enabled) async {
     _ref.read(heartsProvider.notifier).setChallengeModeEnabled(enabled);
-    _ref.read(apiProvider.notifier).toggleChallengeMode(enabled);
+    _ref.read(apiProvider.notifier).toggleChallengeMode(enabled: enabled);
   }
 
   /// Play sound effects
@@ -432,12 +410,5 @@ class _GamificationHelper {
 /// ```
 mixin GamificationMixin<T extends ConsumerStatefulWidget> on ConsumerState<T> {
   _GamificationHelper get gamify => _GamificationHelper(ref);
-}
-
-/// Static helper for non-ConsumerWidget contexts
-class GamificationIntegrationHelper {
-  static _GamificationHelper of(WidgetRef ref) {
-    return _GamificationHelper(ref);
-  }
 }
 

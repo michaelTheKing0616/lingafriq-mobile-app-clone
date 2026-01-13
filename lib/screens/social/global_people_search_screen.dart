@@ -5,8 +5,6 @@ import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 
@@ -68,11 +66,8 @@ class _GlobalPeopleSearchScreenState
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = null;
+        _error = 'Unable to search people right now.';
       });
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
     }
   }
 
@@ -100,9 +95,7 @@ class _GlobalPeopleSearchScreenState
               ),
               child: TextField(
                 controller: _searchController,
-                onChanged: (value) {
-                  _searchDebouncer.run(() => _runSearch(value));
-                },
+                onChanged: _runSearch,
                 decoration: InputDecoration(
                   hintText: 'Search by @handle...',
                   prefixIcon: const Icon(Icons.alternate_email_rounded),
@@ -135,7 +128,7 @@ class _GlobalPeopleSearchScreenState
                       ),
                     ),
                   )
-                : OptimizedListView.builder(
+                : ListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                     itemCount: _results.length,
                     itemBuilder: (context, index) {
@@ -200,8 +193,8 @@ class _GlobalPeopleSearchScreenState
         onTap: () {
           Navigator.push(
             context,
-            SmoothPageRoute(
-              child: PrivateChatScreen(contact: contact),
+            MaterialPageRoute(
+              builder: (_) => PrivateChatScreen(contact: contact),
             ),
           );
         },

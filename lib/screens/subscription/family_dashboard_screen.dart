@@ -50,9 +50,6 @@ class _FamilyDashboardScreenState
         _isLoading = false;
       });
     } catch (e) {
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
       setState(() {
         _error = 'Unable to load family progress right now.';
         _isLoading = false;
@@ -504,7 +501,13 @@ class _FamilyDashboardScreenState
                         }
                       } catch (e) {
                         if (mounted) {
-                          ErrorHandler.showError(context, e);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Polie is unavailable right now: $e',
+                              ),
+                            ),
+                          );
                         }
                       } finally {
                         if (mounted) {

@@ -22,6 +22,7 @@ class PrimaryTextField extends StatelessWidget {
     this.minLines,
     this.maxLines,
     this.border,
+    this.onChanged,
   }) : super(key: key);
   final TextEditingController controller;
   final String title;
@@ -41,6 +42,7 @@ class PrimaryTextField extends StatelessWidget {
   final int? minLines;
   final int? maxLines;
   final InputBorder? border;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +72,7 @@ class PrimaryTextField extends StatelessWidget {
               obscureText: obscureText,
               controller: controller,
               validator: validator,
+              onChanged: onChanged,
               onFieldSubmitted: (_) {
                 if (nextNode != null) {
                   FocusScope.of(context).requestFocus(nextNode);

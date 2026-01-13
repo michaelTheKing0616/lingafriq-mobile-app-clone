@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../services/voice/audio_recording_service.dart';
 import '../../providers/language_village_provider.dart';
 import '../../models/language_village_model.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
-import '../../utils/pan_african_design_system.dart';
-import '../../screens/chat/live_classroom_screen_material3.dart';
-import 'package:flutter/services.dart';
+import '../../widgets/audio_player_widget.dart';
 
 /// Language Villages Screen - Voice rooms for target-language-only practice
 class LanguageVillagesScreen extends ConsumerWidget {
@@ -74,7 +69,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
       );
     }
 
-    return OptimizedListView.builder(
+    return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: villages.length,
       itemBuilder: (context, index) {
@@ -82,25 +77,20 @@ class LanguageVillagesScreen extends ConsumerWidget {
         return _VillageCard(
           village: village,
           onJoin: () async {
-            await safeAsync(
-              context: context,
-              operation: () async {
-                final success = await ref
-                    .read(languageVillageProvider.notifier)
-                    .joinVillage(village.id);
-                if (context.mounted) {
-                  if (success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Joined ${village.name}!')),
-                    );
-                  } else {
-                    throw Exception('Failed to join village');
-                  }
-                }
-              },
-              errorContext: 'joinVillage',
-              showError: true,
-            );
+            final success = await ref
+                .read(languageVillageProvider.notifier)
+                .joinVillage(village.id);
+            if (context.mounted) {
+              if (success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Joined ${village.name}!')),
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Village is full')),
+                );
+              }
+            }
           },
         );
       },
@@ -145,14 +135,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.exit_to_app),
                     onPressed: () async {
-                      await safeAsync(
-                        context: context,
-                        operation: () async {
-                          await ref.read(languageVillageProvider.notifier).leaveVillage();
-                        },
-                        errorContext: 'leaveVillage',
-                        showError: true,
-                      );
+                      await ref.read(languageVillageProvider.notifier).leaveVillage();
                     },
                   ),
                 ],
@@ -201,13 +184,10 @@ class LanguageVillagesScreen extends ConsumerWidget {
               ],
             ),
           ),
-        // Voice Room UI
+        // Voice room: live voice messages list + record button
         Expanded(
-          child: _VoiceRoomView(
-            village: currentVillage,
-            onLeave: () {
-              villageProvider.leaveVillage();
-            },
+          child: _VillageVoiceRoom(
+            village: village,
           ),
         ),
       ],
@@ -257,19 +237,16 @@ class LanguageVillagesScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () async {
-              await safeAsync(
-                context: context,
-                operation: () async {
-                  final success = await ref
-                      .read(languageVillageProvider.notifier)
-                      .createVillage(
-                        name: nameController.text,
-                        language: languageController.text,
-                        description: descriptionController.text,
-                      );
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    if (success) {
+              final success = await ref
+                  .read(languageVillageProvider.notifier)
+                  .createVillage(
+                    name: nameController.text,
+                    language: languageController.text,
+                    description: descriptionController.text,
+                  );
+              if (context.mounted) {
+                Navigator.pop(context);
+                if (success) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Village created!')),
                   );
@@ -280,6 +257,335 @@ class LanguageVillagesScreen extends ConsumerWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _VillageVoiceRoom extends ConsumerWidget {
+  final LanguageVillage village;
+
+  const _VillageVoiceRoom({Key? key, required this.village}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final provider = ref.watch(languageVillageProvider.notifier);
+    final messages = provider.voiceMessages;
+    final polieRecap = provider.polieRecap;
+    final isAskingPolie = provider.isAskingPolieRecap;
+    final isLiveConnected = provider.isLiveConnected;
+    final isLiveConnecting = provider.isLiveConnecting;
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Voice Room',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(
+                        isLiveConnected
+                            ? Icons.podcasts_rounded
+                            : Icons.podcasts_outlined,
+                        size: 16,
+                        color: isLiveConnected
+                            ? Colors.greenAccent
+                            : Colors.grey,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        isLiveConnected
+                            ? 'Live village circle connected'
+                            : 'Tap to join live circle (beta)',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  TextButton.icon(
+                    onPressed: isLiveConnecting
+                        ? null
+                        : () {
+                            if (isLiveConnected) {
+                              provider.disconnectLiveRoom();
+                            } else {
+                              provider.connectLiveRoom();
+                            }
+                          },
+                    icon: isLiveConnecting
+                        ? const SizedBox(
+                            width: 14,
+                            height: 14,
+                            child:
+                                CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Icon(
+                            isLiveConnected
+                                ? Icons.call_end_rounded
+                                : Icons.call_rounded,
+                            size: 16,
+                          ),
+                    label: Text(
+                      isLiveConnected ? 'Leave live circle' : 'Join live circle',
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.auto_awesome),
+                    tooltip: 'Ask Polie for a recap',
+                    onPressed: isAskingPolie
+                        ? null
+                        : () => provider.askPolieForRecap(),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    tooltip: 'Refresh messages',
+                    onPressed: () => provider.refreshVoiceMessages(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        if (polieRecap != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              color: isDark
+                  ? Colors.green.withOpacity(0.2)
+                  : Colors.green.shade50,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.smart_toy_rounded, size: 18),
+                        const SizedBox(width: 8),
+                        Text(
+                          'Polie’s Recap',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      polieRecap,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        if (messages.isEmpty)
+          Expanded(
+            child: Center(
+              child: Text(
+                'No voice messages yet.\nBe the first to greet the village!',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey,
+                    ),
+              ),
+            ),
+          )
+        else
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final msg = messages[index];
+                final title = (msg['title'] as String?) ?? 'Voice message';
+                final createdAtStr = msg['createdAt']?.toString() ?? '';
+                final fileUrl = msg['fileUrl']?.toString() ?? '';
+
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  color: isDark
+                      ? Colors.white.withOpacity(0.06)
+                      : Colors.white,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          createdAtStr,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 8),
+                        if (fileUrl.isNotEmpty)
+                          AudioPlayerWidget(audioUrl: fileUrl),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                icon: const Icon(Icons.mic),
+                label: const Text('Record voice message'),
+                onPressed: () async {
+                  await _showVoiceRecorderSheet(context, ref, village);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showVoiceRecorderSheet(
+      BuildContext context, WidgetRef ref, LanguageVillage village) async {
+    final recorder = AudioRecordingService();
+    bool isRecording = false;
+    String? recordedPath;
+
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            top: 16,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'New voice message',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    isRecording
+                        ? 'Recording… tap to stop when you’re done.'
+                        : 'Tap the mic to start recording a short greeting or message.',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  IconButton.filled(
+                    iconSize: 40,
+                    icon: Icon(isRecording ? Icons.stop : Icons.mic),
+                    onPressed: () async {
+                      if (!isRecording) {
+                        final path = await recorder.startRecording();
+                        if (path != null) {
+                          setState(() {
+                            recordedPath = path;
+                            isRecording = true;
+                          });
+                        }
+                      } else {
+                        final path = await recorder.stopRecording();
+                        setState(() {
+                          recordedPath = path ?? recordedPath;
+                          isRecording = false;
+                        });
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 12),
+                  if (!isRecording && recordedPath != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Ready to send to ${village.name}',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        FilledButton.icon(
+                          icon: const Icon(Icons.send),
+                          label: const Text('Send'),
+                          onPressed: () async {
+                            if (recordedPath == null) return;
+                            final ok = await ref
+                                .read(languageVillageProvider.notifier)
+                                .sendRecordedVoiceMessage(recordedPath!);
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    ok
+                                        ? 'Voice message sent to ${village.name}!'
+                                        : 'Could not send voice message. Please try again.',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  const SizedBox(height: 8),
+                ],
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }
@@ -329,172 +635,6 @@ class _VillageCard extends StatelessWidget {
               : onJoin,
           child: const Text('Join'),
         ),
-      ),
-    );
-  }
-}
-
-/// Voice Room View Widget
-class _VoiceRoomView extends ConsumerStatefulWidget {
-  final LanguageVillage village;
-  final VoidCallback onLeave;
-
-  const _VoiceRoomView({
-    required this.village,
-    required this.onLeave,
-  });
-
-  @override
-  ConsumerState<_VoiceRoomView> createState() => _VoiceRoomViewState();
-}
-
-class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
-  bool _isMuted = false;
-  bool _isVideoEnabled = true;
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Container(
-      decoration: BoxDecoration(
-        gradient: isDark
-            ? PanAfricanGradients.darkSurface
-            : PanAfricanGradients.forest,
-      ),
-      child: Column(
-        children: [
-          // Header
-          Container(
-            padding: EdgeInsets.all(4.w),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight,
-              boxShadow: PanAfricanShadows.sm,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.village.name,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${widget.village.currentParticipants}/${widget.village.maxParticipants} participants',
-                        style: TextStyle(fontSize: 12.sp),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: widget.onLeave,
-                  tooltip: 'Leave Room',
-                ),
-              ],
-            ),
-          ),
-          // Participants grid
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(4.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 4.w,
-                mainAxisSpacing: 4.h,
-              ),
-              itemCount: widget.village.currentParticipants,
-              itemBuilder: (context, index) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                    boxShadow: PanAfricanShadows.sm,
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 30.r,
-                        backgroundColor: PanAfricanColors.primary,
-                        child: Text(
-                          'P${index + 1}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 2.h),
-                      Text(
-                        'Participant ${index + 1}',
-                        style: TextStyle(fontSize: 12.sp),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          // Controls
-          Container(
-            padding: EdgeInsets.all(4.w),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight,
-              boxShadow: PanAfricanShadows.md,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  icon: Icon(_isMuted ? Icons.mic_off : Icons.mic),
-                  iconSize: 32.sp,
-                  color: _isMuted ? Colors.red : PanAfricanColors.primary,
-                  onPressed: () {
-                    setState(() => _isMuted = !_isMuted);
-                    HapticFeedback.lightImpact();
-                  },
-                  tooltip: _isMuted ? 'Unmute' : 'Mute',
-                ),
-                IconButton(
-                  icon: Icon(_isVideoEnabled ? Icons.videocam : Icons.videocam_off),
-                  iconSize: 32.sp,
-                  color: _isVideoEnabled ? PanAfricanColors.primary : Colors.grey,
-                  onPressed: () {
-                    setState(() => _isVideoEnabled = !_isVideoEnabled);
-                    HapticFeedback.lightImpact();
-                  },
-                  tooltip: _isVideoEnabled ? 'Turn off video' : 'Turn on video',
-                ),
-                FilledButton.icon(
-                  onPressed: () {
-                    // Navigate to full classroom view
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LiveClassroomScreenMaterial3(
-                          roomId: widget.village.id,
-                          roomName: widget.village.name,
-                        ),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.fullscreen),
-                  label: const Text('Full View'),
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

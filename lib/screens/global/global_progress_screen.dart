@@ -5,9 +5,6 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/tabs_view/standings/leader_board_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,7 +29,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load global progress data. Please check your connection and try again.',
+      errorMessage: 'Global Progress data is temporarily unavailable',
       onRetry: () {
         ref.read(leaderboardProvider.notifier).getProfiles();
       },

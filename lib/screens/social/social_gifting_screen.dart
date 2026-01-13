@@ -1,19 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../providers/api_provider.dart';
 import '../../providers/gamification_provider.dart';
-import '../../providers/user_provider.dart';
 
 /// Social Gifting Screen - Send lessons to friends
-class SocialGiftingScreen extends ConsumerWidget {
+class SocialGiftingScreen extends ConsumerStatefulWidget {
   const SocialGiftingScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SocialGiftingScreen> createState() => _SocialGiftingScreenState();
+}
+
+class _SocialGiftingScreenState extends ConsumerState<SocialGiftingScreen> {
+  final TextEditingController _queryController = TextEditingController();
+  String? _selectedRecipientLabel;
+  int? _selectedRecipientUserId;
+  String _lessonType = 'premium';
+  bool _isSending = false;
+
+  @override
+  void dispose() {
+    _queryController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Send a Lesson'),
+        title: Row(
+          children: const [
+            Text('Send a Lesson'),
+            SizedBox(width: 8),
+            Text(
+              'beta',
+              style: TextStyle(fontSize: 12, fontStyle: FontStyle.italic),
+            ),
+          ],
+        ),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -90,12 +116,20 @@ class SocialGiftingScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                   TextField(
+                    controller: _queryController,
                     decoration: const InputDecoration(
                       labelText: 'Friend\'s Username or Email',
                       hintText: 'Enter username or email',
                       prefixIcon: Icon(Icons.person),
                     ),
                   ),
+                  if (_selectedRecipientLabel != null) ...[
+                    const SizedBox(height: 8),
+                    Text(
+                      'Selected: $_selectedRecipientLabel',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     decoration: const InputDecoration(
@@ -107,18 +141,24 @@ class SocialGiftingScreen extends ConsumerWidget {
                       DropdownMenuItem(value: 'quiz', child: Text('Quiz Pack')),
                       DropdownMenuItem(value: 'game', child: Text('Game Session')),
                     ],
-                    onChanged: (value) {},
+                    value: _lessonType,
+                    onChanged: _isSending
+                        ? null
+                        : (value) {
+                            if (value == null) return;
+                            setState(() => _lessonType = value);
+                          },
                   ),
                   const SizedBox(height: 24),
                   SizedBox(
                     width: double.infinity,
                     child: FilledButton(
-                      onPressed: gamification.cowries >= 50
+                      onPressed: !_isSending && gamification.cowries >= 50
                           ? () {
                               _showGiftConfirmation(context, ref);
                             }
                           : null,
-                      child: const Text('Send Gift'),
+                      child: Text(_isSending ? 'Sending…' : 'Send Gift'),
                     ),
                   ),
                 ],
@@ -176,37 +216,11 @@ class SocialGiftingScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () async {
-              try {
-                final gamification = ref.read(gamificationProvider.notifier);
-                final user = ref.read(userProvider);
-                
-                if (user == null) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please log in to send gifts')),
-                    );
-                  }
-                  return;
-                }
+              Navigator.pop(context);
+              await _sendGift(ref);
 
-                // Deduct currency for gift
-                await gamification.awardCurrency(cowries: -50);
-                
-                // Send gift via API (if gift endpoint exists)
-                // For now, we'll log the gift action and award XP
-                // In the future, this would call a gift API endpoint
-                await gamification.awardXP('send_gift');
-
-                if (context.mounted) {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Gift sent successfully!')),
-                  );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  ErrorHandler.showError(context, e);
-                }
+              if (context.mounted) {
+                // snack shown inside _sendGift
               }
             },
             child: const Text('Send'),
@@ -214,6 +228,73 @@ class SocialGiftingScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _sendGift(WidgetRef ref) async {
+    if (_isSending) return;
+
+    final query = _queryController.text.trim();
+    if (query.isEmpty) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter a username, @handle, or email.')),
+      );
+      return;
+    }
+
+    setState(() => _isSending = true);
+    try {
+      final api = ref.read(apiProvider.notifier);
+
+      // Resolve recipient (reuse backend lookup; avoids duplicating matching logic on mobile)
+      final results = await api.lookupUsers(query);
+      if (results.isEmpty) {
+        throw Exception('No user found for "$query". Try their @handle.');
+      }
+
+      // If multiple results returned, take the first exact-ish match.
+      final recipient = results.first;
+      final recipientId = (recipient['id'] as num?)?.toInt();
+      if (recipientId == null) {
+        throw Exception('Invalid recipient user id.');
+      }
+
+      setState(() {
+        _selectedRecipientUserId = recipientId;
+        _selectedRecipientLabel = recipient['username']?.toString() ??
+            recipient['global_id']?.toString() ??
+            recipient['email']?.toString();
+      });
+
+      // 1) Transfer cowries (server-authoritative)
+      final transferred = await api.transferCowries(
+        recipientUserId: recipientId,
+        amount: 50,
+      );
+      if (!transferred) {
+        throw Exception('Transfer failed. Please try again.');
+      }
+
+      // 2) Create ancestry gift edge (best-effort)
+      await api.createGiftLink(recipientUserId: recipientId);
+
+      // 3) Update local UI state (best-effort)
+      await ref.read(gamificationProvider.notifier).awardXP('send_gift');
+
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gift sent to ${_selectedRecipientLabel ?? 'friend'}!'),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gift failed: ${e.toString()}')),
+      );
+    } finally {
+      if (mounted) setState(() => _isSending = false);
+    }
   }
 }
 

@@ -14,13 +14,11 @@ import '../../utils/pan_african_design_system.dart';
 class HeartsWidget extends ConsumerStatefulWidget {
   final bool compact;
   final VoidCallback? onTap;
-  final bool showRefill;
 
   const HeartsWidget({
     Key? key,
     this.compact = false,
     this.onTap,
-    this.showRefill = true,
   }) : super(key: key);
 
   @override
@@ -74,7 +72,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
-        gradient: PanAfricanGradients.forest,
+        gradient: PanAfricanGradients.primaryGreen,
         borderRadius: PanAfricanRadius.roundBR,
       ),
       child: Row(
@@ -163,7 +161,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
         borderRadius: PanAfricanRadius.lgBR,
-        boxShadow: PanAfricanShadows.md,
+        boxShadow: PanAfricanShadows.medium,
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -242,7 +240,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
           decoration: BoxDecoration(
             color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
             borderRadius: PanAfricanRadius.xlBR,
-            boxShadow: PanAfricanShadows.lg,
+            boxShadow: PanAfricanShadows.large,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,

@@ -3,8 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Screen for creating user-generated stories
@@ -123,40 +121,44 @@ class CreateStoryScreen extends HookConsumerWidget {
                 
                 isSubmitting.value = true;
                 
-                await safeAsync(
-                  context: context,
-                  operation: () async {
-                    final ugcService = ref.read(userGeneratedContentServiceProvider);
-                    final vocabulary = vocabController.text
-                        .split(',')
-                        .map((v) => v.trim())
-                        .where((v) => v.isNotEmpty)
-                        .toList();
-                    
-                    final story = await ugcService.createStory(
-                      language: selectedLanguage.value,
-                      title: titleController.text,
-                      story: storyController.text,
-                      theme: themeController.text.isEmpty ? null : themeController.text,
-                      vocabulary: vocabulary.isEmpty ? null : vocabulary,
+                try {
+                  final ugcService = ref.read(userGeneratedContentServiceProvider);
+                  final vocabulary = vocabController.text
+                      .split(',')
+                      .map((v) => v.trim())
+                      .where((v) => v.isNotEmpty)
+                      .toList();
+                  
+                  final story = await ugcService.createStory(
+                    language: selectedLanguage.value,
+                    title: titleController.text,
+                    story: storyController.text,
+                    theme: themeController.text.isEmpty ? null : themeController.text,
+                    vocabulary: vocabulary.isEmpty ? null : vocabulary,
+                  );
+                  
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Story created successfully!'),
+                        backgroundColor: AppColors.primaryGreen,
+                      ),
                     );
-                    
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Story created successfully!'),
-                          backgroundColor: AppColors.primaryGreen,
-                        ),
-                      );
-                      Navigator.of(context).pop(true);
-                    }
-                  },
-                  errorContext: 'createStory',
-                  showError: true,
-                );
-                
-                if (context.mounted) {
-                  isSubmitting.value = false;
+                    Navigator.of(context).pop(true);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Error creating story: $e'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } finally {
+                  if (context.mounted) {
+                    isSubmitting.value = false;
+                  }
                 }
               },
               style: FilledButton.styleFrom(

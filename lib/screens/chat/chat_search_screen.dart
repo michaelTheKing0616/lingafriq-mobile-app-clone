@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 
 class ChatSearchScreen extends ConsumerStatefulWidget {
   final String? room;
@@ -23,14 +21,12 @@ class ChatSearchScreen extends ConsumerStatefulWidget {
 
 class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
   final TextEditingController _queryController = TextEditingController();
-  late final Debouncer _searchDebouncer;
   bool _isLoading = false;
   String? _error;
   List<Map<String, dynamic>> _results = const [];
 
   @override
   void dispose() {
-    _searchDebouncer.dispose();
     _queryController.dispose();
     super.dispose();
   }
@@ -65,11 +61,8 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = null;
+        _error = 'Unable to search messages right now.';
       });
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
     }
   }
 

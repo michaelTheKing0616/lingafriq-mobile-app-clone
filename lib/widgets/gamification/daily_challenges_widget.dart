@@ -78,7 +78,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
               ? PanAfricanColors.primaryLight.withOpacity(0.2)
               : PanAfricanColors.outline.withOpacity(0.3),
         ),
-        boxShadow: PanAfricanShadows.md,
+        boxShadow: PanAfricanShadows.medium,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -226,7 +226,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
           child: Container(
             padding: EdgeInsets.all(PanAfricanSpacing.md),
             decoration: BoxDecoration(
-              gradient: PanAfricanGradients.forest,
+              gradient: PanAfricanGradients.primaryGreen,
               borderRadius: PanAfricanRadius.mdBR,
               boxShadow: PanAfricanShadows.glow(PanAfricanColors.primary),
             ),
@@ -453,7 +453,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
             vertical: PanAfricanSpacing.xs,
           ),
           decoration: BoxDecoration(
-            gradient: PanAfricanGradients.forest,
+            gradient: PanAfricanGradients.primaryGreen,
             borderRadius: PanAfricanRadius.roundBR,
             boxShadow: PanAfricanShadows.glowGreen(0.3),
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,10 +18,6 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../../utils/api.dart';
 import '../../../widgets/delete_account_dialogue.dart';
 import '../../../services/account_service.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:lingafriq/config/app_config.dart';
-import 'package:lingafriq/utils/api_service.dart';
 
 class ProfileEditScreen extends HookConsumerWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);
@@ -30,13 +25,11 @@ class ProfileEditScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final firstnameController = useTextEditingController(text: user?.first_name ?? '');
-    final lastNameController = useTextEditingController(text: user?.last_name ?? '');
-    final globalIdController = useTextEditingController(text: user?.global_id ?? user?.username ?? '');
+    final firstnameController = useTextEditingController(text: user?.first_name);
+    final lastNameController = useTextEditingController(text: user?.last_name);
+    final handleController = useTextEditingController(text: user?.globalId);
     final selectedCountry = useState<String?>(user?.nationality);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    final isUpdatingHandle = useState(false);
-    final handleError = useState<String?>(null);
 
     return LoadingOverlayPro(
       isLoading: isLoading,
@@ -62,21 +55,12 @@ class ProfileEditScreen extends HookConsumerWidget {
                 if (selectedAvatar == null) return;
 
                 final updatedUser = user.copyWith(avater: selectedAvatar);
-                await safeAsync(
-                  context: context,
-                  operation: () async {
-                    await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                    ref.read(userProvider.notifier).overrideUser(updatedUser);
-                    
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      HapticFeedback.lightImpact();
-                      VxToast.show(context, msg: 'Avatar updated');
-                    }
-                  },
-                  errorContext: 'updateAvatar',
-                  showError: true,
-                );
+                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                ref.read(userProvider.notifier).overrideUser(updatedUser);
+
+                Navigator.of(context).pop();
+                HapticFeedback.lightImpact();
+                VxToast.show(context, msg: 'Avatar updated');
               },
             ).centered(),
             24.heightBox,
@@ -100,34 +84,25 @@ class ProfileEditScreen extends HookConsumerWidget {
               textInputAction: TextInputAction.next,
             ),
             12.heightBox,
-            
-            // Global ID / Handle Editor
-            PanAfricanTextField(
-              controller: globalIdController,
-              label: 'Your Handle (global_id)',
-              hint: 'e.g., your_handle',
-              prefixIcon: Icons.alternate_email,
-              helperText: 'This is your unique identifier. Use it to find you in chat (@your_handle).',
-              errorText: handleError.value,
+            // Handle / global ID editor (optional, must be unique)
+            PrimaryTextField(
+              controller: handleController,
+              title: "Handle",
+              hintText: "Choose a unique handle (e.g. lingafriq_learner)",
+              validator: (value) {
+                final v = value?.trim() ?? '';
+                if (v.isEmpty) return null; // Optional
+                if (v.length < 3 || v.length > 30) {
+                  return "Handle must be between 3 and 30 characters";
+                }
+                if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(v)) {
+                  return "Only letters, numbers, and underscores are allowed";
+                }
+                return null;
+              },
+              textInputAction: TextInputAction.next,
               onChanged: (value) {
-                handleError.value = null;
-                // Remove @ if user types it
-                if (value.startsWith('@')) {
-                  globalIdController.value = TextEditingValue(
-                    text: value.substring(1),
-                    selection: TextSelection.collapsed(offset: value.length - 1),
-                  );
-                }
-                // Validate format: alphanumeric and underscore only, 3-30 chars
-                if (value.isNotEmpty) {
-                  if (value.length < 3) {
-                    handleError.value = 'Handle must be at least 3 characters';
-                  } else if (value.length > 30) {
-                    handleError.value = 'Handle must be 30 characters or less';
-                  } else if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(value)) {
-                    handleError.value = 'Handle can only contain letters, numbers, and underscores';
-                  }
-                }
+                // No-op; we'll read from controller in onTap below
               },
             ),
             12.heightBox,
@@ -156,7 +131,16 @@ class ProfileEditScreen extends HookConsumerWidget {
                   nationality: selectedCountry.value,
                 );
 
-                await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
+                final payload = updatedUser.toMap();
+                final handle = handleController.text.trim();
+                if (handle.isNotEmpty) {
+                  payload['handle'] = handle;
+                } else {
+                  // Explicitly clear handle if user empties the field
+                  payload['handle'] = null;
+                }
+
+                await ref.read(apiProvider.notifier).updateProfile(payload);
                 ref.read(userProvider.notifier).overrideUser(updatedUser);
 
                 Navigator.of(context).pop();

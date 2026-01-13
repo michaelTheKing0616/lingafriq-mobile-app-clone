@@ -55,7 +55,7 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
         ),
         borderRadius: PanAfricanRadius.lgBR,
         border: Border.all(color: config.color.withOpacity(0.3), width: 2),
-        boxShadow: PanAfricanShadows.md,
+        boxShadow: PanAfricanShadows.medium,
       ),
       child: Column(
         children: [

@@ -1,9 +1,9 @@
 /// Offline Indicator Widget - Shows connection status
 /// Displays a banner when device is offline
 
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:lingafriq/services/offline/offline_service.dart';
 
 class OfflineIndicator extends StatefulWidget {
   final Widget child;
@@ -28,6 +28,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
   bool _isOnline = true;
   late AnimationController _controller;
   late Animation<double> _slideAnimation;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySub;
 
   @override
   void initState() {
@@ -46,13 +47,13 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
 
   Future<void> _checkConnectivity() async {
     final result = await Connectivity().checkConnectivity();
-    final isOnline = result != ConnectivityResult.none;
+    final isOnline = result.any((r) => r != ConnectivityResult.none);
     _updateStatus(isOnline);
   }
 
   void _listenToConnectivity() {
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      final isOnline = result != ConnectivityResult.none;
+    _connectivitySub = Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
+      final isOnline = result.any((r) => r != ConnectivityResult.none);
       _updateStatus(isOnline);
     });
   }
@@ -73,6 +74,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
 
   @override
   void dispose() {
+    _connectivitySub?.cancel();
     _controller.dispose();
     super.dispose();
   }

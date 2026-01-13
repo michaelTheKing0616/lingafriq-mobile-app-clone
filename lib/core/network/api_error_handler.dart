@@ -15,6 +15,7 @@ class ApiErrorHandler {
       return await apiCall();
     } catch (e) {
       final exception = ExceptionHandler.handleError(e);
+      final userMessage = ExceptionHandler.getUserFriendlyMessage(exception);
       
       debugPrint('API Error: ${exception.message}');
       if (e is DioException) {

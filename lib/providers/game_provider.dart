@@ -8,10 +8,10 @@ import '../providers/gamification_provider.dart';
 import '../providers/api_provider.dart';
 import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
-import '../providers/dio_provider.dart';
+import '../providers/curriculum_provider.dart';
+import '../models/curriculum_model.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
-import '../utils/api.dart';
 import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 
@@ -32,6 +32,26 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   BaseProviderState build() {
     _loadUserSRS();
     return BaseProviderState();
+  }
+
+  /// Warm up game content for a given game type/language/level without
+  /// starting a visible session. This is used by lazy loaders and
+  /// background initialization on low‑end devices to reduce first-load jank.
+  Future<void> warmupGameContent({
+    required GameType gameType,
+    required String language,
+    String? level,
+    int count = 10,
+  }) async {
+    try {
+      await _loadCardsForGame(
+        language: language,
+        level: level,
+        count: count,
+      );
+    } catch (e) {
+      debugPrint('Error warming up game content for $gameType ($language, $level): $e');
+    }
   }
 
   /// Start a new game session
@@ -209,7 +229,6 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Load cards for a game
-  /// Attempts to load from backend API, falls back to curated local data
   Future<List<PhraseCard>> _loadCardsForGame({
     required String language,
     String? level,
@@ -217,67 +236,78 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     final cards = <PhraseCard>[];
 
-    // Try to load from backend API
+    // 1) Try to derive cards from the installed curriculum for this language/level.
     try {
-      final queryParams = <String, dynamic>{
-        'language': language,
-        'count': count,
-      };
-      if (level != null) queryParams['level'] = level;
+      final curriculumState = ref.read(curriculumProvider);
+      final curriculumNotifier = ref.read(curriculumProvider.notifier);
 
-      final response = await ref.read(client).get(
-        '${Api.baseurl}api/games/cards',
-        queryParameters: queryParams,
-      );
+      Curriculum? curriculumModel =
+          curriculumNotifier.curriculum; // may already be loaded
 
-      if (response.statusCode == 200 && response.data is List) {
-        final dataList = response.data as List;
-        for (var item in dataList) {
-          if (item is Map<String, dynamic>) {
-            try {
-              cards.add(PhraseCard(
-                cardId: item['id'] ?? item['card_id'] ?? 'card_${cards.length}',
-                language: item['language'] ?? language,
-                text: item['text'] ?? item['phrase'] ?? '',
-                ascii: item['ascii'] ?? item['text'] ?? '',
-                gloss: item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '',
-                level: item['level'] ?? level ?? 'A0',
-                tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${item['id'] ?? cards.length}'] ?? SRSState(),
-              ));
-            } catch (e) {
-              debugPrint('Error parsing card from API: $e');
-              continue;
+      if (curriculumModel == null) {
+        // Attempt to load from bundle/cache once
+        await curriculumNotifier.loadCurriculumFromBundle();
+        curriculumModel = curriculumNotifier.curriculum;
+      }
+
+      if (curriculumModel != null) {
+        final langKey = language.toLowerCase();
+        final levelKey = (level ?? 'A1').toUpperCase();
+        final languageMap = curriculumModel.languages[langKey];
+
+        if (languageMap != null && languageMap.isNotEmpty) {
+          // Prefer requested level when available; otherwise fall back to first level.
+          final List<CurriculumUnit> unitsForLevel =
+              languageMap[levelKey] ?? languageMap.values.first;
+
+          final selectedUnits = unitsForLevel.isNotEmpty
+              ? unitsForLevel
+              : languageMap.values.expand((u) => u).toList();
+
+          final vocabCards = <PhraseCard>[];
+
+          for (final unit in selectedUnits) {
+            for (final lesson in unit.lessons) {
+              for (final v in lesson.vocabObjects) {
+                if (v.word.trim().isEmpty) continue;
+                vocabCards.add(
+                  PhraseCard(
+                    cardId:
+                        '${langKey}_${lesson.id}_${v.word}_${v.meaning}'.hashCode.toString(),
+                    language: language,
+                    text: v.word,
+                    ascii: v.word,
+                    gloss: v.meaning,
+                    level: levelKey,
+                    tags: [lesson.id, unit.title],
+                    srs: _userSRS[
+                          '${_currentSession?.userId ?? 'user'}_${langKey}_${lesson.id}_${v.word}'
+                        ] ??
+                        SRSState(),
+                  ),
+                );
+                if (vocabCards.length >= count * 2) break;
+              }
+              if (vocabCards.length >= count * 2) break;
             }
+            if (vocabCards.length >= count * 2) break;
           }
-        }
 
-        // If we got cards from API, apply diacritics enforcement and return
-        if (cards.isNotEmpty) {
-          for (var i = 0; i < cards.length; i++) {
-            final card = cards[i];
-            final enforced = DiacriticsEnforcer.enforceWithMetadata(
-              card.text,
-              language,
-              enableFuzzy: true,
-              fuzzyThreshold: 0.75,
-            );
-
-            if (enforced['changed'] == true) {
-              cards[i] = card.copyWith(text: enforced['text'] as String);
-            }
+          if (vocabCards.isNotEmpty) {
+            vocabCards.shuffle();
+            cards.addAll(vocabCards.take(count));
           }
-          return cards;
         }
       }
     } catch (e) {
-      debugPrint('Error loading cards from API, using fallback: $e');
-      // Continue to fallback
+      debugPrint('Error deriving game cards from curriculum: $e');
     }
 
-    // Fallback to curated local data
-    final fallbackCards = _generateFallbackCards(language, level, count);
-    cards.addAll(fallbackCards);
+    // 2) Fallback to curated starter deck if curriculum is unavailable.
+    if (cards.isEmpty) {
+      final starterCards = _generateMockCards(language, level, count);
+      cards.addAll(starterCards);
+    }
 
     // Apply diacritics enforcement to all cards
     for (var i = 0; i < cards.length; i++) {
@@ -297,8 +327,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return cards;
   }
 
-  /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)
-  List<PhraseCard> _generateFallbackCards(String language, String? level, int count) {
+  /// Generate a small curated deck of cards for early game sessions.
+  List<PhraseCard> _generateMockCards(String language, String? level, int count) {
     final cards = <PhraseCard>[];
     final lang = language.toLowerCase();
 
@@ -444,6 +474,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await syncProvider.queueSync(SyncTask(
         type: SyncType.gameSRS,
         data: {
+          // Game SRS sync is keyed by the numeric user id in the backend.
           'user_id': user.id.toString(),
           'srs': srsData,
           'timestamp': DateTime.now().toIso8601String(),
@@ -464,6 +495,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       await syncProvider.queueSync(SyncTask(
         type: SyncType.telemetry,
         data: {
+          // Telemetry sync for legacy game events still expects numeric user id.
           'user_id': user.id.toString(),
           'event': event,
           'timestamp': DateTime.now().toIso8601String(),

@@ -8,27 +8,9 @@ buildscript {
     }
 
     repositories {
-        // Google Maven repository first - mirrors Maven Central and more reliable
         google()
-        
-        // Official Gradle plugin portal for plugins
-        gradlePluginPortal()
-        
-        // Maven Central - use explicit URL to avoid 403 errors from old URLs
-        // Use repo1.maven.org instead of repo.maven.apache.org
-        maven {
-            name = "Maven Central"
-            url = uri("https://repo1.maven.org/maven2")
-        }
-        
-        // Fallback: standard mavenCentral() (uses repo1.maven.org internally)
         mavenCentral()
-        
-        // Additional fallback repositories
-        maven {
-            name = "Sonatype Snapshots"
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-        }
+        gradlePluginPortal()
     }
 
     dependencies {
@@ -38,81 +20,10 @@ buildscript {
     }
 }
 
-// Configure NDK version at root level so all subprojects can use it
-// Check for available NDK versions before configuring projects
-def rootNdkVersion = null
-def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
-if (!sdkDir) {
-    def localProps = new Properties()
-    def localPropsFile = file('local.properties')
-    if (localPropsFile.exists()) {
-        localPropsFile.withReader('UTF-8') { reader -> localProps.load(reader) }
-        sdkDir = localProps.getProperty('sdk.dir')
-    }
-}
-
-if (sdkDir) {
-    // Check for rive_common's preferred NDK version first (26.1.10909125)
-    def riveNdkDir = file("${sdkDir}/ndk/26.1.10909125")
-    def riveSourceProperties = file("${riveNdkDir}/source.properties")
-    if (riveNdkDir.exists() && riveSourceProperties.exists()) {
-        rootNdkVersion = "26.1.10909125"
-        println("✅ Root NDK 26.1.10909125 found (required by rive_common)")
-    } else {
-        // Fallback to app's preferred NDK version (27.0.12077973)
-        def appNdkDir = file("${sdkDir}/ndk/27.0.12077973")
-        def appSourceProperties = file("${appNdkDir}/source.properties")
-        if (appNdkDir.exists() && appSourceProperties.exists()) {
-            rootNdkVersion = "27.0.12077973"
-            println("✅ Root NDK 27.0.12077973 found")
-        } else {
-            println("⚠️ No NDK found at root level - plugins requiring NDK may fail")
-        }
-    }
-}
-
 allprojects {
     repositories {
-        // Google Maven repository first - mirrors Maven Central and more reliable
         google()
-        
-        // Official Gradle plugin portal for plugins
-        gradlePluginPortal()
-        
-        // Maven Central - use explicit URL to avoid 403 errors from old URLs
-        // Use repo1.maven.org instead of repo.maven.apache.org
-        maven {
-            name = "Maven Central"
-            url = uri("https://repo1.maven.org/maven2")
-        }
-        
-        // Fallback: standard mavenCentral() (uses repo1.maven.org internally)
         mavenCentral()
-        
-        // Additional fallback repositories
-        maven {
-            name = "Sonatype Snapshots"
-            url = uri("https://oss.sonatype.org/content/repositories/snapshots")
-        }
-        
-        // JitPack for GitHub-based dependencies
-        maven { 
-            name = "JitPack"
-            url = uri("https://jitpack.io")
-        }
-    }
-    
-    // Configure dependency resolution to handle Kotlin version conflicts
-    // Allow Flutter plugin loader to use Kotlin 1.9.22 while app uses 2.2.0
-    configurations.all {
-        resolutionStrategy {
-            // Prefer project modules but allow dependency versions when required
-            // This allows Flutter plugin loader to use 1.9.22 and app to use 2.2.0
-            preferProjectModules()
-            // Use dependencySubstitution to handle version conflicts gracefully
-            // Gradle 8.7 automatically resolves version conflicts by selecting the highest version
-            // unless explicitly overridden, which is what we want for Kotlin compatibility
-        }
     }
 }
 
@@ -121,151 +32,19 @@ rootProject.buildDir = '../build'
 
 subprojects {
     afterEvaluate { project ->
-        // ✅ FIRST: Set compileSdk 36 for ALL projects (including excluded ones)
-        // This must happen before plugins try to access SDK platforms
-        if (project.hasProperty('android')) {
-            try {
-                project.android {
-                    def currentCompileSdk = compileSdk
-                    if (currentCompileSdk == null) {
-                        compileSdk = 36
-                        println("✅ Set compileSdk to 36 for ${project.name} (was null)")
-                    } else if (currentCompileSdk instanceof Integer && currentCompileSdk < 36) {
-                        compileSdk = 36
-                        println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
-                    } else if (currentCompileSdk instanceof String) {
-                        try {
-                            def sdkInt = currentCompileSdk.toInteger()
-                            if (sdkInt < 36) {
-                                compileSdk = 36
-                                println("✅ Set compileSdk to 36 for ${project.name} (was ${currentCompileSdk})")
-                            }
-                        } catch (Exception e) {
-                            compileSdk = 36
-                            println("✅ Set compileSdk to 36 for ${project.name} (was non-numeric: ${currentCompileSdk})")
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                // If we can't check or set compileSdk, try to set it directly
-                try {
-                    project.android.compileSdk = 36
-                    println("✅ Set compileSdk to 36 for ${project.name} (fallback)")
-                } catch (Exception e2) {
-                    println("⚠️ Could not set compileSdk for ${project.name}: ${e2.message}")
-                }
-            }
-        }
-        
-        // NOTE: We keep all required plugins enabled for production builds (including WebRTC/LiveKit and Workmanager).
-        
         if (project.hasProperty('android')) {
             project.android {
                 // ✅ Ensure every submodule has a namespace (Gradle 8+ requirement)
-                // For flutter_vibrate, set namespace explicitly to prevent package attribute issues
-                if (project.name == 'flutter_vibrate') {
-                    namespace = 'flutter.plugins.vibrate'
-                } else if (!namespace) {
+                if (!namespace) {
                     namespace project.group
                 }
-                
-                // Fix flutter_vibrate AndroidManifest.xml package attribute issue
-                // The plugin's manifest has a deprecated package attribute
-                // We set namespace explicitly above, and use manifest merger properties to ignore the package attribute
-                if (project.name == 'flutter_vibrate') {
-                    // Try to modify the manifest source before it's processed
-                    project.afterEvaluate {
-                        def sourceManifest = file("${project.projectDir}/src/main/AndroidManifest.xml")
-                        if (sourceManifest.exists()) {
-                            try {
-                                def manifestContent = sourceManifest.text
-                                if (manifestContent.contains('package="flutter.plugins.vibrate"')) {
-                                    // Ensure build directory exists before creating backup
-                                    project.buildDir.mkdirs()
-                                    // Create backup and modify
-                                    def backupManifest = file("${project.buildDir}/AndroidManifest.xml.backup")
-                                    backupManifest.parentFile.mkdirs() // Ensure parent directory exists
-                                    backupManifest.write(manifestContent)
-                                    manifestContent = manifestContent.replaceAll('package="flutter.plugins.vibrate"', '')
-                                    sourceManifest.write(manifestContent)
-                                    println("✅ Removed package attribute from flutter_vibrate AndroidManifest.xml")
-                                }
-                            } catch (Exception e) {
-                                println("⚠️ Could not modify flutter_vibrate manifest: ${e.message}")
-                                println("   Namespace is set, which should handle the package attribute")
-                            }
-                        }
-                    }
-                }
-                
-                
-                // ✅ Enforce minSdk 21 for all subprojects (required by NDK 26.1.10909125)
-                // NDK 26.1.10909125 requires minSdk 21+, but some plugins may have lower minSdk
-                // The android.ndk.suppressMinSdkVersionError=21 in gradle.properties suppresses the error
-                // We also set the experimental property here as a backup
-                defaultConfig {
-                    // Try to ensure minSdk is at least 21, but rely on suppress property if not possible
-                    try {
-                        // Access minSdkVersion property if it exists
-                        def minSdk = project.android.defaultConfig.minSdkVersion
-                        if (minSdk != null && minSdk instanceof Integer && minSdk < 21) {
-                            project.android.defaultConfig.minSdkVersion 21
-                            println("✅ Updated minSdkVersion to 21 for ${project.name}")
-                        }
-                    } catch (Exception e) {
-                        // Suppress property in gradle.properties will handle this
-                    }
-                }
-                
-                // ✅ Enforce Java 17 for all subprojects to match Kotlin JVM target
-                // This fixes JVM target compatibility issues between Java and Kotlin
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_17
-                    targetCompatibility JavaVersion.VERSION_17
-                }
-                
-                // ✅ Configure NDK for plugins that require it (e.g., rive_common)
-                // Use the root NDK version if available
-                if (rootNdkVersion) {
-                    try {
-                        ndkVersion rootNdkVersion
-                        println("✅ Configured NDK ${rootNdkVersion} for ${project.name}")
-                    } catch (Exception e) {
-                        println("⚠️ Could not set NDK version for ${project.name}: ${e.message}")
-                    }
-                } else {
-                    println("⚠️ No NDK available for ${project.name} - plugins requiring NDK may fail")
-                }
-                
-                // ✅ Suppress NDK minSdk version error (already set in gradle.properties, but ensure it's applied)
-                // This allows plugins with lower minSdk to work with NDK 26.1.10909125
-                experimentalProperties["android.ndk.suppressMinSdkVersionError"] = "21"
-            }
-        }
-        
-        // ✅ Enforce minimum Kotlin language version 1.8 (required by Kotlin 2.2.0 compiler)
-        // and JVM target 17 for all subprojects
-        // Use lenient compiler settings to support older plugin source code
-        project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-            kotlinOptions {
-                languageVersion = '1.8'
-                apiVersion = '1.8'
-                jvmTarget = '17'
-                // Use lenient compiler flags for better compatibility with older plugins
-                freeCompilerArgs += [
-                    '-Xjvm-default=all',
-                    '-Xsuppress-version-warnings'
-                ]
             }
         }
     }
 
-    // Keep each module's build output organized under root /build/
+    // Keep each module’s build output organized under root /build/
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-    // ❌ REMOVED: evaluationDependsOn(':app') causes circular dependency issues
-    // This forces evaluation of :app during subproject configuration, which triggers
-    // NDK validation before the build is ready, causing build failures.
-    // The app project will be evaluated naturally when needed during the build process.
+    project.evaluationDependsOn(':app')
 }
 
 // ✅ Clean task
