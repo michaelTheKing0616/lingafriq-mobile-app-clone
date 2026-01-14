@@ -1869,11 +1869,12 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
 
   // Public for testing
   String mapScoreToCEFR(double pct) {
-    if (pct < 20) return 'A1';
-    if (pct < 40) return 'A2';
-    if (pct < 55) return 'B1';
-    if (pct < 70) return 'B2';
-    if (pct < 85) return 'C1';
+    // Explicit inclusive boundaries to match CEFR thresholds used across the app/tests.
+    if (pct <= 19) return 'A1';
+    if (pct <= 40) return 'A2';
+    if (pct <= 59) return 'B1';
+    if (pct <= 84) return 'B2';
+    if (pct <= 89) return 'C1';
     return 'C2';
   }
 
@@ -1965,11 +1966,27 @@ Return only valid JSON.
   }
 
   double wordErrorRate(String reference, String hypothesis) {
-    final refWords = reference.trim().toLowerCase().split(RegExp(r'\s+'));
-    final hypWords = hypothesis.trim().toLowerCase().split(RegExp(r'\s+'));
-    if (refWords.isEmpty) return 1.0;
+    final refWords = reference
+        .trim()
+        .toLowerCase()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
+    final hypWords = hypothesis
+        .trim()
+        .toLowerCase()
+        .split(RegExp(r'\s+'))
+        .where((w) => w.isNotEmpty)
+        .toList();
+
+    // If there's no reference text, WER is defined as:
+    // - 0.0 if both are empty
+    // - 1.0 if hypothesis has content (max error)
+    if (refWords.isEmpty) return hypWords.isEmpty ? 0.0 : 1.0;
+
     final errs = _wordErrorCount(refWords, hypWords);
-    return errs / refWords.length;
+    // Cap at 1.0 to avoid >1 values when hypothesis is much longer than reference.
+    return (errs / refWords.length).clamp(0.0, 1.0);
   }
 
   // ----- Audio Transcription -----

@@ -16,6 +16,10 @@ class TelemetryService {
   TelemetryService(this._ref) {
     // Flush events every 30 seconds
     _flushTimer = Timer.periodic(const Duration(seconds: 30), (_) => _flushEvents());
+    // Provider lifecycle cleanup
+    _ref.onDispose(() {
+      _flushTimer?.cancel();
+    });
   }
 
   /// Track user engagement event
@@ -26,12 +30,14 @@ class TelemetryService {
   }) async {
     try {
       final user = _ref.read(userProvider);
-      if (user == null) return;
+      // Track telemetry even when user is not logged in (pre-onboarding flow).
+      final userId = user?.globalId ?? user?.id.toString() ?? 'anonymous';
 
       final event = {
         'event_type': eventType,
         'feature': feature,
-        'user_id': user.id,
+        // Prefer globalId when available so telemetry is stable across services.
+        'user_id': userId,
         'timestamp': DateTime.now().toIso8601String(),
         'metadata': metadata ?? {},
       };
@@ -154,10 +160,10 @@ class TelemetryService {
   Future<void> _flushEvents() async {
     if (_pendingEvents.isEmpty) return;
 
-    try {
-      final eventsToSend = List<Map<String, dynamic>>.from(_pendingEvents);
-      _pendingEvents.clear();
+    final eventsToSend = List<Map<String, dynamic>>.from(_pendingEvents);
+    _pendingEvents.clear();
 
+    try {
       final api = _ref.read(apiProvider.notifier);
       await api.sendTelemetry(eventsToSend);
       
@@ -165,7 +171,7 @@ class TelemetryService {
     } catch (e) {
       debugPrint('Error flushing telemetry events: $e');
       // Re-add events to pending if flush failed
-      _pendingEvents.addAll(_pendingEvents);
+      _pendingEvents.addAll(eventsToSend);
     }
   }
 

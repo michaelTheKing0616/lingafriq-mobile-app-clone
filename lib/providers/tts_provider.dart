@@ -21,6 +21,12 @@ class TTSProvider extends BaseProvider {
 
   @override
   BaseProviderState build() {
+    // Notifier has no dispose(); register cleanup via ref.onDispose instead.
+    ref.onDispose(() {
+      // Best-effort cleanup (don't throw during dispose).
+      cleanup();
+    });
+
     _playerSub ??= _player.playerStateStream.listen((state) {
       final nowSpeaking =
           state.playing && state.processingState != ProcessingState.completed;

@@ -18,6 +18,10 @@ class HeartsNotifier extends Notifier<HeartsState> {
 
   @override
   HeartsState build() {
+    // Notifier has no dispose(); register cleanup via ref.onDispose instead.
+    ref.onDispose(() {
+      _regenerationTimer?.cancel();
+    });
     _loadState();
     return HeartsState();
   }
@@ -217,10 +221,7 @@ class HeartsNotifier extends Notifier<HeartsState> {
     _saveState();
   }
 
-  @override
-  void dispose() {
-    _regenerationTimer?.cancel();
-  }
+  // Note: no dispose() override for Notifier.
 }
 
 /// Extension for easy hearts access

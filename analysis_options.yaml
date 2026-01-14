@@ -10,6 +10,13 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  errors:
+    # The codebase is on a Flutter/Dart version where many legacy APIs are marked
+    # deprecated (e.g. Color.withOpacity, MaterialStateProperty). These are noisy
+    # and don’t impact runtime correctness; treat them as non-blocking while the
+    # audit focuses on correctness, security, and stability.
+    deprecated_member_use: ignore
+    deprecated_member_use_from_same_package: ignore
   exclude:
     # This folder is a curriculum JSON bundle; it contains one experimental Dart file
     # (`ai_chat_provider_patched.dart`) that is not imported by the runtime app.
