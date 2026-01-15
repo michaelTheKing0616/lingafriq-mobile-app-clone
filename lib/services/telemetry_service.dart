@@ -18,6 +18,10 @@ class TelemetryService {
     _flushTimer = Timer.periodic(const Duration(seconds: 30), (_) => _flushEvents());
   }
 
+  void dispose() {
+    _flushTimer?.cancel();
+  }
+
   /// Track user engagement event
   Future<void> trackEngagement({
     required String eventType,
@@ -179,6 +183,8 @@ class TelemetryService {
 }
 
 final telemetryServiceProvider = Provider<TelemetryService>((ref) {
-  return TelemetryService(ref);
+  final svc = TelemetryService(ref);
+  ref.onDispose(svc.dispose);
+  return svc;
 });
 
