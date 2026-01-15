@@ -2,7 +2,11 @@
 
 buildscript {
     ext {
-        kotlin_version = '2.2.0' // ✅ Upgrade to Kotlin 2.x (1.9.x soon unsupported)
+        // Kotlin 2.x drops support for languageVersion 1.4, and some transitive
+        // Flutter plugins (e.g. sentry_flutter) still request 1.4, causing CI failures:
+        //   "Language version 1.4 is no longer supported; please, use version 1.8 or greater."
+        // Use a stable Kotlin 1.9 line for maximum plugin compatibility.
+        kotlin_version = '1.9.24'
         agp_version = '8.6.0'     // ✅ Android Gradle Plugin (works with Flutter 3.35+)
         gms_version = '4.4.2'     // ✅ Google Services plugin
     }
