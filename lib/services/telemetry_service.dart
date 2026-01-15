@@ -35,7 +35,7 @@ class TelemetryService {
     try {
       final user = _ref.read(userProvider);
       // Track telemetry even when user is not logged in (pre-onboarding flow).
-      final userId = user?.globalId ?? user?.id.toString() ?? 'anonymous';
+      final userId = user?.global_id ?? user?.id.toString() ?? 'anonymous';
 
       final event = {
         'event_type': eventType,
