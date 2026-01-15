@@ -13,6 +13,15 @@ class TTSProvider extends BaseProvider {
   final VoiceServiceClient _voiceClient = VoiceServiceClient();
   String? _currentLanguage;
 
+  @override
+  BaseProviderState build() {
+    // Notifier has no dispose(); register cleanup via ref.onDispose instead.
+    ref.onDispose(() {
+      _voiceClient.dispose();
+    });
+    return BaseProviderState();
+  }
+
   /// Initialize TTS provider
   Future<void> init() async {
     // Voice service client is ready to use
@@ -71,9 +80,4 @@ class TTSProvider extends BaseProvider {
 
   /// Check if currently playing
   bool get isPlaying => _voiceClient.isPlaying;
-
-  @override
-  void dispose() {
-    _voiceClient.dispose();
-  }
 }
