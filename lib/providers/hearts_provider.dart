@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/hearts_system_model.dart';
 import '../services/sound_effects_service.dart';
 import 'gamification_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for hearts/lives system
 final heartsProvider = NotifierProvider<HeartsNotifier, HeartsState>(() {
@@ -46,7 +47,7 @@ class HeartsNotifier extends Notifier<HeartsState> {
         }
       }
     } catch (e) {
-      debugPrint('Error loading hearts state: $e');
+      logger.error('Error loading hearts state', tag: 'hearts', error: e);
     }
   }
 
@@ -84,7 +85,7 @@ class HeartsNotifier extends Notifier<HeartsState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_storageKey, jsonEncode(state.toJson()));
     } catch (e) {
-      debugPrint('Error saving hearts state: $e');
+      logger.error('Error saving hearts state', tag: 'hearts', error: e);
     }
   }
 
@@ -164,17 +165,18 @@ class HeartsNotifier extends Notifier<HeartsState> {
   /// Refill hearts (with cowries or ads)
   Future<bool> refillHearts({bool useCowries = true}) async {
     if (useCowries) {
-      // Check if user has enough cowries
-      final gamification =
-          ref.read(gamificationProvider.notifier).gamification;
+      // Check if user has enough cowries and deduct
+      final gamificationNotifier = ref.read(gamificationProvider.notifier);
+      final gamification = gamificationNotifier.gamification;
       if (gamification.cowries < HeartsConfig.cowriesCostPerRefill) {
         return false;
       }
 
       // Deduct cowries
-      await ref.read(gamificationProvider.notifier).spendCurrency(
+      final success = await gamificationNotifier.spendCurrency(
         cowries: HeartsConfig.cowriesCostPerRefill,
       );
+      if (!success) return false;
     }
 
     // Refill hearts

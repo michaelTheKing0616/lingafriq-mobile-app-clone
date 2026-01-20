@@ -9,7 +9,9 @@ import 'backend_sync_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
-import '../services/gamification/events_service.dart';
+import '../services/rive_gamification_service.dart';
+import '../utils/api.dart';
+import '../utils/structured_logger.dart';
 
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
@@ -51,14 +53,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
       if (user != null) {
         final success = await ref.read(apiProvider.notifier).awardXP(
           userId: user.id.toString(),
-          amount: xpGain,
           source: backendSource,
           sourceId: uniqueSourceId,
+          amount: xpGain,
           difficultyMultiplier: multiplier,
         );
         
         if (!success) {
-          debugPrint('Failed to award XP via backend for source: $source');
+          logger.warn('Failed to award XP via backend', tag: 'gamification', context: {'source': source});
           // Fall back to local-only if backend fails (for offline support)
           // But don't sync to backend to prevent double-counting
         } else {
@@ -78,13 +80,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
               );
             }
           } catch (e) {
-            debugPrint('Error updating local XP from backend: $e');
+            logger.error('Error updating local XP from backend', tag: 'gamification', error: e);
             // Continue with local calculation
           }
         }
       }
     } catch (e) {
-      debugPrint('Error awarding XP via backend: $e');
+      logger.error('Error awarding XP via backend', tag: 'gamification', error: e, context: {'source': source});
       // Fall back to local-only for offline support
     }
     
@@ -108,7 +110,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
       _gamification = _gamification.copyWith(
         cowries: _gamification.cowries + levelUpBonus,
       );
-      debugPrint('Level up! New level: $newLevel - $newTitle');
+      logger.info('Level up!', tag: 'gamification', context: {'newLevel': newLevel, 'newTitle': newTitle});
+      
+      // React with Rive
+      try {
+        ref.read(riveGamificationServiceProvider).reactToLevelUp(newLevel: newLevel);
+      } catch (e) {
+        logger.warn('Rive service not available', tag: 'gamification', error: e);
+      }
       
       // Emit level up event
       await _emitEvent('level_up', {
@@ -164,7 +173,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         userId: user.id.toString(),
       );
     } catch (e) {
-      debugPrint('Error emitting event: $e');
+      logger.error('Error emitting event', tag: 'gamification', error: e, context: {'eventType': eventType});
       // Don't throw - event emission failure shouldn't break XP flow
     }
   }
@@ -193,32 +202,15 @@ class GamificationProvider extends Notifier<BaseProviderState>
       // Use freeze (Ask the Ancestors)
       newStreak = _gamification.dailyStreak;
       newFreezeLeft = _gamification.freezeLeft - 1;
-      debugPrint('Used streak freeze! Remaining: $newFreezeLeft');
+      logger.info('Used streak freeze', tag: 'gamification', context: {'remaining': newFreezeLeft});
     } else {
       // Streak broken
-      if (_gamification.ubuntuStreakActive && _gamification.dailyStreak > 0) {
-        // Ubuntu mode: donate lessons instead of breaking.
-        final previousStreak = _gamification.dailyStreak;
-        final donatedLessons = previousStreak.clamp(1, 30);
-        final estimatedDonatedXp = donatedLessons * 30; // ~30 XP per lesson
-
-        debugPrint(
-          'Ubuntu streak: donating $donatedLessons lessons (~$estimatedDonatedXp XP) '
-          'to help others instead of breaking a ${previousStreak}-day streak.',
-        );
-
-        // Fire-and-forget donation to backend; failure should not block UX.
-        _donateUbuntuStreak(
-          streakBefore: previousStreak,
-          donatedLessons: donatedLessons,
-          donatedXp: estimatedDonatedXp,
-        );
-
-        // Preserve streak instead of resetting.
-        newStreak = previousStreak;
-      } else {
-        newStreak = 1;
+      if (_gamification.ubuntuStreakActive) {
+        // Ubuntu mode: donate lessons instead of breaking
+        logger.info('Ubuntu streak: Donating lessons to help others', tag: 'gamification');
+        await _donateLessonsToCommunity();
       }
+      newStreak = 1;
     }
 
     // Streak bonuses
@@ -238,41 +230,18 @@ class GamificationProvider extends Notifier<BaseProviderState>
     // Award XP for daily check-in
     await awardXP('daily_checkin');
 
+    // React with Rive
+    try {
+      ref.read(riveGamificationServiceProvider).reactToDailyCheckIn(streak: newStreak);
+    } catch (e) {
+      logger.warn('Rive service not available', tag: 'gamification', error: e);
+    }
+
     await _saveGamification();
     await _checkBadges();
     await _syncToBackend();
 
     state = state.copyWith();
-  }
-
-  /// Ubuntu streak donation helper – informs backend that the learner chose
-  /// to convert a broken streak into help for others.
-  Future<void> _donateUbuntuStreak({
-    required int streakBefore,
-    required int donatedLessons,
-    required int donatedXp,
-  }) async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) return;
-
-      final api = ref.read(apiProvider.notifier);
-      await api.donateUbuntuStreak(
-        streakBefore: streakBefore,
-        donatedLessons: donatedLessons,
-        donatedXp: donatedXp,
-        language: null, // Optional: can be wired to current study language
-      );
-
-      // Emit a local gamification event for analytics / UI nudges.
-      await _emitEvent('ubuntu_donation', {
-        'streak_before': streakBefore,
-        'donated_lessons': donatedLessons,
-        'donated_xp': donatedXp,
-      });
-    } catch (e) {
-      debugPrint('Error during Ubuntu streak donation: $e');
-    }
   }
 
   /// Check perfect week streak
@@ -293,7 +262,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     final badge = BadgeDefinitions.getBadgeById(badgeId);
     if (badge == null) {
-      debugPrint('Badge not found: $badgeId');
+      logger.warn('Badge not found', tag: 'gamification', context: {'badgeId': badgeId});
       return false;
     }
 
@@ -312,8 +281,15 @@ class GamificationProvider extends Notifier<BaseProviderState>
     await _saveGamification();
     await _syncToBackend();
 
+    // React with Rive
+    try {
+      ref.read(riveGamificationServiceProvider).reactToBadgeUnlock();
+    } catch (e) {
+      logger.warn('Rive service not available', tag: 'gamification', error: e);
+    }
+
     state = state.copyWith();
-    debugPrint('Badge unlocked: ${badge.name}');
+    logger.info('Badge unlocked', tag: 'gamification', context: {'badgeName': badge.name, 'badgeId': badgeId});
     return true;
   }
 
@@ -425,46 +401,41 @@ class GamificationProvider extends Notifier<BaseProviderState>
     state = state.copyWith();
   }
 
-  /// Enable Ubuntu streak (never break - help others if you do)
-  Future<void> enableUbuntuStreak() async {
-    _gamification = _gamification.copyWith(ubuntuStreakActive: true);
-    await _saveGamification();
-    await _syncToBackend();
-    state = state.copyWith();
-  }
-
-  /// Explicitly set the Ubuntu streak flag (used when turning it off).
-  Future<void> setUbuntuStreakActive(bool active) async {
-    _gamification = _gamification.copyWith(ubuntuStreakActive: active);
-    await _saveGamification();
-    await _syncToBackend();
-    state = state.copyWith();
-  }
-
-  /// Spend currency (used by hearts refills and store purchases).
+  /// Spend currency (deduct from current balance)
   Future<bool> spendCurrency({
     required int cowries,
     int? ngwenya,
     int? ancestralBeads,
   }) async {
+    // Check if user has enough currency
     if (_gamification.cowries < cowries) return false;
     if (ngwenya != null && _gamification.ngwenya < ngwenya) return false;
-    if (ancestralBeads != null && _gamification.ancestralBeads < ancestralBeads) {
-      return false;
-    }
+    if (ancestralBeads != null && _gamification.ancestralBeads < ancestralBeads) return false;
 
+    // Deduct currency
     _gamification = _gamification.copyWith(
       cowries: _gamification.cowries - cowries,
       ngwenya: ngwenya != null ? _gamification.ngwenya - ngwenya : _gamification.ngwenya,
-      ancestralBeads: ancestralBeads != null
-          ? _gamification.ancestralBeads - ancestralBeads
-          : _gamification.ancestralBeads,
+      ancestralBeads: ancestralBeads != null ? _gamification.ancestralBeads - ancestralBeads : _gamification.ancestralBeads,
     );
-
     await _saveGamification();
     await _syncToBackend();
     state = state.copyWith();
     return true;
+  }
+
+  /// Enable Ubuntu streak (never break - help others if you do)
+  Future<void> enableUbuntuStreak() async {
+    _gamification = _gamification.copyWith(ubuntuStreakActive: true);
+    await _saveGamification();
+    state = state.copyWith();
+  }
+
+  /// Toggle Ubuntu streak on/off (used by the Ubuntu card switch).
+  Future<void> setUbuntuStreakActive(bool isActive) async {
+    _gamification = _gamification.copyWith(ubuntuStreakActive: isActive);
+    await _saveGamification();
+    state = state.copyWith();
   }
 
   /// Persistence
@@ -474,7 +445,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final json = _gamification.toJson();
       await prefs.setString('user_gamification', jsonEncode(json));
     } catch (e) {
-      debugPrint('Error saving gamification: $e');
+      logger.error('Error saving gamification', tag: 'gamification', error: e);
     }
   }
 
@@ -487,7 +458,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         _gamification = UserGamificationModel.fromJson(json);
       }
     } catch (e) {
-      debugPrint('Error loading gamification: $e');
+      logger.error('Error loading gamification', tag: 'gamification', error: e);
     }
   }
 
@@ -505,7 +476,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error syncing gamification with backend: $e');
+      logger.error('Error syncing gamification with backend', tag: 'gamification', error: e);
     }
   }
 
@@ -524,7 +495,36 @@ class GamificationProvider extends Notifier<BaseProviderState>
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing gamification sync: $e');
+      logger.error('Error queuing gamification sync', tag: 'gamification', error: e);
+    }
+  }
+
+  /// Donate lessons to community when Ubuntu streak would break
+  Future<void> _donateLessonsToCommunity() async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final api = ref.read(apiProvider.notifier);
+      final response = await api.post(
+        Api.ubuntuDonate,
+        data: {
+          'streakBefore': _gamification.dailyStreak,
+          'donatedLessons': 1, // Donate 1 lesson per broken streak
+          'language': user.learningLanguage ?? 'yoruba',
+        },
+      );
+
+      if (response != null && response.statusCode == 200) {
+        logger.info('Successfully donated lesson to community via Ubuntu streak', tag: 'gamification');
+        // Award small XP bonus for donation
+        await awardXP('ubuntu_donation', multiplier: 0.5);
+      } else {
+        logger.warn('Failed to donate lesson', tag: 'gamification', context: {'statusCode': response?.statusCode});
+      }
+    } catch (e) {
+      logger.error('Error donating lesson to community', tag: 'gamification', error: e);
+      // Don't throw - this is a nice-to-have feature, don't break the streak logic
     }
   }
 

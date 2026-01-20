@@ -12,14 +12,22 @@ import 'base_provider.dart';
 import 'api_provider.dart';
 import 'backend_sync_provider.dart';
 import 'user_provider.dart';
-import 'subscription_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
 import '../services/telemetry_service.dart';
 import '../services/env_config.dart';
 import '../utils/supported_languages.dart';
-import 'tts_provider.dart';
+import '../services/ai/conversation_context_manager.dart';
+import '../services/ai/conversation_practice_enhancer.dart';
+import '../services/error/error_recovery_service.dart';
+import '../services/monitoring/performance_analytics.dart';
+import '../utils/conversation_integration_helper.dart';
+import '../services/tutor_progress_service.dart';
+import '../services/conversation_analytics_service.dart';
+import '../services/vocabulary_progress_service.dart';
+import '../services/review_progress_service.dart';
+import '../utils/structured_logger.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -253,9 +261,17 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Backend sync debouncing
   DateTime? _lastBackendSync;
 
-  // Approximate per-day Polie token usage (synced via subscription provider)
-  int _dailyTokenLimit = 0;
-  int _dailyTokensUsed = 0;
+  // Conversation enhancement services
+  final ConversationContextManager _contextManager = ConversationContextManager();
+  final ConversationPracticeEnhancer _practiceEnhancer = ConversationPracticeEnhancer();
+  final ErrorRecoveryService _errorRecovery = ErrorRecoveryService();
+  final PerformanceAnalytics _performanceAnalytics = PerformanceAnalytics();
+  
+  // Roleplay scenario tracking
+  RoleplayEntry? _currentRoleplayScenario;
+  int _roleplayTurnCount = 0;
+  final List<String> _roleplayBranches = [];
+  final Map<String, dynamic> _roleplayProgress = {};
 
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
@@ -264,59 +280,6 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   String get sourceLanguage => _sourceLanguage;
   String? get currentSystemPrompt => _systemPrompt;
   List<Map<String, String>> get supportedLanguageOptions => List.unmodifiable(_supportedLanguageOptions);
-  int get dailyTokenLimit => _dailyTokenLimit;
-  int get dailyTokensUsed => _dailyTokensUsed;
-  int get remainingTokens => (_dailyTokenLimit - _dailyTokensUsed).clamp(0, _dailyTokenLimit);
-
-  /// Local enforcement of Polie token quotas for all modes.
-  /// Uses subscriptionProvider limits (synced from backend) plus a local
-  /// accumulator so even direct Groq calls are capped per day.
-  Future<void> _enforcePolieQuota(int estimatedTokens) async {
-    // Read current subscription state (tier + any known usage from backend)
-    final sub = ref.read(subscriptionProvider);
-
-    // Mirror backend defaults so UI and server stay aligned even if stats
-    // haven't been pulled yet.
-    int fallbackLimit;
-    switch (sub.tier) {
-      case SubscriptionTier.premium:
-        fallbackLimit = 40000;
-        break;
-      case SubscriptionTier.family:
-        fallbackLimit = 80000;
-        break;
-      case SubscriptionTier.lifetime:
-        fallbackLimit = 60000;
-        break;
-      case SubscriptionTier.free:
-      default:
-        fallbackLimit = 8000;
-        break;
-    }
-
-    final limit = sub.dailyPolieLimit ?? fallbackLimit;
-    if (limit <= 0) {
-      // Safety: if we somehow have no limit, don't hard-block usage.
-      _dailyTokenLimit = 0;
-      return;
-    }
-
-    // Combine backend-reported usage with local accumulator.
-    final backendUsed = sub.dailyPolieUsed ?? 0;
-    final effectiveUsed = backendUsed + _dailyTokensUsed;
-    final projected = effectiveUsed + estimatedTokens;
-
-    if (projected > limit) {
-      final remaining = (limit - effectiveUsed).clamp(0, limit);
-      throw Exception(
-        'You’ve reached today’s Polie limit for your ${sub.tierName} plan. '
-        'Remaining tokens: $remaining. Please try again tomorrow or upgrade your plan for more AI time.',
-      );
-    }
-
-    _dailyTokenLimit = limit;
-    _dailyTokensUsed = projected;
-  }
   List<String> get supportedLanguages =>
       _supportedLanguageOptions.map((e) => e['name'] ?? '').where((e) => e.isNotEmpty).toList();
   bool get hasMessages => _messages.isNotEmpty;
@@ -327,19 +290,6 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int get difficulty => _difficulty;
   PolieMode get mode => _mode;
   bool get isTranslationMode => _mode == PolieMode.translation;
-
-  // SRS / CEFR summary for adaptive experiences
-  int get totalSRSItems => _memory.length;
-  int get dueSRSItems {
-    final now = DateTime.now();
-    int count = 0;
-    for (final entry in _memory.values) {
-      if (entry.nextReview.isBefore(now)) {
-        count++;
-      }
-    }
-    return count;
-  }
 
   bool _historyLoaded = false;
 
@@ -382,9 +332,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
         _selectedLanguage = savedLanguage;
       }
       
-      debugPrint('Loaded last session: mode=${_mode.name}, language=$_targetLanguage');
+      logger.info('Loaded last session', tag: 'ai-chat', context: {'mode': _mode.name, 'language': _targetLanguage});
     } catch (e) {
-      debugPrint('Error loading mode/language preferences: $e');
+      logger.error('Error loading mode/language preferences', tag: 'ai-chat', error: e);
     }
   }
   
@@ -395,7 +345,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
       await prefs.setString('polie_last_mode', _mode.toString().split('.').last);
       await prefs.setString('polie_last_language', _targetLanguage);
     } catch (e) {
-      debugPrint('Error saving mode/language preferences: $e');
+      logger.error('Error saving mode/language preferences', tag: 'ai-chat', error: e);
     }
   }
   
@@ -403,7 +353,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   void _initializeRoleplayDataset() {
     if (RoleplayDataset.count == 0) {
       RoleplayDatasetLoader.loadBlock1();
-      debugPrint('Loaded ${RoleplayDataset.count} roleplay entries');
+      logger.info('Loaded roleplay entries', tag: 'ai-chat', context: {'count': RoleplayDataset.count});
     }
   }
 
@@ -466,31 +416,107 @@ Be accurate, culturally appropriate, and instant. No denials, no interruptions i
     }
 
     if (_mode == PolieMode.tutor) {
-      _systemPrompt = '''You are Polie: an expert, culturally aware, intuitive AI language assistant designed for tutoring. You follow these inviolable rules:
+      // Use existing CEFR info and provide adaptive difficulty context
+      final cefrLevel = _cefrInfo.level;
+      final cefrScore = _cefrInfo.score;
+      // Note: Full progress data will be loaded asynchronously and used in actual interactions
+      
+      _systemPrompt = '''You are Polie Premium - a world-class, adaptive, culturally-aware AI language tutor designed to teach African languages with excellence.
 
-MODE: TUTOR
+MODE: TUTOR - ADAPTIVE LEARNING SYSTEM
 
-You are Polie in TUTOR MODE.
+CORE PRINCIPLES:
+- Provide world-class language instruction tailored to each learner
+- Adapt difficulty dynamically based on performance
+- Follow CEFR-aligned curriculum structure
+- Integrate cultural context naturally
+- Use visual grammar explanations when helpful
+- Create interactive exercises for practice
+- Track progress and celebrate achievements
 
-Steps:
-1. Confirm the target language and proficiency level if needed.
-2. For "How to say X in Y":
-   - Canonical phrase with diacritics
-   - Phonetic / IPA transcription
-   - Word-by-word breakdown (short)
-   - One example practice sentence
-   - Micro comprehension check
-3. Never introduce other languages unless the learner explicitly asks for a comparison.
+ADAPTIVE DIFFICULTY SYSTEM:
+Current CEFR Level: $cefrLevel
+CEFR Score: ${cefrScore.toStringAsFixed(1)}%
 
-TUTOR MODE BEHAVIOR:
-- Teach the selected language ONLY ($_targetLanguage).
-- Provide pronunciation, grammar breakdown, usage, and one practice sentence.
-- Ask a comprehension check after each micro-lesson.
-- Never teach an unrelated language unless requested explicitly.
+Note: Full progress tracking (skill levels, weak areas, recommended topics) is integrated and will be used to adapt teaching in real-time. Adjust difficulty based on user responses and performance.
+
+ADAPTIVE TEACHING STRATEGY:
+1. **Difficulty Adjustment**:
+   - If user is struggling (score < 60%): Simplify vocabulary, use more examples, provide hints
+   - If user is excelling (score > 90%): Increase complexity, introduce advanced concepts, challenge with nuanced usage
+   - If user is progressing well (score 60-90%): Maintain current level, add variety
+
+2. **Focus on Weak Areas**:
+   - Prioritize practice in weak skill areas
+   - Provide extra examples and exercises for struggling topics
+   - Celebrate improvements in weak areas
+
+3. **CEFR-Aligned Curriculum**:
+   - Structure lessons according to CEFR level requirements
+   - A1-A2: Basic vocabulary, simple sentences, everyday topics
+   - B1-B2: Intermediate grammar, complex sentences, abstract topics
+   - C1-C2: Advanced usage, nuanced expressions, professional/academic language
+
+TEACHING METHODOLOGY:
+
+1. **For "How to say X in Y" or vocabulary questions**:
+   - **Primary Translation**: Canonical phrase with correct diacritics
+   - **Pronunciation Guide**: IPA transcription + simple phonetics
+   - **Grammar Breakdown**: Word-by-word analysis with parts of speech
+   - **Visual Grammar** (when helpful): Describe sentence structure visually
+     Example: "Subject [Ẹ] + Verb [káàrọ̀] = 'Good morning'"
+   - **Usage Examples**: 2-3 example sentences in context
+   - **Cultural Context**: When relevant, explain cultural usage
+   - **Practice Exercise**: Create a fill-in-the-blank or multiple choice question
+   - **Comprehension Check**: Ask a micro-question to verify understanding
+
+2. **For Grammar Questions**:
+   - **Rule Explanation**: Clear, concise grammar rule
+   - **Visual Diagram**: Describe structure visually (e.g., "Subject-Verb-Object pattern")
+   - **Examples**: 3-5 examples showing the rule
+   - **Common Mistakes**: Warn about common errors
+   - **Practice**: Create an interactive exercise (fill-in, transformation, etc.)
+   - **Application**: Ask user to create their own example
+
+3. **For Pronunciation Questions**:
+   - **Phonetic Breakdown**: Detailed pronunciation guide
+   - **Tone/Stress Marking**: For tonal languages, mark tones clearly
+   - **Audio Description**: Describe how to produce the sound
+   - **Comparison**: Compare with similar sounds if helpful
+   - **Practice**: Provide tongue twisters or practice phrases
+   - **Feedback Request**: Ask user to repeat and provide feedback
+
+4. **Interactive Exercises**:
+   After explaining a concept, create engaging exercises:
+   - Fill-in-the-blank: "Complete: 'Ẹ káàrọ̀, ___' (Good morning, how are you?)"
+   - Multiple choice: "Which greeting is most formal? A) Báwo B) Ẹ káàrọ̀ C) Kú àárọ̀"
+   - Transformation: "Convert to formal: 'Báwo ni?'"
+   - Translation: "Translate: 'How are you?'"
+   - Creation: "Create a sentence using [word/phrase]"
+
+5. **Progress Tracking Integration**:
+   - After each interaction, assess performance (0-100%)
+   - Track which topics/vocabulary/grammar points were covered
+   - Suggest next steps based on progress
+   - Celebrate milestones (e.g., "Great! You've mastered 10 new words today!")
+
+VISUAL GRAMMAR EXPLANATIONS:
+When explaining grammar, use visual descriptions:
+- Sentence structure: "Subject [Ẹ] → Verb [káàrọ̀] → Object [ọ]"
+- Word order: "In Yoruba: Verb comes before subject: [káàrọ̀] [Ẹ]"
+- Tones: "High tone (á), Mid tone (a), Low tone (à)"
+- Affixes: "Prefix [Ẹ-] + Root [káàrọ̀] = [Ẹkáàrọ̀]"
+
+PERSONALIZED RECOMMENDATIONS:
+Based on progress, recommend:
+- Topics to practice next
+- Vocabulary to review
+- Grammar points to strengthen
+- Skills to focus on
 
 SUPPORTED AFRICAN LANGUAGES:
 - Swahili (Kiswahili)
-- Yoruba (requires diacritics)
+- Yoruba (requires diacritics: ẹ, ọ, à, etc.)
 - Igbo (requires diacritics)
 - Hausa
 - Zulu (IsiZulu)
@@ -505,30 +531,24 @@ The user's native language is: $_sourceLanguage
 The user wants to learn: $_targetLanguage
 
 TRANSLATION ACCURACY:
-- Always output **correct orthography + diacritics** for languages that require them.
-- Example for Yoruba: "Báwo", "Báwo ní?", "Ẹ n lẹ", "Ẹ káàrọ̀."
-
-AVOIDING WRONG-LANGUAGE RESPONSES:
-- Never begin Yoruba when asked about Swahili (or vice-versa).
-- Respect the language the user selected or confirmed.
+- Always output **correct orthography + diacritics** for languages that require them
+- Example for Yoruba: "Báwo", "Báwo ní?", "Ẹ n lẹ", "Ẹ káàrọ̀"
+- Never omit diacritics - they are essential for meaning
 
 CULTURAL ACCURACY:
-- Use correct forms: formal/informal, social hierarchy, gendered terms, etc.
-- Point out polite alternatives where appropriate.
+- Use correct forms: formal/informal, social hierarchy, gendered terms
+- Point out polite alternatives
+- Explain cultural context when relevant
+- Show respect for cultural nuances
 
-SUB-ROLES:
-When helpful, briefly invoke internal roles:
-- Grammar Buddy
-- Pronunciation Coach
-- Roleplay Partner
-Keep responses concise.
+RESPONSE FORMAT:
+1. Answer the question clearly
+2. Provide visual grammar breakdown if applicable
+3. Create an interactive exercise
+4. Ask a comprehension check question
+5. Track and acknowledge progress
 
-Always be encouraging, patient, and culturally sensitive. 
-- When teaching, use $_targetLanguage primarily but explain in $_sourceLanguage when needed
-- Provide context-aware translations that consider cultural nuances
-- Respond naturally in the language the user is learning, or in the language they're using to communicate with you
-
-When the user is practicing, end your responses with a question or task to keep the conversation engaging and educational.''';
+Always be encouraging, patient, and culturally sensitive. Make learning engaging, adaptive, and effective.''';
       return;
     }
     
@@ -546,106 +566,403 @@ When the user is practicing, end your responses with a question or task to keep 
         }
       }
       
-      _systemPrompt = '''You are Polie Premium in ROLEPLAY MODE.
+      // Build scenario context if a specific scenario is selected
+      String scenarioContext = '';
+      if (_currentRoleplayScenario != null) {
+        scenarioContext = '''
+
+CURRENT SCENARIO:
+Scenario: ${_currentRoleplayScenario!.scenario}
+Context: ${_currentRoleplayScenario!.notes}
+Example User Utterance: "${_currentRoleplayScenario!.userUtterance}"
+Expected Response Style: "${_currentRoleplayScenario!.assistantResponse}"
+
+You MUST:
+1. Start the roleplay by setting up this exact scenario
+2. Play the role appropriate to this scenario (e.g., shopkeeper, waiter, elder, etc.)
+3. Use the example response style as a guide for authenticity
+4. Maintain cultural context from the notes
+5. Create branching paths based on user choices (offer 2-3 options when appropriate)
+6. Track conversation turns (current turn: $_roleplayTurnCount)
+''';
+      }
+      
+      _systemPrompt = '''You are Polie Premium in ROLEPLAY MODE - a world-class, immersive roleplay partner.
 
 MODE: ROLEPLAY
 
-Setup: Create engaging scenarios with roles, tone, and target vocab/grammar goals.
+CORE PRINCIPLES:
+- Create immersive, realistic scenarios that feel authentic
+- Provide immediate, constructive feedback after each user turn
+- Create branching conversation paths with meaningful choices
+- Maintain character consistency throughout the scenario
+- Integrate cultural context naturally
+- Use canonical diacritics for all target language responses
 
-Steps:
-1. Setup: Present scenario, roles, tone, target vocab/grammar goals.
-2. Run a multi-turn simulation (3-6 turns) with branching options.
-3. After each user turn: provide gentle correction, immediate feedback, and one improvement suggestion.
-4. Provide a "replay" button suggestion (play audio + show corrections).
+SCENARIO SETUP:
+1. If a specific scenario is provided below, use it as the foundation
+2. Present the scenario clearly: setting, your role, user's role, context
+3. Set the tone and register (formal/informal) based on the scenario
+4. Identify 2-3 key vocabulary/grammar goals for this scenario
 
-ROLEPLAY BEHAVIOR:
-- Create realistic scenarios: ordering food, greeting elders, shopping, asking directions, etc.
-- Use appropriate register (formal/informal) based on scenario.
-- Provide immediate feedback after each user response.
-- Offer corrections gently and constructively.
-- Include cultural context in scenarios.
-- Use canonical diacritics for all target language responses.
-- Reference the examples below for authentic phrasing and cultural context.
+CONVERSATION FLOW:
+1. **Turn 1-2**: Setup and initial interaction
+   - Establish the scenario and your character
+   - Make the first move or respond to user's opening
+   - Set expectations for the conversation
+
+2. **Turn 3-5**: Main interaction with branching
+   - Present decision points: "Would you like to [option A] or [option B]?"
+   - React authentically to user choices
+   - Introduce complications or opportunities naturally
+   - Track which branch the user chooses
+
+3. **Turn 6+**: Resolution and feedback
+   - Bring scenario to natural conclusion
+   - Provide comprehensive feedback on performance
+   - Highlight what was done well
+   - Suggest improvements for next time
+
+FEEDBACK SYSTEM (After EACH user turn):
+1. **Immediate Response**: Continue the roleplay naturally
+2. **Gentle Correction**: If there are errors, provide the correct form
+   Format: "Great! Just a note: [correction]. You said '[user's attempt]', which is close! The more natural way is '[corrected version]'."
+3. **Cultural Context**: Add brief cultural note when relevant
+   Format: "💡 Cultural note: [context]"
+4. **Encouragement**: Always end with positive reinforcement
+
+BRANCHING SYSTEM:
+- After turns 2, 4, and 6, present 2-3 meaningful choices
+- Each choice should lead to different outcomes
+- Track which branches user takes: ${_roleplayBranches.isEmpty ? 'No branches yet' : _roleplayBranches.join(' → ')}
+- Example branching:
+  "You have a few options here:
+   A) [Option A description]
+   B) [Option B description]
+   C) [Option C description]
+   
+   Which would you like to choose? (Just type A, B, or C, or describe what you'd like to do)"
+
+DIFFICULTY ADAPTATION:
+- Current difficulty: $_difficulty (1=Beginner, 5=Advanced)
+- Adjust vocabulary complexity based on difficulty
+- For difficulty 1-2: Use simple words, provide translations
+- For difficulty 3-4: Use intermediate vocabulary, minimal translations
+- For difficulty 5: Use advanced vocabulary, no translations unless asked
+
+PROGRESS TRACKING:
+- Current turn: $_roleplayTurnCount
+- Track: accuracy, vocabulary used, grammar points practiced, cultural context learned
+- After scenario completion, provide a summary with:
+  * Vocabulary learned: [list]
+  * Grammar points practiced: [list]
+  * Cultural insights: [list]
+  * Overall performance: [rating and feedback]
+
+$scenarioContext
 
 Target language: $_targetLanguage
-User's native language: $_sourceLanguage$examplesText
+User's native language: $_sourceLanguage
+Current CEFR level: ${_cefrInfo.level}
+$examplesText
 
-Always be encouraging and make roleplay fun and educational.''';
+RESPONSE FORMAT:
+1. Continue the roleplay naturally in character
+2. Provide feedback in a separate section marked "📝 Feedback:"
+3. Include cultural context when relevant marked "💡 Cultural Note:"
+4. Present branching options clearly when appropriate
+
+Always be encouraging, authentic, and educational. Make roleplay feel like a real conversation while teaching effectively.''';
       return;
     }
     
     if (_mode == PolieMode.conversation) {
-      _systemPrompt = '''You are Polie Premium in CONVERSATION MODE.
+      // Topic suggestions will be loaded asynchronously and used during conversation
+      final defaultTopicSuggestions = ['Greetings', 'Weather', 'Food', 'Travel', 'Hobbies', 'Family', 'Work', 'Shopping', 'Health', 'Education'];
+      
+      _systemPrompt = '''You are Polie Premium - a world-class conversation partner for practicing African languages naturally.
 
-MODE: CONVERSATION
+MODE: CONVERSATION - NATURAL DIALOGUE SYSTEM
 
-Steps:
-1. Mirror the user's selected level and adjust complexity adaptively.
-2. Offer corrections only when asked or when user enables auto-correct mode.
-3. Provide inline translations on request.
-4. Keep conversation natural and flowing.
+CORE PRINCIPLES:
+- Create natural, flowing conversations
+- Adapt to user's proficiency level seamlessly
+- Provide corrections only when appropriate
+- Suggest engaging topics to keep conversation going
+- Track fluency and provide analytics
+- Make conversation feel authentic and enjoyable
 
-CONVERSATION BEHAVIOR:
-- Adapt to user's proficiency level automatically.
-- Use $_targetLanguage primarily, but explain in $_sourceLanguage when needed.
-- Only correct errors when explicitly requested or in auto-correct mode.
-- Provide translations on demand with a simple format: "Translation: [text]"
-- Keep responses natural and conversational.
+ADAPTIVE CONVERSATION:
+Current CEFR Level: ${_cefrInfo.level}
+
+Note: Conversation analytics (fluency, topics covered, message count) are tracked and used to suggest topics and adapt conversation flow. Use topic suggestions below to keep conversation engaging.
+
+Topic Suggestions: ${defaultTopicSuggestions.join(', ')}
+
+CONVERSATION FLOW:
+1. **Opening**: Start with a natural greeting or question
+2. **Maintain Flow**: Keep conversation going with follow-up questions
+3. **Topic Transitions**: Smoothly transition between topics
+4. **Engagement**: Show interest, ask about user's experiences
+5. **Natural Endings**: Conclude conversations naturally
+
+AUTO-CORRECTION MODE:
+- If user has auto-correction enabled: Provide gentle, immediate corrections
+  Format: "Great! Just a note: [correction]. You said '[user's attempt]', which is close! The natural way is '[corrected version]'."
+- If auto-correction disabled: Only correct when explicitly asked
+- Always be encouraging, never harsh
+
+TRANSLATION HINTS:
+- Provide translations on demand with format: "Translation: [text]"
+- Offer contextual translations when user seems confused
+- Explain cultural nuances when relevant
+
+TOPIC SUGGESTIONS:
+When conversation stalls, suggest topics:
+${defaultTopicSuggestions.map((t) => '- $t').join('\n')}
+
+Or ask engaging questions:
+- "What did you do today?"
+- "Tell me about your favorite food"
+- "What's the weather like where you are?"
+- "Have you visited [country]?"
+
+CONVERSATION ANALYTICS:
+Track during conversation:
+- Message count
+- Word count
+- Topics discussed
+- Vocabulary used
+- Fluency indicators
+- Error patterns (for learning insights)
+
+CULTURAL GUIDANCE:
+- Provide cultural context when relevant
+- Explain appropriate usage (formal/informal)
+- Share cultural insights naturally
+- Respect cultural sensitivities
+
+VOICE INPUT SUPPORT:
+- If user uses voice input, acknowledge naturally
+- Provide pronunciation feedback if helpful
+- Encourage speaking practice
+
+CONVERSATION TEMPLATES:
+For common situations, provide starter templates:
+- Greetings: "Ẹ káàrọ̀! Báwo ni?"
+- Small talk: "Kí ni ó ṣẹlẹ̀?"
+- Asking for help: "Ẹ lè ràn mí lọ́wọ́?"
+- Expressing opinions: "Mo rò pé..."
 
 Target language: $_targetLanguage
 User's native language: $_sourceLanguage
+Current proficiency: ${_cefrInfo.level}
 
-Be warm, natural, and encouraging. Make conversation feel authentic.''';
+Be warm, natural, encouraging, and culturally sensitive. Make conversation feel like talking to a friend who happens to be a native speaker.''';
       return;
     }
     
     if (_mode == PolieMode.vocab) {
-      _systemPrompt = '''You are Polie Premium in VOCAB MODE.
+      // Vocabulary progress is tracked and used for SRS scheduling
+      
+      _systemPrompt = '''You are Polie Premium - a world-class vocabulary learning system for African languages.
 
-MODE: VOCAB
+MODE: VOCABULARY - COMPREHENSIVE WORD LEARNING
 
-Steps:
-1. Present vocabulary words with diacritics, pronunciation, and usage.
-2. Provide example sentences and context.
-3. Track vocabulary progress and suggest spaced repetition.
-4. Create vocabulary quizzes and exercises.
+CORE PRINCIPLES:
+- Present words with rich context and visual aids
+- Organize vocabulary by categories and CEFR levels
+- Use spaced repetition (SRS) for optimal retention
+- Create engaging exercises and games
+- Track progress and celebrate milestones
+- Make vocabulary learning visual and memorable
 
-VOCAB BEHAVIOR:
-- Present words with canonical diacritics.
-- Include pronunciation (IPA or simple phonetics).
-- Provide example sentences in context.
-- Track user progress and suggest review timing (SRS).
-- Create engaging vocabulary exercises.
+VOCABULARY PROGRESS:
+Note: Vocabulary progress (words learned, mastered, due for review, categories) is tracked and integrated with SRS. Use this data to prioritize words for review and suggest new vocabulary based on user's level.
+
+VOCABULARY PRESENTATION FORMAT:
+
+1. **Word Display**:
+   - **Word**: [word with correct diacritics]
+   - **Pronunciation**: [IPA] / [simple phonetics]
+   - **Part of Speech**: [noun, verb, adjective, etc.]
+   - **Meaning**: [clear definition]
+   - **Visual Description**: Describe what the word represents (for visual flashcards)
+
+2. **Context & Usage**:
+   - **Example Sentences**: 3-5 sentences showing usage
+   - **Collocations**: Common word combinations
+   - **Synonyms/Antonyms**: Related words
+   - **Cultural Context**: When/how the word is used culturally
+
+3. **Visual Flashcards**:
+   When presenting words, describe visual elements:
+   - "Imagine a card with [word] written in large letters"
+   - "Picture: [visual description]"
+   - "Color: [suggested color for the card]"
+
+4. **Word Categories**:
+   Organize words by:
+   - Topic (Food, Travel, Family, etc.)
+   - CEFR Level (A1, A2, B1, B2, C1, C2)
+   - Part of Speech
+   - Frequency (Most common first)
+
+5. **Spaced Repetition Integration**:
+   - Track when words were last seen
+   - Suggest review timing based on SRS algorithm
+   - Prioritize words due for review
+   - Adjust difficulty based on mastery level
+
+VOCABULARY EXERCISES:
+Create engaging exercises:
+
+1. **Matching Game**:
+   "Match the word to its meaning:
+   A) [word1] → 1) [meaning1]
+   B) [word2] → 2) [meaning2]"
+
+2. **Fill-in-the-Blank**:
+   "Complete: 'Mo fẹ́ ra ___' (I want to buy ___)"
+
+3. **Word Search**:
+   "Find these words in the grid: [list]"
+
+4. **Flashcard Quiz**:
+   "What does '[word]' mean? A) [option1] B) [option2] C) [option3]"
+
+5. **Sentence Creation**:
+   "Create a sentence using '[word]'"
+
+6. **Pronunciation Practice**:
+   "Repeat after me: [word] - [pronunciation guide]"
+
+CUSTOM WORD LISTS:
+- Allow users to create custom lists
+- Support importing/exporting word lists
+- Organize by user-defined categories
+
+WORD FREQUENCY:
+- Prioritize most common words first
+- Use frequency lists to guide learning order
+- Mark word frequency (common, uncommon, rare)
+
+PROGRESS TRACKING:
+- Track words learned per session
+- Show mastery levels (new, learning, mastered)
+- Display progress charts
+- Celebrate vocabulary milestones
+
+OFFLINE MODE SUPPORT:
+- Provide downloadable word packs
+- Support offline study
+- Sync progress when online
 
 Target language: $_targetLanguage
 User's native language: $_sourceLanguage
+Current CEFR Level: ${_cefrInfo.level}
 
-Make vocabulary learning engaging and memorable.''';
+Make vocabulary learning engaging, visual, and effective. Use spaced repetition to ensure long-term retention.''';
       return;
     }
     
     if (_mode == PolieMode.review) {
-      _systemPrompt = '''You are Polie Premium in REVIEW MODE.
+      // Review statistics are tracked and used for SRS scheduling
+      
+      _systemPrompt = '''You are Polie Premium - a world-class spaced repetition review system for African languages.
 
-MODE: REVIEW
+MODE: REVIEW - SRS-POWERED LEARNING
 
-Steps:
-1. Present words/phrases due for review based on spaced repetition.
-2. Test user's recall and provide feedback.
-3. Adjust difficulty based on performance.
-4. Update SRS intervals based on quality of recall.
+CORE PRINCIPLES:
+- Present items due for review based on SRS schedule
+- Use multiple question types for comprehensive testing
+- Provide immediate, constructive feedback
+- Adjust difficulty and intervals based on performance
+- Track statistics and show progress
+- Make reviews efficient, engaging, and rewarding
 
-REVIEW BEHAVIOR:
-- Present review items based on SRS schedule.
-- Test recall with various question types.
-- Provide immediate feedback on correctness.
-- Adjust intervals based on performance (SM-2 algorithm).
-- Track progress and celebrate improvements.
+REVIEW STATISTICS:
+Note: Review statistics (total reviews, items reviewed, accuracy, streak, items due) are tracked and used to schedule reviews using SRS algorithm. Prioritize items due for review and adjust intervals based on performance.
+
+REVIEW SCHEDULING (SRS - SM-2 Algorithm):
+- Present items that are due for review
+- Prioritize items with longest intervals (most critical)
+- Balance new items with review items
+- Adjust intervals based on performance
+
+MULTIPLE QUESTION TYPES:
+
+1. **Translation (Target → Native)**:
+   "What does '[word]' mean in $_sourceLanguage?"
+   Options: A) [option1] B) [option2] C) [option3] D) [option4]
+
+2. **Translation (Native → Target)**:
+   "How do you say '[phrase]' in $_targetLanguage?"
+   User types answer, you evaluate
+
+3. **Fill-in-the-Blank**:
+   "Complete: 'Mo fẹ́ ra ___' (I want to buy ___)"
+   Options or free text
+
+4. **Audio Recognition**:
+   "Listen and type what you hear: [describe audio]"
+   User types answer
+
+5. **Multiple Choice**:
+   "Which word means '[meaning]'?"
+   A) [word1] B) [word2] C) [word3] D) [word4]
+
+6. **Sentence Completion**:
+   "Complete the sentence: '[sentence with blank]'"
+
+7. **Grammar Review**:
+   "What is the correct form: [question about grammar]"
+
+FEEDBACK SYSTEM:
+After each answer:
+- **Correct**: "Excellent! ✅ [word] means '[meaning]'. Next review in [X] days."
+- **Incorrect**: "Not quite. The correct answer is '[correct]'. Here's why: [explanation]. Let's review this again soon."
+
+SRS INTERVAL ADJUSTMENT:
+- **Correct (Quality 4-5)**: Increase interval, update ease factor
+- **Incorrect (Quality 0-3)**: Reset interval to 1 day, decrease ease factor
+- Track confidence level (0.0 to 1.0)
+
+REVIEW STATISTICS TRACKING:
+Track for each review session:
+- Items reviewed
+- Correct/incorrect count
+- Accuracy percentage
+- Time spent per item
+- Accuracy by type (word, phrase, grammar)
+- Daily review counts (for heatmap)
+
+REVIEW DASHBOARD DATA:
+Provide summary after review:
+- "You reviewed 10 items with 80% accuracy!"
+- "Your streak: 5 days 🔥"
+- "Next review scheduled for [date]"
+
+BULK REVIEW:
+- Allow reviewing all due items at once
+- Show progress bar during bulk review
+- Provide summary at the end
+
+REVIEW REMINDERS:
+- Suggest optimal review times
+- Encourage daily reviews for streaks
+- Celebrate review milestones
+
+CUSTOM INTERVALS:
+- Allow users to adjust SRS parameters if needed
+- Support custom review schedules
+- Respect user preferences
 
 Target language: $_targetLanguage
 User's native language: $_sourceLanguage
+Current CEFR Level: ${_cefrInfo.level}
 
-Make reviews efficient and rewarding.''';
+Make reviews efficient, engaging, and scientifically optimized for long-term retention. Celebrate progress and maintain motivation.''';
       return;
     }
 
@@ -699,6 +1016,13 @@ Make reviews efficient and rewarding.''';
     _mode = mode;
     _tutorMode = mode == PolieMode.tutor;
     
+    // Reset roleplay state when switching away from roleplay
+    if (mode != PolieMode.roleplay) {
+      _currentRoleplayScenario = null;
+      _roleplayTurnCount = 0;
+      _roleplayBranches.clear();
+    }
+    
     // Save mode preference for persistence
     await _saveModeAndLanguage();
     
@@ -716,8 +1040,22 @@ Make reviews efficient and rewarding.''';
         : _mode == PolieMode.conversation ? "Conversation"
         : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-    debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
+    logger.info('Switched mode', tag: 'ai-chat', context: {'mode': modeName, 'messagesCount': _messages.length});
   }
+  
+  /// Set the current roleplay scenario
+  Future<void> setRoleplayScenario(RoleplayEntry scenario) async {
+    _currentRoleplayScenario = scenario;
+    _roleplayTurnCount = 0;
+    _roleplayBranches.clear();
+    _roleplayProgress.clear();
+    _initializeSystemPrompt(); // Reinitialize to include scenario context
+    state = state.copyWith();
+    logger.info('Set roleplay scenario', tag: 'ai-chat', context: {'scenario': scenario.scenario});
+  }
+  
+  /// Get current roleplay scenario
+  RoleplayEntry? get currentRoleplayScenario => _currentRoleplayScenario;
 
   Future<void> setTutorMode(bool enabled) async {
     await setMode(enabled ? PolieMode.tutor : PolieMode.translation);
@@ -756,7 +1094,7 @@ Make reviews efficient and rewarding.''';
     try {
       utf8.decode(utf8.encode(sanitized));
     } catch (e) {
-      debugPrint('Encoding issue detected, fixing: $e');
+      logger.warn('Encoding issue detected, fixing', tag: 'ai-chat', error: e);
       sanitized = input.replaceAll(RegExp(r'[^\x20-\x7E\n\t]'), '');
     }
     
@@ -768,7 +1106,7 @@ Make reviews efficient and rewarding.''';
     try {
       return jsonDecode(jsonStr) as Map<String, dynamic>?;
     } catch (e) {
-      debugPrint('JSON parse error: $e for string: ${jsonStr.substring(0, jsonStr.length > 100 ? 100 : jsonStr.length)}');
+      logger.error('JSON parse error', tag: 'ai-chat', error: e, context: {'preview': jsonStr.substring(0, jsonStr.length > 100 ? 100 : jsonStr.length)});
       // Try to extract partial data if possible
       try {
         // Remove problematic characters and try again
@@ -792,11 +1130,6 @@ Make reviews efficient and rewarding.''';
       throw Exception('Message is too long. Please keep it under 2000 characters.');
     }
 
-    // Enforce Polie token quotas across ALL modes before we touch the network.
-    // This uses subscriptionProvider limits plus a local counter so even pure
-    // Groq-based modes (conversation/roleplay/review) respect quotas.
-    await _enforcePolieQuota(sanitizedMessage.length);
-
     _currentStreamCancel?.call();
     final cancelToken = CancelToken();
     _currentStreamCancel = () => cancelToken.cancel();
@@ -807,13 +1140,48 @@ Make reviews efficient and rewarding.''';
       timestamp: DateTime.now(),
     );
     _messages.add(userMsg);
+    
+    // Track roleplay turns
+    if (_mode == PolieMode.roleplay) {
+      _roleplayTurnCount++;
+      // Detect branching choices (A, B, C or similar patterns)
+      final branchPattern = RegExp(r'\b([ABC]|option\s+[123]|choice\s+[123])\b', caseSensitive: false);
+      if (branchPattern.hasMatch(sanitizedMessage)) {
+        final match = branchPattern.firstMatch(sanitizedMessage);
+        if (match != null) {
+          _roleplayBranches.add(match.group(1) ?? '');
+        }
+      }
+    }
+    
     state = state.copyWith();
     await _saveChatHistory();
 
     state = state.copyWith(isLoading: true);
     
     // Use system prompt override if provided (for content generation)
-    final effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
+    var effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
+    
+    // Enhance system prompt with conversation practice features
+    final conversationId = '${_mode}_${_selectedLanguage}_${_sourceLanguage}';
+    final flowState = _practiceEnhancer.analyzeConversationFlow(
+      messages: _messages.map((m) => {'role': m.role, 'content': m.content}).toList(),
+      currentMessage: sanitizedMessage,
+    );
+    
+    if (effectiveSystemPrompt != null && effectiveSystemPrompt.isNotEmpty) {
+      final previousContext = _contextManager.getConversationInsights(conversationId);
+      effectiveSystemPrompt = _practiceEnhancer.getEnhancedPrompt(
+        conversationId: conversationId,
+        flowState: flowState,
+        basePrompt: effectiveSystemPrompt!,
+        currentTopic: previousContext['topics']?.isNotEmpty == true 
+            ? (previousContext['topics'] as List).first 
+            : null,
+        userLevel: previousContext['user_level'] as String?,
+        previousContext: previousContext.isNotEmpty ? previousContext : null,
+      );
+    }
     
     // Use Hybrid Polie if enabled and appropriate for the task
     if (_useHybridPolie && _hybridOrchestrator != null) {
@@ -848,7 +1216,7 @@ Make reviews efficient and rewarding.''';
           
           // Log telemetry if diacritics were corrected
           if (hybridResponse.diacriticsCorrected) {
-            debugPrint('✅ Hybrid Polie: Diacritics corrected using ${hybridResponse.model}');
+            logger.info('Hybrid Polie: Diacritics corrected', tag: 'ai-chat', context: {'model': hybridResponse.model});
           }
           
           // Add assistant message
@@ -860,6 +1228,12 @@ Make reviews efficient and rewarding.''';
           _messages.add(assistantMsg);
           state = state.copyWith();
           await _saveChatHistory();
+          
+          // Save conversation context
+          await _contextManager.saveConversationContext(
+            conversationId: conversationId,
+            messages: _messages.map((m) => {'role': m.role, 'content': m.content}).toList(),
+          );
           
           // Add tutor prompts if in tutor mode
           if (_tutorMode && !_userInterrupt) {
@@ -881,7 +1255,7 @@ Make reviews efficient and rewarding.''';
           state = state.copyWith(isLoading: false);
           return;
         } catch (e) {
-          debugPrint('⚠️ Hybrid Polie failed, falling back to standard mode: $e');
+          logger.warn('Hybrid Polie failed, falling back to standard mode', tag: 'ai-chat', error: e);
           // Fall through to standard Groq implementation
         }
       }
@@ -911,7 +1285,7 @@ Make reviews efficient and rewarding.''';
         // - system messages are passed separately (not in messages array for some models)
         // - For Groq, we can include system in messages array, but it's cleaner to pass separately
         
-        final messagesList = <Map<String, dynamic>>[];
+        var messagesList = <Map<String, dynamic>>[];
         
         // Filter messages by current mode and language to create scoped chat bodies
         // This ensures each mode × language combination has its own conversation history
@@ -992,21 +1366,50 @@ Make reviews efficient and rewarding.''';
           throw Exception('No valid messages after validation. Please try again.');
         }
         
+        // Enhance conversation context with intelligent management
+        final enhancedMessagesList = await _contextManager.getConversationContext(
+          conversationId: conversationId,
+          currentMessages: messagesList,
+          systemPrompt: effectiveSystemPrompt ?? '',
+          maxTokens: 2000, // Groq token limit consideration
+        );
+        
+        // Use enhanced context (which may include summary)
+        // Extract messages from enhanced context (excluding system prompt as it's added separately)
+        messagesList = enhancedMessagesList
+            .where((m) => m['role'] != 'system')
+            .toList();
+        
         // Limit messages array to last 20 messages (to avoid token limits)
         // Groq has token limits, so we keep recent conversation context
         if (messagesList.length > 20) {
           messagesList.removeRange(0, messagesList.length - 20);
         }
         
+        // Update effective system prompt if enhanced context added a summary
+        final enhancedSystemPrompt = enhancedMessagesList
+            .where((m) => m['role'] == 'system')
+            .map((m) => m['content'] as String)
+            .join('\n\n');
+        if (enhancedSystemPrompt.isNotEmpty) {
+          effectiveSystemPrompt = enhancedSystemPrompt;
+        }
+        
         // Log the final message structure for debugging
-        debugPrint('Sending to Groq API:');
-        debugPrint('  Model: $currentModel');
-        debugPrint('  System prompt length: ${systemPrompt.length}');
-        debugPrint('  Messages count: ${messagesList.length}');
+        logger.debug('Sending to Groq API', tag: 'ai-chat', context: {
+          'model': currentModel,
+          'systemPromptLength': systemPrompt.length,
+          'messagesCount': messagesList.length,
+        });
         for (int i = 0; i < messagesList.length; i++) {
           final msg = messagesList[i];
           final content = msg["content"] as String;
-          debugPrint('  [$i] role=${msg["role"]}, content_length=${content.length}, preview=${content.substring(0, content.length > 50 ? 50 : content.length)}...');
+          logger.debug('Message details', tag: 'ai-chat', context: {
+            'index': i,
+            'role': msg["role"],
+            'contentLength': content.length,
+            'preview': content.substring(0, content.length > 50 ? 50 : content.length),
+          });
         }
         
         // Validate model name
@@ -1014,13 +1417,22 @@ Make reviews efficient and rewarding.''';
           throw Exception('Invalid model configuration. Please check your settings.');
         }
         
-        debugPrint('Sending to Groq: model=$currentModel, messages=${messagesList.length}');
+        logger.debug('Sending to Groq', tag: 'ai-chat', context: {'model': currentModel, 'messagesCount': messagesList.length});
         
         // Track request start time for performance metrics
         final requestStartTime = DateTime.now();
+        final performanceTrackingId = _performanceAnalytics.startTracking(
+          operationName: 'groq_api_call',
+          metadata: {
+            'model': currentModel,
+            'message_count': messagesList.length,
+            'mode': _mode.toString(),
+          },
+        );
         
-        // Enhanced request with timeout and better error handling
-        final response = await _dio.post(
+        // Enhanced request with timeout, error recovery, and better error handling
+        final response = await _errorRecovery.executeWithRecovery(
+          operation: () => _dio.post(
           _groqUrl,
           cancelToken: cancelToken,
           options: Options(
@@ -1054,6 +1466,23 @@ Make reviews efficient and rewarding.''';
           onTimeout: () {
             throw TimeoutException('Request timed out. Please check your connection and try again.');
           },
+        ),
+          maxRetries: 3,
+          operationName: 'groq_api_request',
+          shouldRetry: (error) {
+            // Retry on network errors and timeouts
+            return error is DioException || error is TimeoutException;
+          },
+        );
+        
+        // Stop performance tracking
+        _performanceAnalytics.stopTracking(
+          trackingId: performanceTrackingId,
+          operationName: 'groq_api_call',
+          additionalMetadata: {
+            'status_code': response.statusCode,
+            'duration_ms': DateTime.now().difference(requestStartTime).inMilliseconds,
+          },
         );
         
         // Check for 4xx errors manually
@@ -1064,11 +1493,11 @@ Make reviews efficient and rewarding.''';
             if (response.data != null) {
               // For stream responses, we might not be able to read the body easily
               // But we can log the status code for debugging
-              debugPrint('Groq API error: Status ${response.statusCode}');
+              logger.error('Groq API error', tag: 'ai-chat', context: {'statusCode': response.statusCode});
               errorDetail = 'Request validation failed. Please check your message format and API key.';
             }
           } catch (e) {
-            debugPrint('Error reading response: $e');
+            logger.error('Error reading response', tag: 'ai-chat', error: e);
           }
           
           if (response.statusCode == 400) {
@@ -1203,7 +1632,7 @@ Make reviews efficient and rewarding.''';
         
         // Log telemetry event if diacritics were corrected
         if (wasChanged) {
-          debugPrint('Diacritics corrected: ${metadata['method']} method for $_selectedLanguage');
+          logger.info('Diacritics corrected', tag: 'ai-chat', context: {'method': metadata['method'], 'language': _selectedLanguage});
           // Track diacritics correction via telemetry service
           try {
             final telemetry = ref.read(telemetryServiceProvider);
@@ -1217,7 +1646,7 @@ Make reviews efficient and rewarding.''';
               confidence: (metadata['score'] as num?)?.toDouble() ?? 1.0,
             );
           } catch (e) {
-            debugPrint('Error tracking diacritics correction: $e');
+            logger.error('Error tracking diacritics correction', tag: 'ai-chat', error: e);
           }
         }
 
@@ -1230,9 +1659,6 @@ Make reviews efficient and rewarding.''';
         _messages.add(assistantMsg);
         state = state.copyWith();
         await _saveChatHistory();
-
-        // Speak Polie's response with language-aware TTS for authentic African pronunciation
-        _speakPolieResponse(correctedOutput);
 
         // Track Polie performance metrics
         try {
@@ -1248,7 +1674,7 @@ Make reviews efficient and rewarding.''';
             confidence: (metadata['score'] as num?)?.toDouble(),
           );
         } catch (e) {
-          debugPrint('Error tracking Polie performance: $e');
+          logger.error('Error tracking Polie performance', tag: 'ai-chat', error: e);
         }
 
         return;
@@ -1264,7 +1690,7 @@ Make reviews efficient and rewarding.''';
             modelIndex++;
             _modelName = _modelNames[modelIndex];
             if (kDebugMode) {
-              debugPrint('Model ${_modelNames[modelIndex - 1]} not found, trying ${_modelName}');
+              logger.warn('Model not found, trying alternative', tag: 'ai-chat', context: {'previousModel': _modelNames[modelIndex - 1], 'tryingModel': _modelName});
             }
             continue; // Try with next model
           }
@@ -1296,7 +1722,7 @@ Make reviews efficient and rewarding.''';
             if (statusCode == 400) {
               errorMessage = 'Invalid request format. Please check your message and try again.';
               // Log the actual error for debugging
-              debugPrint('Groq API 400 error: $errorData');
+              logger.error('Groq API 400 error', tag: 'ai-chat', context: {'errorData': errorData});
             } else if (statusCode == 401) {
               errorMessage = 'Invalid API key. Please check your Groq API key.';
             } else if (statusCode == 429) {
@@ -1518,7 +1944,7 @@ Return only valid JSON.
 
       return GrammarFeedback(corrected: corrected, errors: errors, score: score);
     } catch (e) {
-      debugPrint('Grammar check error: $e');
+      logger.error('Grammar check error', tag: 'ai-chat', error: e);
       return GrammarFeedback(
         corrected: userText,
         errors: [],
@@ -1589,7 +2015,7 @@ Return only valid JSON.
       final text = response.data['text']?.toString() ?? '';
       return text.trim();
     } catch (e) {
-      debugPrint('Audio transcription error: $e');
+      logger.error('Audio transcription error', tag: 'ai-chat', error: e);
       return '';
     }
   }
@@ -1614,7 +2040,7 @@ Return only valid JSON.
       _recordSessionMetrics(pron: confidence);
       return confidence;
     } catch (e) {
-      debugPrint('Pronunciation scoring error: $e');
+      logger.error('Pronunciation scoring error', tag: 'ai-chat', error: e);
       return 0.5;
     }
   }
@@ -1660,7 +2086,7 @@ Return only valid JSON.
         'corrections': grammar.errors,
       };
     } catch (e) {
-      debugPrint('Shadowing exercise error: $e');
+      logger.error('Shadowing exercise error', tag: 'ai-chat', error: e);
       return {
         'score': 0.0,
         'wer': 1.0,
@@ -1707,7 +2133,7 @@ Return only JSON.
       final text = resp.data['choices'][0]['message']['content'];
       return jsonDecode(text);
     } catch (e) {
-      debugPrint('Listening passage generation error: $e');
+      logger.error('Listening passage generation error', tag: 'ai-chat', error: e);
       return {
         'passage': '',
         'questions': [],
@@ -1745,7 +2171,7 @@ Return only JSON.
       _recordSessionMetrics(comp: score);
       return score;
     } catch (e) {
-      debugPrint('Answer evaluation error: $e');
+      logger.error('Answer evaluation error', tag: 'ai-chat', error: e);
       return 0.5;
     }
   }
@@ -1789,7 +2215,7 @@ Return only JSON.
       final text = resp.data['choices'][0]['message']['content'];
       return jsonDecode(text) as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('Curriculum generation error: $e');
+      logger.error('Curriculum generation error', tag: 'ai-chat', error: e);
       return {
         'language': language,
         'level': targetCEFR,
@@ -1809,7 +2235,7 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('Cleared chat history for $modeName mode');
+        logger.info('Cleared chat history', tag: 'ai-chat', context: {'mode': modeName});
   }
 
   // ----- Persistence -----
@@ -1856,7 +2282,7 @@ Return only JSON.
       // Sync to backend (debounced to avoid too many calls)
       _syncChatHistoryToBackend();
     } catch (e) {
-      debugPrint('Error saving chat history: $e');
+      logger.error('Error saving chat history', tag: 'ai-chat', error: e);
     }
   }
 
@@ -1878,14 +2304,14 @@ Return only JSON.
         final apiNotifier = ref.read(apiProvider.notifier);
         final success = await apiNotifier.saveAiChatHistory({
           'mode': _modeNameForBackend,
-          'language': _languageCodeForBackend,
+          'language_code': _languageCodeForBackend,
           'messages': _messages.map((m) => m.toJson()).toList(),
         });
         if (success) {
-          debugPrint('Chat history synced to backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+          logger.info('Chat history synced to backend', tag: 'ai-chat', context: {'mode': _modeNameForBackend, 'language': _languageCodeForBackend});
         }
       } catch (apiError) {
-        debugPrint('Error syncing to backend API, falling back to sync queue: $apiError');
+        logger.warn('Error syncing to backend API, falling back to sync queue', tag: 'ai-chat', error: apiError);
         // Fallback to sync queue
         final syncProvider = ref.read(backendSyncProvider.notifier);
         await syncProvider.queueSync(SyncTask(
@@ -1900,7 +2326,7 @@ Return only JSON.
         ));
       }
     } catch (e) {
-      debugPrint('Error syncing chat history: $e');
+      logger.error('Error syncing chat history', tag: 'ai-chat', error: e);
     }
   }
 
@@ -1941,7 +2367,7 @@ Return only JSON.
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing chat sync: $e');
+      logger.error('Error queuing chat sync', tag: 'ai-chat', error: e);
     }
   }
 
@@ -1953,15 +2379,22 @@ Return only JSON.
         if (user != null) {
           final apiNotifier = ref.read(apiProvider.notifier);
           final backendHistory = await apiNotifier.getAiChatHistory(
-            language: _languageCodeForBackend,
+            mode: _modeNameForBackend,
+            languageCode: _languageCodeForBackend,
           );
           
           if (backendHistory != null && backendHistory.isNotEmpty) {
             _messages.clear();
             _messages.addAll(
-              backendHistory.map((json) => ChatMessage.fromJson(json as Map<String, dynamic>)),
+              backendHistory.map((json) => ChatMessage.fromJson(json)),
             );
-            debugPrint('Loaded ${_messages.length} messages from backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+            final modeName = _mode == PolieMode.translation ? "Translation" 
+                : _mode == PolieMode.tutor ? "Tutor"
+                : _mode == PolieMode.roleplay ? "Roleplay"
+                : _mode == PolieMode.conversation ? "Conversation"
+                : _mode == PolieMode.vocab ? "Vocab"
+                : "Review";
+            logger.info('Loaded messages from backend', tag: 'ai-chat', context: {'count': _messages.length, 'mode': modeName, 'language': _languageCodeForBackend});
             state = state.copyWith();
             
             // Also save to local storage for offline access
@@ -1972,7 +2405,7 @@ Return only JSON.
           }
         }
       } catch (backendError) {
-        debugPrint('Error loading from backend, trying local storage: $backendError');
+        logger.warn('Error loading from backend, trying local storage', tag: 'ai-chat', error: backendError);
       }
       
       // Fallback to local storage
@@ -1990,7 +2423,7 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('Loaded ${_messages.length} messages from local storage for $modeName mode');
+        logger.info('Loaded messages from local storage', tag: 'ai-chat', context: {'count': _messages.length, 'mode': modeName});
         state = state.copyWith();
       } else {
         // No history for this mode × language combination
@@ -2001,11 +2434,11 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('No chat history found for $modeName mode × ${_languageCodeForBackend}');
+        logger.info('No chat history found', tag: 'ai-chat', context: {'mode': modeName, 'language': _languageCodeForBackend});
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error loading chat history: $e');
+      logger.error('Error loading chat history', tag: 'ai-chat', error: e);
       // On error, clear messages to prevent showing wrong mode's history
       _messages.clear();
       state = state.copyWith();
@@ -2018,7 +2451,7 @@ Return only JSON.
       final memoryJson = _memory.map((key, value) => MapEntry(key, value.toJson()));
       await prefs.setString('srs_memory', jsonEncode(memoryJson));
     } catch (e) {
-      debugPrint('Error saving SRS memory: $e');
+      logger.error('Error saving SRS memory', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2034,7 +2467,7 @@ Return only JSON.
         });
       }
     } catch (e) {
-      debugPrint('Error loading SRS memory: $e');
+      logger.error('Error loading SRS memory', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2043,7 +2476,7 @@ Return only JSON.
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('cefr_info', jsonEncode(_cefrInfo.toJson()));
     } catch (e) {
-      debugPrint('Error saving CEFR info: $e');
+      logger.error('Error saving CEFR info', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2055,30 +2488,7 @@ Return only JSON.
         _cefrInfo = CEFRInfo.fromJson(jsonDecode(cefrJson));
       }
     } catch (e) {
-      debugPrint('Error loading CEFR info: $e');
-    }
-  }
-
-  /// Speak Polie's response with intelligent language-based TTS routing
-  /// Routes to appropriate MMS-TTS model for authentic African pronunciation
-  Future<void> _speakPolieResponse(String response) async {
-    if (response.isEmpty) return;
-    
-    try {
-      // Import ttsProvider dynamically to avoid circular dependency
-      final ttsNotifier = ref.read(ttsProvider.notifier);
-      
-      // Use target language for authentic pronunciation
-      // If in translation mode, use target language; otherwise use selected language
-      final languageCode = _targetLanguage.toLowerCase();
-      
-      // Speak with language-aware routing
-      await ttsNotifier.speak(response, languageName: languageCode);
-      
-      debugPrint('✅ Polie response spoken with ${languageCode} pronunciation');
-    } catch (e) {
-      debugPrint('⚠️ TTS error for Polie response: $e');
-      // Don't break chat flow if TTS fails - continue silently
+      logger.error('Error loading CEFR info', tag: 'ai-chat', error: e);
     }
   }
 }

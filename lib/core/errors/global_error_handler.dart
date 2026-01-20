@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'app_exceptions.dart';
+import '../../utils/structured_logger.dart';
 
 /// Global error handler widget
 /// Catches and handles all unhandled errors in the app
@@ -9,9 +9,9 @@ class GlobalErrorHandler extends StatefulWidget {
   final Widget child;
 
   const GlobalErrorHandler({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   State<GlobalErrorHandler> createState() => _GlobalErrorHandlerState();
@@ -38,10 +38,16 @@ class _GlobalErrorHandlerState extends State<GlobalErrorHandler> {
   void _handleError(dynamic error, StackTrace? stack) {
     final exception = ExceptionHandler.handleError(error);
     
-    debugPrint('🚨 Global Error Handler: ${exception.message}');
-    if (stack != null) {
-      debugPrint('Stack trace: $stack');
-    }
+    logger.fatal(
+      'Global error handler caught exception',
+      tag: 'global-error-handler',
+      context: {
+        'exceptionType': exception.runtimeType.toString(),
+        'message': exception.message,
+      },
+      error: error,
+      stackTrace: stack,
+    );
 
     // In production, you might want to:
     // - Send to crash reporting service (Firebase Crashlytics)
@@ -65,12 +71,12 @@ class ErrorBoundary extends StatelessWidget {
   final VoidCallback? onRetry;
 
   const ErrorBoundary({
-    Key? key,
+    super.key,
     required this.child,
     this.fallback,
     this.errorMessage,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +85,7 @@ class ErrorBoundary extends StatelessWidget {
       builder: (context) {
         try {
           return child;
-        } catch (e, stack) {
+        } catch (e) {
           final exception = ExceptionHandler.handleError(e);
           final userMessage = ExceptionHandler.getUserFriendlyMessage(exception);
 

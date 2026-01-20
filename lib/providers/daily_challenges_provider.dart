@@ -5,8 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/daily_challenge_model.dart';
 import '../services/sound_effects_service.dart';
 import 'gamification_provider.dart';
-import 'api_provider.dart';
-import 'user_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for daily challenges
 final dailyChallengesProvider = NotifierProvider<DailyChallengesNotifier, DailyChallengesState>(() {
@@ -110,7 +109,7 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
         await _generateNewChallenges();
       }
     } catch (e) {
-      debugPrint('Error loading daily challenges: $e');
+      logger.error('Error loading daily challenges', tag: 'daily-challenges', error: e);
       await _generateNewChallenges();
     }
   }
@@ -145,7 +144,7 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
       await prefs.setString(_storageKey, challengesJson);
       await prefs.setString(_lastDateKey, todayStr);
     } catch (e) {
-      debugPrint('Error saving daily challenges: $e');
+      logger.error('Error saving daily challenges', tag: 'daily-challenges', error: e);
     }
   }
 
@@ -238,7 +237,7 @@ class DailyChallengesNotifier extends Notifier<DailyChallengesState> {
       await _saveChallenges();
       return true;
     } catch (e) {
-      debugPrint('Error claiming challenge: $e');
+      logger.error('Error claiming challenge', tag: 'daily-challenges', error: e);
       return false;
     }
   }

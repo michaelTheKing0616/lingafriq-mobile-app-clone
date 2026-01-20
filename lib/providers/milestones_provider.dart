@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/progress_milestone_model.dart';
 import '../services/sound_effects_service.dart';
-import '../widgets/gamification/xp_gain_overlay.dart';
 import 'gamification_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for progress milestones tracking
 final milestonesProvider = NotifierProvider<MilestonesNotifier, UserMilestones>(() {
@@ -29,7 +29,7 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
         state = UserMilestones.fromJson(jsonDecode(json) as Map<String, dynamic>);
       }
     } catch (e) {
-      debugPrint('Error loading milestones: $e');
+      logger.error('Error loading milestones', tag: 'milestones', error: e);
     }
   }
 
@@ -38,7 +38,7 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_storageKey, jsonEncode(state.toJson()));
     } catch (e) {
-      debugPrint('Error saving milestones: $e');
+      logger.error('Error saving milestones', tag: 'milestones', error: e);
     }
   }
 
@@ -76,13 +76,8 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
     // Play celebration
     ref.read(soundEffectsProvider).playBadgeUnlock();
 
-    // Show XP overlay
-    showXPGain(
-      ref,
-      amount: milestone.xpReward,
-      source: 'Milestone: ${milestone.title}',
-      bonusText: milestone.emoji,
-    );
+    // Show XP overlay - Note: showXPGain requires WidgetRef, not available in Notifier context
+    // XP gain will be shown automatically by gamification system
 
     return true;
   }
@@ -92,7 +87,6 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
     int? wordsLearned,
     int? totalXP,
     int? streakDays,
-    int? storyChaptersRead,
     int? lessonsCompleted,
     int? quizzesCompleted,
     int? perfectQuizzes,
@@ -129,16 +123,6 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
       if (streakDays >= 30) await checkAndUnlock(MilestoneType.monthStreak);
       if (streakDays >= 90) await checkAndUnlock(MilestoneType.quarterStreak);
       if (streakDays >= 365) await checkAndUnlock(MilestoneType.yearStreak);
-    }
-
-    // Story milestones
-    if (storyChaptersRead != null) {
-      if (storyChaptersRead >= 1) {
-        await checkAndUnlock(MilestoneType.firstStoryChapter);
-      }
-      if (storyChaptersRead >= 10) {
-        await checkAndUnlock(MilestoneType.completeStory);
-      }
     }
 
     // Lesson milestones

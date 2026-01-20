@@ -1,10 +1,13 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
-import 'package:lingafriq/services/polie_content_generator.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Provider for managing loading screen content
 /// Supports both client-side (local) and backend (API) content
@@ -37,26 +40,35 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     
     if (useBackend) {
       try {
-        // Try to load from backend
-        final contentData = await ref.read(apiProvider.notifier).getLoadingScreenContent();
-        var content = LoadingScreenContent.fromJson(contentData);
+        // Get last viewed content ID for variety
+        final lastId = _prefs.getString(_lastContentKey);
+        
+        // Try to load from backend with parameters for variety
+        final contentData = await ref.read(apiProvider.notifier).getLoadingScreenContent(
+          lastContentId: lastId,
+        );
+        final content = LoadingScreenContent.fromJson(contentData);
         state = content;
-
-        // Ask Polie for an additional micro-tip if possible
-        content = await _attachAiTip(content);
-        state = content;
-
+        
         // Save to local preferences as backup
         await _prefs.setString(_lastContentKey, content.id);
+        
+        // Track viewed content
+        final viewedIds = _prefs.getStringList(_viewedContentKey) ?? [];
+        final updatedViewed = [...viewedIds, content.id];
+        if (updatedViewed.length > 20) {
+          updatedViewed.removeAt(0);
+        }
+        await _prefs.setStringList(_viewedContentKey, updatedViewed);
         return;
       } catch (e) {
         // Backend failed, fall back to local content
-        print('Loading screen: Backend failed, using local content: $e');
+        logger.warn('Loading screen: Backend failed, using local content', tag: 'loading-screen', error: e);
         _loadLocalContent();
         return;
       }
     }
-
+    
     // Use local content (default)
     _loadLocalContent();
   }
@@ -81,17 +93,15 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     final random = Random();
     final selected = availableContent[random.nextInt(availableContent.length)];
     
-    // Update state and enrich with AI tip
+    // Update state
     state = selected;
-    _attachAiTip(selected).then((enhanced) {
-      state = enhanced;
-    });
     
     // Save to preferences
     _prefs.setString(_lastContentKey, selected.id);
     final updatedViewed = [...viewedIds, selected.id];
-    // Keep only last 5 viewed to allow rotation
-    if (updatedViewed.length > 5) {
+    // Keep only last 20 viewed to allow more variety and avoid repetition
+    // With 40+ facts, keeping 20 viewed ensures good rotation
+    if (updatedViewed.length > 20) {
       updatedViewed.removeAt(0);
     }
     _prefs.setStringList(_viewedContentKey, updatedViewed);
@@ -131,58 +141,41 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
     }
   }
 
-  /// Future: Fetch AI-generated image URL
-  /// This can be integrated with an AI image generation service
+  /// Fetch AI-generated image URL from backend
+  /// Uses the loading screen image generation endpoint
   Future<String> fetchAIGeneratedImage({
     required String country,
     required String language,
   }) async {
-    // Best-effort: use backend curated images for the given country/language.
-    // (True AI image generation would require a dedicated service + storage).
     try {
-      final byCountry =
-          await ref.read(apiProvider.notifier).getLoadingScreenContentByCountry(country);
-      if (byCountry.isNotEmpty) {
-        final imageUrl = byCountry.first['imageUrl']?.toString() ?? '';
-        if (imageUrl.isNotEmpty) return imageUrl;
+      // Use the prompt from the current content's fact
+      final prompt = state.fact;
+      
+      if (prompt.isEmpty) {
+        return 'assets/images/loading/placeholder.png';
       }
 
-      final byLanguage =
-          await ref.read(apiProvider.notifier).getLoadingScreenContentByLanguage(language);
-      if (byLanguage.isNotEmpty) {
-        final imageUrl = byLanguage.first['imageUrl']?.toString() ?? '';
-        if (imageUrl.isNotEmpty) return imageUrl;
+      // Call backend image generation endpoint via API client
+      final response = await ref.read(client).get(
+        '${Api.baseurl}api/v1/loading-screen/image/${Uri.encodeComponent(prompt)}',
+        queryParameters: {
+          'country': country,
+          'language': language,
+        },
+      );
+
+      if (response.statusCode == 200 && response.data is Map) {
+        final data = response.data as Map<String, dynamic>;
+        final imageUrl = data['imageUrl'] ?? data['image_url'] ?? data['url'];
+        if (imageUrl != null && imageUrl is String) {
+          return imageUrl;
+        }
       }
-    } catch (_) {}
-
-    // Fallback: empty string means “no remote image available”.
-    return '';
-  }
-
-  /// Ask Polie for an additional loading-screen micro-tip and attach it
-  /// to the LoadingScreenContent instance.
-  Future<LoadingScreenContent> _attachAiTip(LoadingScreenContent base) async {
-    try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      final tip = await polieGenerator.generateLoadingScreenTip(
-        language: base.language,
-        greeting: base.greeting,
-        fact: base.fact,
-      );
-      return LoadingScreenContent(
-        id: base.id,
-        imageUrl: base.imageUrl,
-        country: base.country,
-        countryFlag: base.countryFlag,
-        greeting: base.greeting,
-        greetingTranslation: base.greetingTranslation,
-        language: base.language,
-        fact: base.fact,
-        personName: base.personName,
-        aiTip: tip,
-      );
-    } catch (_) {
-      return base;
+    } catch (e) {
+      logger.error('Failed to generate AI image', tag: 'loading-screen', error: e);
     }
+    
+    // Fallback to placeholder
+    return 'assets/images/loading/placeholder.png';
   }
 }

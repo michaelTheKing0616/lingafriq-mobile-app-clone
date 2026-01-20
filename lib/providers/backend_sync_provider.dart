@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'api_provider.dart';
-import 'base_provider.dart';
 import 'user_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Centralized backend sync provider
 /// Handles all data synchronization with backend
@@ -82,7 +82,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
         state = state.copyWith(pendingSyncs: _syncQueue.length);
       }
     } catch (e) {
-      debugPrint('Error loading sync queue: $e');
+      logger.error('Error loading sync queue', tag: 'backend-sync', error: e);
     }
   }
 
@@ -95,7 +95,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
       );
       state = state.copyWith(pendingSyncs: _syncQueue.length);
     } catch (e) {
-      debugPrint('Error saving sync queue: $e');
+      logger.error('Error saving sync queue', tag: 'backend-sync', error: e);
     }
   }
 
@@ -115,7 +115,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
 
     final user = ref.read(userProvider);
     if (user == null) {
-      debugPrint('Cannot sync: User not logged in');
+      logger.warn('Cannot sync: User not logged in', tag: 'backend-sync');
       return;
     }
 
@@ -129,12 +129,12 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
           await _executeSyncTask(task);
           _syncQueue.remove(task);
         } catch (e) {
-          debugPrint('Sync task failed: ${task.type} - $e');
+          logger.error('Sync task failed', tag: 'backend-sync', error: e, context: {'taskType': task.type});
           task.retries++;
           if (task.retries < 3) {
             failedTasks.add(task);
           } else {
-            debugPrint('Task ${task.type} failed after 3 retries, removing');
+            logger.warn('Task failed after 3 retries, removing', tag: 'backend-sync', context: {'taskType': task.type});
           }
         }
       }
@@ -149,7 +149,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
         pendingSyncs: _syncQueue.length,
       );
     } catch (e) {
-      debugPrint('Error during sync: $e');
+      logger.error('Error during sync', tag: 'backend-sync', error: e);
       state = state.copyWith(isSyncing: false);
     }
   }

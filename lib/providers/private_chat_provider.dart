@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 class PrivateChatState {
   final List<PrivateChatContact> contacts;
@@ -71,7 +72,7 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
         error: null,
       );
     } catch (e) {
-      debugPrint('Failed to load contacts: $e');
+      logger.error('Failed to load contacts', tag: 'private-chat', error: e);
       state = state.copyWith(
         isLoading: false,
         error: 'Unable to load contacts right now.',
@@ -81,46 +82,6 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
 
   void search(String query) {
     state = state.copyWith(query: query);
-
-    // If the user is searching by handle (starting with "@"), try a backend
-    // lookup by global_id to find users that may not be in the local list yet.
-    final trimmed = query.trim();
-    if (trimmed.startsWith('@') && trimmed.length > 1) {
-      final handle = trimmed.substring(1);
-      _searchByHandle(handle);
-      return;
-    }
-
-    // Otherwise rely on local filtering of the loaded contacts list.
-  }
-
-  Future<void> _searchByHandle(String handle) async {
-    state = state.copyWith(isLoading: true, error: null);
-    try {
-      final api = ref.read(apiProvider.notifier);
-      final results = await api.searchUsersByHandle(handle);
-      final contacts = results
-          .map<PrivateChatContact>((m) => PrivateChatContact(
-                id: (m['id'] as num?)?.toInt() ?? -1,
-                username: (m['username'] ?? '') as String,
-                email: m['email']?.toString(),
-                avatarUrl: m['avater']?.toString(),
-                language: m['nationality']?.toString(),
-              ))
-          .toList();
-
-      state = state.copyWith(
-        contacts: contacts,
-        isLoading: false,
-        error: null,
-      );
-    } catch (e) {
-      debugPrint('Failed to search by handle: $e');
-      state = state.copyWith(
-        isLoading: false,
-        error: 'Unable to search by handle right now.',
-      );
-    }
   }
 }
 

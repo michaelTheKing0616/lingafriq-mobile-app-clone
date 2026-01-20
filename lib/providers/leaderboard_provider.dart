@@ -1,13 +1,15 @@
+import 'dart:convert';
 import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/leaderboard_entry_model.dart';
-import 'api_provider.dart';
+import '../models/user_gamification_model.dart';
 import 'base_provider.dart';
 import 'gamification_provider.dart';
 import 'user_provider.dart';
 import 'gamification_services_provider.dart';
-import '../services/gamification/leaderboards_service.dart';
+import '../utils/structured_logger.dart';
 
 final leaderboardProvider =
     NotifierProvider<LeaderboardProvider, BaseProviderState>(() {
@@ -100,9 +102,12 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
 
       _cache[type] = entries;
       _lastFetch = DateTime.now();
+      
+      // Cache leaderboard data locally for offline access
+      await _cacheLeaderboards();
     } catch (e) {
-      debugPrint('Error fetching leaderboards: $e');
-      // Fallback to mock data on error
+      logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
+      // Fallback to cached data or mock data only if no cache available
       final gamification = ref.read(gamificationProvider.notifier).gamification;
       final user = ref.read(userProvider);
 
@@ -125,25 +130,54 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
   /// Parse API response to LeaderboardEntry list
   List<LeaderboardEntry> _parseLeaderboardEntries(List<dynamic> entries) {
     return entries.map((entry) {
-      // Backend returns either:
-      // - { user_id, score, rank, username, global_id, avatar, nationality } (global/tribe)
-      // - { user_id, score, rank } (village)
-      final username = (entry['username'] ?? entry['user_id'] ?? 'Unknown').toString();
-      final nationality = entry['nationality']?.toString();
-      final avatar = entry['avatar']?.toString();
+      // Handle different response formats
+      final userData = entry['user'] ?? entry['user_id'] ?? entry;
+      final userDataMap = userData is Map ? userData as Map<String, dynamic> : <String, dynamic>{};
+      
+      // Extract XP/score (could be in entry or user data)
+      final xp = (entry['xp'] ?? entry['score'] ?? userDataMap['xp'] ?? userDataMap['total_xp'] ?? 0).toInt();
+      
+      // Extract user information
+      final userId = entry['user_id']?.toString() ?? 
+                     userDataMap['id']?.toString() ?? 
+                     userDataMap['user_id']?.toString() ?? '';
+      final username = entry['username']?.toString() ?? 
+                       userDataMap['username']?.toString() ?? 
+                       userDataMap['global_id']?.toString() ?? 
+                       'Unknown';
+      
+      // Extract gamification data if available
+      final gamificationData = entry['gamification'] ?? userDataMap['gamification'] ?? <String, dynamic>{};
+      final gamificationMap = gamificationData is Map ? gamificationData as Map<String, dynamic> : <String, dynamic>{};
+      
+      // Calculate level from XP
+      final level = _calculateLevelFromXP(xp);
+      
+      // Get level title from gamification data or calculate from level
+      final levelTitle = gamificationMap['level_title']?.toString() ?? 
+                         userDataMap['level_title']?.toString() ??
+                         LevelTitles.getTitleForLevel(level);
+      
+      // Get daily streak from gamification data
+      final dailyStreak = (gamificationMap['daily_streak'] ?? 
+                           userDataMap['daily_streak'] ?? 
+                           entry['daily_streak'] ?? 
+                           0).toInt();
+      
+      // Get tribe from gamification data or user data
+      final tribe = gamificationMap['tribe']?.toString() ?? 
+                    userDataMap['tribe']?.toString() ?? 
+                    entry['tribe']?.toString();
+      
       return LeaderboardEntry(
-        userId: entry['user_id']?.toString() ?? '',
+        userId: userId,
         username: username,
-        xp: (entry['score'] ?? 0).toInt(),
-        level: _calculateLevelFromXP((entry['score'] ?? 0).toInt()),
-        // These are not currently provided for *other* users by the leaderboard API.
-        // We keep them safe/blank rather than showing misleading placeholders.
-        levelTitle: '',
-        dailyStreak: 0,
-        tribe: null,
-        rank: entry['rank'] ?? 0,
-        country: nationality,
-        avatar: avatar,
+        xp: xp,
+        level: level,
+        levelTitle: levelTitle,
+        dailyStreak: dailyStreak,
+        tribe: tribe,
+        rank: (entry['rank'] ?? entry['position'] ?? 0).toInt(),
       );
     }).toList();
   }
@@ -218,9 +252,65 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     return entry.rank;
   }
 
+  /// Cache leaderboards locally for offline access
+  Future<void> _cacheLeaderboards() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cacheData = <String, dynamic>{
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+        'data': <String, dynamic>{},
+      };
+      
+      for (var entry in _cache.entries) {
+        cacheData['data'][entry.key.name] = entry.value.map((e) => {
+          'user_id': e.userId,
+          'username': e.username,
+          'xp': e.xp,
+          'level': e.level,
+          'level_title': e.levelTitle,
+          'daily_streak': e.dailyStreak,
+          'tribe': e.tribe,
+          'rank': e.rank,
+        }).toList();
+      }
+      
+      await prefs.setString('leaderboard_cache', jsonEncode(cacheData));
+    } catch (e) {
+      logger.error('Error caching leaderboards', tag: 'leaderboard', error: e);
+      // Continue without caching - not critical
+    }
+  }
+
   /// Load leaderboards from local cache
   Future<void> _loadLeaderboards() async {
-    // TODO: Load from SharedPreferences if needed
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final cachedData = prefs.getString('leaderboard_cache');
+      if (cachedData != null) {
+        final decoded = jsonDecode(cachedData) as Map<String, dynamic>;
+        final cacheTimestamp = decoded['timestamp'] as int?;
+        final cacheAge = cacheTimestamp != null 
+            ? DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(cacheTimestamp))
+            : const Duration(days: 1);
+        
+        // Only use cached data if it's less than 1 hour old
+        if (cacheAge.inHours < 1 && decoded['data'] is Map) {
+          final data = decoded['data'] as Map<String, dynamic>;
+          for (var entry in data.entries) {
+            final type = LeaderboardType.values.firstWhere(
+              (e) => e.name == entry.key,
+              orElse: () => LeaderboardType.global,
+            );
+            if (entry.value is List) {
+              _cache[type] = _parseLeaderboardEntries(entry.value as List);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      logger.error('Error loading cached leaderboards', tag: 'leaderboard', error: e);
+      // Continue without cache - will fetch fresh data on next request
+    }
   }
 
   /// Refresh leaderboards

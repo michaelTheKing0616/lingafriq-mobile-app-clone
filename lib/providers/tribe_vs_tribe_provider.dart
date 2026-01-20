@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/tribe_vs_tribe_model.dart';
-import 'gamification_services_provider.dart';
 import 'base_provider.dart';
-import 'api_provider.dart';
+import 'dio_provider.dart';
+import '../utils/api.dart';
+import '../utils/structured_logger.dart';
 
 final tribeVsTribeProvider =
     NotifierProvider<TribeVsTribeProvider, BaseProviderState>(() {
@@ -30,46 +31,77 @@ class TribeVsTribeProvider extends Notifier<BaseProviderState>
     state = state.copyWith(isLoading: true);
 
     try {
-      // Fetch from backend competitions API (source-of-truth).
-      final competitionsService = ref.read(competitionsServiceProvider);
-      final competitions = await competitionsService.getCompetitions(
-        status: 'active',
-        type: 'tribe_vs_tribe',
+      // Fetch from backend API
+      final response = await ref.read(client).get(
+        '${Api.baseurl}api/tribes/events/current',
       );
 
-      if (competitions.isEmpty) {
-        _currentEvent = null;
+      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+        final data = response.data as Map<String, dynamic>;
+        
+        // Parse event data
+        _currentEvent = TribeVsTribeEvent(
+          id: data['id']?.toString() ?? '',
+          name: data['name'] ?? 'Tribe Battle',
+          description: data['description'] ?? 'Compete with other tribes! Earn XP for your tribe.',
+          startDate: data['start_date'] != null 
+              ? DateTime.parse(data['start_date']) 
+              : DateTime.now(),
+          endDate: data['end_date'] != null 
+              ? DateTime.parse(data['end_date']) 
+              : DateTime.now().add(const Duration(days: 2)),
+          participatingTribes: (data['participating_tribes'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ?? [],
+        );
+
+        // Parse tribe scores
         _tribeScores.clear();
-        return;
-      }
+        if (data['scores'] is Map) {
+          final scores = data['scores'] as Map<String, dynamic>;
+          scores.forEach((tribeId, score) {
+            _tribeScores[tribeId] = (score is int) ? score : (score as num).toInt();
+          });
+        }
+      } else {
+        // Fallback: Create event for next weekend if no active event
+        final now = DateTime.now();
+        final weekendStart = _getNextWeekendStart(now);
 
-      final comp = competitions.first as Map<String, dynamic>;
-      final id = (comp['_id'] ?? comp['id'] ?? '').toString();
-      final name = (comp['name'] ?? 'Tribe Battle').toString();
-      final start = DateTime.tryParse(comp['start_at']?.toString() ?? '') ?? DateTime.now();
-      final end = DateTime.tryParse(comp['end_at']?.toString() ?? '') ?? start.add(const Duration(days: 2));
+        _currentEvent = TribeVsTribeEvent(
+          id: 'event_${weekendStart.millisecondsSinceEpoch}',
+          name: 'Weekend Tribe Battle',
+          description: 'Compete with other tribes! Earn XP for your tribe.',
+          startDate: weekendStart,
+          endDate: weekendStart.add(const Duration(days: 2)),
+          participatingTribes: ['yoruba', 'igbo', 'hausa', 'swahili', 'zulu'],
+        );
 
-      _currentEvent = TribeVsTribeEvent(
-        id: id,
-        name: name,
-        description: (comp['description'] ?? 'Compete with other tribes! Earn XP for your tribe.').toString(),
-        startDate: start,
-        endDate: end,
-        participatingTribes: const [], // derived from results below
-      );
-
-      // Load results into local cache for fast UI rendering.
-      final results = await competitionsService.getCompetitionResults(id);
-      final rows = (results['results'] as List?) ?? const [];
-      _tribeScores.clear();
-      for (final r in rows) {
-        final m = Map<String, dynamic>.from(r as Map);
-        final tribeName = (m['subject_name'] ?? '').toString();
-        final points = (m['points'] is int) ? m['points'] as int : int.tryParse('${m['points']}') ?? 0;
-        if (tribeName.isNotEmpty) _tribeScores[tribeName] = points;
+        // Initialize scores to 0
+        _tribeScores.clear();
+        for (var tribe in _currentEvent!.participatingTribes) {
+          _tribeScores[tribe] = 0;
+        }
       }
     } catch (e) {
-      debugPrint('Error loading tribe vs tribe event: $e');
+      logger.error('Error loading tribe vs tribe event', tag: 'tribe-vs-tribe', error: e);
+      // Fallback on error
+      final now = DateTime.now();
+      final weekendStart = _getNextWeekendStart(now);
+
+      _currentEvent = TribeVsTribeEvent(
+        id: 'event_${weekendStart.millisecondsSinceEpoch}',
+        name: 'Weekend Tribe Battle',
+        description: 'Compete with other tribes! Earn XP for your tribe.',
+        startDate: weekendStart,
+        endDate: weekendStart.add(const Duration(days: 2)),
+        participatingTribes: ['yoruba', 'igbo', 'hausa', 'swahili', 'zulu'],
+      );
+
+      _tribeScores.clear();
+      for (var tribe in _currentEvent!.participatingTribes) {
+        _tribeScores[tribe] = 0;
+      }
     } finally {
       state = state.copyWith(isLoading: false);
     }
@@ -84,12 +116,34 @@ class TribeVsTribeProvider extends Notifier<BaseProviderState>
   /// Contribute XP to tribe
   Future<void> contributeToTribe(String tribeId, int xp) async {
     try {
+      // Update local state immediately for responsive UI
       _tribeScores[tribeId] = (_tribeScores[tribeId] ?? 0) + xp;
-      // Note: Backend currently derives tribe-vs-tribe totals from canonical events,
-      // so direct “submit points” is intentionally not done here.
       state = state.copyWith();
+
+      // Sync to backend
+      try {
+        final response = await ref.read(client).post(
+          Api.tribeDepositXP(tribeId),
+          data: {
+            'xp': xp,
+            'event_id': _currentEvent?.id,
+          },
+        );
+
+        if (response.statusCode == 200 && response.data is Map) {
+          final data = response.data as Map<String, dynamic>;
+          // Update with server-authoritative score
+          if (data['total_xp'] != null) {
+            _tribeScores[tribeId] = (data['total_xp'] as num).toInt();
+          }
+        }
+      } catch (syncError) {
+        logger.error('Error syncing tribe XP contribution to backend', tag: 'tribe-vs-tribe', error: syncError);
+        // Continue - local state is already updated
+      }
     } catch (e) {
-      debugPrint('Error contributing to tribe: $e');
+      logger.error('Error contributing to tribe', tag: 'tribe-vs-tribe', error: e);
+      rethrow;
     }
   }
 

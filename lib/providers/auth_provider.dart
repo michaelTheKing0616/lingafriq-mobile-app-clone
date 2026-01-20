@@ -2,55 +2,75 @@ import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/services/auth/credential_storage_service.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
-import '../screens/auth/login_screen.dart';
-import '../screens/onboarding/kijiji_onboarding_screen.dart';
+import '../screens/auth/world_class_login_screen.dart';
+import '../screens/onboarding/onboarding_screen_material3.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
 import 'dialog_provider.dart';
 import 'navigation_provider.dart';
 import 'shared_preferences_provider.dart';
-import '../services/secure_storage_service.dart';
 
 final authProvider = NotifierProvider<AuthProvider, BaseProviderState>(() {
   return AuthProvider();
 });
 
 class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
+  bool _isLoggingIn = false; // Prevent duplicate login requests
+  
   @override
   BaseProviderState build() {
     return BaseProviderState();
   }
 
   Future<void> navigateBasedOnCondition() async {
-    // World-class security: do NOT auto-login with stored passwords.
-    // Instead, use refresh tokens stored in secure storage.
-    final refreshed = await ref.read(apiProvider.notifier).refreshSession();
-    if (!refreshed) {
-      ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+    // Check if onboarding has been seen first
+    final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
+    
+    if (!isOnboardingSeen) {
+      ref.read(navigationProvider).naviateOffAll(const OnboardingScreenMaterial3());
       return;
     }
 
-    try {
-      final userInfo = await ref.read(apiProvider.notifier).getUserInfo();
-      final profile = await ref.read(apiProvider.notifier).getProfileUser(userInfo.id);
-      if (profile != null) {
-        ref.read(userProvider.notifier).overrideUser(profile);
-        await ref.read(apiProvider.notifier).regiserDevice();
-      }
-    } catch (_) {
-      // If profile fetch fails, still allow navigation; user can retry inside app.
+    // CRITICAL FIX: Check if user is already logged in before making API call
+    final currentUser = ref.read(userProvider);
+    final apiNotifier = ref.read(apiProvider.notifier);
+    
+    // If user is already logged in and has a token, skip login API call
+    // This prevents unnecessary API calls on every splash screen load
+    if (currentUser != null && (apiNotifier.token?.isNotEmpty ?? false)) {
+      // Already logged in, navigate to tabs view
+      ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+      return;
     }
 
-    final hasSeenOnboarding =
-        ref.read(sharedPreferencesProvider).hasSeenOnboarding;
-    if (!hasSeenOnboarding) {
-      ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
-    } else {
-      ref.read(navigationProvider).naviateOffAll(const TabsView());
+    // Use secure credential storage instead of SharedPreferences
+    final credentialStorage = CredentialStorageService();
+    final storedCredentials = await credentialStorage.getStoredCredentials();
+    
+    if (storedCredentials == null) {
+      ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
+      return;
     }
+
+    final email = storedCredentials['email']!;
+    final password = storedCredentials['password']!;
+
+    final user = await login(email: email, password: password);
+
+    //Login suceess, login can fail is user has changed the password in the web
+    if (user is ProfileModel) {
+      ref.read(userProvider.notifier).overrideUser(user);
+      await ref.read(apiProvider.notifier).registerDevice();
+      ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+      return;
+    }
+
+    ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
   }
 
   Future<ProfileModel?> login({
@@ -60,23 +80,34 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     bool splashlogin = false,
     bool updateProfile = false,
   }) async {
+    // CRITICAL: Prevent duplicate login requests
+    if (_isLoggingIn) {
+      return null; // Login already in progress
+    }
+    
     try {
+      _isLoggingIn = true;
       if (storeCredentials) {
         state = state.copyWith(isLoading: true);
       }
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
       if (storeCredentials) {
-        // Store only email in prefs; tokens are stored securely by ApiProvider.login().
-        await ref.read(sharedPreferencesProvider).storeEmailAndPassword(email, password);
+        // Use secure credential storage instead of SharedPreferences
+        final credentialStorage = CredentialStorageService();
+        await credentialStorage.storeCredentials(
+          email: email,
+          password: password,
+        );
+        // Also store email in SharedPreferences for backward compatibility (email is not sensitive)
+        final prefs = ref.read(sharedPreferencesProvider);
+        await prefs.prefs.setString('email', email);
         ref.read(apiProvider.notifier).accountUpdate();
         await Future.delayed(const Duration(seconds: 3));
         state = state.copyWith(isLoading: false);
         ref.read(userProvider.notifier).overrideUser(user);
 
-        // New accounts: always take them through the rich Kijiji onboarding
-        // flow, which includes the placement test (with a skip option).
-        ref.read(navigationProvider).naviateOffAll(const KijijiOnboardingScreen());
+        ref.read(navigationProvider).naviateOffAll(OnboardingScreenMaterial3());
         return user;
       }
       return user;
@@ -84,6 +115,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: false);
       await ref.read(dialogProvider(e)).showExceptionDialog();
       return null;
+    } finally {
+      _isLoggingIn = false; // Always reset flag
     }
   }
 
@@ -157,8 +190,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   // }
 
   Future<void> signOut({bool deleteAccount = false}) async {
-    await ref.read(sharedPreferencesProvider).removeEmailAndPassword();
-    await SecureStorageService().clearAllTokens();
+    final prefs = ref.read(sharedPreferencesProvider);
+    await prefs.removeEmailAndPassword();
     "Delete Account $deleteAccount".log('signout');
     if (deleteAccount == false) {
       await ref.read(apiProvider.notifier).unregisterDevice();

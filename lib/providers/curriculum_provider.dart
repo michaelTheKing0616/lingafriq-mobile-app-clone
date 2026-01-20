@@ -5,6 +5,7 @@ import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final curriculumProvider = NotifierProvider<CurriculumProvider, BaseProviderState>(() {
   return CurriculumProvider();
@@ -41,7 +42,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
           state = state.copyWith(); // Trigger rebuild
           return;
         } catch (e) {
-          debugPrint('Error loading cached curriculum: $e');
+          logger.error('Error loading cached curriculum', tag: 'curriculum', error: e);
           // Continue to try loading from bundle
         }
       }
@@ -82,7 +83,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
               levelsMap[level] = units;
             }
           } catch (e) {
-            debugPrint('Error loading $language $level: $e');
+            logger.error('Error loading curriculum', tag: 'curriculum', error: e, context: {'language': language, 'level': level});
             // Continue with other languages/levels
           }
         }
@@ -111,7 +112,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
       state = state.copyWith(isLoading: false);
       state = state.copyWith(); // Trigger rebuild
     } catch (e) {
-      debugPrint('Error loading curriculum: $e');
+      logger.error('Error loading curriculum', tag: 'curriculum', error: e);
       state = state.copyWith(isLoading: false);
       // Don't rethrow - show user-friendly error in UI
       // The UI will handle showing the error message
@@ -186,6 +187,11 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
     return _completionStatus[language]?[level]?[lessonId] ?? false;
   }
 
+  /// Public method to check if a lesson is completed
+  bool isLessonCompleted(String language, String level, String lessonId) {
+    return _isLessonCompleted(language, level, lessonId);
+  }
+
   bool _isUnitCompleted(String language, String level, CurriculumUnit unit) {
     return unit.lessons.every((l) => _isLessonCompleted(language, level, l.id));
   }
@@ -209,7 +215,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
         await prefs.setString('curriculum_data', _curriculum!.toJson());
       }
     } catch (e) {
-      debugPrint('Error saving curriculum: $e');
+      logger.error('Error saving curriculum', tag: 'curriculum', error: e);
     }
   }
 
@@ -222,7 +228,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error loading curriculum: $e');
+      logger.error('Error loading curriculum', tag: 'curriculum', error: e);
     }
   }
 
@@ -231,7 +237,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('curriculum_completion', jsonEncode(_completionStatus));
     } catch (e) {
-      debugPrint('Error saving completion status: $e');
+      logger.error('Error saving completion status', tag: 'curriculum', error: e);
     }
   }
 
@@ -250,7 +256,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
         });
       }
     } catch (e) {
-      debugPrint('Error loading completion status: $e');
+      logger.error('Error loading completion status', tag: 'curriculum', error: e);
     }
   }
 }

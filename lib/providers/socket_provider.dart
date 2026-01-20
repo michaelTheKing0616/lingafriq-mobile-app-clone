@@ -15,8 +15,7 @@ final socketServiceProvider = Provider<GamificationSocketService>((ref) {
       service.initialize(token);
       
       // Subscribe to user inbox
-      final inboxUserId = next.globalId ?? next.id.toString();
-      service.subscribeToUserInbox(inboxUserId);
+      service.subscribeToUserInbox(next.id.toString());
     } else {
       service.disconnect();
     }

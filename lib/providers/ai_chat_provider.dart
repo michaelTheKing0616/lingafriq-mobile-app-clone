@@ -38,9 +38,23 @@ class AiChatProvider extends BaseProvider {
   final Dio _dio = Dio();
   
   // OpenAI API Configuration
-  // Key is injected at build time via --dart-define=OPENAI_API_KEY=...
-  // (Do NOT hardcode secrets in the mobile app repo.)
-  static String get _apiKey => const String.fromEnvironment('OPENAI_API_KEY', defaultValue: '');
+  // Uses centralized EnvConfig for API key management
+  static String get _apiKey {
+    // Try OpenAI key from environment
+    const openAiKey = String.fromEnvironment('OPENAI_API_KEY', defaultValue: '');
+    if (openAiKey.isNotEmpty) return openAiKey;
+    
+    // Fallback: Check if Groq is configured (alternative AI provider)
+    if (EnvConfig.isGroqConfigured) {
+      // Note: This provider is designed for OpenAI, but Groq can be used as fallback
+      // For production, prefer using GroqChatProvider which is optimized for Groq
+      return EnvConfig.groqApiKey;
+    }
+    
+    // Return empty string if not configured - will throw error on use
+    return '';
+  }
+  
   static const String _apiUrl = 'https://api.openai.com/v1/chat/completions';
   
   String _selectedLanguage = 'English'; // Default language
@@ -92,11 +106,11 @@ Always be encouraging, patient, and culturally sensitive. Respond naturally in t
     if (userMessage.trim().isEmpty) {
       throw Exception('Message cannot be empty');
     }
-
+    
+    // Validate API key is configured
     if (_apiKey.isEmpty) {
-      // Keep behavior explicit + safe if this provider is ever wired up.
       throw Exception(
-        'AI chat is not configured. Set OPENAI_API_KEY via --dart-define at build time, or use the HuggingFace provider.',
+        'AI API key is not configured. Please configure OPENAI_API_KEY or use GroqChatProvider instead.'
       );
     }
 

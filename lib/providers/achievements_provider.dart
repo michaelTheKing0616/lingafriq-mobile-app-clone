@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final achievementsProvider = NotifierProvider<AchievementsProvider, BaseProviderState>(() {
   return AchievementsProvider();
@@ -46,7 +47,7 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error syncing achievements with backend: $e');
+      logger.error('Error syncing achievements with backend', tag: 'achievements', error: e);
       // Silently fail - local state is primary
     }
   }
@@ -245,15 +246,15 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
         }
       }
     } catch (e) {
-      debugPrint('Error syncing unlocked achievements: $e');
+      logger.error('Error syncing unlocked achievements', tag: 'achievements', error: e);
     }
   }
 
   Future<void> _syncXPToBackend() async {
     try {
-      await ref.read(apiProvider.notifier).updateXP(_totalXP, _level);
+      await ref.read(apiProvider.notifier).updateXP(_totalXP);
     } catch (e) {
-      debugPrint('Error syncing XP to backend: $e');
+      logger.error('Error syncing XP to backend', tag: 'achievements', error: e);
     }
   }
 
@@ -269,7 +270,7 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
       final achievementsJson = _achievements.map((a) => a.toJson()).toList();
       await prefs.setStringList('achievements', achievementsJson);
     } catch (e) {
-      debugPrint('Error saving achievements: $e');
+      logger.error('Error saving achievements', tag: 'achievements', error: e);
     }
   }
 
@@ -282,7 +283,7 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
         _achievements.addAll(achievementsJson.map((json) => Achievement.fromJson(json)));
       }
     } catch (e) {
-      debugPrint('Error loading achievements: $e');
+      logger.error('Error loading achievements', tag: 'achievements', error: e);
     }
   }
 
@@ -292,7 +293,7 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
       await prefs.setInt('total_xp', _totalXP);
       await prefs.setInt('user_level', _level);
     } catch (e) {
-      debugPrint('Error saving XP: $e');
+      logger.error('Error saving XP', tag: 'achievements', error: e);
     }
   }
 
@@ -302,7 +303,7 @@ class AchievementsProvider extends Notifier<BaseProviderState> with BaseProvider
       _totalXP = prefs.getInt('total_xp') ?? 0;
       _level = prefs.getInt('user_level') ?? 1;
     } catch (e) {
-      debugPrint('Error loading XP: $e');
+      logger.error('Error loading XP', tag: 'achievements', error: e);
     }
   }
 }

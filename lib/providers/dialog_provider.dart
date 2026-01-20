@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'navigation_provider.dart';
+import '../utils/error_handler.dart';
 
 final dialogProvider = Provider.autoDispose.family<DialogProvider, Object?>((ref, Object? error) {
   return DialogProvider(ref.container, error);
@@ -76,53 +76,47 @@ class DialogProvider {
       return;
     }
 
-    if (e is! DioError) {
-      _log(e.runtimeType.toString());
-      await showPlatformDialogue(
-        title: 'Error',
-        content: SelectableText(e.toString()),
-      );
-      return;
-    }
+    // Use ErrorConverter for consistent error handling
+    final appError = ErrorConverter.toAppError(e);
+    final userMessage = ErrorConverter.getUserMessage(appError);
 
-    final error = e as DioError;
-    final status = error.response?.statusCode?.toString() ?? "";
-
-    if (error.type == DioErrorType.badResponse) {
-      final data = error.response?.data;
-
-      if (data is Map && data.keys.isNotEmpty) {
-        final error = data[data.keys.first];
-        await showPlatformDialogue(
-          title: "Error $status",
-          content: SelectableText(
-            error is List ? error.first.toString() : error.toString(),
-          ),
-        );
-        return;
+    // CRITICAL: Never show raw HTTP status codes to users (especially 429)
+    // Always use user-friendly titles
+    String title = "We're sorry";
+    if (appError is ApiError) {
+      final statusCode = appError.statusCode;
+      // Map status codes to friendly titles without exposing raw codes
+      if (statusCode == 429) {
+        title = "Please slow down";
+      } else if (statusCode == 401) {
+        title = "Authentication required";
+      } else if (statusCode == 403) {
+        title = "Access denied";
+      } else if (statusCode == 404) {
+        title = "Not found";
+      } else if (statusCode != null && statusCode >= 500) {
+        title = "Server error";
+      } else {
+        title = "Oops, an error occurred";
       }
-
-      await showPlatformDialogue(
-        title: "Error $status",
-        content: SelectableText(data?.toString() ?? ""),
-      );
-      return;
+    } else {
+      title = "Oops, an error occurred";
     }
 
     await showPlatformDialogue(
-      title: "Error $status",
-      content: SelectableText(error.message ?? '', maxLines: 5),
+      title: title,
+      content: SelectableText(userMessage),
     );
   }
 
-  void showSuccessSnackBar() {
+  void showSuccessSnackBar({String? message}) {
     final context = ref.read(navigationProvider).navigatorKey.currentContext;
     if (context == null) return;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: Text(e is String ? e.toString() : ''),
+          content: Text(message ?? 'Success'),
           duration: const Duration(seconds: 2),
           backgroundColor: Colors.green,
         ),

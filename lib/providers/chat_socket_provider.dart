@@ -1,22 +1,17 @@
-import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/services/gamification/socket_service.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Chat Socket Provider - Wraps socket service for chat functionality
 class ChatSocketNotifier extends Notifier<ChatSocketState> {
   final List<Map<String, dynamic>> _messages = [];
   final List<Map<String, dynamic>> _onlineUsers = [];
-  final Set<String> _blockedUserIds = {};
-  final List<Map<String, dynamic>> _pendingQueue = [];
   String _activeRoom = 'general';
   bool _isConnected = false;
   final Map<String, List<Map<String, dynamic>>> _roomMessages = {};
-  final Map<String, DateTime> _lastReadAtByRoom = {};
   IO.Socket? _socket;
 
   @override
@@ -26,131 +21,89 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   }
 
   void _initializeSocket() {
-    final api = ref.read(apiProvider.notifier);
-    final token = api.token;
-    final user = ref.read(userProvider);
-    final apiBaseUrl =
-        Api.baseurl.replaceFirst('http://', '').replaceFirst('https://', '');
-
-    final headers = <String, dynamic>{};
-    if (user != null) {
-      headers['userid'] = user.id.toString();
-      headers['username'] = user.username;
+    try {
+      final token = ref.read(apiProvider.notifier).token;
+      // Use the base URL directly - socket.io client handles protocol conversion
+      final baseUrl = Api.baseurl.replaceAll(RegExp(r'/$'), ''); // Remove trailing slashes
+      
+      _socket = IO.io(
+        baseUrl,
+        IO.OptionBuilder()
+            .setTransports(['websocket', 'polling'])
+            .setAuth({'token': token ?? ''})
+            .enableAutoConnect()
+            .setReconnectionAttempts(5)
+            .setReconnectionDelay(1000)
+            .setReconnectionDelayMax(5000)
+            .setTimeout(20000)
+            .build(),
+      );
+    } catch (e) {
+      logger.error('Error initializing socket', tag: 'chat-socket', error: e);
+      return;
     }
-    if (token != null) {
-      headers['authorization'] = 'Bearer $token';
-    }
-
-    _socket = IO.io(
-      'http://$apiBaseUrl',
-      IO.OptionBuilder()
-          .setTransports(['websocket', 'polling'])
-          .setExtraHeaders(headers)
-          .enableAutoConnect()
-          .build(),
-    );
 
     _socket!.onConnect((_) {
       _isConnected = true;
       state = state.copyWith(isConnected: true);
-
-      // Load blocked users once on connect so we can filter messages client-side
-      api.getBlockedUsers().then((blocked) {
-        _blockedUserIds
-          ..clear()
-          ..addAll(blocked
-              .map((u) => (u['userId'] ?? u['id'] ?? '').toString())
-              .where((id) => id.isNotEmpty));
-      }).catchError((e) {
-        // Non-fatal; chat still works without block filtering
-      });
-
-      // Flush any messages that were queued while offline.
-      if (_pendingQueue.isNotEmpty) {
-        for (final msg in List<Map<String, dynamic>>.from(_pendingQueue)) {
-          _socket?.emit('send_message', msg);
-        }
-        _pendingQueue.clear();
-      }
+      logger.info('Chat socket connected', tag: 'chat-socket');
     });
 
     _socket!.onDisconnect((_) {
       _isConnected = false;
       state = state.copyWith(isConnected: false);
+      logger.info('Chat socket disconnected', tag: 'chat-socket');
+    });
+    
+    _socket!.onError((error) {
+      logger.error('Chat socket error', tag: 'chat-socket', error: error);
+      _isConnected = false;
+      state = state.copyWith(isConnected: false);
+    });
+    
+    _socket!.onConnectError((error) {
+      logger.error('Chat socket connection error', tag: 'chat-socket', error: error);
+      _isConnected = false;
+      state = state.copyWith(isConnected: false);
     });
 
-    // New-message stream from backend chat server
-    _socket!.on('new_message', (data) {
+    _socket!.on('message', (data) {
       final messageData = Map<String, dynamic>.from(data);
       final room = messageData['room'] ?? _activeRoom;
-      final senderId = messageData['userId']?.toString();
-      if (senderId != null && _blockedUserIds.contains(senderId)) {
-        // Skip messages from blocked users
-        return;
-      }
       if (!_roomMessages.containsKey(room)) {
         _roomMessages[room] = [];
       }
-      // Mark messages as delivered once they are echoed back from the server.
-      messageData['status'] = messageData['status'] ?? 'delivered';
       _roomMessages[room]!.add(messageData);
       _messages.add(messageData);
       state = state.copyWith(messages: List.from(_messages));
     });
 
-    // Server-side edit propagation
-    _socket!.on('message_edited', (data) {
-      final payload = Map<String, dynamic>.from(data);
-      final id = payload['id']?.toString();
-      if (id == null) return;
-      for (final list in [_messages, ..._roomMessages.values]) {
-        for (final msg in list) {
-          if (msg['id']?.toString() == id) {
-            msg['message'] = payload['message'] ?? msg['message'];
-            msg['edited'] = payload['edited'] ?? true;
-            msg['editedAt'] = payload['editedAt'] ?? msg['editedAt'];
-          }
-        }
+    _socket!.on('user_joined', (data) {
+      final userData = Map<String, dynamic>.from(data);
+      if (!_onlineUsers.any((u) => u['userId'] == userData['userId'])) {
+        _onlineUsers.add(userData);
+        state = state.copyWith(onlineUsers: List.from(_onlineUsers));
       }
-      state = state.copyWith(messages: List.from(_messages));
     });
 
-    // Server-side reactions propagation
-    _socket!.on('message_reacted', (data) {
-      final payload = Map<String, dynamic>.from(data);
-      final id = payload['id']?.toString();
-      if (id == null) return;
-      for (final list in [_messages, ..._roomMessages.values]) {
-        for (final msg in list) {
-          if (msg['id']?.toString() == id) {
-            msg['reactions'] = payload['reactions'] ?? msg['reactions'];
-          }
-        }
-      }
-      state = state.copyWith(messages: List.from(_messages));
-    });
-
-    // Online users presence from backend
-    _socket!.on('online_users', (data) {
-      final list = (data as List)
-          .map<Map<String, dynamic>>(
-              (u) => Map<String, dynamic>.from(u as Map))
-          .toList();
-      _onlineUsers
-        ..clear()
-        ..addAll(list);
+    _socket!.on('user_left', (data) {
+      final userId = data['userId'];
+      _onlineUsers.removeWhere((u) => u['userId'] == userId);
       state = state.copyWith(onlineUsers: List.from(_onlineUsers));
     });
   }
 
   void connect(String userId, String username) {
-    if (!_isConnected) {
-      _socket?.connect();
-      // Inform server of the authenticated user for richer presence data
-      _socket?.emit('user_connected', {
-        'userId': userId,
-        'username': username,
-      });
+    try {
+      if (!_isConnected && _socket != null) {
+        _socket!.connect();
+        logger.info('Attempting to connect chat socket', tag: 'chat-socket', context: {'userId': userId});
+      } else if (_socket == null) {
+        // Reinitialize if socket is null
+        _initializeSocket();
+      }
+    } catch (e) {
+      logger.error('Error connecting chat socket', tag: 'chat-socket', error: e);
     }
   }
 
@@ -159,11 +112,11 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
     if (!_roomMessages.containsKey(room)) {
       _roomMessages[room] = [];
     }
-    _socket?.emit('join_room', {'room': room});
+    _socket?.emit('join', room);
   }
 
   void leaveRoom(String room) {
-    _socket?.emit('leave_room', {'room': room});
+    _socket?.emit('leave', room);
     if (room == _activeRoom) {
       _activeRoom = 'general';
     }
@@ -171,104 +124,36 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
 
   void setActiveRoom(String room) {
     _activeRoom = room;
-    // Local read marker: when a room becomes active, consider all messages up to now as "seen".
-    _lastReadAtByRoom[room] = DateTime.now();
   }
 
-  Map<String, dynamic>? lastMessageForRoom(String room) {
-    final list = _roomMessages[room];
-    if (list == null || list.isEmpty) return null;
-    return list.last;
-  }
-
-  String? lastMessageTextForRoom(String room) {
-    final msg = lastMessageForRoom(room);
-    return msg?['message']?.toString();
-  }
-
-  String? lastMessageTimestampForRoom(String room) {
-    final msg = lastMessageForRoom(room);
-    return msg?['timestamp']?.toString();
-  }
-
-  int unreadCountForRoom(String room, String currentUserId) {
-    final list = _roomMessages[room];
-    if (list == null || list.isEmpty) return 0;
-    final lastReadAt = _lastReadAtByRoom[room];
-    if (lastReadAt == null) return 0;
-
-    int count = 0;
-    for (final msg in list) {
-      final senderId = msg['userId']?.toString();
-      if (senderId == null || senderId == currentUserId) continue;
-      final ts = msg['timestamp']?.toString();
-      if (ts == null) continue;
-      try {
-        final dt = DateTime.parse(ts);
-        if (dt.isAfter(lastReadAt)) {
-          count++;
-        }
-      } catch (_) {
-        // Ignore malformed timestamps.
+  void sendMessage(String room, String message, String userId, String username) {
+    if (!_isConnected || _socket == null) {
+      logger.warn('Cannot send message: Socket not connected', tag: 'chat-socket');
+      return;
+    }
+    
+    try {
+      final messageData = {
+        'room': room,
+        'message': message,
+        'userId': userId,
+        'username': username,
+        'timestamp': DateTime.now().toIso8601String(),
+      };
+      
+      _socket!.emit('message', messageData);
+      
+      // Optimistically add to local state for immediate UI feedback
+      if (!_roomMessages.containsKey(room)) {
+        _roomMessages[room] = [];
       }
+      _roomMessages[room]!.add(messageData);
+      _messages.add(messageData);
+      state = state.copyWith(messages: List.from(_messages));
+    } catch (e) {
+      logger.error('Error sending message', tag: 'chat-socket', error: e);
+      // Don't update state if send fails - server will not receive it
     }
-    return count;
-  }
-
-  void sendMessage(
-    String room,
-    String message,
-    String userId,
-    String username, {
-    String chatType = 'global',
-    String messageType = 'text',
-    String? recipientId,
-    String? replyTo,
-    String? fileUrl,
-  }) {
-    final now = DateTime.now().toIso8601String();
-    final messageData = {
-      'room': room,
-      'message': message,
-      'userId': userId,
-      'username': username,
-      'timestamp': now,
-      'chatType': chatType,
-      'messageType': messageType,
-      if (recipientId != null) 'recipientId': recipientId,
-      if (replyTo != null) 'replyTo': replyTo,
-      if (fileUrl != null) 'fileUrl': fileUrl,
-      // Local status used only until the server echoes back the message.
-      'status': 'sending',
-    };
-
-    if (_isConnected && _socket != null) {
-      _socket!.emit('send_message', messageData);
-    } else {
-      // Queue the message to be sent when connection is restored.
-      _pendingQueue.add(messageData);
-    }
-  }
-
-  /// Insert a local-only Polie assistant message into a room.
-  /// This does not emit to the socket server, but gives the user
-  /// an in-chat AI assistant similar to @Meta in WhatsApp.
-  void addLocalPolieMessage(String room, String text) {
-    final messageData = {
-      'room': room,
-      'message': text,
-      'userId': 'polie',
-      'username': 'Polie',
-      'timestamp': DateTime.now().toIso8601String(),
-      'isPolie': true,
-      'status': 'local',
-    };
-    if (!_roomMessages.containsKey(room)) {
-      _roomMessages[room] = [];
-    }
-    _roomMessages[room]!.add(messageData);
-    _messages.add(messageData);
-    state = state.copyWith(messages: List.from(_messages));
   }
 
   List<Map<String, dynamic>> messagesForRoom(String room) {
@@ -279,45 +164,15 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   List<Map<String, dynamic>> get onlineUsers => _onlineUsers;
   bool get isConnected => _isConnected;
 
-  bool isUserBlocked(String userId) => _blockedUserIds.contains(userId);
-
-  void markUserBlocked(String userId) {
-    _blockedUserIds.add(userId);
-  }
-
-  void markUserUnblocked(String userId) {
-    _blockedUserIds.remove(userId);
-  }
-
-  /// Request an edit of an already-sent message.
-  void editMessage(String messageId, String newText) {
-    if (_socket == null) return;
-    _socket!.emit('edit_message', {
-      'id': messageId,
-      'message': newText,
-    });
-  }
-
-  /// React to a message with a simple emoji.
-  void reactToMessage(String messageId, String emoji) {
-    if (_socket == null) return;
-    _socket!.emit('react_message', {
-      'id': messageId,
-      'emoji': emoji,
-    });
-  }
-
-  /// Remove a previously-sent reaction.
-  void removeReaction(String messageId, String emoji) {
-    if (_socket == null) return;
-    _socket!.emit('unreact_message', {
-      'id': messageId,
-      'emoji': emoji,
-    });
-  }
-
   void dispose() {
-    _socket?.disconnect();
+    try {
+      _socket?.disconnect();
+      _socket?.dispose();
+      _socket = null;
+      _isConnected = false;
+    } catch (e) {
+      logger.error('Error disposing chat socket', tag: 'chat-socket', error: e);
+    }
   }
 }
 

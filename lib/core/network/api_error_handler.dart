@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import '../errors/app_exceptions.dart';
+import '../../utils/structured_logger.dart';
 
 /// API Error Handler
 /// Wraps API calls with proper error handling and converts to AppException
@@ -15,12 +15,22 @@ class ApiErrorHandler {
       return await apiCall();
     } catch (e) {
       final exception = ExceptionHandler.handleError(e);
-      final userMessage = ExceptionHandler.getUserFriendlyMessage(exception);
       
-      debugPrint('API Error: ${exception.message}');
-      if (e is DioException) {
-        debugPrint('DioException: ${e.type}, Status: ${e.response?.statusCode}');
-      }
+      logger.error(
+        'API error occurred',
+        tag: 'api-error-handler',
+        context: {
+          'errorMessage': errorMessage,
+          'exceptionType': exception.runtimeType.toString(),
+          'message': exception.message,
+          if (e is DioException) ...{
+            'dioExceptionType': e.type.toString(),
+            'statusCode': e.response?.statusCode,
+            'responseData': e.response?.data?.toString(),
+          },
+        },
+        error: e,
+      );
       
       // If fallback value provided, return it instead of throwing
       if (fallbackValue != null) {
@@ -63,7 +73,14 @@ class ApiErrorHandler {
         
         // Wait before retrying
         await Future.delayed(retryDelay * attempts);
-        debugPrint('Retrying API call (attempt $attempts/$maxRetries)...');
+        logger.info(
+          'Retrying API call',
+          tag: 'api-error-handler',
+          context: {
+            'attempt': attempts,
+            'maxRetries': maxRetries,
+          },
+        );
       }
     }
     

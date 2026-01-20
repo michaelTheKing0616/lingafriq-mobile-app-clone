@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history/models/history_response.dart';
 import 'package:lingafriq/history/models/section_history_model.dart';
@@ -21,7 +21,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/extensions.dart';
-import 'package:lingafriq/services/secure_storage_service.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 
 import '../history_quiz/models/history_quiz_response.dart';
 import '../language_quiz/models/language_quiz_lesson_model.dart';
@@ -30,6 +30,7 @@ import '../lessons/models/lesson_response.dart';
 import '../lessons/models/section_lesson_model.dart';
 import '../models/user.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final apiProvider = NotifierProvider<ApiProvider, BaseProviderState>(() {
   return ApiProvider();
@@ -38,24 +39,70 @@ final apiProvider = NotifierProvider<ApiProvider, BaseProviderState>(() {
 class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   @override
   BaseProviderState build() {
-    // Best-effort token restore for cold starts (used by dio interceptor).
-    _restoreSessionToken();
+    // Load tokens from SharedPreferences on initialization
+    // This ensures tokens are available if the app was previously logged in
+    _loadTokensFromStorage();
     return BaseProviderState();
   }
 
   String? token;
+  String? refreshToken;
 
-  Future<void> _restoreSessionToken() async {
+  /// Load tokens from SharedPreferences on provider initialization
+  void _loadTokensFromStorage() {
     try {
-      final storage = SecureStorageService();
-      final stored = await storage.getSessionToken();
-      if (stored != null && stored.isNotEmpty) {
-        token = stored;
-        state = state.copyWith();
-      }
-    } catch (_) {
-      // Non-fatal; user can re-auth
+      final prefs = ref.read(sharedPreferencesProvider);
+      token = prefs.getAccessToken();
+      // Refresh token is async, but we can't await in build()
+      // It will be loaded when needed via refreshAccessToken()
+    } catch (e) {
+      // Silently fail - tokens might not exist yet (user not logged in)
+      token = null;
+      refreshToken = null;
     }
+  }
+
+  /// Refresh access token using refresh token
+  Future<String?> refreshAccessToken() async {
+    try {
+      if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
+        // Try to get from shared preferences
+        final prefs = ref.read(sharedPreferencesProvider);
+        refreshToken = await prefs.getRefreshToken();
+      }
+      
+      if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
+        return null;
+      }
+
+      final res = await ref.read(client).post(
+        Api.refreshToken,
+        data: { 'refreshToken': refreshToken },
+      );
+
+      if (res.statusCode == 200 && (res.data['accessToken'] || res.data['access'])) {
+        // Handle both formats: backend returns 'accessToken' and 'refreshToken'
+        token = res.data['accessToken'] ?? res.data['access'];
+        refreshToken = res.data['refreshToken'] ?? res.data['refresh'] ?? refreshToken;
+        
+        // Store tokens
+        final prefs = ref.read(sharedPreferencesProvider);
+        await prefs.storeAuthTokens(token!, refreshToken!);
+        
+        return token;
+      }
+      return null;
+    } catch (e) {
+      token = null;
+      refreshToken = null;
+      return null;
+    }
+  }
+
+  /// Clear stored tokens
+  void clearToken() {
+    token = null;
+    refreshToken = null;
   }
 
   Future<void> register(FormData registerData) async {
@@ -74,121 +121,46 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<ProfileModel> login(Map<String, String> data) async {
     try {
       final res = await ref.read(client).post(Api.login, data: data);
-      if (res.statusCode != 200) throw res.data;
-      token = res.data['access'];
-      final refresh = res.data['refresh']?.toString();
-
-      // Store tokens securely (no passwords stored on device).
-      final storage = SecureStorageService();
-      if (token != null) {
-        await storage.storeSessionToken(token!);
+      if (res.statusCode != 200) {
+        // Convert to structured error
+        final error = ErrorConverter.toAppError(
+          DioException(
+            requestOptions: RequestOptions(path: Api.login),
+            response: res,
+            type: DioExceptionType.badResponse,
+          ),
+        );
+        throw error;
       }
-      if (refresh != null && refresh.isNotEmpty) {
-        await storage.storeRefreshToken(refresh);
+      token = res.data['access'] ?? res.data['token'];
+      refreshToken = res.data['refresh'];
+
+      // Store tokens
+      if ((token?.isNotEmpty ?? false) && (refreshToken?.isNotEmpty ?? false)) {
+        final prefs = ref.read(sharedPreferencesProvider);
+        await prefs.storeAuthTokens(token!, refreshToken!);
       }
 
       final email = data['email'] as String;
-      ProfileModel? user = await ref.read(sharedPreferencesProvider).getUser(email);
+      final prefs = ref.read(sharedPreferencesProvider);
+      ProfileModel? user = await prefs.getUser(email);
 
       if (user == null || user.email != email) {
         final userInfo = await getUserInfo();
         user = await getProfileUser(userInfo.id);
 
-        await ref.read(sharedPreferencesProvider).storeUser(user, userInfo.email);
+        await prefs.storeUser(user, userInfo.email);
       }
 
       getUserInfo().then((userInfo) async {
         user = await getProfileUser(userInfo.id);
         ref.read(userProvider.notifier).overrideUser(user);
-        await ref.read(sharedPreferencesProvider).storeUser(user!, userInfo.email);
+        await prefs.storeUser(user!, userInfo.email);
       });
 
       return user!;
     } catch (e) {
       rethrow;
-    }
-  }
-
-  /// Get the current user's ancestry graph.
-  ///
-  /// Server endpoint: GET /api/ancestry/me
-  /// - Requires Authorization header
-  /// - Returns { user_id, mentors, mentees }
-  Future<Map<String, dynamic>> getAncestryMe() async {
-    final res = await ref.read(client).get('/api/ancestry/me');
-    if (res.statusCode != 200) {
-      throw res.data;
-    }
-    return Map<String, dynamic>.from(res.data ?? {});
-  }
-
-  /// Lookup users by username/email/handle (global_id) for gifting UX.
-  /// Backend: GET /accounts/auth/users/lookup?q=...
-  Future<List<Map<String, dynamic>>> lookupUsers(String query) async {
-    final res = await ref.read(client).get(
-          'accounts/auth/users/lookup',
-          queryParameters: {'q': query},
-        );
-    if (res.statusCode != 200) throw res.data;
-    final data = res.data;
-    if (data is List) return data.cast<Map<String, dynamic>>();
-    return const <Map<String, dynamic>>[];
-  }
-
-  /// Create or activate a gifting ancestry link (mentor=current user → mentee=recipient).
-  /// Backend: POST /api/ancestry/gift-link
-  Future<bool> createGiftLink({required int recipientUserId}) async {
-    final res = await ref.read(client).post(
-          '/api/ancestry/gift-link',
-          data: {'recipient_user_id': recipientUserId},
-        );
-    return res.statusCode == 200 || res.statusCode == 201;
-  }
-
-  /// Transfer cowries to another user (server-authoritative).
-  /// Backend: POST /api/gamification/currency/transfer
-  Future<bool> transferCowries({
-    required int recipientUserId,
-    required int amount,
-  }) async {
-    final res = await ref.read(client).post(
-          '/api/gamification/currency/transfer',
-          data: {
-            'currency_type': 'cowries',
-            'amount': amount,
-            'recipient_user_id': recipientUserId,
-          },
-        );
-    return res.statusCode == 200;
-  }
-
-  /// Refresh access token using stored refresh token (secure storage).
-  Future<bool> refreshSession() async {
-    try {
-      final storage = SecureStorageService();
-      final refresh = await storage.getRefreshToken();
-      if (refresh == null || refresh.isEmpty) return false;
-
-      final res = await ref.read(client).post(Api.tokenRefresh, data: {
-        'refresh': refresh,
-      });
-      if (res.statusCode != 200) return false;
-
-      final newAccess = res.data['access']?.toString();
-      final newRefresh = res.data['refresh']?.toString();
-
-      if (newAccess == null || newAccess.isEmpty) return false;
-      token = newAccess;
-      await storage.storeSessionToken(newAccess);
-
-      if (newRefresh != null && newRefresh.isNotEmpty) {
-        await storage.storeRefreshToken(newRefresh);
-      }
-
-      state = state.copyWith();
-      return true;
-    } catch (_) {
-      return false;
     }
   }
 
@@ -236,66 +208,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Search users by handle (global_id) so learners can discover each other
-  /// for chats and communities. Requires authentication.
-  Future<List<Map<String, dynamic>>> searchUsersByHandle(String handle) async {
-    try {
-      // Backward-compatible: prefer the legacy handle search endpoint first.
-      // If it returns empty (or user entered username/email), fall back to the
-      // newer lookup endpoint which supports username/email/@handle.
-      final res = await ref.read(client).get(
-            'accounts/auth/users/search',
-            queryParameters: {'handle': handle},
-          );
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is List) {
-        final list = data.cast<Map<String, dynamic>>();
-        if (list.isNotEmpty) return list;
-      }
-
-      // Fallback: try the newer lookup route (exact-ish match on username/email/global_id).
-      final fallback = await lookupUsers(handle);
-      return fallback;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Get list of blocked users for the current learner
-  Future<List<Map<String, dynamic>>> getBlockedUsers() async {
-    try {
-      final res = await ref.read(client).get('user-connections/blocked');
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is Map && data['data'] is List) {
-        return (data['data'] as List).cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Report a chat message for moderation
-  Future<bool> reportChatMessage({
-    required String messageId,
-    String? reason,
-  }) async {
-    try {
-      final res = await ref.read(client).post(
-            '/chat/messages/$messageId/report',
-            data: {
-              if (reason != null && reason.isNotEmpty) 'reason': reason,
-            },
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
   Future<bool> deleteUser(Map<String, dynamic> data) async {
     try {
       final userId = ref.read(userProvider)?.id;
@@ -329,44 +241,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-   * Subscription API helpers
-   */
-
-  Future<Map<String, dynamic>> getSubscription() async {
-    try {
-      final res = await ref.read(client).get('/subscription');
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Map<String, dynamic>> updateSubscription(String tier) async {
-    try {
-      final res = await ref.read(client).put(
-            '/subscription',
-            data: {
-              'tier': tier.toString().split('.').last,
-            },
-          );
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> cancelSubscription() async {
-    try {
-      final res = await ref.read(client).post('/subscription/cancel');
-      if (res.statusCode != 200) throw res.data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   Future<User> getUserInfo() async {
     "getUserInfo".log('getUserInfo');
     try {
@@ -375,475 +249,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return User.fromMap(res.data);
     } catch (e) {
       rethrow;
-    }
-  }
-
-  /*
-   * User Generated Content (UGC)
-   * These helpers wire the mobile app to the backend UGC endpoints:
-   *   POST /api/user-content/lessons
-   *   POST /api/user-content/quizzes
-   *   POST /api/user-content/stories
-   *   GET  /api/user-content
-   *   POST /api/user-content/share
-   *   POST /api/user-content/rate
-   */
-
-  Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/user-content/lessons',
-            data: data,
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/user-content/quizzes',
-            data: data,
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/user-content/stories',
-            data: data,
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getUserContent({
-    String? language,
-    String? contentType,
-  }) async {
-    try {
-      final queryParams = <String, dynamic>{};
-      if (language != null) queryParams['language'] = language;
-      if (contentType != null) queryParams['content_type'] = contentType;
-
-      final res = await ref.read(client).get(
-            '/api/user-content',
-            queryParameters: queryParams.isEmpty ? null : queryParams,
-          );
-      if (res.statusCode != 200) throw res.data;
-
-      final data = res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<bool> shareUgcContent({
-    required String contentId,
-    required String contentType,
-    List<String>? userIds,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'content_id': contentId,
-        'content_type': contentType,
-      };
-      if (userIds != null) {
-        payload['shared_with'] = userIds;
-      }
-
-      final res = await ref.read(client).post(
-            '/api/user-content/share',
-            data: payload,
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<bool> rateUgcContent({
-    required String contentId,
-    required int rating,
-    String? review,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'content_id': contentId,
-        'rating': rating,
-      };
-      if (review != null) {
-        payload['review'] = review;
-      }
-
-      final res = await ref.read(client).post(
-            '/api/user-content/rate',
-            data: payload,
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  /// Search chat messages (global or private) using the backend search endpoint.
-  Future<List<Map<String, dynamic>>> searchChatMessages({
-    required String query,
-    String? room,
-    String type = 'all', // 'global' | 'private' | 'all'
-    int limit = 50,
-  }) async {
-    try {
-      final params = <String, dynamic>{
-        'q': query,
-        'type': type,
-        'limit': limit,
-      };
-      if (room != null && room.isNotEmpty) {
-        params['room'] = room;
-      }
-      final res = await ref.read(client).get(
-            '/chat/messages/search',
-            queryParameters: params,
-          );
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data['data'] ?? res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Family subscription: get family progress dashboard
-  Future<Map<String, dynamic>> getFamilyProgressDashboard() async {
-    try {
-      final res = await ref.read(client).get('/api/progress/family/dashboard');
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /*
-   * Experiments & feature flags
-   * Lightweight configuration returned by /api/experiments/config.
-   */
-
-  Future<Map<String, dynamic>> getExperimentsConfig() async {
-    try {
-      final res = await ref.read(client).get('/api/experiments/config');
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /*
-   * Language villages & voice rooms
-   */
-
-  /// Get (or lazily create) a language village for the given language.
-  Future<Map<String, dynamic>> getVillage(String language) async {
-    try {
-      final res = await ref.read(client).get('/api/villages/$language');
-      if (res.statusCode != 200) throw res.data;
-      if (res.data is Map<String, dynamic>) {
-        return Map<String, dynamic>.from(res.data as Map);
-      }
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// List all villages, optionally filtered by language.
-  Future<List<Map<String, dynamic>>> getVillages({String? language}) async {
-    try {
-      final params = <String, dynamic>{};
-      if (language != null && language.isNotEmpty) {
-        params['lang'] = language;
-      }
-      final res = await ref.read(client).get(
-            '/api/villages',
-            queryParameters: params.isEmpty ? null : params,
-          );
-      if (res.statusCode != 200) throw res.data;
-      final body = res.data;
-      final data = body is Map && body['data'] != null ? body['data'] : body;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// List recent village voice messages for a language.
-  Future<List<Map<String, dynamic>>> getVillageVoiceMessages({
-    required String language,
-    int limit = 50,
-  }) async {
-    try {
-      final res = await ref.read(client).get(
-            '/api/villages/$language/voice-messages',
-            queryParameters: {'limit': limit},
-          );
-      if (res.statusCode != 200) throw res.data;
-      final body = res.data;
-      final data = body is Map && body['data'] != null ? body['data'] : body;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Link an uploaded audio media item to a village as a voice message.
-  Future<bool> createVillageVoiceMessage({
-    required String language,
-    required String mediaId,
-  }) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/villages/$language/voice-message',
-            data: {'mediaId': mediaId},
-          );
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      debugPrint('Error creating village voice message: $e');
-      return false;
-    }
-  }
-
-  /// Request an STT-based summary of recent village voice messages.
-  Future<Map<String, dynamic>> summarizeVillageAudio({
-    required String language,
-    int limit = 10,
-  }) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/voice/stt/summarize-village',
-            data: {
-              'language': language,
-              'limit': limit,
-            },
-          );
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Request a summarized transcript of recent village voice messages.
-  Future<Map<String, dynamic>> summarizeVillageVoice({
-    required String language,
-    int limit = 10,
-  }) async {
-    try {
-      final res = await ref.read(client).post(
-            '/api/voice/stt/summarize-village',
-            data: {
-              'language': language,
-              'limit': limit,
-            },
-          );
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      debugPrint('Error summarizing village voice: $e');
-      rethrow;
-    }
-  }
-
-  /// Record an Ubuntu streak donation when the user would otherwise break their streak.
-  Future<bool> donateUbuntuStreak({
-    required int streakBefore,
-    required int donatedLessons,
-    int? donatedXp,
-    String? language,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'streakBefore': streakBefore,
-        'donatedLessons': donatedLessons,
-      };
-      if (donatedXp != null && donatedXp > 0) {
-        payload['donatedXp'] = donatedXp;
-      }
-      if (language != null && language.isNotEmpty) {
-        payload['language'] = language;
-      }
-
-      final res = await ref.read(client).post(
-            '/api/gamification/ubuntu/donate',
-            data: payload,
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      // Donation failure should not break streak logic; log and continue.
-      debugPrint('Error donating Ubuntu streak: $e');
-      return false;
-    }
-  }
-
-  /*
-   * Media import & voice integration helpers
-   */
-
-  Future<Map<String, dynamic>> uploadMedia({
-    required String filePath,
-    required String fileName,
-    String? title,
-    String? description,
-    String? language,
-  }) async {
-    try {
-      final file = await MultipartFile.fromFile(filePath, filename: fileName);
-      final formData = FormData.fromMap({
-        'file': file,
-        if (title != null) 'title': title,
-        if (description != null) 'description': description,
-        if (language != null) 'language': language,
-      });
-
-      final res = await ref.read(client).post(
-            '/media/upload',
-            data: formData,
-            options: Options(contentType: 'multipart/form-data'),
-          );
-
-      if (res.statusCode != 201 && res.statusCode != 200) throw res.data;
-      final body = res.data;
-      if (body is Map && body['data'] != null) {
-        return Map<String, dynamic>.from(body['data'] as Map);
-      }
-      return Map<String, dynamic>.from(body ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<Map<String, dynamic>> transcribeAudioFile({
-    required String filePath,
-    required String fileName,
-    String? language,
-    String task = 'transcribe',
-  }) async {
-    try {
-      final file = await MultipartFile.fromFile(filePath, filename: fileName);
-      final formData = FormData.fromMap({
-        'audio': file,
-        if (language != null) 'language': language,
-        'task': task,
-      });
-
-      final res = await ref.read(client).post(
-            '/api/voice/stt/transcribe',
-            data: formData,
-            options: Options(contentType: 'multipart/form-data'),
-          );
-
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  /// Quick pronunciation scoring via voice-service proxy.
-  /// Proxies to: POST /api/voice/pronunciation/quick
-  Future<Map<String, dynamic>> pronunciationQuick({
-    required String audioPath,
-    required String expectedText,
-    required String language,
-  }) async {
-    try {
-      final file = File(audioPath);
-      final fileName = audioPath.split(Platform.pathSeparator).last;
-
-      final formData = FormData.fromMap({
-        'learner_audio': await MultipartFile.fromFile(
-          file.path,
-          filename: fileName,
-        ),
-        'expected_text': expectedText,
-        'language': language,
-      });
-
-      final res = await ref.read(client).post(
-            '/voice/pronunciation/quick',
-            data: formData,
-          );
-
-      if (res.statusCode != 200) {
-        throw res.data;
-      }
-
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      debugPrint('Error calling pronunciationQuick: $e');
-      rethrow;
-    }
-  }
-
-  Future<bool> linkMediaToLesson({
-    required String mediaId,
-    required String lessonId,
-    String? summary,
-    List<String>? keyPhrases,
-    String? cefrLevel,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'lesson_id': lessonId,
-      };
-      if (summary != null && summary.isNotEmpty) {
-        payload['summary'] = summary;
-      }
-      if (keyPhrases != null && keyPhrases.isNotEmpty) {
-        payload['key_phrases'] = keyPhrases;
-      }
-      if (cefrLevel != null && cefrLevel.isNotEmpty) {
-        payload['cefr_level'] = cefrLevel;
-      }
-
-      final res = await ref.read(client).post(
-            '/media/$mediaId/link-lesson',
-            data: payload,
-          );
-      if (res.statusCode != 200) throw res.data;
-      return true;
-    } catch (e) {
-      return false;
     }
   }
 
@@ -1136,17 +541,29 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: true);
       final res = await ref.read(client).patch(endpointToHit);
       if (res.statusCode != 200) throw res.data;
-      accountUpdate().then((value) {
-        "Account updated".log("accountUpdate");
-        final userId = ref.read(userProvider)?.id;
-        if (userId != null) {
-          getProfileUser(userId).then((user) {
-            ref.read(userProvider.notifier).overrideUser(user);
-          });
+      
+      // CRITICAL FIX: Use async/await instead of chained promises for proper error handling
+      try {
+        final updateSuccess = await accountUpdate();
+        if (updateSuccess) {
+          "Account updated".log("accountUpdate");
+          final userId = ref.read(userProvider)?.id;
+          if (userId != null) {
+            try {
+              final user = await getProfileUser(userId);
+              ref.read(userProvider.notifier).overrideUser(user);
+            } catch (e) {
+              // Handle getProfileUser error gracefully - log but don't fail the whole operation
+              "Error getting updated profile $e".log("getProfileUser");
+              // User data might still be valid from previous state
+            }
+          }
         }
-      }).catchError((e) {
+      } catch (e) {
+        // Handle accountUpdate error gracefully - log but don't fail the whole operation
         "Error Account update $e".log("accountUpdate");
-      });
+        // Mark as complete succeeded, account update is secondary
+      }
 
       state = state.copyWith(isLoading: false);
       return true;
@@ -1391,7 +808,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   * History Quiz Section End
   * 
   */
-  Future<bool> regiserDevice() async {
+  Future<bool> registerDevice() async {
     try {
       final token = await ref.read(firebaseMessagingProvider).getToken();
       final data = {
@@ -1437,556 +854,947 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /*
-   * Gamification & Progress API Methods
-   */
+  /// Get AI-curated loading screen content
+  /// Returns a LoadingScreenContent object with fact, image, and cultural information
+  Future<Map<String, dynamic>> getLoadingScreenContent({
+    String? country,
+    String? language,
+    String? lastContentId,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{};
+      if (country != null) queryParams['country'] = country;
+      if (language != null) queryParams['language'] = language;
+      if (lastContentId != null) queryParams['lastContentId'] = lastContentId;
+
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/v1/loading-screen/content',
+        queryParameters: queryParams.isEmpty ? null : queryParams,
+      );
+
+      if (res.statusCode != 200) throw res.data;
+      return res.data as Map<String, dynamic>;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Search users by handle (global_id)
+  Future<List<Map<String, dynamic>>> searchUsersByHandle(String handle) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.searchUsersByHandle(handle),
+      );
+      if (res.statusCode != 200) throw res.data;
+      final data = res.data;
+      if (data is List) {
+        return List<Map<String, dynamic>>.from(data);
+      } else if (data is Map && data.containsKey('result')) {
+        final result = data['result'];
+        if (result is List) {
+          return List<Map<String, dynamic>>.from(result);
+        }
+      }
+      return [];
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// Award XP to a user (server-authoritative)
+  /// Returns true if successful, false otherwise
+  Future<bool> awardXP({
+    required String userId,
+    required String source,
+    required String sourceId,
+    required int amount,
+    double difficultyMultiplier = 1.0,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        Api.xpAward,
+        data: {
+          'user_id': userId,
+          'source': source,
+          'source_id': sourceId,
+          'amount': amount,
+          'difficulty_multiplier': difficultyMultiplier,
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error awarding XP', error: e);
+      return false;
+    }
+  }
+
+  /// Get user XP and level information
+  /// Returns Map with totalXP, level, levelTitle, or null on error
+  Future<Map<String, dynamic>?> getUserXP(String userId) async {
+    try {
+      final res = await ref.read(client).get('${Api.xpTotal}?user_id=$userId');
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error getting user XP', error: e);
+      return null;
+    }
+  }
+
+  /// Record learner activity for analytics and progress tracking
+  Future<bool> recordLearnerActivity({
+    required String userId,
+    required String language,
+    String? activityType,
+    Map<String, dynamic>? metadata,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/learner-activity',
+        data: {
+          'user_id': userId,
+          'language': language,
+          if (activityType != null) 'activity_type': activityType,
+          if (metadata != null) 'metadata': metadata,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error recording learner activity', error: e);
+      return false;
+    }
+  }
+
+  /// Get experiments configuration (feature flags and variants)
+  Future<Map<String, dynamic>> getExperimentsConfig() async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/experiments/config',
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return {'flags': {}, 'variants': {}};
+    } catch (e) {
+      logger.error('Error getting experiments config', error: e);
+      // Return default empty config on error
+      return {'flags': {}, 'variants': {}};
+    }
+  }
+
+  /// Get daily goals for the current user
+  Future<Map<String, dynamic>> getDailyGoals() async {
+    try {
+      final res = await ref.read(client).get(Api.dailyChallenges);
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return {};
+    } catch (e) {
+      logger.error('Error getting daily goals', error: e);
+      return {};
+    }
+  }
 
   /// Sync gamification data with backend
   Future<bool> syncGamification(Map<String, dynamic> data) async {
     try {
-      final res = await ref.read(client).post('/api/gamification/sync', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing gamification: $e');
-      return false;
-    }
-  }
-
-  /// Sync game session data
-  Future<bool> syncGameSession(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/gamification/game-session', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing game session: $e');
-      return false;
-    }
-  }
-
-  /// Sync game SRS data
-  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/gamification/game-srs', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing game SRS: $e');
-      return false;
-    }
-  }
-
-  /// Sync AI chat history
-  Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/ai-chat/history/sync', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing AI chat history: $e');
-      return false;
-    }
-  }
-
-  /// Sync AI chat SRS
-  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/ai-chat/srs/sync', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing AI chat SRS: $e');
-      return false;
-    }
-  }
-
-  /// Sync progress data
-  Future<bool> syncProgress(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/progress/sync', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing progress: $e');
-      return false;
-    }
-  }
-
-  /// Sync onboarding data
-  Future<bool> syncOnboarding(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/onboarding/sync', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing onboarding: $e');
-      return false;
-    }
-  }
-
-  /// Send telemetry events
-  Future<bool> sendTelemetry(List<Map<String, dynamic>> events) async {
-    try {
-      final res = await ref.read(client).post('/api/telemetry', data: {'events': events});
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error sending telemetry: $e');
-      return false;
-    }
-  }
-
-  /// Submit a completed game session to backend (best-effort).
-  Future<bool> submitGameCompletion({
-    required String gameType,
-    required int languageId,
-    required int points,
-    required int score,
-    String? userId,
-    Map<String, dynamic>? extra,
-  }) async {
-    try {
-      final payload = <String, dynamic>{
-        'gameType': gameType,
-        'languageId': languageId,
-        'points': points,
-        'score': score,
-      };
-      if (userId != null) payload['userId'] = userId;
-      if (extra != null) payload.addAll(extra);
-
-      final res = await ref
-          .read(client)
-          .post(Api.submitGameCompletion, data: payload);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error submitting game completion: $e');
-      return false;
-    }
-  }
-
-  /// Submit a native speaker voice contribution (best-effort).
-  Future<bool> submitVoiceContribution({
-    required String userId,
-    required String promptId,
-    required String language,
-    required String category,
-    required String promptText,
-    required String promptTranslation,
-    required String audioPath,
-  }) async {
-    try {
-      final data = <String, dynamic>{
-        'userId': userId,
-        'promptId': promptId,
-        'language': language,
-        'category': category,
-        'promptText': promptText,
-        'promptTranslation': promptTranslation,
-      };
-
-      // Prefer multipart file upload when available.
-      final Dio dio = ref.read(client);
-      final res = await dio.post(
-        Api.submitVoiceContribution,
-        data: FormData.fromMap({
-          ...data,
-          if (!kIsWeb && File(audioPath).existsSync())
-            'audio': await MultipartFile.fromFile(
-              audioPath,
-              filename: audioPath.split(Platform.pathSeparator).last,
-            ),
-          if (kIsWeb) 'audioPath': audioPath, // fallback for web builds
-        }),
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}sync',
+        data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error submitting voice contribution: $e');
-      return false;
-    }
-  }
-
-  /// Get daily goals
-  Future<List<Map<String, dynamic>>> getDailyGoals() async {
-    try {
-      final res = await ref.read(client).get('/api/gamification/daily-goals');
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      if (data is Map && data['goals'] is List) {
-        return (data['goals'] as List).cast<Map<String, dynamic>>();
-      }
-      return [];
-    } catch (e) {
-      debugPrint('Error getting daily goals: $e');
-      return [];
-    }
-  }
-
-  /// Update daily streak
-  Future<bool> updateDailyStreak(int streak) async {
-    try {
-      final res = await ref.read(client).put('/api/gamification/daily-streak', data: {'streak': streak});
-      return res.statusCode == 200;
-    } catch (e) {
-      debugPrint('Error updating daily streak: $e');
-      return false;
-    }
-  }
-
-  /// Update daily goal progress
-  Future<bool> updateDailyGoal(String goalType, int amount) async {
-    try {
-      final res = await ref.read(client).post('/api/gamification/daily-goals/update', data: {
-        'type': goalType,
-        'amount': amount,
-      });
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error updating daily goal: $e');
+      logger.error('Error syncing gamification', error: e);
       return false;
     }
   }
 
   /// Save AI chat history
-  Future<bool> saveAiChatHistory(Map<String, dynamic> data) async {
+  Future<bool> saveAiChatHistory(Map<String, dynamic> chatData) async {
     try {
-      final res = await ref.read(client).post('/api/ai-chat/history', data: data);
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/ai-chat/history',
+        data: chatData,
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error saving AI chat history: $e');
+      logger.error('Error saving AI chat history', error: e);
       return false;
     }
   }
 
-  /// Sync telemetry data
-  Future<bool> syncTelemetry(Map<String, dynamic> data) async {
-    try {
-      final res = await ref.read(client).post('/api/telemetry/sync', data: data);
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error syncing telemetry: $e');
-      return false;
-    }
-  }
-
-  /// Get AI chat history
-  Future<List<Map<String, dynamic>>> getAiChatHistory({String? userId, String? language, int limit = 50}) async {
-    try {
-      final params = <String, dynamic>{'limit': limit};
-      if (userId != null) params['user_id'] = userId;
-      if (language != null) params['language'] = language;
-      final res = await ref.read(client).get('/api/ai-chat/history', queryParameters: params);
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      if (data is Map && data['history'] is List) {
-        return (data['history'] as List).cast<Map<String, dynamic>>();
-      }
-      return [];
-    } catch (e) {
-      debugPrint('Error getting AI chat history: $e');
-      return [];
-    }
-  }
-
-  /// Block a user
-  Future<bool> blockUser(String userId) async {
-    try {
-      final res = await ref.read(client).post('/api/users/$userId/block');
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error blocking user: $e');
-      return false;
-    }
-  }
-
-  /// Award XP to user
-  Future<bool> awardXP({
-    required String userId,
-    required int amount,
-    String? source,
-    String? sourceId,
-    double? difficultyMultiplier,
-    Map<String, dynamic>? metadata,
+  /// Get AI chat history from backend
+  /// Returns list of message maps, or null if not found/error
+  Future<List<Map<String, dynamic>>?> getAiChatHistory({
+    required String mode,
+    required String languageCode,
   }) async {
     try {
-      final payload = <String, dynamic>{
-        'amount': amount,
-        if (source != null) 'source': source,
-        if (sourceId != null) 'sourceId': sourceId,
-        if (difficultyMultiplier != null) 'multiplier': difficultyMultiplier,
-        if (metadata != null) 'metadata': metadata,
-      };
-      final res = await ref.read(client).post('/api/gamification/xp/award', data: payload);
-      return res.statusCode == 200 || res.statusCode == 201;
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/ai-chat/history',
+        queryParameters: {
+          'mode': mode,
+          'language_code': languageCode,
+        },
+      );
+      
+      if (res.statusCode == 200 && res.data != null) {
+        // Backend should return: { "messages": [...] } or directly [...]
+        if (res.data is Map && res.data['messages'] != null) {
+          final messages = res.data['messages'] as List;
+          return messages.map((m) => m as Map<String, dynamic>).toList();
+        } else if (res.data is List) {
+          return (res.data as List).map((m) => m as Map<String, dynamic>).toList();
+        }
+      }
+      return null;
     } catch (e) {
-      debugPrint('Error awarding XP: $e');
+      logger.error('Error getting AI chat history', error: e);
+      return null;
+    }
+  }
+
+  /// Get user gamification data from backend
+  /// Returns gamification data map, or null if not found/error
+  Future<Map<String, dynamic>?> getGamification(String userId) async {
+    try {
+      final res = await ref.read(client).get(
+        Api.userGamification(userId),
+      );
+      
+      if (res.statusCode == 200 && res.data != null) {
+        if (res.data is Map) {
+          return res.data as Map<String, dynamic>;
+        } else if (res.data is List && (res.data as List).isNotEmpty) {
+          // Backend might return a list with single item
+          return (res.data as List).first as Map<String, dynamic>;
+        }
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error getting gamification', error: e);
+      return null;
+    }
+  }
+
+  /// Update daily goal progress
+  Future<bool> updateDailyGoal(String goalId, Map<String, dynamic> progress) async {
+    try {
+      final res = await ref.read(client).patch(
+        '${Api.baseurl}${Api.dailyChallenges}/$goalId',
+        data: progress,
+      );
+      return res.statusCode == 200 || res.statusCode == 204;
+    } catch (e) {
+      logger.error('Error updating daily goal', error: e);
       return false;
     }
   }
 
-  /// Get user XP
-  Future<Map<String, dynamic>> getUserXP(String userId) async {
-    try {
-      final res = await ref.read(client).get('/api/gamification/xp/$userId');
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      debugPrint('Error getting user XP: $e');
-      return {};
-    }
-  }
-
-  /// Get gamification data for user
-  Future<Map<String, dynamic>> getGamification(String userId) async {
-    try {
-      final res = await ref.read(client).get('/api/gamification/$userId');
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      debugPrint('Error getting gamification: $e');
-      return {};
-    }
-  }
-
-  /// Get loading screen content
-  Future<Map<String, dynamic>> getLoadingScreenContent() async {
-    try {
-      // Backend route is mounted at `/loading-screen` (with optionalAuth).
-      // Some deployments/docs refer to `/api/loading-screen`, so we try both.
-      Response res;
-      try {
-        res = await ref.read(client).get('/loading-screen');
-      } catch (_) {
-        res = await ref.read(client).get('/api/loading-screen');
-      }
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      debugPrint('Error getting loading screen content: $e');
-      return {};
-    }
-  }
-
-  /// Get loading screen content filtered by country
-  Future<List<Map<String, dynamic>>> getLoadingScreenContentByCountry(String country) async {
-    try {
-      Response res;
-      try {
-        res = await ref.read(client).get('/loading-screen/country/$country');
-      } catch (_) {
-        res = await ref.read(client).get('/api/loading-screen/country/$country');
-      }
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is Map && data['result'] is List) {
-        return (data['result'] as List).cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      debugPrint('Error getting loading screen content by country: $e');
-      return const <Map<String, dynamic>>[];
-    }
-  }
-
-  /// Get loading screen content filtered by language
-  Future<List<Map<String, dynamic>>> getLoadingScreenContentByLanguage(String language) async {
-    try {
-      Response res;
-      try {
-        res = await ref.read(client).get('/loading-screen/language/$language');
-      } catch (_) {
-        res = await ref.read(client).get('/api/loading-screen/language/$language');
-      }
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is Map && data['result'] is List) {
-        return (data['result'] as List).cast<Map<String, dynamic>>();
-      }
-      return const <Map<String, dynamic>>[];
-    } catch (e) {
-      debugPrint('Error getting loading screen content by language: $e');
-      return const <Map<String, dynamic>>[];
-    }
-  }
-
-  /// Get progress metrics
-  Future<Map<String, dynamic>> getProgressMetrics() async {
-    try {
-      final res = await ref.read(client).get('/api/progress/metrics');
-      if (res.statusCode != 200) throw res.data;
-      return Map<String, dynamic>.from(res.data ?? {});
-    } catch (e) {
-      debugPrint('Error getting progress metrics: $e');
-      return {};
-    }
-  }
-
-  /// Update user points
+  /// Update user points (legacy method - prefer awardXP)
   Future<bool> updateUserPoints(int points) async {
     try {
-      final res = await ref.read(client).put('/api/gamification/points', data: {'points': points});
-      return res.statusCode == 200;
+      final res = await ref.read(client).post(
+        Api.currencyAward,
+        data: {'amount': points},
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error updating user points: $e');
+      logger.error('Error updating user points', error: e);
       return false;
+    }
+  }
+
+  /// Get progress metrics for the current user
+  Future<Map<String, dynamic>> getProgressMetrics() async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}${Api.gamificationBase}progress',
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return {};
+    } catch (e) {
+      logger.error('Error getting progress metrics', error: e);
+      return {};
     }
   }
 
   /// Update progress metrics
   Future<bool> updateProgressMetrics(Map<String, dynamic> metrics) async {
     try {
-      final res = await ref.read(client).put('/api/progress/metrics', data: metrics);
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}progress',
+        data: metrics,
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error updating progress metrics: $e');
+      logger.error('Error updating progress metrics', error: e);
       return false;
     }
   }
 
-  /// Get achievements
+  /// Get all achievements
   Future<List<Map<String, dynamic>>> getAchievements() async {
     try {
-      final res = await ref.read(client).get('/api/gamification/achievements');
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      if (data is Map && data['achievements'] is List) {
-        return (data['achievements'] as List).cast<Map<String, dynamic>>();
+      final res = await ref.read(client).get(Api.badges);
+      if (res.statusCode == 200) {
+        if (res.data is List) {
+          return List<Map<String, dynamic>>.from(res.data);
+        } else if (res.data is Map && res.data['results'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['results']);
+        }
       }
       return [];
     } catch (e) {
-      debugPrint('Error getting achievements: $e');
+      logger.error('Error getting achievements', error: e);
       return [];
     }
   }
 
-  /// Unlock achievement
+  /// Unlock an achievement
   Future<bool> unlockAchievement(String achievementId) async {
     try {
-      final res = await ref.read(client).post('/api/gamification/achievements/$achievementId/unlock');
+      final res = await ref.read(client).post(
+        '${Api.badges}$achievementId/unlock',
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error unlocking achievement: $e');
+      logger.error('Error unlocking achievement', error: e);
       return false;
     }
   }
 
-  /// Update XP and level
-  Future<bool> updateXP(int totalXP, int level) async {
+  /// Update XP (legacy method - prefer awardXP)
+  Future<bool> updateXP(int xp) async {
     try {
-      final res = await ref.read(client).put('/api/gamification/xp', data: {
-        'totalXP': totalXP,
-        'level': level,
-      });
-      return res.statusCode == 200;
+      final user = ref.read(userProvider);
+      if (user == null) return false;
+      return await awardXP(
+        userId: user.id.toString(),
+        source: 'manual_update',
+        sourceId: 'manual_${DateTime.now().millisecondsSinceEpoch}',
+        amount: xp,
+      );
     } catch (e) {
-      debugPrint('Error updating XP: $e');
+      logger.error('Error updating XP', error: e);
       return false;
     }
   }
 
   /// Update challenge progress
-  Future<bool> updateChallengeProgress({required String type, required int amount}) async {
+  Future<bool> updateChallengeProgress(String challengeId, Map<String, dynamic> progress) async {
     try {
-      final res = await ref.read(client).post('/api/gamification/challenges/progress', data: {
-        'type': type,
-        'amount': amount,
-      });
-      return res.statusCode == 200 || res.statusCode == 201;
+      final res = await ref.read(client).patch(
+        '${Api.baseurl}${Api.dailyChallenges}/$challengeId',
+        data: progress,
+      );
+      return res.statusCode == 200 || res.statusCode == 204;
     } catch (e) {
-      debugPrint('Error updating challenge progress: $e');
+      logger.error('Error updating challenge progress', error: e);
       return false;
     }
   }
 
   /// Update milestone stats
-  Future<bool> updateMilestoneStats(Map<String, dynamic> stats) async {
+  Future<bool> updateMilestoneStats(String milestoneId, int value) async {
     try {
-      final res = await ref.read(client).put('/api/gamification/milestones/stats', data: stats);
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.milestones}',
+        data: {
+          'milestoneId': milestoneId,
+          'value': value,
+        },
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error updating milestone stats: $e');
+      logger.error('Error updating milestone stats', error: e);
       return false;
     }
   }
 
-  /// Add league XP
+  /// Add XP to league (for tribe competitions)
   Future<bool> addLeagueXP(int xp) async {
     try {
-      final res = await ref.read(client).post('/api/gamification/leagues/xp', data: {'xp': xp});
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.league}/xp',
+        data: {'xp': xp},
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error adding league XP: $e');
+      logger.error('Error adding league XP', error: e);
       return false;
     }
   }
 
-  /// Record learner activity
-  Future<bool> recordLearnerActivity({required String userId, required String language}) async {
-    try {
-      final res = await ref.read(client).post('/api/progress/activity', data: {
-        'user_id': userId,
-        'language': language,
-      });
-      return res.statusCode == 200 || res.statusCode == 201;
-    } catch (e) {
-      debugPrint('Error recording learner activity: $e');
-      return false;
-    }
-  }
-
-  /// Use a heart (for challenge mode)
+  /// Use a heart (lives system)
   Future<bool> useHeart() async {
     try {
-      final res = await ref.read(client).post('/api/gamification/hearts/use');
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}hearts/use',
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error using heart: $e');
+      logger.error('Error using heart', error: e);
       return false;
     }
   }
 
-  /// Refill hearts
+  /// Refill hearts (buy or wait)
   Future<bool> refillHearts() async {
     try {
-      final res = await ref.read(client).post('/api/gamification/hearts/refill');
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}hearts/refill',
+      );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error refilling hearts: $e');
+      logger.error('Error refilling hearts', error: e);
       return false;
     }
   }
 
   /// Toggle challenge mode
-  Future<bool> toggleChallengeMode({required bool enabled}) async {
+  Future<bool> toggleChallengeMode(bool enabled) async {
     try {
-      final res = await ref.read(client).put('/api/gamification/challenge-mode', data: {'enabled': enabled});
-      return res.statusCode == 200;
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}challenge-mode',
+        data: {'enabled': enabled},
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
-      debugPrint('Error toggling challenge mode: $e');
+      logger.error('Error toggling challenge mode', error: e);
       return false;
     }
   }
 
   /// Get leaderboard
-  Future<List<Map<String, dynamic>>> getLeaderboard({String? league, int limit = 100}) async {
+  Future<List<Map<String, dynamic>>> getLeaderboard({String? category}) async {
     try {
-      final params = <String, dynamic>{'limit': limit};
-      if (league != null) params['league'] = league;
-      final res = await ref.read(client).get('/api/gamification/leaderboard', queryParameters: params);
-      if (res.statusCode != 200) throw res.data;
-      final data = res.data;
-      if (data is List) {
-        return data.cast<Map<String, dynamic>>();
-      }
-      if (data is Map && data['leaderboard'] is List) {
-        return (data['leaderboard'] as List).cast<Map<String, dynamic>>();
+      final url = category != null 
+          ? '${Api.baseurl}${Api.leagueLeaderboard}?category=$category'
+          : Api.leagueLeaderboard;
+      final res = await ref.read(client).get(url);
+      if (res.statusCode == 200) {
+        if (res.data is List) {
+          return List<Map<String, dynamic>>.from(res.data);
+        } else if (res.data is Map && res.data['results'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['results']);
+        } else if (res.data is Map && res.data['leaderboard'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['leaderboard']);
+        }
       }
       return [];
     } catch (e) {
-      debugPrint('Error getting leaderboard: $e');
+      logger.error('Error getting leaderboard', error: e);
       return [];
+    }
+  }
+
+  /// Send telemetry events
+  Future<bool> sendTelemetry(List<Map<String, dynamic>> events) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/telemetry',
+        data: {'events': events},
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error sending telemetry', error: e);
+      return false;
+    }
+  }
+
+  /// Family subscription: aggregated progress dashboard
+  /// Backend: GET /api/progress/family/dashboard
+  Future<Map<String, dynamic>> getFamilyProgressDashboard() async {
+    final res = await ref.read(client).get('/api/progress/family/dashboard');
+    if (res.statusCode != 200) {
+      throw Exception(res.data);
+    }
+    final data = res.data;
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    return <String, dynamic>{};
+  }
+
+  /// Fetch ancestry graph for the current user.
+  ///
+  /// Backend: GET /api/ancestry/me
+  /// Backward-compatible: requires only auth (user id is derived from JWT server-side).
+  Future<Map<String, dynamic>> getAncestryMe() async {
+    final res = await ref.read(client).get('/api/ancestry/me');
+    if (res.statusCode != 200) {
+      throw Exception(res.data);
+    }
+    final data = res.data;
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    return <String, dynamic>{};
+  }
+
+  /// Generic POST helper method for flexibility
+  Future<Response?> post(String path, {dynamic data}) async {
+    try {
+      return await ref.read(client).post(path, data: data);
+    } catch (e) {
+      logger.error('Error in POST request', error: e, context: {'path': path});
+      return null;
+    }
+  }
+
+  /// Sync game session to backend
+  Future<bool> syncGameSession(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/games/session/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing game session', error: e);
+      return false;
+    }
+  }
+
+  /// Sync game SRS (Spaced Repetition System) data to backend
+  Future<bool> syncGameSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/games/srs/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing game SRS', error: e);
+      return false;
+    }
+  }
+
+  /// Create user-generated lesson
+  Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}lessons',
+        data: data,
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data};
+      }
+      throw Exception('Failed to create lesson: ${res.statusCode}');
+    } catch (e) {
+      logger.error('Error creating UGC lesson', error: e);
+      rethrow;
+    }
+  }
+
+  /// Create user-generated quiz
+  Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}quizzes',
+        data: data,
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data};
+      }
+      throw Exception('Failed to create quiz: ${res.statusCode}');
+    } catch (e) {
+      logger.error('Error creating UGC quiz', error: e);
+      rethrow;
+    }
+  }
+
+  /// Create user-generated story
+  Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}stories',
+        data: data,
+      );
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data};
+      }
+      throw Exception('Failed to create story: ${res.statusCode}');
+    } catch (e) {
+      logger.error('Error creating UGC story', error: e);
+      rethrow;
+    }
+  }
+
+  /// Share user-generated content
+  Future<bool> shareUgcContent({
+    required String contentId,
+    required String contentType,
+    List<String>? userIds,
+  }) async {
+    try {
+      final data = {
+        'content_id': contentId,
+        'content_type': contentType,
+        if (userIds != null && userIds.isNotEmpty) 'user_ids': userIds,
+      };
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}share',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error sharing UGC content', error: e);
+      return false;
+    }
+  }
+
+  /// Get user-generated content
+  Future<List<Map<String, dynamic>>> getUserContent({
+    String? language,
+    String? contentType,
+  }) async {
+    try {
+      final queryParams = <String, String>{};
+      if (language != null) queryParams['language'] = language;
+      if (contentType != null) queryParams['type'] = contentType;
+      
+      final queryString = queryParams.isEmpty 
+          ? '' 
+          : '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}';
+      
+      final res = await ref.read(client).get(
+        '${Api.baseurl}${Api.userContent}content$queryString',
+      );
+      if (res.statusCode == 200) {
+        if (res.data is List) {
+          return List<Map<String, dynamic>>.from(res.data);
+        } else if (res.data is Map && res.data['results'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['results']);
+        } else if (res.data is Map && res.data['content'] is List) {
+          return List<Map<String, dynamic>>.from(res.data['content']);
+        }
+      }
+      return [];
+    } catch (e) {
+      logger.error('Error getting user content', error: e);
+      return [];
+    }
+  }
+
+  /// Rate user-generated content
+  Future<bool> rateUgcContent({
+    required String contentId,
+    required int rating,
+    String? review,
+  }) async {
+    try {
+      final data = {
+        'content_id': contentId,
+        'rating': rating,
+        if (review != null && review.isNotEmpty) 'review': review,
+      };
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.userContent}rate',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error rating UGC content', error: e);
+      return false;
+    }
+  }
+
+  /// Sync AI chat history to backend
+  Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/ai-chat/history/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing AI chat history', error: e);
+      return false;
+    }
+  }
+
+  /// Sync AI chat SRS data to backend
+  Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/ai-chat/srs/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing AI chat SRS', error: e);
+      return false;
+    }
+  }
+
+  /// Sync progress metrics to backend
+  Future<bool> syncProgress(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.gamificationBase}progress/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing progress', error: e);
+      return false;
+    }
+  }
+
+  /// Sync onboarding data to backend
+  Future<bool> syncOnboarding(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/onboarding/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing onboarding', error: e);
+      return false;
+    }
+  }
+
+  /// Sync telemetry events to backend
+  Future<bool> syncTelemetry(Map<String, dynamic> data) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/telemetry/sync',
+        data: data,
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error syncing telemetry', error: e);
+      return false;
+    }
+  }
+
+  /// Search chat messages
+  Future<List<Map<String, dynamic>>> searchChatMessages({
+    required String query,
+    String? room,
+    String type = 'all',
+    int limit = 100,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'q': query,
+        'type': type,
+        'limit': limit,
+      };
+      if (room != null) {
+        queryParams['room'] = room;
+      }
+      
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/chat/search',
+        queryParameters: queryParams,
+      );
+      
+      if (res.statusCode == 200 && res.data is List) {
+        return List<Map<String, dynamic>>.from(res.data);
+      } else if (res.statusCode == 200 && res.data is Map && res.data['results'] is List) {
+        return List<Map<String, dynamic>>.from(res.data['results']);
+      }
+      return [];
+    } catch (e) {
+      logger.error('Error searching chat messages', error: e);
+      return [];
+    }
+  }
+
+  /// Submit voice contribution
+  Future<bool> submitVoiceContribution({
+    required String userId,
+    required String promptId,
+    required String language,
+    required String category,
+    required String promptText,
+    required String audioPath,
+  }) async {
+    try {
+      final formData = FormData.fromMap({
+        'user_id': userId,
+        'prompt_id': promptId,
+        'language': language,
+        'category': category,
+        'prompt_text': promptText,
+        'audio': await MultipartFile.fromFile(audioPath),
+      });
+      
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/voice/contributions',
+        data: formData,
+      );
+      
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error submitting voice contribution', error: e);
+      return false;
+    }
+  }
+
+  // ========== SOCIAL AUDIO API METHODS ==========
+
+  /// Get social audio rooms
+  Future<Response?> getSocialAudioRooms({
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioRooms}',
+        queryParameters: queryParameters,
+      );
+    } catch (e) {
+      logger.error('Error getting social audio rooms', error: e);
+      return null;
+    }
+  }
+
+  /// Get social audio room by ID
+  Future<Response?> getSocialAudioRoom(String roomId) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioRoom(roomId)}',
+      );
+    } catch (e) {
+      logger.error('Error getting social audio room', error: e);
+      return null;
+    }
+  }
+
+  /// Create social audio room
+  Future<Response?> createSocialAudioRoom(Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRooms}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error creating social audio room', error: e);
+      return null;
+    }
+  }
+
+  /// Join social audio room
+  Future<Response?> joinSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRoomJoin(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error joining social audio room', error: e);
+      return null;
+    }
+  }
+
+  /// Leave social audio room
+  Future<Response?> leaveSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRoomLeave(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error leaving social audio room', error: e);
+      return null;
+    }
+  }
+
+  /// Update social audio room status
+  Future<Response?> updateSocialAudioRoomStatus(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).patch(
+        '${Api.baseurl}${Api.socialAudioRoomStatus(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error updating social audio room status', error: e);
+      return null;
+    }
+  }
+
+  /// Get social audio room participants
+  Future<Response?> getSocialAudioRoomParticipants(String roomId) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioRoomParticipants(roomId)}',
+      );
+    } catch (e) {
+      logger.error('Error getting social audio room participants', error: e);
+      return null;
+    }
+  }
+
+  /// Moderate social audio room
+  Future<Response?> moderateSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioRoomModerate(roomId)}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error moderating social audio room', error: e);
+      return null;
+    }
+  }
+
+  /// Follow user for social audio
+  Future<Response?> followSocialAudioUser(String userId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).post(
+        '${Api.baseurl}${Api.socialAudioFollowUser(userId)}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error following social audio user', error: e);
+      return null;
+    }
+  }
+
+  /// Unfollow user for social audio
+  Future<Response?> unfollowSocialAudioUser(String userId, Map<String, dynamic> data) async {
+    try {
+      return await ref.read(client).delete(
+        '${Api.baseurl}${Api.socialAudioUnfollowUser(userId)}',
+        data: data,
+      );
+    } catch (e) {
+      logger.error('Error unfollowing social audio user', error: e);
+      return null;
+    }
+  }
+
+  /// Get following list for social audio
+  Future<Response?> getSocialAudioFollowingList(Map<String, dynamic>? queryParameters) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioFollowingList}',
+        queryParameters: queryParameters,
+      );
+    } catch (e) {
+      logger.error('Error getting social audio following list', error: e);
+      return null;
+    }
+  }
+
+  /// Get followers list for social audio
+  Future<Response?> getSocialAudioFollowersList(Map<String, dynamic>? queryParameters) async {
+    try {
+      return await ref.read(client).get(
+        '${Api.baseurl}${Api.socialAudioFollowers}',
+        queryParameters: queryParameters,
+      );
+    } catch (e) {
+      logger.error('Error getting social audio followers list', error: e);
+      return null;
     }
   }
 }

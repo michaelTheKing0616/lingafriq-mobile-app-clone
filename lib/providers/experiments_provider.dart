@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'base_provider.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 class ExperimentsState {
   final Map<String, bool> flags;
@@ -81,7 +80,7 @@ class ExperimentsNotifier extends Notifier<ExperimentsState> {
       );
       state = state.copyWith(isLoading: false);
     } catch (e) {
-      debugPrint('Error loading experiments config: $e');
+      logger.error('Error loading experiments config', tag: 'experiments', error: e);
       state = state.copyWith(
         isLoading: false,
         error: 'Failed to load experiments config',

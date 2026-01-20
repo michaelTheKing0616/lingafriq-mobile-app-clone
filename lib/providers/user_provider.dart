@@ -15,14 +15,6 @@ class UserProvider extends Notifier<ProfileModel?> {
     state = user;
   }
 
-  /// Update local user points immediately (UI responsiveness).
-  /// Backend remains source-of-truth; we refresh profile after server updates.
-  void addPoints(int points) {
-    final current = state;
-    if (current == null) return;
-    state = current.copyWith(completed_point: current.completed_point + points);
-  }
-
   void resetUser() {
     state = null;
   }

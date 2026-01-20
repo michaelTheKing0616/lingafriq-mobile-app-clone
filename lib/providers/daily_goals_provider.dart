@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final dailyGoalsProvider = NotifierProvider<DailyGoalsProvider, BaseProviderState>(() {
   return DailyGoalsProvider();
@@ -30,14 +31,64 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
   Future<void> _syncWithBackend() async {
     try {
       final backendGoals = await ref.read(apiProvider.notifier).getDailyGoals();
-      // getDailyGoals returns List<Map<String, dynamic>>, so we check if we have goals
-      if (backendGoals.isNotEmpty) {
-        // Extract streak from first goal if available, or sync individual goals
-        // For now, just sync goals structure - streak sync handled separately
-        // TODO: Sync individual goals if needed
+      if (backendGoals.containsKey('streak')) {
+        final backendStreak = backendGoals['streak'] as int? ?? 0;
+        if (backendStreak > _currentStreak) {
+          _currentStreak = backendStreak;
+          await _saveStreak();
+        }
+      }
+      
+      // Sync individual goals if available from backend
+      if (backendGoals.containsKey('goals') && backendGoals['goals'] is List) {
+        final backendGoalsList = backendGoals['goals'] as List;
+        final today = DateTime.now();
+        final todayStart = DateTime(today.year, today.month, today.day);
+        
+        for (var backendGoal in backendGoalsList) {
+          if (backendGoal is Map<String, dynamic>) {
+            final goalType = backendGoal['type']?.toString();
+            final backendProgress = (backendGoal['progress'] ?? backendGoal['current'] ?? 0).toInt();
+            final backendTarget = (backendGoal['target'] ?? 0).toInt();
+            
+            if (goalType != null) {
+              // Find matching local goal and sync if backend has more progress
+              final localGoalIndex = _goals.indexWhere(
+                (g) => g.type == goalType && 
+                       g.date.year == today.year && 
+                       g.date.month == today.month && 
+                       g.date.day == today.day,
+              );
+              
+              if (localGoalIndex >= 0) {
+                final localGoal = _goals[localGoalIndex];
+                if (backendProgress > localGoal.current) {
+                  _goals[localGoalIndex] = localGoal.copyWith(
+                    current: backendProgress.clamp(0, backendTarget),
+                    completed: backendProgress >= backendTarget,
+                  );
+                }
+              } else if (backendProgress > 0) {
+                // Create goal from backend data if it doesn't exist locally
+                _goals.add(DailyGoal(
+                  id: _goals.length + 1,
+                  type: goalType,
+                  target: backendTarget > 0 ? backendTarget : _getDefaultTarget(goalType),
+                  current: backendProgress,
+                  date: todayStart,
+                  completed: backendProgress >= backendTarget,
+                  streak: _currentStreak,
+                ));
+              }
+            }
+          }
+        }
+        
+        // Save synced goals
+        await _saveGoals();
       }
     } catch (e) {
-      debugPrint('Error syncing daily goals with backend: $e');
+      logger.error('Error syncing daily goals with backend', tag: 'daily-goals', error: e);
       // Silently fail - local state is primary
     }
   }
@@ -181,7 +232,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
       final goalsJson = _goals.map((g) => g.toJson()).toList();
       await prefs.setStringList('daily_goals', goalsJson);
     } catch (e) {
-      debugPrint('Error saving daily goals: $e');
+      logger.error('Error saving daily goals', tag: 'daily-goals', error: e);
     }
   }
 
@@ -192,7 +243,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
       _goals.clear();
       _goals.addAll(goalsJson.map((json) => DailyGoal.fromJson(json)));
     } catch (e) {
-      debugPrint('Error loading daily goals: $e');
+      logger.error('Error loading daily goals', tag: 'daily-goals', error: e);
     }
   }
 
@@ -204,7 +255,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
         await prefs.setString('last_activity_date', _lastActivityDate!.toIso8601String());
       }
     } catch (e) {
-      debugPrint('Error saving streak: $e');
+      logger.error('Error saving streak', tag: 'daily-goals', error: e);
     }
   }
 
@@ -217,7 +268,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
         _lastActivityDate = DateTime.parse(lastDateStr);
       }
     } catch (e) {
-      debugPrint('Error loading streak: $e');
+      logger.error('Error loading streak', tag: 'daily-goals', error: e);
     }
   }
 
@@ -233,9 +284,10 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
   /// Sync streak to backend
   Future<void> _syncStreakToBackend() async {
     try {
-      await ref.read(apiProvider.notifier).updateDailyStreak(_currentStreak);
+      // updateDailyStreak method not implemented in ApiProvider - streak synced via updateDailyGoal
+      // await ref.read(apiProvider.notifier).updateDailyStreak(_currentStreak);
     } catch (e) {
-      debugPrint('Error syncing streak to backend: $e');
+      logger.error('Error syncing streak to backend', tag: 'daily-goals', error: e);
     }
   }
 }

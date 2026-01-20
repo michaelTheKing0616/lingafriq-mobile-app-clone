@@ -6,6 +6,7 @@ import '../models/league_model.dart';
 import '../services/sound_effects_service.dart';
 import 'api_provider.dart';
 import 'user_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for league/division system
 final leagueProvider = NotifierProvider<LeagueNotifier, LeagueState>(() {
@@ -65,7 +66,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
       // Fetch fresh leaderboard from server
       await refreshLeaderboard();
     } catch (e) {
-      debugPrint('Error loading league state: $e');
+      logger.error('Error loading league state', tag: 'league', error: e);
     }
   }
 
@@ -80,7 +81,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
       };
       await prefs.setString(_storageKey, jsonEncode(data));
     } catch (e) {
-      debugPrint('Error saving league state: $e');
+      logger.error('Error saving league state', tag: 'league', error: e);
     }
   }
 
@@ -139,11 +140,17 @@ class LeagueNotifier extends Notifier<LeagueState> {
       final user = ref.read(userProvider);
       
       // Fetch leaderboard from API
-      final leaderboardData =
-          await api.getLeaderboard(league: state.currentTier.name);
-      if (leaderboardData.isNotEmpty) {
+      final responseList = await api.getLeaderboard(
+        category: '${state.currentTier.name}_weekly',
+      );
+      
+      // Convert list response to expected format
+      final response = responseList.isNotEmpty ? {'leaderboard': responseList} : null;
+      
+      if (response != null && response['leaderboard'] != null) {
+        final leaderboardData = response['leaderboard'] as List<dynamic>;
         final leaderboard = leaderboardData
-            .map((item) => LeaguePosition.fromJson(item))
+            .map((item) => LeaguePosition.fromJson(item as Map<String, dynamic>))
             .toList();
         
         // Find user's rank
@@ -180,7 +187,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
         );
       }
     } catch (e) {
-      debugPrint('Error refreshing leaderboard: $e');
+      logger.error('Error refreshing leaderboard', tag: 'league', error: e);
     }
   }
 
