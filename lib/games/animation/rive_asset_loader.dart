@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
-import 'dart:io';
 import 'rive_game_guide.dart';
 
 /// Rive Asset Loader

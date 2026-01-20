@@ -59,9 +59,9 @@ plugins {
     // ✅ Google Services Plugin
     id "com.google.gms.google-services" version "4.4.2" apply false
 
-    // ✅ Upgrade Kotlin to 2.2.0 (matches latest Flutter-compatible stdlib)
-    // Note: Flutter plugin loader may require Kotlin 1.9.x internally, but we use 2.2.0 for app code
-    id "org.jetbrains.kotlin.android" version "2.2.0" apply false
+    // ✅ Kotlin 1.9.x for maximum Flutter plugin compatibility.
+    // This also avoids CI failures from transitive plugins still requesting Kotlin languageVersion 1.4.
+    id "org.jetbrains.kotlin.android" version "1.9.24" apply false
 }
 
 rootProject.name = rootProject.name ?: "mobile-app"

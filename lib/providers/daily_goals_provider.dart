@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final dailyGoalsProvider = NotifierProvider<DailyGoalsProvider, BaseProviderState>(() {
   return DailyGoalsProvider();
@@ -87,7 +88,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
         await _saveGoals();
       }
     } catch (e) {
-      debugPrint('Error syncing daily goals with backend: $e');
+      logger.error('Error syncing daily goals with backend', tag: 'daily-goals', error: e);
       // Silently fail - local state is primary
     }
   }
@@ -231,7 +232,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
       final goalsJson = _goals.map((g) => g.toJson()).toList();
       await prefs.setStringList('daily_goals', goalsJson);
     } catch (e) {
-      debugPrint('Error saving daily goals: $e');
+      logger.error('Error saving daily goals', tag: 'daily-goals', error: e);
     }
   }
 
@@ -242,7 +243,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
       _goals.clear();
       _goals.addAll(goalsJson.map((json) => DailyGoal.fromJson(json)));
     } catch (e) {
-      debugPrint('Error loading daily goals: $e');
+      logger.error('Error loading daily goals', tag: 'daily-goals', error: e);
     }
   }
 
@@ -254,7 +255,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
         await prefs.setString('last_activity_date', _lastActivityDate!.toIso8601String());
       }
     } catch (e) {
-      debugPrint('Error saving streak: $e');
+      logger.error('Error saving streak', tag: 'daily-goals', error: e);
     }
   }
 
@@ -267,7 +268,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
         _lastActivityDate = DateTime.parse(lastDateStr);
       }
     } catch (e) {
-      debugPrint('Error loading streak: $e');
+      logger.error('Error loading streak', tag: 'daily-goals', error: e);
     }
   }
 
@@ -286,7 +287,7 @@ class DailyGoalsProvider extends Notifier<BaseProviderState> with BaseProviderMi
       // updateDailyStreak method not implemented in ApiProvider - streak synced via updateDailyGoal
       // await ref.read(apiProvider.notifier).updateDailyStreak(_currentStreak);
     } catch (e) {
-      debugPrint('Error syncing streak to backend: $e');
+      logger.error('Error syncing streak to backend', tag: 'daily-goals', error: e);
     }
   }
 }

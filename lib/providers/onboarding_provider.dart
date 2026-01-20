@@ -4,6 +4,7 @@ import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 class OnboardingNotifier extends Notifier<OnboardingData> {
   SharedPreferencesProvider get _prefs => ref.read(sharedPreferencesProvider);
@@ -483,7 +484,7 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
         ));
       }
     } catch (e) {
-      debugPrint('Error queuing onboarding sync: $e');
+      logger.error('Error queuing onboarding sync', tag: 'onboarding', error: e);
     }
   }
   

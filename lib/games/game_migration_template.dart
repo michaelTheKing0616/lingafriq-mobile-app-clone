@@ -7,16 +7,16 @@
 /// 3. Implement game-specific models, scoring, and feedback
 /// 4. Remove old implementation from cultural_games.dart
 
-import '../gamekit/game.dart';
-import '../gamekit/game_engine.dart';
-import '../gamekit/game_session.dart';
-import '../gamekit/game_result.dart';
-import '../gamekit/game_animation_bridge.dart';
-import '../gamekit/game_difficulty.dart';
-import '../gamekit/game_feedback.dart';
+import 'gamekit/game.dart';
+import 'gamekit/game_engine.dart';
+import 'gamekit/game_session.dart';
+import 'gamekit/game_result.dart';
+import 'gamekit/game_turn_context.dart';
+import 'gamekit/game_scoring.dart';
+import 'gamekit/game_animation_bridge.dart';
+import 'gamekit/game_difficulty.dart';
+import 'gamekit/game_feedback.dart';
 import '../../services/polie_game_client.dart';
-import '../../services/cultural_mastery_service.dart';
-import '../gamekit/game_meta_layer.dart';
 
 // TODO: Create [GameName]Content model
 class GameNameContent {

@@ -1,5 +1,3 @@
-import 'package:lingafriq/models/language_response.dart';
-
 /// Lesson Content Manager
 /// 
 /// This system allows easy addition of new lessons to the curriculum.

@@ -3,15 +3,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:io';
+import 'dart:typed_data';
 import '../../screens/games/base_game_screen.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_game_client.dart';
-import '../gamekit/game_session.dart';
+import '../gamekit/game_session.dart' as gamekit_session;
 import '../gamekit/game_animation_bridge.dart';
+import '../gamekit/game_result.dart';
 import '../animation/rive_game_guide.dart';
 import 'tone_forge_game.dart';
 import 'tone_forge_models.dart';
 import 'tone_forge_audio.dart';
+import 'package:path_provider/path_provider.dart';
 
 /// ToneForge game screen - Flagship implementation
 class ToneForgeScreen extends BaseGameScreen {
@@ -78,7 +82,7 @@ class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
     });
 
     try {
-      final gameSession = GameSession(
+      final gameSession = gamekit_session.GameSession(
         sessionId: session!.sessionId,
         userId: session!.userId,
         gameId: _game.config.gameId,
@@ -112,11 +116,15 @@ class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
   Future<void> _startRecording() async {
     try {
       if (await _recorder.hasPermission()) {
+        final tmp = await getTemporaryDirectory();
+        final recordPath =
+            '${tmp.path}${Platform.pathSeparator}tone_forge_${DateTime.now().millisecondsSinceEpoch}.wav';
         await _recorder.start(
           const RecordConfig(
             encoder: AudioEncoder.pcm16bits,
             sampleRate: 44100,
           ),
+          path: recordPath,
         );
         setState(() => _isRecording = true);
         _guideController.setListening(true);
@@ -156,7 +164,7 @@ class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
         durationMs: 0, // Calculate from audio length
       );
 
-      final gameSession = GameSession(
+      final gameSession = gamekit_session.GameSession(
         sessionId: session!.sessionId,
         userId: session!.userId,
         gameId: _game.config.gameId,
@@ -198,10 +206,53 @@ class _ToneForgeScreenState extends BaseGameScreenState<ToneForgeScreen> {
   }
 
   Future<List<double>> _readAudioSamples(String path) async {
-    // Simplified - in production, use proper audio file reading
-    // This is a placeholder that returns mock data
-    // Replace with actual audio file parsing
-    return List.generate(1000, (i) => (math.sin(i * 0.1) * 0.5 + 0.5));
+    final file = File(path);
+    if (!await file.exists()) {
+      throw Exception('Recorded audio file not found');
+    }
+    final bytes = await file.readAsBytes();
+    if (bytes.isEmpty) {
+      throw Exception('Recorded audio is empty');
+    }
+
+    // Basic WAV/PCM16 parser (little-endian). If header not present, treat as raw PCM16.
+    int dataOffset = 0;
+    int dataLength = bytes.length;
+    if (bytes.length >= 44 &&
+        bytes[0] == 0x52 && // R
+        bytes[1] == 0x49 && // I
+        bytes[2] == 0x46 && // F
+        bytes[3] == 0x46 && // F
+        bytes[8] == 0x57 && // W
+        bytes[9] == 0x41 && // A
+        bytes[10] == 0x56 && // V
+        bytes[11] == 0x45 // E
+        ) {
+      // Find "data" chunk
+      int i = 12;
+      while (i + 8 <= bytes.length) {
+        final chunkId = String.fromCharCodes(bytes.sublist(i, i + 4));
+        final chunkSize = ByteData.sublistView(Uint8List.fromList(bytes), i + 4, i + 8)
+            .getUint32(0, Endian.little);
+        if (chunkId == 'data') {
+          dataOffset = i + 8;
+          dataLength = chunkSize;
+          break;
+        }
+        i += 8 + chunkSize;
+      }
+    }
+
+    final end = (dataOffset + dataLength).clamp(0, bytes.length);
+    final pcm = Uint8List.fromList(bytes.sublist(dataOffset, end));
+    final bd = ByteData.sublistView(pcm);
+
+    final samples = <double>[];
+    for (int i = 0; i + 1 < pcm.length; i += 2) {
+      final v = bd.getInt16(i, Endian.little);
+      samples.add(v / 32768.0);
+    }
+    return samples;
   }
 
   @override

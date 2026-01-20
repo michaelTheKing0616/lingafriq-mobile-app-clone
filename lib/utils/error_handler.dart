@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'dart:async';
 import 'dart:io';
 
 class ErrorHandler {
@@ -37,6 +38,15 @@ class ErrorHandler {
           return 'You don\'t have permission to perform this action.';
         } else if (statusCode == 404) {
           return 'The requested resource was not found.';
+        } else if (statusCode == 429) {
+          // CRITICAL: Never show raw 429 to users - use friendly message
+          final retryAfter = error.response?.headers.value('retry-after');
+          if (retryAfter != null) {
+            final seconds = int.tryParse(retryAfter) ?? 60;
+            final minutes = (seconds / 60).ceil();
+            return 'Please slow down. Try again in ${minutes} minute${minutes > 1 ? 's' : ''}.';
+          }
+          return 'You\'re making requests too quickly. Please wait a moment and try again.';
         } else if (statusCode == 500) {
           return 'Server error. Please try again later.';
         } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {
@@ -277,6 +287,16 @@ class ErrorConverter {
           message = 'You don\'t have permission to perform this action.';
         } else if (statusCode == 404) {
           message = 'The requested resource was not found.';
+        } else if (statusCode == 429) {
+          // CRITICAL: Never show raw 429 to users - use friendly message
+          final retryAfter = error.response?.headers.value('retry-after');
+          if (retryAfter != null) {
+            final seconds = int.tryParse(retryAfter) ?? 60;
+            final minutes = (seconds / 60).ceil();
+            message = 'Please slow down. Try again in ${minutes} minute${minutes > 1 ? 's' : ''}.';
+          } else {
+            message = 'You\'re making requests too quickly. Please wait a moment and try again.';
+          }
         } else if (statusCode == 500) {
           message = 'Server error. Please try again later.';
         } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {

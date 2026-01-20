@@ -4,12 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/games/base_game_screen.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_game_client.dart';
-import '../gamekit/game_session.dart';
+import '../gamekit/game_session.dart' as gamekit_session;
 import '../gamekit/game_animation_bridge.dart';
+import '../gamekit/game_result.dart';
 import '../animation/rive_game_guide.dart';
 import 'proverb_unlocker_game.dart';
 import 'proverb_unlocker_models.dart';
-import 'dart:math';
 
 /// ProverbUnlocker game screen - Refactored to use GameKit
 /// This replaces the old implementation with random logic
@@ -73,7 +73,7 @@ class _ProverbUnlockerScreenState extends BaseGameScreenState<ProverbUnlockerScr
     });
 
     try {
-      final gameSession = GameSession(
+      final gameSession = gamekit_session.GameSession(
         sessionId: session!.sessionId,
         userId: session!.userId,
         gameId: _game.config.gameId,
@@ -99,7 +99,7 @@ class _ProverbUnlockerScreenState extends BaseGameScreenState<ProverbUnlockerScr
     });
 
     try {
-      final gameSession = GameSession(
+      final gameSession = gamekit_session.GameSession(
         sessionId: session!.sessionId,
         userId: session!.userId,
         gameId: _game.config.gameId,

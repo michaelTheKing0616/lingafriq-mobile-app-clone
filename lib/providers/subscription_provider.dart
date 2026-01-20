@@ -2,11 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
-import 'api_provider.dart';
 import 'dio_provider.dart';
 import 'user_provider.dart';
 import '../utils/api.dart';
-import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Subscription tier provider with backend integration
 class SubscriptionNotifier extends Notifier<SubscriptionState> {
@@ -53,7 +52,7 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
       // Fallback to local storage
       await _loadFromLocalStorage();
     } catch (e) {
-      debugPrint('Error loading subscription status: $e');
+      logger.error('Error loading subscription status', tag: 'subscription', error: e);
       // Fallback to local storage on error
       await _loadFromLocalStorage();
     }
@@ -78,7 +77,7 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
         );
       }
     } catch (e) {
-      debugPrint('Error loading subscription from local storage: $e');
+      logger.error('Error loading subscription from local storage', tag: 'subscription', error: e);
       // Keep default free tier
     }
   }
@@ -93,7 +92,7 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
         'expires_at': status.expiresAt?.toIso8601String(),
       }));
     } catch (e) {
-      debugPrint('Error saving subscription status: $e');
+      logger.error('Error saving subscription status', tag: 'subscription', error: e);
     }
   }
   
@@ -151,7 +150,7 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
         throw Exception('Subscription failed: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error subscribing: $e');
+      logger.error('Error subscribing', tag: 'subscription', error: e);
       // Return false but don't throw - let UI handle the error
       return false;
     }
@@ -187,7 +186,7 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
         throw Exception('Cancellation failed: ${response.statusCode}');
       }
     } catch (e) {
-      debugPrint('Error canceling subscription: $e');
+      logger.error('Error canceling subscription', tag: 'subscription', error: e);
       // Still update local state to free tier
       final newState = SubscriptionState(
         tier: SubscriptionTier.free,

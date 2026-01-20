@@ -111,9 +111,7 @@ mixin PerformanceOptimizedScreen<T extends StatefulWidget> on State<T> {
   late final Debouncer searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
   
   /// Cache instance for data caching
-  late final SimpleCache<String, dynamic> cache = SimpleCache<String, dynamic>(
-    defaultTtl: const Duration(hours: 1),
-  );
+  late final SimpleCache cache = SimpleCache();
 
   @override
   void dispose() {
@@ -147,7 +145,7 @@ class OptimizedScreenBuilder extends StatelessWidget {
   final Widget Function(
     BuildContext context,
     Debouncer searchDebouncer,
-    SimpleCache<String, dynamic> cache,
+    SimpleCache cache,
   ) builder;
 
   const OptimizedScreenBuilder({
@@ -167,7 +165,7 @@ class _OptimizedScreenBuilderStateful extends StatefulWidget {
   final Widget Function(
     BuildContext context,
     Debouncer searchDebouncer,
-    SimpleCache<String, dynamic> cache,
+    SimpleCache cache,
   ) builder;
 
   const _OptimizedScreenBuilderStateful({
@@ -181,9 +179,7 @@ class _OptimizedScreenBuilderStateful extends StatefulWidget {
 
 class _OptimizedScreenBuilderStatefulState extends State<_OptimizedScreenBuilderStateful> {
   late final Debouncer searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
-  late final SimpleCache<String, dynamic> cache = SimpleCache<String, dynamic>(
-    defaultTtl: const Duration(hours: 1),
-  );
+  late final SimpleCache cache = SimpleCache();
 
   @override
   void dispose() {

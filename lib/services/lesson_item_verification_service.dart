@@ -2,12 +2,13 @@
 /// Handles native speaker verification of lesson items
 
 import 'package:dio/dio.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/dio_provider.dart';
 
 class LessonItemVerificationService {
   final Dio _dio;
 
-  LessonItemVerificationService() : _dio = DioProvider.instance;
+  LessonItemVerificationService(this._dio);
 
   /// Submit verification for a lesson item
   Future<Map<String, dynamic>> submitVerification({
@@ -96,3 +97,7 @@ class LessonItemVerificationService {
   }
 }
 
+/// Provider that uses the app-wide authenticated Dio client.
+final lessonItemVerificationServiceProvider = Provider<LessonItemVerificationService>((ref) {
+  return LessonItemVerificationService(ref.read(client));
+});

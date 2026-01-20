@@ -41,10 +41,18 @@ final _timerProvider = Provider((ref) {
     'Welcome', // English
   ];
 
-  Timer.periodic(2.seconds, (tick) {
+  // CRITICAL FIX: Store timer reference for cleanup to prevent memory leak
+  Timer? timer;
+  
+  timer = Timer.periodic(2.seconds, (tick) {
     final index = tick.tick % welcomeTexts.length;
     final greeting = welcomeTexts[index];
     ref.read(_titleProvider.notifier).setTitle(greeting);
+  });
+
+  // CRITICAL FIX: Clean up timer when provider is disposed to prevent memory leak
+  ref.onDispose(() {
+    timer?.cancel();
   });
 });
 

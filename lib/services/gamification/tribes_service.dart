@@ -104,13 +104,17 @@ class TribesService {
   /// Get user's tribes (tribes the user is a member of)
   Future<List<Map<String, dynamic>>> getUserTribes(String userId) async {
     try {
-      // Get all tribes and filter by membership
-      // Note: In production, this should be a dedicated endpoint like /api/tribes/user/:userId
-      // For now, we'll get all tribes and the client will need to check membership separately
-      // This is a placeholder - backend should provide /api/tribes/user/:userId endpoint
-      final allTribes = await getAllTribes();
-      // Without a dedicated endpoint, we can't efficiently get user's tribes
-      // Return empty list - this should be implemented on backend
+      // Preferred: fetch memberships for the authenticated user (server derives user id from JWT).
+      final response = await _dio.get('${Api.baseurl}api/tribes/me');
+      if (response.data is Map &&
+          (response.data['success'] == true || response.statusCode == 200) &&
+          response.data['data'] != null) {
+        return List<Map<String, dynamic>>.from(response.data['data']);
+      }
+      // Backward compatible: if server returns a raw list.
+      if (response.data is List) {
+        return List<Map<String, dynamic>>.from(response.data);
+      }
       return [];
     } catch (e) {
       rethrow;

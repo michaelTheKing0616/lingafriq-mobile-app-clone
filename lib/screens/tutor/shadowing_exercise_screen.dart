@@ -6,6 +6,7 @@ import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
 class ShadowingExerciseScreen extends ConsumerStatefulWidget {
@@ -40,12 +41,16 @@ class _ShadowingExerciseScreenState
   Future<void> _startRecording() async {
     try {
       if (await _recorder.hasPermission()) {
+        final tempDir = await getTemporaryDirectory();
+        final recordingPath =
+            '${tempDir.path}${Platform.pathSeparator}shadowing_${DateTime.now().millisecondsSinceEpoch}.wav';
         await _recorder.start(
           const RecordConfig(
             encoder: AudioEncoder.wav,
             sampleRate: 16000,
             numChannels: 1,
           ),
+          path: recordingPath,
         );
         setState(() {
           _isRecording = true;

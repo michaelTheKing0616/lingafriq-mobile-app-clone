@@ -7,6 +7,7 @@ import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 class FamilyDashboardScreen extends ConsumerStatefulWidget {

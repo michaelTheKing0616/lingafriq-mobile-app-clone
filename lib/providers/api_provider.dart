@@ -541,17 +541,29 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: true);
       final res = await ref.read(client).patch(endpointToHit);
       if (res.statusCode != 200) throw res.data;
-      accountUpdate().then((value) {
-        "Account updated".log("accountUpdate");
-        final userId = ref.read(userProvider)?.id;
-        if (userId != null) {
-          getProfileUser(userId).then((user) {
-            ref.read(userProvider.notifier).overrideUser(user);
-          });
+      
+      // CRITICAL FIX: Use async/await instead of chained promises for proper error handling
+      try {
+        final updateSuccess = await accountUpdate();
+        if (updateSuccess) {
+          "Account updated".log("accountUpdate");
+          final userId = ref.read(userProvider)?.id;
+          if (userId != null) {
+            try {
+              final user = await getProfileUser(userId);
+              ref.read(userProvider.notifier).overrideUser(user);
+            } catch (e) {
+              // Handle getProfileUser error gracefully - log but don't fail the whole operation
+              "Error getting updated profile $e".log("getProfileUser");
+              // User data might still be valid from previous state
+            }
+          }
         }
-      }).catchError((e) {
+      } catch (e) {
+        // Handle accountUpdate error gracefully - log but don't fail the whole operation
         "Error Account update $e".log("accountUpdate");
-      });
+        // Mark as complete succeeded, account update is secondary
+      }
 
       state = state.copyWith(isLoading: false);
       return true;
@@ -796,7 +808,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   * History Quiz Section End
   * 
   */
-  Future<bool> regiserDevice() async {
+  Future<bool> registerDevice() async {
     try {
       final token = await ref.read(firebaseMessagingProvider).getToken();
       final data = {
@@ -1295,6 +1307,34 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       logger.error('Error sending telemetry', error: e);
       return false;
     }
+  }
+
+  /// Family subscription: aggregated progress dashboard
+  /// Backend: GET /api/progress/family/dashboard
+  Future<Map<String, dynamic>> getFamilyProgressDashboard() async {
+    final res = await ref.read(client).get('/api/progress/family/dashboard');
+    if (res.statusCode != 200) {
+      throw Exception(res.data);
+    }
+    final data = res.data;
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    return <String, dynamic>{};
+  }
+
+  /// Fetch ancestry graph for the current user.
+  ///
+  /// Backend: GET /api/ancestry/me
+  /// Backward-compatible: requires only auth (user id is derived from JWT server-side).
+  Future<Map<String, dynamic>> getAncestryMe() async {
+    final res = await ref.read(client).get('/api/ancestry/me');
+    if (res.statusCode != 200) {
+      throw Exception(res.data);
+    }
+    final data = res.data;
+    if (data is Map<String, dynamic>) return data;
+    if (data is Map) return Map<String, dynamic>.from(data);
+    return <String, dynamic>{};
   }
 
   /// Generic POST helper method for flexibility

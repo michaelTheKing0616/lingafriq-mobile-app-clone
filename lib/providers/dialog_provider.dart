@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -81,10 +80,31 @@ class DialogProvider {
     final appError = ErrorConverter.toAppError(e);
     final userMessage = ErrorConverter.getUserMessage(appError);
 
+    // CRITICAL: Never show raw HTTP status codes to users (especially 429)
+    // Always use user-friendly titles
+    String title = "We're sorry";
+    if (appError is ApiError) {
+      final statusCode = appError.statusCode;
+      // Map status codes to friendly titles without exposing raw codes
+      if (statusCode == 429) {
+        title = "Please slow down";
+      } else if (statusCode == 401) {
+        title = "Authentication required";
+      } else if (statusCode == 403) {
+        title = "Access denied";
+      } else if (statusCode == 404) {
+        title = "Not found";
+      } else if (statusCode != null && statusCode >= 500) {
+        title = "Server error";
+      } else {
+        title = "Oops, an error occurred";
+      }
+    } else {
+      title = "Oops, an error occurred";
+    }
+
     await showPlatformDialogue(
-      title: appError is ApiError && appError.statusCode != null
-          ? "Error ${appError.statusCode}"
-          : "Error",
+      title: title,
       content: SelectableText(userMessage),
     );
   }

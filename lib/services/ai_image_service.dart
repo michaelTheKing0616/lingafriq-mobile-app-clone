@@ -19,6 +19,14 @@ import 'package:http/http.dart' as http;
 /// 
 /// Note: GROQ_API_KEY is used separately for Polie AI chat feature
 class AIImageService {
+  static String _fallbackAvatarAsset({required String country, required String language}) {
+    final seed = (country.trim().toLowerCase() + '|' + language.trim().toLowerCase())
+        .codeUnits
+        .fold<int>(0, (a, b) => a + b);
+    final idx = (seed % 10) + 1; // avatar_1..avatar_10
+    return 'assets/images/avatar_$idx.png';
+  }
+
   /// Get API key from environment variable (set via GitHub Secrets or --dart-define)
   /// Supports multiple providers - set the appropriate secret based on your choice
   static String? get _apiKey {
@@ -96,7 +104,7 @@ class AIImageService {
   /// Returns: URL or path of the generated image
   /// 
   /// Note: Requires API key to be set via GitHub Secret or --dart-define
-  /// If no API key is available, returns placeholder image path
+  /// If no API key is available, returns a deterministic local avatar asset
   static Future<String> generatePersonImage({
     required String country,
     required String language,
@@ -105,9 +113,9 @@ class AIImageService {
     // Check if API key is available
     final apiKey = _apiKey;
     if (apiKey == null || _provider == 'none') {
-      // No API key configured, return placeholder
-      print('AI Image Service: No API key configured. Using placeholder image.');
-      return 'assets/images/loading/placeholder.png';
+      // No API key configured: return a deterministic curated local avatar asset
+      // (guaranteed to exist in this repo).
+      return _fallbackAvatarAsset(country: country, language: language);
     }
 
     // Implement actual API call based on provider
@@ -146,8 +154,8 @@ class AIImageService {
       }
     } catch (e) {
       print('AI Image Service: Error generating image: $e');
-      // Return placeholder on error
-      return 'assets/images/loading/placeholder.png';
+      // Return deterministic local avatar on error
+      return _fallbackAvatarAsset(country: country, language: language);
     }
   }
 

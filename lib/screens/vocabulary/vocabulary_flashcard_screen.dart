@@ -290,14 +290,13 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
   }
 
   String _getWordMeaning(WordMastery word) {
-    // Get meaning from metadata or return placeholder
     if (word.metadata != null && word.metadata!['meaning'] != null) {
       return word.metadata!['meaning'] as String;
     }
     if (word.metadata != null && word.metadata!['translation'] != null) {
       return word.metadata!['translation'] as String;
     }
-    return 'Tap to see meaning';
+    return 'Meaning not available';
   }
 
   String? _getWordExample(WordMastery word) {
@@ -343,8 +342,10 @@ class _Flashcard extends StatelessWidget {
     if (word.metadata != null && word.metadata!['meaning'] != null) {
       return word.metadata!['meaning'] as String;
     }
-    // Fallback: return a placeholder
-    return 'Translation for ${word.word}';
+    if (word.metadata != null && word.metadata!['translation'] != null) {
+      return word.metadata!['translation'] as String;
+    }
+    return 'Meaning not available';
   }
 
   String? _getWordExample(WordMastery word) {

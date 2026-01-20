@@ -17,6 +17,99 @@ class PolieContentGenerator {
 
   PolieContentGenerator(this._ref);
 
+  /// Generate actionable classroom / family learning activities based on a progress summary.
+  ///
+  /// This is used by Family subscription dashboards to turn raw metrics into:
+  /// - a weekly plan
+  /// - suggested activities by age/level
+  /// - parent/guardian coaching tips
+  /// - a short motivational message
+  Future<String> generateClassroomActivities({
+    required String language,
+    required String classSummary,
+  }) async {
+    final additional = classSummary.hashCode.toString();
+    final cached = await PolieCacheService.getCachedContent(
+      'family_classroom_activities',
+      language,
+      additional: additional,
+    );
+    if (cached != null && cached['text'] is String && (cached['text'] as String).trim().isNotEmpty) {
+      return cached['text'] as String;
+    }
+
+    final groqChatNotifier = _ref.read(groqChatProvider.notifier);
+    final systemPrompt = '''
+You are Polie, a world-class language learning coach and curriculum designer.
+Your job: turn the provided learning summary into a practical, motivating plan that a family can follow.
+
+Requirements:
+- Output in clear, friendly English (unless requested otherwise).
+- Be specific and actionable: concrete activities, duration, and example prompts.
+- Tailor the plan to a family setting with multiple learners at different levels.
+- Include: (1) Snapshot, (2) Weekly plan (Mon–Sun), (3) 5 activity ideas, (4) 5 quick coaching tips, (5) a short motivational note.
+- Keep it concise: ~400–700 words.
+
+Family learning summary:
+${classSummary.trim()}
+''';
+
+    try {
+      await groqChatNotifier.setMode(PolieMode.tutor);
+      await groqChatNotifier.setLanguageDirection('English', language);
+      await groqChatNotifier.clearChat();
+
+      String fullResponse = '';
+      await for (final chunk in groqChatNotifier.sendMessageStream(
+        'Create a family-friendly learning plan from the summary above.',
+        systemPromptOverride: systemPrompt,
+      )) {
+        fullResponse += chunk;
+      }
+
+      final cleaned = fullResponse.trim();
+      if (cleaned.isEmpty) throw Exception('Empty AI response');
+
+      await PolieCacheService.cacheContent(
+        'family_classroom_activities',
+        language,
+        {'text': cleaned},
+        additional: additional,
+        ttl: const Duration(hours: 24),
+      );
+
+      return cleaned;
+    } catch (e) {
+      debugPrint('Error generating classroom activities: $e');
+      // Provide a robust non-AI fallback that is still actionable.
+      final fallback = [
+        'Snapshot',
+        '- Summary received, but Polie could not generate a tailored plan right now.',
+        '',
+        'Weekly plan (simple)',
+        '- Mon/Wed/Fri: 15 min speaking practice (repeat + shadow simple phrases)',
+        '- Tue/Thu: 15 min listening + 5 min recap',
+        '- Sat: 20 min family game (flashcards / quiz / roleplay)',
+        '- Sun: 10 min review + set next week goals',
+        '',
+        'Activity ideas',
+        '- “Repeat & Record”: say 5 phrases, record, replay, improve',
+        '- “Family roleplay”: market greetings + bargaining',
+        '- “Story time”: read a short story and pick 5 new words',
+        '- “Kitchen labels”: label 10 objects; quiz each other',
+        '- “Mini-challenges”: fastest correct pronunciation wins',
+        '',
+        'Coaching tips',
+        '- Keep sessions short and consistent',
+        '- Celebrate effort, not perfection',
+        '- Encourage full sentences, not single words',
+        '- Review yesterday’s words before adding new ones',
+        '- Rotate who “teaches” to boost confidence',
+      ].join('\n');
+      return fallback;
+    }
+  }
+
   /// Generate culturally-accurate proverb with explanation
   /// Uses caching to improve performance for common queries
   Future<Map<String, dynamic>> generateProverb(String language, {String? theme}) async {

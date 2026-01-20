@@ -5,14 +5,18 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
 
 class PronunciationService {
-  final Dio _dio = Dio();
+  final Dio _dio;
   
-  // Production service URLs - falls back to backend API
-  static String get MFA_SERVICE_URL => AppConfig.pronunciationApi ?? "https://api.lingafriq.com/api/v1/pronunciation/analyze";
-  static String get ASR_SERVICE_URL => AppConfig.speechToTextApi ?? "https://api.lingafriq.com/api/v1/speech/transcribe";
+  PronunciationService({Dio? dio}) : _dio = dio ?? Dio(BaseOptions(baseUrl: AppConfig.backendBaseUrl));
+
+  // Backend routes (authenticated) - proxied to the voice service by node-backend.
+  static const String _mfaAnalyzePath = '/api/voice/pronunciation/analyze';
+  static const String _sttTranscribePath = '/api/voice/stt/transcribe';
   
   /// Enhanced pronunciation scoring with detailed phoneme-level analysis
   /// Supports multiple languages with improved accuracy metrics
@@ -25,17 +29,16 @@ class PronunciationService {
     try {
       // Send audio file to enhanced pronunciation service
       final formData = FormData.fromMap({
-        'audio': await MultipartFile.fromFile(audioPath),
-        'reference_text': referenceText,
+        // Backend expects `learner_audio` and `expected_text`.
+        'learner_audio': await MultipartFile.fromFile(audioPath),
+        'expected_text': referenceText,
         'language': language,
+        // Extra flags are safe even if the backend ignores them.
         'include_detailed_feedback': includeDetailedFeedback,
-        'include_phoneme_alignment': true,
-        'include_pitch_analysis': true,
-        'include_fluency_metrics': true,
       });
       
       final response = await _dio.post(
-        MFA_SERVICE_URL,
+        _mfaAnalyzePath,
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -95,13 +98,15 @@ class PronunciationService {
       final formData = FormData.fromMap({
         'audio': await MultipartFile.fromFile(audioPath),
         'language': language,
+        // Backend supports `language` and optional `task`.
+        'task': 'transcribe',
+        // Keep flags for forward-compat; backend may ignore.
         'include_word_timings': includeWordTimings,
         'include_confidence_scores': includeConfidenceScores,
-        'enable_language_detection': true, // Auto-detect if language matches
       });
       
       final response = await _dio.post(
-        ASR_SERVICE_URL,
+        _sttTranscribePath,
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -154,6 +159,7 @@ class PronunciationService {
       return AudioQualityCheck(
         duration: 0,
         fileSize: 0,
+        sampleRate: 0,
         isValid: false,
         issues: ['Unable to analyze audio file'],
       );
@@ -238,6 +244,11 @@ class PronunciationResult {
   /// Check if pronunciation is excellent (>= 90%)
   bool get isExcellent => score >= 0.9;
 }
+
+/// Riverpod provider that uses the app-wide authenticated Dio client.
+final pronunciationServiceProvider = Provider<PronunciationService>((ref) {
+  return PronunciationService(dio: ref.read(client));
+});
 
 /// Transcription result with confidence and timing information
 class TranscriptionResult {

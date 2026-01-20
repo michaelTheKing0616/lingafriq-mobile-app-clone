@@ -20,7 +20,7 @@ import 'dart:math';
 /// Provides common patterns for all cultural games
 class CulturalGameHelper {
   static Future<Map<String, dynamic>> loadPolieContent({
-    required Ref ref,
+    required WidgetRef ref,
     required String gameType,
     required String language,
     String? difficulty,
@@ -87,6 +87,12 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
   int get maxRounds => _maxRounds;
   bool get isLoading => _isLoading;
   String get description => _description;
+
+  Future<void> _initializeGame() async {
+    // Initialize game by loading first content
+    // gameType should be provided by the implementing class
+    await loadNewContent('cultural_game', difficulty: widget.level);
+  }
 
   Future<void> loadNewContent(String gameType, {String? difficulty}) async {
     if (_round >= _maxRounds) {

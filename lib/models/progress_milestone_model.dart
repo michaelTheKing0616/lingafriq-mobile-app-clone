@@ -91,7 +91,7 @@ class Milestone {
     required this.emoji,
     required this.xpReward,
     required this.cowriesReward,
-    this.color = const Color(0xFFF7CB46),
+    this.color = PanAfricanColors.secondary, // Use design system color instead of hardcoded value
     this.isSecret = false,
   });
 }

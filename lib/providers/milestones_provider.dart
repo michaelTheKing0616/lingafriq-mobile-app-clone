@@ -4,8 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/progress_milestone_model.dart';
 import '../services/sound_effects_service.dart';
-import '../widgets/gamification/xp_gain_overlay.dart';
 import 'gamification_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for progress milestones tracking
 final milestonesProvider = NotifierProvider<MilestonesNotifier, UserMilestones>(() {
@@ -29,7 +29,7 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
         state = UserMilestones.fromJson(jsonDecode(json) as Map<String, dynamic>);
       }
     } catch (e) {
-      debugPrint('Error loading milestones: $e');
+      logger.error('Error loading milestones', tag: 'milestones', error: e);
     }
   }
 
@@ -38,7 +38,7 @@ class MilestonesNotifier extends Notifier<UserMilestones> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_storageKey, jsonEncode(state.toJson()));
     } catch (e) {
-      debugPrint('Error saving milestones: $e');
+      logger.error('Error saving milestones', tag: 'milestones', error: e);
     }
   }
 

@@ -8,6 +8,7 @@ import 'gamification_services_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
 import '../utils/progress_integration.dart';
+import '../utils/structured_logger.dart';
 
 final questProvider = NotifierProvider<QuestProvider, BaseProviderState>(() {
   return QuestProvider();
@@ -68,7 +69,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
       // Save updated progress
       await _saveQuestProgress();
     } catch (e) {
-      debugPrint('Error loading journey from API: $e');
+      logger.error('Error loading journey from API', tag: 'quest', error: e);
       // Continue with local data
     }
   }
@@ -86,7 +87,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
       final targetLanguage = chapter.metadata?['language']?.toString();
       await ProgressIntegration.onStoryLessonCompleted(ref, language: targetLanguage);
     } catch (e) {
-      debugPrint('Error tracking lesson completion: $e');
+      logger.error('Error tracking lesson completion', tag: 'quest', error: e);
     }
 
     // Try to complete journey node via API
@@ -115,7 +116,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
         );
       }
     } catch (e) {
-      debugPrint('Error completing journey node: $e');
+      logger.error('Error completing journey node', tag: 'quest', error: e);
       // Continue - local completion is already tracked
     }
 
@@ -158,7 +159,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
                 allLessonsCompleted: true, // All lessons are completed at this point
               );
             } catch (e) {
-              debugPrint('Error awarding story completion XP: $e');
+              logger.error('Error awarding story completion XP', tag: 'quest', error: e);
               // Continue - XP award failure shouldn't block chapter completion
             }
             
@@ -168,7 +169,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
                 final gamification = ref.read(gamificationProvider.notifier);
                 await gamification.unlockBadge(chapter.badgeReward!);
               } catch (e) {
-                debugPrint('Error unlocking badge: $e');
+                logger.error('Error unlocking badge', tag: 'quest', error: e);
                 // Continue - badge unlock failure shouldn't block chapter completion
               }
             }
@@ -179,7 +180,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
         }
       }
     } catch (e) {
-      debugPrint('Error checking chapter completion: $e');
+      logger.error('Error checking chapter completion', tag: 'quest', error: e);
       // Continue execution - completion check failure shouldn't block lesson completion
     }
 
@@ -247,7 +248,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
 
       return completedCount / chapter.lessons.length;
     } catch (e) {
-      debugPrint('Error getting chapter progress: $e');
+      logger.error('Error getting chapter progress', tag: 'quest', error: e);
       return 0.0;
     }
   }
@@ -258,7 +259,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('quest_progress', jsonEncode(_lessonProgress));
     } catch (e) {
-      debugPrint('Error saving quest progress: $e');
+      logger.error('Error saving quest progress', tag: 'quest', error: e);
     }
   }
 
@@ -294,7 +295,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
         }
       }
     } catch (e) {
-      debugPrint('Error loading quest progress: $e');
+      logger.error('Error loading quest progress', tag: 'quest', error: e);
     }
   }
 }

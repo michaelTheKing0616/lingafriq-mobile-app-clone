@@ -1,7 +1,6 @@
 /// Conversation Analytics Model
 /// Tracks conversation mode metrics, fluency, and topic coverage
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Conversation Session
 class ConversationSession {

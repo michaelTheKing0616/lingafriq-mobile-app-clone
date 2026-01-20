@@ -7,6 +7,7 @@ import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Provider for managing loading screen content
 /// Supports both client-side (local) and backend (API) content
@@ -62,7 +63,7 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
         return;
       } catch (e) {
         // Backend failed, fall back to local content
-        print('Loading screen: Backend failed, using local content: $e');
+        logger.warn('Loading screen: Backend failed, using local content', tag: 'loading-screen', error: e);
         _loadLocalContent();
         return;
       }
@@ -171,7 +172,7 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
         }
       }
     } catch (e) {
-      debugPrint('Failed to generate AI image: $e');
+      logger.error('Failed to generate AI image', tag: 'loading-screen', error: e);
     }
     
     // Fallback to placeholder

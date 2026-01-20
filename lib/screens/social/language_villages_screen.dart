@@ -112,6 +112,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
     WidgetRef ref,
     LanguageVillage village,
   ) {
+    final villageProvider = ref.read(languageVillageProvider.notifier);
     return Column(
       children: [
         // Village header
@@ -204,7 +205,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
         // Voice Room UI
         Expanded(
           child: _VoiceRoomView(
-            village: currentVillage,
+            village: village,
             onLeave: () {
               villageProvider.leaveVillage();
             },
@@ -270,11 +271,13 @@ class LanguageVillagesScreen extends ConsumerWidget {
                   if (context.mounted) {
                     Navigator.pop(context);
                     if (success) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Village created!')),
-                  );
-                }
-              }
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Village created!')),
+                      );
+                    }
+                  }
+                },
+              );
             },
             child: const Text('Create'),
           ),

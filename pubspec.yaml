@@ -91,6 +91,8 @@ dependencies:
   speech_to_text: ^7.0.0
   # Haptic Feedback
   flutter_vibrate: ^1.2.0
+  # Permissions
+  permission_handler: ^11.3.1
   # Charts & Visualization
   fl_chart: ^0.69.0
   # Environment Variables

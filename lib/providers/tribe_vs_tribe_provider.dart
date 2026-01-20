@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/tribe_vs_tribe_model.dart';
 import 'base_provider.dart';
-import 'api_provider.dart';
 import 'dio_provider.dart';
 import '../utils/api.dart';
+import '../utils/structured_logger.dart';
 
 final tribeVsTribeProvider =
     NotifierProvider<TribeVsTribeProvider, BaseProviderState>(() {
@@ -84,7 +84,7 @@ class TribeVsTribeProvider extends Notifier<BaseProviderState>
         }
       }
     } catch (e) {
-      debugPrint('Error loading tribe vs tribe event: $e');
+      logger.error('Error loading tribe vs tribe event', tag: 'tribe-vs-tribe', error: e);
       // Fallback on error
       final now = DateTime.now();
       final weekendStart = _getNextWeekendStart(now);
@@ -138,11 +138,11 @@ class TribeVsTribeProvider extends Notifier<BaseProviderState>
           }
         }
       } catch (syncError) {
-        debugPrint('Error syncing tribe XP contribution to backend: $syncError');
+        logger.error('Error syncing tribe XP contribution to backend', tag: 'tribe-vs-tribe', error: syncError);
         // Continue - local state is already updated
       }
     } catch (e) {
-      debugPrint('Error contributing to tribe: $e');
+      logger.error('Error contributing to tribe', tag: 'tribe-vs-tribe', error: e);
       rethrow;
     }
   }

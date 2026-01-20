@@ -18,11 +18,10 @@ class CultureMagazineService {
   }) async {
     try {
       final dio = ref.read(client);
-      String url = Api.cultureMagazineArticles;
+      String url = Api.cultureArticles(published: true);
       
       // Build query parameters
       final queryParams = <String, dynamic>{
-        'published': 'true',
         'page': page.toString(),
         'limit': limit.toString(),
       };
@@ -59,7 +58,10 @@ class CultureMagazineService {
   Future<List<CultureContent>> getFeaturedArticles() async {
     try {
       final dio = ref.read(client);
-      final response = await dio.get(Api.cultureMagazineFeaturedArticles);
+      final response = await dio.get(
+        Api.cultureArticles(published: true),
+        queryParameters: {'featured': 'true'},
+      );
 
       if (response.statusCode == 200 && response.data['success'] == true) {
         final articles = response.data['data'] ?? [];
@@ -78,7 +80,8 @@ class CultureMagazineService {
   Future<CultureContent> getArticleBySlug(String slug) async {
     try {
       final dio = ref.read(client);
-      final response = await dio.get(Api.cultureMagazineArticleBySlug(slug));
+      // Backend uses id-based path today; slug lookups aren't wired in Api constants.
+      final response = await dio.get(Api.cultureArticle(slug));
 
       if (response.statusCode == 200 && response.data['success'] == true) {
         return CultureContent.fromBackendMap(response.data['data']);

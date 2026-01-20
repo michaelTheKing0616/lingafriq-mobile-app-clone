@@ -6,6 +6,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final progressTrackingProvider = NotifierProvider<ProgressTrackingProvider, BaseProviderState>(() {
   return ProgressTrackingProvider();
@@ -45,7 +46,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error syncing progress metrics with backend: $e');
+      logger.error('Error syncing progress metrics with backend', tag: 'progress-tracking', error: e);
       // Silently fail - local state is primary
     }
   }
@@ -169,7 +170,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing progress sync: $e');
+      logger.error('Error queuing progress sync', tag: 'progress-tracking', error: e);
     }
   }
 
@@ -202,7 +203,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('progress_metrics', _metrics.toJson());
     } catch (e) {
-      debugPrint('Error saving progress metrics: $e');
+      logger.error('Error saving progress metrics', tag: 'progress-tracking', error: e);
     }
   }
 
@@ -214,7 +215,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
         _metrics = ProgressMetrics.fromJson(metricsJson);
       }
     } catch (e) {
-      debugPrint('Error loading progress metrics: $e');
+      logger.error('Error loading progress metrics', tag: 'progress-tracking', error: e);
     }
   }
 
@@ -224,7 +225,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
       final historyJson = _history.map((m) => m.toJson()).toList();
       await prefs.setStringList('progress_history', historyJson);
     } catch (e) {
-      debugPrint('Error saving progress history: $e');
+      logger.error('Error saving progress history', tag: 'progress-tracking', error: e);
     }
   }
 
@@ -235,7 +236,7 @@ class ProgressTrackingProvider extends Notifier<BaseProviderState> with BaseProv
       _history.clear();
       _history.addAll(historyJson.map((json) => ProgressMetrics.fromJson(json)));
     } catch (e) {
-      debugPrint('Error loading progress history: $e');
+      logger.error('Error loading progress history', tag: 'progress-tracking', error: e);
     }
   }
 }

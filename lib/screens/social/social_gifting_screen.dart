@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../utils/error_handler.dart';
 
 /// Social Gifting Screen - Send lessons to friends
 class SocialGiftingScreen extends ConsumerWidget {

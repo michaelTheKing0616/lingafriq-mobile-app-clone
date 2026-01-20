@@ -27,6 +27,7 @@ import '../services/tutor_progress_service.dart';
 import '../services/conversation_analytics_service.dart';
 import '../services/vocabulary_progress_service.dart';
 import '../services/review_progress_service.dart';
+import '../utils/structured_logger.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -331,9 +332,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
         _selectedLanguage = savedLanguage;
       }
       
-      debugPrint('Loaded last session: mode=${_mode.name}, language=$_targetLanguage');
+      logger.info('Loaded last session', tag: 'ai-chat', context: {'mode': _mode.name, 'language': _targetLanguage});
     } catch (e) {
-      debugPrint('Error loading mode/language preferences: $e');
+      logger.error('Error loading mode/language preferences', tag: 'ai-chat', error: e);
     }
   }
   
@@ -344,7 +345,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
       await prefs.setString('polie_last_mode', _mode.toString().split('.').last);
       await prefs.setString('polie_last_language', _targetLanguage);
     } catch (e) {
-      debugPrint('Error saving mode/language preferences: $e');
+      logger.error('Error saving mode/language preferences', tag: 'ai-chat', error: e);
     }
   }
   
@@ -352,7 +353,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   void _initializeRoleplayDataset() {
     if (RoleplayDataset.count == 0) {
       RoleplayDatasetLoader.loadBlock1();
-      debugPrint('Loaded ${RoleplayDataset.count} roleplay entries');
+      logger.info('Loaded roleplay entries', tag: 'ai-chat', context: {'count': RoleplayDataset.count});
     }
   }
 
@@ -1039,7 +1040,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
         : _mode == PolieMode.conversation ? "Conversation"
         : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-    debugPrint('Switched to $modeName mode. Loaded ${_messages.length} messages.');
+    logger.info('Switched mode', tag: 'ai-chat', context: {'mode': modeName, 'messagesCount': _messages.length});
   }
   
   /// Set the current roleplay scenario
@@ -1050,7 +1051,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     _roleplayProgress.clear();
     _initializeSystemPrompt(); // Reinitialize to include scenario context
     state = state.copyWith();
-    debugPrint('Set roleplay scenario: ${scenario.scenario}');
+    logger.info('Set roleplay scenario', tag: 'ai-chat', context: {'scenario': scenario.scenario});
   }
   
   /// Get current roleplay scenario
@@ -1093,7 +1094,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     try {
       utf8.decode(utf8.encode(sanitized));
     } catch (e) {
-      debugPrint('Encoding issue detected, fixing: $e');
+      logger.warn('Encoding issue detected, fixing', tag: 'ai-chat', error: e);
       sanitized = input.replaceAll(RegExp(r'[^\x20-\x7E\n\t]'), '');
     }
     
@@ -1105,7 +1106,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     try {
       return jsonDecode(jsonStr) as Map<String, dynamic>?;
     } catch (e) {
-      debugPrint('JSON parse error: $e for string: ${jsonStr.substring(0, jsonStr.length > 100 ? 100 : jsonStr.length)}');
+      logger.error('JSON parse error', tag: 'ai-chat', error: e, context: {'preview': jsonStr.substring(0, jsonStr.length > 100 ? 100 : jsonStr.length)});
       // Try to extract partial data if possible
       try {
         // Remove problematic characters and try again
@@ -1215,7 +1216,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
           
           // Log telemetry if diacritics were corrected
           if (hybridResponse.diacriticsCorrected) {
-            debugPrint('✅ Hybrid Polie: Diacritics corrected using ${hybridResponse.model}');
+            logger.info('Hybrid Polie: Diacritics corrected', tag: 'ai-chat', context: {'model': hybridResponse.model});
           }
           
           // Add assistant message
@@ -1254,7 +1255,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
           state = state.copyWith(isLoading: false);
           return;
         } catch (e) {
-          debugPrint('⚠️ Hybrid Polie failed, falling back to standard mode: $e');
+          logger.warn('Hybrid Polie failed, falling back to standard mode', tag: 'ai-chat', error: e);
           // Fall through to standard Groq implementation
         }
       }
@@ -1395,14 +1396,20 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
         }
         
         // Log the final message structure for debugging
-        debugPrint('Sending to Groq API:');
-        debugPrint('  Model: $currentModel');
-        debugPrint('  System prompt length: ${systemPrompt.length}');
-        debugPrint('  Messages count: ${messagesList.length}');
+        logger.debug('Sending to Groq API', tag: 'ai-chat', context: {
+          'model': currentModel,
+          'systemPromptLength': systemPrompt.length,
+          'messagesCount': messagesList.length,
+        });
         for (int i = 0; i < messagesList.length; i++) {
           final msg = messagesList[i];
           final content = msg["content"] as String;
-          debugPrint('  [$i] role=${msg["role"]}, content_length=${content.length}, preview=${content.substring(0, content.length > 50 ? 50 : content.length)}...');
+          logger.debug('Message details', tag: 'ai-chat', context: {
+            'index': i,
+            'role': msg["role"],
+            'contentLength': content.length,
+            'preview': content.substring(0, content.length > 50 ? 50 : content.length),
+          });
         }
         
         // Validate model name
@@ -1410,7 +1417,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
           throw Exception('Invalid model configuration. Please check your settings.');
         }
         
-        debugPrint('Sending to Groq: model=$currentModel, messages=${messagesList.length}');
+        logger.debug('Sending to Groq', tag: 'ai-chat', context: {'model': currentModel, 'messagesCount': messagesList.length});
         
         // Track request start time for performance metrics
         final requestStartTime = DateTime.now();
@@ -1486,11 +1493,11 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
             if (response.data != null) {
               // For stream responses, we might not be able to read the body easily
               // But we can log the status code for debugging
-              debugPrint('Groq API error: Status ${response.statusCode}');
+              logger.error('Groq API error', tag: 'ai-chat', context: {'statusCode': response.statusCode});
               errorDetail = 'Request validation failed. Please check your message format and API key.';
             }
           } catch (e) {
-            debugPrint('Error reading response: $e');
+            logger.error('Error reading response', tag: 'ai-chat', error: e);
           }
           
           if (response.statusCode == 400) {
@@ -1625,7 +1632,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
         
         // Log telemetry event if diacritics were corrected
         if (wasChanged) {
-          debugPrint('Diacritics corrected: ${metadata['method']} method for $_selectedLanguage');
+          logger.info('Diacritics corrected', tag: 'ai-chat', context: {'method': metadata['method'], 'language': _selectedLanguage});
           // Track diacritics correction via telemetry service
           try {
             final telemetry = ref.read(telemetryServiceProvider);
@@ -1639,7 +1646,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
               confidence: (metadata['score'] as num?)?.toDouble() ?? 1.0,
             );
           } catch (e) {
-            debugPrint('Error tracking diacritics correction: $e');
+            logger.error('Error tracking diacritics correction', tag: 'ai-chat', error: e);
           }
         }
 
@@ -1667,7 +1674,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
             confidence: (metadata['score'] as num?)?.toDouble(),
           );
         } catch (e) {
-          debugPrint('Error tracking Polie performance: $e');
+          logger.error('Error tracking Polie performance', tag: 'ai-chat', error: e);
         }
 
         return;
@@ -1683,7 +1690,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
             modelIndex++;
             _modelName = _modelNames[modelIndex];
             if (kDebugMode) {
-              debugPrint('Model ${_modelNames[modelIndex - 1]} not found, trying ${_modelName}');
+              logger.warn('Model not found, trying alternative', tag: 'ai-chat', context: {'previousModel': _modelNames[modelIndex - 1], 'tryingModel': _modelName});
             }
             continue; // Try with next model
           }
@@ -1715,7 +1722,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
             if (statusCode == 400) {
               errorMessage = 'Invalid request format. Please check your message and try again.';
               // Log the actual error for debugging
-              debugPrint('Groq API 400 error: $errorData');
+              logger.error('Groq API 400 error', tag: 'ai-chat', context: {'errorData': errorData});
             } else if (statusCode == 401) {
               errorMessage = 'Invalid API key. Please check your Groq API key.';
             } else if (statusCode == 429) {
@@ -1937,7 +1944,7 @@ Return only valid JSON.
 
       return GrammarFeedback(corrected: corrected, errors: errors, score: score);
     } catch (e) {
-      debugPrint('Grammar check error: $e');
+      logger.error('Grammar check error', tag: 'ai-chat', error: e);
       return GrammarFeedback(
         corrected: userText,
         errors: [],
@@ -2008,7 +2015,7 @@ Return only valid JSON.
       final text = response.data['text']?.toString() ?? '';
       return text.trim();
     } catch (e) {
-      debugPrint('Audio transcription error: $e');
+      logger.error('Audio transcription error', tag: 'ai-chat', error: e);
       return '';
     }
   }
@@ -2033,7 +2040,7 @@ Return only valid JSON.
       _recordSessionMetrics(pron: confidence);
       return confidence;
     } catch (e) {
-      debugPrint('Pronunciation scoring error: $e');
+      logger.error('Pronunciation scoring error', tag: 'ai-chat', error: e);
       return 0.5;
     }
   }
@@ -2079,7 +2086,7 @@ Return only valid JSON.
         'corrections': grammar.errors,
       };
     } catch (e) {
-      debugPrint('Shadowing exercise error: $e');
+      logger.error('Shadowing exercise error', tag: 'ai-chat', error: e);
       return {
         'score': 0.0,
         'wer': 1.0,
@@ -2126,7 +2133,7 @@ Return only JSON.
       final text = resp.data['choices'][0]['message']['content'];
       return jsonDecode(text);
     } catch (e) {
-      debugPrint('Listening passage generation error: $e');
+      logger.error('Listening passage generation error', tag: 'ai-chat', error: e);
       return {
         'passage': '',
         'questions': [],
@@ -2164,7 +2171,7 @@ Return only JSON.
       _recordSessionMetrics(comp: score);
       return score;
     } catch (e) {
-      debugPrint('Answer evaluation error: $e');
+      logger.error('Answer evaluation error', tag: 'ai-chat', error: e);
       return 0.5;
     }
   }
@@ -2208,7 +2215,7 @@ Return only JSON.
       final text = resp.data['choices'][0]['message']['content'];
       return jsonDecode(text) as Map<String, dynamic>;
     } catch (e) {
-      debugPrint('Curriculum generation error: $e');
+      logger.error('Curriculum generation error', tag: 'ai-chat', error: e);
       return {
         'language': language,
         'level': targetCEFR,
@@ -2228,7 +2235,7 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('Cleared chat history for $modeName mode');
+        logger.info('Cleared chat history', tag: 'ai-chat', context: {'mode': modeName});
   }
 
   // ----- Persistence -----
@@ -2275,7 +2282,7 @@ Return only JSON.
       // Sync to backend (debounced to avoid too many calls)
       _syncChatHistoryToBackend();
     } catch (e) {
-      debugPrint('Error saving chat history: $e');
+      logger.error('Error saving chat history', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2301,10 +2308,10 @@ Return only JSON.
           'messages': _messages.map((m) => m.toJson()).toList(),
         });
         if (success) {
-          debugPrint('Chat history synced to backend: ${_modeNameForBackend} × ${_languageCodeForBackend}');
+          logger.info('Chat history synced to backend', tag: 'ai-chat', context: {'mode': _modeNameForBackend, 'language': _languageCodeForBackend});
         }
       } catch (apiError) {
-        debugPrint('Error syncing to backend API, falling back to sync queue: $apiError');
+        logger.warn('Error syncing to backend API, falling back to sync queue', tag: 'ai-chat', error: apiError);
         // Fallback to sync queue
         final syncProvider = ref.read(backendSyncProvider.notifier);
         await syncProvider.queueSync(SyncTask(
@@ -2319,7 +2326,7 @@ Return only JSON.
         ));
       }
     } catch (e) {
-      debugPrint('Error syncing chat history: $e');
+      logger.error('Error syncing chat history', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2360,7 +2367,7 @@ Return only JSON.
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing chat sync: $e');
+      logger.error('Error queuing chat sync', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2387,7 +2394,7 @@ Return only JSON.
                 : _mode == PolieMode.conversation ? "Conversation"
                 : _mode == PolieMode.vocab ? "Vocab"
                 : "Review";
-            debugPrint('Loaded ${_messages.length} messages from backend: $modeName × $_languageCodeForBackend');
+            logger.info('Loaded messages from backend', tag: 'ai-chat', context: {'count': _messages.length, 'mode': modeName, 'language': _languageCodeForBackend});
             state = state.copyWith();
             
             // Also save to local storage for offline access
@@ -2398,7 +2405,7 @@ Return only JSON.
           }
         }
       } catch (backendError) {
-        debugPrint('Error loading from backend, trying local storage: $backendError');
+        logger.warn('Error loading from backend, trying local storage', tag: 'ai-chat', error: backendError);
       }
       
       // Fallback to local storage
@@ -2416,7 +2423,7 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('Loaded ${_messages.length} messages from local storage for $modeName mode');
+        logger.info('Loaded messages from local storage', tag: 'ai-chat', context: {'count': _messages.length, 'mode': modeName});
         state = state.copyWith();
       } else {
         // No history for this mode × language combination
@@ -2427,11 +2434,11 @@ Return only JSON.
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
             : "Review";
-        debugPrint('No chat history found for $modeName mode × ${_languageCodeForBackend}');
+        logger.info('No chat history found', tag: 'ai-chat', context: {'mode': modeName, 'language': _languageCodeForBackend});
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error loading chat history: $e');
+      logger.error('Error loading chat history', tag: 'ai-chat', error: e);
       // On error, clear messages to prevent showing wrong mode's history
       _messages.clear();
       state = state.copyWith();
@@ -2444,7 +2451,7 @@ Return only JSON.
       final memoryJson = _memory.map((key, value) => MapEntry(key, value.toJson()));
       await prefs.setString('srs_memory', jsonEncode(memoryJson));
     } catch (e) {
-      debugPrint('Error saving SRS memory: $e');
+      logger.error('Error saving SRS memory', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2460,7 +2467,7 @@ Return only JSON.
         });
       }
     } catch (e) {
-      debugPrint('Error loading SRS memory: $e');
+      logger.error('Error loading SRS memory', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2469,7 +2476,7 @@ Return only JSON.
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('cefr_info', jsonEncode(_cefrInfo.toJson()));
     } catch (e) {
-      debugPrint('Error saving CEFR info: $e');
+      logger.error('Error saving CEFR info', tag: 'ai-chat', error: e);
     }
   }
 
@@ -2481,7 +2488,7 @@ Return only JSON.
         _cefrInfo = CEFRInfo.fromJson(jsonDecode(cefrJson));
       }
     } catch (e) {
-      debugPrint('Error loading CEFR info: $e');
+      logger.error('Error loading CEFR info', tag: 'ai-chat', error: e);
     }
   }
 }

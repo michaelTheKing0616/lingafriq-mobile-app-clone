@@ -104,7 +104,7 @@ class AncestralTreeScreen extends ConsumerWidget {
 
   Future<List<_TreePerson>> _loadTreeData(WidgetRef ref) async {
     try {
-      final dio = ref.read(dioProvider);
+      final dio = ref.read(client);
       final response = await dio.get('${Api.baseurl}api/social/ancestral-tree');
       
       if (response.statusCode == 200 && response.data != null) {

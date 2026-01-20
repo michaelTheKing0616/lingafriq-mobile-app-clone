@@ -7,15 +7,12 @@ import '../../models/game/game_session_model.dart' show GameType, GameResult;
 import '../../services/polie_game_client.dart';
 import '../../services/rive_gamification_service.dart';
 import '../gamekit/game_session.dart';
-import '../gamekit/game_result.dart';
-import '../gamekit/game_engine.dart';
-import '../gamekit/game_turn_context.dart';
 import '../gamekit/game_animation_bridge.dart';
+import '../gamekit/game_result.dart';
 import '../animation/rive_game_guide.dart';
 import 'drum_rhythm_game.dart';
 import 'drum_rhythm_models.dart';
 import '../../games/widgets/game_answer_tile.dart';
-import '../../games/widgets/streak_indicator.dart';
 import '../../games/widgets/progress_meter.dart';
 
 /// Drum Rhythm game screen - Migrated to GameKit

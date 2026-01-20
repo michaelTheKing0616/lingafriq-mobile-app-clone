@@ -65,7 +65,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                       animationController: animationController,
                       onGetStarted: () async {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                        ref.read(apiProvider.notifier).regiserDevice();
+                        ref.read(apiProvider.notifier).registerDevice();
                         ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
                       },
                       onLogin: () {

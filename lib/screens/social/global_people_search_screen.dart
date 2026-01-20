@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 class GlobalPeopleSearchScreen extends ConsumerStatefulWidget {
   const GlobalPeopleSearchScreen({Key? key}) : super(key: key);
@@ -21,6 +22,7 @@ class GlobalPeopleSearchScreen extends ConsumerStatefulWidget {
 class _GlobalPeopleSearchScreenState
     extends ConsumerState<GlobalPeopleSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final Debouncer _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 400));
   bool _isLoading = false;
   String? _error;
   List<PrivateChatContact> _results = const [];
@@ -28,6 +30,7 @@ class _GlobalPeopleSearchScreenState
   @override
   void dispose() {
     _searchController.dispose();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 

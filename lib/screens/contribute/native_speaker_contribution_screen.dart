@@ -998,7 +998,6 @@ Format as JSON array:
         language: _selectedLanguage,
         category: _selectedCategory,
         promptText: _currentPrompt!.text,
-        promptTranslation: _currentPrompt!.translation,
         audioPath: _lastRecordingPath!,
       );
       

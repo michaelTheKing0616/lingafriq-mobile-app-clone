@@ -67,23 +67,30 @@ class EnhancedTTSService {
   final SecretsManager _secrets = SecretsManager();
   final AudioPlayer _audioPlayer = AudioPlayer();
   final Map<String, String> _audioCache = {}; // text -> audio file path
-  final WidgetRef? _ref; // For accessing user provider
+  final Ref? _ref; // For accessing user provider
 
   bool _isInitialized = false;
   String? _userLanguage; // User's selected language from onboarding
 
-  EnhancedTTSService({WidgetRef? ref}) : _ref = ref;
+  EnhancedTTSService({Ref? ref}) : _ref = ref;
 
   /// Initialize TTS service
   Future<void> initialize() async {
     if (_isInitialized) return;
 
     try {
+      // Ensure secrets are loaded before any remote TTS calls.
+      try {
+        await _secrets.initialize();
+      } catch (e) {
+        logger.warn('SecretsManager failed to initialize (will rely on system TTS fallback)', error: e);
+      }
+
       // Get user's selected language from profile
       if (_ref != null) {
         try {
           final user = _ref.read(userProvider);
-          _userLanguage = user?.preferred_language;
+          _userLanguage = user?.learningLanguage;
           logger.info('User language detected', context: {'language': _userLanguage});
         } catch (e) {
           logger.debug('Could not get user language from provider', error: e);
@@ -178,7 +185,7 @@ class EnhancedTTSService {
         data: {'inputs': text},
         options: Options(
           headers: {
-            'Authorization': 'Bearer ${_secrets.huggingFaceToken}',
+            'Authorization': 'Bearer ${_secrets.huggingfaceToken}',
           },
           responseType: ResponseType.bytes,
           receiveTimeout: const Duration(seconds: 30),

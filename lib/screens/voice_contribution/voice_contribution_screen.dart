@@ -6,8 +6,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'dart:io';
 
@@ -45,8 +45,14 @@ class VoiceContributionScreen extends HookConsumerWidget {
     Future<void> loadPrompts() async {
       isLoading.value = true;
       try {
+        final user = ref.read(userProvider);
+        if (user == null) {
+          prompts.value = [];
+          return;
+        }
+
         final response = await ApiService.get(
-          '${AppConfig.backendBaseUrl}/api/v1/voice/contributions/prompts',
+          '/api/voice/contributions/prompts',
           queryParameters: {
             'language': selectedLanguage.value,
             'category': selectedCategory.value,
@@ -68,11 +74,16 @@ class VoiceContributionScreen extends HookConsumerWidget {
 
     Future<void> loadUserStats() async {
       try {
-        // Get current user ID from auth
-        final userId = 'current_user_id'; // Replace with actual user ID
+        final user = ref.read(userProvider);
+        if (user == null) {
+          userStats.value = null;
+          return;
+        }
+
+        final userId = user.id.toString();
         
         final response = await ApiService.get(
-          '${AppConfig.backendBaseUrl}/api/v1/voice/contributions/stats/$userId',
+          '/api/voice/contributions/stats/$userId',
         );
 
         if (response.statusCode == 200) {
@@ -104,22 +115,26 @@ class VoiceContributionScreen extends HookConsumerWidget {
 
       isSubmitting.value = true;
       try {
-        // Get current user ID
-        final userId = 'current_user_id'; // Replace with actual user ID
+        final user = ref.read(userProvider);
+        if (user == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please log in to submit a contribution')),
+          );
+          return;
+        }
 
         // Upload file
         final response = await ApiService.uploadFile(
-          '${AppConfig.backendBaseUrl}/api/v1/voice/contributions',
+          '/api/voice/contributions',
           audioFile.value!.path,
           additionalData: {
-            'userId': userId,
             'promptId': selectedPrompt.value!['id'],
             'language': selectedLanguage.value,
             'category': selectedCategory.value,
             'promptText': selectedPrompt.value!['text'],
             'promptTranslation': selectedPrompt.value!['translation'] ?? '',
           },
-          fileField: 'audio',
+          fileFieldName: 'audio',
         );
 
         if (response.statusCode == 201) {
@@ -277,8 +292,8 @@ class VoiceContributionScreen extends HookConsumerWidget {
                               : PanAfricanColors.surfaceContainerLight,
                         ),
                         items: categories.map((cat) {
-                          return DropdownMenuItem(
-                            value: cat['value'],
+                          return DropdownMenuItem<String>(
+                            value: cat['value'] as String,
                             child: Row(
                               children: [
                                 Icon(cat['icon'] as IconData, size: 18.sp),
@@ -394,7 +409,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                 // Audio File Selection
                 if (selectedPrompt.value != null) ...[
                   PanAfricanCard(
-                    color: audioFile.value != null
+                    backgroundColor: audioFile.value != null
                         ? PanAfricanColors.success.withOpacity(0.1)
                         : null,
                     child: Column(

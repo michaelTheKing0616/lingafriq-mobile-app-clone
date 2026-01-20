@@ -17,6 +17,7 @@ import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -27,12 +28,17 @@ class ModernDashboardScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final dailyGoals = ref.watch(dailyGoalsProvider);
+    // NOTE: Using ref.read(notifier) here is necessary due to DailyGoalsProvider architecture
+    // The provider stores goals/streak as private fields with getters, not in BaseProviderState
+    // TODO: Refactor DailyGoalsProvider to use a proper state model instead of BaseProviderState
+    final dailyGoalsNotifier = ref.read(dailyGoalsProvider.notifier);
+    final dailyGoals = dailyGoalsNotifier.goals;
+    final currentStreak = dailyGoalsNotifier.currentStreak;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Calculate today's goal progress
-    final completedGoals = dailyGoals.goals.where((g) => g.isCompleted).length;
-    final totalGoals = dailyGoals.goals.length;
+    final completedGoals = dailyGoals.where((g) => g.completed).length;
+    final totalGoals = dailyGoals.length;
     final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
     
     return Scaffold(
@@ -85,10 +91,10 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                user?.avatar != null
+                                user?.avater != null
                                     ? ClipOval(
                                         child: LazyImage(
-                                          imageUrl: user!.avatar!,
+                                          imageUrl: user!.avater!,
                                           width: 48,
                                           height: 48,
                                           placeholder: CircleAvatar(
@@ -107,16 +113,16 @@ class ModernDashboardScreen extends HookConsumerWidget {
                                     : CircleAvatar(
                                         radius: 24,
                                         backgroundColor: Colors.white,
-                                  child: user?.avatar == null
-                                      ? Text(
-                                          (user?.username ?? 'U')[0].toUpperCase(),
-                                          style: TextStyle(
-                                            color: const Color(0xFFCE1126),
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        )
-                                      : null,
-                                ),
+                                        child: user?.avater == null
+                                            ? Text(
+                                                (user?.username ?? 'U')[0].toUpperCase(),
+                                                style: TextStyle(
+                                                  color: const Color(0xFFCE1126),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            : null,
+                                      ),
                                 SizedBox(width: 3.w),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +165,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                             Expanded(
                               child: _StatCard(
                                 icon: Icons.local_fire_department_rounded,
-                                value: '${user?.streak ?? 0}',
+                                value: '$currentStreak',
                                 label: 'Day Streak',
                                 color: const Color(0xFFFF6B35),
                                 isDark: isDark,

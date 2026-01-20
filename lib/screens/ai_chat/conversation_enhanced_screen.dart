@@ -56,7 +56,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
 
       // Auto-correct if enabled
       if (autoCorrectionEnabled.value) {
-        await _autoCorrect(text, messages.value.length - 1, corrections);
+        await _autoCorrect(text, messages.value.length - 1, corrections, chatProvider);
       }
 
       // Scroll to bottom
@@ -168,7 +168,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                   itemCount: messages.value.length,
                   itemBuilder: (context, index) {
                     final message = messages.value[index];
-                    final correction = corrections[index];
+                    final correction = corrections.value[index];
                     return _MessageBubble(
                       message: message,
                       correction: correction,
@@ -252,6 +252,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
     String text,
     int messageIndex,
     ValueNotifier<Map<int, String>> corrections,
+    dynamic chatProvider,
   ) async {
     try {
       // Use AI chat provider to check grammar and get corrections

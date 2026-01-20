@@ -22,7 +22,6 @@ import 'services/offline/cache_encryption.dart';
 import 'services/offline/offline_analytics.dart';
 // Auth Services
 import 'services/auth/credential_storage_service.dart';
-import 'services/auth/biometric_auth_service.dart';
 // Localization & Features
 import 'services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'services/advanced/smart_recommendations.dart';

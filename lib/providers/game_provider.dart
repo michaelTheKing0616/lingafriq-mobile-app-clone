@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/game/phrase_card_model.dart';
 import '../models/game/game_session_model.dart';
 import '../providers/gamification_provider.dart';
-import '../providers/api_provider.dart';
 import '../providers/backend_sync_provider.dart';
 import '../providers/user_provider.dart';
 import '../providers/dio_provider.dart';
@@ -14,6 +13,7 @@ import '../utils/progress_integration.dart';
 import '../utils/api.dart';
 import '../services/telemetry_service.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
   return GameProvider();
@@ -90,7 +90,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: false);
       return _currentSession!;
     } catch (e) {
-      debugPrint('Error starting game: $e');
+      logger.error('Error starting game', tag: 'game-provider', error: e, context: {'gameType': gameType});
       state = state.copyWith(isLoading: false);
       rethrow;
     }
@@ -147,7 +147,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       state = state.copyWith();
     } catch (e) {
-      debugPrint('Error completing turn: $e');
+      logger.error('Error completing turn', tag: 'game-provider', error: e);
     }
   }
 
@@ -203,7 +203,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith();
       return endedSession;
     } catch (e) {
-      debugPrint('Error ending game: $e');
+      logger.error('Error ending game', tag: 'game-provider', error: e);
       rethrow;
     }
   }
@@ -246,7 +246,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
                 srs: _userSRS['${_currentSession?.userId ?? 'user'}_${item['id'] ?? cards.length}'] ?? SRSState(),
               ));
             } catch (e) {
-              debugPrint('Error parsing card from API: $e');
+              logger.error('Error parsing card from API', tag: 'game-provider', error: e);
               continue;
             }
           }
@@ -271,7 +271,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         }
       }
     } catch (e) {
-      debugPrint('Error loading cards from API, using fallback: $e');
+      logger.error('Error loading cards from API, using fallback', tag: 'game-provider', error: e);
       // Continue to fallback
     }
 
@@ -425,7 +425,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing session sync: $e');
+      logger.error('Error queuing session sync', tag: 'game-provider', error: e);
     }
   }
 
@@ -450,7 +450,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing SRS sync: $e');
+      logger.error('Error queuing SRS sync', tag: 'game-provider', error: e);
     }
   }
 
@@ -481,7 +481,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }));
       await prefs.setStringList('telemetry_log', existing);
     } catch (e) {
-      debugPrint('Error sending telemetry: $e');
+      logger.error('Error sending telemetry', tag: 'game-provider', error: e);
     }
   }
 
@@ -493,7 +493,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       existing.add(jsonEncode(session.toJson()));
       await prefs.setStringList('game_sessions', existing);
     } catch (e) {
-      debugPrint('Error saving session: $e');
+      logger.error('Error saving session', tag: 'game-provider', error: e);
     }
   }
 
@@ -510,7 +510,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         });
       }
     } catch (e) {
-      debugPrint('Error loading SRS: $e');
+      logger.error('Error loading SRS', tag: 'game-provider', error: e);
     }
   }
 
@@ -524,7 +524,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       });
       await prefs.setString('user_srs', jsonEncode(json));
     } catch (e) {
-      debugPrint('Error saving SRS: $e');
+      logger.error('Error saving SRS', tag: 'game-provider', error: e);
     }
   }
 }

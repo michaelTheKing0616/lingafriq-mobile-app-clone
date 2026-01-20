@@ -75,32 +75,65 @@ class _DioLogger extends Interceptor {
       'Api call error\n${err.requestOptions.uri.toString()}\n${err.requestOptions.path}\n${err.response?.statusCode}\n${err.response?.statusMessage}\n${err.response?.data},',
     );
     
-      // Handle 401 Unauthorized - attempt token refresh
-      if (err.response?.statusCode == 401 && err.requestOptions.path != Api.refreshToken) {
-        final requestOptions = err.requestOptions;
+    // Handle 429 Rate Limit - Transform to user-friendly error before propagation
+    if (err.response?.statusCode == 429) {
+      final retryAfter = err.response?.headers.value('retry-after');
+      final retrySeconds = retryAfter != null ? int.tryParse(retryAfter) : null;
+      
+      // Create user-friendly error that will be caught by error handlers
+      final userFriendlyError = DioException(
+        requestOptions: err.requestOptions,
+        type: DioExceptionType.badResponse,
+        response: err.response != null
+            ? Response(
+                requestOptions: err.requestOptions,
+                statusCode: 429,
+                statusMessage: retrySeconds != null
+                    ? 'Please slow down. Try again in ${(retrySeconds / 60).ceil()} minute${(retrySeconds / 60).ceil() > 1 ? 's' : ''}.'
+                    : 'You\'re making requests too quickly. Please wait a moment and try again.',
+                data: {
+                  'message': retrySeconds != null
+                      ? 'Please slow down. Try again in ${(retrySeconds / 60).ceil()} minute${(retrySeconds / 60).ceil() > 1 ? 's' : ''}.'
+                      : 'You\'re making requests too quickly. Please wait a moment and try again.',
+                  'code': 429,
+                  'retry_after': retrySeconds,
+                },
+                headers: err.response!.headers,
+              )
+            : null,
+        error: 'Rate limit exceeded',
+      );
+      
+      _log('Rate limit (429) detected - transformed to user-friendly message');
+      return handler.reject(userFriendlyError);
+    }
+    
+    // Handle 401 Unauthorized - attempt token refresh
+    if (err.response?.statusCode == 401 && err.requestOptions.path != Api.refreshToken) {
+      final requestOptions = err.requestOptions;
+      
+      // Skip refresh if already retried
+      if (!requestOptions.extra.containsKey('_retry')) {
+        requestOptions.extra['_retry'] = true;
         
-        // Skip refresh if already retried
-        if (!requestOptions.extra.containsKey('_retry')) {
-          requestOptions.extra['_retry'] = true;
+        try {
+          // Attempt to refresh token
+          final apiProviderNotifier = ref.read(apiProvider.notifier);
+          final newAccessToken = await apiProviderNotifier.refreshAccessToken();
           
-          try {
-            // Attempt to refresh token
-            final apiProviderNotifier = ref.read(apiProvider.notifier);
-            final newAccessToken = await apiProviderNotifier.refreshAccessToken();
-            
-            if (newAccessToken != null) {
-              // Update token and retry request
-              requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
-              final response = await ref.read(client).fetch(requestOptions);
-              return handler.resolve(response);
-            }
-          } catch (refreshError) {
-            _log('Token refresh failed: $refreshError');
-            // If refresh fails, clear token and let error propagate
-            ref.read(apiProvider.notifier).clearToken();
+          if (newAccessToken != null) {
+            // Update token and retry request
+            requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
+            final response = await ref.read(client).fetch(requestOptions);
+            return handler.resolve(response);
           }
+        } catch (refreshError) {
+          _log('Token refresh failed: $refreshError');
+          // If refresh fails, clear token and let error propagate
+          ref.read(apiProvider.notifier).clearToken();
         }
       }
+    }
     
     super.onError(err, handler);
   }

@@ -24,40 +24,17 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
-// Check for NDK availability before configuring android block
-// This prevents build failures if NDK installation is incomplete
-// Check for multiple NDK versions: 26.1.10909125 (for rive_common) and 27.0.12077973 (for app)
-def ndkVersionToUse = null
+// NDK: prefer the highest version required by plugins (backward compatible).
+// CI failure fix: speech_to_text requires 27.0.12077973, so we pin to that.
+def ndkVersionToUse = "27.0.12077973"
 def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 if (!sdkDir) {
     // Try to get SDK from local.properties as fallback
     sdkDir = localProperties.getProperty('sdk.dir')
 }
 
-if (sdkDir) {
-    // Check for rive_common's preferred NDK version first (26.1.10909125)
-    def riveNdkDir = file("${sdkDir}/ndk/26.1.10909125")
-    def riveSourceProperties = file("${riveNdkDir}/source.properties")
-    if (riveNdkDir.exists() && riveSourceProperties.exists()) {
-        ndkVersionToUse = "26.1.10909125"
-        println("✅ NDK 26.1.10909125 found (required by rive_common) and will be used")
-    } else {
-        // Fallback to app's preferred NDK version (27.0.12077973)
-        def appNdkDir = file("${sdkDir}/ndk/27.0.12077973")
-        def appSourceProperties = file("${appNdkDir}/source.properties")
-        if (appNdkDir.exists() && appSourceProperties.exists()) {
-            ndkVersionToUse = "27.0.12077973"
-            println("✅ NDK 27.0.12077973 found and will be used")
-        } else {
-            println("⚠️ NDK not found - checked versions:")
-            println("   - 26.1.10909125 (required by rive_common) at ${riveNdkDir.absolutePath}")
-            println("   - 27.0.12077973 (preferred for app) at ${appNdkDir.absolutePath}")
-            println("   Build will continue - plugins requiring NDK may fail")
-        }
-    }
-} else {
-    println("⚠️ Android SDK location not found - skipping NDK version specification")
-    println("   Build will use default NDK if available")
+if (!sdkDir) {
+    println("⚠️ Android SDK location not found - NDK pin will rely on CI/Gradle installation")
 }
 
 android {
@@ -66,11 +43,8 @@ android {
     // Fix for AndroidX + SDK36 plugin requirements
     compileSdk = 36
     
-    // Only set NDK version if it's available and properly installed
-    // This prevents build failures when NDK installation is incomplete
-    if (ndkVersionToUse) {
-        ndkVersion ndkVersionToUse
-    }
+    // Pin NDK to satisfy plugins (speech_to_text needs 27.x). Gradle will install it in CI.
+    ndkVersion ndkVersionToUse
 
     defaultConfig {
         applicationId "com.cracklog.lingafriq"

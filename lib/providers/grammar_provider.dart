@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'api_provider.dart';
 import 'dio_provider.dart';
 import '../utils/api.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for enhanced grammar explanations with backend integration
 class GrammarNotifier extends Notifier<GrammarState> {
@@ -48,7 +48,7 @@ class GrammarNotifier extends Notifier<GrammarState> {
         return explanation;
       }
     } catch (e) {
-      debugPrint('Error fetching grammar explanation from backend: $e');
+      logger.error('Error fetching grammar explanation from backend', tag: 'grammar', error: e, context: {'grammarPoint': grammarPoint, 'language': language});
       // Fall back to local cache or default
     }
     
@@ -125,7 +125,7 @@ class GrammarNotifier extends Notifier<GrammarState> {
         'cultural_note': explanation.culturalNote,
       }));
     } catch (e) {
-      debugPrint('Error saving grammar explanation to cache: $e');
+      logger.error('Error saving grammar explanation to cache', tag: 'grammar', error: e);
     }
   }
   
@@ -140,7 +140,7 @@ class GrammarNotifier extends Notifier<GrammarState> {
         return _parseGrammarExplanation(data);
       }
     } catch (e) {
-      debugPrint('Error loading grammar explanation from cache: $e');
+      logger.error('Error loading grammar explanation from cache', tag: 'grammar', error: e);
     }
     return null;
   }

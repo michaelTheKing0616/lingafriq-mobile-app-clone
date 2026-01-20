@@ -3,10 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/dio_provider.dart' show client;
 import 'package:lingafriq/utils/api.dart';
 import 'package:dio/dio.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Provider for managing offline content downloads
 class OfflineContentNotifier extends Notifier<OfflineContentState> {
@@ -86,7 +86,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
           );
 
           if (fileResponse.statusCode != 200) {
-            debugPrint('Failed to download file: $url (status: ${fileResponse.statusCode})');
+            logger.warn('Failed to download file', tag: 'offline-content', context: {'url': url, 'statusCode': fileResponse.statusCode});
             continue; // Skip failed files but continue with others
           }
 
@@ -94,7 +94,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
           final fileFile = File(filePath);
           await fileFile.writeAsBytes(fileResponse.data as List<int>);
         } catch (e) {
-          debugPrint('Error downloading file $url: $e');
+          logger.error('Error downloading file', tag: 'offline-content', error: e, context: {'url': url});
           continue; // Skip failed files but continue with others
         }
 
@@ -119,7 +119,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
         downloadProgress: 1.0,
       );
     } catch (e) {
-      debugPrint('Error downloading language: $e');
+      logger.error('Error downloading language', tag: 'offline-content', error: e, context: {'language': language});
       state = state.copyWith(isDownloading: false);
       // Don't rethrow - allow user to retry
       throw Exception('Failed to download language pack. Please check your connection and try again.');
@@ -172,7 +172,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
           options: Options(responseType: ResponseType.bytes),
         );
         if (fileResponse.statusCode != 200) {
-          debugPrint('Failed to download game file: $url');
+          logger.warn('Failed to download game file', tag: 'offline-content', context: {'url': url});
           continue; // Skip failed files but continue with others
         }
 
@@ -200,7 +200,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
         downloadProgress: 1.0,
       );
     } catch (e) {
-      debugPrint('Error downloading game: $e');
+      logger.error('Error downloading game', tag: 'offline-content', error: e, context: {'gameId': gameId});
       state = state.copyWith(isDownloading: false);
       // Don't rethrow - allow user to retry
       throw Exception('Failed to download game. Please check your connection and try again.');

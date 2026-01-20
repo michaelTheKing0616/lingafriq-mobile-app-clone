@@ -3,7 +3,6 @@ import 'game_difficulty.dart';
 import 'game_feedback.dart';
 import 'game_animation_bridge.dart';
 import 'game_result.dart';
-import 'game_session.dart';
 import 'game_turn_context.dart';
 
 /// Central game engine that orchestrates scoring, difficulty, feedback, and animation

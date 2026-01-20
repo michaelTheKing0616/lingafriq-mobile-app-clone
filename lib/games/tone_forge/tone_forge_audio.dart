@@ -52,7 +52,7 @@ class ToneForgeAudioAnalyzer {
     final minPeriod = (sampleRate / 400).round();
     final maxPeriod = (sampleRate / 80).round();
 
-    for (int i = minPeriod; i < min(maxPeriod, autocorr.length); i++) {
+    for (int i = minPeriod; i < math.min(maxPeriod, autocorr.length); i++) {
       if (autocorr[i] > maxValue) {
         maxValue = autocorr[i];
         maxIndex = i;

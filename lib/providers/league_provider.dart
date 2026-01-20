@@ -6,6 +6,7 @@ import '../models/league_model.dart';
 import '../services/sound_effects_service.dart';
 import 'api_provider.dart';
 import 'user_provider.dart';
+import '../utils/structured_logger.dart';
 
 /// Provider for league/division system
 final leagueProvider = NotifierProvider<LeagueNotifier, LeagueState>(() {
@@ -65,7 +66,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
       // Fetch fresh leaderboard from server
       await refreshLeaderboard();
     } catch (e) {
-      debugPrint('Error loading league state: $e');
+      logger.error('Error loading league state', tag: 'league', error: e);
     }
   }
 
@@ -80,7 +81,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
       };
       await prefs.setString(_storageKey, jsonEncode(data));
     } catch (e) {
-      debugPrint('Error saving league state: $e');
+      logger.error('Error saving league state', tag: 'league', error: e);
     }
   }
 
@@ -186,7 +187,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
         );
       }
     } catch (e) {
-      debugPrint('Error refreshing leaderboard: $e');
+      logger.error('Error refreshing leaderboard', tag: 'league', error: e);
     }
   }
 

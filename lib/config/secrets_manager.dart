@@ -156,7 +156,7 @@ class SecretsManager {
     // Use String.fromEnvironment to get build-time variables
     // These are set via: flutter build --dart-define=KEY=value
     // Note: This is compile-time only, so it only works if set during build
-    const value = String.fromEnvironment('', defaultValue: '');
+    final value = String.fromEnvironment(dartDefineKey, defaultValue: '');
     if (value.isNotEmpty) {
       return value;
     }

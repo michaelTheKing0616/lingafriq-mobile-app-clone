@@ -60,7 +60,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
               icon: Icons.menu_book,
               color: Colors.blue,
               onTap: () async {
-                await safeNavigate(
+                final result = await safeNavigate(
                   context: context,
                   destination: const CreateLessonScreen(),
                 );

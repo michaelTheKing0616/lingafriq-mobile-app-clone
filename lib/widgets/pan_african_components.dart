@@ -262,6 +262,7 @@ class PanAfricanCard extends StatefulWidget {
   final bool hasGlow;
   final Color? glowColor;
   final double? elevation;
+  final Color? backgroundColor;
 
   const PanAfricanCard({
     Key? key,
@@ -276,6 +277,7 @@ class PanAfricanCard extends StatefulWidget {
     this.hasGlow = false,
     this.glowColor,
     this.elevation,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -313,7 +315,8 @@ class _PanAfricanCardState extends State<PanAfricanCard>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final cardColor = isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
+    final cardColor =
+        widget.backgroundColor ?? (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
     final glowColor = widget.glowColor ?? PanAfricanColors.primary;
 
     Widget card = Container(

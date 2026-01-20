@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 class PrivateChatState {
   final List<PrivateChatContact> contacts;
@@ -71,7 +72,7 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
         error: null,
       );
     } catch (e) {
-      debugPrint('Failed to load contacts: $e');
+      logger.error('Failed to load contacts', tag: 'private-chat', error: e);
       state = state.copyWith(
         isLoading: false,
         error: 'Unable to load contacts right now.',

@@ -131,7 +131,7 @@ You can do this by going to your profile tab, and selecting the “Feedback” o
                                       curve: Curves.fastLinearToSlowEaseIn,
                                     );
                                   } else {
-                                    ref.read(apiProvider.notifier).regiserDevice();
+                                    ref.read(apiProvider.notifier).registerDevice();
                                     ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
                                   }
                                 },

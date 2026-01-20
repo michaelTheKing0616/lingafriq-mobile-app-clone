@@ -7,6 +7,7 @@ import 'package:just_audio/just_audio.dart';
 
 import '../services/voice/voice_api_service.dart';
 import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final ttsProvider = NotifierProvider<TTSProvider, BaseProviderState>(() {
   return TTSProvider();
@@ -63,7 +64,7 @@ class TTSProvider extends BaseProvider {
           );
 
       if (bytes == null || bytes.isEmpty) {
-        debugPrint('TTS: empty audio for language=$languageName');
+        logger.warn('TTS: empty audio', tag: 'tts', context: {'language': languageName});
         return;
       }
 
@@ -71,7 +72,7 @@ class TTSProvider extends BaseProvider {
       await _player.play();
       _isSpeaking = true;
     } catch (e) {
-      debugPrint('TTS speak error: $e');
+      logger.error('TTS speak error', tag: 'tts', error: e);
     }
   }
 

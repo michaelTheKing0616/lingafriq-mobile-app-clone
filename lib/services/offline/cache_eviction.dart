@@ -13,6 +13,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'dart:convert';
 
 /// Cache eviction policy types
 enum EvictionPolicy {
@@ -110,10 +111,14 @@ class CacheEvictionManager {
         // Get metadata (stored separately)
         final metadataJson = prefs.getString('_cache_meta_$key');
         final metadata = metadataJson != null
-            ? Map<String, dynamic>.from(
-                // Parse JSON metadata
-                // For now, use defaults
-              )
+            ? (() {
+                try {
+                  final decoded = jsonDecode(metadataJson);
+                  if (decoded is Map<String, dynamic>) return decoded;
+                  if (decoded is Map) return Map<String, dynamic>.from(decoded);
+                } catch (_) {}
+                return <String, dynamic>{};
+              })()
             : <String, dynamic>{};
 
         entries.add(CacheEntry(
@@ -255,9 +260,14 @@ class CacheEvictionManager {
 
       final metadataJson = prefs.getString('_cache_meta_$key');
       if (metadataJson != null) {
-        final metadata = Map<String, dynamic>.from(
-          // Parse JSON
-        );
+        final metadata = (() {
+          try {
+            final decoded = jsonDecode(metadataJson);
+            if (decoded is Map<String, dynamic>) return decoded;
+            if (decoded is Map) return Map<String, dynamic>.from(decoded);
+          } catch (_) {}
+          return <String, dynamic>{};
+        })();
         final createdAt = metadata['createdAt'] != null
             ? DateTime.parse(metadata['createdAt'])
             : null;

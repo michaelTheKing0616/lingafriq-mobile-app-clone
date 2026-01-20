@@ -9,10 +9,9 @@ import 'backend_sync_provider.dart';
 import 'user_provider.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
-import '../services/gamification/events_service.dart';
 import '../services/rive_gamification_service.dart';
-import '../utils/api_service.dart';
 import '../utils/api.dart';
+import '../utils/structured_logger.dart';
 
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
@@ -61,7 +60,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         );
         
         if (!success) {
-          debugPrint('Failed to award XP via backend for source: $source');
+          logger.warn('Failed to award XP via backend', tag: 'gamification', context: {'source': source});
           // Fall back to local-only if backend fails (for offline support)
           // But don't sync to backend to prevent double-counting
         } else {
@@ -81,13 +80,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
               );
             }
           } catch (e) {
-            debugPrint('Error updating local XP from backend: $e');
+            logger.error('Error updating local XP from backend', tag: 'gamification', error: e);
             // Continue with local calculation
           }
         }
       }
     } catch (e) {
-      debugPrint('Error awarding XP via backend: $e');
+      logger.error('Error awarding XP via backend', tag: 'gamification', error: e, context: {'source': source});
       // Fall back to local-only for offline support
     }
     
@@ -111,13 +110,13 @@ class GamificationProvider extends Notifier<BaseProviderState>
       _gamification = _gamification.copyWith(
         cowries: _gamification.cowries + levelUpBonus,
       );
-      debugPrint('Level up! New level: $newLevel - $newTitle');
+      logger.info('Level up!', tag: 'gamification', context: {'newLevel': newLevel, 'newTitle': newTitle});
       
       // React with Rive
       try {
         ref.read(riveGamificationServiceProvider).reactToLevelUp(newLevel: newLevel);
       } catch (e) {
-        debugPrint('Rive service not available: $e');
+        logger.warn('Rive service not available', tag: 'gamification', error: e);
       }
       
       // Emit level up event
@@ -174,7 +173,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         userId: user.id.toString(),
       );
     } catch (e) {
-      debugPrint('Error emitting event: $e');
+      logger.error('Error emitting event', tag: 'gamification', error: e, context: {'eventType': eventType});
       // Don't throw - event emission failure shouldn't break XP flow
     }
   }
@@ -203,12 +202,12 @@ class GamificationProvider extends Notifier<BaseProviderState>
       // Use freeze (Ask the Ancestors)
       newStreak = _gamification.dailyStreak;
       newFreezeLeft = _gamification.freezeLeft - 1;
-      debugPrint('Used streak freeze! Remaining: $newFreezeLeft');
+      logger.info('Used streak freeze', tag: 'gamification', context: {'remaining': newFreezeLeft});
     } else {
       // Streak broken
       if (_gamification.ubuntuStreakActive) {
         // Ubuntu mode: donate lessons instead of breaking
-        debugPrint('Ubuntu streak: Donating lessons to help others');
+        logger.info('Ubuntu streak: Donating lessons to help others', tag: 'gamification');
         await _donateLessonsToCommunity();
       }
       newStreak = 1;
@@ -235,7 +234,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
     try {
       ref.read(riveGamificationServiceProvider).reactToDailyCheckIn(streak: newStreak);
     } catch (e) {
-      debugPrint('Rive service not available: $e');
+      logger.warn('Rive service not available', tag: 'gamification', error: e);
     }
 
     await _saveGamification();
@@ -263,7 +262,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     final badge = BadgeDefinitions.getBadgeById(badgeId);
     if (badge == null) {
-      debugPrint('Badge not found: $badgeId');
+      logger.warn('Badge not found', tag: 'gamification', context: {'badgeId': badgeId});
       return false;
     }
 
@@ -286,11 +285,11 @@ class GamificationProvider extends Notifier<BaseProviderState>
     try {
       ref.read(riveGamificationServiceProvider).reactToBadgeUnlock();
     } catch (e) {
-      debugPrint('Rive service not available: $e');
+      logger.warn('Rive service not available', tag: 'gamification', error: e);
     }
 
     state = state.copyWith();
-    debugPrint('Badge unlocked: ${badge.name}');
+    logger.info('Badge unlocked', tag: 'gamification', context: {'badgeName': badge.name, 'badgeId': badgeId});
     return true;
   }
 
@@ -446,7 +445,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
       final json = _gamification.toJson();
       await prefs.setString('user_gamification', jsonEncode(json));
     } catch (e) {
-      debugPrint('Error saving gamification: $e');
+      logger.error('Error saving gamification', tag: 'gamification', error: e);
     }
   }
 
@@ -459,7 +458,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         _gamification = UserGamificationModel.fromJson(json);
       }
     } catch (e) {
-      debugPrint('Error loading gamification: $e');
+      logger.error('Error loading gamification', tag: 'gamification', error: e);
     }
   }
 
@@ -477,7 +476,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         state = state.copyWith();
       }
     } catch (e) {
-      debugPrint('Error syncing gamification with backend: $e');
+      logger.error('Error syncing gamification with backend', tag: 'gamification', error: e);
     }
   }
 
@@ -496,7 +495,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
         },
       ));
     } catch (e) {
-      debugPrint('Error queuing gamification sync: $e');
+      logger.error('Error queuing gamification sync', tag: 'gamification', error: e);
     }
   }
 
@@ -517,14 +516,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
       );
 
       if (response != null && response.statusCode == 200) {
-        debugPrint('Successfully donated lesson to community via Ubuntu streak');
+        logger.info('Successfully donated lesson to community via Ubuntu streak', tag: 'gamification');
         // Award small XP bonus for donation
         await awardXP('ubuntu_donation', multiplier: 0.5);
       } else {
-        debugPrint('Failed to donate lesson: ${response?.statusCode}');
+        logger.warn('Failed to donate lesson', tag: 'gamification', context: {'statusCode': response?.statusCode});
       }
     } catch (e) {
-      debugPrint('Error donating lesson to community: $e');
+      logger.error('Error donating lesson to community', tag: 'gamification', error: e);
       // Don't throw - this is a nice-to-have feature, don't break the streak logic
     }
   }

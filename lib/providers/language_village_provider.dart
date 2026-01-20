@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/language_village_model.dart';
 import 'base_provider.dart';
-import 'api_provider.dart';
 import 'dio_provider.dart' show client;
 import '../utils/api.dart';
 import 'user_provider.dart';
+import '../utils/structured_logger.dart';
 
 final languageVillageProvider =
     NotifierProvider<LanguageVillageProvider, BaseProviderState>(() {
@@ -63,7 +63,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
         _villages.clear();
       }
     } catch (e) {
-      debugPrint('Error loading villages from API: $e');
+      logger.error('Error loading villages from API', tag: 'language-village', error: e);
       // Fallback to empty list on error
       _villages.clear();
     } finally {
@@ -102,7 +102,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
             if (token != null && roomName != null) {
               // Store token for WebRTC connection
               // In production, this would initialize LiveKit client
-              debugPrint('LiveKit token received for village: ${village.id}');
+              logger.info('LiveKit token received for village', tag: 'language-village', context: {'villageId': village.id});
               
               // Add user to participants list
               _participants.add(VillageParticipant(
@@ -116,14 +116,14 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
           }
         }
       } catch (e) {
-        debugPrint('Error connecting to voice room: $e');
+        logger.error('Error connecting to voice room', tag: 'language-village', error: e);
         // Continue even if voice connection fails
       }
       
       state = state.copyWith();
       return true;
     } catch (e) {
-      debugPrint('Error joining village: $e');
+      logger.error('Error joining village', tag: 'language-village', error: e);
       return false;
     }
   }
@@ -134,10 +134,10 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       // Disconnect from voice room if connected
       // In production, this would disconnect LiveKit client
       if (_currentVillage != null) {
-        debugPrint('Leaving village: ${_currentVillage!.id}');
+        logger.info('Leaving village', tag: 'language-village', context: {'villageId': _currentVillage!.id});
       }
     } catch (e) {
-      debugPrint('Error disconnecting from voice room: $e');
+      logger.error('Error disconnecting from voice room', tag: 'language-village', error: e);
     }
     
     _currentVillage = null;
@@ -154,7 +154,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
     try {
       final user = ref.read(userProvider);
       if (user == null) {
-        debugPrint('Cannot create village: User not logged in');
+        logger.warn('Cannot create village: User not logged in', tag: 'language-village');
         return false;
       }
 
@@ -187,11 +187,11 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
         state = state.copyWith();
         return true;
       } else {
-        debugPrint('Failed to create village: ${response.statusCode}');
+        logger.warn('Failed to create village', tag: 'language-village', context: {'statusCode': response.statusCode});
         return false;
       }
     } catch (e) {
-      debugPrint('Error creating village: $e');
+      logger.error('Error creating village', tag: 'language-village', error: e);
       return false;
     }
   }

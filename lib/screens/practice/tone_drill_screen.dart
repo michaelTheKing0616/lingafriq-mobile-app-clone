@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
+import 'dart:io';
 import 'dart:typed_data';
 import '../../models/lesson_item_model.dart';
 import '../../services/voice/tone_error_detection_service.dart';
@@ -114,9 +115,15 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   }
 
   Future<Uint8List> _readAudioFile(String path) async {
-    // Read audio file - implementation depends on file system access
-    // This is a placeholder
-    return Uint8List(0);
+    final file = File(path);
+    if (!await file.exists()) {
+      throw Exception('Recorded audio file not found');
+    }
+    final bytes = await file.readAsBytes();
+    if (bytes.isEmpty) {
+      throw Exception('Recorded audio is empty');
+    }
+    return Uint8List.fromList(bytes);
   }
 
   List<double> _convertToAudioSamples(Uint8List audioData) {

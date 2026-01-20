@@ -3,6 +3,7 @@ import 'package:lingafriq/services/error/error_recovery_service.dart';
 import 'package:lingafriq/services/monitoring/performance_analytics.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:async';
 
 /// World-class network helper utility
 /// Provides error recovery, performance tracking, and consistent error handling

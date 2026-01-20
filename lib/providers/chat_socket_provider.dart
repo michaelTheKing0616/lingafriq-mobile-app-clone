@@ -1,12 +1,9 @@
-import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/services/gamification/socket_service.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/providers/socket_provider.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Chat Socket Provider - Wraps socket service for chat functionality
 class ChatSocketNotifier extends Notifier<ChatSocketState> {
@@ -42,30 +39,30 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
             .build(),
       );
     } catch (e) {
-      debugPrint('Error initializing socket: $e');
+      logger.error('Error initializing socket', tag: 'chat-socket', error: e);
       return;
     }
 
     _socket!.onConnect((_) {
       _isConnected = true;
       state = state.copyWith(isConnected: true);
-      debugPrint('Chat socket connected');
+      logger.info('Chat socket connected', tag: 'chat-socket');
     });
 
     _socket!.onDisconnect((_) {
       _isConnected = false;
       state = state.copyWith(isConnected: false);
-      debugPrint('Chat socket disconnected');
+      logger.info('Chat socket disconnected', tag: 'chat-socket');
     });
     
     _socket!.onError((error) {
-      debugPrint('Chat socket error: $error');
+      logger.error('Chat socket error', tag: 'chat-socket', error: error);
       _isConnected = false;
       state = state.copyWith(isConnected: false);
     });
     
     _socket!.onConnectError((error) {
-      debugPrint('Chat socket connection error: $error');
+      logger.error('Chat socket connection error', tag: 'chat-socket', error: error);
       _isConnected = false;
       state = state.copyWith(isConnected: false);
     });
@@ -100,13 +97,13 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
     try {
       if (!_isConnected && _socket != null) {
         _socket!.connect();
-        debugPrint('Attempting to connect chat socket for user: $userId');
+        logger.info('Attempting to connect chat socket', tag: 'chat-socket', context: {'userId': userId});
       } else if (_socket == null) {
         // Reinitialize if socket is null
         _initializeSocket();
       }
     } catch (e) {
-      debugPrint('Error connecting chat socket: $e');
+      logger.error('Error connecting chat socket', tag: 'chat-socket', error: e);
     }
   }
 
@@ -131,7 +128,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
 
   void sendMessage(String room, String message, String userId, String username) {
     if (!_isConnected || _socket == null) {
-      debugPrint('Cannot send message: Socket not connected');
+      logger.warn('Cannot send message: Socket not connected', tag: 'chat-socket');
       return;
     }
     
@@ -154,7 +151,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
       _messages.add(messageData);
       state = state.copyWith(messages: List.from(_messages));
     } catch (e) {
-      debugPrint('Error sending message: $e');
+      logger.error('Error sending message', tag: 'chat-socket', error: e);
       // Don't update state if send fails - server will not receive it
     }
   }
@@ -174,7 +171,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
       _socket = null;
       _isConnected = false;
     } catch (e) {
-      debugPrint('Error disposing chat socket: $e');
+      logger.error('Error disposing chat socket', tag: 'chat-socket', error: e);
     }
   }
 }

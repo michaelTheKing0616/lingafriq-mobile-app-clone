@@ -5,8 +5,8 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
-import '../screens/auth/login_screen.dart';
 import '../screens/auth/world_class_login_screen.dart';
 import '../screens/onboarding/onboarding_screen_material3.dart';
 import 'api_provider.dart';
@@ -20,6 +20,8 @@ final authProvider = NotifierProvider<AuthProvider, BaseProviderState>(() {
 });
 
 class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
+  bool _isLoggingIn = false; // Prevent duplicate login requests
+  
   @override
   BaseProviderState build() {
     return BaseProviderState();
@@ -31,6 +33,18 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     
     if (!isOnboardingSeen) {
       ref.read(navigationProvider).naviateOffAll(const OnboardingScreenMaterial3());
+      return;
+    }
+
+    // CRITICAL FIX: Check if user is already logged in before making API call
+    final currentUser = ref.read(userProvider);
+    final apiNotifier = ref.read(apiProvider.notifier);
+    
+    // If user is already logged in and has a token, skip login API call
+    // This prevents unnecessary API calls on every splash screen load
+    if (currentUser != null && (apiNotifier.token?.isNotEmpty ?? false)) {
+      // Already logged in, navigate to tabs view
+      ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
       return;
     }
 
@@ -51,7 +65,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     //Login suceess, login can fail is user has changed the password in the web
     if (user is ProfileModel) {
       ref.read(userProvider.notifier).overrideUser(user);
-      await ref.read(apiProvider.notifier).regiserDevice();
+      await ref.read(apiProvider.notifier).registerDevice();
       ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
       return;
     }
@@ -66,7 +80,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     bool splashlogin = false,
     bool updateProfile = false,
   }) async {
+    // CRITICAL: Prevent duplicate login requests
+    if (_isLoggingIn) {
+      return null; // Login already in progress
+    }
+    
     try {
+      _isLoggingIn = true;
       if (storeCredentials) {
         state = state.copyWith(isLoading: true);
       }
@@ -95,6 +115,8 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: false);
       await ref.read(dialogProvider(e)).showExceptionDialog();
       return null;
+    } finally {
+      _isLoggingIn = false; // Always reset flag
     }
   }
 

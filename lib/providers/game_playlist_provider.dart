@@ -2,8 +2,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../models/game/game_session_model.dart';
 import '../providers/progress_tracking_provider.dart';
-import '../services/adaptive_learning_service.dart';
 import '../providers/experiments_provider.dart';
+import '../providers/adaptive_learning_provider.dart';
 
 /// A recommended playlist of games for the current learner,
 /// ordered from most impactful to nice-to-have.

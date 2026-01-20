@@ -7,7 +7,7 @@ import '../services/social_audio/social_audio_learning_tracker.dart';
 import '../providers/api_provider.dart';
 import '../providers/dio_provider.dart';
 import '../providers/user_provider.dart';
-import 'base_provider.dart';
+import '../utils/structured_logger.dart';
 
 final socialAudioServiceProvider = Provider<SocialAudioService>((ref) {
   final api = ref.read(apiProvider.notifier);
@@ -100,7 +100,7 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
           );
         }
       } catch (e) {
-        debugPrint('Error loading cached rooms: $e');
+        logger.error('Error loading cached rooms', tag: 'social-audio', error: e);
       }
     }
 
@@ -163,7 +163,7 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
           );
         }
       } catch (e) {
-        debugPrint('Error loading cached scheduled rooms: $e');
+        logger.error('Error loading cached scheduled rooms', tag: 'social-audio', error: e);
       }
     }
 
@@ -213,7 +213,7 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
           );
         }
       } catch (e) {
-        debugPrint('Error loading cached my rooms: $e');
+        logger.error('Error loading cached my rooms', tag: 'social-audio', error: e);
       }
     }
 
@@ -318,7 +318,7 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
         language: room.language,
         joinedAt: joinedAt,
         role: role,
-      ).catchError((e) => debugPrint('Error tracking participation: $e'));
+      ).catchError((e) => logger.error('Error tracking participation', tag: 'social-audio', error: e));
       
       // Refresh rooms list (force refresh after join)
       await discoverRooms(forceRefresh: true);
@@ -359,7 +359,7 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
           joinedAt: joinedAt,
           leftAt: leftAt,
           durationMinutes: duration,
-        ).catchError((e) => debugPrint('Error tracking participation end: $e'));
+        ).catchError((e) => logger.error('Error tracking participation end', tag: 'social-audio', error: e));
       }
       
       state = state.copyWith(

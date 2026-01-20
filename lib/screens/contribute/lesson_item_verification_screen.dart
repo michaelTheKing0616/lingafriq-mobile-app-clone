@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/lesson_item_model.dart';
 import '../../services/lesson_item_verification_service.dart';
 import '../../utils/screen_helpers.dart';
 
-class LessonItemVerificationScreen extends StatefulWidget {
+class LessonItemVerificationScreen extends ConsumerStatefulWidget {
   final String? languageCode;
 
   const LessonItemVerificationScreen({
@@ -13,11 +14,11 @@ class LessonItemVerificationScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<LessonItemVerificationScreen> createState() => _LessonItemVerificationScreenState();
+  ConsumerState<LessonItemVerificationScreen> createState() => _LessonItemVerificationScreenState();
 }
 
-class _LessonItemVerificationScreenState extends State<LessonItemVerificationScreen> {
-  final LessonItemVerificationService _verificationService = LessonItemVerificationService();
+class _LessonItemVerificationScreenState extends ConsumerState<LessonItemVerificationScreen> {
+  late final LessonItemVerificationService _verificationService;
   final TextEditingController _commentsController = TextEditingController();
   final TextEditingController _textCorrectionController = TextEditingController();
   final TextEditingController _translationCorrectionController = TextEditingController();
@@ -170,6 +171,7 @@ class _LessonItemVerificationScreenState extends State<LessonItemVerificationScr
 
   @override
   Widget build(BuildContext context) {
+    _verificationService = ref.read(lessonItemVerificationServiceProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Verify Lesson Items'),

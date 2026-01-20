@@ -5,12 +5,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/leaderboard_entry_model.dart';
 import '../models/user_gamification_model.dart';
-import 'api_provider.dart';
 import 'base_provider.dart';
 import 'gamification_provider.dart';
 import 'user_provider.dart';
 import 'gamification_services_provider.dart';
-import '../services/gamification/leaderboards_service.dart';
+import '../utils/structured_logger.dart';
 
 final leaderboardProvider =
     NotifierProvider<LeaderboardProvider, BaseProviderState>(() {
@@ -107,7 +106,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       // Cache leaderboard data locally for offline access
       await _cacheLeaderboards();
     } catch (e) {
-      debugPrint('Error fetching leaderboards: $e');
+      logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
       // Fallback to cached data or mock data only if no cache available
       final gamification = ref.read(gamificationProvider.notifier).gamification;
       final user = ref.read(userProvider);
@@ -277,7 +276,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       
       await prefs.setString('leaderboard_cache', jsonEncode(cacheData));
     } catch (e) {
-      debugPrint('Error caching leaderboards: $e');
+      logger.error('Error caching leaderboards', tag: 'leaderboard', error: e);
       // Continue without caching - not critical
     }
   }
@@ -309,7 +308,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
         }
       }
     } catch (e) {
-      debugPrint('Error loading cached leaderboards: $e');
+      logger.error('Error loading cached leaderboards', tag: 'leaderboard', error: e);
       // Continue without cache - will fetch fresh data on next request
     }
   }

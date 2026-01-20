@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'app_exceptions.dart';
+import '../../utils/structured_logger.dart';
 
 /// Global error handler widget
 /// Catches and handles all unhandled errors in the app
@@ -37,10 +38,16 @@ class _GlobalErrorHandlerState extends State<GlobalErrorHandler> {
   void _handleError(dynamic error, StackTrace? stack) {
     final exception = ExceptionHandler.handleError(error);
     
-    debugPrint('🚨 Global Error Handler: ${exception.message}');
-    if (stack != null) {
-      debugPrint('Stack trace: $stack');
-    }
+    logger.fatal(
+      'Global error handler caught exception',
+      tag: 'global-error-handler',
+      context: {
+        'exceptionType': exception.runtimeType.toString(),
+        'message': exception.message,
+      },
+      error: error,
+      stackTrace: stack,
+    );
 
     // In production, you might want to:
     // - Send to crash reporting service (Firebase Crashlytics)

@@ -1,4 +1,6 @@
 /// ProverbUnlocker game models
+import 'dart:math' as math;
+
 class ProverbUnlockerContent {
   final String proverb;
   final String translation;

@@ -44,7 +44,9 @@ buildscript {
 
 // Configure NDK version at root level so all subprojects can use it
 // Check for available NDK versions before configuring projects
-def rootNdkVersion = null
+// Prefer the highest NDK required by our plugins (backward compatible).
+// CI will auto-install the requested NDK version when `ndkVersion` is set.
+def rootNdkVersion = "27.0.12077973"
 def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
 if (!sdkDir) {
     def localProps = new Properties()
@@ -56,23 +58,7 @@ if (!sdkDir) {
 }
 
 if (sdkDir) {
-    // Check for rive_common's preferred NDK version first (26.1.10909125)
-    def riveNdkDir = file("${sdkDir}/ndk/26.1.10909125")
-    def riveSourceProperties = file("${riveNdkDir}/source.properties")
-    if (riveNdkDir.exists() && riveSourceProperties.exists()) {
-        rootNdkVersion = "26.1.10909125"
-        println("✅ Root NDK 26.1.10909125 found (required by rive_common)")
-    } else {
-        // Fallback to app's preferred NDK version (27.0.12077973)
-        def appNdkDir = file("${sdkDir}/ndk/27.0.12077973")
-        def appSourceProperties = file("${appNdkDir}/source.properties")
-        if (appNdkDir.exists() && appSourceProperties.exists()) {
-            rootNdkVersion = "27.0.12077973"
-            println("✅ Root NDK 27.0.12077973 found")
-        } else {
-            println("⚠️ No NDK found at root level - plugins requiring NDK may fail")
-        }
-    }
+    println("✅ Root NDK pinned to ${rootNdkVersion}")
 }
 
 allprojects {
@@ -245,6 +231,13 @@ subprojects {
                 // This allows plugins with lower minSdk to work with NDK 26.1.10909125
                 experimentalProperties["android.ndk.suppressMinSdkVersionError"] = "21"
             }
+        }
+
+        // ✅ Fix Kotlin/Java JVM target mismatch without using `--release`
+        // (AGP forbids --release because it breaks Android bootclasspath wiring).
+        project.tasks.withType(JavaCompile).configureEach {
+            sourceCompatibility = JavaVersion.VERSION_17.toString()
+            targetCompatibility = JavaVersion.VERSION_17.toString()
         }
         
         // ✅ Enforce minimum Kotlin language version 1.8 (required by Kotlin 2.2.0 compiler)
