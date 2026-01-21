@@ -41,6 +41,12 @@ post_install do |installer|
       config.build_settings['DEVELOPMENT_TEAM'] = 'Z5YSG5V5DV'
       # Set minimum iOS deployment target to 15.0 for Firebase 12.4.0
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      # Fix for TARGET_OS_SIMULATOR not found error - ensure TargetConditionals.h is available
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+      config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']
+      # Add import path for system headers
+      config.build_settings['HEADER_SEARCH_PATHS'] ||= ['$(inherited)']
+      config.build_settings['HEADER_SEARCH_PATHS'] << '$(SDKROOT)/usr/include'
     end
   end
 end
