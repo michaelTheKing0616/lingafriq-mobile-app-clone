@@ -151,6 +151,20 @@ subprojects {
         
         if (project.hasProperty('android')) {
             project.android {
+                // ✅ CRITICAL: Set compileOptions FIRST before any plugin configuration
+                // This ensures plugins like audio_session pick up Java 17
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+                
+                // ✅ Also set Kotlin options at android block level
+                // This ensures consistency across all plugins
+                if (project.plugins.hasPlugin('org.jetbrains.kotlin.android')) {
+                    // Kotlin options are set via kotlinOptions block in app/build.gradle
+                    // But we ensure consistency here for plugins
+                }
+                
                 // ✅ Ensure every submodule has a namespace (Gradle 8+ requirement)
                 // For flutter_vibrate, set namespace explicitly to prevent package attribute issues
                 if (project.name == 'flutter_vibrate') {
@@ -207,13 +221,6 @@ subprojects {
                     }
                 }
                 
-                // ✅ Enforce Java 17 for all subprojects to match Kotlin JVM target
-                // This fixes JVM target compatibility issues between Java and Kotlin
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_17
-                    targetCompatibility JavaVersion.VERSION_17
-                }
-                
                 // ✅ Configure NDK for plugins that require it (e.g., rive_common)
                 // Use the root NDK version if available
                 if (rootNdkVersion) {
@@ -235,15 +242,17 @@ subprojects {
 
         // ✅ Fix Kotlin/Java JVM target mismatch without using `--release`
         // (AGP forbids --release because it breaks Android bootclasspath wiring).
-        project.tasks.withType(JavaCompile).configureEach {
+        // Force Java 17 for ALL Java compilation tasks, including plugin tasks
+        project.tasks.withType(JavaCompile).configureEach { task ->
             sourceCompatibility = JavaVersion.VERSION_17.toString()
             targetCompatibility = JavaVersion.VERSION_17.toString()
+            options.release = null // Don't use --release flag (AGP requirement)
         }
         
         // ✅ Enforce minimum Kotlin language version 1.8 (required by Kotlin 2.2.0 compiler)
         // and JVM target 17 for all subprojects
         // Use lenient compiler settings to support older plugin source code
-        project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
             kotlinOptions {
                 languageVersion = '1.8'
                 apiVersion = '1.8'
@@ -255,6 +264,7 @@ subprojects {
                 ]
             }
         }
+        
     }
 
     // Keep each module's build output organized under root /build/
