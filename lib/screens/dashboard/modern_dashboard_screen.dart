@@ -14,8 +14,10 @@ import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/widgets/adaptive/adaptive_learning_panel.dart';
-import 'package:lingafriq/widgets/gamification/ubuntu_card_widget.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -26,13 +28,17 @@ class ModernDashboardScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final dailyGoals = ref.watch(dailyGoalsProvider);
+    // NOTE: Using ref.read(notifier) here is necessary due to DailyGoalsProvider architecture
+    // The provider stores goals/streak as private fields with getters, not in BaseProviderState
+    // TODO: Refactor DailyGoalsProvider to use a proper state model instead of BaseProviderState
+    final dailyGoalsNotifier = ref.read(dailyGoalsProvider.notifier);
+    final dailyGoals = dailyGoalsNotifier.goals;
+    final currentStreak = dailyGoalsNotifier.currentStreak;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Calculate today's goal progress
-    final goalsProvider = ref.read(dailyGoalsProvider.notifier);
-    final completedGoals = goalsProvider.goals.where((g) => g.completed).length;
-    final totalGoals = goalsProvider.goals.length;
+    final completedGoals = dailyGoals.where((g) => g.completed).length;
+    final totalGoals = dailyGoals.length;
     final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
     
     return Scaffold(
@@ -85,22 +91,38 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  radius: 24,
-                                  backgroundColor: Colors.white,
-                                  backgroundImage: user?.avatar != null
-                                      ? NetworkImage(user!.avatar!)
-                                      : null,
-                                  child: user?.avatar == null
-                                      ? Text(
-                                          (user?.username ?? 'U')[0].toUpperCase(),
-                                          style: TextStyle(
-                                            color: const Color(0xFFCE1126),
-                                            fontWeight: FontWeight.bold,
+                                user?.avater != null
+                                    ? ClipOval(
+                                        child: LazyImage(
+                                          imageUrl: user!.avater!,
+                                          width: 48,
+                                          height: 48,
+                                          placeholder: CircleAvatar(
+                                            radius: 24,
+                                            backgroundColor: Colors.white,
+                                            child: Text(
+                                              (user.username ?? 'U')[0].toUpperCase(),
+                                              style: TextStyle(
+                                                color: const Color(0xFFCE1126),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
-                                        )
-                                      : null,
-                                ),
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 24,
+                                        backgroundColor: Colors.white,
+                                        child: user?.avater == null
+                                            ? Text(
+                                                (user?.username ?? 'U')[0].toUpperCase(),
+                                                style: TextStyle(
+                                                  color: const Color(0xFFCE1126),
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            : null,
+                                      ),
                                 SizedBox(width: 3.w),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,7 +165,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                             Expanded(
                               child: _StatCard(
                                 icon: Icons.local_fire_department_rounded,
-                                value: '${user?.streak ?? 0}',
+                                value: '$currentStreak',
                                 label: 'Day Streak',
                                 color: const Color(0xFFFF6B35),
                                 isDark: isDark,
@@ -320,8 +342,8 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (_) => const AiChatLanguageSetupScreen(
+                            SmoothPageRoute(
+                              child: const AiChatLanguageSetupScreen(
                                 initialMode: PolieMode.translation,
                               ),
                             ),
@@ -337,7 +359,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const DailyChallengesScreen()),
+                            SmoothPageRoute(child: const DailyChallengesScreen()),
                           );
                         },
                       ),
@@ -350,7 +372,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const LanguageGamesScreen()),
+                            SmoothPageRoute(child: const LanguageGamesScreen()),
                           );
                         },
                       ),
@@ -387,7 +409,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const GlobalChatScreen()),
+                            SmoothPageRoute(child: const GlobalChatScreen()),
                           );
                         },
                       ),
@@ -398,7 +420,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const CultureMagazineScreen()),
+                            SmoothPageRoute(child: const CultureMagazineScreen()),
                           );
                         },
                       ),
@@ -409,7 +431,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const GlobalProgressScreen()),
+                            SmoothPageRoute(child: const GlobalProgressScreen()),
                           );
                         },
                       ),
@@ -420,22 +442,12 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (_) => const ProgressDashboardScreen()),
+                            SmoothPageRoute(child: const ProgressDashboardScreen()),
                           );
                         },
                       ),
                     ],
                   ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
-
-                  // Adaptive Learning Panel powered by Polie + gamification
-                  const AdaptiveLearningPanel(),
-
-                  SizedBox(height: 2.h),
-
-                  // Ubuntu Streak card – opt‑in social streak protection
-                  const UbuntuCardWidget(),
-
                   SizedBox(height: 3.h),
                 ],
               ),

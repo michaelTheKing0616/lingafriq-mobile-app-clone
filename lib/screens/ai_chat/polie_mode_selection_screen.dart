@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
+import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -19,8 +23,10 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Mode selection is temporarily unavailable',
-      onRetry: () {},
+      errorMessage: 'Unable to load mode selection. Please try again.',
+      onRetry: () {
+        // Retry by rebuilding
+      },
       child: _buildContent(context, ref),
     );
   }
@@ -223,14 +229,40 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
     // Set the mode first (this will save current chat history and load new mode's history)
     await ref.read(groqChatProvider.notifier).setMode(mode);
     
-    // Navigate to language selection
-    // After language is selected, it will load the scoped chat history (mode × language)
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => AiChatLanguageSetupScreen(initialMode: mode),
-      ),
-    );
+    // For roleplay mode, navigate to scenario selection after language selection
+    // For other modes, navigate directly to language selection
+    if (mode == PolieMode.roleplay) {
+      // First select language, then show scenario selection
+      Navigator.push(
+        context,
+        SmoothPageRoute(
+          child: AiChatLanguageSetupScreen(
+            initialMode: mode,
+            onLanguageSelected: (language, languageName) {
+              // Navigate to scenario selection after language is selected
+              Navigator.pushReplacement(
+                context,
+                SmoothPageRoute(
+                  child: RoleplayScenarioSelectionScreen(
+                    language: language,
+                    languageName: languageName,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    } else {
+      // Navigate to language selection
+      // After language is selected, it will load the scoped chat history (mode × language)
+      Navigator.push(
+        context,
+        SmoothPageRoute(
+          child: AiChatLanguageSetupScreen(initialMode: mode),
+        ),
+      );
+    }
   }
 }
 

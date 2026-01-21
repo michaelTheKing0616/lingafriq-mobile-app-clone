@@ -231,16 +231,14 @@ class _ClassroomView extends HookConsumerWidget {
                 },
               ];
 
-              // Iterate through all participants and filter remote ones
-              for (final participant in room.participants.values) {
-                if (participant is RemoteParticipant) {
-                  remoteParts[participant.sid] = participant;
-                  participantList.add({
-                    'name': participant.name ?? 'Participant',
-                    'id': participant.sid,
-                    'isLocal': false,
-                  });
-                }
+              // LiveKit 2.x: remote participants are exposed via `room.remoteParticipants`.
+              for (final participant in room.remoteParticipants.values) {
+                remoteParts[participant.sid] = participant;
+                participantList.add({
+                  'name': participant.name ?? 'Participant',
+                  'id': participant.sid,
+                  'isLocal': false,
+                });
               }
 
               remoteParticipants.value = remoteParts;

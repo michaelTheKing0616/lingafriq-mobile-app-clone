@@ -12,6 +12,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: 🔧 Ensure Gradle wrapper is executable
+        run: |
+          chmod +x android/gradlew || true
       
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -19,8 +23,54 @@ jobs:
           flutter-version: '3.35.0'
           channel: 'stable'
       
-      - name: Install dependencies
-        run: flutter pub get
+      - name: 🔧 Install CMake (required for rive_common native builds)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake
+          cmake --version
+          echo "✅ CMake installed successfully"
+      
+      - name: 🧹 Comprehensive Cache Clearing (Before Build)
+        run: |
+          echo "🧹 Starting comprehensive cache clearing..."
+          
+          # 1. Flutter clean - removes build artifacts
+          echo "📦 Step 1: Flutter clean..."
+          flutter clean || true
+          
+          # 2. Clear Flutter pub cache (if needed)
+          echo "📦 Step 2: Clearing Flutter pub cache..."
+          flutter pub cache repair || true
+          
+          # 3. Remove build directories
+          echo "🗑️ Step 3: Removing build directories..."
+          rm -rf build/ || true
+          rm -rf .dart_tool/ || true
+          rm -rf .flutter-plugins || true
+          rm -rf .flutter-plugins-dependencies || true
+          rm -rf .packages || true
+          
+          # 4. Clear Gradle cache
+          echo "🔄 Step 4: Clearing Gradle cache..."
+          chmod +x android/gradlew || true
+          cd android || exit 0
+          ./gradlew clean --refresh-dependencies || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
+          rm -rf ~/.gradle/caches/transforms-* || true
+          rm -rf ~/.gradle/daemon || true
+          cd ..
+          
+          # 5. Clear Android build cache
+          echo "📱 Step 5: Clearing Android build cache..."
+          rm -rf android/.gradle || true
+          rm -rf android/app/build || true
+          rm -rf android/build || true
+          
+          # 6. Get fresh dependencies
+          echo "📥 Step 6: Getting fresh dependencies..."
+          flutter pub get
+          
+          echo "✅ Cache clearing complete!"
       
       - name: Build APK
         run: |

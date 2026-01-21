@@ -1,7 +1,6 @@
 /// Review Progress Model
 /// Tracks review sessions, SRS performance, and review statistics
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Review Session Result
 class ReviewSessionResult {

@@ -9,8 +9,6 @@
 /// 3. Add lesson sections with content
 /// 4. The lesson will appear in the app automatically
 
-import 'package:lingafriq/models/language_response.dart';
-
 class LessonContent {
   final int languageId;
   final String languageName;

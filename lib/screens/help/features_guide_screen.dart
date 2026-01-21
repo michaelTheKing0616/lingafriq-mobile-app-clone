@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 
 /// Comprehensive Features Guide Screen
 /// Explains all modules, features, and how to use them

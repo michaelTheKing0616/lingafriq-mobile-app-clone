@@ -9,6 +9,7 @@ class PhraseCard {
   final String level; // CEFR level (A0, A1, A2, B1, B2, C1, C2)
   final List<String> tags; // e.g., ["greeting", "polite", "spoken"]
   final String? audioNativeUrl; // Native speaker audio URL
+  final String? imageUrl; // Image URL for visual games
   final List<String> contextExamples; // Usage examples
   final SRSState srs; // Spaced Repetition System state
 
@@ -22,6 +23,7 @@ class PhraseCard {
     required this.level,
     this.tags = const [],
     this.audioNativeUrl,
+    this.imageUrl,
     this.contextExamples = const [],
     SRSState? srs,
   }) : srs = srs ?? SRSState();
@@ -36,6 +38,7 @@ class PhraseCard {
         'level': level,
         'tags': tags,
         'audio_native_url': audioNativeUrl,
+        'image_url': imageUrl,
         'context_examples': contextExamples,
         'srs': srs.toJson(),
       };
@@ -50,6 +53,7 @@ class PhraseCard {
         level: json['level'] as String,
         tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
         audioNativeUrl: json['audio_native_url'] as String?,
+        imageUrl: json['image_url'] as String?,
         contextExamples: (json['context_examples'] as List<dynamic>?)
                 ?.map((e) => e as String)
                 .toList() ??
@@ -69,6 +73,7 @@ class PhraseCard {
     String? level,
     List<String>? tags,
     String? audioNativeUrl,
+    String? imageUrl,
     List<String>? contextExamples,
     SRSState? srs,
   }) =>
@@ -82,6 +87,7 @@ class PhraseCard {
         level: level ?? this.level,
         tags: tags ?? this.tags,
         audioNativeUrl: audioNativeUrl ?? this.audioNativeUrl,
+        imageUrl: imageUrl ?? this.imageUrl,
         contextExamples: contextExamples ?? this.contextExamples,
         srs: srs ?? this.srs,
       );

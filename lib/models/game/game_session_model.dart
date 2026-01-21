@@ -135,7 +135,7 @@ enum GameResult {
   incorrect,
   partial,
   timeout,
-  skipped,
+  skipped;
 }
 
 /// Game Type Enum
@@ -327,5 +327,7 @@ extension GameTypeExtension on GameType {
         return 'Drum-to-Word Matching';
     }
   }
+
+  // displayName is already defined earlier in this extension (keep a single definition).
 }
 

@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 /// Seasonal Event model
 class SeasonalEvent {
   final String id;

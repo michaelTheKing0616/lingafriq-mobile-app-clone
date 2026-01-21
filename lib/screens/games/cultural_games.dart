@@ -3,11 +3,15 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math';
+import '../../games/drum_rhythm/drum_rhythm_screen.dart';
 
 // Export separate game implementations
 export 'cultural/clan_story_game.dart';
@@ -358,7 +362,9 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
   }
 }
 
-/// Drum Rhythm Shadowing Game
+/// Drum Rhythm Shadowing Game - Migrated to GameKit
+/// Use DrumRhythmScreen instead
+@Deprecated('Use DrumRhythmScreen from lib/games/drum_rhythm/drum_rhythm_screen.dart')
 class DrumRhythmGame extends BaseGameScreen {
   const DrumRhythmGame({
     Key? key,
@@ -375,302 +381,13 @@ class DrumRhythmGame extends BaseGameScreen {
 }
 
 class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
-  Map<String, dynamic>? _currentRhythm;
-  List<String> _wordOptions = [];
-  String? _selectedWord;
-  bool _showResult = false;
-  bool _isCorrect = false;
-  int _score = 0;
-  int _round = 0;
-  final int _maxRounds = 5;
-  bool _isLoadingRhythm = false;
-  String _rhythmPattern = '';
-
-  Future<void> _initializeGame() async {
-    await _loadNewRhythm();
-  }
-
-  @override
-  Future<void> onGameInitialized() async {
-    await _loadNewRhythm();
-  }
-
-  Future<void> _loadNewRhythm() async {
-    if (_round >= _maxRounds) {
-      await _endGame();
-      return;
-    }
-
-    setState(() {
-      _isLoadingRhythm = true;
-      _showResult = false;
-      _selectedWord = null;
-      _rhythmPattern = '';
-    });
-
-    try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      final rhythmData = await polieGenerator.generateDrumRhythm(widget.language);
-
-      setState(() {
-        _currentRhythm = rhythmData;
-        _round++;
-        _rhythmPattern = rhythmData['pattern']?.toString() ?? 'DUM da-da DUM';
-        // Create word options based on rhythm context
-        _wordOptions = _createWordOptions(rhythmData);
-        _isLoadingRhythm = false;
-      });
-    } catch (e) {
-      debugPrint('Error loading rhythm: $e');
-      setState(() {
-        _isLoadingRhythm = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error loading rhythm. Please try again.')),
-        );
-      }
-    }
-  }
-
-  List<String> _createWordOptions(Map<String, dynamic> rhythmData) {
-    final context = rhythmData['context']?.toString() ?? '';
-    final correctWord = _extractWordFromContext(context);
-    final options = [correctWord];
-    
-    // Add distractors
-    options.addAll([
-      'greeting',
-      'farewell',
-      'celebration',
-      'work',
-    ]);
-    
-    options.shuffle(Random());
-    return options;
-  }
-
-  String _extractWordFromContext(String context) {
-    // Try to extract a relevant word from context
-    final words = ['dance', 'music', 'festival', 'ceremony', 'tradition'];
-    return words[Random().nextInt(words.length)];
-  }
-
-  void _selectWord(String word) {
-    if (_showResult) return;
-    
-    setState(() {
-      _selectedWord = word;
-      // Simple matching logic - in production, use actual tone pattern matching
-      _isCorrect = Random().nextBool(); // Placeholder - should match actual rhythm
-      _showResult = true;
-      
-      if (_isCorrect) {
-        _score++;
-      }
-    });
-
-    completeTurn(
-      cardId: 'rhythm_${_round}',
-      result: _isCorrect ? GameResult.correct : GameResult.incorrect,
-      durationMs: 5000,
-      confidence: _isCorrect ? 0.8 : 0.3,
-      feedback: {
-        'pattern': _rhythmPattern,
-        'selected': word,
-        'correct': _wordOptions.first,
-      },
-    );
-
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
-        _loadNewRhythm();
-      }
-    });
-  }
-
-  Future<void> _endGame() async {
-    await finishGame();
-    
-    if (mounted) {
-      final accuracy = _score / _maxRounds;
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Game Complete!'),
-          content: Text('You scored $_score out of $_maxRounds!\nAccuracy: ${(accuracy * 100).toStringAsFixed(0)}%'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Close'),
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
   @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoadingRhythm) {
-      return const DynamicLoadingScreen();
-    }
-
-    if (error != null) {
-      return ErrorBoundary(
-        errorMessage: error!,
-        onRetry: () {
-          _initializeGame();
-        },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(error!),
-              SizedBox(height: 2.h),
-              FilledButton(
-                onPressed: () {
-                  _initializeGame();
-                },
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_round > _maxRounds) {
-      return const Center(child: Text('Game Complete!'));
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.sp),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-                Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(4.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 4.h),
-            // Rhythm Pattern Display
-            Card(
-              elevation: 4,
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
-                  children: [
-                    Icon(Icons.music_note, size: 48.sp, color: Colors.orange),
-                    SizedBox(height: 2.h),
-                    Text(
-                      'Drum Rhythm Pattern',
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 1.h),
-                    Text(
-                      _rhythmPattern,
-                      style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600, letterSpacing: 2),
-                      textAlign: TextAlign.center,
-                    ),
-                    if (_currentRhythm?['context'] != null) ...[
-                      SizedBox(height: 1.h),
-                      Text(
-                        _currentRhythm!['context'].toString(),
-                        style: TextStyle(fontSize: 12.sp),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              'Which word matches this rhythm?',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 2.h),
-            // Word Options
-            ..._wordOptions.map((word) {
-              final isSelected = _selectedWord == word;
-              final isCorrectOption = word == _wordOptions.first;
-              
-              Color? backgroundColor;
-              if (_showResult) {
-                if (isCorrectOption) {
-                  backgroundColor = Colors.green.withOpacity(0.3);
-                } else if (isSelected && !isCorrectOption) {
-                  backgroundColor = Colors.red.withOpacity(0.3);
-                }
-              } else if (isSelected) {
-                backgroundColor = Colors.blue.withOpacity(0.3);
-              }
-
-              return Padding(
-                padding: EdgeInsets.only(bottom: 2.h),
-                child: Card(
-                  color: backgroundColor,
-                  child: ListTile(
-                    leading: Icon(Icons.volume_up, color: Colors.blue),
-                    title: Text(word.toUpperCase()),
-                    trailing: _showResult && isCorrectOption
-                        ? const Icon(Icons.check_circle, color: Colors.green)
-                        : _showResult && isSelected && !isCorrectOption
-                            ? const Icon(Icons.cancel, color: Colors.red)
-                            : null,
-                    onTap: () => _selectWord(word),
-                  ),
-                ),
-              );
-            }),
-            if (_showResult) ...[
-              SizedBox(height: 2.h),
-              Card(
-                color: _isCorrect ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: Column(
-                    children: [
-                      Icon(
-                        _isCorrect ? Icons.check_circle : Icons.cancel,
-                        color: _isCorrect ? Colors.green : Colors.red,
-                        size: 32.sp,
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        _isCorrect ? 'Correct!' : 'Incorrect',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: _isCorrect ? Colors.green : Colors.red,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ],
-        ),
-      ),
+    // Redirect to new GameKit implementation
+    return DrumRhythmScreen(
+      language: widget.language,
+      level: widget.level,
+      onBack: widget.onBack,
     );
   }
 }

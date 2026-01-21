@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/utils/utils.dart';
 
-/// Modern, reusable audio player widget used across tutorials, media,
-/// and chat voice notes. Shows buffering, play/pause, and a scrubbable seek bar.
 class AudioPlayerWidget extends StatefulWidget {
   final String audioUrl;
   const AudioPlayerWidget({
@@ -17,59 +15,28 @@ class AudioPlayerWidget extends StatefulWidget {
   State<AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
 }
 
-class _AudioPlayerWidgetState extends State<AudioPlayerWidget>
-    with WidgetsBindingObserver {
-  final AudioPlayer _player = AudioPlayer();
+class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver {
+  final _player = AudioPlayer();
 
-  late final LockCachingAudioSource _audioSource;
-
-  Duration _duration = Duration.zero;
-  Duration _position = Duration.zero;
-  Duration _bufferedPosition = Duration.zero;
-  bool _isSeeking = false;
+  late final LockCachingAudioSource audioSource;
 
   @override
   void initState() {
     super.initState();
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
-    _audioSource = LockCachingAudioSource(Uri.parse(widget.audioUrl));
-    widget.audioUrl.log('AUDIOSOURCE');
+    audioSource = LockCachingAudioSource(Uri.parse(widget.audioUrl));
+    widget.audioUrl.log("AUDIOSOURCE");
     _init();
   }
 
   Future<void> _init() async {
-    _player.playbackEventStream.listen(
-      (_) {},
-      onError: (Object e, StackTrace stackTrace) {
-        debugPrint('Audio stream error: $e');
-      },
-    );
-
-    _player.durationStream.listen((d) {
-      if (!mounted) return;
-      setState(() {
-        _duration = d ?? Duration.zero;
-      });
+    _player.playbackEventStream.listen((event) {}, onError: (Object e, StackTrace stackTrace) {
+      print('A stream error occurred: $e');
     });
-
-    _player.positionStream.listen((p) {
-      if (!mounted || _isSeeking) return;
-      setState(() {
-        _position = p;
-      });
-    });
-
-    _player.bufferedPositionStream.listen((b) {
-      if (!mounted || _isSeeking) return;
-      setState(() {
-        _bufferedPosition = b;
-      });
-    });
-
     try {
-      await _player.setAudioSource(_audioSource);
+      await _player.setAudioSource(audioSource);
     } catch (e) {
-      debugPrint('Error loading audio source: $e');
+      print("Error loading audio source: $e");
     }
   }
 
@@ -83,79 +50,65 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.paused) {
+      // Release the player's resources when not in use. We use "stop" so that
+      // if the app resumes later, it will still remember what position to
+      // resume from.
       _player.stop();
     }
   }
 
+  /// Collects the data useful for displaying in a seek bar, using a handy
+  /// feature of rx_dart to combine the 3 streams of interest into one.
+  // Stream<PositionData> get _positionDataStream =>
+  //     Rx.combineLatest3<Duration, double, Duration?, PositionData>(
+  //         _player.positionStream, audioSource.downloadProgressStream, _player.durationStream,
+  //         (position, downloadProgress, reportedDuration) {
+  //       final duration = reportedDuration ?? Duration.zero;
+  //       final bufferedPosition = duration * downloadProgress;
+  //       return PositionData(position, bufferedPosition, duration);
+  //     });
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-    final maxMillis =
-        _duration.inMilliseconds == 0 ? 1.0 : _duration.inMilliseconds.toDouble();
-    final positionMillis =
-        min(_position.inMilliseconds.toDouble(), maxMillis);
-    final bufferedMillis =
-        min(_bufferedPosition.inMilliseconds.toDouble(), maxMillis);
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF102216) : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        double.infinity.widthBox,
+        IconButton(
+          onPressed: () {
+            if (_player.playing) {
+              _player.pause();
+            } else {
+              _player.play();
+            }
+          },
+          icon: Icon(
+            Icons.volume_up_rounded,
+            color: AppColors.red,
+            size: 32.sp,
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Play / pause / loading button
-          ControlButtons(_player),
-          8.widthBox,
-          // Seek bar
-          Expanded(
-            child: SeekBar(
-              duration: _duration,
-              position: Duration(milliseconds: positionMillis.round()),
-              bufferedPosition: Duration(milliseconds: bufferedMillis.round()),
-              onChanged: (value) {
-                setState(() {
-                  _isSeeking = true;
-                  _position = value;
-                });
-              },
-              onChangeEnd: (value) async {
-                await _player.seek(value);
-                if (mounted) {
-                  setState(() {
-                    _isSeeking = false;
-                  });
-                }
-              },
-            ),
-          ),
-          8.widthBox,
-          // Timestamp
-          Text(
-            _formatDuration(_position),
-            style: TextStyle(
-              fontSize: 10.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
-          ),
-        ],
-      ),
+        ).px16(),
+        12.heightBox,
+        // Center(
+        //   child: ControlButtons(_player),
+        // ),
+        // 16.heightBox,
+        // Display seek bar. Using StreamBuilder, this widget rebuilds
+        // each time the position, buffered position or duration changes.
+        // StreamBuilder<PositionData>(
+        //   stream: _positionDataStream,
+        //   builder: (context, snapshot) {
+        //     final positionData = snapshot.data;
+        //     return SeekBar(
+        //       key: ValueKey(positionData),
+        //       duration: positionData?.duration ?? Duration.zero,
+        //       position: positionData?.position ?? Duration.zero,
+        //       bufferedPosition: positionData?.bufferedPosition ?? Duration.zero,
+        //       onChangeEnd: _player.seek,
+        //     );
+        //   },
+        // ),
+      ],
     );
-  }
-
-  String _formatDuration(Duration d) {
-    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
-    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
-    return '$minutes:$seconds';
   }
 }
 

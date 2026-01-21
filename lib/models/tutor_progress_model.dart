@@ -1,7 +1,6 @@
 /// Tutor Progress Model
 /// Tracks tutor mode learning progress, CEFR advancement, and adaptive difficulty
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Tutor Session Result
 class TutorSessionResult {

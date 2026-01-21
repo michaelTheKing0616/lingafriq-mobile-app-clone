@@ -5,8 +5,11 @@ import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 class GlobalPeopleSearchScreen extends ConsumerStatefulWidget {
   const GlobalPeopleSearchScreen({Key? key}) : super(key: key);
@@ -19,6 +22,7 @@ class GlobalPeopleSearchScreen extends ConsumerStatefulWidget {
 class _GlobalPeopleSearchScreenState
     extends ConsumerState<GlobalPeopleSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final Debouncer _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 400));
   bool _isLoading = false;
   String? _error;
   List<PrivateChatContact> _results = const [];
@@ -26,6 +30,7 @@ class _GlobalPeopleSearchScreenState
   @override
   void dispose() {
     _searchController.dispose();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 
@@ -66,8 +71,11 @@ class _GlobalPeopleSearchScreenState
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _error = 'Unable to search people right now.';
+        _error = null;
       });
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
     }
   }
 
@@ -95,7 +103,9 @@ class _GlobalPeopleSearchScreenState
               ),
               child: TextField(
                 controller: _searchController,
-                onChanged: _runSearch,
+                onChanged: (value) {
+                  _searchDebouncer.run(() => _runSearch(value));
+                },
                 decoration: InputDecoration(
                   hintText: 'Search by @handle...',
                   prefixIcon: const Icon(Icons.alternate_email_rounded),
@@ -128,7 +138,7 @@ class _GlobalPeopleSearchScreenState
                       ),
                     ),
                   )
-                : ListView.builder(
+                : OptimizedListView.builder(
                     padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                     itemCount: _results.length,
                     itemBuilder: (context, index) {
@@ -193,8 +203,8 @@ class _GlobalPeopleSearchScreenState
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => PrivateChatScreen(contact: contact),
+            SmoothPageRoute(
+              child: PrivateChatScreen(contact: contact),
             ),
           );
         },

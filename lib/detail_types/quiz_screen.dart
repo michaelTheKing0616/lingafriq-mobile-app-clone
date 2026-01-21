@@ -40,7 +40,7 @@ class QuizScreen extends HookConsumerWidget {
     required this.endpointToHit,
     this.isTakeQuiz = false,
     this.isCompleted = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -283,9 +283,9 @@ class QuizScreen extends HookConsumerWidget {
 class _DotIndicator extends ConsumerWidget {
   final List<QuizModel> quiz;
   const _DotIndicator({
-    Key? key,
+    super.key,
     required this.quiz,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -315,11 +315,11 @@ class QuizItem extends HookWidget {
   final QuizModel quiz;
   final ValueChanged<String> onSelect;
   const QuizItem({
-    Key? key,
+    super.key,
     required this.quiz,
     required this.onSelect,
     this.initial,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -357,7 +357,7 @@ class QuizItem extends HookWidget {
               onSelect.call(value!);
             },
           );
-        }).toList(),
+        }),
         Divider(
           height: 0,
           color: context.adaptive8,

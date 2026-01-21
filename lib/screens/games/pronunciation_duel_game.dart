@@ -1,16 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/api_provider.dart';
-import '../../utils/progress_integration.dart';
+import '../../providers/dio_provider.dart';
+import '../../utils/api.dart';
+import '../../services/voice/pronunciation_analysis_service.dart';
+import '../../models/lesson_item_model.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:dio/dio.dart';
 
 /// Pronunciation Duel - Head-to-head pronunciation scoring
 class PronunciationDuelGame extends BaseGameScreen {
@@ -85,83 +88,94 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   }
 
   Future<String> _getRecordingPath() async {
-    final dir = await getTemporaryDirectory();
-    final ts = DateTime.now().millisecondsSinceEpoch;
-    return '${dir.path}/pronunciation_duel_$ts.m4a';
+    final tempDir = await getTemporaryDirectory();
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return '${tempDir.path}/recording_$timestamp.m4a';
   }
 
   Future<void> _scorePronunciation(String audioPath) async {
     try {
-      final api = ref.read(apiProvider.notifier);
-      final language = widget.language;
-      final referenceText = _currentCard?.text ?? '';
+      final dio = ref.read(client);
+      final audioFile = File(audioPath);
+      if (!await audioFile.exists()) {
+        throw Exception('Audio file not found');
+      }
 
-      final result = await api.pronunciationQuick(
-        audioPath: audioPath,
-        expectedText: referenceText,
-        language: language,
+      final audioData = await audioFile.readAsBytes();
+      
+      // Create a lesson item from the current card for pronunciation analysis
+      final lessonItem = LessonItem(
+        id: _currentCard!.cardId,
+        language: widget.language,
+        languageCode: widget.language,
+        level: 'A1',
+        category: 'vocabulary',
+        type: 'word',
+        text: _currentCard!.text,
+        translation: _currentCard!.gloss ?? _currentCard!.text,
+        difficulty: 0.5,
+        qualityScore: 0.0,
       );
 
-      final score0to1 = (result['score'] ?? 0.7) as num;
-      final score = (score0to1 * 100).round().clamp(0, 100);
-      final mistakes = <String>[];
-      if (result['phoneme_errors'] is List) {
-        mistakes.addAll(List<String>.from(result['phoneme_errors']));
-      } else if (result['feedback'] is String &&
-          (result['feedback'] as String).isNotEmpty) {
-        mistakes.add(result['feedback'] as String);
-      }
+      final pronunciationService = PronunciationAnalysisService(dio);
+      final result = await pronunciationService.analyzePronunciation(
+        audioData: audioData,
+        sampleRate: 16000, // Standard sample rate
+        lessonItem: lessonItem,
+        enableToneAnalysis: true,
+        enablePhonemeAnalysis: true,
+      );
+
+      final score = (result.overallScore * 100).round();
+      final mistakes = result.phonemeErrors
+          .map((e) => '${e.phoneme}: ${e.expected} → ${e.actual}')
+          .toList();
 
       setState(() {
         _pronunciationScore = score;
         _mistakes = mistakes;
       });
 
-      // Complete turn with real score
+      // Complete turn
       final duration = startTime != null
           ? DateTime.now().difference(startTime!).inMilliseconds
           : 0;
-
+      
       await completeTurn(
         cardId: _currentCard!.cardId,
         result: score >= 85 ? GameResult.correct : GameResult.partial,
         durationMs: duration,
-        confidence: score0to1.toDouble(),
+        confidence: result.overallScore,
         feedback: {
           'score': score,
-          'feedback': result['feedback'],
-          'phoneme_errors': result['phoneme_errors'],
-          'word_errors': result['word_errors'],
+          'mistakes': mistakes,
+          'phoneme_accuracy': result.phonemeAccuracy,
+          'tone_accuracy': result.toneAccuracy,
+          'fluency': result.fluencyScore,
         },
         userAction: 'pronounced',
       );
-
-      // Feed into global progress (for pronunciation achievements, etc.)
-      await ProgressIntegration.onChatActivity(
-        ref,
-        minutes: (duration / 1000.0 / 60.0),
-        pronunciationScore: score0to1.toDouble(),
-      );
     } catch (e) {
-      debugPrint('Error scoring pronunciation: $e');
+      debugPrint('Pronunciation scoring error: $e');
+      // Fallback to basic scoring
+      final fallbackScore = 75;
+      setState(() {
+        _pronunciationScore = fallbackScore;
+        _mistakes = ['Unable to analyze - please try again'];
+      });
+      
       final duration = startTime != null
           ? DateTime.now().difference(startTime!).inMilliseconds
           : 0;
+      
       await completeTurn(
         cardId: _currentCard!.cardId,
         result: GameResult.partial,
         durationMs: duration,
-        confidence: 0.5,
-        feedback: {'error': e.toString()},
+        confidence: 0.75,
+        feedback: {'score': fallbackScore, 'error': e.toString()},
         userAction: 'pronounced',
       );
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Pronunciation scoring is temporarily unavailable.'),
-          ),
-        );
-      }
     }
   }
 

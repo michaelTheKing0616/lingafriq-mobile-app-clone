@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -86,7 +88,7 @@ class GamesScreen extends ConsumerWidget {
                         ),
                       ).py8(),
                       const SizedBox(height: 16),
-                      GridView.builder(
+                      OptimizedListView(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -230,8 +232,8 @@ class GameTypesScreen extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => WordMatchGame(language: language),
+                  SmoothPageRoute(
+                    child: WordMatchGame(language: language),
                   ),
                 );
               },

@@ -3,10 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
-import 'package:lingafriq/providers/game_playlist_provider.dart';
 import 'language_games_screen_components.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/utils/supported_languages.dart';
 
 /// Lazy-loaded game list with pagination
 class LazyGameList extends HookConsumerWidget {
@@ -74,9 +72,6 @@ class LazyGameList extends HookConsumerWidget {
     
     final hasMoreCore = visibleCoreGames.length < allCoreGames.length;
     final hasMoreCultural = visibleCulturalGames.length < allCulturalGames.length;
-
-    // Polie-powered dynamic playlist
-    final playlist = ref.watch(gamePlaylistProvider);
     
     // Preload games when they become visible
     useEffect(() {
@@ -97,21 +92,13 @@ class LazyGameList extends HookConsumerWidget {
       child: Column(
         children: [
           // Language selector
-          _LanguageSelector(
+          LanguageSelector(
             selectedLanguage: selectedLanguage,
             onLanguageChanged: onLanguageChanged,
           ),
           SizedBox(height: 2.h),
-          // Polie-recommended row
-          if (playlist.primary.isNotEmpty)
-            _GameSection(
-              title: 'Polie Recommends',
-              games: playlist.primary,
-              onGameSelected: onGameSelected,
-            ),
-          if (playlist.secondary.isNotEmpty) SizedBox(height: 2.h),
           // Core Games Section with Lazy Loading
-          _GameSection(
+          GameSection(
             title: 'Core Games',
             games: visibleCoreGames,
             onGameSelected: onGameSelected,
@@ -142,7 +129,7 @@ class LazyGameList extends HookConsumerWidget {
             ),
           SizedBox(height: 2.h),
           // Cultural Games Section with Lazy Loading
-          _GameSection(
+          GameSection(
             title: 'Cultural Games',
             games: visibleCulturalGames,
             onGameSelected: onGameSelected,
@@ -177,111 +164,3 @@ class LazyGameList extends HookConsumerWidget {
   }
 }
 
-class _LanguageSelector extends StatelessWidget {
-  final String selectedLanguage;
-  final Function(String) onLanguageChanged;
-
-  const _LanguageSelector({
-    required this.selectedLanguage,
-    required this.onLanguageChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final options = SupportedLanguages.getLanguageOptions();
-    final items = options
-        .map((o) => DropdownMenuItem<String>(
-              value: (o['name'] ?? '').toLowerCase(),
-              child: Text('${o['flag'] ?? ''} ${o['name'] ?? ''}'.trim()),
-            ))
-        .toList();
-
-    return Row(
-      children: [
-        const Icon(Icons.language_rounded),
-        SizedBox(width: 2.w),
-        Expanded(
-          child: DropdownButtonFormField<String>(
-            value: selectedLanguage.isEmpty ? null : selectedLanguage.toLowerCase(),
-            items: items,
-            onChanged: (v) {
-              if (v != null) onLanguageChanged(v);
-            },
-            decoration: const InputDecoration(
-              labelText: 'Language',
-              border: OutlineInputBorder(),
-              isDense: true,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _GameSection extends StatelessWidget {
-  final String title;
-  final List<GameType> games;
-  final Function(GameType) onGameSelected;
-
-  const _GameSection({
-    required this.title,
-    required this.games,
-    required this.onGameSelected,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (games.isEmpty) return const SizedBox.shrink();
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        SizedBox(height: 1.h),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: 1.4,
-          ),
-          itemCount: games.length,
-          itemBuilder: (context, index) {
-            final game = games[index];
-            return InkWell(
-              onTap: () => onGameSelected(game),
-              borderRadius: BorderRadius.circular(12),
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.withOpacity(0.2)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.sports_esports_rounded),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        game.displayName,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        ),
-      ],
-    );
-  }
-}

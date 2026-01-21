@@ -10,6 +10,7 @@ import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/screens/tabs_view/standings/standings_tab.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 
 class TabIndexNotifier extends Notifier<int> {
   @override
@@ -49,15 +50,16 @@ class _TabsViewState extends ConsumerState<TabsView> {
     return Scaffold(
       key: scaffoldKey,
       drawer: const AppDrawer(),
-      body: IndexedStack(
-        index: index,
-        children: const [
-          HomeTab(),
-          CoursesTab(),
-         // Center(),
-           StandingsTab(),
-          ProfileTab(),
-        ],
+      body: OfflineIndicator(
+        child: IndexedStack(
+          index: index,
+          children: const [
+            HomeTab(),
+            CoursesTab(),
+            StandingsTab(),
+            ProfileTab(),
+          ],
+        ),
       ),
       bottomNavigationBar: const _BottomNavigationBar(),
     );

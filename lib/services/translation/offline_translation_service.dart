@@ -223,13 +223,6 @@ class OfflineTranslationService {
     // - Custom NLLB-200 model (quantized, on-device) - fallback
     // - TensorFlow Lite model - final fallback
     
-    // For now, return cached translation if available, otherwise return original
-    // This ensures the app doesn't break when offline
-    final cached = await _getCachedTranslation(text, sourceLanguage, targetLanguage);
-    if (cached != null) {
-      return cached;
-    }
-    
     // If no cache, return original text with low confidence
     // This allows the app to continue functioning offline
     final result = {

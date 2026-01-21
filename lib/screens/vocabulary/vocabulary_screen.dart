@@ -21,7 +21,7 @@ class VocabularyScreen extends ConsumerStatefulWidget {
 }
 
 class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
-  final VocabularyService _vocabService = VocabularyService();
+  late final VocabularyService _vocabService;
   final AudioPlayer _audioPlayer = AudioPlayer();
   List<VocabWord> _words = [];
   bool _isLoading = true;
@@ -31,23 +31,23 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   @override
   void initState() {
     super.initState();
+    _vocabService = ref.read(vocabularyServiceProvider);
     _loadWords();
   }
 
   Future<void> _loadWords() async {
     setState(() => _isLoading = true);
     try {
-      final user = ref.read(userProvider);
-      if (user != null) {
-        final words = await _vocabService.getAllWords(
-          userId: user.id.toString(),
-          language: widget.language,
-        );
-        setState(() {
-          _words = words;
-          _isLoading = false;
-        });
-      }
+      // VocabularyService maintains a local word bank and syncs opportunistically.
+      final words = widget.language == null
+          ? _vocabService.allWords
+          : _vocabService.getWordsByLanguage(widget.language!);
+
+      if (!mounted) return;
+      setState(() {
+        _words = words;
+        _isLoading = false;
+      });
     } catch (e) {
       debugPrint('Error loading vocabulary: $e');
       setState(() => _isLoading = false);

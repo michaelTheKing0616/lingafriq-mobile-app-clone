@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../models/seasonal_event_model.dart';
 import 'package:intl/intl.dart';
 
@@ -28,7 +31,7 @@ class SeasonalEventsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
+      body: OptimizedListView(
         padding: const EdgeInsets.all(16),
         children: [
           if (activeEvents.isNotEmpty) ...[
@@ -92,8 +95,8 @@ class _EventCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => _EventDetailScreen(event: event),
+            SmoothPageRoute(
+              child: _EventDetailScreen(event: event),
             ),
           );
         },
@@ -221,7 +224,7 @@ class _EventDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(event.name),
       ),
-      body: ListView(
+      body: OptimizedListView(
         padding: const EdgeInsets.all(16),
         children: [
           Card(

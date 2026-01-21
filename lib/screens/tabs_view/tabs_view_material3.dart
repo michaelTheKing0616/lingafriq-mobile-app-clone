@@ -69,8 +69,15 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
         currentIndex: index,
         onTap: (value) {
           // Refresh languages provider when tab is changed to courses tab
+          // CRITICAL FIX: Only invalidate if not already loading/refreshing to prevent excessive API calls
           if (value == 1) {
-            ref.invalidate(languagesProvider);
+            final languagesAsync = ref.read(languagesProvider);
+            // Only invalidate if data is not loading, not refreshing, and not in error state
+            if (!languagesAsync.isLoading && 
+                !languagesAsync.isRefreshing && 
+                !languagesAsync.hasError) {
+              ref.invalidate(languagesProvider);
+            }
           }
           HapticFeedback.lightImpact();
           ref.read(tabIndexProvider.notifier).setIndex(value);

@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Screen for creating user-generated quizzes
@@ -154,39 +156,35 @@ class CreateQuizScreen extends HookConsumerWidget {
                       
                       isSubmitting.value = true;
                       
-                      try {
-                        final ugcService = ref.read(userGeneratedContentServiceProvider);
-                        final quiz = await ugcService.createQuiz(
-                          language: selectedLanguage.value,
-                          title: titleController.text,
-                          questions: questions.value,
-                          description: descriptionController.text.isEmpty
-                              ? null
-                              : descriptionController.text,
-                        );
-                        
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Quiz created successfully!'),
-                              backgroundColor: AppColors.primaryGreen,
-                            ),
+                      await safeAsync(
+                        context: context,
+                        operation: () async {
+                          final ugcService = ref.read(userGeneratedContentServiceProvider);
+                          final quiz = await ugcService.createQuiz(
+                            language: selectedLanguage.value,
+                            title: titleController.text,
+                            questions: questions.value,
+                            description: descriptionController.text.isEmpty
+                                ? null
+                                : descriptionController.text,
                           );
-                          Navigator.of(context).pop(true);
-                        }
-                      } catch (e) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Error creating quiz: $e'),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      } finally {
-                        if (context.mounted) {
-                          isSubmitting.value = false;
-                        }
+                          
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Quiz created successfully!'),
+                                backgroundColor: AppColors.primaryGreen,
+                              ),
+                            );
+                            Navigator.of(context).pop(true);
+                          }
+                        },
+                        errorContext: 'createQuiz',
+                        showError: true,
+                      );
+                      
+                      if (context.mounted) {
+                        isSubmitting.value = false;
                       }
                     },
               style: FilledButton.styleFrom(

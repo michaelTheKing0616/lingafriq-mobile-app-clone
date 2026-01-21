@@ -3,6 +3,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/screens/games/word_match_audio_game.dart';
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -10,6 +13,7 @@ import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/screens/games/lazy_game_list.dart';
 import 'language_games_screen_components.dart';
 import 'game_router.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Modern Language Games Screen - Based on Figma Make Design

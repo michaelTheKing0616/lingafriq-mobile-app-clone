@@ -1,6 +1,3 @@
-import '../providers/ai_chat_provider_groq.dart';
-import '../providers/gamification_provider.dart';
-
 /// High-level snapshot of a learner's current state for powering
 /// adaptive home/dashboard experiences.
 class AdaptiveLearningSummary {

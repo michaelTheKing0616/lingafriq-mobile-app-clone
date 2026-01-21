@@ -7,11 +7,18 @@ import 'package:lingafriq/providers/loading_screen_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/images.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 /// Minimum time to show loading screen so users can read facts
-const Duration kMinLoadingDisplayTime = Duration(seconds: 4);
+/// Intelligently configured to allow users to read facts comfortably
+const Duration kMinLoadingDisplayTime = Duration(seconds: 5); // Increased for better readability
+
+/// Time between fact rotations (for longer loading operations)
+const Duration kFactRotationInterval = Duration(seconds: 6);
 
 /// Dynamic loading screen with rotating African cultural content
 /// Based on the design concept with:
@@ -168,7 +175,7 @@ class _DynamicLoadingScreenState
     });
     
     // Rotate facts for longer loading times
-    _factTimer = Timer.periodic(const Duration(seconds: 6), (_) {
+    _factTimer = Timer.periodic(kFactRotationInterval, (_) {
       if (mounted) {
         setState(() {
           _factIndex = (_factIndex + 1) % _fallbackFacts.length;
@@ -407,21 +414,15 @@ class _DynamicLoadingScreenState
   }
 
   Widget _buildFact(LoadingScreenContent content, bool isDark) {
-    // Prefer Polie-generated micro-tip if available, otherwise use backend fact,
-    // otherwise fall back to a static fact.
-    final String factText;
-    if ((content.aiTip ?? '').isNotEmpty) {
-      factText = content.aiTip!.trim();
-    } else if (content.fact.isNotEmpty) {
-      factText = content.fact;
-    } else {
-      factText = _fallbackFacts[_factIndex];
-    }
+    // Use backend fact if available, otherwise use fallback
+    final fact = content.fact.isNotEmpty 
+        ? content.fact 
+        : _fallbackFacts[_factIndex];
     
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       child: Container(
-        key: ValueKey(factText),
+        key: ValueKey(fact),
         margin: EdgeInsets.symmetric(horizontal: 16.sp),
         padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 16.sp),
         decoration: BoxDecoration(
@@ -470,7 +471,7 @@ class _DynamicLoadingScreenState
             ),
             SizedBox(height: 12.sp),
             Text(
-              factText,
+              fact,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,

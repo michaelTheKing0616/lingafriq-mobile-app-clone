@@ -14,9 +14,37 @@ pluginManagement {
     includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
 
     repositories {
+        // Google Maven repository first - mirrors Maven Central and more reliable
+        // This is the most reliable source and should be tried first
         google()
-        mavenCentral()
+        
+        // Official Gradle plugin portal for plugins
         gradlePluginPortal()
+        
+        // Maven Central - use explicit URL to avoid 403 errors from old URLs
+        // Use repo1.maven.org instead of repo.maven.apache.org
+        maven {
+            name = "Maven Central"
+            url = uri("https://repo1.maven.org/maven2")
+        }
+        
+        // Fallback: standard mavenCentral() (uses repo1.maven.org internally)
+        mavenCentral()
+        
+        // Additional fallback repositories
+        maven {
+            name = "Sonatype Snapshots"
+            url = uri("https://oss.sonatype.org/content/repositories/snapshots")
+        }
+    }
+    
+    resolutionStrategy {
+        eachPlugin {
+            // Force Flutter plugin loader version
+            if (requested.id.id == 'dev.flutter.flutter-plugin-loader') {
+                useVersion('1.0.0')
+            }
+        }
     }
 }
 
@@ -31,9 +59,14 @@ plugins {
     // ✅ Google Services Plugin
     id "com.google.gms.google-services" version "4.4.2" apply false
 
-    // ✅ Upgrade Kotlin to 2.2.0 (matches latest Flutter-compatible stdlib)
-    id "org.jetbrains.kotlin.android" version "2.2.0" apply false
+    // ✅ Kotlin 1.9.x for maximum Flutter plugin compatibility.
+    // This also avoids CI failures from transitive plugins still requesting Kotlin languageVersion 1.4.
+    id "org.jetbrains.kotlin.android" version "1.9.24" apply false
 }
 
 rootProject.name = rootProject.name ?: "mobile-app"
 include ":app"
+
+// Exclude flutter_webrtc plugin from build (uses deprecated embedding API)
+// We use livekit_client instead which uses dart_webrtc
+// Note: Plugin exclusion is handled in app/build.gradle and via removal script

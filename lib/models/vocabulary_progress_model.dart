@@ -1,7 +1,6 @@
 /// Vocabulary Progress Model
 /// Tracks vocabulary learning, mastery, and spaced repetition
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Vocabulary Word
 class VocabularyWord {

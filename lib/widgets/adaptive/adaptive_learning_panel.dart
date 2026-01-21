@@ -8,6 +8,7 @@ import '../../services/localization_service.dart';
 import '../../utils/african_theme.dart';
 import '../../utils/design_system.dart';
 import '../../providers/navigation_provider.dart';
+import '../../providers/adaptive_learning_provider.dart';
 import '../../screens/ai_chat/ai_chat_language_setup_screen.dart';
 import '../../screens/games/language_games_screen.dart';
 import '../../screens/progress/progress_dashboard_screen.dart';

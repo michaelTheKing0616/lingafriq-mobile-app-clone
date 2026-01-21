@@ -1797,4 +1797,88 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return null;
     }
   }
+
+  /// Upload media file
+  Future<Map<String, dynamic>?> uploadMedia(File file, {String? type, Map<String, dynamic>? metadata}) async {
+    try {
+      final formData = FormData.fromMap({
+        'file': await MultipartFile.fromFile(file.path, filename: file.path.split('/').last),
+        if (type != null) 'type': type,
+        if (metadata != null) ...metadata,
+      });
+      
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.mediaUpload()}',
+        data: formData,
+      );
+      
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : {'id': res.data.toString()};
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error uploading media', error: e);
+      return null;
+    }
+  }
+
+  /// Report a chat message
+  Future<bool> reportChatMessage({required String messageId, String? reason, String? description}) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}chat/report',
+        data: {
+          'messageId': messageId,
+          if (reason != null) 'reason': reason,
+          if (description != null) 'description': description,
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error reporting chat message', error: e);
+      return false;
+    }
+  }
+
+  /// Block a user
+  Future<bool> blockUser(String userId) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.connectionBlock()}',
+        data: {'userId': userId},
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error blocking user', error: e);
+      return false;
+    }
+  }
+
+  /// Quick pronunciation check
+  Future<Map<String, dynamic>?> pronunciationQuick({
+    required String text,
+    required String language,
+    String? audioUrl,
+  }) async {
+    try {
+      final data = {
+        'text': text,
+        'language': language,
+        if (audioUrl != null) 'audioUrl': audioUrl,
+      };
+      
+      final res = await ref.read(client).post(
+        '${Api.baseurl}pronunciation/quick',
+        data: data,
+      );
+      
+      if (res.statusCode == 200) {
+        return res.data is Map ? Map<String, dynamic>.from(res.data) : null;
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error checking pronunciation', error: e);
+      return null;
+    }
+  }
 }

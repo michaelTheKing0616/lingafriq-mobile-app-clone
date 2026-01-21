@@ -3,6 +3,9 @@
 /// This file re-exports the consolidated implementations from their dedicated files
 /// Use this for convenience imports, or import directly from the source files
 
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+
 export '../widgets/performance/optimized_list_view.dart';
 export '../widgets/performance/lazy_image.dart';
 export 'simple_cache.dart';
@@ -64,7 +67,4 @@ class BatchProcessor<T> {
     }
   }
 }
-
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 

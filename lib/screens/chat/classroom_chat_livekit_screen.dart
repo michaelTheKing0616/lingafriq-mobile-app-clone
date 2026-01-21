@@ -172,7 +172,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
                   if (isWhiteboardVisible.value)
                     Expanded(
                       flex: 1,
-                      child: _buildWhiteboard(context, isDark),
+                      child: _buildWhiteboard(context, isDark, roomState.value),
                     ),
 
                   // Controls
@@ -251,7 +251,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
     );
   }
 
-  Widget _buildWhiteboard(BuildContext context, bool isDark) {
+  Widget _buildWhiteboard(BuildContext context, bool isDark, Room? room) {
     return Container(
       margin: EdgeInsets.all(PanAfricanSpacing.md),
       child: InteractiveWhiteboard(
@@ -259,13 +259,13 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
         onDrawingUpdate: (points) {
           // Sync whiteboard state with backend/other participants
           // This would typically send updates via WebSocket or LiveKit data channel
-          if (roomState.value != null) {
+          if (room != null) {
             // Send drawing updates through LiveKit data channel
             final data = {
               'type': 'whiteboard_update',
               'points': points.map((p) => p.toJson()).toList(),
             };
-            // roomState.value?.localParticipant?.publishData(
+            // room.localParticipant?.publishData(
             //   jsonEncode(data).codeUnits,
             //   reliable: true,
             // );
@@ -411,7 +411,8 @@ class _VideoTile extends StatelessWidget {
       // Access video tracks through track publications
       final videoTrackPublications = liveParticipant!.videoTrackPublications;
       if (videoTrackPublications.isNotEmpty) {
-        final firstPublication = videoTrackPublications.values.first;
+        // Get first video track publication (videoTrackPublications is a List)
+        final firstPublication = videoTrackPublications.first;
         if (firstPublication.subscribed && firstPublication.track != null) {
           videoTrack = firstPublication.track as VideoTrack?;
         }

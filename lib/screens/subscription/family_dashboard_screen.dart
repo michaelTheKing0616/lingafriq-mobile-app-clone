@@ -7,6 +7,7 @@ import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 class FamilyDashboardScreen extends ConsumerStatefulWidget {
@@ -50,6 +51,9 @@ class _FamilyDashboardScreenState
         _isLoading = false;
       });
     } catch (e) {
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
       setState(() {
         _error = 'Unable to load family progress right now.';
         _isLoading = false;
@@ -501,13 +505,7 @@ class _FamilyDashboardScreenState
                         }
                       } catch (e) {
                         if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Polie is unavailable right now: $e',
-                              ),
-                            ),
-                          );
+                          ErrorHandler.showError(context, e);
                         }
                       } finally {
                         if (mounted) {

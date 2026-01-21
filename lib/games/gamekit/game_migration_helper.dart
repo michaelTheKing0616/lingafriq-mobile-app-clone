@@ -1,14 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter/foundation.dart';
 import 'game_engine.dart';
 import 'game_animation_bridge.dart';
 import 'game_session.dart';
-import 'game.dart';
 import 'game_scoring.dart';
-import 'game_feedback.dart';
-import 'game_difficulty.dart';
 import '../../services/polie_game_client.dart' show PolieGameClient, PolieEvaluationResult;
 import '../../services/rive_gamification_service.dart';
 import '../animation/rive_game_guide.dart';
+import 'game_result.dart';
 
 /// Helper class to migrate games to GameKit framework
 /// This provides standard patterns and utilities for game migration
@@ -37,7 +36,7 @@ class GameMigrationHelper {
     required String language,
     String? level,
     required DateTime startTime,
-    List<GameTurn> turns = const [],
+    List<GameTurnResult> turns = const [],
   }) {
     return GameSession(
       sessionId: sessionId,

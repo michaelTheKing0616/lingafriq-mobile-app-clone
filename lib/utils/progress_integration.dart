@@ -20,7 +20,7 @@ class ProgressIntegration {
     final xpEarned = baseXP + perfectBonus + (pointsEarned ?? 0);
     
     // Use new gamification integration (handles everything: XP, challenges, milestones, leagues, backend sync)
-    await ref.gamify.onLessonComplete(
+    await GamificationIntegrationHelper.of(ref).onLessonComplete(
       xpEarned: xpEarned,
       wordsLearned: 5, // estimate 5 words per lesson
       timeSpentMinutes: 5, // estimate 5 minutes
@@ -31,7 +31,7 @@ class ProgressIntegration {
     
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('lessons', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('lessons', {'progress': 1});
     } catch (e) {
       // Silently fail - local state is updated
     }
@@ -75,7 +75,7 @@ class ProgressIntegration {
     final xpEarned = baseXP + perfectBonus + (pointsEarned ?? 0);
     
     // Use new gamification integration (handles everything: XP, challenges, milestones, leagues, backend sync)
-    await ref.gamify.onQuizComplete(
+    await GamificationIntegrationHelper.of(ref).onQuizComplete(
       score: perfect ? 100 : 80, // estimate
       xpEarned: xpEarned,
       isPerfect: perfect,
@@ -87,7 +87,7 @@ class ProgressIntegration {
     
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('quizzes', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('quizzes', {'progress': 1});
     } catch (e) {
       // Silently fail
     }
@@ -128,7 +128,7 @@ class ProgressIntegration {
     
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('games', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('games', {'progress': 1});
     } catch (e) {
       // Silently fail
     }
@@ -259,7 +259,7 @@ class ProgressIntegration {
 
     // Sync with backend
     try {
-      await ref.read(apiProvider.notifier).updateDailyGoal('stories', 1);
+      await ref.read(apiProvider.notifier).updateDailyGoal('stories', {'progress': 1});
     } catch (e) {
       // Silently fail
     }

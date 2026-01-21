@@ -16,6 +16,10 @@ class TelemetryService {
   TelemetryService(this._ref) {
     // Flush events every 30 seconds
     _flushTimer = Timer.periodic(const Duration(seconds: 30), (_) => _flushEvents());
+    // Provider lifecycle cleanup
+    _ref.onDispose(() {
+      _flushTimer?.cancel();
+    });
   }
 
   void dispose() {
@@ -31,7 +35,7 @@ class TelemetryService {
     try {
       final user = _ref.read(userProvider);
       // Track telemetry even when user is not logged in (pre-onboarding flow).
-      final userId = user?.globalId ?? user?.id.toString() ?? 'anonymous';
+      final userId = user?.global_id ?? user?.id.toString() ?? 'anonymous';
 
       final event = {
         'event_type': eventType,

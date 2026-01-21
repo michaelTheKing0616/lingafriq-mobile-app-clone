@@ -74,6 +74,10 @@ jobs:
       - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
 
+      - name: 🔧 Ensure Gradle wrapper is executable
+        run: |
+          chmod +x android/gradlew || true
+
       - name: 🧰 Setup Java
         uses: actions/setup-java@v4
         with:
@@ -85,6 +89,15 @@ jobs:
         with:
           flutter-version: '3.35.0'
 
+      - name: 🔧 Install CMake (required for rive_common native builds)
+        run: |
+          # Install CMake via apt (Ubuntu) - must be before SDK installation
+          sudo apt-get update
+          sudo apt-get install -y cmake
+          # Verify CMake installation
+          cmake --version
+          echo "✅ CMake installed successfully"
+
       - name: 🛠️ Configure Android SDK
         run: |
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
@@ -95,7 +108,7 @@ jobs:
       - name: 🧩 Install Android SDK components
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125"
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125" "cmake;3.22.1"
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
@@ -118,24 +131,125 @@ jobs:
           echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> android/key.properties
           echo "storeFile=app/upload-keystore.jks" >> android/key.properties
 
-      - name: 🧱 Clean build cache
-        run: flutter clean
+      - name: 🧹 Comprehensive Cache Clearing (Before Build)
+        run: |
+          echo "🧹 Starting comprehensive cache clearing..."
+          
+          # 1. Flutter clean - removes build artifacts
+          echo "📦 Step 1: Flutter clean..."
+          flutter clean || true
+          
+          # 2. Clear Flutter pub cache (if needed)
+          echo "📦 Step 2: Clearing Flutter pub cache..."
+          flutter pub cache repair || true
+          
+          # 3. Remove build directories
+          echo "🗑️ Step 3: Removing build directories..."
+          rm -rf build/ || true
+          rm -rf .dart_tool/ || true
+          rm -rf .flutter-plugins || true
+          rm -rf .flutter-plugins-dependencies || true
+          rm -rf .packages || true
+          
+          # 4. Clear Gradle cache
+          echo "🔄 Step 4: Clearing Gradle cache..."
+          chmod +x android/gradlew || true
+          cd android || exit 0
+          ./gradlew clean --refresh-dependencies || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
+          rm -rf ~/.gradle/caches/transforms-* || true
+          rm -rf ~/.gradle/daemon || true
+          cd ..
+          
+          # 5. Clear Android build cache
+          echo "📱 Step 5: Clearing Android build cache..."
+          rm -rf android/.gradle || true
+          rm -rf android/app/build || true
+          rm -rf android/build || true
+          
+          # 6. DELETE GENERATED PLUGIN FILES (critical - must happen BEFORE flutter pub get)
+          echo "🗑️ Step 6: Deleting generated plugin metadata files..."
+          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
+          rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
+          rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
+          rm -rf .flutter-plugins || true
+          rm -rf .flutter-plugins-dependencies || true
+          
+          # 7. Get fresh dependencies (will regenerate plugin files)
+          echo "📥 Step 7: Getting fresh dependencies..."
+          flutter pub get
+          
+          echo "✅ Cache clearing complete!"
 
       - name: 🏗️ Build AAB (Release)
-        run: flutter build appbundle --release --split-debug-info=build/symbols
+        env:
+          GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false -Dorg.gradle.console=plain"
+        run: |
+          echo "🏗️ Starting AAB build..."
+          set +e  # Don't exit on error immediately
+          chmod +x android/gradlew || true
+          
+          # First attempt - FULL VERBOSE OUTPUT
+          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log
+          BUILD_EXIT_CODE=${PIPESTATUS[0]}
+          
+          if [ $BUILD_EXIT_CODE -eq 0 ]; then
+            echo "✅ Build succeeded on first attempt"
+            exit 0
+          fi
+          
+          echo "⚠️ Build failed (exit code: $BUILD_EXIT_CODE), showing last 100 lines of build log:"
+          tail -n 100 build.log || true
+          
+          echo "🔄 Performing deep clean and retry..."
+          flutter clean
+          rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true
+          chmod +x android/gradlew || true
+          cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
+          flutter pub get
+          
+          # Second attempt - FULL VERBOSE OUTPUT
+          echo "🏗️ Retrying build after clean..."
+          
+          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build-retry.log
+          BUILD_EXIT_CODE=${PIPESTATUS[0]}
+          
+          if [ $BUILD_EXIT_CODE -eq 0 ]; then
+            echo "✅ Build succeeded on retry"
+            exit 0
+          fi
+          
+          echo "❌ Build failed after retry (exit code: $BUILD_EXIT_CODE)"
+          echo "📋 Last 200 lines of retry build log:"
+          tail -n 200 build-retry.log || true
+          exit 1
 
       - name: 🚚 Package AAB and mapping file
         run: |
           mkdir -p build/release
           version="${{ needs.increment-version.outputs.version }}"
           
-          # Copy AAB
-          cp build/app/outputs/bundle/release/app-release.aab "build/release/LingAfriq-${version}.aab"
+          # Check if AAB file exists
+          AAB_PATH="build/app/outputs/bundle/release/app-release.aab"
+          if [ ! -f "$AAB_PATH" ]; then
+            echo "❌ ERROR: AAB file not found at $AAB_PATH"
+            echo "📋 Checking build directory structure:"
+            find build -name "*.aab" -type f 2>/dev/null || echo "No AAB files found"
+            echo "📋 Build directory contents:"
+            ls -la build/app/outputs/bundle/release/ 2>/dev/null || echo "Release directory not found"
+            echo "📋 Full build directory:"
+            ls -la build/app/outputs/ 2>/dev/null || echo "Outputs directory not found"
+            exit 1
+          fi
+          
+          echo "✅ Found AAB file: $AAB_PATH"
+          cp "$AAB_PATH" "build/release/LingAfriq-${version}.aab"
+          echo "✅ Copied AAB to build/release/LingAfriq-${version}.aab"
           
           # Copy mapping.txt if it exists (generated by R8/ProGuard)
           if [ -f build/app/outputs/mapping/release/mapping.txt ]; then
             cp build/app/outputs/mapping/release/mapping.txt "build/release/mapping.txt"
-            echo "✅ Found mapping.txt file"
+            echo "✅ Found and copied mapping.txt file"
           else
             echo "⚠️ mapping.txt not found (check if minifyEnabled is true in build.gradle)"
           fi
@@ -143,7 +257,11 @@ jobs:
           # Also copy symbols if they exist
           if [ -d build/symbols ]; then
             cp -r build/symbols "build/release/symbols" || true
+            echo "✅ Copied symbols directory"
           fi
+          
+          echo "📦 Final artifacts in build/release/:"
+          ls -lh build/release/
 
       - name: 📤 Upload AAB and mapping file
         uses: actions/upload-artifact@v4
@@ -238,9 +356,11 @@ jobs:
           cd ios
           # Remove Podfile.lock to force regeneration with correct Firebase versions
           rm -f Podfile.lock
-          # Update CocoaPods repo and install dependencies
-          pod repo update
-          pod install --repo-update
+          # Update CocoaPods repo and install dependencies (reduced verbosity)
+          echo "📦 Updating CocoaPods repo..."
+          pod repo update --silent
+          echo "📦 Installing pods..."
+          pod install --repo-update --silent
           cd ..
 
       - name: 🏗️ Build iOS Archive (Release)
@@ -248,14 +368,14 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
         run: |
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            # Build signed IPA
+            # Build signed IPA (reduced verbosity - only show important messages)
             echo "🔐 Building signed IPA..."
-            flutter build ipa --release --split-debug-info=build/symbols
+            flutter build ipa --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built|Xcode build done)"
           else
             # Build archive without signing (for manual signing later)
             echo "⚠️ No signing credentials found. Building archive without signing..."
             echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols
+            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built|Xcode build done)"
           fi
 
       - name: 🚚 Package iOS build with version

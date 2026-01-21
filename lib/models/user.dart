@@ -4,8 +4,6 @@ import 'dart:convert';
 
 class User {
   final int id;
-  /// Global, stable identifier shared across services (maps to backend global_id).
-  final String? globalId;
   final String email;
   final String username;
   final String first_name;
@@ -17,10 +15,9 @@ class User {
   final String ranks;
   final String points;
   final String level;
-
+  final String? global_id; // Global handle for user identification
   User({
     required this.id,
-    this.globalId,
     required this.email,
     required this.username,
     required this.first_name,
@@ -32,11 +29,11 @@ class User {
     required this.ranks,
     required this.points,
     required this.level,
+    this.global_id,
   });
 
   User copyWith({
     int? id,
-    String? globalId,
     String? email,
     String? username,
     String? first_name,
@@ -48,10 +45,10 @@ class User {
     String? ranks,
     String? points,
     String? level,
+    String? global_id,
   }) {
     return User(
       id: id ?? this.id,
-      globalId: globalId ?? this.globalId,
       email: email ?? this.email,
       username: username ?? this.username,
       first_name: first_name ?? this.first_name,
@@ -63,6 +60,7 @@ class User {
       ranks: ranks ?? this.ranks,
       points: points ?? this.points,
       level: level ?? this.level,
+      global_id: global_id ?? this.global_id,
     );
   }
 
@@ -71,9 +69,6 @@ class User {
 
     result.addAll({'id': id});
     result.addAll({'email': email});
-    if (globalId != null) {
-      result.addAll({'global_id': globalId});
-    }
     result.addAll({'username': username});
     result.addAll({'first_name': first_name});
     result.addAll({'last_name': last_name});
@@ -84,6 +79,9 @@ class User {
     }
     if (avater != null) {
       result.addAll({'avater': avater});
+    }
+    if (global_id != null) {
+      result.addAll({'global_id': global_id});
     }
     result.addAll({'ranks': ranks});
     result.addAll({'points': points});
@@ -111,7 +109,6 @@ class User {
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id']?.toInt() ?? 0,
-      globalId: map['global_id'],
       email: map['email'] ?? '',
       username: map['username'] ?? '',
       first_name: map['first_name'] ?? '',
@@ -120,6 +117,7 @@ class User {
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       image_url: map['image_url'],
       avater: map['avater'],
+      global_id: map['global_id'],
       ranks: map['ranks'] ?? '',
       points: map['points'] ?? '',
       level: map['level'] ?? '',
@@ -132,7 +130,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, image_url: $image_url, avater: $avater, ranks: $ranks, points: $points, level: $level)';
+    return 'User(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, image_url: $image_url, avater: $avater, global_id: $global_id, ranks: $ranks, points: $points, level: $level)';
   }
 
   @override
@@ -141,7 +139,6 @@ class User {
 
     return other is User &&
         other.id == id &&
-        other.globalId == globalId &&
         other.email == email &&
         other.username == username &&
         other.first_name == first_name &&
@@ -150,6 +147,7 @@ class User {
         other.agree_to_privacy_terms == agree_to_privacy_terms &&
         other.image_url == image_url &&
         other.avater == avater &&
+        other.global_id == global_id &&
         other.ranks == ranks &&
         other.points == points &&
         other.level == level;
@@ -159,7 +157,6 @@ class User {
   int get hashCode {
     return id.hashCode ^
         email.hashCode ^
-        (globalId?.hashCode ?? 0) ^
         username.hashCode ^
         first_name.hashCode ^
         last_name.hashCode ^
@@ -167,6 +164,7 @@ class User {
         agree_to_privacy_terms.hashCode ^
         image_url.hashCode ^
         avater.hashCode ^
+        global_id.hashCode ^
         ranks.hashCode ^
         points.hashCode ^
         level.hashCode;

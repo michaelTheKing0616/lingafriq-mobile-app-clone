@@ -1,7 +1,6 @@
 /// Translation History Model
 /// Stores translation history with alternatives, grammar breakdown, and cultural context
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Grammar Breakdown
 class GrammarBreakdown {

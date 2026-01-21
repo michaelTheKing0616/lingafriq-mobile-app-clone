@@ -1,5 +1,4 @@
 import 'game_turn_context.dart';
-import 'game_result.dart';
 import 'game_scoring.dart';
 
 /// Abstract feedback engine - generates user-facing feedback

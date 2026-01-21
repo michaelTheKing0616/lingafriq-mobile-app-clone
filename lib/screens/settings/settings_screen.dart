@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
@@ -28,7 +31,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Settings temporarily unavailable',
+      errorMessage: 'Unable to load settings. Please check your connection and try again.',
       child: _buildSettings(context),
     );
   }

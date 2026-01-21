@@ -4,11 +4,10 @@ import 'game_session.dart';
 import 'game_result.dart';
 import 'game_turn_context.dart';
 import 'game_scoring.dart';
-import 'game_feedback.dart';
-import 'game_difficulty.dart';
-import 'game_animation_bridge.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../services/polie_game_client.dart';
 import 'batch_game_factory.dart';
+import 'game_migration_helper.dart';
 
 /// Generic game content model - can be used by simple games
 class GenericGameContent {

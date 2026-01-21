@@ -9,6 +9,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/painting.dart';
 import 'dart:async';
 import 'performance_monitor_integrated.dart';
 
@@ -51,14 +52,21 @@ mixin ScreenPerformanceTracker<T extends StatefulWidget> on State<T> {
   }
 
   void _checkMemoryUsage() {
-    // Memory usage tracking would require platform channels
-    // This is a placeholder for future implementation
     if (mounted) {
+      // Best-effort memory proxy without platform channels:
+      // Flutter image cache size is a strong indicator of memory pressure for UI-heavy screens.
+      final imageCache = PaintingBinding.instance.imageCache;
+      final bytes = imageCache.currentSizeBytes;
+      final mb = bytes / (1024 * 1024);
       _monitor.recordMetric(
         type: MetricType.memoryUsage,
         identifier: _screenName ?? 'unknown',
-        value: 0.0, // Placeholder
-        metadata: {'timestamp': DateTime.now().toIso8601String()},
+        value: mb,
+        metadata: {
+          'timestamp': DateTime.now().toIso8601String(),
+          'image_cache_bytes': bytes,
+          'image_cache_entries': imageCache.currentSize,
+        },
       );
     }
   }

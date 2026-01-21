@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
+import '../../providers/ai_chat_provider_groq.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../providers/ai_chat_provider_groq.dart';
-import '../../services/env_config.dart';
 
 /// Story Builder - Collaborative story construction
 class StoryBuilderGame extends BaseGameScreen {
@@ -29,7 +28,6 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
   int _currentTurn = 0;
   final int _maxTurns = 5;
   String? _prompt;
-  bool _isCheckingGrammar = false;
 
   @override
   int getCardCount() => 1;
@@ -50,47 +48,32 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
       _story.add(sentence);
       _sentenceController.clear();
       _currentTurn++;
-      _isCheckingGrammar = true;
     });
 
-    // Evaluate grammar using Polie (Groq) when configured; safe fallback otherwise.
-    GameResult result = GameResult.partial;
+    // Evaluate grammar using AI chat provider
+    GameResult result = GameResult.correct;
     Map<String, dynamic> feedback = {'sentence': sentence, 'turn': _currentTurn};
-    if (EnvConfig.isGroqConfigured) {
-      try {
-        final polie = ref.read(groqChatProvider.notifier);
-        final g = await polie.grammarCheck(widget.language, sentence);
-        // Score mapping:
-        // - >= 0.8: correct
-        // - >= 0.55: partial
-        // - < 0.55: wrong
-        final score = g.score;
-        result = score >= 0.8
-            ? GameResult.correct
-            : score >= 0.55
-                ? GameResult.partial
-                : GameResult.incorrect;
-        feedback = {
-          ...feedback,
-          'grammar_score': score,
-          'corrected': g.corrected,
-          'errors': g.errors,
-          'ai': 'groq',
-        };
-      } catch (_) {
-        // Fall through to fallback below.
+    
+    try {
+      final aiChatProvider = ref.read(groqChatProvider.notifier);
+      final grammarCheck = await aiChatProvider.grammarCheck(widget.language, sentence);
+      
+      if (grammarCheck.score < 0.8 || grammarCheck.errors.isNotEmpty) {
+        result = grammarCheck.errors.isEmpty 
+            ? GameResult.partial 
+            : GameResult.incorrect;
+        feedback['grammar_errors'] = grammarCheck.errors;
+        feedback['grammar_score'] = grammarCheck.score;
+        feedback['corrected'] = grammarCheck.corrected;
+        feedback['suggestions'] = grammarCheck.errors.map((e) => e['suggestion'] ?? e['message'] ?? '').where((s) => s.isNotEmpty).toList();
+      } else {
+        feedback['grammar_score'] = grammarCheck.score;
       }
-    }
-
-    // Offline / not configured fallback: heuristic based on basic sentence quality.
-    if (!EnvConfig.isGroqConfigured) {
-      final looksOk = sentence.length >= 10 && sentence.contains(RegExp(r'[.!?]$'));
-      result = looksOk ? GameResult.partial : GameResult.incorrect;
-      feedback = {
-        ...feedback,
-        'ai': 'fallback',
-        'note': 'Grammar check not available (no Groq key).',
-      };
+    } catch (e) {
+      debugPrint('Grammar check error: $e');
+      // If grammar check fails, accept the sentence but note the error
+      result = GameResult.partial;
+      feedback['grammar_check_error'] = 'Unable to verify grammar';
     }
 
     final duration = startTime != null
@@ -103,10 +86,6 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
       durationMs: duration,
       feedback: feedback,
     );
-
-    if (mounted) {
-      setState(() => _isCheckingGrammar = false);
-    }
 
     if (_currentTurn >= _maxTurns) {
       finishGame();
@@ -169,14 +148,8 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
             ),
             SizedBox(height: 2.h),
             FilledButton(
-              onPressed: (_currentTurn >= _maxTurns || _isCheckingGrammar) ? null : _addSentence,
-              child: Text(
-                _currentTurn >= _maxTurns
-                    ? 'Story Complete!'
-                    : _isCheckingGrammar
-                        ? 'Checking…'
-                        : 'Add Sentence',
-              ),
+              onPressed: _currentTurn >= _maxTurns ? null : _addSentence,
+              child: Text(_currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence'),
             ),
           ],
         ),

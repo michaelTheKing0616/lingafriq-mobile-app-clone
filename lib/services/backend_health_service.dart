@@ -146,7 +146,8 @@ class BackendHealthService {
     // Check telemetry endpoint
     try {
       final response = await _dio.head(
-        '${Api.baseurl}${Api.sendTelemetry}',
+        // Matches `apiProvider.sendTelemetry` which POSTs to `/api/telemetry`
+        '${Api.baseurl}api/telemetry',
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),
@@ -161,7 +162,7 @@ class BackendHealthService {
     // Check UGC endpoints
     try {
       final response = await _dio.head(
-        '${Api.baseurl}${Api.getUserContent}',
+        '${Api.baseurl}${Api.userContent}',
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),

@@ -160,6 +160,108 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
     return _roomMessages[room] ?? [];
   }
 
+  /// Get last message text for a room
+  String? lastMessageTextForRoom(String roomId) {
+    final messages = _roomMessages[roomId] ?? [];
+    if (messages.isEmpty) return null;
+    final lastMessage = messages.last;
+    return lastMessage['message']?.toString() ?? lastMessage['text']?.toString();
+  }
+
+  /// Get last message timestamp for a room
+  DateTime? lastMessageTimestampForRoom(String roomId) {
+    final messages = _roomMessages[roomId] ?? [];
+    if (messages.isEmpty) return null;
+    final lastMessage = messages.last;
+    final timestamp = lastMessage['timestamp']?.toString();
+    if (timestamp == null) return null;
+    try {
+      return DateTime.parse(timestamp);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Get unread count for a room
+  int unreadCountForRoom(String roomId, String currentUserId) {
+    final messages = _roomMessages[roomId] ?? [];
+    // Count messages that are not from current user and not read
+    return messages.where((msg) {
+      final senderId = msg['userId']?.toString() ?? msg['senderId']?.toString();
+      final isRead = msg['isRead'] ?? false;
+      return senderId != currentUserId && !isRead;
+    }).length;
+  }
+
+  /// Mark a user as blocked
+  void markUserBlocked(String userId) {
+    // Store blocked users in state or local storage
+    // This is a placeholder - implement based on your blocking logic
+    logger.info('User blocked', tag: 'chat-socket', context: {'userId': userId});
+  }
+
+  /// React to a message
+  void reactToMessage(String messageId, String emoji) {
+    if (!_isConnected || _socket == null) {
+      logger.warn('Cannot react to message: Socket not connected', tag: 'chat-socket');
+      return;
+    }
+    
+    try {
+      _socket!.emit('react', {
+        'messageId': messageId,
+        'emoji': emoji,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+      logger.info('Reacted to message', tag: 'chat-socket', context: {'messageId': messageId, 'emoji': emoji});
+    } catch (e) {
+      logger.error('Error reacting to message', tag: 'chat-socket', error: e);
+    }
+  }
+
+  /// Edit a message
+  void editMessage(String messageId, String newText) {
+    if (!_isConnected || _socket == null) {
+      logger.warn('Cannot edit message: Socket not connected', tag: 'chat-socket');
+      return;
+    }
+    
+    try {
+      _socket!.emit('edit_message', {
+        'messageId': messageId,
+        'text': newText,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+      
+      // Update local state
+      for (final room in _roomMessages.keys) {
+        final index = _roomMessages[room]!.indexWhere((msg) => msg['id'] == messageId || msg['messageId'] == messageId);
+        if (index != -1) {
+          _roomMessages[room]![index]['message'] = newText;
+          _roomMessages[room]![index]['text'] = newText;
+          _roomMessages[room]![index]['edited'] = true;
+          _roomMessages[room]![index]['editedAt'] = DateTime.now().toIso8601String();
+        }
+      }
+      
+      logger.info('Edited message', tag: 'chat-socket', context: {'messageId': messageId});
+    } catch (e) {
+      logger.error('Error editing message', tag: 'chat-socket', error: e);
+    }
+  }
+
+  /// Add a local Polie message (optimistic update)
+  void addLocalPolieMessage(Map<String, dynamic> messageData) {
+    final room = messageData['room'] ?? _activeRoom;
+    if (!_roomMessages.containsKey(room)) {
+      _roomMessages[room] = [];
+    }
+    _roomMessages[room]!.add(messageData);
+    _messages.add(messageData);
+    state = state.copyWith(messages: List.from(_messages));
+    logger.info('Added local Polie message', tag: 'chat-socket', context: {'room': room});
+  }
+
   List<Map<String, dynamic>> get messages => _messages;
   List<Map<String, dynamic>> get onlineUsers => _onlineUsers;
   bool get isConnected => _isConnected;

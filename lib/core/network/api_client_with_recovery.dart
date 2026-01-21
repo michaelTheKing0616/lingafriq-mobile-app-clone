@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import '../../services/error/error_recovery_service.dart';
 
 /// API Client wrapper with automatic error recovery

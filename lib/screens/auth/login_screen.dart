@@ -7,6 +7,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/auth/sign_up_screen.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/validators.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:lingafriq/widgets/title_logo.dart';

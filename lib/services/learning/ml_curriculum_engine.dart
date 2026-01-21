@@ -151,7 +151,7 @@ class MLCurriculumEngine {
     required UserAttempt attempt,
   }) async {
     try {
-      final key = '$userId_$language';
+      final key = '${userId}_$language';
       if (!_userPerformance.containsKey(key)) {
         _userPerformance[key] = UserPerformance(
           userId: userId,
@@ -387,7 +387,7 @@ class MLCurriculumEngine {
       final threshold = lastLevel == 'beginner' ? 0.5 : 
                        lastLevel == 'intermediate' ? 0.6 : 0.7;
       
-      if (math.abs(difficultyScore - threshold) < 0.15) {
+      if ((difficultyScore - threshold).abs() < 0.15) {
         // Not enough change, keep current level
         return lastLevel;
       }

@@ -1,7 +1,5 @@
 /// Enhanced Historical Personality Model
 /// Comprehensive model for historical personalities with knowledge base, memory, and educational features
-import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Enhanced Historical Personality
 class EnhancedHistoricalPersonality {

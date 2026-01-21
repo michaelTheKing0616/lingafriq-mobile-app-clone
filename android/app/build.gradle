@@ -24,21 +24,38 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+// NDK: prefer the highest version required by plugins (backward compatible).
+// CI failure fix: speech_to_text requires 27.0.12077973, so we pin to that.
+def ndkVersionToUse = "27.0.12077973"
+def sdkDir = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+if (!sdkDir) {
+    // Try to get SDK from local.properties as fallback
+    sdkDir = localProperties.getProperty('sdk.dir')
+}
+
+if (!sdkDir) {
+    println("⚠️ Android SDK location not found - NDK pin will rely on CI/Gradle installation")
+}
+
 android {
     namespace = "com.cracklog.lingafriq"
 
     // Fix for AndroidX + SDK36 plugin requirements
     compileSdk = 36
-    ndkVersion "26.1.10909125"
+    
+    // Pin NDK to satisfy plugins (speech_to_text needs 27.x). Gradle will install it in CI.
+    ndkVersion ndkVersionToUse
 
     defaultConfig {
         applicationId "com.cracklog.lingafriq"
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         targetSdk = 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         
         // Support 16KB page size (required for Android 15+)
+        // Configure NDK ABI filters - this is safe even if NDK isn't installed
+        // Flutter plugins will handle native library inclusion if needed
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
@@ -59,6 +76,8 @@ android {
 
     kotlinOptions {
         jvmTarget = '17'
+        languageVersion = '1.8'
+        apiVersion = '1.8'
     }
 
     sourceSets {
@@ -73,17 +92,22 @@ android {
                 // Try multiple locations: CI/CD location first, then root location
                 def keystoreFile = null
                 if (keystorePath) {
-                    // Try CI/CD location: android/app/upload-keystore.jks
-                    def ciKeystore = file("${rootProject.projectDir}/android/${keystorePath}")
-                    // Try root location: upload-keystore.jks (for local development)
-                    def rootKeystore = file("${rootProject.projectDir}/${keystorePath.split('/').last()}")
-                    
+                    // In CI we write: android/app/upload-keystore.jks
+                    // and set in key.properties: storeFile=app/upload-keystore.jks
+                    //
+                    // rootProject.projectDir points to the `android/` folder, so the correct
+                    // resolved path is: android/<storeFile> (NOT android/android/<storeFile>).
+                    def ciKeystore = file("${rootProject.projectDir}/${keystorePath}")
+
+                    // Optional local convenience: allow placing the keystore directly in android/
+                    def androidRootKeystore = file("${rootProject.projectDir}/${keystorePath.split('/').last()}")
+
                     if (ciKeystore.exists()) {
                         keystoreFile = ciKeystore
                         println("✅ Found keystore at CI/CD location: ${keystoreFile.absolutePath}")
-                    } else if (rootKeystore.exists()) {
-                        keystoreFile = rootKeystore
-                        println("✅ Found keystore at root location: ${keystoreFile.absolutePath}")
+                    } else if (androidRootKeystore.exists()) {
+                        keystoreFile = androidRootKeystore
+                        println("✅ Found keystore at android/ root location: ${keystoreFile.absolutePath}")
                     }
                 }
                 
@@ -96,7 +120,7 @@ android {
                     println("✅ Keystore configured successfully")
                 } else {
                     println("⚠️ Keystore file not found. Tried:")
-                    println("   - ${rootProject.projectDir}/android/${keystorePath}")
+                    println("   - ${rootProject.projectDir}/${keystorePath}")
                     println("   - ${rootProject.projectDir}/${keystorePath?.split('/')?.last()}")
                 }
             }
@@ -138,3 +162,5 @@ dependencies {
 flutter {
     source '../..'
 }
+
+// NOTE: We keep all required plugins enabled for production builds (including LiveKit/WebRTC and Workmanager).

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -58,6 +57,9 @@ class _ClassroomDashboardScreenState
         _isLoading = false;
       });
     } catch (e) {
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
       setState(() {
         _error = 'Unable to load classroom progress right now.';
         _isLoading = false;
@@ -433,11 +435,14 @@ class _ClassroomDashboardScreenState
         _poliePrompt = ideas;
       });
     } catch (e) {
+      if (mounted) {
+        ErrorHandler.showError(context, e);
+      }
       // Fallback to a simple static hint if Polie fails
       setState(() {
         _poliePrompt =
             'Example warm‑up: In pairs, have learners greet each other in '
-            '${widget.languageTag} and ask “How are you?” Then invite a few '
+            '${widget.languageTag} and ask "How are you?" Then invite a few '
             'pairs to perform for the class and give gentle corrections.';
       });
     } finally {
@@ -447,10 +452,6 @@ class _ClassroomDashboardScreenState
         });
       }
     }
-  }
-
-  Future<void> copyToClipboard(String text, BuildContext context) async {
-    await Clipboard.setData(ClipboardData(text: text));
   }
 }
 

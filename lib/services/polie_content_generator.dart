@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../providers/ai_chat_provider_groq.dart';
@@ -19,37 +17,97 @@ class PolieContentGenerator {
 
   PolieContentGenerator(this._ref);
 
-  /// Generate greeting phrases grouped by formality.
+  /// Generate actionable classroom / family learning activities based on a progress summary.
   ///
-  /// Returns:
-  /// `{ "formal": [{ "native": "...", "translation": "..." }], "informal": [...] }`
-  Future<Map<String, dynamic>> generateGreetings(String language) async {
-    try {
-      final content = await generateGameContent(
-        gameType: 'greetings',
-        language: language,
-        additionalContext: '''Return JSON object with keys "formal" and "informal".
-Each is an array of objects: {"native": "...", "translation": "..."}.
-Use correct diacritics for $language.''',
-      );
-      final raw = content['content'];
-      if (raw is String) {
-        final parsed = jsonDecode(raw);
-        if (parsed is Map<String, dynamic>) return parsed;
-      }
-    } catch (e) {
-      debugPrint('Error generating greetings: $e');
+  /// This is used by Family subscription dashboards to turn raw metrics into:
+  /// - a weekly plan
+  /// - suggested activities by age/level
+  /// - parent/guardian coaching tips
+  /// - a short motivational message
+  Future<String> generateClassroomActivities({
+    required String language,
+    required String classSummary,
+  }) async {
+    final additional = classSummary.hashCode.toString();
+    final cached = await PolieCacheService.getCachedContent(
+      'family_classroom_activities',
+      language,
+      additional: additional,
+    );
+    if (cached != null && cached['text'] is String && (cached['text'] as String).trim().isNotEmpty) {
+      return cached['text'] as String;
     }
 
-    // Fallback (keeps the recording workflow functional offline)
-    return <String, dynamic>{
-      'formal': [
-        {'native': 'Hello', 'translation': 'Hello'},
-      ],
-      'informal': [
-        {'native': 'Hi', 'translation': 'Hi'},
-      ],
-    };
+    final groqChatNotifier = _ref.read(groqChatProvider.notifier);
+    final systemPrompt = '''
+You are Polie, a world-class language learning coach and curriculum designer.
+Your job: turn the provided learning summary into a practical, motivating plan that a family can follow.
+
+Requirements:
+- Output in clear, friendly English (unless requested otherwise).
+- Be specific and actionable: concrete activities, duration, and example prompts.
+- Tailor the plan to a family setting with multiple learners at different levels.
+- Include: (1) Snapshot, (2) Weekly plan (Mon–Sun), (3) 5 activity ideas, (4) 5 quick coaching tips, (5) a short motivational note.
+- Keep it concise: ~400–700 words.
+
+Family learning summary:
+${classSummary.trim()}
+''';
+
+    try {
+      await groqChatNotifier.setMode(PolieMode.tutor);
+      await groqChatNotifier.setLanguageDirection('English', language);
+      await groqChatNotifier.clearChat();
+
+      String fullResponse = '';
+      await for (final chunk in groqChatNotifier.sendMessageStream(
+        'Create a family-friendly learning plan from the summary above.',
+        systemPromptOverride: systemPrompt,
+      )) {
+        fullResponse += chunk;
+      }
+
+      final cleaned = fullResponse.trim();
+      if (cleaned.isEmpty) throw Exception('Empty AI response');
+
+      await PolieCacheService.cacheContent(
+        'family_classroom_activities',
+        language,
+        {'text': cleaned},
+        additional: additional,
+        ttl: const Duration(hours: 24),
+      );
+
+      return cleaned;
+    } catch (e) {
+      debugPrint('Error generating classroom activities: $e');
+      // Provide a robust non-AI fallback that is still actionable.
+      final fallback = [
+        'Snapshot',
+        '- Summary received, but Polie could not generate a tailored plan right now.',
+        '',
+        'Weekly plan (simple)',
+        '- Mon/Wed/Fri: 15 min speaking practice (repeat + shadow simple phrases)',
+        '- Tue/Thu: 15 min listening + 5 min recap',
+        '- Sat: 20 min family game (flashcards / quiz / roleplay)',
+        '- Sun: 10 min review + set next week goals',
+        '',
+        'Activity ideas',
+        '- “Repeat & Record”: say 5 phrases, record, replay, improve',
+        '- “Family roleplay”: market greetings + bargaining',
+        '- “Story time”: read a short story and pick 5 new words',
+        '- “Kitchen labels”: label 10 objects; quiz each other',
+        '- “Mini-challenges”: fastest correct pronunciation wins',
+        '',
+        'Coaching tips',
+        '- Keep sessions short and consistent',
+        '- Celebrate effort, not perfection',
+        '- Encourage full sentences, not single words',
+        '- Review yesterday’s words before adding new ones',
+        '- Rotate who “teaches” to boost confidence',
+      ].join('\n');
+      return fallback;
+    }
   }
 
   /// Generate culturally-accurate proverb with explanation
@@ -343,149 +401,6 @@ Make it fun, educational, and culturally relevant.''';
     }
   }
 
-  /// Generate a short, contextual hint for a specific game situation.
-  /// This is used by game modes (e.g. WordMatch+Audio) as an in-game
-  /// Polie coach when learners struggle.
-  Future<String> generateGameHint({
-    required String gameType,
-    required String language,
-    required String context,
-  }) async {
-    try {
-      final groqChatNotifier = _ref.read(groqChatProvider.notifier);
-
-      final systemPrompt = '''You are Polie, a kind, concise language coach.
-Game: $gameType
-Language: $language
-
-The learner just made a mistake in this situation:
-$context
-
-Give a SHORT hint (1–2 sentences max) that:
-- Focuses on one clear idea.
-- Uses simple language.
-- Encourages the learner.
-Do NOT reveal the full answer outright unless the learner is truly stuck.''';
-
-      await groqChatNotifier.setMode(PolieMode.tutor);
-      await groqChatNotifier.setLanguageDirection('English', language);
-      await groqChatNotifier.clearChat();
-
-      String fullResponse = '';
-      await for (final chunk in groqChatNotifier.sendMessageStream(
-        'Give the learner a short, friendly hint.',
-        systemPromptOverride: systemPrompt,
-      )) {
-        fullResponse += chunk;
-      }
-
-      return fullResponse.trim();
-    } catch (e) {
-      debugPrint('Error generating game hint: $e');
-      return 'Think about how this word is used in everyday conversation, especially its tone and context.';
-    }
-  }
-
-  /// Generate a short loading-screen micro-tip based on the current
-  /// greeting/fact and learner language. This is meant to be a single,
-  /// motivating nugget of learning that feels personal.
-  Future<String> generateLoadingScreenTip({
-    required String language,
-    required String greeting,
-    required String fact,
-  }) async {
-    try {
-      final groqChatNotifier = _ref.read(groqChatProvider.notifier);
-
-      final systemPrompt = '''You are Polie, an inspiring African language tutor.
-The app is showing this loading-screen content:
-- Language: $language
-- Greeting: "$greeting"
-- Fact: "$fact"
-
-Write ONE short, friendly learning tip (1–2 sentences) that:
-- Connects to the greeting or fact.
-- Either teaches a tiny piece of language or motivates the learner.
-- Is easy to read quickly while a screen is loading.
-Do NOT repeat the raw fact verbatim; build on it.''';
-
-      await groqChatNotifier.setMode(PolieMode.tutor);
-      await groqChatNotifier.setLanguageDirection('English', language);
-      await groqChatNotifier.clearChat();
-
-      String fullResponse = '';
-      await for (final chunk in groqChatNotifier.sendMessageStream(
-        'Give one short loading-screen learning tip.',
-        systemPromptOverride: systemPrompt,
-      )) {
-        fullResponse += chunk;
-      }
-
-      return fullResponse.trim();
-    } catch (e) {
-      debugPrint('Error generating loading-screen tip: $e');
-      return 'Use this moment to say today’s greeting out loud and notice its rhythm and tone.';
-    }
-  }
-
-  /// Generate classroom activity ideas for a specific class profile.
-  /// Used by ClassroomDashboardScreen to give teachers concrete, level-aware
-  /// warm‑ups and practice ideas powered by Polie.
-  Future<String> generateClassroomActivities({
-    required String language,
-    required String classSummary,
-  }) async {
-    final groqChatNotifier = _ref.read(groqChatProvider.notifier);
-
-    final systemPrompt = '''
-You are Polie, an expert African language teacher and lesson designer.
-
-You are helping a teacher plan a SHORT in‑class activity for today based on
-this classroom profile:
-
-$classSummary
-
-Generate 3 concrete activity ideas for the next 15–20 minutes:
-
-For EACH activity, include:
-1. A short title.
-2. Step‑by‑step instructions for the teacher.
-3. Example target‑language phrases students should use (in $language, with English glosses).
-4. Optional variation or extension for stronger students.
-
-The activities should:
-- Be doable in a regular classroom (phones optional).
-- Encourage speaking, listening, and interaction.
-- Be culturally appropriate and motivating for African learners.
-
-Return your answer as clear Markdown-style text with numbered activities.''';
-
-    try {
-      await groqChatNotifier.setMode(PolieMode.tutor);
-      await groqChatNotifier.setLanguageDirection('English', language);
-      await groqChatNotifier.clearChat();
-
-      String fullResponse = '';
-      await for (final chunk in groqChatNotifier.sendMessageStream(
-        'Suggest classroom activities for this class.',
-        systemPromptOverride: systemPrompt,
-      )) {
-        fullResponse += chunk;
-      }
-
-      return fullResponse.trim();
-    } catch (e) {
-      debugPrint('Error generating classroom activities: $e');
-      // Fallback: generic but still helpful suggestion.
-      return '''
-1. Warm‑up circle: In a circle, each learner greets the next person in $language and asks a simple question (name, how they feel, favourite food). Then switch directions and change the question.
-
-2. Mini role‑plays: In pairs, students act out a short scene (at the market, greeting an elder, meeting a friend). Give them 3–4 key phrases to use and invite 2 pairs to perform for the class.
-
-3. Quick review game: Write 8–10 key words/phrases on the board. Call out the English meaning and have teams race to say the $language phrase correctly. Award small points or XP for correct answers.''';
-    }
-  }
-
   /// Generate village quest scenario with NPC interaction
   Future<Map<String, dynamic>> generateVillageQuestScenario(String language) async {
     return generateGameContent(
@@ -540,57 +455,6 @@ Return your answer as clear Markdown-style text with numbered activities.''';
     );
   }
 
-  /// Generate a Polie-style recap of a village voice session, based on
-  /// STT summary + optional transcripts from the voice-service.
-  Future<String> generateVillageRecap({
-    required String language,
-    required String summary,
-    List<String>? transcriptSnippets,
-  }) async {
-    final groqChatNotifier = _ref.read(groqChatProvider.notifier);
-
-    final systemPrompt = '''
-You are Polie, a warm, insightful African language tutor and community host.
-You just listened to a set of short voice messages from a village voice room
-for the language "$language". You received the following automatic summary and
-snippets from a speech‑to‑text service:
-
-Summary of the session:
-$summary
-
-${(transcriptSnippets != null && transcriptSnippets.isNotEmpty)
-        ? 'Representative snippets:\n- ${transcriptSnippets.join('\n- ')}\n'
-        : ''}
-
-Your task:
-- Write a short, human‑friendly recap of what the class or village talked about.
-- Highlight interesting words, phrases, or cultural points that appeared.
-- Encourage learners with 1–2 specific suggestions for what to try next time.
-- Keep it concise (4–6 sentences), warm, and motivating.
-
-Do NOT invent facts that contradict the summary. If the summary is very short
-or generic, acknowledge that and still give helpful suggestions.''';
-
-    try {
-      await groqChatNotifier.setMode(PolieMode.tutor);
-      await groqChatNotifier.setLanguageDirection('English', language);
-      await groqChatNotifier.clearChat();
-
-      String fullResponse = '';
-      await for (final chunk in groqChatNotifier.sendMessageStream(
-        'Please write a recap of this village voice session.',
-        systemPromptOverride: systemPrompt,
-      )) {
-        fullResponse += chunk;
-      }
-
-      return fullResponse.trim();
-    } catch (e) {
-      debugPrint('Error generating village recap: $e');
-      return 'Polie listened in on your village session. Keep greeting others, trying new phrases, and don’t worry about mistakes—every voice note grows your confidence.';
-    }
-  }
-
   /// Generate multilingual relay content
   Future<Map<String, dynamic>> generateMultilingualRelay(String language) async {
     return generateGameContent(
@@ -616,6 +480,70 @@ or generic, acknowledge that and still give helpful suggestions.''';
       language: language,
       additionalContext: 'Create drum rhythm pattern with associated word/phrase in $language, and 4 word options to match.',
     );
+  }
+
+  /// Generate greetings for voice contribution
+  Future<Map<String, dynamic>> generateGreetings(String language) async {
+    final groqChatNotifier = _ref.read(groqChatProvider.notifier);
+    
+    final systemPrompt = '''You are Polie, an expert in African languages and cultures. Generate authentic greetings in $language:
+1. Formal greetings (morning, afternoon, evening)
+2. Informal greetings
+3. Responses to greetings
+4. Cultural context and usage
+
+Provide at least 5 formal and 5 informal greetings with translations.''';
+
+    try {
+      await groqChatNotifier.setMode(PolieMode.tutor);
+      await groqChatNotifier.setLanguageDirection('English', language);
+      await groqChatNotifier.clearChat();
+      
+      String fullResponse = '';
+      await for (final chunk in groqChatNotifier.sendMessageStream(
+        "Generate authentic greetings in $language",
+        systemPromptOverride: systemPrompt,
+      )) {
+        fullResponse += chunk;
+      }
+      
+      // Parse response into structured format
+      final lines = fullResponse.split('\n');
+      final formal = <String>[];
+      final informal = <String>[];
+      
+      bool inFormal = false;
+      bool inInformal = false;
+      
+      for (var line in lines) {
+        if (line.toLowerCase().contains('formal')) {
+          inFormal = true;
+          inInformal = false;
+        } else if (line.toLowerCase().contains('informal')) {
+          inInformal = true;
+          inFormal = false;
+        } else if (line.trim().isNotEmpty && !line.startsWith('#')) {
+          if (inFormal && formal.length < 5) {
+            formal.add(line.trim());
+          } else if (inInformal && informal.length < 5) {
+            informal.add(line.trim());
+          }
+        }
+      }
+      
+      return {
+        'formal': formal.isNotEmpty ? formal : ['Good morning', 'Good afternoon', 'Good evening', 'Hello', 'Greetings'],
+        'informal': informal.isNotEmpty ? informal : ['Hi', 'Hey', 'What\'s up', 'How are you', 'Hey there'],
+        'language': language,
+      };
+    } catch (e) {
+      debugPrint('Error generating greetings: $e');
+      return {
+        'formal': ['Good morning', 'Good afternoon', 'Good evening', 'Hello', 'Greetings'],
+        'informal': ['Hi', 'Hey', 'What\'s up', 'How are you', 'Hey there'],
+        'language': language,
+      };
+    }
   }
 
   // Helper methods for parsing and fallbacks

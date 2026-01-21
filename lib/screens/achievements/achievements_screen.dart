@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
@@ -9,12 +12,12 @@ import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AchievementsScreen extends ConsumerWidget {
-  const AchievementsScreen({Key? key}) : super(key: key);
+  const AchievementsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Achievements are temporarily unavailable',
+      errorMessage: 'Unable to load achievements. Please check your connection and try again.',
       onRetry: () {
         // Retry by rebuilding
       },
@@ -23,12 +26,41 @@ class AchievementsScreen extends ConsumerWidget {
   }
 
   Widget _buildContent(BuildContext context, WidgetRef ref) {
-    final achievementsNotifier = ref.watch(achievementsProvider.notifier);
-    final achievements = ref.watch(achievementsProvider.notifier).achievements;
-    final totalXP = ref.watch(achievementsProvider.notifier).totalXP;
-    final level = ref.watch(achievementsProvider.notifier).level;
-    final unlockedCount = ref.watch(achievementsProvider.notifier).unlockedCount;
     final isDark = context.isDarkMode;
+    
+    // Safely access achievements provider with error handling
+    try {
+      final achievementsNotifier = ref.watch(achievementsProvider.notifier);
+      final achievements = achievementsNotifier.achievements;
+      final totalXP = achievementsNotifier.totalXP;
+      final level = achievementsNotifier.level;
+      final unlockedCount = achievementsNotifier.unlockedCount;
+      
+      return _buildAchievementsContent(
+        context: context,
+        isDark: isDark,
+        achievements: achievements,
+        totalXP: totalXP,
+        level: level,
+        unlockedCount: unlockedCount,
+      );
+    } catch (e) {
+      // Handle errors gracefully
+      if (context.mounted) {
+        ErrorHandler.showError(context, e);
+      }
+      return _buildErrorState(context, isDark);
+    }
+  }
+
+  Widget _buildAchievementsContent({
+    required BuildContext context,
+    required bool isDark,
+    required List<Achievement> achievements,
+    required int totalXP,
+    required int level,
+    required int unlockedCount,
+  }) {
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -52,7 +84,7 @@ class AchievementsScreen extends ConsumerWidget {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 20,
                   offset: const Offset(0, 10),
                 ),
@@ -70,7 +102,7 @@ class AchievementsScreen extends ConsumerWidget {
                           icon: const Icon(Icons.arrow_back, color: Colors.white),
                           onPressed: () => Navigator.of(context).pop(),
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Colors.white.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -80,7 +112,7 @@ class AchievementsScreen extends ConsumerWidget {
                             Scaffold.of(context).openDrawer();
                           },
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Colors.white.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
@@ -105,7 +137,7 @@ class AchievementsScreen extends ConsumerWidget {
                       'Your rewards & badges',
                       style: TextStyle(
                         fontSize: 16.sp,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -199,7 +231,7 @@ class AchievementsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryGreen.withOpacity(0.3),
+            color: AppColors.primaryGreen.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -229,7 +261,7 @@ class AchievementsScreen extends ConsumerWidget {
                       '$totalXP XP',
                       style: TextStyle(
                         fontSize: 18.sp,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -237,7 +269,7 @@ class AchievementsScreen extends ConsumerWidget {
                 Container(
                   padding: EdgeInsets.all(16.sp),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Text(
@@ -254,7 +286,7 @@ class AchievementsScreen extends ConsumerWidget {
               child: LinearProgressIndicator(
                 value: progressNeeded > 0 ? progressToNext / progressNeeded : 1.0,
                 minHeight: 12,
-                backgroundColor: Colors.white.withOpacity(0.3),
+                backgroundColor: Colors.white.withValues(alpha: 0.3),
                 valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
               ),
             ),
@@ -297,7 +329,7 @@ class AchievementsScreen extends ConsumerWidget {
           label,
           style: TextStyle(
             fontSize: 12.sp,
-            color: color.withOpacity(0.8),
+            color: color.withValues(alpha: 0.8),
           ),
         ),
       ],
@@ -319,7 +351,7 @@ class AchievementsScreen extends ConsumerWidget {
         boxShadow: isUnlocked
             ? [
                 BoxShadow(
-                  color: rarityColor.withOpacity(0.3),
+                  color: rarityColor.withValues(alpha: 0.3),
                   blurRadius: 15,
                   offset: const Offset(0, 5),
                 ),
@@ -336,7 +368,7 @@ class AchievementsScreen extends ConsumerWidget {
               padding: EdgeInsets.all(12.sp),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? rarityColor.withOpacity(0.2)
+                    ? rarityColor.withValues(alpha: 0.2)
                     : (isDark ? const Color(0xFF2A4A35) : Colors.grey[100]),
                 shape: BoxShape.circle,
               ),
@@ -382,7 +414,7 @@ class AchievementsScreen extends ConsumerWidget {
             Container(
               padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
               decoration: BoxDecoration(
-                color: isUnlocked ? rarityColor.withOpacity(0.2) : Colors.transparent,
+                color: isUnlocked ? rarityColor.withValues(alpha: 0.2) : Colors.transparent,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
@@ -495,7 +527,7 @@ class AchievementsScreen extends ConsumerWidget {
             borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
             boxShadow: achievement.isUnlocked ? DesignSystem.shadowMedium : [],
             border: achievement.isUnlocked
-                ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withOpacity(0.2), width: 2)
+                ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withValues(alpha: 0.2), width: 2)
                 : Border.all(
                     color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
                     width: 1,
@@ -592,6 +624,41 @@ class AchievementsScreen extends ConsumerWidget {
             }),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildErrorState(BuildContext context, bool isDark) {
+    return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error_outline,
+              size: 64.sp,
+              color: isDark ? Colors.white70 : Colors.black54,
+            ),
+            SizedBox(height: 16.sp),
+            Text(
+              'Unable to load achievements',
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+            SizedBox(height: 8.sp),
+            Text(
+              'Please try again later',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? Colors.grey[400] : Colors.grey[600],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

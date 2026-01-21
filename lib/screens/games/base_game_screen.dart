@@ -8,7 +8,12 @@ import '../../providers/hearts_provider.dart';
 import '../../services/lazy_game_loader.dart';
 import '../../services/telemetry_service.dart';
 import '../../utils/gamification_integration.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
+import '../../widgets/rive_global_guide.dart';
+import '../../games/animation/rive_asset_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Base class for all game screens - handles common functionality
@@ -133,7 +138,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
     // If incorrect, check hearts system
     if (result == GameResult.incorrect) {
-      final canContinue = await ref.gamify.onMistake();
+      final canContinue = await GamificationIntegrationHelper.of(ref).onMistake();
       if (!canContinue && mounted) {
         _showOutOfHeartsDialog();
         return false;
@@ -165,7 +170,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
               style: TextStyle(color: Colors.grey[700]),
             ),
             const SizedBox(height: 16),
-            const HeartsWidget(),
+            const HeartsWidget(showRefill: false),
           ],
         ),
         actions: [
@@ -178,7 +183,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           ),
           FilledButton.icon(
             onPressed: () async {
-              final success = await ref.gamify.refillHearts();
+              final success = await GamificationIntegrationHelper.of(ref).refillHearts();
               if (success && mounted) {
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -205,9 +210,10 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       final wordsLearned = endedSession.correctCount;
 
       // Award gamification
-      await ref.gamify.onGameComplete(
+      await GamificationIntegrationHelper.of(ref).onGameComplete(
         xpEarned: xpEarned,
         wordsLearned: wordsLearned,
+        accuracy: endedSession.accuracy,
       );
 
       if (mounted) {
@@ -308,7 +314,21 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             onPressed: widget.onBack ?? () => Navigator.pop(context),
           ),
         ),
-        body: const Center(child: CircularProgressIndicator()),
+        body: Stack(
+          children: [
+            const Center(child: CircularProgressIndicator()),
+            // Rive guide in corner
+            Positioned(
+              top: 16,
+              right: 16,
+              child: RiveGlobalGuide(
+                width: 80.w,
+                height: 80.h,
+                showInCorner: true,
+              ),
+            ),
+          ],
+        ),
       );
     }
 
@@ -321,25 +341,53 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             onPressed: widget.onBack ?? () => Navigator.pop(context),
           ),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error, size: 64, color: Colors.red),
-              const SizedBox(height: 16),
-              Text('Error: $_error'),
-              const SizedBox(height: 16),
+        body: Stack(
+          children: [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text('Error: $_error'),
+                  const SizedBox(height: 16),
                   FilledButton(
                     onPressed: _initializeGame,
                     child: const Text('Retry'),
                   ),
-            ],
-          ),
+                ],
+              ),
+            ),
+            // Rive guide in corner
+            Positioned(
+              top: 16,
+              right: 16,
+              child: RiveGlobalGuide(
+                width: 80.w,
+                height: 80.h,
+                showInCorner: true,
+              ),
+            ),
+          ],
         ),
       );
     }
 
-    return buildGameContent(context);
+    return Stack(
+      children: [
+        buildGameContent(context),
+        // Rive guide in corner for all games
+        Positioned(
+          top: 16,
+          right: 16,
+          child: RiveGlobalGuide(
+            width: 80.w,
+            height: 80.h,
+            showInCorner: true,
+          ),
+        ),
+      ],
+    );
   }
 
   /// Override to build the actual game UI

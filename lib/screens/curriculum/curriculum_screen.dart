@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
@@ -6,6 +8,7 @@ import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,9 +34,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
       await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading curriculum: $e')),
-        );
+        ErrorHandler.showError(context, e);
       }
     }
   }
@@ -41,7 +42,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
   @override
   Widget build(BuildContext context) {
     return ErrorBoundary(
-      errorMessage: 'Comprehensive Curriculum is temporarily unavailable',
+      errorMessage: 'Unable to load curriculum. Please check your connection and try again.',
       onRetry: () {
         _loadCurriculum();
       },
@@ -222,7 +223,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
   Widget _buildLevelsView(BuildContext context, String language, bool isDark) {
     final levels = ref.read(curriculumProvider.notifier).getLevelsForLanguage(language);
 
-    return ListView.builder(
+    return OptimizedListView.builder(
       padding: EdgeInsets.all(16.sp),
       itemCount: levels.length,
       itemBuilder: (context, index) {
@@ -422,8 +423,8 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
           // Navigate to lesson detail screen
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => LessonDetailScreen(
+            SmoothPageRoute(
+              child: LessonDetailScreen(
                 lesson: lesson,
                 language: language,
                 level: level,

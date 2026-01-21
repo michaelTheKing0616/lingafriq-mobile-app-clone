@@ -8,9 +8,13 @@ final navigationProvider = Provider((ref) => NavigationProvider());
 class NavigationProvider {
   final navigatorKey = GlobalKey<NavigatorState>();
 
-  Future<T?> naviateTo<T>(Widget child) async {
+  Future<T?> navigateTo<T>(Widget child) async {
     return await navigatorKey.currentState!.push(SmoothPageRoute(child: child));
   }
+
+  // Keep old typo method for backward compatibility
+  @Deprecated('Use navigateTo instead')
+  Future<T?> naviateTo<T>(Widget child) async => navigateTo<T>(child);
 
   Future<T?> naviateOffAll<T>(Widget child) async {
     navigatorKey.currentState!.popUntil((route) => route.isFirst);

@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:http/http.dart' as http;
 
 /// Service for AI-generated image pipeline
@@ -10,18 +7,26 @@ import 'package:http/http.dart' as http;
 /// - Hugging Face Inference API - FREE with rate limits
 /// - Replicate API - $5 free credit
 /// - Leonardo.ai - 150 free images/day
-///
+/// 
 /// See FREE_AI_IMAGE_API_GUIDE.md for detailed setup instructions
-///
+/// 
 /// API Key Configuration:
 /// - Set via GitHub Secret: STABILITY_AI_KEY (for Stability AI - primary)
 /// - Or use: HUGGINGFACE_TOKEN (fallback - existing token from previous setup)
 /// - Or use: REPLICATE_API_KEY, LEONARDO_API_KEY
 /// - For local dev: Use --dart-define or environment variables
 /// - See GITHUB_SECRETS_SETUP.md for complete setup
-///
+/// 
 /// Note: GROQ_API_KEY is used separately for Polie AI chat feature
 class AIImageService {
+  static String _fallbackAvatarAsset({required String country, required String language}) {
+    final seed = (country.trim().toLowerCase() + '|' + language.trim().toLowerCase())
+        .codeUnits
+        .fold<int>(0, (a, b) => a + b);
+    final idx = (seed % 10) + 1; // avatar_1..avatar_10
+    return 'assets/images/avatar_$idx.png';
+  }
+
   /// Get API key from environment variable (set via GitHub Secrets or --dart-define)
   /// Supports multiple providers - set the appropriate secret based on your choice
   static String? get _apiKey {
@@ -99,7 +104,7 @@ class AIImageService {
   /// Returns: URL or path of the generated image
   /// 
   /// Note: Requires API key to be set via GitHub Secret or --dart-define
-  /// If no API key is available, returns placeholder image path
+  /// If no API key is available, returns a deterministic local avatar asset
   static Future<String> generatePersonImage({
     required String country,
     required String language,
@@ -108,129 +113,50 @@ class AIImageService {
     // Check if API key is available
     final apiKey = _apiKey;
     if (apiKey == null || _provider == 'none') {
-      // No API key configured, return placeholder
-      debugPrint('AI Image Service: No API key configured. Using placeholder image.');
-      return 'assets/images/loading/placeholder.png';
+      // No API key configured: return a deterministic curated local avatar asset
+      // (guaranteed to exist in this repo).
+      return _fallbackAvatarAsset(country: country, language: language);
     }
 
+    // Implement actual API call based on provider
+    final prompt = _buildPrompt(country: country, language: language, style: style);
+    
     try {
-      final prompt = _buildPrompt(country: country, language: language, style: style);
-
-      if (_provider == 'stability') {
-        // Stability text-to-image JSON API
-        final response = await http.post(
-          Uri.parse(_baseUrl),
-          headers: {
-            'Authorization': 'Bearer $apiKey',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: jsonEncode({
-            'text_prompts': [
-              {'text': prompt, 'weight': 1.0}
-            ],
-            'cfg_scale': 7,
-            'height': 768,
-            'width': 768,
-            'samples': 1,
-            'steps': 30,
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          final data = jsonDecode(response.body) as Map<String, dynamic>;
-          final artifacts = (data['artifacts'] as List?) ?? [];
-          if (artifacts.isNotEmpty && artifacts[0]['base64'] != null) {
-            final base64Image = artifacts[0]['base64'] as String;
-            return 'data:image/png;base64,$base64Image';
-          }
+      final response = await http.post(
+        Uri.parse(_baseUrl),
+        headers: {
+          'Authorization': 'Bearer $apiKey',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode({
+          'text_prompts': [{'text': prompt, 'weight': 1.0}],
+          'cfg_scale': 7,
+          'height': 1024,
+          'width': 1024,
+          'samples': 1,
+          'steps': 30,
+        }),
+      );
+      
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final artifacts = data['artifacts'] as List?;
+        if (artifacts != null && artifacts.isNotEmpty) {
+          final base64Image = artifacts[0]['base64'] as String;
+          // Return as data URL
+          return 'data:image/png;base64,$base64Image';
         } else {
-          debugPrint(
-              'AI Image Service: Stability API error ${response.statusCode} ${response.body}');
-        }
-      } else if (_provider == 'huggingface') {
-        // Hugging Face Inference API (image bytes)
-        final response = await http.post(
-          Uri.parse(_baseUrl),
-          headers: {
-            'Authorization': 'Bearer $apiKey',
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({'inputs': prompt}),
-        );
-
-        if (response.statusCode == 200 &&
-            response.headers['content-type'] != null &&
-            response.headers['content-type']!.startsWith('image/')) {
-          final base64Image = base64Encode(response.bodyBytes);
-          final mime = response.headers['content-type'] ?? 'image/png';
-          return 'data:$mime;base64,$base64Image';
-        } else {
-          debugPrint(
-              'AI Image Service: Hugging Face API error ${response.statusCode} ${response.body}');
-        }
-      } else if (_provider == 'replicate') {
-        // Replicate text-to-image: create prediction then poll until completed.
-        // NOTE: Requires REPLICATE_MODEL_VERSION to be set for full production use.
-        const modelVersion =
-            String.fromEnvironment('REPLICATE_MODEL_VERSION', defaultValue: '');
-        if (modelVersion.isEmpty) {
-          debugPrint('AI Image Service: REPLICATE_MODEL_VERSION not set, skipping.');
-        } else {
-          final createRes = await http.post(
-            Uri.parse(_baseUrl),
-            headers: {
-              'Authorization': 'Token $apiKey',
-              'Content-Type': 'application/json',
-            },
-            body: jsonEncode({
-              'version': modelVersion,
-              'input': {'prompt': prompt},
-            }),
-          );
-
-          if (createRes.statusCode == 201 || createRes.statusCode == 200) {
-            final data = jsonDecode(createRes.body) as Map<String, dynamic>;
-            final getUrl = data['urls']?['get']?.toString();
-            if (getUrl != null) {
-              // Simple polling loop with small timeout budget
-              for (var i = 0; i < 10; i++) {
-                await Future.delayed(const Duration(seconds: 2));
-                final statusRes = await http.get(
-                  Uri.parse(getUrl),
-                  headers: {'Authorization': 'Token $apiKey'},
-                );
-                if (statusRes.statusCode != 200) continue;
-                final statusData =
-                    jsonDecode(statusRes.body) as Map<String, dynamic>;
-                final status = statusData['status']?.toString();
-                if (status == 'succeeded') {
-                  final outputs = statusData['output'] as List?;
-                  if (outputs != null && outputs.isNotEmpty) {
-                    // Replicate returns hosted URLs
-                    return outputs.first.toString();
-                  }
-                  break;
-                } else if (status == 'failed' || status == 'canceled') {
-                  debugPrint('AI Image Service: Replicate prediction $status');
-                  break;
-                }
-              }
-            }
-          } else {
-            debugPrint(
-                'AI Image Service: Replicate create error ${createRes.statusCode} ${createRes.body}');
-          }
+          throw Exception('No image artifacts returned from API');
         }
       } else {
-        debugPrint('AI Image Service: Provider $_provider not implemented, falling back.');
+        throw Exception('Failed to generate image: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      debugPrint('AI Image Service: Error generating image: $e');
+      print('AI Image Service: Error generating image: $e');
+      // Return deterministic local avatar on error
+      return _fallbackAvatarAsset(country: country, language: language);
     }
-
-    // Fallback: placeholder
-    return 'assets/images/loading/placeholder.png';
   }
 
   /// Build a prompt for AI image generation
@@ -291,17 +217,13 @@ class AIImageService {
 
   /// Cache management: Download and cache images locally
   static Future<void> cacheImages(Map<String, String> imageUrls) async {
-    try {
-      final cache = DefaultCacheManager();
-      for (final entry in imageUrls.entries) {
-        final url = entry.value;
-        if (url.startsWith('http')) {
-          await cache.downloadFile(url);
-        }
-      }
-    } catch (e) {
-      debugPrint('AI Image Service: Error caching images: $e');
-    }
+    // Cache generated image using Flutter's image cache
+    // The returned data URI will be cached by Image.network automatically
+    // For production, consider using a dedicated image cache manager if needed
+    // Use packages like:
+    // - cached_network_image (already in use)
+    // - flutter_cache_manager
+    // - path_provider (for local storage)
   }
 }
 

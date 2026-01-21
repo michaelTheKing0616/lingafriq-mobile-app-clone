@@ -102,17 +102,16 @@ class EnhancedSTTService {
     bool allowFallback = true,
   }) async {
     try {
-      final formData = FormData.fromBytes(
-        audioData,
-        filename: 'audio.wav',
-      );
-
-      formData.fields.addAll([
-        MapEntry('language_code', languageCode),
-        if (dialect != null) MapEntry('dialect', dialect),
-        MapEntry('enable_word_timings', enableWordTimings.toString()),
-        MapEntry('enable_accent_detection', enableAccentDetection.toString()),
-      ]);
+      final formData = FormData.fromMap({
+        'audio': MultipartFile.fromBytes(
+          audioData,
+          filename: 'audio.wav',
+        ),
+        'language_code': languageCode,
+        if (dialect != null) 'dialect': dialect,
+        'enable_word_timings': enableWordTimings.toString(),
+        'enable_accent_detection': enableAccentDetection.toString(),
+      });
 
       final response = await _dio.post(
         '${Api.baseurl}api/voice/stt/transcribe-enhanced',
@@ -143,12 +142,13 @@ class EnhancedSTTService {
   /// Uses direct API call (same endpoint as VoiceApiService.transcribeAudioBytes)
   Future<STTRecognitionResult> _fallbackToBasicSTT(Uint8List audioData, String languageCode) async {
     try {
-      final formData = FormData.fromBytes(
-        audioData,
-        filename: 'audio.wav',
-      );
-
-      formData.fields.add(MapEntry('language', languageCode));
+      final formData = FormData.fromMap({
+        'audio': MultipartFile.fromBytes(
+          audioData,
+          filename: 'audio.wav',
+        ),
+        'language': languageCode,
+      });
 
       final response = await _dio.post(
         '${Api.baseurl}api/voice/stt/transcribe',
@@ -200,16 +200,14 @@ class EnhancedSTTService {
     List<String>? candidateLanguages,
   }) async {
     try {
-      final formData = FormData.fromBytes(
-        audioData,
-        filename: 'audio.wav',
-      );
-
-      if (candidateLanguages != null && candidateLanguages.isNotEmpty) {
-        formData.fields.addAll([
-          MapEntry('candidate_languages', candidateLanguages.join(',')),
-        ]);
-      }
+      final formData = FormData.fromMap({
+        'audio': MultipartFile.fromBytes(
+          audioData,
+          filename: 'audio.wav',
+        ),
+        if (candidateLanguages != null && candidateLanguages.isNotEmpty)
+          'candidate_languages': candidateLanguages.join(','),
+      });
 
       final response = await _dio.post(
         '${Api.baseurl}api/voice/stt/detect-language',

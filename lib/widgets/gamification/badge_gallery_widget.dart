@@ -119,7 +119,7 @@ class _BadgeCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Icon(
-                _getBadgeIcon(badge.category),
+                _getBadgeIcon(badge.category.name),
                 size: 32.sp,
                 color: isUnlocked
                     ? AppColors.accentGold
@@ -165,11 +165,8 @@ class _BadgeCard extends StatelessWidget {
     );
   }
 
-  IconData _getBadgeIcon(Object category) {
-    final categoryStr = category is String
-        ? category
-        : category.toString().split('.').last;
-    switch (categoryStr.toLowerCase()) {
+  IconData _getBadgeIcon(String category) {
+    switch (category.toLowerCase()) {
       case 'streak':
         return Icons.local_fire_department_rounded;
       case 'level':

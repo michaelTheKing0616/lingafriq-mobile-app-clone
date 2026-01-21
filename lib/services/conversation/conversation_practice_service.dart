@@ -8,6 +8,7 @@
 /// - Dialogue flow generation
 
 import 'package:flutter/foundation.dart';
+import 'package:dio/dio.dart';
 import '../../models/lesson_item_model.dart';
 import '../../providers/dio_provider.dart';
 import '../../utils/api.dart';

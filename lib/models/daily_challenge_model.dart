@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// Types of daily challenges
 enum ChallengeType {
   lessonsComplete,      // Complete X lessons

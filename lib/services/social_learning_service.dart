@@ -6,7 +6,7 @@
 import 'package:dio/dio.dart';
 import 'package:lingafriq/models/social_group.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
-import 'package:lingafriq/config/env_config.dart';
+import 'package:lingafriq/services/env_config.dart';
 
 class SocialLearningService {
   final Dio _dio;
@@ -14,7 +14,7 @@ class SocialLearningService {
 
   SocialLearningService({Dio? dio})
       : _dio = dio ?? Dio(),
-        _baseUrl = EnvConfig.backendUrl;
+        _baseUrl = EnvConfig.backendBaseUrl;
 
   // ===== Study Groups =====
 

@@ -9,6 +9,7 @@
 
 import 'dart:async';
 import 'dart:collection';
+import 'dart:collection';
 
 /// Batch processing result
 class BatchProcessResult<T> {
@@ -153,7 +154,8 @@ class BatchProcessor<T, R> {
       final item = queue.removeFirst();
       final index = items.length - queue.length - activeTasks.length - 1;
 
-      final task = processor(item, index).then((result) {
+      late final Future<void> task;
+      task = processor(item, index).then((result) {
         results.add(result);
         processedCount++;
         onProgress?.call(processedCount + errors.length, items.length);
@@ -202,6 +204,4 @@ class BatchProcessor<T, R> {
     return completer.future;
   }
 }
-
-import 'dart:collection';
 

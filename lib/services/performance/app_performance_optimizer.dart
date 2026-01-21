@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/painting.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/services/monitoring/performance_analytics.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
@@ -203,18 +205,56 @@ class AppPerformanceOptimizer {
   /// Optimize bundle size (report unused resources)
   Future<Map<String, dynamic>> analyzeBundleSize() async {
     try {
-      // This would integrate with build tools to analyze bundle size
-      // For now, return a placeholder structure
+      // Runtime-friendly bundle insights (no build tooling required):
+      // - count assets from AssetManifest.json
+      // - summarize common asset types
+      // - surface live image cache size as a memory proxy
+      final manifestStr = await rootBundle.loadString('AssetManifest.json');
+      final manifest = jsonDecode(manifestStr) as Map<String, dynamic>;
+      final assets = manifest.keys.toList();
+
+      int imageAssets = 0;
+      int fontAssets = 0;
+      int audioAssets = 0;
+      for (final a in assets) {
+        final lower = a.toLowerCase();
+        if (lower.endsWith('.png') ||
+            lower.endsWith('.jpg') ||
+            lower.endsWith('.jpeg') ||
+            lower.endsWith('.webp') ||
+            lower.endsWith('.gif')) {
+          imageAssets++;
+        } else if (lower.endsWith('.ttf') || lower.endsWith('.otf')) {
+          fontAssets++;
+        } else if (lower.endsWith('.mp3') ||
+            lower.endsWith('.wav') ||
+            lower.endsWith('.m4a') ||
+            lower.endsWith('.ogg')) {
+          audioAssets++;
+        }
+      }
+
+      final imageCache = PaintingBinding.instance.imageCache;
+      final imageCacheMb = imageCache.currentSizeBytes / (1024 * 1024);
+
       return {
-        'total_size_mb': 0.0,
-        'assets_size_mb': 0.0,
-        'code_size_mb': 0.0,
-        'unused_resources': [],
+        'asset_manifest_kb': manifestStr.length / 1024.0,
+        'asset_count': assets.length,
+        'asset_breakdown': {
+          'images': imageAssets,
+          'fonts': fontAssets,
+          'audio': audioAssets,
+        },
+        'runtime': {
+          'image_cache_mb': imageCacheMb,
+          'image_cache_entries': imageCache.currentSize,
+        },
+        'unused_resources': <String>[],
         'recommendations': [
-          'Use lazy loading for non-critical screens',
-          'Optimize images (use WebP format)',
+          'Use lazy loading for non-critical screens and heavy assets',
+          'Prefer WebP for large images where possible',
           'Remove unused dependencies',
-          'Enable code splitting',
+          'Use deferred components for very large optional features (advanced)',
         ],
       };
     } catch (e, stackTrace) {

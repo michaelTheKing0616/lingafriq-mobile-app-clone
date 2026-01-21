@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart' as groq;
-import 'package:lingafriq/providers/ai_chat_provider_huggingface.dart' as hf;
+import 'package:lingafriq/providers/ai_chat_provider_huggingface.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/services/env_config.dart';
 
 class AiChatScreen extends ConsumerStatefulWidget {
   const AiChatScreen({Key? key}) : super(key: key);
@@ -50,21 +49,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     _focusNode.unfocus();
 
     try {
-      // Prefer the Hybrid Polie (Groq + NLLB/AfriTeVa routing) system.
-      // Fallback to HuggingFace provider only if Groq isn't configured.
-      if (EnvConfig.isGroqConfigured) {
-        await ref.read(groq.groqChatProvider.notifier).sendMessage(message);
-      } else {
-        await ref.read(hf.huggingFaceChatProvider.notifier).sendMessage(message);
-      }
+      await ref.read(huggingFaceChatProvider.notifier).sendMessage(message);
       _scrollToBottom();
     } catch (e) {
       if (mounted) {
-        ref.read(dialogProvider('')).showPlatformDialogue(
-              title: 'Error',
-              content: Text(e.toString()),
-              action1Text: 'OK',
-            );
+        ErrorHandler.showError(context, e);
       }
     }
   }
@@ -80,22 +69,14 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         );
 
     if (result == true) {
-      if (EnvConfig.isGroqConfigured) {
-        await ref.read(groq.groqChatProvider.notifier).clearChat();
-      } else {
-        await ref.read(hf.huggingFaceChatProvider.notifier).clearChat();
-      }
+      await ref.read(huggingFaceChatProvider.notifier).clearChat();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final dynamic chatNotifier = EnvConfig.isGroqConfigured
-        ? ref.read(groq.groqChatProvider.notifier)
-        : ref.read(hf.huggingFaceChatProvider.notifier);
-    final chatState = EnvConfig.isGroqConfigured
-        ? ref.watch(groq.groqChatProvider)
-        : ref.watch(hf.huggingFaceChatProvider);
+    final chatNotifier = ref.read(huggingFaceChatProvider.notifier);
+    final chatState = ref.watch(huggingFaceChatProvider);
     final isDark = context.isDarkMode;
 
     return Scaffold(
@@ -128,9 +109,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                             ),
                           ),
                           Text(
-                            EnvConfig.isGroqConfigured
-                                ? 'Polie Hybrid (Groq + NLLB/AfriTeVa)'
-                                : 'Polie (Fallback)',
+                            'Practice African languages',
                             style: TextStyle(
                               color: Colors.white.withOpacity(0.9),
                               fontSize: 14.sp,
@@ -151,11 +130,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             ),
           ),
           Expanded(
-            child: (chatNotifier.messages as List).isEmpty
+            child: chatNotifier.messages.isEmpty
                 ? _buildEmptyState(context)
-                : _buildChatMessages(context, (chatNotifier.messages as List)),
+                : _buildChatMessages(context, chatNotifier),
           ),
-          _buildMessageInput(context, chatNotifier, chatState.isLoading),
+          _buildMessageInput(context, chatNotifier),
         ],
       ),
     );
@@ -236,26 +215,20 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildChatMessages(BuildContext context, List messages) {
+  Widget _buildChatMessages(BuildContext context, HuggingFaceChatProvider chatProvider) {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      itemCount: messages.length,
+      itemCount: chatProvider.messages.length,
       itemBuilder: (context, index) {
-        final message = messages[index];
+        final message = chatProvider.messages[index];
         return _buildMessageBubble(context, message);
       },
     );
   }
 
-  Widget _buildMessageBubble(BuildContext context, dynamic message) {
-    final role = (message as dynamic).role?.toString() ?? '';
-    final content = (message as dynamic).content?.toString() ?? '';
-    final timestamp = (message as dynamic).timestamp is DateTime
-        ? (message as dynamic).timestamp as DateTime
-        : DateTime.now();
-
-    final isUser = role == 'user';
+  Widget _buildMessageBubble(BuildContext context, ChatMessage message) {
+    final isUser = message.role == 'user';
     final isDark = context.isDarkMode;
 
     return Padding(
@@ -306,7 +279,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    content,
+                    message.content,
                     style: TextStyle(
                       color: isUser
                           ? Colors.white
@@ -317,7 +290,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    _formatTime(timestamp),
+                    _formatTime(message.timestamp),
                     style: TextStyle(
                       color: isUser
                           ? Colors.white70
@@ -350,8 +323,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(BuildContext context, dynamic _chatProvider, bool isLoading) {
+  Widget _buildMessageInput(BuildContext context, HuggingFaceChatProvider chatProvider) {
     final isDark = context.isDarkMode;
+    final isLoading = chatProvider.isBusy;
 
     return Container(
       decoration: BoxDecoration(

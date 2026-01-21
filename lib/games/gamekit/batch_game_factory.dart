@@ -8,6 +8,7 @@ import 'game_scoring.dart';
 import 'game_feedback.dart';
 import 'game_difficulty.dart';
 import 'game_migration_helper.dart';
+import 'game_turn_context.dart';
 
 /// Factory for creating standard game engines for all games
 /// This ensures consistency across all 35+ games

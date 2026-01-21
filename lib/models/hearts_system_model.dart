@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 /// Hearts/Lives System Configuration
 class HeartsConfig {
   static const int maxHearts = 5;

@@ -8,6 +8,9 @@ import 'package:lingafriq/services/placement_test_service.dart';
 import 'package:lingafriq/services/localization_service.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 
 class PlacementQuizScreen extends HookConsumerWidget {
   final VoidCallback onComplete;

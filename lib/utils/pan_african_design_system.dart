@@ -33,6 +33,7 @@ class PanAfricanColors {
   
   /// Gold - Representing African wealth, sunsets, and success
   static const Color secondary = Color(0xFFF7CB46);
+  static const Color secondaryLight = Color(0xFFFFF3CD);
   static const Color secondaryDark = Color(0xFFE8A817);
   static const Color secondaryContainer = Color(0xFFFFF3CD);
   static const Color onSecondaryContainer = Color(0xFF5C4A00);
@@ -50,6 +51,9 @@ class PanAfricanColors {
   // ═══════════════════════════════════════════════════════════════════════════
   // ACCENT COLORS - African Textiles Inspired
   // ═══════════════════════════════════════════════════════════════════════════
+  
+  /// Accent color - Using secondary gold for vibrant accents
+  static const Color accent = secondary;
   
   /// Kente Red
   static const Color kenteRed = Color(0xFFC4413A);
@@ -86,11 +90,13 @@ class PanAfricanColors {
   // ═══════════════════════════════════════════════════════════════════════════
   
   // Light Mode
+  static const Color surface = Color(0xFFFAFAFA);
   static const Color surfaceLight = Color(0xFFFAFAFA);
   static const Color surfaceContainerLight = Color(0xFFF0F2F0);
   static const Color surfaceContainerHighLight = Color(0xFFE8EBE8);
   static const Color cardLight = Color(0xFFFFFFFF);
   static const Color borderLight = Color(0xFFE0E4E0);
+  static const Color outline = Color(0xFFE0E4E0);
   
   // Dark Mode
   static const Color surfaceDark = Color(0xFF0D1810);
@@ -99,16 +105,13 @@ class PanAfricanColors {
   static const Color cardDark = Color(0xFF1F3527);
   static const Color borderDark = Color(0xFF2A4A35);
   
-  // Additional aliases for compatibility
-  static const Color surface = surfaceLight;
-  static const Color outline = borderLight;
-  static const Color textPrimary = Color(0xFF1A2E21);
-  static const Color textSecondary = Color(0xFF4A5D52);
-  
   // ═══════════════════════════════════════════════════════════════════════════
   // TEXT COLORS
   // ═══════════════════════════════════════════════════════════════════════════
   
+  static const Color textPrimary = Color(0xFF0D1B12);
+  static const Color textSecondary = Color(0xFF4A5D52);
+  static const Color textDark = Color(0xFF0D1B12);
   static const Color textPrimaryLight = Color(0xFF0D1B12);
   static const Color textSecondaryLight = Color(0xFF4A5D52);
   static const Color textDisabledLight = Color(0xFF9CA8A0);
@@ -142,13 +145,6 @@ class PanAfricanGradients {
     end: Alignment.bottomRight,
     colors: [Color(0xFFF7CB46), Color(0xFFE8A817), Color(0xFFF7CB46)],
     stops: [0.0, 0.5, 1.0],
-  );
-  
-  /// Primary Green - For success states and primary actions
-  static const LinearGradient primaryGreen = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [Color(0xFF1B7340), Color(0xFF2BEE6C)],
   );
   
   /// Kente Vibrant - Celebratory/achievement gradient
@@ -275,20 +271,14 @@ class PanAfricanShadows {
     ),
   ];
   
-  // Additional shadow getters for compatibility
-  static List<BoxShadow> get medium => md;
-  
-  static List<BoxShadow> get large => lg;
-
-  static List<BoxShadow> Function(Color) get glow => (color) => [
+  /// Generic glow method
+  static List<BoxShadow> glow(Color color) => [
     BoxShadow(
       color: color.withOpacity(0.3),
       blurRadius: 20,
       spreadRadius: 2,
     ),
   ];
-  
-  // Removed duplicate getter - use glowGreen(0.3) directly
 }
 
 /// Pan-African Typography

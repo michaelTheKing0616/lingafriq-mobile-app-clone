@@ -52,7 +52,7 @@ class ConversationContext {
   final Map<String, dynamic> userProfile;
   final Map<String, dynamic> conversationState;
   final DateTime createdAt;
-  final DateTime updatedAt;
+  DateTime updatedAt;
 
   ConversationContext({
     required this.conversationId,
@@ -230,9 +230,45 @@ class ConversationContextManager {
         .take(5)
         .toList();
 
-    // Simple consistency check (in production, use ML model)
-    // For now, just check if personality is maintained
-    return true; // Placeholder
+    // Heuristic consistency check:
+    // - Block common "AI disclaimer" / refusal patterns that break character.
+    // - Ensure assistant stays aligned to the configured personality tone keywords (best-effort).
+    final personality = context.personality!.toLowerCase().trim();
+    if (personality.isEmpty) return true;
+
+    final assistantText = recentMessages.map((m) => m.content).join('\n').toLowerCase();
+
+    const disallowedPhrases = <String>[
+      'as an ai',
+      'as a language model',
+      "i can't help with",
+      "i cannot help with",
+      "i can’t help with",
+      'i am an ai',
+      'i am a chatbot',
+      'i do not have personal opinions',
+      'i don\'t have personal opinions',
+    ];
+    if (disallowedPhrases.any(assistantText.contains)) {
+      return false;
+    }
+
+    // Very lightweight personality cues (extendable).
+    // If the personality string contains certain archetypes, expect matching markers sometimes.
+    final cueMap = <String, List<String>>{
+      'friendly': ['great', 'nice', 'let\'s', 'sure', 'happy to'],
+      'strict': ['must', 'should', 'important', 'rule', 'focus'],
+      'playful': ['fun', 'game', 'haha', 'play', 'challenge'],
+      'formal': ['please', 'kindly', 'therefore', 'however'],
+    };
+
+    final matchedArchetypes = cueMap.keys.where((k) => personality.contains(k)).toList();
+    if (matchedArchetypes.isEmpty) return true;
+
+    // If we expect cues, require at least one cue hit across recent messages.
+    final expectedCues = matchedArchetypes.expand((k) => cueMap[k] ?? const <String>[]).toList();
+    final hasCue = expectedCues.any(assistantText.contains);
+    return hasCue;
   }
 
   /// Clear conversation context

@@ -1,7 +1,6 @@
 /// Roleplay Progress Model
 /// Tracks user progress through roleplay scenarios
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 
 /// Scenario Progress
 class ScenarioProgress {

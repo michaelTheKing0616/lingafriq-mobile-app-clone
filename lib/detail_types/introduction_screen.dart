@@ -11,7 +11,7 @@ import '../widgets/top_gradient_box_builder.dart';
 
 class IntroductionScreen extends ConsumerWidget {
   final Language language;
-  const IntroductionScreen({Key? key, required this.language}) : super(key: key);
+  const IntroductionScreen({super.key, required this.language});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

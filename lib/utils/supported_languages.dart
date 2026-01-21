@@ -117,18 +117,6 @@ class SupportedLanguages {
   
   /// Get all supported languages
   static List<String> get allLanguages => _languages.keys.toList();
-
-  /// True if the language (name/code/iso639-3) is supported.
-  static bool isSupported(String language) {
-    final key = language.toLowerCase();
-    if (_languages.containsKey(key)) return true;
-    return _languages.values.any((info) {
-      final code = (info['code'] as String?)?.toLowerCase();
-      final iso = (info['iso639_3'] as String?)?.toLowerCase();
-      final name = (info['name'] as String?)?.toLowerCase();
-      return key == code || key == iso || key == name;
-    });
-  }
   
   /// Get language info
   static Map<String, dynamic> getLanguageInfo(String language) {

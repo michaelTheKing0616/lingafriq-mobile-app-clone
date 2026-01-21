@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/games/base_game_screen.dart';
-import '../../models/game/game_session_model.dart';
+import '../../models/game/game_session_model.dart' show GameType, GameResult;
 import 'generic_game_template.dart';
 import 'game_session.dart';
 import 'all_games_registry.dart';
-import '../animation/rive_game_guide.dart';
 import '../widgets/game_answer_tile.dart';
 import '../widgets/progress_meter.dart';
 import 'game_result.dart';
@@ -87,9 +86,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
       setState(() {});
     } catch (e) {
       debugPrint('Error loading content: $e');
-      setState(() {
-        error = 'Failed to load content. Please try again.';
-      });
+      setError('Failed to load content. Please try again.');
     }
   }
 
@@ -148,9 +145,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
       });
     } catch (e) {
       debugPrint('Error processing answer: $e');
-      setState(() {
-        error = 'Failed to process answer. Please try again.';
-      });
+      setError('Failed to process answer. Please try again.');
     }
   }
 

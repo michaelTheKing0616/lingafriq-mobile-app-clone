@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
 class ShadowingExerciseScreen extends ConsumerStatefulWidget {
@@ -39,15 +41,16 @@ class _ShadowingExerciseScreenState
   Future<void> _startRecording() async {
     try {
       if (await _recorder.hasPermission()) {
-        final outputPath =
-            '${Directory.systemTemp.path}${Platform.pathSeparator}shadowing_${DateTime.now().millisecondsSinceEpoch}.wav';
+        final tempDir = await getTemporaryDirectory();
+        final recordingPath =
+            '${tempDir.path}${Platform.pathSeparator}shadowing_${DateTime.now().millisecondsSinceEpoch}.wav';
         await _recorder.start(
           const RecordConfig(
             encoder: AudioEncoder.wav,
             sampleRate: 16000,
             numChannels: 1,
           ),
-          path: outputPath,
+          path: recordingPath,
         );
         setState(() {
           _isRecording = true;
@@ -62,9 +65,7 @@ class _ShadowingExerciseScreenState
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error starting recording: $e')),
-        );
+        ErrorHandler.showError(context, e);
       }
     }
   }
@@ -82,9 +83,7 @@ class _ShadowingExerciseScreenState
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error stopping recording: $e')),
-        );
+        ErrorHandler.showError(context, e);
       }
       setState(() {
         _isRecording = false;
@@ -112,9 +111,7 @@ class _ShadowingExerciseScreenState
       });
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error evaluating: $e')),
-        );
+        ErrorHandler.showError(context, e);
       }
       setState(() {
         _isEvaluating = false;

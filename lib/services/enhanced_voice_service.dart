@@ -201,8 +201,8 @@ class EnhancedVoiceService {
         options: Options(
           headers: {
             'Accept': 'application/json',
-            if (_secrets.huggingFaceToken != null)
-              'Authorization': 'Bearer ${_secrets.huggingFaceToken}',
+            if (_secrets.huggingfaceToken != null)
+              'Authorization': 'Bearer ${_secrets.huggingfaceToken}',
           },
           sendTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),

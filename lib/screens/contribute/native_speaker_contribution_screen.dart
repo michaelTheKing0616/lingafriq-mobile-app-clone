@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +8,9 @@ import '../../services/polie_content_generator.dart';
 import '../../widgets/voice/pronunciation_feedback_widget.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/api_provider.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 
 /// Recording Prompt Model
 class RecordingPrompt {
@@ -996,7 +998,6 @@ Format as JSON array:
         language: _selectedLanguage,
         category: _selectedCategory,
         promptText: _currentPrompt!.text,
-        promptTranslation: _currentPrompt!.translation,
         audioPath: _lastRecordingPath!,
       );
       
@@ -1044,6 +1045,3 @@ Format as JSON array:
     super.dispose();
   }
 }
-
-// Helper function to parse JSON
-// (moved to top of file) import 'dart:convert';

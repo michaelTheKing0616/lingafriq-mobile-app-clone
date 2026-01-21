@@ -10,6 +10,9 @@ import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/api_provider.dart';
 import '../../services/review/intelligent_review_service.dart';
+import '../../utils/error_handler.dart';
+import '../../utils/integration_helpers.dart';
+import '../../utils/performance_utils.dart';
 import '../../widgets/material3/haptic_button.dart';
 
 class GamifiedReviewScreen extends ConsumerStatefulWidget {
@@ -51,17 +54,15 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
       final user = ref.read(userProvider);
       if (user != null) {
         // Send to backend
-        await ref.read(apiProvider.notifier).sendTelemetry([
-          {
-            'eventType': 'user_rating',
-            'userId': user.globalId ?? user.id.toString(),
-            'metadata': {
-              'rating': rating,
-              'reason': _selectedReason,
-              'timestamp': DateTime.now().toIso8601String(),
-            },
+        await ref.read(apiProvider.notifier).sendTelemetry({
+          'eventType': 'user_rating',
+          'userId': user.id,
+          'metadata': {
+            'rating': rating,
+            'reason': _selectedReason,
+            'timestamp': DateTime.now().toIso8601String(),
           },
-        ]);
+        });
 
         // Award gamification rewards
         if (rating >= 4) {
