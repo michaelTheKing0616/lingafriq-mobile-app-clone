@@ -527,5 +527,38 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       logger.error('Error saving SRS', tag: 'game-provider', error: e);
     }
   }
+
+  /// Warm up game content for a specific game type
+  /// Preloads game data, cards, and assets to improve initial load time
+  Future<void> warmupGameContent({
+    required String gameType,
+    String? language,
+    String? difficulty,
+  }) async {
+    try {
+      logger.info('Warming up game content', tag: 'game-provider', context: {
+        'gameType': gameType,
+        'language': language,
+        'difficulty': difficulty,
+      });
+
+      // Preload cards for the game type
+      if (language != null) {
+        await _loadCardsForGame(
+          language: language,
+          level: difficulty,
+          count: 20, // Preload more cards for warmup
+        );
+      }
+
+      // Additional warmup logic can be added here (e.g., preload audio, images, etc.)
+      logger.info('Game content warmed up', tag: 'game-provider', context: {'gameType': gameType});
+    } catch (e) {
+      logger.error('Error warming up game content', tag: 'game-provider', error: e, context: {
+        'gameType': gameType,
+      });
+      // Don't throw - warmup is optional
+    }
+  }
 }
 

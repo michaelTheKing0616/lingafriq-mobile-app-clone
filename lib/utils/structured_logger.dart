@@ -160,17 +160,29 @@ class StructuredLogger {
     try {
       final sentryService = SentryService();
       if (sentryService.isInitialized) {
-        await sentryService.captureException(
-          entry.error ?? entry.message,
-          stackTrace: entry.stackTrace,
-          context: {
-            'message': entry.message,
-            'tag': entry.tag,
-            'level': entry.level.name,
-            ...entry.context,
-          },
-          level: entry.level.name.toLowerCase(),
-        );
+        if (entry.error != null) {
+          await sentryService.captureException(
+            entry.error!,
+            stackTrace: entry.stackTrace,
+            context: {
+              'message': entry.message,
+              'tag': entry.tag,
+              'level': entry.level.name,
+              ...entry.context,
+            },
+            level: entry.level.name.toLowerCase(),
+          );
+        } else {
+          await sentryService.captureMessage(
+            entry.message,
+            level: entry.level.name.toLowerCase(),
+            context: {
+              'tag': entry.tag,
+              'level': entry.level.name,
+              ...entry.context,
+            },
+          );
+        }
       }
     } catch (e) {
       // Don't fail if Sentry fails
