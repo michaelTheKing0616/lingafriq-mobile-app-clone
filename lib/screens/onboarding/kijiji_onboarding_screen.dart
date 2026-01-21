@@ -13,6 +13,7 @@ import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -126,7 +127,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         // Navigate to login screen (not TabsView) so user can log in
                         // Login screen will pre-fill credentials if available
-                        ref.read(navigationProvider).navigateOffAll(const LoginScreen());
+                        ref.read(navigationProvider).naviateOffAll(const LoginScreen());
                       },
                     );
                   default:
@@ -174,7 +175,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                     // Mark onboarding as seen
                     await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                     // Navigate directly to login screen (with pre-filled credentials if available)
-                    ref.read(navigationProvider).navigateOffAll(const LoginScreen());
+                    ref.read(navigationProvider).naviateOffAll(const LoginScreen());
                   },
                   child: Text(
                     'Skip',
@@ -188,6 +189,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
               ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -1339,7 +1341,6 @@ class _PlacementTestScreen extends HookConsumerWidget {
           ],
         ),
       ),
-    ),
     );
   }
 }

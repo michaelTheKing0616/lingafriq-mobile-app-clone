@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/conversation/conversation_practice_service.dart';
+import '../../services/conversation/dialogue_flow_generator.dart';
 import '../../models/lesson_item_model.dart';
 import '../../providers/dio_provider.dart';
 import 'package:dio/dio.dart';
 import '../../widgets/global/error_recovery_widget.dart';
 import '../../widgets/global/offline_banner.dart';
 import '../../utils/screen_integration_helper.dart';
+import '../../widgets/error_boundary.dart';
 
 class ConversationPracticeScreen extends ConsumerStatefulWidget {
   final String languageCode;
@@ -37,10 +39,21 @@ class _ConversationPracticeScreenState extends ConsumerState<ConversationPractic
   @override
   void initState() {
     super.initState();
-    final dioProviderValue = ref.read(dioProvider);
-    _conversationService = ConversationPracticeService(dioProviderValue);
-    _startSession();
+    // Note: initState doesn't have access to ref, so we'll initialize in didChangeDependencies
   }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      final dioClient = ref.read(client);
+      _conversationService = ConversationPracticeService(dioClient);
+      _isInitialized = true;
+      _startSession();
+    }
+  }
+
+  bool _isInitialized = false;
 
   @override
   void dispose() {
@@ -149,10 +162,10 @@ class _ConversationPracticeScreenState extends ConsumerState<ConversationPractic
               ),
           ],
         ),
-        body: withErrorBoundary(
-          _buildBody(),
+        body: ErrorBoundary(
           errorMessage: _error,
           onRetry: _startSession,
+          child: _buildBody(),
         ),
       ),
     );

@@ -318,7 +318,10 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
         language: room.language,
         joinedAt: joinedAt,
         role: role,
-      ).catchError((e) => logger.error('Error tracking participation', tag: 'social-audio', error: e));
+      ).catchError((e) {
+        logger.error('Error tracking participation', tag: 'social-audio', error: e);
+        return false;
+      });
       
       // Refresh rooms list (force refresh after join)
       await discoverRooms(forceRefresh: true);
@@ -359,7 +362,10 @@ class SocialAudioNotifier extends Notifier<SocialAudioState> {
           joinedAt: joinedAt,
           leftAt: leftAt,
           durationMinutes: duration,
-        ).catchError((e) => logger.error('Error tracking participation end', tag: 'social-audio', error: e));
+        ).catchError((e) {
+          logger.error('Error tracking participation end', tag: 'social-audio', error: e);
+          return false;
+        });
       }
       
       state = state.copyWith(

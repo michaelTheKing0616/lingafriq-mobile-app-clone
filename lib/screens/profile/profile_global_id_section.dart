@@ -174,13 +174,19 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                PanAfricanTextField(
+                TextField(
                   controller: handleController,
-                  label: 'Handle',
-                  hint: 'e.g., myhandle123',
-                  prefixText: '@',
-                  helperText: '3-30 characters, letters, numbers, and underscores only',
                   maxLength: 30,
+                  decoration: InputDecoration(
+                    labelText: 'Handle',
+                    hintText: 'e.g., myhandle123',
+                    prefixText: '@',
+                    helperText: '3-30 characters, letters, numbers, and underscores only',
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
                 Row(

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'dart:typed_data';
+import 'dart:io';
 import '../../models/lesson_item_model.dart';
 import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../providers/dio_provider.dart';
 import '../../widgets/global/error_recovery_widget.dart';
 import '../../widgets/global/offline_banner.dart';
 import '../../utils/screen_integration_helper.dart';
+import '../../utils/screen_helpers.dart';
+import '../../core/errors/global_error_handler.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PronunciationPracticeScreen extends ConsumerStatefulWidget {
@@ -48,11 +52,14 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
   Future<void> _startRecording() async {
     try {
       if (await _recorder.hasPermission()) {
+        final tempDir = await getTemporaryDirectory();
+        final path = '${tempDir.path}/pronunciation_${DateTime.now().millisecondsSinceEpoch}.pcm';
         await _recorder.start(
           const RecordConfig(
             encoder: AudioEncoder.pcm16bits,
             sampleRate: 16000,
           ),
+          path: path,
         );
         setState(() {
           _isRecording = true;
@@ -130,14 +137,14 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
         appBar: AppBar(
           title: const Text('Pronunciation Practice'),
         ),
-        body: withErrorBoundary(
-          _buildBody(),
+        body: ErrorBoundary(
           errorMessage: _error,
           onRetry: () {
             if (_recordedAudio != null) {
               _analyzePronunciation(_recordedAudio!);
             }
           },
+          child: _buildBody(),
         ),
       ),
     );
@@ -357,6 +364,4 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
     );
   }
 }
-
-import 'dart:io';
 

@@ -37,14 +37,15 @@ class UserProfileScreen extends ConsumerWidget {
 
   Widget _buildProfile(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final gamification = ref.watch(gamificationProvider);
+    final gamificationNotifier = ref.read(gamificationProvider.notifier);
+    final gamification = gamificationNotifier.gamification;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
     // Get preferred language from user profile or smart recommendations
     final preferredLanguage = user?.nationality ?? 'yoruba';
     
     // Format member since date from gamification lastLogin or use current date as fallback
-    final memberSinceDate = gamification?.lastLogin ?? DateTime.now();
+    final memberSinceDate = gamification.lastLogin ?? DateTime.now();
     final memberSinceFormatted = DateFormat('MMMM yyyy').format(memberSinceDate);
     
     return Scaffold(
@@ -118,10 +119,10 @@ class UserProfileScreen extends ConsumerWidget {
                               ),
                             ],
                           ),
-                          child: user?.avatar != null
+                          child: user?.avater != null
                               ? ClipOval(
                                   child: LazyImage(
-                                    imageUrl: user!.avatar!,
+                                    imageUrl: user!.avatarUrl,
                                     width: 24.w,
                                     height: 24.w,
                                     placeholder: CircleAvatar(
@@ -140,7 +141,7 @@ class UserProfileScreen extends ConsumerWidget {
                               : CircleAvatar(
                                   radius: 12.w,
                                   backgroundColor: Colors.white,
-                            child: user?.avatar == null
+                            child: user?.avater == null
                                 ? Text(
                                     (user?.username ?? 'U')[0].toUpperCase(),
                                     style: TextStyle(

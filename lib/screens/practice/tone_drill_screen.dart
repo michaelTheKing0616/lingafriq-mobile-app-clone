@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:path_provider/path_provider.dart';
 import '../../models/lesson_item_model.dart';
 import '../../services/voice/tone_error_detection_service.dart';
 import '../../services/voice/tone_drill_service.dart';
@@ -70,11 +71,14 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   Future<void> _startRecording() async {
     try {
       if (await _recorder.hasPermission()) {
+        final tempDir = await getTemporaryDirectory();
+        final path = '${tempDir.path}/tone_drill_${DateTime.now().millisecondsSinceEpoch}.pcm';
         await _recorder.start(
           const RecordConfig(
             encoder: AudioEncoder.pcm16bits,
             sampleRate: 16000,
           ),
+          path: path,
         );
         setState(() {
           _isRecording = true;
@@ -368,6 +372,7 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
                 child: VisualPitchFeedbackWidget(
                   userPitch: _lastResult!.userPitchContour,
                   nativePitch: _lastResult!.expectedPitchContour,
+                  timePoints: _lastResult!.userPitchContour.map((p) => p.time).toList(),
                 ),
               ),
             ],

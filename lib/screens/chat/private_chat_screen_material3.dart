@@ -207,6 +207,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
           ],
         ),
       ),
+      ),
     );
   }
 }

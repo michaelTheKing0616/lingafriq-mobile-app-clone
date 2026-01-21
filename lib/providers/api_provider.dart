@@ -1881,4 +1881,30 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return null;
     }
   }
+
+  /// Submit game completion
+  Future<bool> submitGameCompletion({
+    required String gameType,
+    required int languageId,
+    required int points,
+    required int score,
+    Map<String, dynamic>? metadata,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.games}/complete',
+        data: {
+          'gameType': gameType,
+          'languageId': languageId,
+          'points': points,
+          'score': score,
+          if (metadata != null) ...metadata,
+        },
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
+    } catch (e) {
+      logger.error('Error submitting game completion', error: e);
+      return false;
+    }
+  }
 }

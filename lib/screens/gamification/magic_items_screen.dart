@@ -164,9 +164,10 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
           ),
         ],
       ),
-      body: OptimizedListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
+        child: Column(
+          children: [
           // Currency display
           Card(
             child: Padding(
@@ -223,7 +224,8 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
               },
             );
           }),
-        ],
+          ],
+        ),
       ),
     );
   }
