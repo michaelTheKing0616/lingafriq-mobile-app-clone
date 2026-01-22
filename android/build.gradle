@@ -2,11 +2,10 @@
 
 buildscript {
     ext {
-        // Kotlin 2.x drops support for languageVersion 1.4, and some transitive
-        // Flutter plugins (e.g. sentry_flutter) still request 1.4, causing CI failures:
-        //   "Language version 1.4 is no longer supported; please, use version 1.8 or greater."
-        // Use a stable Kotlin 1.9 line for maximum plugin compatibility.
-        kotlin_version = '1.9.24'
+        // Kotlin 2.2.0 required by Flutter 3.35.0 (minimum 2.1.0)
+        // Flutter 3.35.0 and dependencies use Kotlin 2.2.0 stdlib, so we must match the compiler version
+        // Note: Kotlin 2.x requires minimum languageVersion 1.8 (no longer supports 1.4)
+        kotlin_version = '2.2.0'
         agp_version = '8.6.0'     // ✅ Android Gradle Plugin (works with Flutter 3.35+)
         gms_version = '4.4.2'     // ✅ Google Services plugin
     }
@@ -93,7 +92,7 @@ allprojects {
     }
     
     // Configure dependency resolution to handle Kotlin version conflicts
-    // Allow Flutter plugin loader to use Kotlin 1.9.22 while app uses 2.2.0
+    // All modules now use Kotlin 2.2.0 (required by Flutter 3.35.0)
     configurations.all {
         resolutionStrategy {
             // Prefer project modules but allow dependency versions when required
@@ -234,9 +233,9 @@ subprojects {
                     println("⚠️ No NDK available for ${project.name} - plugins requiring NDK may fail")
                 }
                 
-                // ✅ Suppress NDK minSdk version error (already set in gradle.properties, but ensure it's applied)
-                // This allows plugins with lower minSdk to work with NDK 26.1.10909125
-                experimentalProperties["android.ndk.suppressMinSdkVersionError"] = "21"
+                // ✅ Suppress NDK minSdk version error (set in gradle.properties)
+                // This allows plugins with lower minSdk to work with NDK 27.0.12077973
+                // Note: Property is set in gradle.properties to avoid duplicate warnings
             }
         }
 
