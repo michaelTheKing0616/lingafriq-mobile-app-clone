@@ -107,10 +107,31 @@ jobs:
           echo "$ANDROID_SDK_ROOT/platform-tools" >> $GITHUB_PATH
           echo "$ANDROID_SDK_ROOT/tools/bin" >> $GITHUB_PATH
 
+      - name: 🧹 Clean corrupted NDK installations
+        run: |
+          echo "🧹 Cleaning any corrupted NDK installations..."
+          # Remove corrupted NDK 27.0.12077973 if it exists (missing source.properties)
+          if [ -d "$ANDROID_SDK_ROOT/ndk/27.0.12077973" ]; then
+            if [ ! -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
+              echo "⚠️ Found corrupted NDK 27.0.12077973 (missing source.properties), removing..."
+              rm -rf "$ANDROID_SDK_ROOT/ndk/27.0.12077973"
+              echo "✅ Removed corrupted NDK installation"
+            else
+              echo "✅ NDK 27.0.12077973 exists and appears valid"
+            fi
+          fi
+
       - name: 🧩 Install Android SDK components
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;26.1.10909125" "cmake;3.22.1"
+          # Install NDK 27.0.12077973 (required by build.gradle and speech_to_text plugin)
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;27.0.12077973" "cmake;3.22.1"
+          # Verify NDK installation
+          if [ -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
+            echo "✅ NDK 27.0.12077973 installed successfully"
+          else
+            echo "⚠️ NDK 27.0.12077973 installation may be incomplete"
+          fi
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
@@ -168,6 +189,15 @@ jobs:
           rm -rf android/.gradle || true
           rm -rf android/app/build || true
           rm -rf android/build || true
+          
+          # 5a. Clean corrupted NDK installations (if any)
+          echo "🧹 Step 5a: Cleaning corrupted NDK installations..."
+          if [ -n "$ANDROID_SDK_ROOT" ] && [ -d "$ANDROID_SDK_ROOT/ndk/27.0.12077973" ]; then
+            if [ ! -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
+              echo "⚠️ Found corrupted NDK 27.0.12077973, removing..."
+              rm -rf "$ANDROID_SDK_ROOT/ndk/27.0.12077973" || true
+            fi
+          fi
           
           # 6. DELETE GENERATED PLUGIN FILES (critical - must happen BEFORE flutter pub get)
           echo "🗑️ Step 6: Deleting generated plugin metadata files..."
