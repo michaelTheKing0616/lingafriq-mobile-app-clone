@@ -1548,11 +1548,18 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   /// Sync onboarding data to backend
+  /// Backend expects: { onboarding_data: {...}, timestamp: "..." }
   Future<bool> syncOnboarding(Map<String, dynamic> data) async {
     try {
+      // Backend expects the data wrapped in 'onboarding_data' field
+      final requestBody = {
+        'onboarding_data': data,
+        'timestamp': DateTime.now().toIso8601String(),
+      };
+      
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/onboarding/sync',
-        data: data,
+        '${Api.baseurl}api/onboarding/save/',
+        data: requestBody,
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {

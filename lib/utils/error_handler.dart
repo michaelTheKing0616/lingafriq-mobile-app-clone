@@ -22,14 +22,37 @@ class ErrorHandler {
     }
   }
 
-  /// Handle Dio-specific errors
+  /// Check if error is due to network connectivity (no internet)
+  static bool _isNetworkError(DioException error) {
+    return error.type == DioExceptionType.connectionError ||
+           (error.type == DioExceptionType.connectionTimeout && 
+            error.message?.toLowerCase().contains('network') == true);
+  }
+
+  /// Check if error is due to backend being unavailable (internet works, backend doesn't)
+  static bool _isBackendError(DioException error) {
+    return error.type == DioExceptionType.connectionTimeout ||
+           error.type == DioExceptionType.sendTimeout ||
+           error.type == DioExceptionType.receiveTimeout ||
+           (error.response?.statusCode != null && error.response!.statusCode >= 500);
+  }
+
+  /// Handle Dio-specific errors with better distinction between network and backend issues
   static String _handleDioError(DioException error) {
+    // First check if it's a network connectivity issue (no internet)
+    if (_isNetworkError(error)) {
+      return 'No internet connection. Please check your network settings and try again.';
+    }
+    
+    // Then check if it's a backend issue (internet works, backend unavailable)
+    if (_isBackendError(error)) {
+      if (error.response?.statusCode != null && error.response!.statusCode! >= 500) {
+        return 'Server is temporarily unavailable. Your data is saved locally and will sync when the server is back online.';
+      }
+      return 'Server is taking too long to respond. Your data is saved locally and will sync automatically.';
+    }
+    
     switch (error.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-        return 'Connection timed out. Please check your internet connection.';
-      
       case DioExceptionType.badResponse:
         final statusCode = error.response?.statusCode;
         if (statusCode == 401) {
@@ -48,26 +71,28 @@ class ErrorHandler {
           }
           return 'You\'re making requests too quickly. Please wait a moment and try again.';
         } else if (statusCode == 500) {
-          return 'Server error. Please try again later.';
+          return 'Server error. Your data is saved locally and will sync when the server is back online.';
         } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {
           final message = error.response?.data?['message'] as String?;
           return message ?? 'Request failed. Please try again.';
         } else {
-          return 'Server error. Please try again later.';
+          return 'Server error. Your data is saved locally and will sync when the server is back online.';
         }
       
       case DioExceptionType.cancel:
         return 'Request was cancelled.';
-      
-      case DioExceptionType.connectionError:
-        return 'No internet connection. Please check your network settings.';
       
       case DioExceptionType.badCertificate:
         return 'Security certificate error. Please try again.';
       
       case DioExceptionType.unknown:
       default:
-        return 'Network error. Please check your connection and try again.';
+        // Try to determine if it's network or backend
+        final message = error.message?.toLowerCase() ?? '';
+        if (message.contains('network') || message.contains('internet') || message.contains('connection')) {
+          return 'Network error. Please check your internet connection and try again.';
+        }
+        return 'Unable to reach server. Your data is saved locally and will sync automatically when connection is restored.';
     }
   }
 

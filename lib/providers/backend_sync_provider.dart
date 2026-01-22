@@ -177,6 +177,8 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
         await api.syncProgress(task.data);
         break;
       case SyncType.onboarding:
+        // syncOnboarding already wraps data in 'onboarding_data' field
+        // task.data contains the step data (e.g., { step: 'proficiency_language', proficiency_language: 'en' })
         await api.syncOnboarding(task.data);
         break;
       case SyncType.telemetry:

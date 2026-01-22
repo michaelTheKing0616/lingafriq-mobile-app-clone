@@ -6,6 +6,7 @@ import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'dart:async';
 
 import '../screens/auth/world_class_login_screen.dart';
 import '../screens/onboarding/onboarding_screen_material3.dart';
@@ -190,16 +191,41 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   // }
 
   Future<void> signOut({bool deleteAccount = false}) async {
-    final prefs = ref.read(sharedPreferencesProvider);
-    await prefs.removeEmailAndPassword();
-    "Delete Account $deleteAccount".log('signout');
-    if (deleteAccount == false) {
-      await ref.read(apiProvider.notifier).unregisterDevice();
-    }
+    try {
+      final prefs = ref.read(sharedPreferencesProvider);
+      await prefs.removeEmailAndPassword();
+      "Delete Account $deleteAccount".log('signout');
+      
+      // Try to unregister device, but don't block if it fails
+      if (deleteAccount == false) {
+        try {
+          await ref.read(apiProvider.notifier).unregisterDevice().timeout(
+            const Duration(seconds: 5),
+            onTimeout: () {
+              throw TimeoutException('Unregister device timeout');
+            },
+          );
+        } catch (e) {
+          // Log but continue - logout should work even if backend is unavailable
+          logger.warn('Failed to unregister device during logout, continuing', error: e);
+        }
+      }
 
-    // ref.read(tabIndexProvider.state).state = 0;
-    navigateBasedOnCondition();
-    await Future.delayed(const Duration(milliseconds: 500));
-    ref.read(userProvider.notifier).overrideUser(null);
+      // Clear user state immediately
+      ref.read(userProvider.notifier).overrideUser(null);
+      
+      // Navigate based on condition (will show login or onboarding)
+      navigateBasedOnCondition();
+      
+      // Small delay to ensure navigation completes
+      await Future.delayed(const Duration(milliseconds: 500));
+    } catch (e) {
+      // Even if something fails, ensure user is logged out locally
+      logger.error('Error during signOut, forcing local logout', error: e);
+      ref.read(userProvider.notifier).overrideUser(null);
+      final prefs = ref.read(sharedPreferencesProvider);
+      await prefs.removeEmailAndPassword();
+      navigateBasedOnCondition();
+    }
   }
 }
