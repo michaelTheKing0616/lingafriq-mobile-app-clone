@@ -96,7 +96,7 @@ allprojects {
     configurations.all {
         resolutionStrategy {
             // Prefer project modules but allow dependency versions when required
-            // This allows Flutter plugin loader to use 1.9.22 and app to use 2.2.0
+            // All modules now use Kotlin 2.2.0 (required by Flutter 3.35.0)
             preferProjectModules()
             // Use dependencySubstitution to handle version conflicts gracefully
             // Gradle 8.7 automatically resolves version conflicts by selecting the highest version
