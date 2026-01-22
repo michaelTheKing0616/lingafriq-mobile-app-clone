@@ -20,8 +20,8 @@ class OfflineContentScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final offlineContent = ref.watch(offlineContentProvider);
-    final subscription = ref.watch(subscriptionProvider);
-    final hasOfflineAccess = subscription.hasFeature('offline_mode');
+    final subscriptionNotifier = ref.read(subscriptionProvider.notifier);
+    final hasOfflineAccess = subscriptionNotifier.hasFeature('offline_mode');
 
     if (!hasOfflineAccess) {
       return Scaffold(
@@ -120,25 +120,26 @@ class OfflineContentScreen extends ConsumerWidget {
                 .animate()
                 .fadeIn(delay: 100.ms),
             SizedBox(height: 16.h),
-            ...SupportedLanguages.allLanguages.map((language) {
-              final isDownloaded = offlineContent.downloadedLanguages.contains(language.code);
+            ...SupportedLanguages.getLanguageOptions().map((language) {
+              final languageCode = language['code']!;
+              final isDownloaded = offlineContent.downloadedLanguages.contains(languageCode);
               return AnimatedCard(
                 child: ListTile(
                   leading: CircleAvatar(
                     backgroundColor: AfricanTheme.primaryGreen.withOpacity(0.1),
                     child: Text(
-                      language.flag,
+                      language['flag']!,
                       style: TextStyle(fontSize: 20.sp),
                     ),
                   ),
-                  title: Text(language.name),
+                  title: Text(language['name']!),
                   subtitle: Text('~50 MB'),
                   trailing: isDownloaded
                       ? IconButton(
                           icon: const Icon(Icons.delete_rounded),
                           color: Colors.red,
                           onPressed: () {
-                            ref.read(offlineContentProvider.notifier).deleteLanguage(language.code);
+                            ref.read(offlineContentProvider.notifier).deleteLanguage(languageCode);
                           },
                         )
                       : AnimatedButton(
@@ -146,7 +147,7 @@ class OfflineContentScreen extends ConsumerWidget {
                           onPressed: offlineContent.isDownloading
                               ? null
                               : () {
-                                  ref.read(offlineContentProvider.notifier).downloadLanguage(language.code);
+                                  ref.read(offlineContentProvider.notifier).downloadLanguage(languageCode);
                                 },
                         ),
                 ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'dart:ui' as ui show TextDirection;
+import 'package:flutter/foundation.dart';
 
 enum AppLanguage {
   english('en', 'English'),
@@ -34,6 +35,10 @@ class DynamicLocalizationService {
   static const String _prefKey = 'app_language';
   static AppLanguage _currentLanguage = AppLanguage.english;
   static Locale _currentLocale = const Locale('en');
+  
+  // Notifier to trigger UI rebuilds when language changes
+  static final ValueNotifier<Locale> _localeNotifier = ValueNotifier<Locale>(const Locale('en'));
+  static ValueNotifier<Locale> get localeNotifier => _localeNotifier;
 
   /// Initialize localization service (static)
   static Future<void> initialize() async {
@@ -64,6 +69,9 @@ class DynamicLocalizationService {
 
     // Update Intl locale
     Intl.defaultLocale = languageCode;
+    
+    // Notify listeners to trigger UI rebuild
+    _localeNotifier.value = _currentLocale;
   }
 
   /// Get all supported languages

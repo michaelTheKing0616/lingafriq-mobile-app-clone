@@ -402,41 +402,42 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
               decoration: BoxDecoration(
                 color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Select Language for Lessons',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: context.adaptive,
-                ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              ...languages.results.take(5).map((language) => ListTile(
-                leading: Icon(Icons.book, color: AppColors.primaryGreen),
-                title: Text(
-                  language.name,
-                  style: TextStyle(color: context.adaptive),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context); // Close daily goals
-                  ref.read(navigationProvider).navigateTo(
-                    LessonsListScreen(language: language),
-                  );
-                },
-              )),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-      );
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Select Language for Lessons',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: context.adaptive,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ...languages.results.take(5).map((language) => ListTile(
+                    leading: Icon(Icons.book, color: AppColors.primaryGreen),
+                    title: Text(
+                      language.name,
+                      style: TextStyle(color: context.adaptive),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context); // Close daily goals
+                      ref.read(navigationProvider).navigateTo(
+                        LessonsListScreen(language: language),
+                      );
+                    },
+                  )),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ),
+          );
+        }
       },
       errorContext: 'showLanguageSelectorForLessons',
       showError: true,
@@ -460,41 +461,42 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
               decoration: BoxDecoration(
                 color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          ),
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Select Language for Quiz',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: context.adaptive,
-                ),
-                textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 16),
-              ...languages.results.take(5).map((language) => ListTile(
-                leading: Icon(Icons.language, color: AppColors.primaryGreen),
-                title: Text(
-                  language.name,
-                  style: TextStyle(color: context.adaptive),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context); // Close daily goals
-                  ref.read(navigationProvider).navigateTo(
-                    TakeQuizScreen(language: language),
-                  );
-                },
-              )),
-              const SizedBox(height: 8),
-            ],
-          ),
-        ),
-      );
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Select Language for Quiz',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: context.adaptive,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ...languages.results.take(5).map((language) => ListTile(
+                    leading: Icon(Icons.language, color: AppColors.primaryGreen),
+                    title: Text(
+                      language.name,
+                      style: TextStyle(color: context.adaptive),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pop(context); // Close daily goals
+                      ref.read(navigationProvider).navigateTo(
+                        TakeQuizScreen(language: language),
+                      );
+                    },
+                  )),
+                  const SizedBox(height: 8),
+                ],
+              ),
+            ),
+          );
+        }
       },
       errorContext: 'showLanguageSelectorForQuiz',
       showError: true,

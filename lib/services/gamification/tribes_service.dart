@@ -120,5 +120,15 @@ class TribesService {
       rethrow;
     }
   }
+
+  /// Get classroom progress for a tribe
+  Future<Map<String, dynamic>> getClassroomProgress(String tribeId) async {
+    try {
+      final response = await _dio.get('${Api.baseurl}api/tribes/$tribeId/classroom/progress');
+      return response.data is Map ? Map<String, dynamic>.from(response.data) : {};
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 

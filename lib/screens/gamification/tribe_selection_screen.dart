@@ -142,9 +142,10 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
           ),
         ],
       ),
-      body: OptimizedListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
+        child: Column(
+          children: [
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -202,7 +203,8 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                       : () => _joinTribe(tribe['id'], tribe['name']),
                 ),
               )),
-        ],
+          ],
+        ),
       ),
     );
   }

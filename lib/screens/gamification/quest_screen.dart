@@ -12,6 +12,7 @@ import '../../services/gamification/journey_service.dart';
 import '../../services/gamification/polie_story_generator.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
+import '../../widgets/animations/smooth_transitions.dart';
 
 /// "The Great Journey" Quest/Story Mode Screen
 class QuestScreen extends ConsumerStatefulWidget {
@@ -336,9 +337,10 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
           ),
         ],
       ),
-      body: OptimizedListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
+        child: Column(
+          children: [
           // Chapter header with generated story
           Card(
             child: Padding(
@@ -470,7 +472,8 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
                         },
                 ),
               )),
-        ],
+          ],
+        ),
       ),
     );
   }

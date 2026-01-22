@@ -353,7 +353,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
             // Language Selector
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: DropdownButtonFormField<String>(
+              child: DropdownButtonFormField<AppLanguage>(
                 value: selectedLanguage.value,
                 decoration: InputDecoration(
                   labelText: 'Language',
@@ -380,8 +380,11 @@ class GamesScreenEnhanced extends HookConsumerWidget {
             ),
 
             // Section Tabs (Core vs Cultural)
-            Container(
-              padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md,
+                vertical: PanAfricanSpacing.sm,
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -414,7 +417,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
                     ),
                   ),
                 ],
-              ).paddingSymmetric(horizontal: PanAfricanSpacing.md),
+              ),
             ),
 
             // Category Filters
@@ -496,6 +499,7 @@ class GamesScreenEnhanced extends HookConsumerWidget {
           ],
         ),
       ),
+      ),
     );
   }
 }
@@ -572,7 +576,6 @@ class _GameCard extends StatelessWidget {
           ],
         ),
       ),
-    ),
     );
   }
 }

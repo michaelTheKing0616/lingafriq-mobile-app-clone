@@ -54,15 +54,17 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
       final user = ref.read(userProvider);
       if (user != null) {
         // Send to backend
-        await ref.read(apiProvider.notifier).sendTelemetry({
-          'eventType': 'user_rating',
-          'userId': user.id,
-          'metadata': {
-            'rating': rating,
-            'reason': _selectedReason,
-            'timestamp': DateTime.now().toIso8601String(),
-          },
-        });
+        await ref.read(apiProvider.notifier).sendTelemetry([
+          {
+            'eventType': 'user_rating',
+            'userId': user.id,
+            'metadata': {
+              'rating': rating,
+              'reason': _selectedReason,
+              'timestamp': DateTime.now().toIso8601String(),
+            },
+          }
+        ]);
 
         // Award gamification rewards
         if (rating >= 4) {

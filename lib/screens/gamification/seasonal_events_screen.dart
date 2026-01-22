@@ -4,6 +4,7 @@ import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import '../../models/seasonal_event_model.dart';
+import '../../widgets/animations/smooth_transitions.dart';
 import 'package:intl/intl.dart';
 
 /// Seasonal Events Screen
@@ -31,9 +32,10 @@ class SeasonalEventsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: OptimizedListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
+        child: Column(
+          children: [
           if (activeEvents.isNotEmpty) ...[
             Text(
               'Active Events',
@@ -71,7 +73,8 @@ class SeasonalEventsScreen extends ConsumerWidget {
                 ],
               ),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -224,9 +227,10 @@ class _EventDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(event.name),
       ),
-      body: OptimizedListView(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        children: [
+        child: Column(
+          children: [
           Card(
             child: Padding(
               padding: const EdgeInsets.all(16),
@@ -311,6 +315,7 @@ class _EventDetailScreen extends StatelessWidget {
             ),
           ],
         ],
+      ),
       ),
     );
   }

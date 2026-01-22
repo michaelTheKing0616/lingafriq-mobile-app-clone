@@ -8,6 +8,8 @@ import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:flutter/services.dart';
 
 class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String tribeId;
@@ -80,7 +82,7 @@ class _ClassroomDashboardScreenState
               icon: const Icon(Icons.copy_rounded),
               tooltip: 'Copy class code',
               onPressed: () {
-                copyToClipboard(widget.classroomCode!, context);
+                Clipboard.setData(ClipboardData(text: widget.classroomCode!));
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Class code copied')),
                 );

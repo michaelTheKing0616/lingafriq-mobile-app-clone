@@ -28,4 +28,7 @@ class AppColors {
   static const Color accentGreen = stitchPrimary;
   static const Color textPrimary = stitchTextDark;
   static const Color textSecondary = grey;
+  
+  // Additional color for games
+  static const Color oceanBlue = Color(0xFF00A8E8);
 }

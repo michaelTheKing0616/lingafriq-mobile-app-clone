@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
@@ -66,7 +67,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                       onGetStarted: () async {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         ref.read(apiProvider.notifier).registerDevice();
-                        ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
+                        ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
                       },
                       onLogin: () {
                         ref.read(navigationProvider).navigateTo(const WorldClassLoginScreen());
@@ -789,6 +790,7 @@ class _PathCard extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }
