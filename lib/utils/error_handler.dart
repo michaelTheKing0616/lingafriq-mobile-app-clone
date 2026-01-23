@@ -31,10 +31,11 @@ class ErrorHandler {
 
   /// Check if error is due to backend being unavailable (internet works, backend doesn't)
   static bool _isBackendError(DioException error) {
+    final statusCode = error.response?.statusCode;
     return error.type == DioExceptionType.connectionTimeout ||
            error.type == DioExceptionType.sendTimeout ||
            error.type == DioExceptionType.receiveTimeout ||
-           (error.response?.statusCode != null && error.response!.statusCode >= 500);
+           (statusCode != null && statusCode >= 500);
   }
 
   /// Handle Dio-specific errors with better distinction between network and backend issues
@@ -46,7 +47,8 @@ class ErrorHandler {
     
     // Then check if it's a backend issue (internet works, backend unavailable)
     if (_isBackendError(error)) {
-      if (error.response?.statusCode != null && error.response!.statusCode! >= 500) {
+      final statusCode = error.response?.statusCode;
+      if (statusCode != null && statusCode >= 500) {
         return 'Server is temporarily unavailable. Your data is saved locally and will sync when the server is back online.';
       }
       return 'Server is taking too long to respond. Your data is saved locally and will sync automatically.';
