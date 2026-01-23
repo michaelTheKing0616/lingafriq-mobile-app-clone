@@ -425,11 +425,18 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                       style: TextStyle(color: context.adaptive),
                     ),
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context); // Close daily goals
-                      ref.read(navigationProvider).navigateTo(
-                        LessonsListScreen(language: language),
-                      );
+                      // CRITICAL FIX: Add context.mounted checks before Navigator calls
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        if (context.mounted) {
+                          Navigator.pop(context); // Close daily goals
+                          if (context.mounted) {
+                            ref.read(navigationProvider).navigateTo(
+                              LessonsListScreen(language: language),
+                            );
+                          }
+                        }
+                      }
                     },
                   )),
                   const SizedBox(height: 8),
@@ -484,11 +491,18 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                       style: TextStyle(color: context.adaptive),
                     ),
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pop(context); // Close daily goals
-                      ref.read(navigationProvider).navigateTo(
-                        TakeQuizScreen(language: language),
-                      );
+                      // CRITICAL FIX: Add context.mounted checks before Navigator calls
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        if (context.mounted) {
+                          Navigator.pop(context); // Close daily goals
+                          if (context.mounted) {
+                            ref.read(navigationProvider).navigateTo(
+                              TakeQuizScreen(language: language),
+                            );
+                          }
+                        }
+                      }
                     },
                   )),
                   const SizedBox(height: 8),

@@ -148,17 +148,13 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (user == null || user.email != email) {
         final userInfo = await getUserInfo();
         user = await getProfileUser(userInfo.id);
-
         await prefs.storeUser(user, userInfo.email);
       }
 
-      getUserInfo().then((userInfo) async {
-        user = await getProfileUser(userInfo.id);
-        ref.read(userProvider.notifier).overrideUser(user);
-        await prefs.storeUser(user!, userInfo.email);
-      });
+      // Update user provider with current user
+      ref.read(userProvider.notifier).overrideUser(user);
 
-      return user!;
+      return user;
     } catch (e) {
       rethrow;
     }
@@ -1579,6 +1575,33 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     } catch (e) {
       logger.error('Error syncing telemetry', error: e);
       return false;
+    }
+  }
+
+  /// Check if username is available
+  /// Queries backend to check against all registered usernames (case-insensitive)
+  Future<bool> checkUsernameAvailability(String username) async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}onboarding/check-username',
+        queryParameters: {'username': username.trim()},
+      );
+      
+      if (res.statusCode == 200 && res.data != null) {
+        final data = res.data is Map ? res.data : (res.data['data'] ?? {});
+        // Backend returns: { success: true, data: { username: "...", available: true/false } }
+        return data['available'] ?? false;
+      }
+      // If endpoint doesn't exist or fails, assume available (allow user to continue)
+      logger.warn('Username check endpoint returned unexpected response', context: {
+        'statusCode': res.statusCode,
+        'data': res.data,
+      });
+      return true; // Default to available if check fails
+    } catch (e) {
+      // If check fails, allow user to continue (they can change it later if needed)
+      logger.warn('Error checking username availability', error: e);
+      return true; // Default to available if check fails
     }
   }
 
