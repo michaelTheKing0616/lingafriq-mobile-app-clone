@@ -57,13 +57,17 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              final result = await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const CreateRoomScreen(),
                 ),
-              ).then((_) => _loadRooms());
+              );
+              // CRITICAL FIX: Convert .then() to async/await for better error handling
+              if (context.mounted) {
+                _loadRooms();
+              }
             },
             tooltip: 'Create Room',
           ),
@@ -269,13 +273,17 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
       margin: EdgeInsets.only(bottom: 2.h),
       elevation: 2,
       child: InkWell(
-        onTap: () {
-          Navigator.push(
+        onTap: () async {
+          // CRITICAL FIX: Convert .then() to async/await for better error handling
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => RoomDetailScreen(roomId: room.id),
             ),
-          ).then((_) => _loadRooms());
+          );
+          if (context.mounted) {
+            _loadRooms();
+          }
         },
         child: Padding(
           padding: EdgeInsets.all(4.w),

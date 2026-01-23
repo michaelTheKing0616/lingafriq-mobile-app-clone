@@ -16,8 +16,11 @@ import 'package:lingafriq/services/localization/dynamic_localization_service.dar
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/backend_sync_provider.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:file_picker/file_picker.dart';
 import 'dart:async';
+import 'dart:io';
 
 /// Enhanced 9-Step Onboarding Flow with Beautiful Material 3 + Pan-African Design
 class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
@@ -33,54 +36,72 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
 
     final steps = [
       _Step1ProficiencyLanguage(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step2LearningLanguage(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step3AgeCategory(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step4LearningReasons(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step5PrimaryGoal(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step6LearningStyle(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step7PacePreference(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step8AppTone(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
         },
       ),
       _Step9SchedulePreferences(
+        pageController: pageController,
+        currentStep: currentStep,
         onNext: (data) {
           onboardingData.value = {...onboardingData.value, ...data};
           _goToNext(pageController, currentStep);
@@ -88,12 +109,10 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
       ),
       _Step10ProfileSetup(
         onboardingData: onboardingData.value,
+        pageController: pageController,
+        currentStep: currentStep,
         onComplete: () async {
-          await _completeOnboarding(onboardingData.value);
-          Navigator.pushReplacement(
-            context,
-            SmoothPageRoute(child: const TabsView()),
-          );
+          await _completeOnboarding(onboardingData.value, context);
         },
       ),
     ];
@@ -220,7 +239,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     }
   }
 
-  Future<void> _completeOnboarding(Map<String, dynamic> data) async {
+  Future<void> _completeOnboarding(Map<String, dynamic> data, BuildContext context) async {
     // Save all onboarding data locally
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -245,14 +264,77 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
       // Log but continue - user can proceed even if backend is unavailable
       logger.warn('Backend sync failed for onboarding completion, continuing locally', error: e);
     }
+
+    // After onboarding is complete, offer placement test
+    // Get the learning language from onboarding data
+    final learningLanguage = data['learning_language'] as String?;
+    
+    if (learningLanguage != null && context.mounted) {
+      try {
+        // Check connectivity before showing placement test
+        final connectivity = Connectivity();
+        final hasConnection = await connectivity.checkConnectivity();
+        
+        if (hasConnection != ConnectivityResult.none) {
+          // Show placement test as optional - user can skip
+          final shouldTakeTest = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text('Take Placement Test?'),
+              content: Text(
+                'Would you like to take a placement test to assess your current level in $learningLanguage? You can skip this and take it later.',
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: Text('Skip'),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: Text('Take Test'),
+                ),
+              ],
+            ),
+          );
+
+          if (shouldTakeTest == true && context.mounted) {
+            // Navigate to placement test
+            await Navigator.push(
+              context,
+              SmoothPageRoute(
+                child: PlacementTestScreen(
+                  language: learningLanguage,
+                ),
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        logger.warn('Error showing placement test option, continuing to app', error: e);
+      }
+    }
+
+    // Navigate to main app
+    if (context.mounted) {
+      Navigator.pushReplacement(
+        context,
+        SmoothPageRoute(child: const TabsView()),
+      );
+    }
   }
 }
 
 // Step 1: Proficiency Language
 class _Step1ProficiencyLanguage extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
 
-  const _Step1ProficiencyLanguage({required this.onNext});
+  const _Step1ProficiencyLanguage({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   // Comprehensive language list: Major languages with flags + all African languages
   static List<Map<String, String>> get _majorLanguages => [
@@ -391,21 +473,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
             'timestamp': DateTime.now().toIso8601String(),
           },
         ));
-        // Also try immediate sync (non-blocking)
-        try {
-          await ApiService.post(
-            '/onboarding/proficiency-language',
-            data: {'proficiency_language': selectedLanguage.value},
-          ).timeout(
-            const Duration(seconds: 3),
-            onTimeout: () {
-              throw TimeoutException('Backend sync timeout');
-            },
-          );
-        } catch (e) {
-          // Silent fail - already queued for retry
-          logger.debug('Immediate sync failed, will retry via queue', error: e);
-        }
+        // Sync will be handled by the queue automatically
       } catch (e) {
         // Log but continue - user can proceed even if backend is unavailable
         logger.warn('Failed to queue sync for proficiency language, continuing locally', error: e);
@@ -419,6 +487,8 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
       title: 'What language do you speak?',
       description: 'We\'ll translate all in-app content to this language',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: Column(
         children: [
           // Major languages grid
@@ -591,8 +661,14 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 // Step 2: Learning Language (triggers placement test)
 class _Step2LearningLanguage extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
 
-  const _Step2LearningLanguage({required this.onNext});
+  const _Step2LearningLanguage({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -636,58 +712,22 @@ class _Step2LearningLanguage extends HookConsumerWidget {
             'timestamp': DateTime.now().toIso8601String(),
           },
         ));
-        // Also try immediate sync (non-blocking)
-        try {
-          await ApiService.post(
-            '/onboarding/learning-language',
-            data: {'learning_language': selectedLanguage.value},
-          ).timeout(
-            const Duration(seconds: 3),
-            onTimeout: () => throw TimeoutException('Backend sync timeout'),
-          );
-        } catch (e) {
-          // Silent fail - already queued for retry
-          logger.debug('Immediate sync failed, will retry via queue', error: e);
-        }
+        // Sync will be handled by the queue automatically
       } catch (e) {
         logger.warn('Failed to queue sync for learning language, continuing locally', error: e);
       }
 
       // Always proceed to next step
+      // Placement test will be offered after all onboarding steps are complete
       onNext({'learning_language': selectedLanguage.value});
-
-      // Navigate to placement test (optional - can be skipped if backend unavailable)
-      // Only show placement test if we have internet connection
-      if (context.mounted) {
-        try {
-          // Check connectivity before showing placement test
-          // If backend is unavailable, skip placement test and continue
-          final hasConnection = await Connectivity().checkConnectivity();
-          if (hasConnection != ConnectivityResult.none) {
-            Navigator.push(
-              context,
-              SmoothPageRoute(
-                child: PlacementTestScreen(
-                  language: selectedLanguage.value!,
-                ),
-              ),
-            ).catchError((e) {
-              logger.warn('Placement test navigation failed, continuing without it', error: e);
-            });
-          } else {
-            logger.info('No internet connection, skipping placement test');
-          }
-        } catch (e) {
-          logger.warn('Error checking connectivity for placement test, continuing without it', error: e);
-          // Continue to next step if placement test fails
-        }
-      }
     }
 
     return _OnboardingStepTemplate(
       title: 'What language do you wish to learn first?',
-      description: 'This will trigger your placement test',
+      description: 'Select the language you want to learn',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: Column(
         children: [
           Expanded(
@@ -769,8 +809,14 @@ class _Step2LearningLanguage extends HookConsumerWidget {
 // Simplified step templates for remaining steps
 class _Step3AgeCategory extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
 
-  const _Step3AgeCategory({required this.onNext});
+  const _Step3AgeCategory({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -783,6 +829,8 @@ class _Step3AgeCategory extends HookConsumerWidget {
       title: 'What\'s your age category?',
       description: 'This helps us personalize your experience',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: _buildOptionSelector(
         context,
         options,
@@ -811,18 +859,7 @@ class _Step3AgeCategory extends HookConsumerWidget {
                 'timestamp': DateTime.now().toIso8601String(),
               },
             ));
-            // Also try immediate sync (non-blocking)
-            try {
-              await ApiService.post(
-                '/onboarding/age-category',
-                data: {'age_category': selected.value},
-              ).timeout(
-                const Duration(seconds: 3),
-                onTimeout: () => throw TimeoutException('Backend sync timeout'),
-              );
-            } catch (e) {
-              logger.debug('Immediate sync failed, will retry via queue', error: e);
-            }
+            // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for age category, continuing locally', error: e);
           }
@@ -899,7 +936,13 @@ class _Step3AgeCategory extends HookConsumerWidget {
 // Similar simplified templates for steps 4-9
 class _Step4LearningReasons extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
-  const _Step4LearningReasons({required this.onNext});
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+  const _Step4LearningReasons({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -947,18 +990,7 @@ class _Step4LearningReasons extends HookConsumerWidget {
                 'timestamp': DateTime.now().toIso8601String(),
               },
             ));
-            // Also try immediate sync (non-blocking)
-            try {
-              await ApiService.post(
-                '/onboarding/learning-reasons',
-                data: {'learning_reasons': selected.value.toList()},
-              ).timeout(
-                const Duration(seconds: 3),
-                onTimeout: () => throw TimeoutException('Backend sync timeout'),
-              );
-            } catch (e) {
-              logger.debug('Immediate sync failed, will retry via queue', error: e);
-            }
+            // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for learning reasons, continuing locally', error: e);
           }
@@ -1025,7 +1057,13 @@ class _Step4LearningReasons extends HookConsumerWidget {
 // Steps 5-9 follow similar pattern - creating simplified versions
 class _Step5PrimaryGoal extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
-  const _Step5PrimaryGoal({required this.onNext});
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+  const _Step5PrimaryGoal({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1037,6 +1075,8 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
       title: 'What\'s your primary goal?',
       description: 'Choose your main learning objective',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: _buildOptionSelector(
         context,
         goals,
@@ -1065,18 +1105,7 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
                 'timestamp': DateTime.now().toIso8601String(),
               },
             ));
-            // Also try immediate sync (non-blocking)
-            try {
-              await ApiService.post(
-                '/onboarding/primary-goal',
-                data: {'primary_goal': selected.value},
-              ).timeout(
-                const Duration(seconds: 3),
-                onTimeout: () => throw TimeoutException('Backend sync timeout'),
-              );
-            } catch (e) {
-              logger.debug('Immediate sync failed, will retry via queue', error: e);
-            }
+            // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for primary goal, continuing locally', error: e);
           }
@@ -1149,7 +1178,13 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
 
 class _Step6LearningStyle extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
-  const _Step6LearningStyle({required this.onNext});
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+  const _Step6LearningStyle({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1161,6 +1196,8 @@ class _Step6LearningStyle extends HookConsumerWidget {
       title: 'How do you learn best?',
       description: 'Select your preferred learning style',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: _buildOptionSelector(
         context,
         styles,
@@ -1189,18 +1226,7 @@ class _Step6LearningStyle extends HookConsumerWidget {
                 'timestamp': DateTime.now().toIso8601String(),
               },
             ));
-            // Also try immediate sync (non-blocking)
-            try {
-              await ApiService.post(
-                '/onboarding/learning-style',
-                data: {'learning_style': selected.value},
-              ).timeout(
-                const Duration(seconds: 3),
-                onTimeout: () => throw TimeoutException('Backend sync timeout'),
-              );
-            } catch (e) {
-              logger.debug('Immediate sync failed, will retry via queue', error: e);
-            }
+            // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for learning style, continuing locally', error: e);
           }
@@ -1285,6 +1311,8 @@ class _Step7PacePreference extends HookConsumerWidget {
       title: 'What pace do you prefer?',
       description: 'How fast do you want to learn?',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: _buildOptionSelector(
         context,
         paces,
@@ -1313,18 +1341,7 @@ class _Step7PacePreference extends HookConsumerWidget {
                 'timestamp': DateTime.now().toIso8601String(),
               },
             ));
-            // Also try immediate sync (non-blocking)
-            try {
-              await ApiService.post(
-                '/onboarding/pace-preference',
-                data: {'pace_preference': selected.value},
-              ).timeout(
-                const Duration(seconds: 3),
-                onTimeout: () => throw TimeoutException('Backend sync timeout'),
-              );
-            } catch (e) {
-              logger.debug('Immediate sync failed, will retry via queue', error: e);
-            }
+            // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for pace preference, continuing locally', error: e);
           }
@@ -1397,7 +1414,13 @@ class _Step7PacePreference extends HookConsumerWidget {
 
 class _Step8AppTone extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
-  const _Step8AppTone({required this.onNext});
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+  const _Step8AppTone({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1409,6 +1432,8 @@ class _Step8AppTone extends HookConsumerWidget {
       title: 'What tone do you prefer?',
       description: 'How should Polie communicate with you?',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: _buildOptionSelector(
         context,
         tones,
@@ -1437,18 +1462,7 @@ class _Step8AppTone extends HookConsumerWidget {
                 'timestamp': DateTime.now().toIso8601String(),
               },
             ));
-            // Also try immediate sync (non-blocking)
-            try {
-              await ApiService.post(
-                '/onboarding/app-tone',
-                data: {'app_tone': selected.value},
-              ).timeout(
-                const Duration(seconds: 3),
-                onTimeout: () => throw TimeoutException('Backend sync timeout'),
-              );
-            } catch (e) {
-              logger.debug('Immediate sync failed, will retry via queue', error: e);
-            }
+            // Sync will be handled by the queue automatically
           } catch (e) {
             logger.warn('Failed to queue sync for app tone, continuing locally', error: e);
           }
@@ -1521,7 +1535,13 @@ class _Step8AppTone extends HookConsumerWidget {
 
 class _Step9SchedulePreferences extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
-  const _Step9SchedulePreferences({required this.onNext});
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+  const _Step9SchedulePreferences({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1535,6 +1555,8 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
       title: 'Set your learning schedule',
       description: 'When and how long do you want to learn?',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: Column(
         children: [
           Expanded(
@@ -1628,22 +1650,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                             'timestamp': DateTime.now().toIso8601String(),
                           },
                         ));
-                        // Also try immediate sync (non-blocking)
-                        try {
-                          await ApiService.post(
-                            '/onboarding/schedule-preferences',
-                            data: {
-                              'daily_duration_minutes': duration.value,
-                              'preferred_time_of_day': timeOfDay.value,
-                              'reminders_enabled': remindersEnabled.value,
-                            },
-                          ).timeout(
-                            const Duration(seconds: 3),
-                            onTimeout: () => throw TimeoutException('Backend sync timeout'),
-                          );
-                        } catch (e) {
-                          logger.debug('Immediate sync failed, will retry via queue', error: e);
-                        }
+                        // Sync will be handled by the queue automatically
                       } catch (e) {
                         logger.warn('Failed to queue sync for schedule preferences, continuing locally', error: e);
                       }
@@ -1673,21 +1680,118 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
 class _Step10ProfileSetup extends HookConsumerWidget {
   final Map<String, dynamic> onboardingData;
   final VoidCallback onComplete;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
 
   const _Step10ProfileSetup({
     required this.onboardingData,
     required this.onComplete,
+    this.pageController,
+    this.currentStep,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usernameController = useTextEditingController();
+    final username = useState('');
+    final usernameStatus = useState<UsernameStatus>(UsernameStatus.initial);
+    final isChecking = useState(false);
+    final avatarPath = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    Timer? _debounceTimer;
+
+    // Listen to username changes and validate
+    useEffect(() {
+      void listener() {
+        final text = usernameController.text.trim();
+        username.value = text;
+
+        // Clear previous timer
+        _debounceTimer?.cancel();
+
+        if (text.isEmpty) {
+          usernameStatus.value = UsernameStatus.initial;
+          isChecking.value = false;
+          return;
+        }
+
+        // Validate length
+        if (text.length < 3) {
+          usernameStatus.value = UsernameStatus.tooShort;
+          isChecking.value = false;
+          return;
+        }
+
+        if (text.length > 30) {
+          usernameStatus.value = UsernameStatus.tooLong;
+          isChecking.value = false;
+          return;
+        }
+
+        // Validate format (alphanumeric and underscore only)
+        if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(text)) {
+          usernameStatus.value = UsernameStatus.invalidFormat;
+          isChecking.value = false;
+          return;
+        }
+
+        // Debounce API check
+        usernameStatus.value = UsernameStatus.checking;
+        isChecking.value = true;
+        _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+          try {
+            final api = ref.read(apiProvider.notifier);
+            final isAvailable = await api.checkUsernameAvailability(text);
+            if (context.mounted) {
+              usernameStatus.value = isAvailable
+                  ? UsernameStatus.available
+                  : UsernameStatus.taken;
+              isChecking.value = false;
+            }
+          } catch (e) {
+            if (context.mounted) {
+              usernameStatus.value = UsernameStatus.error;
+              isChecking.value = false;
+              logger.warn('Error checking username availability', error: e);
+            }
+          }
+        });
+      }
+
+      usernameController.addListener(listener);
+
+      return () {
+        _debounceTimer?.cancel();
+        usernameController.removeListener(listener);
+      };
+    }, []);
+
+    Future<void> pickAvatar() async {
+      try {
+        final result = await FilePicker.platform.pickFiles(
+          type: FileType.image,
+          allowMultiple: false,
+        );
+
+        if (result != null && result.files.single.path != null) {
+          avatarPath.value = result.files.single.path;
+        }
+      } catch (e) {
+        logger.error('Error picking avatar', error: e);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to pick image')),
+          );
+        }
+      }
+    }
 
     return _OnboardingStepTemplate(
       title: 'Complete Your Profile',
-      description: 'Set your username and avatar',
+      description: 'Set your username (avatar is optional)',
       isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
       child: Column(
         children: [
           Expanded(
@@ -1695,36 +1799,86 @@ class _Step10ProfileSetup extends HookConsumerWidget {
               padding: EdgeInsets.all(PanAfricanSpacing.lg),
               child: Column(
                 children: [
-                  // Avatar Selection
-                  CircleAvatar(
-                    radius: 60.r,
-                    backgroundColor: PanAfricanColors.primary,
-                    child: Icon(Icons.person, size: 60.sp, color: Colors.white),
+                  // Avatar Selection (Optional)
+                  ValueListenableBuilder<String?>(
+                    valueListenable: avatarPath,
+                    builder: (context, path, _) {
+                      return Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 60.r,
+                            backgroundColor: PanAfricanColors.primary,
+                            backgroundImage: path != null
+                                ? FileImage(File(path))
+                                : null,
+                            child: path == null
+                                ? Icon(Icons.person, size: 60.sp, color: Colors.white)
+                                : null,
+                          ),
+                          if (path != null)
+                            Positioned(
+                              right: 0,
+                              bottom: 0,
+                              child: CircleAvatar(
+                                radius: 18.r,
+                                backgroundColor: PanAfricanColors.secondary,
+                                child: Icon(Icons.check, size: 18.sp, color: Colors.black),
+                              ),
+                            ),
+                        ],
+                      );
+                    },
                   ),
                   SizedBox(height: PanAfricanSpacing.md),
-                  TextButton(
-                    onPressed: () {
-                      // Avatar picker
+                  ValueListenableBuilder<String?>(
+                    valueListenable: avatarPath,
+                    builder: (context, path, _) {
+                      return TextButton(
+                        onPressed: pickAvatar,
+                        child: Text(path == null ? 'Add Avatar (Optional)' : 'Change Avatar'),
+                      );
                     },
-                    child: Text('Change Avatar'),
                   ),
                   SizedBox(height: PanAfricanSpacing.xl),
 
                   // Username Input
-                  TextField(
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      hintText: 'Choose a unique username',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                      ),
-                      filled: true,
-                      fillColor: isDark
-                          ? PanAfricanColors.surfaceContainerDark
-                          : PanAfricanColors.surfaceContainerLight,
-                    ),
-                    style: PanAfricanTypography.bodyLarge(context),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: isChecking,
+                    builder: (context, checking, _) {
+                      return ValueListenableBuilder<UsernameStatus>(
+                        valueListenable: usernameStatus,
+                        builder: (context, status, _) {
+                          return TextField(
+                            controller: usernameController,
+                            decoration: InputDecoration(
+                              labelText: 'Username',
+                              hintText: 'Choose a unique username',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                              ),
+                              filled: true,
+                              fillColor: isDark
+                                  ? PanAfricanColors.surfaceContainerDark
+                                  : PanAfricanColors.surfaceContainerLight,
+                              suffixIcon: checking
+                                  ? SizedBox(
+                                      width: 20.w,
+                                      height: 20.h,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(12.w),
+                                        child: CircularProgressIndicator(strokeWidth: 2),
+                                      ),
+                                    )
+                                  : _getUsernameStatusIcon(status),
+                              helperText: _getUsernameStatusText(status),
+                              helperMaxLines: 2,
+                            ),
+                            style: PanAfricanTypography.bodyLarge(context),
+                            autofocus: false,
+                          );
+                        },
+                      );
+                    },
                   ),
                 ],
               ),
@@ -1732,60 +1886,120 @@ class _Step10ProfileSetup extends HookConsumerWidget {
           ),
           Padding(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: ElevatedButton(
-              onPressed: usernameController.text.isEmpty
-                  ? null
-                  : () async {
-                      // Save locally first
-                      try {
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.setString('onboarding_username', usernameController.text);
-                      } catch (e) {
-                        logger.error('Error saving username locally', error: e);
-                      }
+            child: ValueListenableBuilder<String>(
+              valueListenable: username,
+              builder: (context, usernameValue, _) {
+                return ValueListenableBuilder<UsernameStatus>(
+                  valueListenable: usernameStatus,
+                  builder: (context, status, _) {
+                    final canContinueNow = usernameValue.isNotEmpty &&
+                        usernameValue.length >= 3 &&
+                        usernameValue.length <= 30 &&
+                        RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(usernameValue) &&
+                        (status == UsernameStatus.available ||
+                            status == UsernameStatus.error);
 
-                      // Queue sync with backend (will retry automatically)
-                      try {
-                        final syncProvider = ref.read(backendSyncProvider.notifier);
-                        await syncProvider.queueSync(SyncTask(
-                          type: SyncType.onboarding,
-                          data: {
-                            'step': 'profile_setup',
-                            'username': usernameController.text,
-                            'timestamp': DateTime.now().toIso8601String(),
-                          },
-                        ));
-                        // Also try immediate sync (non-blocking)
-                        try {
-                          await ApiService.post(
-                            '/onboarding/profile-setup',
-                            data: {'username': usernameController.text},
-                          ).timeout(
-                            const Duration(seconds: 3),
-                            onTimeout: () => throw TimeoutException('Backend sync timeout'),
-                          );
-                        } catch (e) {
-                          logger.debug('Immediate sync failed, will retry via queue', error: e);
+                    return ElevatedButton(
+                  onPressed: canContinueNow
+                      ? () async {
+                          // Save locally first
+                          try {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setString('onboarding_username', usernameValue);
+                            if (avatarPath.value != null) {
+                              await prefs.setString('onboarding_avatar_path', avatarPath.value!);
+                            }
+                          } catch (e) {
+                            logger.error('Error saving username locally', error: e);
+                          }
+
+                          // Queue sync with backend (will retry automatically)
+                          try {
+                            final syncProvider = ref.read(backendSyncProvider.notifier);
+                            await syncProvider.queueSync(SyncTask(
+                              type: SyncType.onboarding,
+                              data: {
+                                'step': 'profile_setup',
+                                'username': usernameValue,
+                                'avatar_path': avatarPath.value,
+                                'timestamp': DateTime.now().toIso8601String(),
+                              },
+                            ));
+                            // Sync will be handled by the queue automatically
+                          } catch (e) {
+                            logger.warn('Failed to queue sync for profile setup, continuing locally', error: e);
+                          }
+
+                          // Always complete onboarding
+                          onComplete();
                         }
-                      } catch (e) {
-                        logger.warn('Failed to queue sync for profile setup, continuing locally', error: e);
-                      }
-
-                      // Always complete onboarding
-                      onComplete();
-                    },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PanAfricanColors.secondary,
-                foregroundColor: Colors.black,
-                minimumSize: Size(double.infinity, 50.h),
-              ),
-              child: Text('Complete Onboarding'),
+                      : null,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: PanAfricanColors.secondary,
+                    foregroundColor: Colors.black,
+                    minimumSize: Size(double.infinity, 50.h),
+                    disabledBackgroundColor: PanAfricanColors.borderLight,
+                  ),
+                      child: Text('Complete Onboarding'),
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
       ),
     );
   }
+
+  Widget? _getUsernameStatusIcon(UsernameStatus status) {
+    switch (status) {
+      case UsernameStatus.available:
+        return Icon(Icons.check_circle, color: PanAfricanColors.success);
+      case UsernameStatus.taken:
+        return Icon(Icons.cancel, color: PanAfricanColors.error);
+      case UsernameStatus.invalidFormat:
+      case UsernameStatus.tooShort:
+      case UsernameStatus.tooLong:
+        return Icon(Icons.error, color: PanAfricanColors.warning);
+      default:
+        return null;
+    }
+  }
+
+  String? _getUsernameStatusText(UsernameStatus status) {
+    switch (status) {
+      case UsernameStatus.initial:
+        return 'Enter a username (3-30 characters, letters, numbers, and underscores only)';
+      case UsernameStatus.checking:
+        return 'Checking availability...';
+      case UsernameStatus.available:
+        return '✓ Username is available';
+      case UsernameStatus.taken:
+        return '✗ Username is already taken';
+      case UsernameStatus.tooShort:
+        return 'Username must be at least 3 characters';
+      case UsernameStatus.tooLong:
+        return 'Username must be 30 characters or less';
+      case UsernameStatus.invalidFormat:
+        return 'Only letters, numbers, and underscores are allowed';
+      case UsernameStatus.error:
+        return 'Could not verify availability. You can still continue.';
+      default:
+        return null;
+    }
+  }
+}
+
+enum UsernameStatus {
+  initial,
+  checking,
+  available,
+  taken,
+  tooShort,
+  tooLong,
+  invalidFormat,
+  error,
 }
 
 class _OnboardingStepTemplate extends ConsumerWidget {
@@ -1793,12 +2007,16 @@ class _OnboardingStepTemplate extends ConsumerWidget {
   final String description;
   final Widget child;
   final bool isDark;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
 
   const _OnboardingStepTemplate({
     required this.title,
     required this.description,
     required this.child,
     required this.isDark,
+    this.pageController,
+    this.currentStep,
   });
 
   @override
@@ -1807,6 +2025,9 @@ class _OnboardingStepTemplate extends ConsumerWidget {
     final syncState = ref.watch(backendSyncProvider);
     final isSyncing = syncState.isSyncing;
     final pendingSyncs = syncState.pendingSyncs;
+    final canGoBack = currentStep != null && 
+                      currentStep!.value > 0 && 
+                      pageController != null;
     
     return Container(
       decoration: BoxDecoration(
@@ -1821,6 +2042,27 @@ class _OnboardingStepTemplate extends ConsumerWidget {
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
               children: [
+                // Back button row
+                if (canGoBack)
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.arrow_back),
+                        onPressed: () {
+                          if (pageController != null && currentStep != null) {
+                            currentStep!.value--;
+                            pageController!.previousPage(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                            HapticFeedback.lightImpact();
+                          }
+                        },
+                        tooltip: 'Go back',
+                      ),
+                      Spacer(),
+                    ],
+                  ),
                 Text(
                   title,
                   style: PanAfricanTypography.headlineMedium(context),

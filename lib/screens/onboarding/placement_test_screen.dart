@@ -9,6 +9,13 @@ import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/services/placement_test_service.dart';
+import 'package:lingafriq/models/placement_question.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/utils/api.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -31,25 +38,71 @@ class PlacementTestScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> generateTest() async {
-      await safeAsync(
-        context: context,
-        operation: () async {
-          final response = await ApiService.get(
-            '/onboarding/placement-test/generate',
+      isGenerating.value = true;
+      try {
+        // Try to fetch from backend first, fallback to local if it fails
+        List<PlacementQuestion> questions;
+        try {
+          final client = ref.read(dioProvider);
+          final response = await client.get(
+            '${Api.baseurl}onboarding/placement-test/generate',
             queryParameters: {'language': language},
           );
-
-          if (response.statusCode == 200) {
-            test.value = response.data['data'];
-            isGenerating.value = false;
+          
+          if (response.statusCode == 200 && response.data != null) {
+            final data = response.data is Map ? response.data : (response.data['data'] ?? {});
+            final questionsList = (data['questions'] as List?) ?? [];
+            
+            // Convert backend format to PlacementQuestion objects
+            questions = questionsList.map((q) {
+              final qMap = q as Map<String, dynamic>;
+              return PlacementQuestion(
+                id: qMap['id'] ?? '',
+                languageCode: qMap['languageCode'] ?? language,
+                level: qMap['level'] ?? 'A1',
+                skill: qMap['skill'] ?? 'vocab',
+                prompt: qMap['prompt'] ?? '',
+                options: (qMap['options'] as List).cast<String>(),
+                correctIndex: qMap['correctIndex'] ?? 0,
+              );
+            }).toList();
+            
+            logger.info('Placement test generated from backend', context: {
+              'language': language,
+              'questionCount': questions.length,
+            });
           } else {
-            throw Exception('Failed to generate test');
+            throw Exception('Invalid response from backend');
           }
-        },
-        errorContext: 'generateTest',
-        showError: true,
-      );
-      isGenerating.value = false;
+        } catch (backendError) {
+          // Fallback to local service if backend fails
+          logger.warn('Backend placement test generation failed, using local service', error: backendError);
+          questions = await PlacementTestService.loadQuestionsForLanguage(ref, language);
+        }
+
+        if (questions.isEmpty) {
+          throw Exception('No questions available for $language');
+        }
+
+        // Convert to the format expected by the UI
+        test.value = {
+          'test_id': '${DateTime.now().millisecondsSinceEpoch}',
+          'language': language,
+          'questions': questions.map((q) => {
+                'id': q.id,
+                'question': q.prompt,
+                'type': 'multiple_choice',
+                'options': q.options,
+                'correct_index': q.correctIndex,
+              }).toList(),
+        };
+        isGenerating.value = false;
+      } catch (e) {
+        isGenerating.value = false;
+        // Don't show error dialog - let the UI handle it by showing the failure screen
+        logger.error('Failed to generate placement test', error: e);
+        // test.value remains null, which will trigger the failure screen
+      }
     }
 
     Future<void> submitTest() async {
@@ -62,36 +115,112 @@ class PlacementTestScreen extends HookConsumerWidget {
       }
 
       isLoading.value = true;
-      await safeAsync(
-        context: context,
-        operation: () async {
-          final answerList = (test.value?['questions'] as List).asMap().entries.map((entry) {
-            return {
-              'question_id': (entry.value as Map)['id'],
-              'answer': answers.value[entry.key] ?? '',
-            };
-          }).toList();
-
-          final response = await ApiService.post(
-            '/onboarding/placement-test/submit',
-            data: {
-              'test_id': test.value?['test_id'],
-              'language': language,
-              'answers': answerList,
-              'test_questions': test.value?['questions'],
-            },
+      try {
+        // Convert questions to PlacementQuestion objects for evaluation
+        final questions = (test.value?['questions'] as List).map((q) {
+          final qMap = q as Map<String, dynamic>;
+          return PlacementQuestion(
+            id: qMap['id'] ?? '',
+            languageCode: language,
+            level: 'A1', // Default level
+            skill: 'vocab', // Default skill
+            prompt: qMap['question'] ?? '',
+            options: (qMap['options'] as List).cast<String>(),
+            correctIndex: qMap['correct_index'] ?? 0,
           );
+        }).toList();
 
-          if (response.statusCode == 200) {
-            result.value = response.data['data'];
+        // Get selected indices from answers
+        final selectedIndices = <int?>[];
+        for (var i = 0; i < questions.length; i++) {
+          final answer = answers.value[i];
+          if (answer != null) {
+            final index = questions[i].options.indexWhere((opt) => opt == answer);
+            selectedIndices.add(index >= 0 ? index : null);
           } else {
-            throw Exception('Failed to submit test');
+            selectedIndices.add(null);
           }
-        },
-        errorContext: 'submitTest',
-        showError: true,
-      );
-      isLoading.value = false;
+        }
+
+        // Evaluate locally
+        final placementResult = PlacementTestService.evaluate(
+          languageCode: language,
+          questions: questions,
+          selectedIndices: selectedIndices,
+        );
+
+        // Convert to result format
+        result.value = {
+          'cefr_level': placementResult.level,
+          'score': placementResult.score,
+          'total_questions': placementResult.totalQuestions,
+          'correct': placementResult.correct,
+          'strengths': _getStrengths(placementResult),
+          'weaknesses': _getWeaknesses(placementResult),
+          'recommendations': _getRecommendations(placementResult),
+        };
+
+        // Try to sync results to backend (non-blocking)
+        try {
+          await ApiService.post(
+            '/onboarding/placement-test',
+            data: {
+              'placement_test_results': result.value,
+            },
+          ).timeout(
+            const Duration(seconds: 5),
+            onTimeout: () => throw TimeoutException('Backend sync timeout'),
+          );
+        } catch (e) {
+          // Log but continue - results are saved locally
+          logger.warn('Failed to sync placement test results to backend', error: e);
+        }
+      } catch (e) {
+        ErrorHandler.showError(context, e);
+      } finally {
+        isLoading.value = false;
+      }
+    }
+
+    List<String> _getStrengths(PlacementResult result) {
+      if (result.score >= 70) {
+        return ['Strong vocabulary foundation', 'Good understanding of basic grammar'];
+      } else if (result.score >= 50) {
+        return ['Basic vocabulary knowledge'];
+      }
+      return ['Willingness to learn'];
+    }
+
+    List<String> _getWeaknesses(PlacementResult result) {
+      if (result.score < 50) {
+        return ['Need to build vocabulary', 'Grammar fundamentals needed'];
+      } else if (result.score < 70) {
+        return ['Some grammar concepts need review'];
+      }
+      return [];
+    }
+
+    List<String> _getRecommendations(PlacementResult result) {
+      final level = result.level;
+      if (level == 'A1' || level == 'A2') {
+        return [
+          'Start with beginner lessons',
+          'Focus on vocabulary building',
+          'Practice pronunciation daily',
+        ];
+      } else if (level == 'B1' || level == 'B2') {
+        return [
+          'Continue with intermediate content',
+          'Practice conversation skills',
+          'Expand vocabulary in specific topics',
+        ];
+      } else {
+        return [
+          'Advanced lessons recommended',
+          'Focus on fluency and nuance',
+          'Engage with native content',
+        ];
+      }
     }
 
     useEffect(() {
@@ -123,8 +252,74 @@ class PlacementTestScreen extends HookConsumerWidget {
 
     if (test.value == null) {
       return Scaffold(
-        body: Center(
-          child: Text('Failed to load test'),
+        appBar: AppBar(
+          title: Text('Placement Test'),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark
+                ? PanAfricanGradients.darkSurface
+                : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      PanAfricanColors.surfaceLight,
+                      PanAfricanColors.surfaceContainerLight,
+                    ],
+                  ),
+          ),
+          child: SafeArea(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.wifi_off,
+                      size: 64.sp,
+                      color: PanAfricanColors.warning,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xl),
+                    Text(
+                      'Unable to Generate Placement Test',
+                      style: PanAfricanTypography.headlineSmall(context),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    Text(
+                      'We couldn\'t connect to the server to generate your placement test. You can continue without it and take it later from your profile.',
+                      style: PanAfricanTypography.bodyMedium(context),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xl),
+                    ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: PanAfricanColors.primary,
+                        foregroundColor: Colors.white,
+                        minimumSize: Size(double.infinity, 50.h),
+                      ),
+                      child: Text('Continue Without Test'),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    OutlinedButton(
+                      onPressed: () {
+                        isGenerating.value = true;
+                        generateTest();
+                      },
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: Size(double.infinity, 50.h),
+                      ),
+                      child: Text('Try Again'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       );
     }
