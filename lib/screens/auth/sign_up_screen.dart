@@ -102,6 +102,16 @@ class SignupScreen extends HookConsumerWidget {
               PrimaryButton(
                 onTap: () {
                   if (!formKey.currentState!.validate()) return;
+                  // CRITICAL FIX: Validate country selection before proceeding
+                  if (selectedCountry.value == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select your country of residence'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
                   final registerData = {
                     "username": usernameController.text.trim(),
                     "first_name": firstnameController.text.trim().firstLetterUpperCase(),

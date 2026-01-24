@@ -235,13 +235,16 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
             ),
             SizedBox(height: 4.h),
             FilledButton.icon(
-              onPressed: () {
-                Navigator.push(
+              onPressed: () async {
+                final result = await Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const CreateRoomScreen(),
                   ),
-                ).then((_) => _loadRooms());
+                );
+                if (context.mounted) {
+                  _loadRooms();
+                }
               },
               icon: const Icon(Icons.add),
               label: const Text('Create First Room'),

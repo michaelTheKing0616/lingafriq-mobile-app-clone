@@ -14,6 +14,9 @@ import 'package:lingafriq/services/localization/dynamic_localization_service.dar
 import 'package:lingafriq/services/offline/selective_sync.dart' show SelectiveSyncService, SyncCategory, SyncPreference;
 import 'package:lingafriq/services/offline/cache_encryption.dart' show CacheEncryptionService;
 import 'package:lingafriq/services/offline/offline_service.dart' show OfflineService, CacheStats;
+import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
+import 'package:lingafriq/screens/settings/change_password_screen.dart';
+import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -247,19 +250,40 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       leading: Icon(Icons.person),
                       title: Text('Edit Profile'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const EditProfileScreen(),
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.lock),
                       title: Text('Change Password'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangePasswordScreen(),
+                          ),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.privacy_tip),
                       title: Text('Privacy Settings'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const PrivacySettingsScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                   isDark.value,

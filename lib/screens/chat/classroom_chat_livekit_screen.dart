@@ -132,7 +132,12 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
           IconButton(
             icon: Icon(Icons.people),
             onPressed: () {
-              // Show participants list
+              _showParticipantsList(
+                context,
+                participants.value,
+                localParticipant.value,
+                remoteParticipants.value,
+              );
             },
             tooltip: 'Participants',
           ),
@@ -461,6 +466,110 @@ class _VideoTile extends StatelessWidget {
             style: PanAfricanTypography.titleMedium(context),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showParticipantsList(
+    BuildContext context,
+    List<Map<String, dynamic>> participants,
+    LocalParticipant? localParticipant,
+    Map<String, RemoteParticipant> remoteParticipants,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => Container(
+        padding: EdgeInsets.all(16.sp),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Participants (${participants.length})',
+              style: PanAfricanTypography.titleLarge(context),
+            ),
+            SizedBox(height: 16.h),
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: participants.length,
+                itemBuilder: (context, index) {
+                  final participant = participants[index];
+                  final isLocal = participant['isLocal'] == true;
+                  final participantId = participant['id'] as String;
+                  final remoteParticipant = remoteParticipants[participantId];
+                  
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: PanAfricanColors.primaryGreen,
+                      child: Icon(
+                        isLocal ? Icons.person : Icons.person_outline,
+                        color: Colors.white,
+                      ),
+                    ),
+                    title: Text(
+                      participant['name'] ?? 'Unknown',
+                      style: PanAfricanTypography.bodyLarge(context),
+                    ),
+                    subtitle: Text(
+                      isLocal ? 'You' : 'Participant',
+                      style: PanAfricanTypography.bodySmall(context),
+                    ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (remoteParticipant != null) ...[
+                          Icon(
+                            remoteParticipant.isMicrophoneEnabled() 
+                                ? Icons.mic 
+                                : Icons.mic_off,
+                            color: remoteParticipant.isMicrophoneEnabled() 
+                                ? Colors.green 
+                                : Colors.red,
+                            size: 20.sp,
+                          ),
+                          SizedBox(width: 8.w),
+                          Icon(
+                            remoteParticipant.isCameraEnabled() 
+                                ? Icons.videocam 
+                                : Icons.videocam_off,
+                            color: remoteParticipant.isCameraEnabled() 
+                                ? Colors.green 
+                                : Colors.red,
+                            size: 20.sp,
+                          ),
+                        ] else if (isLocal && localParticipant != null) ...[
+                          Icon(
+                            localParticipant.isMicrophoneEnabled() 
+                                ? Icons.mic 
+                                : Icons.mic_off,
+                            color: localParticipant.isMicrophoneEnabled() 
+                                ? Colors.green 
+                                : Colors.red,
+                            size: 20.sp,
+                          ),
+                          SizedBox(width: 8.w),
+                          Icon(
+                            localParticipant.isCameraEnabled() 
+                                ? Icons.videocam 
+                                : Icons.videocam_off,
+                            color: localParticipant.isCameraEnabled() 
+                                ? Colors.green 
+                                : Colors.red,
+                            size: 20.sp,
+                          ),
+                        ],
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 16.h),
+          ],
+        ),
       ),
     );
   }

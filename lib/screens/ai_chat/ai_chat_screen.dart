@@ -93,7 +93,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                     IconButton(
                       icon: const Icon(Icons.menu_rounded, color: Colors.white),
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        // CRITICAL FIX: Add null check for scaffold state
+                        final scaffoldState = Scaffold.of(context);
+                        if (scaffoldState != null) {
+                          scaffoldState.openDrawer();
+                        }
                       },
                     ),
                     Expanded(

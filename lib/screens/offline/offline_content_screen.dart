@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/animated/animated_card.dart';
 import 'package:lingafriq/widgets/animated/animated_button.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/screens/subscription/subscription_screen.dart';
 
 /// Screen for managing offline content downloads
 class OfflineContentScreen extends ConsumerWidget {
@@ -56,7 +57,12 @@ class OfflineContentScreen extends ConsumerWidget {
               AnimatedButton(
                 text: 'View Plans',
                 onPressed: () {
-                  // Navigate to subscription screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SubscriptionScreen(),
+                    ),
+                  );
                 },
               ),
             ],

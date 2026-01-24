@@ -113,7 +113,11 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                         IconButton(
                           icon: const Icon(Icons.menu, color: Colors.white),
                           onPressed: () {
-                            Scaffold.of(context).openDrawer();
+                            // CRITICAL FIX: Add null check for scaffold state
+                            final scaffoldState = Scaffold.of(context);
+                            if (scaffoldState != null) {
+                              scaffoldState.openDrawer();
+                            }
                           },
                           style: IconButton.styleFrom(
                             backgroundColor: Colors.white.withOpacity(0.2),

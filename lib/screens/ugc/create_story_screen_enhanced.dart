@@ -12,6 +12,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/screens/ugc/ugc_validation_feedback_screen.dart';
 import 'package:lingafriq/screens/ugc/ugc_quality_badges_widget.dart';
+import 'package:lingafriq/services/user_generated_content_service.dart';
 
 /// Enhanced Create Story Screen with Validation Feedback
 class CreateStoryScreenEnhanced extends HookConsumerWidget {
@@ -29,11 +30,72 @@ class CreateStoryScreenEnhanced extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> validateContent() async {
-      // Similar validation logic
+      final errors = <String>[];
+      final title = titleController.text.trim();
+      final content = contentController.text.trim();
+
+      if (title.isEmpty) errors.add('Story title is required.');
+      if (title.length < 5) errors.add('Story title should be at least 5 characters.');
+
+      if (content.isEmpty) {
+        errors.add('Story content is required.');
+      } else if (content.length < 50) {
+        errors.add('Story content should be at least 50 characters.');
+      }
+
+      final badges = <String>[];
+      if (title.isNotEmpty && title.length >= 12) badges.add('Clear title');
+      if (content.isNotEmpty && content.length >= 200) badges.add('Rich content');
+      if (content.isNotEmpty && content.length >= 500) badges.add('Detailed story');
+      if (errors.isEmpty) badges.add('Validation passed');
+
+      validationResult.value = errors.isEmpty ? null : {'errors': errors};
+      qualityBadges.value = badges;
     }
 
     Future<void> submitStory() async {
-      // Similar submission logic
+      await validateContent();
+      if (validationResult.value != null) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text((validationResult.value!['errors'] as List?)?.join('\n') ?? 'Please fix validation errors.'),
+          ),
+        );
+        return;
+      }
+
+      if (!context.mounted) return;
+
+      isSubmitting.value = true;
+      try {
+        final service = ref.read(userGeneratedContentServiceProvider);
+        final result = await service.createStory(
+          language: selectedLanguage.value,
+          title: titleController.text.trim(),
+          story: contentController.text.trim(),
+          theme: null,
+          vocabulary: null,
+        );
+
+        if (!context.mounted) return;
+        if (result != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Story created successfully!')),
+          );
+          Navigator.pop(context, result);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to create story. Please try again.')),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ErrorHandler.showError(context, e);
+        }
+      } finally {
+        isSubmitting.value = false;
+      }
     }
 
     return Scaffold(

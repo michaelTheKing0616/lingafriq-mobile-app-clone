@@ -269,6 +269,35 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Update user preferences (privacy, analytics, etc.). Persists to backend when available.
+  Future<bool> updateUserPreferences(Map<String, dynamic> prefs) async {
+    try {
+      final res = await ref.read(client).put(
+        '${Api.baseurl}${Api.userPreferences}',
+        data: prefs,
+      );
+      return res.statusCode == 200 || res.statusCode == 204;
+    } catch (e) {
+      // Backend may not implement preferences endpoint yet; fail silently
+      return false;
+    }
+  }
+
+  /// Fetch user preferences from backend.
+  Future<Map<String, dynamic>?> getUserPreferences() async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}${Api.userPreferences}',
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<LanguageResponse> getLanguages() async {
     try {
       final res = await ref.read(client).get(Api.language);

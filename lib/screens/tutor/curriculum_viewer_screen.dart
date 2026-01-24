@@ -4,6 +4,8 @@ import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
+import 'package:lingafriq/models/curriculum_model.dart';
 
 class CurriculumViewerScreen extends StatelessWidget {
   final Map<String, dynamic> curriculum;
@@ -93,7 +95,38 @@ class CurriculumViewerScreen extends StatelessWidget {
                     color: AppColors.primaryGreen,
                   ),
                   onTap: () {
-                    // Navigate to lesson detail
+                    // Convert lesson map to CurriculumLesson object
+                    try {
+                      final lessonObj = CurriculumLesson.fromMap({
+                        'id': lessonMap['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+                        'title': lessonMap['title'] ?? 'Untitled Lesson',
+                        'vocab': lessonMap['vocab'] ?? [],
+                        'exercises': lessonMap['exercises'] ?? [],
+                        'grammar': lessonMap['grammar'],
+                        'dialogue': lessonMap['dialogue'],
+                        'duration_min': lessonMap['duration_min'],
+                        'is_completed': lessonMap['is_completed'] ?? false,
+                        'objectives': lessonMap['objectives'] ?? [],
+                      });
+                      
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LessonDetailScreen(
+                            lesson: lessonObj,
+                            language: curriculum['language'] ?? 'Unknown',
+                            level: curriculum['level'] ?? 'Beginner',
+                          ),
+                        ),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Error loading lesson: ${e.toString()}'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   },
                 );
               }).toList(),
