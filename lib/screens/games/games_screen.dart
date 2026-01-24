@@ -41,7 +41,11 @@ class GamesScreen extends ConsumerWidget {
                     IconButton(
                       icon: const Icon(Icons.menu_rounded, color: Colors.white),
                       onPressed: () {
-                        Scaffold.of(context).openDrawer();
+                        // CRITICAL FIX: Add null check for scaffold state
+                        final scaffoldState = Scaffold.of(context);
+                        if (scaffoldState != null) {
+                          scaffoldState.openDrawer();
+                        }
                       },
                     ),
                     Expanded(
@@ -246,7 +250,12 @@ class GameTypesScreen extends StatelessWidget {
               description: 'Complete sentences with missing words',
               color: AppColors.accentGold,
               onTap: () {
-                // Navigate to fill in the blank game
+                Navigator.push(
+                  context,
+                  SmoothPageRoute(
+                    child: FillInTheBlankGame(language: language),
+                  ),
+                );
               },
             ),
             const SizedBox(height: 12),
@@ -266,7 +275,12 @@ class GameTypesScreen extends StatelessWidget {
               description: 'Answer questions as fast as you can',
               color: AppColors.oceanBlue,
               onTap: () {
-                // Navigate to speed challenge game
+                Navigator.push(
+                  context,
+                  SmoothPageRoute(
+                    child: SpeedChallengeGame(language: language),
+                  ),
+                );
               },
             ),
           ],

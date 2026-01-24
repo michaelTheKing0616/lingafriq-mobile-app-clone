@@ -13,6 +13,7 @@ import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/screens/games/language_games_screen.dart';
 
 /// Beautiful Material 3 Dashboard with Pan-African Design
 class DashboardScreenMaterial3 extends HookConsumerWidget {
@@ -248,7 +249,14 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               style: PanAfricanTypography.titleLarge(context),
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  SmoothPageRoute(
+                    child: const LanguageGamesScreen(),
+                  ),
+                );
+              },
               child: Text('See All'),
             ),
           ],

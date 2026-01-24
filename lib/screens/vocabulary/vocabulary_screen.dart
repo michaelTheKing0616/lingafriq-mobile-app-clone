@@ -50,6 +50,11 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
       });
     } catch (e) {
       debugPrint('Error loading vocabulary: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error loading vocabulary. Please try again.')),
+        );
+      }
       setState(() => _isLoading = false);
     }
   }

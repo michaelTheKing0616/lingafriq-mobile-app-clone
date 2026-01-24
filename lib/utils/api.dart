@@ -18,6 +18,7 @@ class Api {
   static const String login = "accounts/auth/login";
   static const String refreshToken = "accounts/auth/refresh";
   static const String userInfo = "accounts/auth/users/me/";
+  static const String userPreferences = "api/user/preferences";
   static const String registerFcmDevice = "devices/";
   static String unRegisterFcmDevice(String token) => "devices/$token/";
   static String userProfile(int id) => "account/my_user_profile/?id=$id";

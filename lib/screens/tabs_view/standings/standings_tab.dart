@@ -34,7 +34,11 @@ class StandingsTab extends HookConsumerWidget {
               children: [
                 IconButton(
                   onPressed: () {
-                    ref.read(scaffoldKeyProvider).currentState!.openDrawer();
+                    // CRITICAL FIX: Add null check for scaffold state
+                    final scaffoldState = ref.read(scaffoldKeyProvider).currentState;
+                    if (scaffoldState != null) {
+                      scaffoldState.openDrawer();
+                    }
                   },
                   icon: const Icon(Icons.menu_rounded, color: Colors.white),
                 ),

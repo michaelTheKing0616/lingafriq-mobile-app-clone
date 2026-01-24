@@ -27,7 +27,11 @@ class SeasonalEventsScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
-              Scaffold.of(context).openDrawer();
+              // CRITICAL FIX: Add null check for scaffold state
+              final scaffoldState = Scaffold.of(context);
+              if (scaffoldState != null) {
+                scaffoldState.openDrawer();
+              }
             },
           ),
         ],

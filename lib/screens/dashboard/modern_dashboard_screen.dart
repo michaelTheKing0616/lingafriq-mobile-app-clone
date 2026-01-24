@@ -15,6 +15,8 @@ import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
+import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -149,7 +151,12 @@ class ModernDashboardScreen extends HookConsumerWidget {
                             IconButton(
                               icon: const Icon(Icons.settings_rounded, color: Colors.white),
                               onPressed: () {
-                                // Navigate to settings
+                                Navigator.push(
+                                  context,
+                                  SmoothPageRoute(
+                                    child: const SettingsScreenMaterial3(),
+                                  ),
+                                );
                               },
                               style: IconButton.styleFrom(
                                 backgroundColor: Colors.white.withOpacity(0.2),
@@ -330,7 +337,13 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
                         ),
                         onTap: () {
-                          // Navigate to lessons
+                          // Navigate to language games screen (which includes lessons)
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: const LanguageGamesScreen(),
+                            ),
+                          );
                         },
                       ),
                       _QuickActionCard(

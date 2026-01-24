@@ -76,11 +76,13 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: () {
-              // Show category filter
-            },
+          Builder(
+            builder: (context) => IconButton(
+              icon: Icon(Icons.filter_list),
+              onPressed: () async {
+                await _showCategoryFilter(context, vocabService, words, isLoading);
+              },
+            ),
           ),
         ],
       ),
@@ -257,6 +259,74 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
       StructuredLogger().error('Error loading vocabulary words', error: e, context: {'language': language, 'category': category});
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> _showCategoryFilter(
+    BuildContext context,
+    VocabularyProgressService service,
+    ValueNotifier<List<WordMastery>> words,
+    ValueNotifier<bool> isLoading,
+  ) async {
+    try {
+      final progress = await service.loadProgress(languageName);
+      final allWords = progress.words.values.toList();
+      final categories = allWords
+          .map((w) => w.category)
+          .where((c) => c.isNotEmpty)
+          .toSet()
+          .toList()
+        ..sort();
+      
+      final selectedCategory = await showModalBottomSheet<String?>(
+        context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        builder: (context) => Container(
+          padding: EdgeInsets.all(16.sp),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Filter by Category',
+                style: PanAfricanTypography.titleLarge(context),
+              ),
+              SizedBox(height: 16.h),
+              ListTile(
+                title: Text('All Categories'),
+                leading: Icon(Icons.all_inclusive),
+                onTap: () => Navigator.pop(context, null),
+              ),
+              Divider(),
+              ...categories.map((cat) => ListTile(
+                title: Text(cat),
+                leading: Icon(Icons.category),
+                onTap: () => Navigator.pop(context, cat),
+              )),
+              SizedBox(height: 16.h),
+            ],
+          ),
+        ),
+      );
+      
+      if (selectedCategory != null || category != null) {
+        // Reload words with new category filter
+        isLoading.value = true;
+        words.value = selectedCategory == null
+            ? allWords
+            : allWords.where((w) => w.category == selectedCategory).toList();
+        isLoading.value = false;
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error loading categories: ${e.toString()}'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
