@@ -10,12 +10,12 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/placement_test_service.dart';
-import 'package:lingafriq/models/placement_question.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/dio_provider.dart';
+import 'package:lingafriq/providers/dio_provider.dart' show client;
 import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/models/placement_question.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -37,14 +37,35 @@ class PlacementTestScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    // Helpers for placement result (used in submitTest). The previously removed
+    // _getStrengths / _getWeaknesses / _getRecommendations duplicates are not needed:
+    // they were defined after submitTest and caused "referenced before declared".
+    // These declarations above submitTest fix that.
+    List<String> getStrengths(PlacementResult r) {
+      if (r.score >= 70) return ['Strong vocabulary foundation', 'Good understanding of basic grammar'];
+      if (r.score >= 50) return ['Basic vocabulary knowledge'];
+      return ['Willingness to learn'];
+    }
+    List<String> getWeaknesses(PlacementResult r) {
+      if (r.score < 50) return ['Need to build vocabulary', 'Grammar fundamentals needed'];
+      if (r.score < 70) return ['Some grammar concepts need review'];
+      return [];
+    }
+    List<String> getRecommendations(PlacementResult r) {
+      final level = r.level;
+      if (level == 'A1' || level == 'A2') return ['Start with beginner lessons', 'Focus on vocabulary building', 'Practice pronunciation daily'];
+      if (level == 'B1' || level == 'B2') return ['Continue with intermediate content', 'Practice conversation skills', 'Expand vocabulary in specific topics'];
+      return ['Advanced lessons recommended', 'Focus on fluency and nuance', 'Engage with native content'];
+    }
+
     Future<void> generateTest() async {
       isGenerating.value = true;
       try {
         // Try to fetch from backend first, fallback to local if it fails
         List<PlacementQuestion> questions;
         try {
-          final client = ref.read(dioProvider);
-          final response = await client.get(
+          final dio = ref.read(client);
+          final response = await dio.get(
             '${Api.baseurl}onboarding/placement-test/generate',
             queryParameters: {'language': language},
           );
@@ -155,9 +176,9 @@ class PlacementTestScreen extends HookConsumerWidget {
           'score': placementResult.score,
           'total_questions': placementResult.totalQuestions,
           'correct': placementResult.correct,
-          'strengths': _getStrengths(placementResult),
-          'weaknesses': _getWeaknesses(placementResult),
-          'recommendations': _getRecommendations(placementResult),
+          'strengths': getStrengths(placementResult),
+          'weaknesses': getWeaknesses(placementResult),
+          'recommendations': getRecommendations(placementResult),
         };
 
         // Try to sync results to backend (non-blocking)
@@ -179,47 +200,6 @@ class PlacementTestScreen extends HookConsumerWidget {
         ErrorHandler.showError(context, e);
       } finally {
         isLoading.value = false;
-      }
-    }
-
-    List<String> _getStrengths(PlacementResult result) {
-      if (result.score >= 70) {
-        return ['Strong vocabulary foundation', 'Good understanding of basic grammar'];
-      } else if (result.score >= 50) {
-        return ['Basic vocabulary knowledge'];
-      }
-      return ['Willingness to learn'];
-    }
-
-    List<String> _getWeaknesses(PlacementResult result) {
-      if (result.score < 50) {
-        return ['Need to build vocabulary', 'Grammar fundamentals needed'];
-      } else if (result.score < 70) {
-        return ['Some grammar concepts need review'];
-      }
-      return [];
-    }
-
-    List<String> _getRecommendations(PlacementResult result) {
-      final level = result.level;
-      if (level == 'A1' || level == 'A2') {
-        return [
-          'Start with beginner lessons',
-          'Focus on vocabulary building',
-          'Practice pronunciation daily',
-        ];
-      } else if (level == 'B1' || level == 'B2') {
-        return [
-          'Continue with intermediate content',
-          'Practice conversation skills',
-          'Expand vocabulary in specific topics',
-        ];
-      } else {
-        return [
-          'Advanced lessons recommended',
-          'Focus on fluency and nuance',
-          'Engage with native content',
-        ];
       }
     }
 
