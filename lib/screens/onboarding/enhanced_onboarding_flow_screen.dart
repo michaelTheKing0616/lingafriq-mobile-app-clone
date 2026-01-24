@@ -1298,8 +1298,14 @@ class _Step6LearningStyle extends HookConsumerWidget {
 }
 
 class _Step7PacePreference extends HookConsumerWidget {
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
   final Function(Map<String, dynamic>) onNext;
-  const _Step7PacePreference({required this.onNext});
+  const _Step7PacePreference({
+    required this.pageController,
+    required this.currentStep,
+    required this.onNext,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

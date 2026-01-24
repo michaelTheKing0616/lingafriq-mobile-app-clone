@@ -16,5 +16,7 @@
 			"path": "../../../../../Downloads/Original LingAfriq repos"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"powershell.cwd": "LingAfriqMobile"
+	}
 }

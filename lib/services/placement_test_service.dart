@@ -9,14 +9,14 @@ class PlacementTestService {
   /// Load questions for a language, expanding the static bank with
   /// curriculum- and Polie-generated items when available.
   static Future<List<PlacementQuestion>> loadQuestionsForLanguage(
-    Ref ref,
+    dynamic ref,
     String languageCode,
   ) async {
     // Start from the curated static bank.
     final base = questionsForLanguage(languageCode);
 
     try {
-      final curriculumService = CurriculumService(ref);
+      final curriculumService = CurriculumService(ref as Ref);
       final langKey = languageCode.toLowerCase();
 
       // Try to generate a small set of additional exercises using Polie,

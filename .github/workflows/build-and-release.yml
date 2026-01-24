@@ -92,13 +92,7 @@ jobs:
           flutter-version: '3.35.0'
 
       - name: 🔧 Install CMake (required for rive_common native builds)
-        run: |
-          # Install CMake via apt (Ubuntu) - must be before SDK installation
-          sudo apt-get update
-          sudo apt-get install -y cmake
-          # Verify CMake installation
-          cmake --version
-          echo "✅ CMake installed successfully"
+        run: sudo apt-get update && sudo apt-get install -y cmake
 
       - name: 🛠️ Configure Android SDK
         run: |
@@ -109,29 +103,14 @@ jobs:
 
       - name: 🧹 Clean corrupted NDK installations
         run: |
-          echo "🧹 Cleaning any corrupted NDK installations..."
-          # Remove corrupted NDK 27.0.12077973 if it exists (missing source.properties)
-          if [ -d "$ANDROID_SDK_ROOT/ndk/27.0.12077973" ]; then
-            if [ ! -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
-              echo "⚠️ Found corrupted NDK 27.0.12077973 (missing source.properties), removing..."
-              rm -rf "$ANDROID_SDK_ROOT/ndk/27.0.12077973"
-              echo "✅ Removed corrupted NDK installation"
-            else
-              echo "✅ NDK 27.0.12077973 exists and appears valid"
-            fi
+          if [ -d "$ANDROID_SDK_ROOT/ndk/27.0.12077973" ] && [ ! -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
+            rm -rf "$ANDROID_SDK_ROOT/ndk/27.0.12077973"
           fi
 
       - name: 🧩 Install Android SDK components
         run: |
           yes | sdkmanager --licenses
-          # Install NDK 27.0.12077973 (required by build.gradle and speech_to_text plugin)
           sdkmanager "platforms;android-35" "build-tools;35.0.0" "ndk;27.0.12077973" "cmake;3.22.1"
-          # Verify NDK installation
-          if [ -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
-            echo "✅ NDK 27.0.12077973 installed successfully"
-          else
-            echo "⚠️ NDK 27.0.12077973 installation may be incomplete"
-          fi
 
       - name: 📦 Get Flutter dependencies
         run: flutter pub get
@@ -156,144 +135,68 @@ jobs:
 
       - name: 🧹 Comprehensive Cache Clearing (Before Build)
         run: |
-          echo "🧹 Starting comprehensive cache clearing..."
-          
-          # 1. Flutter clean - removes build artifacts
-          echo "📦 Step 1: Flutter clean..."
           flutter clean || true
-          
-          # 2. Clear Flutter pub cache (if needed)
-          echo "📦 Step 2: Clearing Flutter pub cache..."
           flutter pub cache repair || true
-          
-          # 3. Remove build directories
-          echo "🗑️ Step 3: Removing build directories..."
-          rm -rf build/ || true
-          rm -rf .dart_tool/ || true
-          rm -rf .flutter-plugins || true
-          rm -rf .flutter-plugins-dependencies || true
-          rm -rf .packages || true
-          
-          # 4. Clear Gradle cache
-          echo "🔄 Step 4: Clearing Gradle cache..."
+          rm -rf build/ .dart_tool/ .flutter-plugins .flutter-plugins-dependencies .packages || true
           chmod +x android/gradlew || true
-          cd android || exit 0
-          ./gradlew clean --refresh-dependencies || true
-          rm -rf ~/.gradle/caches/modules-2/files-2.1 || true
-          rm -rf ~/.gradle/caches/transforms-* || true
-          rm -rf ~/.gradle/daemon || true
-          cd ..
-          
-          # 5. Clear Android build cache
-          echo "📱 Step 5: Clearing Android build cache..."
-          rm -rf android/.gradle || true
-          rm -rf android/app/build || true
-          rm -rf android/build || true
-          
-          # 5a. Clean corrupted NDK installations (if any)
-          echo "🧹 Step 5a: Cleaning corrupted NDK installations..."
-          if [ -n "$ANDROID_SDK_ROOT" ] && [ -d "$ANDROID_SDK_ROOT/ndk/27.0.12077973" ]; then
-            if [ ! -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
-              echo "⚠️ Found corrupted NDK 27.0.12077973, removing..."
-              rm -rf "$ANDROID_SDK_ROOT/ndk/27.0.12077973" || true
-            fi
+          cd android && ./gradlew clean --refresh-dependencies -q && cd .. || true
+          rm -rf ~/.gradle/caches/modules-2/files-2.1 ~/.gradle/caches/transforms-* ~/.gradle/daemon || true
+          rm -rf android/.gradle android/app/build android/build || true
+          if [ -n "$ANDROID_SDK_ROOT" ] && [ -d "$ANDROID_SDK_ROOT/ndk/27.0.12077973" ] && [ ! -f "$ANDROID_SDK_ROOT/ndk/27.0.12077973/source.properties" ]; then
+            rm -rf "$ANDROID_SDK_ROOT/ndk/27.0.12077973" || true
           fi
-          
-          # 6. DELETE GENERATED PLUGIN FILES (critical - must happen BEFORE flutter pub get)
-          echo "🗑️ Step 6: Deleting generated plugin metadata files..."
-          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java || true
-          rm -rf ios/Runner/GeneratedPluginRegistrant.m || true
-          rm -rf ios/Runner/GeneratedPluginRegistrant.h || true
-          rm -rf .flutter-plugins || true
-          rm -rf .flutter-plugins-dependencies || true
-          
-          # 7. Get fresh dependencies (will regenerate plugin files)
-          echo "📥 Step 7: Getting fresh dependencies..."
+          rm -rf android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java \
+            ios/Runner/GeneratedPluginRegistrant.m ios/Runner/GeneratedPluginRegistrant.h \
+            .flutter-plugins .flutter-plugins-dependencies || true
           flutter pub get
-          
-          echo "✅ Cache clearing complete!"
 
+      # Logs: normal build (no --verbose). On failure, only grep'd errors + last 80 lines to diagnose.
       - name: 🏗️ Build AAB (Release)
         env:
           GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.parallel=true -Dorg.gradle.caching=false -Dorg.gradle.console=plain"
         run: |
-          echo "🏗️ Starting AAB build..."
-          set +e  # Don't exit on error immediately
+          set +e
           chmod +x android/gradlew || true
-          
-          # First attempt - FULL VERBOSE OUTPUT
-          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build.log
+          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | tee build.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
-          
-          if [ $BUILD_EXIT_CODE -eq 0 ]; then
-            echo "✅ Build succeeded on first attempt"
-            exit 0
-          fi
-          
-          echo "⚠️ Build failed (exit code: $BUILD_EXIT_CODE), showing last 100 lines of build log:"
-          tail -n 100 build.log || true
-          
-          echo "🔄 Performing deep clean and retry..."
+          if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded"; exit 0; fi
+
+          echo "=== Build failed: compile/build errors (grep) ==="
+          grep -E "Error:|Error |FAILED|FAILURE|fatal:|Exception|lib/.*\.dart:[0-9]+|Not found:|Couldn't resolve" build.log || true
+          echo "=== Last 80 lines (context) ==="
+          tail -n 80 build.log || true
+
+          echo "Deep clean and retry..."
           flutter clean
           rm -rf build/ .dart_tool/ android/.gradle android/app/build android/build || true
           chmod +x android/gradlew || true
-          cd android && ./gradlew clean --refresh-dependencies --stacktrace && cd ..
+          (cd android && ./gradlew clean --refresh-dependencies --stacktrace 2>&1 | tail -20) || true
           flutter pub get
-          
-          # Second attempt - FULL VERBOSE OUTPUT
-          echo "🏗️ Retrying build after clean..."
-          
-          flutter build appbundle --release --split-debug-info=build/symbols --verbose 2>&1 | tee build-retry.log
+
+          flutter build appbundle --release --split-debug-info=build/symbols 2>&1 | tee build-retry.log
           BUILD_EXIT_CODE=${PIPESTATUS[0]}
-          
-          if [ $BUILD_EXIT_CODE -eq 0 ]; then
-            echo "✅ Build succeeded on retry"
-            exit 0
-          fi
-          
-          echo "❌ Build failed after retry (exit code: $BUILD_EXIT_CODE)"
-          echo "📋 Last 200 lines of retry build log:"
-          tail -n 200 build-retry.log || true
+          if [ $BUILD_EXIT_CODE -eq 0 ]; then echo "Build succeeded on retry"; exit 0; fi
+
+          echo "=== Retry failed: compile/build errors (grep) ==="
+          grep -E "Error:|Error |FAILED|FAILURE|fatal:|Exception|lib/.*\.dart:[0-9]+|Not found:|Couldn't resolve" build-retry.log || true
+          echo "=== Last 80 lines (context) ==="
+          tail -n 80 build-retry.log || true
           exit 1
 
       - name: 🚚 Package AAB and mapping file
         run: |
           mkdir -p build/release
           version="${{ needs.increment-version.outputs.version }}"
-          
-          # Check if AAB file exists
           AAB_PATH="build/app/outputs/bundle/release/app-release.aab"
           if [ ! -f "$AAB_PATH" ]; then
-            echo "❌ ERROR: AAB file not found at $AAB_PATH"
-            echo "📋 Checking build directory structure:"
-            find build -name "*.aab" -type f 2>/dev/null || echo "No AAB files found"
-            echo "📋 Build directory contents:"
-            ls -la build/app/outputs/bundle/release/ 2>/dev/null || echo "Release directory not found"
-            echo "📋 Full build directory:"
-            ls -la build/app/outputs/ 2>/dev/null || echo "Outputs directory not found"
+            echo "ERROR: AAB not found at $AAB_PATH"
+            find build -name "*.aab" 2>/dev/null || true
+            ls -la build/app/outputs/bundle/release/ 2>/dev/null || true
             exit 1
           fi
-          
-          echo "✅ Found AAB file: $AAB_PATH"
           cp "$AAB_PATH" "build/release/LingAfriq-${version}.aab"
-          echo "✅ Copied AAB to build/release/LingAfriq-${version}.aab"
-          
-          # Copy mapping.txt if it exists (generated by R8/ProGuard)
-          if [ -f build/app/outputs/mapping/release/mapping.txt ]; then
-            cp build/app/outputs/mapping/release/mapping.txt "build/release/mapping.txt"
-            echo "✅ Found and copied mapping.txt file"
-          else
-            echo "⚠️ mapping.txt not found (check if minifyEnabled is true in build.gradle)"
-          fi
-          
-          # Also copy symbols if they exist
-          if [ -d build/symbols ]; then
-            cp -r build/symbols "build/release/symbols" || true
-            echo "✅ Copied symbols directory"
-          fi
-          
-          echo "📦 Final artifacts in build/release/:"
-          ls -lh build/release/
+          [ -f build/app/outputs/mapping/release/mapping.txt ] && cp build/app/outputs/mapping/release/mapping.txt build/release/mapping.txt || true
+          [ -d build/symbols ] && cp -r build/symbols build/release/ || true
 
       - name: 📤 Upload AAB and mapping file
         uses: actions/upload-artifact@v4
@@ -395,20 +298,24 @@ jobs:
           pod install --repo-update --silent
           cd ..
 
+      # Logs: full output to build-ios.log. On failure, only grep'd errors + last 80 lines.
       - name: 🏗️ Build iOS Archive (Release)
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.IOS_BUILD_CERTIFICATE_BASE64 }}
         run: |
+          set +e
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            # Build signed IPA (reduced verbosity - only show important messages)
-            echo "🔐 Building signed IPA..."
-            flutter build ipa --release --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built|Xcode build done)"
+            flutter build ipa --release --split-debug-info=build/symbols 2>&1 | tee build-ios.log
           else
-            # Build archive without signing (for manual signing later)
-            echo "⚠️ No signing credentials found. Building archive without signing..."
-            echo "📝 Note: You'll need to sign manually in Xcode for App Store submission"
-            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | grep -E "(Error|Warning|FAILURE|BUILD FAILED|Exception|✓|Built|Xcode build done)"
+            flutter build ios --release --no-codesign --split-debug-info=build/symbols 2>&1 | tee build-ios.log
           fi
+          code=$?
+          if [ $code -eq 0 ]; then echo "Build succeeded"; exit 0; fi
+          echo "=== Build failed: compile/build errors (grep) ==="
+          grep -E "Error|error:|FAILURE|BUILD FAILED|Exception|fatal:|\.dart:[0-9]+|Not found|Couldn't resolve" build-ios.log || true
+          echo "=== Last 80 lines (context) ==="
+          tail -n 80 build-ios.log || true
+          exit $code
 
       - name: 🚚 Package iOS build with version
         env:
@@ -416,50 +323,21 @@ jobs:
         run: |
           version="${{ needs.increment-version.outputs.version }}"
           mkdir -p build/release/ios
-          
-          echo "🔎 Searching for iOS build artifacts..."
-          echo "Checking build/ios/ipa/..."
-          ls -la build/ios/ipa/ 2>/dev/null || echo "No ipa directory"
-          echo "Checking build/ios/archive/..."
-          ls -la build/ios/archive/ 2>/dev/null || echo "No archive directory"
-          
           if [ -n "$BUILD_CERTIFICATE_BASE64" ]; then
-            # Signed IPA exists
             ipa_file=$(ls build/ios/ipa/*.ipa 2>/dev/null | head -n 1)
             if [ -n "$ipa_file" ] && [ -f "$ipa_file" ]; then
               cp "$ipa_file" "build/release/ios/LingAfriq-$version.ipa"
-              echo "✅ Signed IPA copied: build/release/ios/LingAfriq-$version.ipa"
             else
-              echo "⚠️ IPA file not found in build/ios/ipa/, searching..."
               ipa_found=$(find build -name "*.ipa" -type f 2>/dev/null | head -n 1)
-              if [ -n "$ipa_found" ] && [ -f "$ipa_found" ]; then
-                cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
-                echo "✅ IPA found and copied: $ipa_found"
-              else
-                echo "❌ No IPA file found anywhere"
-              fi
+              [ -n "$ipa_found" ] && [ -f "$ipa_found" ] && cp "$ipa_found" "build/release/ios/LingAfriq-$version.ipa"
             fi
           else
-            # Archive without signing - create xcarchive zip
             if [ -d build/ios/archive/Runner.xcarchive ]; then
-              cd build/ios/archive
-              zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive
-              cd ../../..
-              echo "✅ Unsigned archive created: build/release/ios/LingAfriq-$version-unsigned.xcarchive.zip"
+              (cd build/ios/archive && zip -r "../../../release/ios/LingAfriq-$version-unsigned.xcarchive.zip" Runner.xcarchive)
             elif [ -d build/ios/archive ]; then
-              cd build/ios/archive
-              zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .
-              cd ../../..
-              echo "✅ Archive packaged: build/release/ios/LingAfriq-$version-unsigned.zip"
-            else
-              echo "⚠️ Archive not found. Checking build directory..."
-              find build -name "*.xcarchive" -type d || echo "No xcarchive found"
-              find build -name "*.ipa" -type f || echo "No IPA found"
+              (cd build/ios/archive && zip -r "../../../release/ios/LingAfriq-$version-unsigned.zip" .)
             fi
           fi
-          
-          echo "📦 Final iOS artifacts in build/release/ios/:"
-          ls -lh build/release/ios/ || echo "No files found"
 
       - name: 📤 Upload iOS build artifact
         continue-on-error: true
@@ -510,23 +388,8 @@ jobs:
         id: check-artifacts
         run: |
           mkdir -p build/release/android build/release/ios
-          echo "Checking for Android AAB..."
-          if ls build/release/android/*.aab 2>/dev/null; then
-            echo "android_exists=true" >> $GITHUB_OUTPUT
-            ls -lh build/release/android/
-          else
-            echo "android_exists=false" >> $GITHUB_OUTPUT
-            echo "⚠️ Android AAB not found"
-          fi
-          
-          echo "Checking for iOS artifacts..."
-          if ls build/release/ios/*.ipa build/release/ios/*.zip 2>/dev/null; then
-            echo "ios_exists=true" >> $GITHUB_OUTPUT
-            ls -lh build/release/ios/
-          else
-            echo "ios_exists=false" >> $GITHUB_OUTPUT
-            echo "⚠️ iOS artifacts not found"
-          fi
+          ls build/release/android/*.aab 2>/dev/null && echo "android_exists=true" >> $GITHUB_OUTPUT || echo "android_exists=false" >> $GITHUB_OUTPUT
+          ls build/release/ios/*.ipa build/release/ios/*.zip 2>/dev/null && echo "ios_exists=true" >> $GITHUB_OUTPUT || echo "ios_exists=false" >> $GITHUB_OUTPUT
 
       - name: 🏁 Create GitHub Release
         continue-on-error: true
