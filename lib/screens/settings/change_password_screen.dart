@@ -51,7 +51,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error changing password: ${ErrorHandler.getUserFriendlyError(e)}'),
+              content: Text('Error changing password: ${ErrorHandler.getUserFriendlyMessage(e)}'),
               backgroundColor: Colors.red,
             ),
           );
@@ -64,7 +64,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Change Password'),
-        backgroundColor: PanAfricanColors.primary,
+        backgroundColor: PanAfricanColors.primaryGreen,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -86,17 +86,17 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.all(16.sp),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primary.withOpacity(0.1),
+                      color: PanAfricanColors.primaryGreen.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: PanAfricanColors.primary.withOpacity(0.3),
+                        color: PanAfricanColors.primaryGreen.withOpacity(0.3),
                       ),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: PanAfricanColors.primary,
+                          color: PanAfricanColors.primaryGreen,
                         ),
                         SizedBox(width: 12.w),
                         Expanded(
@@ -127,7 +127,9 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          showCurrentPassword.value = !showCurrentPassword.value;
+                          setState(() {
+                            showCurrentPassword.value = !showCurrentPassword.value;
+                          });
                         },
                       ),
                       border: OutlineInputBorder(
@@ -157,7 +159,9 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          showNewPassword.value = !showNewPassword.value;
+                          setState(() {
+                            showNewPassword.value = !showNewPassword.value;
+                          });
                         },
                       ),
                       border: OutlineInputBorder(
@@ -193,7 +197,9 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          showConfirmPassword.value = !showConfirmPassword.value;
+                          setState(() {
+                            showConfirmPassword.value = !showConfirmPassword.value;
+                          });
                         },
                       ),
                       border: OutlineInputBorder(

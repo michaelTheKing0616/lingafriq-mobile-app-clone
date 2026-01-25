@@ -41,7 +41,12 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final activityStatusEnabled = useState<bool?>(null);
     final isLoading = useState(true);
 
-    Future<void> loadSettings(ApiProvider api) async {
+    useEffect(() {
+      _loadSettings(api);
+      return null;
+    }, []);
+
+    Future<void> _loadSettings(ApiProvider api) async {
       // Load from backend first; fall back to local
       final remote = await api.getUserPreferences();
       if (remote != null && remote.isNotEmpty) {
@@ -75,11 +80,6 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       }
       isLoading.value = false;
     }
-
-    useEffect(() {
-      loadSettings(api);
-      return null;
-    }, []);
 
     Future<void> _syncToBackend(ApiProvider api) async {
       final prefs = {
@@ -134,7 +134,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Privacy Settings'),
-          backgroundColor: PanAfricanColors.primary,
+          backgroundColor: PanAfricanColors.primaryGreen,
         ),
         body: const Center(
           child: CircularProgressIndicator(),
@@ -145,7 +145,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Privacy Settings'),
-        backgroundColor: PanAfricanColors.primary,
+        backgroundColor: PanAfricanColors.primaryGreen,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -257,7 +257,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                 Container(
                   padding: EdgeInsets.all(16.sp),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    color: PanAfricanColors.primaryGreen.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -265,7 +265,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                     children: [
                       Icon(
                         Icons.info_outline,
-                        color: PanAfricanColors.primary,
+                        color: PanAfricanColors.primaryGreen,
                       ),
                       SizedBox(width: 12.w),
                       Expanded(
@@ -294,7 +294,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       style: TextStyle(
         fontSize: 18.sp,
         fontWeight: FontWeight.bold,
-        color: PanAfricanColors.primary,
+        color: PanAfricanColors.primaryGreen,
       ),
     );
   }
@@ -312,7 +312,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         subtitle: Text(subtitle),
         value: value,
         onChanged: onChanged,
-        secondary: Icon(icon, color: PanAfricanColors.primary),
+        secondary: Icon(icon, color: PanAfricanColors.primaryGreen),
       ),
     );
   }
@@ -332,7 +332,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
         value: value,
         groupValue: groupValue,
         onChanged: (val) => onChanged(val!),
-        secondary: Icon(icon, color: PanAfricanColors.primary),
+        secondary: Icon(icon, color: PanAfricanColors.primaryGreen),
       ),
     );
   }
