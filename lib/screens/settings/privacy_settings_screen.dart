@@ -41,11 +41,6 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     final activityStatusEnabled = useState<bool?>(null);
     final isLoading = useState(true);
 
-    useEffect(() {
-      _loadSettings(api);
-      return null;
-    }, []);
-
     Future<void> _loadSettings(ApiProvider api) async {
       // Load from backend first; fall back to local
       final remote = await api.getUserPreferences();
@@ -80,6 +75,11 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       }
       isLoading.value = false;
     }
+
+    useEffect(() {
+      _loadSettings(api);
+      return null;
+    }, []);
 
     Future<void> _syncToBackend(ApiProvider api) async {
       final prefs = {

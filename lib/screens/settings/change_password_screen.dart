@@ -127,9 +127,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showCurrentPassword.value = !showCurrentPassword.value;
-                          });
+                          showCurrentPassword.value = !showCurrentPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -159,9 +157,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showNewPassword.value = !showNewPassword.value;
-                          });
+                          showNewPassword.value = !showNewPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -197,9 +193,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showConfirmPassword.value = !showConfirmPassword.value;
-                          });
+                          showConfirmPassword.value = !showConfirmPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
