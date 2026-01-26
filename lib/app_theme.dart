@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
 
+// Font fallback to ensure diacritics/emoji render correctly on all devices.
+const _globalFontFallback = <String>[
+  'Noto Sans',
+  'NotoSans',
+  'Roboto',
+  'Segoe UI',
+  'Arial Unicode MS',
+  // Emoji fonts (platform-dependent; harmless if missing).
+  'Apple Color Emoji',
+  'Segoe UI Emoji',
+  'Segoe UI Symbol',
+  'Noto Color Emoji',
+];
+
 final lightTheme = ThemeData(
   useMaterial3: true, // ✅ Material 3 Enabled
   fontFamily: 'dosis',
+  fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.light,
   colorScheme: ColorScheme.fromSeed(
     seedColor: primarySwatchLight.shade500, // Use primary color as seed
@@ -57,6 +72,7 @@ final lightTheme = ThemeData(
 final darkTheme = ThemeData(
   useMaterial3: true, // ✅ Material 3 Enabled
   fontFamily: 'dosis',
+  fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.dark,
   colorScheme: ColorScheme.fromSeed(
     seedColor: primarySwatchDark.shade400, // Use primary color as seed

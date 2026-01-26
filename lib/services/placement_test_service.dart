@@ -1,11 +1,28 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/placement_question.dart';
 import 'curriculum_service.dart';
+import '../utils/text_sanitizer.dart';
 
 /// Static placement test content and evaluation logic.
 /// This gives each supported language a small but meaningful set of
 /// questions at different CEFR bands. The structure is easy to extend.
 class PlacementTestService {
+  static List<PlacementQuestion> _sanitizeQuestions(List<PlacementQuestion> qs) {
+    return qs
+        .map(
+          (q) => PlacementQuestion(
+            id: q.id,
+            languageCode: q.languageCode,
+            level: q.level,
+            skill: q.skill,
+            prompt: TextSanitizer.sanitize(q.prompt),
+            options: q.options.map(TextSanitizer.sanitize).toList(),
+            correctIndex: q.correctIndex,
+          ),
+        )
+        .toList();
+  }
+
   /// Load questions for a language, expanding the static bank with
   /// curriculum- and Polie-generated items when available.
   static Future<List<PlacementQuestion>> loadQuestionsForLanguage(
@@ -109,35 +126,51 @@ class PlacementTestService {
       }
 
       if (generated.isEmpty) {
-        return base;
+        return _sanitizeQuestions(base);
       }
 
       // Combine static and generated, giving a richer, multi-skill placement.
-      return [...base, ...generated];
+      return _sanitizeQuestions([...base, ...generated]);
     } catch (_) {
       // If anything goes wrong, fall back to the static bank.
-      return base;
+      return _sanitizeQuestions(base);
     }
   }
 
   static List<PlacementQuestion> questionsForLanguage(String languageCode) {
     final code = languageCode.toLowerCase();
+    final List<PlacementQuestion> qs;
 
-    if (code.contains('yoruba')) return _yorubaQuestions;
-    if (code.contains('swahili')) return _swahiliQuestions;
-    if (code.contains('hausa')) return _hausaQuestions;
-    if (code.contains('igbo')) return _igboQuestions;
-    if (code.contains('zulu')) return _zuluQuestions;
-    if (code.contains('xhosa')) return _xhosaQuestions;
-    if (code.contains('amharic') || code == 'am') return _amharicQuestions;
-    if (code.contains('twi')) return _twiQuestions;
-    if (code.contains('afrikaans')) return _afrikaansQuestions;
-    if (code.contains('pidgin')) return _pidginQuestions;
-    if (code.contains('wolof')) return _wolofQuestions;
-    if (code.contains('somali')) return _somaliQuestions;
+    if (code.contains('yoruba')) {
+      qs = _yorubaQuestions;
+    } else if (code.contains('swahili')) {
+      qs = _swahiliQuestions;
+    } else if (code.contains('hausa')) {
+      qs = _hausaQuestions;
+    } else if (code.contains('igbo')) {
+      qs = _igboQuestions;
+    } else if (code.contains('zulu')) {
+      qs = _zuluQuestions;
+    } else if (code.contains('xhosa')) {
+      qs = _xhosaQuestions;
+    } else if (code.contains('amharic') || code == 'am') {
+      qs = _amharicQuestions;
+    } else if (code.contains('twi')) {
+      qs = _twiQuestions;
+    } else if (code.contains('afrikaans')) {
+      qs = _afrikaansQuestions;
+    } else if (code.contains('pidgin')) {
+      qs = _pidginQuestions;
+    } else if (code.contains('wolof')) {
+      qs = _wolofQuestions;
+    } else if (code.contains('somali')) {
+      qs = _somaliQuestions;
+    } else {
+      // Fallback: use Swahili set as a reasonable default
+      qs = _swahiliQuestions;
+    }
 
-    // Fallback: use Swahili set as a reasonable default
-    return _swahiliQuestions;
+    return _sanitizeQuestions(qs);
   }
 
   /// Evaluate answers and map to a CEFR-ish level using simple bands.

@@ -16,6 +16,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/dio_provider.dart' show client;
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/models/placement_question.dart';
+import 'package:lingafriq/utils/text_sanitizer.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -85,12 +86,14 @@ class PlacementTestScreen extends HookConsumerWidget {
               final options = (optsRaw is List)
                   ? optsRaw.map((e) => e.toString()).toList()
                   : const <String>[];
-              final prompt = (qMap['prompt'] ?? '').toString();
+              final prompt = TextSanitizer.sanitize((qMap['prompt'] ?? '').toString());
               final correct = qMap['correctIndex'];
               final correctIndex =
                   (correct is int) ? correct : int.tryParse(correct?.toString() ?? '') ?? 0;
               if (prompt.trim().isEmpty) continue;
-              if (options.length < 2) continue;
+              final sanitizedOptions =
+                  options.map((o) => TextSanitizer.sanitize(o)).toList();
+              if (sanitizedOptions.length < 2) continue;
               if (correctIndex < 0 || correctIndex >= options.length) continue;
               parsed.add(
                 PlacementQuestion(
@@ -99,7 +102,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                   level: (qMap['level'] ?? 'A1').toString(),
                   skill: (qMap['skill'] ?? 'vocab').toString(),
                   prompt: prompt,
-                  options: options,
+                  options: sanitizedOptions,
                   correctIndex: correctIndex,
                 ),
               );
@@ -149,9 +152,9 @@ class PlacementTestScreen extends HookConsumerWidget {
           'language': language,
           'questions': questions.map((q) => {
                 'id': q.id,
-                'question': q.prompt,
+                'question': TextSanitizer.sanitize(q.prompt),
                 'type': 'multiple_choice',
-                'options': q.options,
+                'options': q.options.map((o) => TextSanitizer.sanitize(o)).toList(),
                 'correct_index': q.correctIndex,
               }).toList(),
         };
@@ -183,8 +186,10 @@ class PlacementTestScreen extends HookConsumerWidget {
             languageCode: language,
             level: 'A1', // Default level
             skill: 'vocab', // Default skill
-            prompt: qMap['question'] ?? '',
-            options: (qMap['options'] as List).cast<String>(),
+            prompt: TextSanitizer.sanitize((qMap['question'] ?? '').toString()),
+            options: (qMap['options'] as List)
+                .map((e) => TextSanitizer.sanitize(e.toString()))
+                .toList(),
             correctIndex: qMap['correct_index'] ?? 0,
           );
         }).toList();
