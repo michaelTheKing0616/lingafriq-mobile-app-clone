@@ -57,7 +57,6 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
 
     try {
       final leaderboardsService = ref.read(leaderboardsServiceProvider);
-      final user = ref.read(userProvider);
 
       List<LeaderboardEntry> entries = [];
 
