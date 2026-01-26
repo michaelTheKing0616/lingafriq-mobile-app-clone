@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
@@ -122,7 +121,11 @@ class ProgressIntegration {
   }
 
   /// Call this when a game is completed
-  static Future<void> onGameCompleted(Ref ref, {int? wordsLearned, int? pointsEarned, bool perfect = false}) async {
+  ///
+  /// IMPORTANT: This must accept BOTH provider `Ref` (riverpod) and UI `WidgetRef`
+  /// (flutter_riverpod/hooks_riverpod). These types are not directly assignable
+  /// in our current dependency graph, but they share the same `.read(...)` API.
+  static Future<void> onGameCompleted(dynamic ref, {int? wordsLearned, int? pointsEarned, bool perfect = false}) async {
     // Update daily goals (local)
     ref.read(dailyGoalsProvider.notifier).updateGoalProgress('games', 1);
     
