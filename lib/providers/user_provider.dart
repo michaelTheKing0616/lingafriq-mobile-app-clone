@@ -35,10 +35,12 @@ class UserProvider extends Notifier<ProfileModel?> {
   Future<void> refreshUser() async {
     try {
       final apiNotifier = ref.read(apiProvider.notifier);
-      // Get user info first to get the user ID
-      final userInfo = await apiNotifier.getUserInfo();
-      // Then get the full profile
-      final updatedProfile = await apiNotifier.getProfileUser(userInfo.id);
+      // Node backend does not support /accounts/auth/users/me.
+      // Refresh via the id embedded in our JWT, then fetch profile.
+      final userId = apiNotifier.currentUserIdFromToken() ?? state?.id;
+      if (userId == null) return;
+
+      final updatedProfile = await apiNotifier.getProfileUser(userId);
       state = updatedProfile;
     } catch (e) {
       // Silently fail - user state remains unchanged

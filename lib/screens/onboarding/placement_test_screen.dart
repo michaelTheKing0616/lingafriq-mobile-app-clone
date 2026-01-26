@@ -105,9 +105,10 @@ class PlacementTestScreen extends HookConsumerWidget {
               );
             }
 
-            // If backend returned too few/invalid questions, treat it as a failure and fallback.
-            if (parsed.length < 6) {
-              throw Exception('Backend returned insufficient placement questions');
+            // Accept whatever the backend can provide, as long as it's non-empty.
+            // We'll pad to a minimum question count below to avoid tiny “tests”.
+            if (parsed.isEmpty) {
+              throw Exception('Backend returned no valid placement questions');
             }
 
             questions = parsed;

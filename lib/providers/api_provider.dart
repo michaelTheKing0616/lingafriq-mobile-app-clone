@@ -140,8 +140,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         );
         throw error;
       }
-      token = res.data['access'] ?? res.data['token'];
-      refreshToken = res.data['refresh'];
+      final payload = (res.data is Map) ? (res.data as Map).cast<String, dynamic>() : <String, dynamic>{};
+
+      token = (payload['access'] ?? payload['token'] ?? payload['accessToken'] ?? payload['access_token'])?.toString();
+      // Some auth flows return only a single token. Keep refresh == access for backward compatibility.
+      refreshToken = (payload['refresh'] ?? payload['refreshToken'] ?? payload['refresh_token'] ?? token)?.toString();
 
       // Store tokens
       if ((token?.isNotEmpty ?? false) && (refreshToken?.isNotEmpty ?? false)) {
@@ -149,14 +152,23 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         await prefs.storeAuthTokens(token!, refreshToken!);
       }
 
-      final email = data['email'] as String;
+      final email = data['email'] ?? '';
       final prefs = ref.read(sharedPreferencesProvider);
-      ProfileModel? user = await prefs.getUser(email);
+      ProfileModel? user = email.isNotEmpty ? await prefs.getUser(email) : null;
 
       if (user == null || user.email != email) {
-        final userInfo = await getUserInfo();
-        user = await getProfileUser(userInfo.id);
-        await prefs.storeUser(user, userInfo.email);
+        // The Node backend does NOT implement /accounts/auth/users/me.
+        // Instead, the numeric user id is embedded in our JWT payload.
+        // Derive it and fetch the full profile from /account/my_user_profile/?id=...
+        final derivedUserId = _extractNumericUserIdFromJwt(token);
+        if (derivedUserId == null) {
+          throw Exception('Login succeeded but user id could not be derived from token');
+        }
+
+        user = await getProfileUser(derivedUserId);
+        if (email.isNotEmpty) {
+          await prefs.storeUser(user, email);
+        }
       }
 
       // Update user provider with current user
@@ -167,6 +179,30 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       rethrow;
     }
   }
+
+  /// Extract the numeric `id` from our JWT payload (without verifying signature).
+  /// Backend payload includes `id` and `user_id` for compatibility.
+  int? _extractNumericUserIdFromJwt(String? jwtToken) {
+    try {
+      if (jwtToken == null || jwtToken.trim().isEmpty) return null;
+      final parts = jwtToken.split('.');
+      if (parts.length < 2) return null;
+      final payloadPart = parts[1];
+      final normalized = base64Url.normalize(payloadPart);
+      final decoded = utf8.decode(base64Url.decode(normalized));
+      final jsonObj = json.decode(decoded);
+      if (jsonObj is! Map) return null;
+      final map = jsonObj.cast<String, dynamic>();
+      final idRaw = map['id'] ?? map['user_id'];
+      if (idRaw is int) return idRaw;
+      return int.tryParse(idRaw?.toString() ?? '');
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Public helper for other providers to refresh user state safely.
+  int? currentUserIdFromToken() => _extractNumericUserIdFromJwt(token);
 
   Future<bool> resetPassword(String email) async {
     try {
