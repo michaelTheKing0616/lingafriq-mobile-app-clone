@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app_theme.dart';
 import 'providers/navigation_provider.dart';
+import 'providers/theme_mode_provider.dart';
 import 'screens/splash/splash_screen.dart';
 
 class MyApp extends ConsumerStatefulWidget {
@@ -20,6 +21,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final navigatorKey = ref.watch(navigationProvider).navigatorKey;
+    final themeMode = ref.watch(themeModeProvider);
     // Listen to locale changes to trigger UI rebuild
     final localeNotifier = DynamicLocalizationService.localeNotifier;
     
@@ -37,7 +39,7 @@ class _MyAppState extends ConsumerState<MyApp> {
               navigatorKey: navigatorKey,
               theme: lightTheme,
               darkTheme: darkTheme,
-              themeMode: ThemeMode.system,
+              themeMode: themeMode,
               locale: currentLocale,
               localizationsDelegates: const [
                 GlobalMaterialLocalizations.delegate,

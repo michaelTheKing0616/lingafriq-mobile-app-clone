@@ -142,12 +142,6 @@ class TakeQuizScreen extends ConsumerWidget {
                         ).px16(),
                       ),
                       20.heightBox,
-                      PrimaryButton(
-                        width: 0.6.sw,
-                        onTap: () {},
-                        color: Colors.transparent,
-                        text: "",
-                      ).centered(),
                     ],
                   ),
                 )

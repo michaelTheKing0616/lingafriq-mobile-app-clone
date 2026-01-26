@@ -71,22 +71,46 @@ class PlacementTestScreen extends HookConsumerWidget {
           );
           
           if (response.statusCode == 200 && response.data != null) {
-            final data = response.data is Map ? response.data : (response.data['data'] ?? {});
-            final questionsList = (data['questions'] as List?) ?? [];
+            final root = response.data;
+            final payload = root is Map ? (root['data'] ?? root) : root;
+            final questionsList =
+                payload is Map ? ((payload['questions'] as List?) ?? []) : const [];
             
             // Convert backend format to PlacementQuestion objects
-            questions = questionsList.map((q) {
-              final qMap = q as Map<String, dynamic>;
-              return PlacementQuestion(
-                id: qMap['id'] ?? '',
-                languageCode: qMap['languageCode'] ?? language,
-                level: qMap['level'] ?? 'A1',
-                skill: qMap['skill'] ?? 'vocab',
-                prompt: qMap['prompt'] ?? '',
-                options: (qMap['options'] as List).cast<String>(),
-                correctIndex: qMap['correctIndex'] ?? 0,
+            final parsed = <PlacementQuestion>[];
+            for (final q in questionsList) {
+              if (q is! Map) continue;
+              final qMap = q.cast<String, dynamic>();
+              final optsRaw = qMap['options'];
+              final options = (optsRaw is List)
+                  ? optsRaw.map((e) => e.toString()).toList()
+                  : const <String>[];
+              final prompt = (qMap['prompt'] ?? '').toString();
+              final correct = qMap['correctIndex'];
+              final correctIndex =
+                  (correct is int) ? correct : int.tryParse(correct?.toString() ?? '') ?? 0;
+              if (prompt.trim().isEmpty) continue;
+              if (options.length < 2) continue;
+              if (correctIndex < 0 || correctIndex >= options.length) continue;
+              parsed.add(
+                PlacementQuestion(
+                  id: (qMap['id'] ?? '').toString(),
+                  languageCode: (qMap['languageCode'] ?? language).toString(),
+                  level: (qMap['level'] ?? 'A1').toString(),
+                  skill: (qMap['skill'] ?? 'vocab').toString(),
+                  prompt: prompt,
+                  options: options,
+                  correctIndex: correctIndex,
+                ),
               );
-            }).toList();
+            }
+
+            // If backend returned too few/invalid questions, treat it as a failure and fallback.
+            if (parsed.length < 6) {
+              throw Exception('Backend returned insufficient placement questions');
+            }
+
+            questions = parsed;
             
             logger.info('Placement test generated from backend', context: {
               'language': language,
@@ -103,6 +127,19 @@ class PlacementTestScreen extends HookConsumerWidget {
 
         if (questions.isEmpty) {
           throw Exception('No questions available for $language');
+        }
+
+        // Hard guarantee: never show a 1-question “test”.
+        // If we somehow have too few questions, pad from the static bank for this language.
+        const minQuestions = 8;
+        if (questions.length < minQuestions) {
+          final fallback = PlacementTestService.questionsForLanguage(language);
+          final existingIds = questions.map((q) => q.id).toSet();
+          for (final q in fallback) {
+            if (questions.length >= minQuestions) break;
+            if (existingIds.contains(q.id)) continue;
+            questions.add(q);
+          }
         }
 
         // Convert to the format expected by the UI

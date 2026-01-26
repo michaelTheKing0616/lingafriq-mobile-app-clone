@@ -8,7 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
+import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'placement_test_screen.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -17,6 +18,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
@@ -31,6 +34,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     final pageController = usePageController();
     final currentStep = useState(0);
     final onboardingData = useState<Map<String, dynamic>>({});
+    final isCompleting = useState(false);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -112,7 +116,15 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
         pageController: pageController,
         currentStep: currentStep,
         onComplete: () async {
-          await _completeOnboarding(onboardingData.value, context);
+          // Guard against duplicate taps / duplicate completion calls.
+          if (isCompleting.value) return;
+          isCompleting.value = true;
+          try {
+            await _completeOnboarding(onboardingData.value, context, ref);
+          } finally {
+            // If navigation fails for some reason, allow retry.
+            isCompleting.value = false;
+          }
         },
       ),
     ];
@@ -128,7 +140,15 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           child: Column(
             children: [
               // Progress Indicator
-              _buildProgressIndicator(context, currentStep.value, steps.length, isDark),
+              _buildProgressIndicator(
+                context,
+                currentStep.value,
+                steps.length,
+                isDark,
+                onBack: currentStep.value > 0
+                    ? () => _goToPrevious(pageController, currentStep)
+                    : null,
+              ),
               
               // Step Content
               Expanded(
@@ -155,11 +175,37 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     int currentStep,
     int totalSteps,
     bool isDark,
+    {VoidCallback? onBack}
   ) {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       child: Column(
         children: [
+          Row(
+            children: [
+              if (onBack != null)
+                IconButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    onBack();
+                  },
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.white.withOpacity(0.15),
+                  ),
+                )
+              else
+                SizedBox(width: 48.w, height: 48.w),
+              const Spacer(),
+              Text(
+                'Onboarding',
+                style: PanAfricanTypography.titleMedium(context).copyWith(color: Colors.white),
+              ),
+              const Spacer(),
+              SizedBox(width: 48.w, height: 48.w),
+            ],
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -192,6 +238,15 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     controller.nextPage(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
+    );
+  }
+
+  void _goToPrevious(PageController controller, ValueNotifier<int> currentStep) {
+    if (currentStep.value <= 0) return;
+    currentStep.value--;
+    controller.previousPage(
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
     );
   }
 
@@ -239,12 +294,19 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     }
   }
 
-  Future<void> _completeOnboarding(Map<String, dynamic> data, BuildContext context) async {
+  Future<void> _completeOnboarding(
+    Map<String, dynamic> data,
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    final prefs = ref.read(sharedPreferencesProvider).prefs;
+
     // Save all onboarding data locally
     try {
-      final prefs = await SharedPreferences.getInstance();
       await prefs.setString('onboarding_complete', 'true');
       await prefs.setString('onboarding_data', data.toString());
+      // This is the flag the splash/auth router actually uses.
+      await prefs.setBool('onboarding_seen', true);
     } catch (e) {
       logger.error('Error saving onboarding completion locally', error: e);
     }
@@ -271,6 +333,12 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     
     if (learningLanguage != null && context.mounted) {
       try {
+        // Prevent showing the same placement prompt multiple times in a single onboarding run.
+        final promptKey = 'placement_test_prompt_shown';
+        final alreadyPrompted = prefs.getBool(promptKey) ?? false;
+        if (alreadyPrompted) {
+          logger.warn('Placement test prompt already shown; skipping duplicate prompt');
+        } else {
         // Check connectivity before showing placement test
         final connectivity = Connectivity();
         final hasConnection = await connectivity.checkConnectivity();
@@ -298,6 +366,9 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           );
 
           if (shouldTakeTest == true && context.mounted) {
+            // Mark prompt as shown before navigation to avoid duplicates even if the next screen
+            // triggers rebuilds or the user navigates back.
+            await prefs.setBool(promptKey, true);
             // Navigate to placement test
             await Navigator.push(
               context,
@@ -307,18 +378,30 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                 ),
               ),
             );
+          } else {
+            await prefs.setBool(promptKey, true);
           }
+        }
         }
       } catch (e) {
         logger.warn('Error showing placement test option, continuing to app', error: e);
       }
     }
 
-    // Navigate to main app
+    // Navigate to the correct next screen:
+    // - If unauthenticated: show login (this fixes "after placement test, login doesn't come up")
+    // - If authenticated: go straight to tabs view
     if (context.mounted) {
-      Navigator.pushReplacement(
-        context,
-        SmoothPageRoute(child: const TabsView()),
+      final currentUser = ref.read(userProvider);
+      final token = ref.read(apiProvider.notifier).token;
+      final isLoggedIn = currentUser != null && (token?.isNotEmpty ?? false);
+
+      final nextScreen =
+          isLoggedIn ? const TabsViewMaterial3() : const WorldClassLoginScreen();
+
+      Navigator.of(context).pushAndRemoveUntil(
+        SmoothPageRoute(child: nextScreen),
+        (route) => false,
       );
     }
   }

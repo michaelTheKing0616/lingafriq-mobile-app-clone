@@ -28,6 +28,8 @@ class LanguageGamesScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String>('yoruba');
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(userProvider);
+    final backAction = onBack ??
+        (Navigator.of(context).canPop() ? () => Navigator.of(context).pop() : null);
     
     if (selectedGame.value != null) {
       return buildGameScreen(
@@ -82,12 +84,12 @@ class LanguageGamesScreen extends HookConsumerWidget {
                     padding: EdgeInsets.all(4.w),
                     child: Column(
                       children: [
-                        if (onBack != null)
+                        if (backAction != null)
                           Align(
                             alignment: Alignment.topLeft,
                             child: IconButton(
                               icon: const Icon(Icons.arrow_back, color: Colors.white),
-                              onPressed: onBack,
+                              onPressed: backAction,
                               style: IconButton.styleFrom(
                                 backgroundColor: Colors.white.withOpacity(0.2),
                                 shape: const CircleBorder(),

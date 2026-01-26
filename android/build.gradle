@@ -6,8 +6,7 @@ buildscript {
         // Flutter 3.35.0 and dependencies use Kotlin 2.2.0 stdlib, so we must match the compiler version
         // Note: Kotlin 2.x requires minimum languageVersion 1.8 (no longer supports 1.4)
         kotlin_version = '2.2.0'
-        // AndroidX (e.g. activity-ktx 1.11.0, core-ktx 1.17.0) now requires AGP 8.9.1+
-        agp_version = '8.9.1'     // ✅ Android Gradle Plugin (works with Flutter 3.35+)
+        agp_version = '8.6.0'     // ✅ Android Gradle Plugin (works with Flutter 3.35+)
         gms_version = '4.4.2'     // ✅ Google Services plugin
     }
 

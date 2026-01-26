@@ -39,7 +39,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
             children: [
               ProfileImageBuilder(
                 showEditIcon: false,
-                onTap: () {},
+                onTap: null,
               ).centered(),
               24.heightBox,
               const ProfileDetailsBuilder(

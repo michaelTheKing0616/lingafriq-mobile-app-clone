@@ -42,6 +42,7 @@ class RequestBatcher {
   final List<BatchRequestItem> _queue = [];
   Timer? _batchTimer;
   bool _isProcessing = false;
+  bool? _batchEndpointAvailable; // lazily detected
 
   RequestBatcher({
     required this.dio,
@@ -164,6 +165,12 @@ class RequestBatcher {
   /// Process batch GET requests
   Future<void> _processBatchGet(List<BatchRequestItem> group) async {
     try {
+      // If we already detected the endpoint is unavailable, skip the attempt.
+      if (_batchEndpointAvailable == false) {
+        await _processIndividual(group);
+        return;
+      }
+
       // Extract IDs from endpoints (assuming RESTful API with IDs)
       final ids = group.map((item) {
         final parts = item.endpoint.split('/');
@@ -184,6 +191,7 @@ class RequestBatcher {
 
       // Distribute responses
       if (response.data is Map && response.data['responses'] != null) {
+        _batchEndpointAvailable = true;
         final responses = response.data['responses'] as List;
         for (int i = 0; i < group.length && i < responses.length; i++) {
           final item = group[i];
@@ -204,6 +212,7 @@ class RequestBatcher {
     } catch (e) {
       // Fallback to individual requests
       logger.warn('Batch GET failed, falling back to individual requests', error: e);
+      _batchEndpointAvailable = false;
       await _processIndividual(group);
     }
   }

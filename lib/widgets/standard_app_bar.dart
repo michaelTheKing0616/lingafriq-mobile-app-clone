@@ -44,13 +44,28 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
         (gradient != null ? Colors.white : 
          (isDark ? Colors.white : Colors.black87));
 
+    final effectiveActions = <Widget>[
+      // World-class navigation: if both back + menu are requested, show back as leading
+      // and menu as an action so users always have drawer access.
+      if (showDrawerButton && showBackButton)
+        Builder(
+          builder: (ctx) => IconButton(
+            icon: const Icon(Icons.menu),
+            color: fgColor,
+            onPressed: () => Scaffold.of(ctx).openDrawer(),
+            tooltip: 'Menu',
+          ),
+        ),
+      ...?actions,
+    ];
+
     final appBar = AppBar(
       backgroundColor: gradient != null ? Colors.transparent : bgColor,
       foregroundColor: fgColor,
       elevation: elevation ?? 0,
       leading: _buildLeading(context, fgColor),
       title: titleWidget ?? (title != null ? Text(title!) : null),
-      actions: actions,
+      actions: effectiveActions.isEmpty ? null : effectiveActions,
       bottom: bottom,
       flexibleSpace: gradient != null
           ? Container(
@@ -65,19 +80,21 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   Widget? _buildLeading(BuildContext context, Color iconColor) {
-    if (showDrawerButton) {
+    if (showBackButton) {
+      return IconButton(
+        icon: const Icon(Icons.arrow_back),
+        color: iconColor,
+        onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+        tooltip: 'Back',
+      );
+    } else if (showDrawerButton) {
       return IconButton(
         icon: const Icon(Icons.menu),
         color: iconColor,
         onPressed: () {
           Scaffold.of(context).openDrawer();
         },
-      );
-    } else if (showBackButton) {
-      return IconButton(
-        icon: const Icon(Icons.arrow_back),
-        color: iconColor,
-        onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+        tooltip: 'Menu',
       );
     }
     return null;
@@ -214,10 +231,21 @@ class StandardGradientHeader extends StatelessWidget {
                     )
                   else
                     const Spacer(),
-                  if (actions != null && actions!.isNotEmpty)
+                  if ((actions != null && actions!.isNotEmpty) || (showDrawerButton && showBackButton))
                     Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: actions!,
+                      children: [
+                        ...?actions,
+                        if (showDrawerButton && showBackButton)
+                          IconButton(
+                            icon: const Icon(Icons.menu, color: Colors.white),
+                            onPressed: () => Scaffold.of(context).openDrawer(),
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.white.withOpacity(0.2),
+                              shape: const CircleBorder(),
+                            ),
+                          ),
+                      ],
                     )
                   else
                     const SizedBox(width: 48),

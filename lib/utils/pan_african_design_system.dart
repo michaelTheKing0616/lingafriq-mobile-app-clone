@@ -22,8 +22,6 @@ class PanAfricanColors {
   
   /// Primary green - Representing African forests and growth
   static const Color primary = Color(0xFF1B7340);
-  // Back-compat alias used by some screens
-  static const Color primaryGreen = primary;
   static const Color primaryLight = Color(0xFF2BEE6C);
   static const Color primaryDark = Color(0xFF0D4D29);
   static const Color primaryContainer = Color(0xFFB7F5CD);

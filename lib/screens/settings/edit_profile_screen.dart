@@ -118,7 +118,7 @@ class EditProfileScreen extends HookConsumerWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error updating profile: ${ErrorHandler.getUserFriendlyMessage(e)}'),
+              content: Text('Error updating profile: ${ErrorHandler.getUserFriendlyError(e)}'),
               backgroundColor: Colors.red,
             ),
           );
@@ -165,7 +165,7 @@ class EditProfileScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
-        backgroundColor: PanAfricanColors.primaryGreen,
+        backgroundColor: PanAfricanColors.primary,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -187,7 +187,7 @@ class EditProfileScreen extends HookConsumerWidget {
                       children: [
                         CircleAvatar(
                           radius: 60.sp,
-                          backgroundColor: PanAfricanColors.primaryGreen,
+                          backgroundColor: PanAfricanColors.primary,
                           backgroundImage: selectedImage.value != null
                               ? FileImage(File(selectedImage.value!.path))
                               : (user?.avater != null
@@ -206,7 +206,7 @@ class EditProfileScreen extends HookConsumerWidget {
                           right: 0,
                           child: CircleAvatar(
                             radius: 20.sp,
-                            backgroundColor: PanAfricanColors.primaryGreen,
+                            backgroundColor: PanAfricanColors.primary,
                             child: IconButton(
                               icon: const Icon(Icons.camera_alt, color: Colors.white),
                               onPressed: _showImagePicker,

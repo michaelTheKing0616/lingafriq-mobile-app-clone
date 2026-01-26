@@ -1,14 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/config/app_config.dart';
-import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/env_config.dart';
 
 /// Grammar Explanation Mode Screen
 class TutorGrammarModeScreen extends HookConsumerWidget {
@@ -26,6 +27,115 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    Future<Map<String, dynamic>> _generateGrammarWithGroq({
+      required String topic,
+      required String language,
+      required String userLevel,
+    }) async {
+      final groqKey = EnvConfig.groqApiKey;
+      if (groqKey.isEmpty) {
+        throw Exception(
+          'Grammar mode is unavailable because the AI service is not configured in this build.',
+        );
+      }
+
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 40),
+          sendTimeout: const Duration(seconds: 20),
+        ),
+      );
+
+      final prompt = '''
+You are Polie, an elite African language tutor.
+Generate a world-class grammar explanation for the following topic.
+
+LANGUAGE: $language
+CEFR_LEVEL: $userLevel
+TOPIC: $topic
+
+Return STRICT JSON ONLY (no markdown, no code fences) in this exact shape:
+{
+  "canonicalRule": "1-3 sentence rule explanation, concise but complete",
+  "examples": [
+    {"target": "Example sentence in $language (with correct diacritics if applicable)", "translation": "English translation"},
+    {"target": "...", "translation": "..."}
+  ],
+  "commonMistakes": ["Mistake 1", "Mistake 2", "Mistake 3"],
+  "practice": [
+    {"prompt": "Exercise prompt", "answer": "Correct answer"},
+    {"prompt": "Exercise prompt", "answer": "Correct answer"}
+  ]
+}
+
+Quality requirements:
+- Use correct orthography/diacritics for Yoruba/Igbo/Twi.
+- Examples must be realistic and culturally appropriate.
+- Practice must be answerable and aligned to the rule.
+''';
+
+      final resp = await dio.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        data: {
+          'model': 'llama-3.1-70b-versatile',
+          'temperature': 0.2,
+          'max_tokens': 900,
+          'messages': [
+            {
+              'role': 'system',
+              'content':
+                  'You output only valid JSON. Never include markdown or commentary.',
+            },
+            {'role': 'user', 'content': prompt},
+          ],
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $groqKey',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (resp.statusCode != 200) {
+        throw Exception('AI request failed (${resp.statusCode}). Please try again.');
+      }
+
+      final content = (resp.data is Map)
+          ? (resp.data['choices']?[0]?['message']?['content']?.toString() ?? '')
+          : '';
+
+      if (content.trim().isEmpty) {
+        throw Exception('AI returned an empty response. Please try again.');
+      }
+
+      Map<String, dynamic>? parsed;
+      try {
+        parsed = jsonDecode(content) as Map<String, dynamic>;
+      } catch (_) {
+        // Attempt to extract the first JSON object if the model emitted extra text.
+        final start = content.indexOf('{');
+        final end = content.lastIndexOf('}');
+        if (start >= 0 && end > start) {
+          parsed = jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
+        }
+      }
+
+      if (parsed == null || parsed.isEmpty) {
+        throw Exception('AI returned an invalid format. Please try again.');
+      }
+
+      // Normalize and defend against shape drift.
+      return {
+        'canonicalRule': parsed['canonicalRule']?.toString() ?? '',
+        'examples': (parsed['examples'] is List) ? parsed['examples'] : const [],
+        'commonMistakes':
+            (parsed['commonMistakes'] is List) ? parsed['commonMistakes'] : const [],
+        'practice': (parsed['practice'] is List) ? parsed['practice'] : const [],
+      };
+    }
+
     Future<void> explainGrammar() async {
       if (topicController.text.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -38,20 +148,11 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
       await safeAsync(
         context: context,
         operation: () async {
-          final response = await ApiService.post(
-            AppConfig.tutorGrammar,
-            data: {
-              'topic': topicController.text,
-              'language': selectedLanguage.value.name,
-              'userLevel': userLevel.value,
-            },
+          grammarResult.value = await _generateGrammarWithGroq(
+            topic: topicController.text,
+            language: selectedLanguage.value.name,
+            userLevel: userLevel.value,
           );
-
-          if (response.statusCode == 200) {
-            grammarResult.value = response.data;
-          } else {
-            throw Exception('Failed to get grammar explanation');
-          }
         },
         errorContext: 'explainGrammar',
         showError: true,

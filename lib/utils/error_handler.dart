@@ -22,11 +22,6 @@ class ErrorHandler {
     }
   }
 
-  /// Back-compat alias (older screens call this name)
-  static String getUserFriendlyMessage(dynamic error) {
-    return getUserFriendlyError(error);
-  }
-
   /// Check if error is due to network connectivity (no internet)
   static bool _isNetworkError(DioException error) {
     return error.type == DioExceptionType.connectionError ||

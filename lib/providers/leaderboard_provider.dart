@@ -6,8 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/leaderboard_entry_model.dart';
 import '../models/user_gamification_model.dart';
 import 'base_provider.dart';
-import 'gamification_provider.dart';
-import 'user_provider.dart';
 import 'gamification_services_provider.dart';
 import '../utils/structured_logger.dart';
 
@@ -107,21 +105,8 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       await _cacheLeaderboards();
     } catch (e) {
       logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
-      // Fallback to cached data or mock data only if no cache available
-      final gamification = ref.read(gamificationProvider.notifier).gamification;
-      final user = ref.read(userProvider);
-
-      if (user != null) {
-        final mockEntries = _generateMockLeaderboard(
-          user.username,
-          gamification.xp,
-          gamification.level,
-          gamification.levelTitle,
-          gamification.dailyStreak,
-          gamification.tribe,
-        );
-        _cache[type] = mockEntries;
-      }
+      // Fail closed: keep last known cached data (if any). Never fabricate leaderboard entries.
+      _cache.putIfAbsent(type, () => []);
     } finally {
       state = state.copyWith(isLoading: false);
     }
@@ -186,51 +171,6 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
   int _calculateLevelFromXP(int xp) {
     // Simple level calculation: level = sqrt(xp / 100)
     return math.sqrt(xp / 100).floor().clamp(1, 999);
-  }
-
-  /// Generate mock leaderboard data (for testing)
-  List<LeaderboardEntry> _generateMockLeaderboard(
-    String currentUsername,
-    int currentXP,
-    int currentLevel,
-    String currentTitle,
-    int currentStreak,
-    String? currentTribe,
-  ) {
-    final entries = <LeaderboardEntry>[];
-    
-    // Add current user at rank 1
-    entries.add(LeaderboardEntry(
-      userId: 'current_user',
-      username: currentUsername,
-      xp: currentXP,
-      level: currentLevel,
-      levelTitle: currentTitle,
-      dailyStreak: currentStreak,
-      tribe: currentTribe,
-      rank: 1,
-    ));
-
-    // Add mock entries
-    final mockNames = [
-      'Kwame', 'Amina', 'Thabo', 'Fatima', 'Kofi',
-      'Zainab', 'Sipho', 'Ngozi', 'Yusuf', 'Mariam',
-    ];
-
-    for (int i = 0; i < 10; i++) {
-      entries.add(LeaderboardEntry(
-        userId: 'user_$i',
-        username: mockNames[i % mockNames.length],
-        xp: currentXP - (i + 1) * 100,
-        level: (currentLevel - (i + 1)).clamp(1, 999),
-        levelTitle: 'Village Storyteller',
-        dailyStreak: currentStreak - (i + 1),
-        tribe: currentTribe,
-        rank: i + 2,
-      ));
-    }
-
-    return entries;
   }
 
   /// Get user's rank

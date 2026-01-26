@@ -9,6 +9,7 @@ import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -25,7 +26,11 @@ import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
+import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
+import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
+import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
+import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
@@ -38,16 +43,14 @@ class AppDrawer extends HookConsumerWidget {
     final currentUser = ref.watch(userProvider);
 
     Future<void> toggleDarkMode() async {
-      final prefs = await SharedPreferences.getInstance();
-      final currentMode = prefs.getBool('dark_mode') ?? false;
-      await prefs.setBool('dark_mode', !currentMode);
-      isDark.value = !currentMode;
+      await ref.read(themeModeProvider.notifier).toggleDarkMode();
+      isDark.value = !isDark.value;
       HapticFeedback.mediumImpact();
       
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Dark mode ${!currentMode ? 'enabled' : 'disabled'}. Restart app to apply.'),
+            content: Text('Dark mode ${isDark.value ? 'enabled' : 'disabled'}'),
             duration: Duration(seconds: 2),
             backgroundColor: PanAfricanColors.primary,
           ),
@@ -270,11 +273,26 @@ class AppDrawer extends HookConsumerWidget {
                         isDark: isDark.value,
                       ),
                       _DrawerItem(
+                        icon: Icons.chat_bubble_outline,
+                        label: 'Private Chat',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: PrivateChatListScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
                         icon: PanAfricanIcons.community,
                         label: 'Language Villages',
                         onTap: () {
                           Navigator.pop(context);
-                          // Navigate to villages
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const LanguageVillagesScreen()),
+                          );
                         },
                         isDark: isDark.value,
                       ),
@@ -283,7 +301,10 @@ class AppDrawer extends HookConsumerWidget {
                         label: 'My Tribes',
                         onTap: () {
                           Navigator.pop(context);
-                          // Navigate to tribes
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const TribeSelectionScreen()),
+                          );
                         },
                         isDark: isDark.value,
                       ),
@@ -311,7 +332,10 @@ class AppDrawer extends HookConsumerWidget {
                         label: 'Leaderboards',
                         onTap: () {
                           Navigator.pop(context);
-                          // Navigate to leaderboards
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const LeaderboardScreen()),
+                          );
                         },
                         isDark: isDark.value,
                       ),

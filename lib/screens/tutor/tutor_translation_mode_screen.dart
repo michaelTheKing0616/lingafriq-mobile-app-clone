@@ -5,12 +5,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/config/app_config.dart';
-import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode, GroqChatProvider;
+import 'package:lingafriq/services/hybrid_polie/hybrid_polie_orchestrator.dart';
 
 /// Translation Mode Screen with Literal/Adaptive Toggle
 class TutorTranslationModeScreen extends HookConsumerWidget {
@@ -39,35 +39,32 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
-        final response = await ApiService.post(
-          AppConfig.tutorTranslate,
-          data: {
-            'text': textController.text,
-            'sourceLang': sourceLanguage.value.name,
-            'targetLang': targetLanguage.value.name,
-            'translationType': translationType.value,
-            // Enhanced translation options
-            'includeContext': true,
-            'includeLiteralTranslation': translationType.value == 'adaptive',
-            'includeCulturalNotes': true,
-            'includePronunciationGuide': true,
-            'includeExampleUsage': true,
-          },
+        // World-class reliability: run translation locally via Hybrid Polie (NLLB-200 with caching + HF fallback),
+        // so this mode does NOT depend on being authenticated or on our backend being up.
+        final groqProvider = ref.read(groqChatProvider.notifier);
+        final orchestrator = HybridPolieOrchestrator();
+        final response = await orchestrator.orchestrate(
+          userMessage: textController.text,
+          mode: PolieMode.translation,
+          targetLanguage: targetLanguage.value.name,
+          sourceLanguage: sourceLanguage.value.name,
+          groqProvider: groqProvider,
         );
 
-        if (response.statusCode == 200) {
-          final data = response.data['data'] ?? response.data;
-          translationResult.value = {
-            'translation': data['translation'] ?? data['text'] ?? '',
-            'literalTranslation': data['literalTranslation'],
-            'culturalNotes': data['culturalNotes'],
-            'pronunciationGuide': data['pronunciationGuide'],
-            'exampleUsage': data['exampleUsage'],
-            'confidence': data['confidence'] ?? 1.0,
-            'alternatives': data['alternatives'],
-            'wordBreakdown': data['wordBreakdown'],
-          };
+        // If we couldn't translate (e.g., HF token missing and backend unavailable), surface a clear error.
+        if (response.model == 'fallback' || response.output.trim().isEmpty) {
+          throw Exception(
+            'Translation is temporarily unavailable. Please ensure you are online and the AI services are configured.',
+          );
         }
+
+        translationResult.value = {
+          'translation': response.output,
+          'confidence': response.confidence,
+          'model': response.model,
+          'diacriticsCorrected': response.diacriticsCorrected,
+          'metadata': response.metadata,
+        };
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);

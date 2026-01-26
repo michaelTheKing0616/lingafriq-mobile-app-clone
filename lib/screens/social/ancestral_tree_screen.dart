@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
-import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
-import 'package:dio/dio.dart';
+import '../../providers/api_provider.dart';
 
 /// Ancestral Tree - Visualize everyone you've helped
 class AncestralTreeScreen extends ConsumerWidget {
@@ -13,7 +8,7 @@ class AncestralTreeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return FutureBuilder<List<_TreePerson>>(
+    return FutureBuilder<_AncestrySnapshot>(
       future: _loadTreeData(ref),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -21,8 +16,39 @@ class AncestralTreeScreen extends ConsumerWidget {
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        
-        final treeData = snapshot.data ?? _generateMockTreeData();
+        if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Ancestral Tree')),
+            body: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Icon(Icons.error_outline, size: 48),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Unable to load your ancestry graph right now.',
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 12),
+                    FilledButton(
+                      onPressed: () {
+                        // Rebuild FutureBuilder by pushing a new route instance.
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => const AncestralTreeScreen()),
+                        );
+                      },
+                      child: const Text('Retry'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+        final data = snapshot.data ?? _AncestrySnapshot.empty();
 
     return Scaffold(
       appBar: AppBar(
@@ -65,19 +91,19 @@ class AncestralTreeScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _StatItem(
-                      label: 'People Helped',
-                      value: '${treeData.length}',
+                      label: 'Mentees',
+                      value: '${data.mentees.length}',
                       icon: Icons.people,
                     ),
                     _StatItem(
-                      label: 'Lessons Gifted',
-                      value: '${treeData.fold(0, (sum, p) => sum + p.lessonsGifted)}',
-                      icon: Icons.card_giftcard,
+                      label: 'Mentors',
+                      value: '${data.mentors.length}',
+                      icon: Icons.school,
                     ),
                     _StatItem(
-                      label: 'Total Impact',
-                      value: '${treeData.fold(0, (sum, p) => sum + p.xpEarned)} XP',
-                      icon: Icons.star,
+                      label: 'Connections',
+                      value: '${data.mentors.length + data.mentees.length}',
+                      icon: Icons.hub,
                     ),
                   ],
                 ),
@@ -92,8 +118,26 @@ class AncestralTreeScreen extends ConsumerWidget {
                   ),
             ),
             const SizedBox(height: 16),
-            // Tree nodes
-            ...treeData.map((person) => _TreeNodeCard(person: person)),
+            if (data.mentors.isEmpty && data.mentees.isEmpty)
+              const Padding(
+                padding: EdgeInsets.only(top: 12),
+                child: Text(
+                  'No ancestry links yet. As you connect with mentors or help other learners, your tree will grow here.',
+                ),
+              )
+            else ...[
+              if (data.mentors.isNotEmpty) ...[
+                Text('Mentors', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                ...data.mentors.map((person) => _TreeNodeCard(person: person)),
+                const SizedBox(height: 16),
+              ],
+              if (data.mentees.isNotEmpty) ...[
+                Text('Mentees', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                ...data.mentees.map((person) => _TreeNodeCard(person: person)),
+              ],
+            ],
           ],
         ),
       ),
@@ -102,82 +146,59 @@ class AncestralTreeScreen extends ConsumerWidget {
     );
   }
 
-  Future<List<_TreePerson>> _loadTreeData(WidgetRef ref) async {
-    try {
-      final dio = ref.read(client);
-      final response = await dio.get('${Api.baseurl}api/social/ancestral-tree');
-      
-      if (response.statusCode == 200 && response.data != null) {
-        final data = response.data['data'] as List?;
-        if (data != null) {
-          return data.map((item) {
-            final personData = item as Map<String, dynamic>;
-            return _TreePerson(
-              username: personData['username'] ?? 'Unknown',
-              avatar: personData['avatar'],
-              joinedDate: personData['joined_date'] != null
-                  ? DateTime.parse(personData['joined_date'])
-                  : DateTime.now(),
-              lessonsGifted: personData['lessons_gifted'] ?? 0,
-              xpEarned: personData['xp_earned'] ?? 0,
-              languages: List<String>.from(personData['languages'] ?? []),
-            );
-          }).toList();
-        }
-      }
-    } catch (e) {
-      debugPrint('Error loading ancestral tree data: $e');
-      // Return mock data as fallback
-    }
-    return _generateMockTreeData();
-  }
+  Future<_AncestrySnapshot> _loadTreeData(WidgetRef ref) async {
+    final api = ref.read(apiProvider.notifier);
+    final raw = await api.getAncestryMe();
 
-  List<_TreePerson> _generateMockTreeData() {
-    return [
-      _TreePerson(
-        username: 'Kwame',
-        avatar: null,
-        joinedDate: DateTime.now().subtract(const Duration(days: 30)),
-        lessonsGifted: 3,
-        xpEarned: 150,
-        languages: ['Yoruba', 'Swahili'],
-      ),
-      _TreePerson(
-        username: 'Amina',
-        avatar: null,
-        joinedDate: DateTime.now().subtract(const Duration(days: 15)),
-        lessonsGifted: 1,
-        xpEarned: 50,
-        languages: ['Hausa'],
-      ),
-      _TreePerson(
-        username: 'Thabo',
-        avatar: null,
-        joinedDate: DateTime.now().subtract(const Duration(days: 7)),
-        lessonsGifted: 2,
-        xpEarned: 100,
-        languages: ['Zulu', 'Xhosa'],
-      ),
-    ];
+    final mentorsRaw = (raw['mentors'] is List) ? (raw['mentors'] as List) : const [];
+    final menteesRaw = (raw['mentees'] is List) ? (raw['mentees'] as List) : const [];
+
+    List<_TreePerson> parsePeople(List rows, {required String kind, required String key}) {
+      final out = <_TreePerson>[];
+      for (final r in rows) {
+        if (r is! Map) continue;
+        final person = r[key];
+        if (person is! Map) continue;
+        out.add(
+          _TreePerson(
+            kind: kind,
+            username: (person['username'] ?? person['global_id'] ?? 'Unknown').toString(),
+            globalId: person['global_id']?.toString(),
+            avatar: person['avater']?.toString(),
+          ),
+        );
+      }
+      return out;
+    }
+
+    return _AncestrySnapshot(
+      mentors: parsePeople(mentorsRaw, kind: 'Mentor', key: 'mentor_id'),
+      mentees: parsePeople(menteesRaw, kind: 'Mentee', key: 'mentee_id'),
+    );
   }
 }
 
 class _TreePerson {
+  final String kind; // Mentor | Mentee
   final String username;
   final String? avatar;
-  final DateTime joinedDate;
-  final int lessonsGifted;
-  final int xpEarned;
-  final List<String> languages;
+  final String? globalId;
 
   _TreePerson({
+    required this.kind,
     required this.username,
     this.avatar,
-    required this.joinedDate,
-    required this.lessonsGifted,
-    required this.xpEarned,
-    required this.languages,
+    this.globalId,
   });
+}
+
+class _AncestrySnapshot {
+  final List<_TreePerson> mentors;
+  final List<_TreePerson> mentees;
+
+  const _AncestrySnapshot({required this.mentors, required this.mentees});
+
+  factory _AncestrySnapshot.empty() => const _AncestrySnapshot(mentors: [], mentees: []);
 }
 
 class _StatItem extends StatelessWidget {
@@ -233,59 +254,26 @@ class _TreeNodeCard extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Joined ${_formatDate(person.joinedDate)}'),
             const SizedBox(height: 4),
             Wrap(
-              spacing: 4,
-              children: person.languages.map((lang) => Chip(
-                    label: Text(lang),
-                    padding: EdgeInsets.zero,
+              spacing: 8,
+              runSpacing: 6,
+              children: [
+                Chip(
+                  label: Text(person.kind),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                if (person.globalId != null && person.globalId!.trim().isNotEmpty)
+                  Chip(
+                    label: Text('@${person.globalId}'),
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  )).toList(),
-            ),
-          ],
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.card_giftcard, size: 16),
-                const SizedBox(width: 4),
-                Text('${person.lessonsGifted}'),
-              ],
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.star, size: 16, color: Colors.amber),
-                const SizedBox(width: 4),
-                Text('${person.xpEarned} XP'),
+                  ),
               ],
             ),
           ],
         ),
       ),
     );
-  }
-
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final diff = now.difference(date);
-
-    if (diff.inDays == 0) {
-      return 'today';
-    } else if (diff.inDays == 1) {
-      return 'yesterday';
-    } else if (diff.inDays < 7) {
-      return '${diff.inDays} days ago';
-    } else if (diff.inDays < 30) {
-      return '${(diff.inDays / 7).floor()} weeks ago';
-    } else {
-      return '${(diff.inDays / 30).floor()} months ago';
-    }
   }
 }
 

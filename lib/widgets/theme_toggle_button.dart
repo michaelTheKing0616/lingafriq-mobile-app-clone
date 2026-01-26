@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/providers/theme_mode_provider.dart';
 
 /// Easy-to-find dark mode toggle button
 /// Can be placed in app bar, drawer, or as a floating action button
@@ -26,7 +27,7 @@ class ThemeToggleButton extends ConsumerWidget {
     if (isFloating) {
       return FloatingActionButton(
         mini: true,
-        onPressed: () => _toggleTheme(context),
+        onPressed: () => _toggleTheme(context, ref),
         backgroundColor: isDark 
             ? AfricanTheme.primaryGreen 
             : AfricanTheme.accentGold,
@@ -41,7 +42,7 @@ class ThemeToggleButton extends ConsumerWidget {
     }
 
     return InkWell(
-      onTap: () => _toggleTheme(context),
+      onTap: () => _toggleTheme(context, ref),
       borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
       child: Container(
         padding: padding ?? EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -85,22 +86,14 @@ class ThemeToggleButton extends ConsumerWidget {
         .scale(delay: 100.ms, duration: 300.ms);
   }
 
-  void _toggleTheme(BuildContext context) {
-    // This would typically use a theme provider
-    // For now, we'll use a simple approach
-    // In production, use: ref.read(themeProvider.notifier).toggleTheme();
-    // For now, we'll show a dialog to change theme
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Change Theme'),
-        content: const Text('Theme toggle will be fully integrated with theme provider.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
+  Future<void> _toggleTheme(BuildContext context, WidgetRef ref) async {
+    await ref.read(themeModeProvider.notifier).toggleDarkMode();
+    if (!context.mounted) return;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Dark mode ${isDark ? 'enabled' : 'disabled'}'),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

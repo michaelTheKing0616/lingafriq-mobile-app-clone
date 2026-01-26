@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
+import 'package:lingafriq/utils/supported_languages.dart';
 
 /// Enhanced Import Media Screen with Transcription Preview, Lesson Generation Preview, Edit/Customize
 class ImportMediaScreenEnhanced extends HookConsumerWidget {
@@ -24,7 +25,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedFile = useState<PlatformFile?>(null);
-    final languageController = useTextEditingController(text: 'yoruba');
+    final selectedLanguage = useState<String>('yoruba');
     final transcriptionResult = useState<Map<String, dynamic>?>(null);
     final lessonResult = useState<Map<String, dynamic>?>(null);
     final isUploading = useState(false);
@@ -88,13 +89,19 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
       isUploading.value = true;
       try {
+        // Validate language via allowlist (treat input as hostile).
+        final lang = selectedLanguage.value.toLowerCase().trim();
+        if (!SupportedLanguages.allLanguages.contains(lang)) {
+          throw Exception('Unsupported language selected.');
+        }
+
         // Upload file
         final uploadResponse = await ApiService.uploadFile(
           Api.mediaUpload(),
           selectedFile.value!.path!,
           additionalData: {
             'title': selectedFile.value!.name,
-            'language': languageController.text,
+            'language': lang,
           },
         );
 
@@ -106,7 +113,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           final transcribeResponse = await ApiService.post(
             Api.mediaTranscribe(mediaId),
             data: {
-              'language': languageController.text,
+              'language': lang,
             },
           );
 
@@ -135,11 +142,16 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
       isGeneratingLesson.value = true;
       try {
+        final lang = selectedLanguage.value.toLowerCase().trim();
+        if (!SupportedLanguages.allLanguages.contains(lang)) {
+          throw Exception('Unsupported language selected.');
+        }
+
         final mediaId = transcriptionResult.value!['mediaId'];
         final response = await ApiService.post(
           Api.mediaGenerateLesson(mediaId),
           data: {
-            'language': languageController.text,
+            'language': lang,
             'userLevel': 'A1',
           },
         );
@@ -197,8 +209,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.lg),
 
                 // Language Selector
-                TextField(
-                  controller: languageController,
+                DropdownButtonFormField<String>(
+                  value: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(
@@ -209,6 +221,21 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                         ? PanAfricanColors.surfaceContainerDark
                         : PanAfricanColors.surfaceContainerLight,
                   ),
+                  items: SupportedLanguages.allLanguages.map((lang) {
+                    final info = SupportedLanguages.getLanguageInfo(lang);
+                    final name = (info['name']?.toString().isNotEmpty ?? false)
+                        ? info['name'].toString()
+                        : lang;
+                    final flag = info['flag']?.toString() ?? '';
+                    return DropdownMenuItem<String>(
+                      value: lang,
+                      child: Text(flag.isNotEmpty ? '$flag  $name' : name),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    selectedLanguage.value = value;
+                  },
                 ),
                 SizedBox(height: PanAfricanSpacing.lg),
 
@@ -297,7 +324,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     lessonResult.value!,
                     showLessonPreview.value,
                     (show) => showLessonPreview.value = show,
-                    languageController,
+                    selectedLanguage.value,
                     transcriptionResult,
                     isDark,
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
@@ -456,7 +483,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     Map<String, dynamic> lesson,
     bool isExpanded,
     Function(bool) onToggle,
-    TextEditingController languageController,
+    String language,
     ValueNotifier<Map<String, dynamic>?> transcriptionResult,
     bool isDark,
   ) {
@@ -531,7 +558,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           }).join('\n\n');
 
                           final result = await ugcService.createLesson(
-                            language: languageController.text,
+                            language: language,
                             title: lesson['title']?.toString() ?? 'Generated Lesson',
                             content: contentString,
                             description: 'Lesson generated from imported media',

@@ -61,7 +61,9 @@ class SubscriptionScreen extends ConsumerWidget {
                 'Ads',
               ],
               isCurrent: subscription.tier == SubscriptionTier.free,
-              onTap: () {},
+              onTap: () {
+                ref.read(subscriptionProvider.notifier).subscribe(SubscriptionTier.free);
+              },
             ),
             SizedBox(height: 16.h),
             _buildTierCard(

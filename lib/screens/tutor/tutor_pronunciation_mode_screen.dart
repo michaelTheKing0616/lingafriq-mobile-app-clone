@@ -5,13 +5,15 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:just_audio/just_audio.dart';
 import 'dart:math' as math;
+import 'dart:io';
+import 'package:lingafriq/services/voice/audio_recording_service.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 
 /// Pronunciation Trainer with Waveform, Phoneme Timeline, Score Ring, Feedback
 class TutorPronunciationModeScreen extends HookConsumerWidget {
@@ -27,6 +29,8 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     final isLoading = useState(false);
     final audioPlayer = useMemoized(() => AudioPlayer());
     final localizationService = useMemoized(() => DynamicLocalizationService());
+    final recorder = useMemoized(() => AudioRecordingService());
+    final recordingPath = useState<String?>(null);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     
@@ -41,32 +45,84 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
         return;
       }
 
-      isRecording.value = true;
-      isLoading.value = true;
-      
-      // Simulate recording - in production, use actual audio recording
-      await Future.delayed(const Duration(seconds: 2));
-      isRecording.value = false;
-
       try {
-        final response = await ApiService.post(
-          AppConfig.tutorPronounce,
-          data: {
-            'text': textController.text,
-            'language': selectedLanguage.value.name,
-            'audioUrl': 'recorded_audio_url', // In production, upload audio first
-          },
-        );
-
-        if (response.statusCode == 200) {
-          pronunciationResult.value = response.data['data'] ?? response.data;
+        // Tap-to-record behavior:
+        // - First tap: start recording
+        // - Second tap: stop recording and analyze
+        if (!isRecording.value) {
+          final path = await recorder.startRecording(sampleRate: 16000, numChannels: 1);
+          if (path == null) {
+            throw Exception('Microphone permission denied or recorder unavailable.');
+          }
+          recordingPath.value = path;
+          isRecording.value = true;
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Recording... tap again to stop & analyze')),
+            );
+          }
+          return;
         }
+
+        // Stop recording
+        final path = await recorder.stopRecording();
+        isRecording.value = false;
+        if (path == null) {
+          throw Exception('Failed to stop recording.');
+        }
+        recordingPath.value = path;
+
+        isLoading.value = true;
+
+        // Primary: backend pronunciation analysis (world-class when backend is available).
+        try {
+          final resp = await ApiService.uploadFile(
+            '/api/pronunciation/advanced/analyze',
+            path,
+            fileFieldName: 'audio',
+            additionalData: {
+              'expected_text': textController.text.trim(),
+              'language': selectedLanguage.value.name,
+              'include_phoneme_details': 'true',
+              'include_tone_analysis': 'true',
+              'include_fluency_metrics': 'true',
+            },
+          );
+
+          if (resp.statusCode == 200) {
+            pronunciationResult.value = (resp.data is Map) ? (resp.data['data'] ?? resp.data) : resp.data;
+            return;
+          }
+        } catch (_) {
+          // Fall through to local AI fallback.
+        }
+
+        // Fallback: local AI-based scoring via Groq Whisper + WER.
+        final bytes = await recorder.getRecordingBytes(path);
+        if (bytes == null || bytes.isEmpty) {
+          throw Exception('Failed to read recorded audio.');
+        }
+
+        final groq = ref.read(groqChatProvider.notifier);
+        final eval = await groq.shadowingExercise(bytes, textController.text.trim());
+        final score = (eval['score'] as num?)?.toDouble() ?? 0.0;
+        final pron = (eval['pronunciationScore'] as num?)?.toDouble() ?? 0.0;
+        final wer = (eval['wer'] as num?)?.toDouble() ?? 1.0;
+
+        pronunciationResult.value = {
+          'overallScore': score,
+          'accuracyScore': (1.0 - wer).clamp(0.0, 1.0),
+          'rhythmScore': (score * 0.9).clamp(0.0, 1.0),
+          'toneScore': (pron).clamp(0.0, 1.0),
+          'feedback': groq.pronunciationFeedback(score),
+          'transcription': eval['userText'],
+          'corrections': eval['corrections'] ?? [],
+        };
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
       } finally {
-        isRecording.value = false;
         isLoading.value = false;
       }
     }
@@ -131,19 +187,10 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
 
             // Record Button
             ElevatedButton.icon(
-              onPressed: isRecording.value ? null : recordAndScore,
-              icon: isRecording.value
-                  ? SizedBox(
-                      width: 20.w,
-                      height: 20.h,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  : Icon(Icons.mic),
+              onPressed: isLoading.value ? null : recordAndScore,
+              icon: isRecording.value ? const Icon(Icons.stop) : const Icon(Icons.mic),
               label: Text(
-                isRecording.value ? 'Recording...' : 'Record & Score',
+                isRecording.value ? 'Stop & Analyze' : 'Record',
                 style: PanAfricanTypography.labelLarge(context)
                     .copyWith(color: Colors.white),
               ),

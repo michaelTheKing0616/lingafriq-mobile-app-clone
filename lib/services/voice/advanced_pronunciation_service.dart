@@ -289,6 +289,7 @@ class AdvancedPronunciationService {
   final Dio _dio;
 
   AdvancedPronunciationService(this._ref) : _dio = _ref.read(client);
+  static const String _advancedAnalyzePath = 'api/pronunciation/advanced/analyze';
 
   /// Analyze pronunciation with advanced ML models
   /// 
@@ -330,7 +331,7 @@ class AdvancedPronunciationService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/pronunciation/advanced/analyze',
+        '${Api.baseurl}$_advancedAnalyzePath',
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -389,7 +390,7 @@ class AdvancedPronunciationService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/pronunciation/advanced/analyze',
+        '${Api.baseurl}$_advancedAnalyzePath',
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -429,16 +430,15 @@ class AdvancedPronunciationService {
     required Stream<Uint8List> audioStream,
     required String expectedText,
     required String language,
-  }) async* {
-    // Stream audio chunks to backend for real-time processing
-    // Uses WebSocket or Server-Sent Events for continuous feedback
-    // Processes audio in chunks and yields feedback as it becomes available
-    
-    yield RealTimeFeedback(
-      timestamp: 0.0,
-      type: 'info',
-      message: 'Real-time feedback requires WebSocket connection',
-      severity: 0.0,
+  }) {
+    // The current backend only supports request/response analysis at:
+    // POST /api/pronunciation/advanced/analyze
+    //
+    // We fail explicitly (not silently) until streaming endpoints exist.
+    return Stream.error(
+      UnsupportedError(
+        'Real-time pronunciation feedback is not supported by the current backend API.',
+      ),
     );
   }
 

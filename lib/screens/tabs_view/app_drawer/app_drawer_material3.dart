@@ -10,6 +10,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
@@ -28,6 +29,9 @@ import 'package:lingafriq/screens/chat/community_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/social_audio/room_discovery_screen.dart';
+import 'package:lingafriq/screens/social/language_villages_screen.dart';
+import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
+import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Modern Pan-African App Drawer with Future-Forward Styling
@@ -40,21 +44,16 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
     final currentUser = ref.watch(userProvider);
 
     Future<void> toggleDarkMode() async {
-      final prefs = await SharedPreferences.getInstance();
-      final currentMode = prefs.getBool('dark_mode') ?? false;
-      await prefs.setBool('dark_mode', !currentMode);
-      
-      // Trigger theme rebuild
-      if (context.mounted) {
-        // This would typically be handled by a theme provider
-        // For now, we'll just show a message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Dark mode ${!currentMode ? 'enabled' : 'disabled'}. Restart app to apply.'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-      }
+      await ref.read(themeModeProvider.notifier).toggleDarkMode();
+      if (!context.mounted) return;
+      final enabled = Theme.of(context).brightness == Brightness.dark;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Dark mode ${enabled ? 'enabled' : 'disabled'}'),
+          duration: const Duration(seconds: 2),
+          backgroundColor: PanAfricanColors.primary,
+        ),
+      );
     }
 
     return Drawer(
@@ -258,36 +257,6 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         isDark: isDark,
                       ),
                       _DrawerItem(
-                        icon: Icons.group_outlined,
-                        label: 'Tribe Chat',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: TribeChatScreenMaterial3(
-                              tribeId: 'default',
-                              tribeName: 'My Tribe',
-                            )),
-                          );
-                        },
-                        isDark: isDark,
-                      ),
-                      _DrawerItem(
-                        icon: Icons.people_outline,
-                        label: 'Community Chat',
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            SmoothPageRoute(child: CommunityChatScreenMaterial3(
-                              villageId: 'default',
-                              villageName: 'My Village',
-                            )),
-                          );
-                        },
-                        isDark: isDark,
-                      ),
-                      _DrawerItem(
                         icon: Icons.school_outlined,
                         label: 'Live Classroom',
                         onTap: () {
@@ -306,7 +275,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         label: 'Language Villages',
                         onTap: () {
                           Navigator.pop(context);
-                          // Navigate to villages
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const LanguageVillagesScreen()),
+                          );
                         },
                         isDark: isDark,
                       ),
@@ -329,7 +301,10 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         label: 'My Tribes',
                         onTap: () {
                           Navigator.pop(context);
-                          // Navigate to tribes
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const TribeSelectionScreen()),
+                          );
                         },
                         isDark: isDark,
                       ),
@@ -356,8 +331,11 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         icon: PanAfricanIcons.trophy,
                         label: 'Leaderboards',
                         onTap: () {
-                          // Navigate to leaderboards
                           Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const LeaderboardScreen()),
+                          );
                         },
                         isDark: isDark,
                       ),

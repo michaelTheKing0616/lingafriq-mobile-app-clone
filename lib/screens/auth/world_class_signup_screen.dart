@@ -17,6 +17,7 @@ import 'package:lingafriq/utils/validators.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 
 class WorldClassSignupScreen extends HookConsumerWidget {
   const WorldClassSignupScreen({Key? key}) : super(key: key);
@@ -695,6 +696,23 @@ class WorldClassSignupScreen extends HookConsumerWidget {
               HapticFeedback.lightImpact();
 
               if (currentStep.value < totalSteps - 1) {
+                // Step 0 -> Step 1: verify username availability (server-side) for excellent UX.
+                if (currentStep.value == 0) {
+                  final username = usernameController.text.trim();
+                  final available = await ref
+                      .read(apiProvider.notifier)
+                      .checkUsernameAvailability(username);
+                  if (!available) {
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: const Text('That username is already taken. Please choose another.'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                    return;
+                  }
+                }
                 currentStep.value++;
               } else {
                 // Final step - register

@@ -274,17 +274,10 @@ class GameSection extends StatelessWidget {
   }
 
   bool _isGameReady(GameType game) {
-    // Games that are fully implemented
-    const readyGames = {
-      GameType.wordMatchAudio,
-      GameType.pronunciationDuel,
-      GameType.toneTrainer,
-      GameType.speedRoundRemix,
-      GameType.storyBuilder,
-      GameType.roleplayAdventure,
-      GameType.grammarDetective,
-    };
-    return readyGames.contains(game);
+    // All games listed are routable via `game_router.dart`.
+    // If a game isn't available at runtime (assets/network/etc.), it should fail with a user-friendly
+    // in-game error state instead of being hidden/disabled at the catalog level.
+    return true;
   }
 }
 
@@ -370,25 +363,6 @@ class _GameCard extends StatelessWidget {
                               ),
                               child: Text(
                                 'READY',
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          else
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 2.w,
-                                vertical: 0.5.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'SOON',
                                 style: TextStyle(
                                   fontSize: 10.sp,
                                   color: Colors.white,

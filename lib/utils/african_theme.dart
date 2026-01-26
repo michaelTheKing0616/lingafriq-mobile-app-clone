@@ -92,11 +92,22 @@ class AfricanTheme {
   ];
   
   // Text Styles
+  static Color textPrimary(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return isDark ? textLight : textDark;
+  }
+
+  static Color textSecondary(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final base = isDark ? textLight : textDark;
+    return base.withOpacity(0.8);
+  }
+
   static TextStyle headingStyle(BuildContext context) {
     return TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.w800,
-      color: textDark,
+      color: textPrimary(context),
       letterSpacing: -0.5,
       height: 1.2,
     );
@@ -106,7 +117,7 @@ class AfricanTheme {
     return TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: textDark.withOpacity(0.8),
+      color: textSecondary(context),
       height: 1.5,
     );
   }
