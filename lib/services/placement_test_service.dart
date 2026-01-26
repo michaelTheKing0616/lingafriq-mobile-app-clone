@@ -1,11 +1,28 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/placement_question.dart';
 import 'curriculum_service.dart';
+import '../utils/text_sanitizer.dart';
 
 /// Static placement test content and evaluation logic.
 /// This gives each supported language a small but meaningful set of
 /// questions at different CEFR bands. The structure is easy to extend.
 class PlacementTestService {
+  static List<PlacementQuestion> _sanitizeQuestions(List<PlacementQuestion> qs) {
+    return qs
+        .map(
+          (q) => PlacementQuestion(
+            id: q.id,
+            languageCode: q.languageCode,
+            level: q.level,
+            skill: q.skill,
+            prompt: TextSanitizer.sanitize(q.prompt),
+            options: q.options.map(TextSanitizer.sanitize).toList(),
+            correctIndex: q.correctIndex,
+          ),
+        )
+        .toList();
+  }
+
   /// Load questions for a language, expanding the static bank with
   /// curriculum- and Polie-generated items when available.
   static Future<List<PlacementQuestion>> loadQuestionsForLanguage(
@@ -109,30 +126,51 @@ class PlacementTestService {
       }
 
       if (generated.isEmpty) {
-        return base;
+        return _sanitizeQuestions(base);
       }
 
       // Combine static and generated, giving a richer, multi-skill placement.
-      return [...base, ...generated];
+      return _sanitizeQuestions([...base, ...generated]);
     } catch (_) {
       // If anything goes wrong, fall back to the static bank.
-      return base;
+      return _sanitizeQuestions(base);
     }
   }
 
   static List<PlacementQuestion> questionsForLanguage(String languageCode) {
     final code = languageCode.toLowerCase();
+    final List<PlacementQuestion> qs;
 
-    if (code.contains('yoruba')) return _yorubaQuestions;
-    if (code.contains('swahili')) return _swahiliQuestions;
-    if (code.contains('hausa')) return _hausaQuestions;
-    if (code.contains('igbo')) return _igboQuestions;
-    if (code.contains('zulu')) return _zuluQuestions;
-    if (code.contains('afrikaans')) return _afrikaansQuestions;
-    if (code.contains('pidgin')) return _pidginQuestions;
+    if (code.contains('yoruba')) {
+      qs = _yorubaQuestions;
+    } else if (code.contains('swahili')) {
+      qs = _swahiliQuestions;
+    } else if (code.contains('hausa')) {
+      qs = _hausaQuestions;
+    } else if (code.contains('igbo')) {
+      qs = _igboQuestions;
+    } else if (code.contains('zulu')) {
+      qs = _zuluQuestions;
+    } else if (code.contains('xhosa')) {
+      qs = _xhosaQuestions;
+    } else if (code.contains('amharic') || code == 'am') {
+      qs = _amharicQuestions;
+    } else if (code.contains('twi')) {
+      qs = _twiQuestions;
+    } else if (code.contains('afrikaans')) {
+      qs = _afrikaansQuestions;
+    } else if (code.contains('pidgin')) {
+      qs = _pidginQuestions;
+    } else if (code.contains('wolof')) {
+      qs = _wolofQuestions;
+    } else if (code.contains('somali')) {
+      qs = _somaliQuestions;
+    } else {
+      // Fallback: use Swahili set as a reasonable default
+      qs = _swahiliQuestions;
+    }
 
-    // Fallback: use Swahili set as a reasonable default
-    return _swahiliQuestions;
+    return _sanitizeQuestions(qs);
   }
 
   /// Evaluate answers and map to a CEFR-ish level using simple bands.
@@ -203,6 +241,34 @@ class PlacementTestService {
       correctIndex: 2,
     ),
     PlacementQuestion(
+      id: 'yo_a1_good_morning',
+      languageCode: 'yoruba',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which Yoruba phrase is closest to “Good morning”?',
+      options: [
+        'Ẹ káàrọ̀',
+        'Ẹ kú alẹ́',
+        'Báwo ni?',
+        'Ẹ ṣé',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'yo_a1_please',
+      languageCode: 'yoruba',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'How do you say “Please” in Yoruba?',
+      options: [
+        'Jọ̀ọ́',
+        'Ẹ ṣé',
+        'Dáradára',
+        'Kí ni?',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
       id: 'yo_a2_tone',
       languageCode: 'yoruba',
       level: 'A2',
@@ -215,6 +281,62 @@ class PlacementTestService {
         '“ẹ̀kọ́” vs “ẹ̀kọ́” (same meaning)',
       ],
       correctIndex: 1,
+    ),
+    PlacementQuestion(
+      id: 'yo_a2_negation',
+      languageCode: 'yoruba',
+      level: 'A2',
+      skill: 'grammar',
+      prompt: 'In Yoruba, which particle is commonly used to negate a verb (e.g., “I did not go”)?',
+      options: [
+        'Kò',
+        'Ní',
+        'Ṣé',
+        'Tí',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'yo_a2_i_am',
+      languageCode: 'yoruba',
+      level: 'A2',
+      skill: 'grammar',
+      prompt: 'Choose the best Yoruba equivalent of “I am a student.”',
+      options: [
+        'Mo jẹ́ akẹ́kọ̀ọ́.',
+        'Ṣé o jẹ́ akẹ́kọ̀ọ́?',
+        'Ẹ káàrọ̀, akẹ́kọ̀ọ́.',
+        'Kò jẹ́ akẹ́kọ̀ọ́.',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'yo_b1_question_word',
+      languageCode: 'yoruba',
+      level: 'B1',
+      skill: 'vocab',
+      prompt: 'Which Yoruba word is commonly used for “where”?',
+      options: [
+        'Níbo',
+        'Kí ni',
+        'Báwo',
+        'Tálọ́',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'yo_b1_time_phrase',
+      languageCode: 'yoruba',
+      level: 'B1',
+      skill: 'reading',
+      prompt: 'Which sentence best matches “I will come tomorrow”?',
+      options: [
+        'Màá wá lọ́la.',
+        'Mo wá lónìí.',
+        'Mo ti wá.',
+        'Kò sí lọ́la.',
+      ],
+      correctIndex: 0,
     ),
   ];
 
@@ -340,6 +462,48 @@ class PlacementTestService {
       ],
       correctIndex: 1,
     ),
+    PlacementQuestion(
+      id: 'zu_a1_thanks',
+      languageCode: 'zulu',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'How do you say “Thank you” in isiZulu?',
+      options: [
+        'Ngiyabonga',
+        'Ngicela',
+        'Sawubona',
+        'Hamba kahle',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'zu_a1_please',
+      languageCode: 'zulu',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which isiZulu word is commonly used for “please”?',
+      options: [
+        'Ngicela',
+        'Ngiyabonga',
+        'Yebo',
+        'Cha',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'zu_a2_yesno',
+      languageCode: 'zulu',
+      level: 'A2',
+      skill: 'vocab',
+      prompt: 'Choose the correct pair for “yes” and “no” in isiZulu.',
+      options: [
+        'Yebo / Cha',
+        'Cha / Yebo',
+        'Sawubona / Hamba kahle',
+        'Ngiyabonga / Ngicela',
+      ],
+      correctIndex: 0,
+    ),
   ];
 
   static final List<PlacementQuestion> _afrikaansQuestions = [
@@ -357,12 +521,54 @@ class PlacementTestService {
       ],
       correctIndex: 0,
     ),
+    PlacementQuestion(
+      id: 'af_a1_thanks',
+      languageCode: 'afrikaans',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'How do you say “Thank you” in Afrikaans?',
+      options: [
+        'Dankie',
+        'Asseblief',
+        'Hallo',
+        'Totsiens',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'af_a1_please',
+      languageCode: 'afrikaans',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'What does “Asseblief” mean?',
+      options: [
+        'Please',
+        'Sorry',
+        'Welcome',
+        'Good night',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'af_a2_order',
+      languageCode: 'afrikaans',
+      level: 'A2',
+      skill: 'grammar',
+      prompt: 'Which sentence is a natural Afrikaans word order for “I like coffee”?',
+      options: [
+        'Ek hou van koffie.',
+        'Ek koffie hou van.',
+        'Hou ek van koffie.',
+        'Van koffie ek hou.',
+      ],
+      correctIndex: 0,
+    ),
   ];
 
   static final List<PlacementQuestion> _pidginQuestions = [
     PlacementQuestion(
       id: 'pcm_a1_greeting',
-      languageCode: 'nigerian_pidgin',
+      languageCode: 'pidgin',
       level: 'A1',
       skill: 'vocab',
       prompt: 'What does “How far?” mean in Nigerian Pidgin?',
@@ -373,6 +579,244 @@ class PlacementTestService {
         'Where are you?',
       ],
       correctIndex: 1,
+    ),
+    PlacementQuestion(
+      id: 'pcm_a1_thanks',
+      languageCode: 'pidgin',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which phrase is closest to “Thank you” in Nigerian Pidgin?',
+      options: [
+        'I dey thank you',
+        'Wetin dey happen?',
+        'Abeg',
+        'You welcome',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'pcm_a1_please',
+      languageCode: 'pidgin',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'What does “Abeg” commonly mean in Nigerian Pidgin?',
+      options: [
+        'Please',
+        'Goodbye',
+        'Morning',
+        'Food',
+      ],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'pcm_a2_meaning',
+      languageCode: 'pidgin',
+      level: 'A2',
+      skill: 'reading',
+      prompt: 'If someone says “I no fit come today”, what do they mean?',
+      options: [
+        'I can’t come today.',
+        'I will come today.',
+        'I came today.',
+        'I don’t know today.',
+      ],
+      correctIndex: 0,
+    ),
+  ];
+
+  // Additional supported languages (to avoid falling back to Swahili for users).
+  static final List<PlacementQuestion> _xhosaQuestions = [
+    PlacementQuestion(
+      id: 'xh_a1_greeting',
+      languageCode: 'xhosa',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'What does “Molo” mean in isiXhosa?',
+      options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'xh_a1_thanks',
+      languageCode: 'xhosa',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'How do you say “Thank you” in isiXhosa?',
+      options: ['Enkosi', 'Ewe', 'Hayi', 'Molo'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'xh_a1_yes',
+      languageCode: 'xhosa',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which word means “yes” in isiXhosa?',
+      options: ['Ewe', 'Hayi', 'Enkosi', 'Ndicela'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'xh_a2_no',
+      languageCode: 'xhosa',
+      level: 'A2',
+      skill: 'vocab',
+      prompt: 'Which word means “no” in isiXhosa?',
+      options: ['Hayi', 'Ewe', 'Enkosi', 'Molo'],
+      correctIndex: 0,
+    ),
+  ];
+
+  static final List<PlacementQuestion> _amharicQuestions = [
+    PlacementQuestion(
+      id: 'am_a1_greeting',
+      languageCode: 'amharic',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which Amharic greeting means “hello”?',
+      options: ['ሰላም (Selam)', 'አመሰግናለሁ (Amesegenallo)', 'እሺ (Ishi)', 'ቻው (Chao)'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'am_a1_thanks',
+      languageCode: 'amharic',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which Amharic phrase means “thank you”?',
+      options: ['አመሰግናለሁ (Amesegenallo)', 'ሰላም (Selam)', 'እሺ (Ishi)', 'በጣም (Betam)'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'am_a1_yes',
+      languageCode: 'amharic',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which word is commonly used for “okay/yes” in Amharic?',
+      options: ['እሺ (Ishi)', 'ሰላም (Selam)', 'አመሰግናለሁ (Amesegenallo)', 'አይ (Ay)'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'am_a2_no',
+      languageCode: 'amharic',
+      level: 'A2',
+      skill: 'vocab',
+      prompt: 'Which word means “no” in Amharic?',
+      options: ['አይ (Ay)', 'እሺ (Ishi)', 'ሰላም (Selam)', 'እንኳን (Enkwan)'],
+      correctIndex: 0,
+    ),
+  ];
+
+  static final List<PlacementQuestion> _twiQuestions = [
+    PlacementQuestion(
+      id: 'tw_a1_greeting',
+      languageCode: 'twi',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'What does the Twi greeting “Ɛte sɛn?” mean?',
+      options: ['How are you?', 'Good morning', 'Thank you', 'Goodbye'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'tw_a1_thanks',
+      languageCode: 'twi',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which Twi phrase means “thank you”?',
+      options: ['Medaase', 'Aane', 'Dabi', 'Maakye'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'tw_a1_yesno',
+      languageCode: 'twi',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Choose the correct pair for “yes” and “no” in Twi.',
+      options: ['Aane / Dabi', 'Dabi / Aane', 'Medaase / Maakye', 'Maakye / Medaase'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'tw_a2_goodmorning',
+      languageCode: 'twi',
+      level: 'A2',
+      skill: 'vocab',
+      prompt: 'What does “Maakye” mean?',
+      options: ['Good morning', 'Good night', 'Please', 'Welcome'],
+      correctIndex: 0,
+    ),
+  ];
+
+  static final List<PlacementQuestion> _wolofQuestions = [
+    PlacementQuestion(
+      id: 'wo_a1_greeting',
+      languageCode: 'wolof',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which Wolof greeting is commonly used for “hello”?',
+      options: ['Salaam aleekum', 'Jërëjëf', 'Ba beneen yoon', 'Waaw'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'wo_a1_thanks',
+      languageCode: 'wolof',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which Wolof word means “thank you”?',
+      options: ['Jërëjëf', 'Waaw', 'Déedéet', 'Salaam'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'wo_a1_yesno',
+      languageCode: 'wolof',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which word means “yes” in Wolof?',
+      options: ['Waaw', 'Déedéet', 'Jërëjëf', 'Ba beneen yoon'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'wo_a2_no',
+      languageCode: 'wolof',
+      level: 'A2',
+      skill: 'vocab',
+      prompt: 'Which word means “no” in Wolof?',
+      options: ['Déedéet', 'Waaw', 'Jërëjëf', 'Salaam'],
+      correctIndex: 0,
+    ),
+  ];
+
+  static final List<PlacementQuestion> _somaliQuestions = [
+    PlacementQuestion(
+      id: 'so_a1_greeting',
+      languageCode: 'somali',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'What does “Salaan” mean in Somali?',
+      options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'so_a1_thanks',
+      languageCode: 'somali',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'How do you say “thank you” in Somali?',
+      options: ['Mahadsanid', 'Salaan', 'Haye', 'Maya'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'so_a1_yesno',
+      languageCode: 'somali',
+      level: 'A1',
+      skill: 'vocab',
+      prompt: 'Which word means “yes/okay” in Somali?',
+      options: ['Haye', 'Maya', 'Mahadsanid', 'Salaan'],
+      correctIndex: 0,
+    ),
+    PlacementQuestion(
+      id: 'so_a2_no',
+      languageCode: 'somali',
+      level: 'A2',
+      skill: 'vocab',
+      prompt: 'Which word means “no” in Somali?',
+      options: ['Maya', 'Haye', 'Salaan', 'Mahadsanid'],
+      correctIndex: 0,
     ),
   ];
 }

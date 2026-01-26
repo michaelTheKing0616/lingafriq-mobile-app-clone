@@ -22,6 +22,8 @@ class PanAfricanColors {
   
   /// Primary green - Representing African forests and growth
   static const Color primary = Color(0xFF1B7340);
+  // Backward-compatible alias (older UI code expects this name).
+  static const Color primaryGreen = primary;
   static const Color primaryLight = Color(0xFF2BEE6C);
   static const Color primaryDark = Color(0xFF0D4D29);
   static const Color primaryContainer = Color(0xFFB7F5CD);
@@ -288,144 +290,158 @@ class PanAfricanTypography {
   // Use Google Fonts for a modern look
   // Josefin Sans - Clean, modern, African-inspired
   // Lato - Clean body text
+  static const List<String> _fontFallback = <String>[
+    'Noto Sans',
+    'NotoSans',
+    'Roboto',
+    'Segoe UI',
+    'Arial Unicode MS',
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol',
+    'Noto Color Emoji',
+  ];
+
+  static TextStyle _withFallback(TextStyle style) =>
+      style.copyWith(fontFamilyFallback: _fontFallback);
   
   static String get displayFont => 'Josefin Sans';
   static String get bodyFont => 'Lato';
   
   // Display Styles
   static TextStyle displayLarge(BuildContext context, {Color? color}) {
-    return GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.josefinSans(
       fontSize: 57.sp,
       fontWeight: FontWeight.w800,
       letterSpacing: -0.25,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle displayMedium(BuildContext context, {Color? color}) {
-    return GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.josefinSans(
       fontSize: 45.sp,
       fontWeight: FontWeight.w700,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle displaySmall(BuildContext context, {Color? color}) {
-    return GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.josefinSans(
       fontSize: 36.sp,
       fontWeight: FontWeight.w600,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   // Headline Styles
   static TextStyle headlineLarge(BuildContext context, {Color? color}) {
-    return GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.josefinSans(
       fontSize: 32.sp,
       fontWeight: FontWeight.w700,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle headlineMedium(BuildContext context, {Color? color}) {
-    return GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.josefinSans(
       fontSize: 28.sp,
       fontWeight: FontWeight.w600,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle headlineSmall(BuildContext context, {Color? color}) {
-    return GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.josefinSans(
       fontSize: 24.sp,
       fontWeight: FontWeight.w600,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   // Title Styles
   static TextStyle titleLarge(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 22.sp,
       fontWeight: FontWeight.w700,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle titleMedium(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 16.sp,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.15,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle titleSmall(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 14.sp,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.1,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   // Body Styles
   static TextStyle bodyLarge(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 16.sp,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.5,
       height: 1.5,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle bodyMedium(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 14.sp,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.25,
       height: 1.4,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle bodySmall(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 12.sp,
       fontWeight: FontWeight.w400,
       letterSpacing: 0.4,
       color: color ?? _textSecondaryColor(context),
-    );
+    ));
   }
   
   // Label Styles
   static TextStyle labelLarge(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 14.sp,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.1,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle labelMedium(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 12.sp,
       fontWeight: FontWeight.w600,
       letterSpacing: 0.5,
       color: color ?? _textColor(context),
-    );
+    ));
   }
   
   static TextStyle labelSmall(BuildContext context, {Color? color}) {
-    return GoogleFonts.lato(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 11.sp,
       fontWeight: FontWeight.w500,
       letterSpacing: 0.5,
       color: color ?? _textSecondaryColor(context),
-    );
+    ));
   }
   
   static Color _textColor(BuildContext context) {

@@ -62,7 +62,7 @@ class OnboardingScreen extends HookConsumerWidget {
                   bottomImage: Images.obBottom2,
                   title: "What Do We Offer Uniqely",
                   description:
-                      "Afrika has a voice, and our duty is to amplify it.  We’d love take you on a journey through history, and  help you express yourself through language. One thing is certain, we bring you closer to Afrika and her culture.",
+                      "Afrika has a voice, and our duty is to amplify it.  We'd love take you on a journey through history, and  help you express yourself through language. One thing is certain, we bring you closer to Afrika and her culture.",
                 ),
                 _OnboardingItem(
                     textfontsize: 17.sp,
@@ -82,9 +82,9 @@ Earn points as you progress and see how you compare to other learners on the lea
                   bottomImage: Images.obBottom2,
                   title: "What Do We Offer Uniqely",
                   description:
-                      '''We aim to have all Afrikan languages, but we’re not there yet. We’re working to feature more languages. Don’t see a language you’d like to learn, let’s know about it and we’d work to include it (that’s if we’re not working on it already 😉♥️). 
+                      '''We aim to have all Afrikan languages, but we're not there yet. We're working to feature more languages. Don't see a language you'd like to learn, let's know about it and we'd work to include it (that's if we're not working on it already 😉♥️). 
 
-You can do this by going to your profile tab, and selecting the “Feedback” option to enter this information. Now let’s get to learning!''',
+You can do this by going to your profile tab, and selecting the "Feedback" option to enter this information. Now let's get to learning!''',
                   width: 0.9.sw,
                   textfontsize: 19.5.sp,
                 ),
