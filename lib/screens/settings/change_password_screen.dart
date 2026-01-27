@@ -51,7 +51,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error changing password: ${ErrorHandler.getUserFriendlyMessage(e)}'),
+              content: Text('Error changing password: ${ErrorHandler.getUserFriendlyError(e)}'),
               backgroundColor: Colors.red,
             ),
           );
@@ -127,9 +127,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showCurrentPassword.value = !showCurrentPassword.value;
-                          });
+                          showCurrentPassword.value = !showCurrentPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -197,9 +195,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showConfirmPassword.value = !showConfirmPassword.value;
-                          });
+                          showConfirmPassword.value = !showConfirmPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(

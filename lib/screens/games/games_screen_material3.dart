@@ -14,6 +14,7 @@ import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/game_router.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Beautiful Material 3 Games Screen
 class GamesScreenMaterial3 extends HookConsumerWidget {

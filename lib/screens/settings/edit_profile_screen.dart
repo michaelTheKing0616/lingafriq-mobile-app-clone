@@ -118,7 +118,7 @@ class EditProfileScreen extends HookConsumerWidget {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Error updating profile: ${ErrorHandler.getUserFriendlyMessage(e)}'),
+              content: Text('Error updating profile: ${ErrorHandler.getUserFriendlyError(e)}'),
               backgroundColor: Colors.red,
             ),
           );
