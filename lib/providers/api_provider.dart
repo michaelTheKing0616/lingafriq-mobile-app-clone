@@ -77,27 +77,19 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final res = await ref.read(client).post(
         Api.refreshToken,
-        // Django JWT refresh contract: { refresh: token } -> { access }
-        data: { 'refresh': refreshToken },
+        data: { 'refreshToken': refreshToken },
       );
 
-      if (res.statusCode == 200) {
-        final data = res.data;
-        final access = (data is Map<String, dynamic>)
-            ? (data['accessToken'] ?? data['access'])?.toString()
-            : null;
-
-        if (access != null && access.isNotEmpty) {
-          token = access;
-
-          // Legacy refresh returns {access} only; keep existing refresh token.
-          final prefs = ref.read(sharedPreferencesProvider);
-          if (refreshToken != null && refreshToken!.isNotEmpty) {
-            await prefs.storeAuthTokens(token!, refreshToken!);
-          }
-
-          return token;
-        }
+      if (res.statusCode == 200 && (res.data['accessToken'] || res.data['access'])) {
+        // Handle both formats: backend returns 'accessToken' and 'refreshToken'
+        token = res.data['accessToken'] ?? res.data['access'];
+        refreshToken = res.data['refreshToken'] ?? res.data['refresh'] ?? refreshToken;
+        
+        // Store tokens
+        final prefs = ref.read(sharedPreferencesProvider);
+        await prefs.storeAuthTokens(token!, refreshToken!);
+        
+        return token;
       }
       return null;
     } catch (e) {
@@ -128,13 +120,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   Future<ProfileModel> login(Map<String, String> data) async {
     try {
-      // Log the login attempt with backend URL for debugging
-      logger.info('Login API call', context: {
-        'endpoint': Api.login,
-        'baseUrl': Api.baseurl,
-        'fullUrl': '${Api.baseurl}${Api.login}',
-      });
-      
       final res = await ref.read(client).post(Api.login, data: data);
       if (res.statusCode != 200) {
         // Convert to structured error
@@ -169,18 +154,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Update user provider with current user
       ref.read(userProvider.notifier).overrideUser(user);
 
-      logger.info('Login successful', context: {'email': data['email']});
       return user;
     } catch (e) {
-      // Log detailed error information for debugging
-      logger.error('Login API call failed', error: e, context: {
-        'endpoint': Api.login,
-        'baseUrl': Api.baseurl,
-        'errorType': e.runtimeType.toString(),
-        'isDioException': e is DioException,
-        'dioErrorType': e is DioException ? e.type.toString() : null,
-        'statusCode': e is DioException ? e.response?.statusCode : null,
-      });
       rethrow;
     }
   }
@@ -1066,17 +1041,9 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Save AI chat history
   Future<bool> saveAiChatHistory(Map<String, dynamic> chatData) async {
     try {
-      // Canonical backend route: POST /api/ai/chat/history/sync/
-      //
-      // Backward compatible input: older callers may include `language_code`.
-      // Sync controller expects `{ mode, messages, timestamp }`.
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/ai/chat/history/sync/',
-        data: {
-          'mode': chatData['mode'],
-          'messages': chatData['messages'],
-          if (chatData['timestamp'] != null) 'timestamp': chatData['timestamp'],
-        },
+        '${Api.baseurl}api/ai-chat/history',
+        data: chatData,
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
@@ -1092,24 +1059,23 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     required String languageCode,
   }) async {
     try {
-      // Canonical backend route: GET /api/ai/chat/history/:mode
-      final res = await ref.read(client).get('${Api.baseurl}api/ai/chat/history/$mode');
-
-      if (res.statusCode != 200 || res.data == null) return null;
-
-      // Expected: { success: true, data: { messages: [...] } }
-      final root = res.data;
-      if (root is Map) {
-        final data = root['data'];
-        if (data is Map && data['messages'] is List) {
-          return (data['messages'] as List).map((m) => Map<String, dynamic>.from(m as Map)).toList();
-        }
-        // Backward-compatible fallbacks
-        if (root['messages'] is List) {
-          return (root['messages'] as List).map((m) => Map<String, dynamic>.from(m as Map)).toList();
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/ai-chat/history',
+        queryParameters: {
+          'mode': mode,
+          'language_code': languageCode,
+        },
+      );
+      
+      if (res.statusCode == 200 && res.data != null) {
+        // Backend should return: { "messages": [...] } or directly [...]
+        if (res.data is Map && res.data['messages'] != null) {
+          final messages = res.data['messages'] as List;
+          return messages.map((m) => m as Map<String, dynamic>).toList();
+        } else if (res.data is List) {
+          return (res.data as List).map((m) => m as Map<String, dynamic>).toList();
         }
       }
-
       return null;
     } catch (e) {
       logger.error('Error getting AI chat history', error: e);
@@ -1357,19 +1323,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Send telemetry events
   Future<bool> sendTelemetry(List<Map<String, dynamic>> events) async {
     try {
-      if (events.isEmpty) return true;
-
-      // Canonical backend route: POST /api/games/telemetry/
-      // Backend accepts ONE event per request, so we batch client-side.
-      var ok = true;
-      for (final event in events) {
-        final res = await ref.read(client).post(
-          '${Api.baseurl}api/games/telemetry/',
-          data: event,
-        );
-        ok = ok && (res.statusCode == 200 || res.statusCode == 201);
-      }
-      return ok;
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/telemetry',
+        data: {'events': events},
+      );
+      return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
       logger.error('Error sending telemetry', error: e);
       return false;
@@ -1417,15 +1375,9 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Sync game session to backend
   Future<bool> syncGameSession(Map<String, dynamic> data) async {
     try {
-      // Canonical backend route: POST /api/games/session/start/
-      // Backend upserts by `session.session_id` and is tolerant to being called
-      // for start/turn/complete via the same handler.
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/games/session/start/',
-        data: {
-          'session': data['session'],
-          if (data['timestamp'] != null) 'timestamp': data['timestamp'],
-        },
+        '${Api.baseurl}api/games/session/sync',
+        data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
@@ -1437,18 +1389,9 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Sync game SRS (Spaced Repetition System) data to backend
   Future<bool> syncGameSRS(Map<String, dynamic> data) async {
     try {
-      final userId = data['user_id']?.toString();
-      if (userId == null || userId.trim().isEmpty) {
-        throw Exception('syncGameSRS requires user_id');
-      }
-
-      // Canonical backend route: PUT /api/games/srs/user/:userId
-      final res = await ref.read(client).put(
-        '${Api.baseurl}api/games/srs/user/$userId',
-        data: {
-          'srs': data['srs'],
-          if (data['timestamp'] != null) 'timestamp': data['timestamp'],
-        },
+      final res = await ref.read(client).post(
+        '${Api.baseurl}api/games/srs/sync',
+        data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
@@ -1591,7 +1534,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/ai/chat/history/sync/',
+        '${Api.baseurl}api/ai-chat/history/sync',
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1605,7 +1548,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/ai/chat/srs/sync/',
+        '${Api.baseurl}api/ai-chat/srs/sync',
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1653,15 +1596,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   /// Sync telemetry events to backend
   Future<bool> syncTelemetry(Map<String, dynamic> data) async {
     try {
-      // Canonical backend route: POST /api/games/telemetry/
-      // Support both single event and `{ events: [...] }` payloads.
-      if (data['events'] is List) {
-        final events = (data['events'] as List).map((e) => Map<String, dynamic>.from(e as Map)).toList();
-        return await sendTelemetry(events);
-      }
-
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/games/telemetry/',
+        '${Api.baseurl}api/telemetry/sync',
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
