@@ -15,7 +15,11 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString and build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+<<<<<<< Updated upstream
 version: 1.6.0+119
+=======
+version: 1.6.0+125
+>>>>>>> Stashed changes
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -162,3 +166,4 @@ flutter:
           weight: 700
         - asset: assets/fonts/Dosis-ExtraBold.ttf
           weight: 800
+

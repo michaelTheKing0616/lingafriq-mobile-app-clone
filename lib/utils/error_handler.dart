@@ -23,19 +23,62 @@ class ErrorHandler {
   }
 
   /// Check if error is due to network connectivity (no internet)
+  /// This should only return true for actual network-level failures
   static bool _isNetworkError(DioException error) {
-    return error.type == DioExceptionType.connectionError ||
-           (error.type == DioExceptionType.connectionTimeout && 
-            error.message?.toLowerCase().contains('network') == true);
+    // ConnectionError typically means DNS failure, no route to host, etc.
+    // This is a true network-level issue
+    if (error.type == DioExceptionType.connectionError) {
+      // Check the error message for specific network failure indicators
+      final message = error.message?.toLowerCase() ?? '';
+      final errorStr = error.toString().toLowerCase();
+      
+      // True network errors: DNS failures, no route to host, network unreachable
+      if (message.contains('failed host lookup') ||
+          message.contains('name resolution') ||
+          message.contains('network is unreachable') ||
+          message.contains('no route to host') ||
+          errorStr.contains('socketexception') ||
+          errorStr.contains('os error')) {
+        return true;
+      }
+      
+      // If connectionError but we can't determine, be conservative
+      // Assume it might be backend connectivity issue, not network
+      return false;
+    }
+    
+    return false;
   }
 
   /// Check if error is due to backend being unavailable (internet works, backend doesn't)
+  /// This includes timeouts, connection refused, and server errors
   static bool _isBackendError(DioException error) {
     final statusCode = error.response?.statusCode;
-    return error.type == DioExceptionType.connectionTimeout ||
-           error.type == DioExceptionType.sendTimeout ||
-           error.type == DioExceptionType.receiveTimeout ||
-           (statusCode != null && statusCode >= 500);
+    
+    // Timeouts usually mean backend is slow or unreachable (but internet works)
+    if (error.type == DioExceptionType.connectionTimeout ||
+        error.type == DioExceptionType.sendTimeout ||
+        error.type == DioExceptionType.receiveTimeout) {
+      return true;
+    }
+    
+    // Server errors (5xx) mean backend is reachable but having issues
+    if (statusCode != null && statusCode >= 500) {
+      return true;
+    }
+    
+    // ConnectionError that's not a true network issue (e.g., connection refused)
+    if (error.type == DioExceptionType.connectionError) {
+      final message = error.message?.toLowerCase() ?? '';
+      // Connection refused means backend is not running or not accessible
+      if (message.contains('connection refused') ||
+          message.contains('connection reset') ||
+          message.contains('connection closed')) {
+        return true;
+      }
+    }
+    
+    return false;
   }
 
   /// Handle Dio-specific errors with better distinction between network and backend issues
@@ -51,6 +94,15 @@ class ErrorHandler {
       if (statusCode != null && statusCode >= 500) {
         return 'Server is temporarily unavailable. Your data is saved locally and will sync when the server is back online.';
       }
+      
+      // Check for connection refused (backend not running or wrong URL)
+      final message = error.message?.toLowerCase() ?? '';
+      if (message.contains('connection refused') || 
+          message.contains('connection reset')) {
+        return 'Cannot connect to server. Please check your connection or try again later.';
+      }
+      
+      // Timeout or other backend issues
       return 'Server is taking too long to respond. Your data is saved locally and will sync automatically.';
     }
     
