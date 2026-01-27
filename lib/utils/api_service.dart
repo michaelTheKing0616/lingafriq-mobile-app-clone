@@ -40,7 +40,7 @@ class ApiService {
     
     // For HTTP backends, disable SSL verification (development only)
     if (baseUrl.startsWith('http://')) {
-      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
         client.badCertificateCallback = (cert, host, port) {
           logger.debug('Allowing HTTP connection (no SSL verification)', context: {
             'host': host,
