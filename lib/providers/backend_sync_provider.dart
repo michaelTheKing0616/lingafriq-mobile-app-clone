@@ -58,51 +58,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
   BackendSyncState build() {
     _loadSyncQueue();
     _startPeriodicSync();
-
-    // If onboarding is completed while unauthenticated, sync tasks will queue up.
-    // As soon as the user becomes available, trigger an immediate sync so the
-    // "pending syncs" badge reflects reality quickly.
-    ref.listen(userProvider, (prev, next) {
-      if (prev == null && next != null) {
-        // Fire-and-forget; syncAll guards against concurrent runs.
-        syncAll();
-      }
-    });
-
     return BackendSyncState();
-  }
-
-  void _dedupeOnboardingQueueInPlace() {
-    // Keep only the most recent onboarding task per `step`.
-    // This prevents the queue (and UI badge) from growing when a user re-runs onboarding.
-    final Map<String, SyncTask> latestByStep = {};
-    final List<SyncTask> passthrough = [];
-
-    for (final t in _syncQueue) {
-      if (t.type == SyncType.onboarding) {
-        final step = (t.data['step'] ?? '').toString();
-        if (step.isEmpty) {
-          passthrough.add(t);
-          continue;
-        }
-
-        final existing = latestByStep[step];
-        if (existing == null || t.timestamp.isAfter(existing.timestamp)) {
-          latestByStep[step] = t;
-        }
-        continue;
-      }
-
-      passthrough.add(t);
-    }
-
-    final dedupedOnboarding = latestByStep.values.toList()
-      ..sort((a, b) => a.timestamp.compareTo(b.timestamp));
-
-    _syncQueue
-      ..clear()
-      ..addAll(passthrough)
-      ..addAll(dedupedOnboarding);
   }
 
   void _startPeriodicSync() {
@@ -123,21 +79,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
         _syncQueue.addAll(
           queue.map((e) => SyncTask.fromJson(e as Map<String, dynamic>)),
         );
-        _dedupeOnboardingQueueInPlace();
         state = state.copyWith(pendingSyncs: _syncQueue.length);
-
-        // If user is already logged in at startup, flush immediately.
-        final user = ref.read(userProvider);
-        if (user != null && _syncQueue.isNotEmpty) {
-          // Fire-and-forget; syncAll will persist queue updates.
-          syncAll();
-        } else {
-          // Persist dedupe changes if any. Avoid writing in the common "no changes" path.
-          await prefs.setString(
-            _syncQueueKey,
-            jsonEncode(_syncQueue.map((e) => e.toJson()).toList()),
-          );
-        }
       }
     } catch (e) {
       logger.error('Error loading sync queue', tag: 'backend-sync', error: e);
@@ -159,15 +101,7 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
 
   /// Add a sync task to the queue
   Future<void> queueSync(SyncTask task) async {
-    // Dedupe onboarding steps (same step can be set multiple times across runs).
-    if (task.type == SyncType.onboarding) {
-      final step = (task.data['step'] ?? '').toString();
-      if (step.isNotEmpty) {
-        _syncQueue.removeWhere((t) => t.type == SyncType.onboarding && (t.data['step'] ?? '').toString() == step);
-      }
-    }
     _syncQueue.add(task);
-    _dedupeOnboardingQueueInPlace();
     await _saveSyncQueue();
     // Try to sync immediately if not already syncing
     if (!state.isSyncing) {
@@ -225,38 +159,30 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
 
     switch (task.type) {
       case SyncType.gamification:
-        final ok = await api.syncGamification(task.data);
-        if (!ok) throw Exception('Gamification sync returned false');
+        await api.syncGamification(task.data);
         break;
       case SyncType.gameSession:
-        final ok = await api.syncGameSession(task.data);
-        if (!ok) throw Exception('Game session sync returned false');
+        await api.syncGameSession(task.data);
         break;
       case SyncType.gameSRS:
-        final ok = await api.syncGameSRS(task.data);
-        if (!ok) throw Exception('Game SRS sync returned false');
+        await api.syncGameSRS(task.data);
         break;
       case SyncType.aiChatHistory:
-        final ok = await api.syncAIChatHistory(task.data);
-        if (!ok) throw Exception('AI chat history sync returned false');
+        await api.syncAIChatHistory(task.data);
         break;
       case SyncType.aiChatSRS:
-        final ok = await api.syncAIChatSRS(task.data);
-        if (!ok) throw Exception('AI chat SRS sync returned false');
+        await api.syncAIChatSRS(task.data);
         break;
       case SyncType.progress:
-        final ok = await api.syncProgress(task.data);
-        if (!ok) throw Exception('Progress sync returned false');
+        await api.syncProgress(task.data);
         break;
       case SyncType.onboarding:
         // syncOnboarding already wraps data in 'onboarding_data' field
         // task.data contains the step data (e.g., { step: 'proficiency_language', proficiency_language: 'en' })
-        final ok = await api.syncOnboarding(task.data);
-        if (!ok) throw Exception('Onboarding sync returned false');
+        await api.syncOnboarding(task.data);
         break;
       case SyncType.telemetry:
-        final ok = await api.syncTelemetry(task.data);
-        if (!ok) throw Exception('Telemetry sync returned false');
+        await api.syncTelemetry(task.data);
         break;
     }
   }

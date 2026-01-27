@@ -86,56 +86,37 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       return null; // Login already in progress
     }
     
-    final shouldShowLoading = storeCredentials || splashlogin;
     try {
       _isLoggingIn = true;
-      if (shouldShowLoading) {
+      if (storeCredentials) {
         state = state.copyWith(isLoading: true);
       }
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);
-
-      // Persist credentials only when explicitly requested (UI login/register).
       if (storeCredentials) {
+        // Use secure credential storage instead of SharedPreferences
         final credentialStorage = CredentialStorageService();
-        await credentialStorage.storeCredentials(email: email, password: password);
-        // Store email (non-sensitive) for backward compatibility.
-        await ref.read(sharedPreferencesProvider).prefs.setString('email', email);
-      }
-
-      // Refresh server-side account snapshot (non-blocking for UX).
-      try {
-        await ref.read(apiProvider.notifier).accountUpdate().timeout(
-          const Duration(seconds: 6),
-          onTimeout: () => false,
+        await credentialStorage.storeCredentials(
+          email: email,
+          password: password,
         );
-      } catch (_) {
-        // Ignore, not critical for login.
+        // Also store email in SharedPreferences for backward compatibility (email is not sensitive)
+        final prefs = ref.read(sharedPreferencesProvider);
+        await prefs.prefs.setString('email', email);
+        ref.read(apiProvider.notifier).accountUpdate();
+        await Future.delayed(const Duration(seconds: 3));
+        state = state.copyWith(isLoading: false);
+        ref.read(userProvider.notifier).overrideUser(user);
+
+        ref.read(navigationProvider).naviateOffAll(OnboardingScreenMaterial3());
+        return user;
       }
-
-      // Ensure user state is set immediately.
-      ref.read(userProvider.notifier).overrideUser(user);
-
-      // Register push token in background (non-blocking).
-      unawaited(ref.read(apiProvider.notifier).registerDevice());
-
-      // World-class UX: always navigate to the correct next screen after explicit login/register.
-      if (storeCredentials && !updateProfile) {
-        final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
-        ref.read(navigationProvider).naviateOffAll(
-          isOnboardingSeen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
-        );
-      }
-
       return user;
     } catch (e) {
       state = state.copyWith(isLoading: false);
       await ref.read(dialogProvider(e)).showExceptionDialog();
       return null;
     } finally {
-      if (shouldShowLoading) {
-        state = state.copyWith(isLoading: false);
-      }
       _isLoggingIn = false; // Always reset flag
     }
   }

@@ -14,8 +14,6 @@ import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/games/language_games_screen.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
-import 'package:lingafriq/providers/gamification_provider.dart';
 
 /// Beautiful Material 3 Dashboard with Pan-African Design
 class DashboardScreenMaterial3 extends HookConsumerWidget {
@@ -24,10 +22,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    // Watch state so UI updates when gamification model changes.
-    ref.watch(gamificationProvider);
-    final gamification = ref.read(gamificationProvider.notifier).gamification;
-
     final greeting = useState(_getGreeting());
 
     useEffect(() {
@@ -50,7 +44,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           child: Column(
             children: [
               // Header
-              _buildHeader(context, ref, greeting.value, isDark),
+              _buildHeader(context, greeting.value, isDark),
               
               // Content
               Expanded(
@@ -69,13 +63,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Quick Stats
-                        _buildQuickStats(
-                          context,
-                          isDark,
-                          streak: gamification.dailyStreak,
-                          totalXp: gamification.xp,
-                          level: gamification.level,
-                        ),
+                        _buildQuickStats(context, isDark),
                         SizedBox(height: PanAfricanSpacing.lg),
 
                         // Quick Actions
@@ -101,7 +89,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, WidgetRef ref, String greeting, bool isDark) {
+  Widget _buildHeader(BuildContext context, String greeting, bool isDark) {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       child: Column(
@@ -110,13 +98,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: const Icon(Icons.menu_rounded, color: Colors.white),
-                onPressed: () {
-                  ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                },
-                tooltip: 'Menu',
-              ).animate().fadeIn(duration: 250.ms),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -145,19 +126,13 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     );
   }
 
-  Widget _buildQuickStats(
-    BuildContext context,
-    bool isDark, {
-    required int streak,
-    required int totalXp,
-    required int level,
-  }) {
+  Widget _buildQuickStats(BuildContext context, bool isDark) {
     return Row(
       children: [
         Expanded(
           child: _StatCard(
             label: 'Streak',
-            value: '$streak',
+            value: '7',
             icon: Icons.local_fire_department,
             color: PanAfricanColors.tertiary,
             isDark: isDark,
@@ -166,8 +141,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         SizedBox(width: PanAfricanSpacing.md),
         Expanded(
           child: _StatCard(
-            label: 'XP',
-            value: _formatCompactNumber(totalXp),
+            label: 'XP Today',
+            value: '250',
             icon: Icons.star,
             color: PanAfricanColors.secondary,
             isDark: isDark,
@@ -177,7 +152,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         Expanded(
           child: _StatCard(
             label: 'Level',
-            value: '$level',
+            value: '12',
             icon: Icons.trending_up,
             color: PanAfricanColors.primary,
             isDark: isDark,
@@ -185,13 +160,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         ),
       ],
     );
-  }
-
-  String _formatCompactNumber(int value) {
-    if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
-    if (value >= 10000) return '${(value / 1000).toStringAsFixed(1)}K';
-    if (value >= 1000) return '${(value / 1000).toStringAsFixed(2)}K';
-    return value.toString();
   }
 
   Widget _buildQuickActions(BuildContext context, bool isDark) {

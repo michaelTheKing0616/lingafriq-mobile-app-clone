@@ -14,18 +14,9 @@ class Api {
   // static const String baseurl = "http://34.121.156.251:8000/";
   // static const String baseurl = "http://34.67.162.25:8000/";
   // static const String baseurl = "http://64.227.113.179:8000/";
-  // Auth endpoints
-  //
-  // IMPORTANT:
-  // The backend provides Django-JWT compatible "legacy" endpoints at:
-  // - POST /auth/jwt/create/   -> { access, refresh }
-  // - POST /auth/jwt/refresh/  -> { access }
-  //
-  // These are mounted at both root and /accounts for backwards compatibility,
-  // but we use the root paths here to avoid coupling auth to /accounts/*.
   static const String register = "accounts/auth/users/";
-  static const String login = "auth/jwt/create/";
-  static const String refreshToken = "auth/jwt/refresh/";
+  static const String login = "accounts/auth/login";
+  static const String refreshToken = "accounts/auth/refresh";
   static const String userInfo = "accounts/auth/users/me/";
   static const String userPreferences = "api/user/preferences";
   static const String registerFcmDevice = "devices/";
