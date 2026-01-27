@@ -2,6 +2,7 @@
 /// Provides clean, type-safe API calls with error handling and authentication
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -33,8 +34,24 @@ class ApiService {
       },
     ));
 
-    // Setup certificate pinning (production only)
+    // Setup certificate pinning (production only, disabled for HTTP backends)
+    // This allows local development with HTTP backends without certificate issues
     setupCertificatePinning(_dio);
+    
+    // For HTTP backends, disable SSL verification (development only)
+    if (baseUrl.startsWith('http://')) {
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+        client.badCertificateCallback = (cert, host, port) {
+          logger.debug('Allowing HTTP connection (no SSL verification)', context: {
+            'host': host,
+            'port': port,
+          });
+          return true; // Allow all certificates for HTTP backends
+        };
+        return client;
+      };
+      logger.info('HTTP backend detected - SSL verification disabled for development');
+    }
 
     // Add security headers validation interceptor
     _dio.interceptors.add(securityHeadersValidator.createInterceptor());

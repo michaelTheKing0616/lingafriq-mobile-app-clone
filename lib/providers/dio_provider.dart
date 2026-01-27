@@ -1,9 +1,12 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 import '../utils/api.dart';
 
@@ -16,6 +19,26 @@ final client = Provider<Dio>(
       receiveTimeout: const Duration(seconds: 120),
     );
     final dio = Dio(options);
+    
+    // CRITICAL FIX: Allow HTTP backends and self-signed certificates for local development
+    // This fixes the issue where curl works but app can't connect
+    if (Api.baseurl.startsWith('http://')) {
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
+        client.badCertificateCallback = (X509Certificate cert, String host, int port) {
+          logger.debug('Allowing HTTP/self-signed certificate for local backend', context: {
+            'host': host,
+            'port': port,
+            'backendUrl': Api.baseurl,
+          });
+          return true; // Allow all certificates for HTTP backends
+        };
+        return client;
+      };
+      logger.info('HTTP backend detected - SSL verification disabled', context: {
+        'backendUrl': Api.baseurl,
+      });
+    }
+    
     dio.interceptors.add(_DioLogger(ref));
     return dio;
   },

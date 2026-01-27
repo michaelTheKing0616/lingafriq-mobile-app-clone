@@ -42,9 +42,14 @@ class CertificatePinningConfig {
         ? envHashes.split(',').map((h) => h.trim()).where((h) => h.isNotEmpty).toList()
         : <String>[];
     
+    // Check if backend URL is HTTP (not HTTPS) - disable pinning for HTTP
+    final backendUrl = const String.fromEnvironment('BACKEND_URL', defaultValue: 'https://api.lingafriq.com');
+    final isHttp = backendUrl.startsWith('http://');
+    
     return CertificatePinningConfig(
       publicKeyHashes: hashes,
-      enabled: hashes.isNotEmpty && !kDebugMode, // Only enable if hashes are configured and not in debug mode
+      enabled: hashes.isNotEmpty && !kDebugMode && !isHttp, // Disable for HTTP or debug mode
+      allowSelfSigned: isHttp || kDebugMode, // Allow self-signed for HTTP/local development
     );
   }
 }
@@ -63,8 +68,9 @@ class CertificatePinner {
       return true;
     }
 
-    if (kDebugMode && config.allowSelfSigned) {
-      logger.debug('Allowing self-signed certificate in debug mode');
+    // Allow self-signed certificates in debug mode or if explicitly allowed
+    if ((kDebugMode || config.allowSelfSigned) && config.allowSelfSigned) {
+      logger.debug('Allowing self-signed certificate (debug mode or HTTP backend)');
       return true;
     }
 
