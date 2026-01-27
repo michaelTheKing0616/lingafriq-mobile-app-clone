@@ -81,6 +81,11 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       isLoading.value = false;
     }
 
+    useEffect(() {
+      _loadSettings(api);
+      return null;
+    }, []);
+
     Future<void> _syncToBackend(ApiProvider api) async {
       final prefs = {
         'analytics': analyticsEnabled.value ?? true,
