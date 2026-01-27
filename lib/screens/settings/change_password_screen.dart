@@ -157,9 +157,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showNewPassword.value = !showNewPassword.value;
-                          });
+                          showNewPassword.value = !showNewPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
