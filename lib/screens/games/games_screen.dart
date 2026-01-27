@@ -13,8 +13,6 @@ import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/screens/games/word_match_game.dart';
-import 'package:lingafriq/screens/games/fill_in_the_blank_game.dart';
-import 'package:lingafriq/screens/games/speed_challenge_game.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 final languagesForGamesProvider = FutureProvider.autoDispose((ref) {

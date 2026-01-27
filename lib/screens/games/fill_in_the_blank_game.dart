@@ -262,7 +262,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     SizedBox(height: 24.h),
                     PrimaryButton(
                       text: 'Play Again',
-                      onTap: _restartGame,
+                      onPressed: _restartGame,
                     ),
                     SizedBox(height: 12.h),
                     TextButton(

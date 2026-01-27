@@ -7,9 +7,6 @@ import 'dart:async';
 import 'dart:io';
 
 class ErrorHandler {
-  /// Backward-compatible alias (older screens call this).
-  static String getUserFriendlyMessage(dynamic error) => getUserFriendlyError(error);
-
   /// Get user-friendly error message from exception
   static String getUserFriendlyError(dynamic error) {
     if (error is DioException) {
