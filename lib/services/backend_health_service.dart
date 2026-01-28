@@ -63,7 +63,7 @@ class BackendHealthService {
     // If health endpoint doesn't exist, try a lightweight endpoint
     try {
       final response = await _dio.get(
-        '${Api.baseurl}health/',
+        '${Api.baseurl}healthcheck',
         options: Options(
           receiveTimeout: const Duration(seconds: 5),
           sendTimeout: const Duration(seconds: 5),
