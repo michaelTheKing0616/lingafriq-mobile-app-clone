@@ -154,7 +154,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
     // Sync with backend: ProgressIntegration + gamification + learner activity
     try {
       await ProgressIntegration.onGameCompleted(
-        ref,
+        ref as Ref,
         wordsLearned: _correctAnswers,
         pointsEarned: _score,
         perfect: _correctAnswers == _questions.length,
@@ -262,7 +262,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     SizedBox(height: 24.h),
                     PrimaryButton(
                       text: 'Play Again',
-                      onPressed: _restartGame,
+                      onTap: _restartGame,
                     ),
                     SizedBox(height: 12.h),
                     TextButton(
