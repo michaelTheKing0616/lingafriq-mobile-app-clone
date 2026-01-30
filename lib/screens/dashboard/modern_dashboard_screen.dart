@@ -30,9 +30,6 @@ class ModernDashboardScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    // NOTE: Using ref.read(notifier) here is necessary due to DailyGoalsProvider architecture
-    // The provider stores goals/streak as private fields with getters, not in BaseProviderState
-    // TODO: Refactor DailyGoalsProvider to use a proper state model instead of BaseProviderState
     final dailyGoalsNotifier = ref.read(dailyGoalsProvider.notifier);
     final dailyGoals = dailyGoalsNotifier.goals;
     final currentStreak = dailyGoalsNotifier.currentStreak;

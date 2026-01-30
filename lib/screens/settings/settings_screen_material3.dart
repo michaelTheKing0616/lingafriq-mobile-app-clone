@@ -17,6 +17,10 @@ import 'package:lingafriq/services/offline/offline_service.dart' show OfflineSer
 import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
 import 'package:lingafriq/screens/settings/change_password_screen.dart';
 import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
+import 'package:lingafriq/providers/theme_mode_provider.dart';
+import 'package:lingafriq/providers/notification_provider.dart';
+import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
+import 'package:lingafriq/utils/constants.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -80,8 +84,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         await safeAsync(
                           context: context,
                           operation: () async {
-                            final prefs = await SharedPreferences.getInstance();
-                            await prefs.setBool('dark_mode', value);
+                            await ref
+                                .read(themeModeProvider.notifier)
+                                .setThemeMode(value ? ThemeMode.dark : ThemeMode.light);
                           },
                           errorContext: 'toggleDarkMode',
                         );
@@ -89,7 +94,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.mediumImpact();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Dark mode ${value ? 'enabled' : 'disabled'}. Restart app to apply.'),
+                            content: Text('Dark mode ${value ? 'enabled' : 'disabled'}'),
                             duration: Duration(seconds: 2),
                             backgroundColor: PanAfricanColors.primary,
                           ),
@@ -300,14 +305,21 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       title: Text('Learning Goals'),
                       subtitle: Text('Set your daily learning goals'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const DailyGoalsScreen()),
+                        );
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.timer),
                       title: Text('Study Reminders'),
                       subtitle: Text('Configure when to be reminded'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () {
+                        _showStudyReminderSettings(context, ref);
+                      },
                     ),
                   ],
                   isDark.value,
@@ -356,19 +368,25 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       leading: Icon(Icons.description),
                       title: Text('Terms of Service'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () async {
+                        await kLaunchUrl('https://lingafriq.com/terms');
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.privacy_tip),
                       title: Text('Privacy Policy'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () async {
+                        await kLaunchUrl('https://lingafriq.com/privacy');
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.help),
                       title: Text('Help & Support'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-                      onTap: () {},
+                      onTap: () async {
+                        await kLaunchUrl('mailto:contact@lingafriq.com?subject=LingAfriq%20Support');
+                      },
                     ),
                   ],
                   isDark.value,
@@ -602,6 +620,90 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               child: Text('Clear Cache'),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  void _showStudyReminderSettings(BuildContext context, WidgetRef ref) {
+    final state = ref.read(notificationProvider);
+    final notifier = ref.read(notificationProvider.notifier);
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        var streakEnabled = state.streakRemindersEnabled;
+        var dailyEnabled = state.dailyGoalRemindersEnabled;
+        var timeOfDay = TimeOfDay(hour: state.reminderTime.hour, minute: state.reminderTime.minute);
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 16.w,
+                  right: 16.w,
+                  top: 16.h,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 16.h,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Study reminders',
+                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.close),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8.h),
+                    SwitchListTile(
+                      title: const Text('Daily goal reminder'),
+                      subtitle: const Text('Get a daily nudge to hit your learning goal'),
+                      value: dailyEnabled,
+                      onChanged: (v) {
+                        setState(() => dailyEnabled = v);
+                        notifier.toggleDailyGoalReminders(v);
+                      },
+                    ),
+                    SwitchListTile(
+                      title: const Text('Streak reminder'),
+                      subtitle: const Text('Get a reminder to keep your streak alive'),
+                      value: streakEnabled,
+                      onChanged: (v) {
+                        setState(() => streakEnabled = v);
+                        notifier.toggleStreakReminders(v);
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.schedule),
+                      title: const Text('Reminder time'),
+                      subtitle: Text(timeOfDay.format(context)),
+                      onTap: () async {
+                        final picked = await showTimePicker(
+                          context: context,
+                          initialTime: timeOfDay,
+                        );
+                        if (picked == null) return;
+                        setState(() => timeOfDay = picked);
+                        notifier.updateReminderTime(Time(picked.hour, picked.minute));
+                      },
+                    ),
+                    SizedBox(height: 8.h),
+                  ],
+                ),
+              ),
+            );
+          },
         );
       },
     );

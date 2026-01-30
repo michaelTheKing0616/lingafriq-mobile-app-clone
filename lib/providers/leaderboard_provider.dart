@@ -7,7 +7,6 @@ import '../models/leaderboard_entry_model.dart';
 import '../models/user_gamification_model.dart';
 import 'base_provider.dart';
 import 'gamification_services_provider.dart';
-import 'user_provider.dart';
 import '../utils/structured_logger.dart';
 
 final leaderboardProvider =

@@ -64,7 +64,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Change Password'),
-        backgroundColor: PanAfricanColors.primaryGreen,
+        backgroundColor: PanAfricanColors.primary,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -86,17 +86,17 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.all(16.sp),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primaryGreen.withOpacity(0.1),
+                      color: PanAfricanColors.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: PanAfricanColors.primaryGreen.withOpacity(0.3),
+                        color: PanAfricanColors.primary.withOpacity(0.3),
                       ),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: PanAfricanColors.primaryGreen,
+                          color: PanAfricanColors.primary,
                         ),
                         SizedBox(width: 12.w),
                         Expanded(

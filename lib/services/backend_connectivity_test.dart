@@ -3,42 +3,42 @@ import 'package:flutter/foundation.dart';
 import '../utils/api.dart';
 import '../services/env_config.dart';
 
-/// Test result structure
-class ConnectivityResult {
-  final bool isConnected;
-  final String? errorMessage;
-  final String backendUrl;
-  final int? statusCode;
-  final Duration? responseTime;
-  final bool hasInternet;
-
-  ConnectivityResult({
-    required this.isConnected,
-    this.errorMessage,
-    required this.backendUrl,
-    this.statusCode,
-    this.responseTime,
-    required this.hasInternet,
-  });
-
-  @override
-  String toString() {
-    return 'ConnectivityResult('
-        'connected: $isConnected, '
-        'hasInternet: $hasInternet, '
-        'backendUrl: $backendUrl, '
-        'statusCode: $statusCode, '
-        'responseTime: ${responseTime?.inMilliseconds}ms'
-        ')';
-  }
-}
-
 /// Backend Connectivity Test Service
 /// Tests actual connectivity to the backend API to verify frontend-backend communication
 class BackendConnectivityTest {
   final Dio _dio;
 
   BackendConnectivityTest() : _dio = Dio();
+
+  /// Test result structure
+  class ConnectivityResult {
+    final bool isConnected;
+    final String? errorMessage;
+    final String backendUrl;
+    final int? statusCode;
+    final Duration? responseTime;
+    final bool hasInternet;
+
+    ConnectivityResult({
+      required this.isConnected,
+      this.errorMessage,
+      required this.backendUrl,
+      this.statusCode,
+      this.responseTime,
+      required this.hasInternet,
+    });
+
+    @override
+    String toString() {
+      return 'ConnectivityResult('
+          'connected: $isConnected, '
+          'hasInternet: $hasInternet, '
+          'backendUrl: $backendUrl, '
+          'statusCode: $statusCode, '
+          'responseTime: ${responseTime?.inMilliseconds}ms'
+          ')';
+    }
+  }
 
   /// Test internet connectivity (not backend-specific)
   Future<bool> testInternetConnectivity() async {
