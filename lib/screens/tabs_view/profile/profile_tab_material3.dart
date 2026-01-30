@@ -13,7 +13,7 @@ import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';

@@ -10,7 +10,7 @@ import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'country_tab.dart';
 import 'global_tab.dart';

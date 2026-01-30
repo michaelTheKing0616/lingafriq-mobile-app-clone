@@ -1,19 +1,25 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
+import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/language_games_screen.dart';
-import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
+import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
+import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/screens/games/language_games_screen.dart';
+import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
+import 'package:lingafriq/widgets/error_widet.dart';
 
 /// Beautiful Material 3 Dashboard with Pan-African Design
 class DashboardScreenMaterial3 extends HookConsumerWidget {
@@ -22,6 +28,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Watch state so UI updates when gamification model changes.
+    ref.watch(gamificationProvider);
+    final gamification = ref.read(gamificationProvider.notifier).gamification;
+
     final greeting = useState(_getGreeting());
 
     useEffect(() {
@@ -44,7 +54,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           child: Column(
             children: [
               // Header
-              _buildHeader(context, greeting.value, isDark),
+              _buildHeader(context, ref, greeting.value, isDark),
               
               // Content
               Expanded(
@@ -63,19 +73,25 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Quick Stats
-                        _buildQuickStats(context, isDark),
+                        _buildQuickStats(
+                          context,
+                          isDark,
+                          streak: gamification.dailyStreak,
+                          totalXp: gamification.xp,
+                          level: gamification.level,
+                        ),
                         SizedBox(height: PanAfricanSpacing.lg),
 
                         // Quick Actions
                         _buildQuickActions(context, isDark),
                         SizedBox(height: PanAfricanSpacing.lg),
 
-                        // Continue Learning
-                        _buildContinueLearning(context, isDark),
+                        // Continue Learning (real languages from API)
+                        _buildContinueLearning(context, ref, isDark),
                         SizedBox(height: PanAfricanSpacing.lg),
 
-                        // Recommended Content
-                        _buildRecommendedContent(context, isDark),
+                        // Featured Languages (Kiswahili, Pidgin, IsiZulu, Igbo, Yoruba, Hausa, etc.)
+                        _buildFeaturedLanguages(context, ref, isDark),
                       ],
                     ),
                   ),
@@ -89,7 +105,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     );
   }
 
-  Widget _buildHeader(BuildContext context, String greeting, bool isDark) {
+  Widget _buildHeader(BuildContext context, WidgetRef ref, String greeting, bool isDark) {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       child: Column(
@@ -98,6 +114,13 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              IconButton(
+                icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                onPressed: () {
+                  ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                },
+                tooltip: 'Menu',
+              ).animate().fadeIn(duration: 250.ms),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -126,13 +149,19 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     );
   }
 
-  Widget _buildQuickStats(BuildContext context, bool isDark) {
+  Widget _buildQuickStats(
+    BuildContext context,
+    bool isDark, {
+    required int streak,
+    required int totalXp,
+    required int level,
+  }) {
     return Row(
       children: [
         Expanded(
           child: _StatCard(
             label: 'Streak',
-            value: '7',
+            value: '$streak',
             icon: Icons.local_fire_department,
             color: PanAfricanColors.tertiary,
             isDark: isDark,
@@ -141,8 +170,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         SizedBox(width: PanAfricanSpacing.md),
         Expanded(
           child: _StatCard(
-            label: 'XP Today',
-            value: '250',
+            label: 'XP',
+            value: _formatCompactNumber(totalXp),
             icon: Icons.star,
             color: PanAfricanColors.secondary,
             isDark: isDark,
@@ -152,7 +181,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         Expanded(
           child: _StatCard(
             label: 'Level',
-            value: '12',
+            value: '$level',
             icon: Icons.trending_up,
             color: PanAfricanColors.primary,
             isDark: isDark,
@@ -160,6 +189,13 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         ),
       ],
     );
+  }
+
+  String _formatCompactNumber(int value) {
+    if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
+    if (value >= 10000) return '${(value / 1000).toStringAsFixed(1)}K';
+    if (value >= 1000) return '${(value / 1000).toStringAsFixed(2)}K';
+    return value.toString();
   }
 
   Widget _buildQuickActions(BuildContext context, bool isDark) {
@@ -237,7 +273,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     );
   }
 
-  Widget _buildContinueLearning(BuildContext context, bool isDark) {
+  Widget _buildContinueLearning(
+      BuildContext context, WidgetRef ref, bool isDark) {
+    final languagesAsync = ref.watch(languagesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -250,128 +288,257 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  SmoothPageRoute(
-                    child: const LanguageGamesScreen(),
-                  ),
-                );
+                ref.read(tabIndexProvider.notifier).setIndex(1);
               },
-              child: Text('See All'),
+              child: const Text('See All'),
             ),
           ],
         ),
         SizedBox(height: PanAfricanSpacing.md),
-        Container(
-          height: 120.h,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: 5,
-            itemBuilder: (context, index) {
-              return Container(
-                width: 200.w,
-                margin: EdgeInsets.only(right: PanAfricanSpacing.md),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? PanAfricanColors.cardDark
-                      : PanAfricanColors.cardLight,
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                  boxShadow: PanAfricanShadows.md,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: PanAfricanGradients.sunset,
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(PanAfricanRadius.lg),
-                          ),
+        languagesAsync.when(
+          data: (languages) {
+            final list = languages.results;
+            if (list.isEmpty) {
+              return _placeholderContinueLearning(isDark);
+            }
+            return SizedBox(
+              height: 120.h,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: list.length,
+                itemBuilder: (context, index) {
+                  final language = list[index];
+                  final progress = language.total_count > 0
+                      ? (language.completed / language.total_count)
+                          .clamp(0.0, 1.0)
+                      : 0.0;
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              LanguageDetailScreen(language: language),
                         ),
-                        child: Center(
-                          child: Icon(
-                            Icons.book,
-                            size: 32.sp,
-                            color: Colors.white,
-                          ),
-                        ),
+                      );
+                    },
+                    child: Container(
+                      width: 200.w,
+                      margin: EdgeInsets.only(right: PanAfricanSpacing.md),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? PanAfricanColors.cardDark
+                            : PanAfricanColors.cardLight,
+                        borderRadius:
+                            BorderRadius.circular(PanAfricanRadius.lg),
+                        boxShadow: PanAfricanShadows.md,
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Lesson ${index + 1}',
-                            style: PanAfricanTypography.titleSmall(context),
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(PanAfricanRadius.lg),
+                              ),
+                              child: CachedNetworkImage(
+                                imageUrl: language.background ?? '',
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                                placeholder: (_, __) => Container(
+                                  color: PanAfricanColors.neutralLight,
+                                  child: Icon(
+                                    Icons.language,
+                                    color: PanAfricanColors.neutralMedium,
+                                    size: 32.sp,
+                                  ),
+                                ),
+                                errorWidget: (_, __, ___) => Container(
+                                  color: PanAfricanColors.neutralLight,
+                                  child: Icon(
+                                    Icons.language,
+                                    color: PanAfricanColors.neutralMedium,
+                                    size: 32.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          SizedBox(height: PanAfricanSpacing.xxs),
-                          LinearProgressIndicator(
-                            value: 0.6,
-                            backgroundColor: PanAfricanColors.neutralLight,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              PanAfricanColors.primary,
+                          Padding(
+                            padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  language.name ?? 'Language',
+                                  style:
+                                      PanAfricanTypography.titleSmall(context),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                SizedBox(height: PanAfricanSpacing.xxs),
+                                LinearProgressIndicator(
+                                  value: progress,
+                                  backgroundColor: PanAfricanColors.neutralLight,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    PanAfricanColors.primary,
+                                  ),
+                                  minHeight: 6.h,
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              )
-                  .animate(delay: (index * 100).ms)
-                  .fadeIn(duration: 300.ms)
-                  .slideX(begin: 0.2);
-            },
+                  )
+                      .animate(delay: (index * 80).ms)
+                      .fadeIn(duration: 300.ms)
+                      .slideX(begin: 0.2);
+                },
+              ),
+            );
+          },
+          loading: () => SizedBox(
+            height: 120.h,
+            child: const Center(
+                child: AdaptiveProgressIndicator(message: 'Loading...')),
+          ),
+          error: (e, _) => SizedBox(
+            height: 120.h,
+            child: Center(
+              child: StreamErrorWidget(
+                error: e,
+                onTryAgain: () => ref.invalidate(languagesProvider),
+              ),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildRecommendedContent(BuildContext context, bool isDark) {
+  Widget _placeholderContinueLearning(BuildContext context, bool isDark) {
+    return Container(
+      height: 120.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: isDark
+            ? PanAfricanColors.cardDark
+            : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+      ),
+      child: Text(
+        'Start a course to see progress',
+        style: PanAfricanTypography.bodyMedium(context),
+      ),
+    );
+  }
+
+  Widget _buildFeaturedLanguages(
+      BuildContext context, WidgetRef ref, bool isDark) {
+    final languagesAsync = ref.watch(languagesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Recommended for You',
+          'Featured Languages',
           style: PanAfricanTypography.titleLarge(context),
         ),
         SizedBox(height: PanAfricanSpacing.md),
-        ...List.generate(3, (index) {
-          return Card(
-            margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-            child: ListTile(
-              leading: Container(
-                padding: EdgeInsets.all(PanAfricanSpacing.sm),
-                decoration: BoxDecoration(
-                  color: PanAfricanColors.primaryContainer.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+        languagesAsync.when(
+          data: (languages) {
+            final list = languages.results;
+            if (list.isEmpty) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+                child: Text(
+                  'No languages available yet.',
+                  style: PanAfricanTypography.bodyMedium(context)
+                      .copyWith(color: PanAfricanColors.neutralMedium),
                 ),
-                child: Icon(
-                  Icons.auto_stories,
-                  color: PanAfricanColors.primary,
-                ),
-              ),
-              title: Text('Cultural Story: ${index + 1}'),
-              subtitle: Text('Learn about African traditions'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  SmoothPageRoute(child: CultureMagazineScreenEnhanced(),
+              );
+            }
+            return Column(
+              children: List.generate(list.length, (index) {
+                final language = list[index];
+                final progress = language.total_count > 0
+                    ? (language.completed / language.total_count)
+                        .clamp(0.0, 1.0)
+                    : 0.0;
+                return Card(
+                  margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+                  color:
+                      isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                  child: ListTile(
+                    leading: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(PanAfricanRadius.md),
+                      child: CachedNetworkImage(
+                        imageUrl: language.background ?? '',
+                        width: 48.w,
+                        height: 48.w,
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) => Container(
+                          color: PanAfricanColors.neutralLight,
+                          child: Icon(
+                            Icons.language,
+                            color: PanAfricanColors.neutralMedium,
+                          ),
+                        ),
+                        errorWidget: (_, __, ___) => Container(
+                          color: PanAfricanColors.neutralLight,
+                          child: Icon(
+                            Icons.language,
+                            color: PanAfricanColors.neutralMedium,
+                          ),
+                        ),
+                      ),
+                    ),
+                    title: Text(language.name ?? 'Language'),
+                    subtitle: progress > 0
+                        ? LinearProgressIndicator(
+                            value: progress,
+                            backgroundColor: PanAfricanColors.neutralLight,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              PanAfricanColors.primary,
+                            ),
+                            minHeight: 6,
+                          )
+                        : Text(
+                            'Start Learning',
+                            style: PanAfricanTypography.bodySmall(context)
+                                .copyWith(
+                                    color: PanAfricanColors.neutralMedium),
+                          ),
+                    trailing: Icon(Icons.chevron_right_rounded,
+                        color: PanAfricanColors.neutralMedium),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              LanguageDetailScreen(language: language),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
-            ),
-          )
-              .animate(delay: (index * 100).ms)
-              .fadeIn(duration: 300.ms)
-              .slideY(begin: 0.2);
-        }),
+                )
+                    .animate(delay: (index * 80).ms)
+                    .fadeIn(duration: 300.ms)
+                    .slideY(begin: 0.1);
+              }),
+            );
+          },
+          loading: () => const Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+            child: AdaptiveProgressIndicator(message: 'Loading languages...'),
+          ),
+          error: (e, _) => StreamErrorWidget(
+            error: e,
+            onTryAgain: () => ref.invalidate(languagesProvider),
+          ),
+        ),
       ],
     );
   }
