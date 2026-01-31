@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Standardized Material 3 AppBar for consistent navigation across the app

@@ -22,7 +22,7 @@ class NavigationProvider {
     final state = navigatorKey.currentState;
     if (state == null) return null;
     state.popUntil((route) => route.isFirst);
-    return await state.pushReplacement<T>(SmoothPageRoute(child: child));
+    return await state.pushReplacement<T, void>(SmoothPageRoute(child: child));
   }
 
   @Deprecated('Use navigateOffAll instead')

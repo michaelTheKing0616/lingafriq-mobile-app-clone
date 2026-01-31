@@ -12,6 +12,7 @@ import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 // Re-export for consumers that imported from tabs_view_material3
 export 'package:lingafriq/providers/tab_scaffold_provider.dart'

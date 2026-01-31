@@ -639,68 +639,70 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         var timeOfDay = TimeOfDay(hour: state.reminderTime.hour, minute: state.reminderTime.minute);
 
         return StatefulBuilder(
+          builder: (context, setState) {
             return ResponsiveSafeArea(
-            return SafeArea(
-              child: Padding(
-                padding: EdgeInsets.only(
-                  left: 16.w,
-                  right: 16.w,
-                  top: 16.h,
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 16.h,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            'Study reminders',
-                            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 16.w,
+                    right: 16.w,
+                    top: 16.h,
+                    bottom: MediaQuery.of(context).viewInsets.bottom + 16.h,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Study reminders',
+                              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.close),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.h),
-                    SwitchListTile(
-                      title: const Text('Daily goal reminder'),
-                      subtitle: const Text('Get a daily nudge to hit your learning goal'),
-                      value: dailyEnabled,
-                      onChanged: (v) {
-                        setState(() => dailyEnabled = v);
-                        notifier.toggleDailyGoalReminders(v);
-                      },
-                    ),
-                    SwitchListTile(
-                      title: const Text('Streak reminder'),
-                      subtitle: const Text('Get a reminder to keep your streak alive'),
-                      value: streakEnabled,
-                      onChanged: (v) {
-                        setState(() => streakEnabled = v);
-                        notifier.toggleStreakReminders(v);
-                      },
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.schedule),
-                      title: const Text('Reminder time'),
-                      subtitle: Text(timeOfDay.format(context)),
-                      onTap: () async {
-                        final picked = await showTimePicker(
-                          context: context,
-                          initialTime: timeOfDay,
-                        );
-                        if (picked == null) return;
-                        setState(() => timeOfDay = picked);
-                        notifier.updateReminderTime(Time(picked.hour, picked.minute));
-                      },
-                    ),
-                    SizedBox(height: 8.h),
-                  ],
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: const Icon(Icons.close),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.h),
+                      SwitchListTile(
+                        title: const Text('Daily goal reminder'),
+                        subtitle: const Text('Get a daily nudge to hit your learning goal'),
+                        value: dailyEnabled,
+                        onChanged: (v) {
+                          setState(() => dailyEnabled = v);
+                          notifier.toggleDailyGoalReminders(v);
+                        },
+                      ),
+                      SwitchListTile(
+                        title: const Text('Streak reminder'),
+                        subtitle: const Text('Get a reminder to keep your streak alive'),
+                        value: streakEnabled,
+                        onChanged: (v) {
+                          setState(() => streakEnabled = v);
+                          notifier.toggleStreakReminders(v);
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.schedule),
+                        title: const Text('Reminder time'),
+                        subtitle: Text(timeOfDay.format(context)),
+                        onTap: () async {
+                          final picked = await showTimePicker(
+                            context: context,
+                            initialTime: timeOfDay,
+                          );
+                          if (picked == null) return;
+                          setState(() => timeOfDay = picked);
+                          notifier.updateReminderTime(Time(picked.hour, picked.minute));
+                        },
+                      ),
+                      SizedBox(height: 8.h),
+                    ],
+                  ),
                 ),
               ),
             );

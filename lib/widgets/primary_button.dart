@@ -36,7 +36,7 @@ class PrimaryButton extends StatelessWidget {
       highlightElevation: elevation,
       disabledColor: context.cardColor,
       minWidth: width ?? double.infinity,
-      minHeight: 48,
+      height: 48,
       color: color ?? (isOutline ? Colors.transparent : context.primaryColor),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),

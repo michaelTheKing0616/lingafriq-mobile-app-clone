@@ -11,6 +11,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FillInTheBlankGame extends ConsumerStatefulWidget {
