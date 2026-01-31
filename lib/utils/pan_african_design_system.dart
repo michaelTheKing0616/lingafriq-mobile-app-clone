@@ -635,5 +635,17 @@ class PanAfricanIcons {
   static const IconData close = Icons.close_rounded;
   static const IconData error = Icons.error_outline_rounded;
   static const IconData loading = Icons.hourglass_empty_rounded;
+
+  // Drawer / app menu (unified with pan_african_components semantics)
+  static const IconData book = Icons.menu_book;
+  static const IconData lesson = Icons.school;
+  static const IconData quiz = Icons.quiz;
+  static const IconData magazine = Icons.article;
+  static const IconData chat = Icons.chat;
+  static const IconData community = Icons.people;
+  static const IconData tribe = Icons.group;
+  static const IconData badge = Icons.workspace_premium;
+  static const IconData trophy = Icons.emoji_events;
+  static const IconData settings = Icons.settings;
 }
 
