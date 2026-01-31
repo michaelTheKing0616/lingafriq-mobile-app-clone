@@ -15,6 +15,7 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 

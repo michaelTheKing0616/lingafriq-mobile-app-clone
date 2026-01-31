@@ -19,6 +19,7 @@ import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Beautiful Material 3 Profile Screen with Pan-African Design
 class ProfileScreenMaterial3 extends HookConsumerWidget {
@@ -39,7 +40,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header

@@ -10,6 +10,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Story Mode with Translation Toggle, Vocabulary Drawer, Interactive Quiz
 class TutorStoryModeScreen extends HookConsumerWidget {
@@ -170,7 +171,7 @@ Quality requirements:
                   ],
                 ),
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header with controls

@@ -26,6 +26,7 @@ import '../../../random_quiz/models/random_quiz_lesson_model.dart';
 import '../../../utils/api.dart';
 import '../../../utils/constants.dart';
 import '../../../widgets/greegins_builder.dart';
+import '../../../widgets/responsive_safe_area.dart';
 
 class TakeQuizScreen extends ConsumerWidget {
   final Language language;
@@ -67,7 +68,7 @@ class TakeQuizScreen extends ConsumerWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SafeArea(
+                ResponsiveSafeArea(
                   child: Column(
                     children: [
                       Expanded(
@@ -117,7 +118,7 @@ class TakeQuizScreen extends ConsumerWidget {
                                     top: constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
                                     child: _LanguageTextBuilder(
                                       onTap: () {
-                                        ref.read(navigationProvider).naviateTo(
+                                        ref.read(navigationProvider).navigateTo(
                                               LanguageQuizSectionsListScreen(language: language),
                                             );
                                       },
@@ -129,7 +130,7 @@ class TakeQuizScreen extends ConsumerWidget {
                                     child: _HistoryTextBuilder(
                                       size: Size(18.sp, 18.sp),
                                       onTap: () {
-                                        ref.read(navigationProvider).naviateTo(
+                                        ref.read(navigationProvider).navigateTo(
                                               HistoryQuizSectionsListScreen(language: language),
                                             );
                                       },
@@ -180,7 +181,7 @@ class TakeQuizScreen extends ConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: randomQuiz.title,
             quiz: quiz,
             isTakeQuiz: true,
@@ -224,7 +225,7 @@ class TakeQuizScreen extends ConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: randomQuiz.title,
               score: randomQuiz.score,

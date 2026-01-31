@@ -188,7 +188,7 @@ class StandardGradientHeader extends StatelessWidget {
           ),
         ],
       ),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Padding(
           padding: EdgeInsets.all(4.w),
           child: Column(

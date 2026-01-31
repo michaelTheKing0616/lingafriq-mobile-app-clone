@@ -9,17 +9,24 @@ class NavigationProvider {
   final navigatorKey = GlobalKey<NavigatorState>();
 
   Future<T?> navigateTo<T>(Widget child) async {
-    return await navigatorKey.currentState!.push(SmoothPageRoute(child: child));
+    final state = navigatorKey.currentState;
+    if (state == null) return null;
+    return await state.push<T>(SmoothPageRoute(child: child));
   }
 
-  // Keep old typo method for backward compatibility
   @Deprecated('Use navigateTo instead')
   Future<T?> naviateTo<T>(Widget child) async => navigateTo<T>(child);
 
-  Future<T?> naviateOffAll<T>(Widget child) async {
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
-    return await navigatorKey.currentState!.pushReplacement(SmoothPageRoute(child: child));
+  /// Replaces the current route with [child], clearing the stack to the first route.
+  Future<T?> navigateOffAll<T>(Widget child) async {
+    final state = navigatorKey.currentState;
+    if (state == null) return null;
+    state.popUntil((route) => route.isFirst);
+    return await state.pushReplacement<T>(SmoothPageRoute(child: child));
   }
+
+  @Deprecated('Use navigateOffAll instead')
+  Future<T?> naviateOffAll<T>(Widget child) async => navigateOffAll<T>(child);
 
   /// Navigate using named routes (used by drawer/menus).
   /// Note: Requires the app's `MaterialApp` to have matching routes / onGenerateRoute.
@@ -32,11 +39,11 @@ class NavigationProvider {
 
   Future<void> pop() async {
     HapticFeedback.selectionClick();
-    navigatorKey.currentState!.pop();
+    navigatorKey.currentState?.pop();
   }
 
   Future<void> popToFirstRoute() async {
     HapticFeedback.selectionClick();
-    navigatorKey.currentState!.popUntil((route) => route.isFirst);
+    navigatorKey.currentState?.popUntil((route) => route.isFirst);
   }
 }

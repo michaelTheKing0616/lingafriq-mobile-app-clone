@@ -10,6 +10,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 

@@ -197,6 +197,82 @@ class PanAfricanSpacing {
   static double get xxxl => 64.w;
 }
 
+/// Responsive vertical spacing: on short screens (e.g. height <= 560) returns
+/// smaller values so content is not pushed too far up/down and fits better.
+class PanAfricanSpacingResponsive {
+  PanAfricanSpacingResponsive._();
+
+  static bool _isShortScreen(BuildContext context) {
+    return MediaQuery.of(context).size.height <= 560;
+  }
+
+  static double verticalContent(BuildContext context) {
+    return _isShortScreen(context) ? 8.w : 24.w;
+  }
+
+  static double screenPaddingVertical(BuildContext context) {
+    return _isShortScreen(context) ? 8.w : 16.w;
+  }
+}
+
+/// Screen width categories (logical px / dp) for adaptive layout.
+/// Small: 320-360, Medium: 375-390, Large: 412-430, Tablet: 700+.
+enum ScreenWidthCategory { small, medium, large, tablet }
+
+/// 8px grid adaptive layout: side margins 16/24/32, section spacing 24-32,
+/// card padding 16 (12 dense), min touch target 48dp. Safety zones handled by ResponsiveSafeArea.
+class AdaptiveLayout {
+  AdaptiveLayout._();
+
+  static const double _grid4 = 4;
+  static const double _grid8 = 8;
+  static const double _grid16 = 16;
+  static const double _grid24 = 24;
+  static const double _grid32 = 32;
+  static const double _grid40 = 40;
+
+  static double get grid4 => _grid4;
+  static double get grid8 => _grid8;
+  static double get grid16 => _grid16;
+  static double get grid24 => _grid24;
+  static double get grid32 => _grid32;
+  static double get grid40 => _grid40;
+
+  static ScreenWidthCategory widthCategory(BuildContext context) {
+    final w = MediaQuery.of(context).size.width;
+    if (w >= 700) return ScreenWidthCategory.tablet;
+    if (w >= 412) return ScreenWidthCategory.large;
+    if (w >= 375) return ScreenWidthCategory.medium;
+    return ScreenWidthCategory.small;
+  }
+
+  /// Standard side margins: 16dp small/medium, 24dp large, 32dp tablet.
+  static double sideMargin(BuildContext context) {
+    switch (widthCategory(context)) {
+      case ScreenWidthCategory.small:
+      case ScreenWidthCategory.medium:
+        return _grid16;
+      case ScreenWidthCategory.large:
+        return _grid24;
+      case ScreenWidthCategory.tablet:
+        return _grid32;
+    }
+  }
+
+  /// Between large sections: 24dp or 32dp.
+  static double sectionSpacing(BuildContext context) {
+    return widthCategory(context) == ScreenWidthCategory.tablet ? _grid32 : _grid24;
+  }
+
+  /// Card/list content padding: 16dp standard, 12dp for dense.
+  static double cardPadding(BuildContext context, {bool dense = false}) {
+    return dense ? 12 : _grid16;
+  }
+
+  /// Minimum touch target: 48dp (Android), 44px (iOS) — use 48 for consistency.
+  static const double minTouchTarget = 48;
+}
+
 /// Pan-African Border Radius
 class PanAfricanRadius {
   PanAfricanRadius._();
@@ -540,5 +616,24 @@ extension PanAfricanContext on BuildContext {
   Color get panTextSecondary => isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
   
   LinearGradient get panHeaderGradient => isDark ? PanAfricanGradients.appBarDark : PanAfricanGradients.forest;
+}
+
+/// Unified icon set for bottom nav and key screens (outlined / rounded pairs).
+class PanAfricanIcons {
+  PanAfricanIcons._();
+
+  static const IconData home = Icons.home_outlined;
+  static const IconData homeSelected = Icons.home_rounded;
+  static const IconData courses = Icons.folder_copy_outlined;
+  static const IconData coursesSelected = Icons.folder_copy_rounded;
+  static const IconData standings = Icons.bar_chart_outlined;
+  static const IconData standingsSelected = Icons.bar_chart_rounded;
+  static const IconData profile = Icons.person_outline;
+  static const IconData profileSelected = Icons.person_rounded;
+  static const IconData menu = Icons.menu_rounded;
+  static const IconData back = Icons.arrow_back_rounded;
+  static const IconData close = Icons.close_rounded;
+  static const IconData error = Icons.error_outline_rounded;
+  static const IconData loading = Icons.hourglass_empty_rounded;
 }
 

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Privacy Settings Screen - Full production implementation
 class PrivacySettingsScreen extends HookConsumerWidget {
@@ -153,7 +154,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.sp),
             child: Column(

@@ -21,6 +21,7 @@ import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -638,7 +639,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         var timeOfDay = TimeOfDay(hour: state.reminderTime.hour, minute: state.reminderTime.minute);
 
         return StatefulBuilder(
-          builder: (context, setState) {
+            return ResponsiveSafeArea(
             return SafeArea(
               child: Padding(
                 padding: EdgeInsets.only(

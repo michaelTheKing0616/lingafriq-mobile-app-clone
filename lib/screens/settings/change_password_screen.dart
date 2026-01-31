@@ -7,6 +7,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/animated/animated_button.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Change Password Screen - Full production implementation
 class ChangePasswordScreen extends HookConsumerWidget {
@@ -72,7 +73,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.sp),
             child: Form(

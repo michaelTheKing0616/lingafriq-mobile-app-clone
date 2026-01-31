@@ -17,6 +17,7 @@ import 'package:lingafriq/providers/dio_provider.dart' show client;
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/models/placement_question.dart';
 import 'package:lingafriq/utils/text_sanitizer.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -293,7 +294,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     ],
                   ),
           ),
-          child: SafeArea(
+          child: ResponsiveSafeArea(
             child: Center(
               child: Padding(
                 padding: EdgeInsets.all(PanAfricanSpacing.xl),
@@ -373,7 +374,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                     ],
                   ),
           ),
-          child: SafeArea(
+          child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Progress

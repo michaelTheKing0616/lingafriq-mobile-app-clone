@@ -60,7 +60,7 @@ class AppDrawer extends HookConsumerWidget {
 
     return Drawer(
       backgroundColor: isDark.value ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Column(
           children: [
             // Header with User Info and Gradient

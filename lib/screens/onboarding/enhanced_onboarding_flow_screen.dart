@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
@@ -20,6 +21,7 @@ import 'package:lingafriq/providers/backend_sync_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
@@ -136,12 +138,13 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
-              // Progress Indicator
+              // Progress Indicator (with Skip)
               _buildProgressIndicator(
                 context,
+                ref,
                 currentStep.value,
                 steps.length,
                 isDark,
@@ -172,6 +175,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
 
   Widget _buildProgressIndicator(
     BuildContext context,
+    WidgetRef ref,
     int currentStep,
     int totalSteps,
     bool isDark,
@@ -202,7 +206,13 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                 style: PanAfricanTypography.titleMedium(context).copyWith(color: Colors.white),
               ),
               const Spacer(),
-              SizedBox(width: 48.w, height: 48.w),
+              TextButton(
+                onPressed: () => _skipOnboarding(context, ref),
+                child: Text(
+                  'Skip',
+                  style: PanAfricanTypography.labelLarge(context).copyWith(color: Colors.white70),
+                ),
+              ),
             ],
           ),
           SizedBox(height: PanAfricanSpacing.sm),
@@ -248,6 +258,23 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeOut,
     );
+  }
+
+  /// Skip onboarding: mark as seen/complete and go to login.
+  static Future<void> _skipOnboarding(BuildContext context, WidgetRef ref) async {
+    try {
+      final prefs = ref.read(sharedPreferencesProvider).prefs;
+      await prefs.setString('onboarding_complete', 'true');
+      await prefs.setBool('onboarding_seen', true);
+      if (context.mounted) {
+        ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
+      }
+    } catch (e) {
+      logger.warn('Skip onboarding failed', error: e);
+      if (context.mounted) {
+        ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
+      }
+    }
   }
 
   /// Helper function to save onboarding data with offline support

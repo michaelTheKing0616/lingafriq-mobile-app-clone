@@ -17,6 +17,7 @@ import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
@@ -50,7 +51,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header
@@ -68,7 +69,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     ),
                   ),
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AdaptiveLayout.sideMargin(context),
+                      vertical: PanAfricanSpacingResponsive.verticalContent(context),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -107,7 +111,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
 
   Widget _buildHeader(BuildContext context, WidgetRef ref, String greeting, bool isDark) {
     return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      padding: EdgeInsets.symmetric(
+        horizontal: AdaptiveLayout.sideMargin(context),
+        vertical: PanAfricanSpacingResponsive.screenPaddingVertical(context),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -299,7 +306,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           data: (languages) {
             final list = languages.results;
             if (list.isEmpty) {
-              return _placeholderContinueLearning(isDark);
+              return _placeholderContinueLearning(context, isDark);
             }
             return SizedBox(
               height: 120.h,
@@ -530,9 +537,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               }),
             );
           },
-          loading: () => const Padding(
+          loading: () => Padding(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: AdaptiveProgressIndicator(message: 'Loading languages...'),
+            child: const AdaptiveProgressIndicator(message: 'Loading languages...'),
           ),
           error: (e, _) => StreamErrorWidget(
             error: e,

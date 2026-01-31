@@ -194,7 +194,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: languageQuiz.title,
             quiz: quiz,
             isTakeQuiz: true,
@@ -243,7 +243,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: languageQuiz.title,
               score: languageQuiz.score,

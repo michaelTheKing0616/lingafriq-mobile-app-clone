@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/standard_app_bar.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'tutor_translation_mode_screen.dart';
 import 'tutor_grammar_mode_screen.dart';
 import 'tutor_pronunciation_mode_screen.dart';

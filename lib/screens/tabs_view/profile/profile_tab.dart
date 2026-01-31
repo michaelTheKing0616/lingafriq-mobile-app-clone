@@ -39,7 +39,7 @@ class ProfileTab extends HookConsumerWidget {
                     onTap: () {
                       ref
                           .read(navigationProvider)
-                          .naviateTo(const ProfileEditScreen());
+                          .navigateTo(const ProfileEditScreen());
                     },
                   ),
                   16.widthBox,
@@ -85,7 +85,7 @@ class ProfileTab extends HookConsumerWidget {
                   onTap: () {
                     ref
                         .read(navigationProvider)
-                        .naviateTo(const ChangePasswordScreen());
+                        .navigateTo(const ChangePasswordScreen());
                   },
                 ),
                 _ProfileItem(
@@ -93,21 +93,21 @@ class ProfileTab extends HookConsumerWidget {
                   onTap: () {
                     ref
                         .read(navigationProvider)
-                        .naviateTo(const SuggestLanguageScreen());
+                        .navigateTo(const SuggestLanguageScreen());
                   },
                 ),
                 _ProfileItem(
                   title: "Who are we?",
                   onTap: () {
                     kLaunchUrl('https://lingafriq.com/#about-us');
-                    // ref.read(navigationProvider).naviateTo(const AboutUsScreen());
+                    // ref.read(navigationProvider).navigateTo(const AboutUsScreen());
                   },
                 ),
                 _ProfileItem(
                   title: "App Privacy and User Policy",
                   onTap: () {
                     kLaunchUrl('https://lingafriq.com/app-policy.html');
-                    // ref.read(navigationProvider).naviateTo(const AppPolicyScreen());
+                    // ref.read(navigationProvider).navigateTo(const AppPolicyScreen());
                   },
                 ),
                 _ProfileItem(

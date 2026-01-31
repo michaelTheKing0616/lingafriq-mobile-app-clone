@@ -18,6 +18,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 class WorldClassSignupScreen extends HookConsumerWidget {
   const WorldClassSignupScreen({Key? key}) : super(key: key);
@@ -72,7 +73,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                     ],
             ),
           ),
-          child: SafeArea(
+          child: ResponsiveSafeArea(
             child: Column(
               children: [
                 // Progress indicator
@@ -397,7 +398,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
             filled: true,
             fillColor: isDark
-                ? Colors.grey[900]!.withOpacity(0.5)
+                ? (Colors.grey[900] ?? Colors.black).withOpacity(0.5)
                 : Colors.grey[100],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -406,7 +407,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
-                color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                color: isDark ? (Colors.grey[800] ?? const Color(0xFF424242)) : (Colors.grey[300] ?? const Color(0xFFE0E0E0)),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -482,7 +483,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             prefixIcon: Icon(Icons.public, color: PanAfricanColors.primaryLight),
             filled: true,
             fillColor: isDark
-                ? Colors.grey[900]!.withOpacity(0.5)
+                ? (Colors.grey[900] ?? Colors.black).withOpacity(0.5)
                 : Colors.grey[100],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -491,7 +492,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
-                color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                color: isDark ? (Colors.grey[800] ?? const Color(0xFF424242)) : (Colors.grey[300] ?? const Color(0xFFE0E0E0)),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -607,7 +608,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             suffixIcon: suffixIcon,
             filled: true,
             fillColor: isDark
-                ? Colors.grey[900]!.withOpacity(0.5)
+                ? (Colors.grey[900] ?? Colors.black).withOpacity(0.5)
                 : Colors.grey[100],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -616,7 +617,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: BorderSide(
-                color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                color: isDark ? (Colors.grey[800] ?? const Color(0xFF424242)) : (Colors.grey[300] ?? const Color(0xFFE0E0E0)),
               ),
             ),
             focusedBorder: OutlineInputBorder(
@@ -665,11 +666,11 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                 height: 56.h,
                 decoration: BoxDecoration(
                   color: isDark
-                      ? Colors.grey[900]!.withOpacity(0.5)
+                      ? (Colors.grey[900] ?? Colors.black).withOpacity(0.5)
                       : Colors.grey[100],
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+                    color: isDark ? (Colors.grey[700] ?? const Color(0xFF616161)) : (Colors.grey[300] ?? const Color(0xFFE0E0E0)),
                   ),
                 ),
                 child: Center(
@@ -688,7 +689,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
         Expanded(
           child: ScaleOnTap(
             onTap: () async {
-              if (!formKey.currentState!.validate()) {
+              if (formKey.currentState == null || !formKey.currentState!.validate()) {
                 HapticFeedback.mediumImpact();
                 return;
               }
@@ -720,7 +721,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                   "username": usernameController.text.trim(),
                   "first_name": firstNameController.text.trim(),
                   "last_name": lastNameController.text.trim(),
-                  "nationality": selectedCountry.value!,
+                  "nationality": selectedCountry.value ?? '',
                   "agree_to_privacy_terms": true,
                   "email": emailController.text.trim(),
                   "password": passwordController.text.trim(),

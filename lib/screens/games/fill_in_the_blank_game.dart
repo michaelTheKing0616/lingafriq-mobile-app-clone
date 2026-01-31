@@ -329,7 +329,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   ],
                 ),
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.sp),
             child: Column(
