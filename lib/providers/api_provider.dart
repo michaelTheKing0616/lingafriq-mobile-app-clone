@@ -368,15 +368,23 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   * 
   */
 
+  /// Timeout for lesson/quiz API calls to avoid endless loading (e.g. when backend is slow or unreachable).
+  static const _lessonReceiveTimeout = Duration(seconds: 30);
+
   Future<LessonResponse> getLessons(int? id) async {
     try {
       final params = {"lessons_language": id};
       final res = await ref.read(client).get(
             Api.lessons,
             queryParameters: params,
+            options: Options(receiveTimeout: _lessonReceiveTimeout),
           );
       if (res.statusCode != 200) throw res.data;
-      return LessonResponse.fromMap(res.data['result'], res.data['total_score']);
+      final data = res.data as Map<String, dynamic>?;
+      final result = data?['result'] as Map<String, dynamic>?;
+      final totalScore = data?['total_score'];
+      if (result == null) throw Exception('Lessons API returned no result');
+      return LessonResponse.fromMap(result, totalScore);
     } catch (e) {
       rethrow;
     }
@@ -387,7 +395,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     int lessonId,
   ) async {
     try {
-      final res = await ref.read(client).get(Api.sectionLessonsList(lessonId));
+      final res = await ref.read(client).get(
+            Api.sectionLessonsList(lessonId),
+            options: Options(receiveTimeout: _lessonReceiveTimeout),
+          );
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];

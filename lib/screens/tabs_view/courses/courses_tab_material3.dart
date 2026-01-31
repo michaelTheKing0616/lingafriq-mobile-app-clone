@@ -16,8 +16,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
-import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
-import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// Beautiful Material 3 Courses Tab with Pan-African Design
@@ -84,27 +83,25 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                                 .where((e) => e.total_score > 0)
                                 .toList();
 
-                            if (progressLanguages.isEmpty) {
+                            // When no progress yet, show all languages so user can start (Kiswahili, Pidgin, IsiZulu, Igbo, Yoruba, Hausa, etc.)
+                            final displayLanguages = progressLanguages.isEmpty
+                                ? languages.results
+                                : progressLanguages;
+
+                            if (displayLanguages.isEmpty) {
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(
-                                      Icons.school_outlined,
+                                      Icons.language_outlined,
                                       size: 64.sp,
                                       color: PanAfricanColors.neutralMedium,
                                     ),
                                     SizedBox(height: PanAfricanSpacing.md),
                                     Text(
-                                      'No Course started yet',
+                                      'No languages available',
                                       style: PanAfricanTypography.titleMedium(context),
-                                    ),
-                                    SizedBox(height: PanAfricanSpacing.sm),
-                                    Text(
-                                      'Start a course to see your progress',
-                                      style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                        color: PanAfricanColors.neutralMedium,
-                                      ),
                                     ),
                                   ],
                                 ),
@@ -120,9 +117,9 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                                 padding: EdgeInsets.symmetric(
                                   horizontal: PanAfricanSpacing.lg,
                                 ),
-                                itemCount: progressLanguages.length,
+                                itemCount: displayLanguages.length,
                                 itemBuilder: (context, index) {
-                                  final language = progressLanguages[index];
+                                  final language = displayLanguages[index];
                                   return _ProgressCard(
                                     language: language,
                                     isDark: isDark,

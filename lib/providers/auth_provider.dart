@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/profile_model.dart';
@@ -6,9 +8,8 @@ import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
-import 'package:lingafriq/services/backend_connectivity_test.dart';
 import 'package:lingafriq/utils/api.dart';
-import 'dart:async';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../screens/auth/world_class_login_screen.dart';
 import '../screens/onboarding/onboarding_screen_material3.dart';
@@ -30,30 +31,56 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     return BaseProviderState();
   }
 
+  static const _lastSeenAppVersionKey = 'last_seen_app_version';
+
   Future<void> navigateBasedOnCondition() async {
     final prefs = ref.read(sharedPreferencesProvider).prefs;
-    
+
+    // App version gate: after an update, require onboarding + login again (no auto-login)
+    try {
+      final info = await PackageInfo.fromPlatform();
+      final currentVersion = '${info.version}+${info.buildNumber}';
+      final lastSeenVersion = prefs.getString(_lastSeenAppVersionKey);
+      if (lastSeenVersion == null || lastSeenVersion != currentVersion) {
+        logger.info('App version changed, resetting flow', context: {
+          'lastSeen': lastSeenVersion,
+          'current': currentVersion,
+        });
+        await prefs.setBool('onboarding_seen', false);
+        await prefs.remove('onboarding_complete');
+        await prefs.remove('onboarding_data');
+        await ref.read(sharedPreferencesProvider).clearAuthTokens();
+        ref.read(apiProvider.notifier).clearToken();
+        ref.read(userProvider.notifier).overrideUser(null);
+        try {
+          await CredentialStorageService().clearCredentials();
+        } catch (_) {
+          // Ignore clear errors
+        }
+        await prefs.setString(_lastSeenAppVersionKey, currentVersion);
+      }
+    } catch (e) {
+      logger.warn('Version check failed, continuing with existing flow', error: e);
+    }
+
     // Log backend URL configuration for debugging
     logger.info('App startup navigation', context: {
       'backendUrl': Api.baseurl,
-      'backendUrlSource': 'EnvConfig.backendBaseUrl',
     });
-    
+
     // CRITICAL FIX: Check if onboarding was actually COMPLETED, not just seen
-    // Verify both flags: onboarding_seen AND onboarding_complete
     final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
     final onboardingComplete = prefs.getString('onboarding_complete') == 'true';
     final hasOnboardingData = prefs.getString('onboarding_data') != null;
-    
+
     logger.info('Onboarding status check', context: {
       'isOnboardingSeen': isOnboardingSeen,
       'onboardingComplete': onboardingComplete,
       'hasOnboardingData': hasOnboardingData,
     });
-    
+
     // If onboarding wasn't fully completed, reset and show onboarding
     if (!isOnboardingSeen || (!onboardingComplete && !hasOnboardingData)) {
-      // Reset onboarding flags to ensure fresh start
       if (isOnboardingSeen && !onboardingComplete) {
         await prefs.setBool('onboarding_seen', false);
         await prefs.remove('onboarding_complete');

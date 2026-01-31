@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/firebase_messaging_provider.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer_material3.dart';
-import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show HomeTabMaterial3, languagesProvider;
+import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/courses/courses_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/standings/standings_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab_material3.dart';
+import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 
-class TabIndexNotifier extends Notifier<int> {
-  @override
-  int build() => 0;
-
-  void setIndex(int value) {
-    state = value;
-  }
-}
-
-final tabIndexProvider =
-    NotifierProvider.autoDispose<TabIndexNotifier, int>(() {
-  return TabIndexNotifier();
-});
-
-final scaffoldKeyProvider = Provider(((ref) => GlobalKey<ScaffoldState>()));
+// Re-export for consumers that imported from tabs_view_material3
+export 'package:lingafriq/providers/tab_scaffold_provider.dart'
+    show tabIndexProvider, scaffoldKeyProvider;
 
 /// Beautiful Material 3 Tabs View with Pan-African Design
 class TabsViewMaterial3 extends StatefulHookConsumerWidget {
@@ -58,7 +47,7 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
         child: IndexedStack(
           index: index,
           children: const [
-            HomeTabMaterial3(),
+            DashboardScreenMaterial3(),
             CoursesTabMaterial3(),
             StandingsTabMaterial3(),
             ProfileTabMaterial3(),

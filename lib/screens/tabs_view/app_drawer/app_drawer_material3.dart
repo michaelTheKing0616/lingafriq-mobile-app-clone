@@ -11,6 +11,7 @@ import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/theme_mode_provider.dart';
+import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
@@ -127,10 +128,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         label: 'Dashboard',
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.pushReplacement(
-                            context,
-                            SmoothPageRoute(child: DashboardScreenMaterial3()),
-                          );
+                          ref.read(tabIndexProvider.notifier).setIndex(0);
                         },
                         isDark: isDark,
                       ),
