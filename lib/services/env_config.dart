@@ -37,11 +37,9 @@ class EnvConfig {
   static bool get isStabilityAiConfigured => stabilityAiKey.isNotEmpty;
   
   /// Backend base URL
-  /// IMPORTANT: Update this default to your actual backend API URL
-  /// Set via: --dart-define=BACKEND_URL=https://admin.lingafriq.com during build
-  /// If using nginx reverse proxy, ensure it points to the backend port (e.g., http://localhost:4000)
-  /// SECURITY: Default uses HTTPS for production security
-  /// NOTE: Default URL matches the production server at admin.lingafriq.com
+  /// For production: set via --dart-define=BACKEND_URL=https://your-api.com during build.
+  /// Ensure the backend has CORS configured to allow your app origin (e.g. in backend env: CORS_ORIGIN).
+  /// Default matches production at admin.lingafriq.com; override for staging/local.
   static String get backendBaseUrl {
     const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://admin.lingafriq.com');
     return url;

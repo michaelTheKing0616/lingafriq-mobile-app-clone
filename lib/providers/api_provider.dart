@@ -601,7 +601,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       state = state.copyWith(isLoading: true);
       final res = await ref.read(client).patch(endpointToHit);
-      if (res.statusCode != 200) throw res.data;
+      if (res.statusCode != 200 && res.statusCode != 204) throw res.data;
       
       // CRITICAL FIX: Use async/await instead of chained promises for proper error handling
       try {

@@ -190,7 +190,7 @@ class _SectionLessonsList extends ConsumerWidget {
           ));
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }
@@ -245,7 +245,7 @@ class _SectionLessonsList extends ConsumerWidget {
           );
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }

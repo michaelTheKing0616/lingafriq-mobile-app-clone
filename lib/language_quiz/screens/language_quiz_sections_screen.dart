@@ -203,7 +203,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
           ));
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }
@@ -255,7 +255,7 @@ class LanguageQuizSectionsList extends HookConsumerWidget {
           );
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }
