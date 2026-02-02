@@ -211,6 +211,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
   void _showCreateVillageDialog(BuildContext context, WidgetRef ref) {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
     String? selectedLanguage;
 
     showDialog(
@@ -220,10 +221,12 @@ class LanguageVillagesScreen extends ConsumerWidget {
           return AlertDialog(
             title: const Text('Create Language Village'),
             content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
                     controller: nameController,
                     decoration: InputDecoration(
                       labelText: 'Village Name',

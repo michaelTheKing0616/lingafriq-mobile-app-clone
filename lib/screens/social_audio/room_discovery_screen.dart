@@ -109,7 +109,8 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
                 ],
               ),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:lingafriq/config/url_constants.dart';
 
 /// Service for AI-generated image pipeline
 /// This service can be integrated with various AI image generation APIs:
@@ -84,7 +85,7 @@ class AIImageService {
       case 'stability':
         return 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image';
       case 'huggingface':
-        return 'https://router.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0';
+        return UrlConstants.huggingFaceModel('stabilityai/stable-diffusion-xl-base-1.0');
       case 'replicate':
         return 'https://api.replicate.com/v1/predictions';
       case 'leonardo':

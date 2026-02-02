@@ -5,6 +5,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import '../../config/url_constants.dart';
 import '../../utils/api.dart';
 import '../../utils/supported_languages.dart';
 import '../env_config.dart';
@@ -12,10 +13,11 @@ import 'cache_service.dart';
 
 class CanonicalPhraseService {
   final Dio _dio = Dio();
-  
-  // HuggingFace Inference API URL for AfriTeVa
-  static const String _hfAfritevaUrl = "https://router.huggingface.co/models/castorini/afriteva_v2_large";
-  
+
+  /// Hugging Face model: AfriTeVa v2 for canonical phrase generation.
+  static String get _hfAfritevaUrl =>
+      UrlConstants.huggingFaceModel('castorini/afriteva_v2_large');
+
   /// Generate canonical phrase using AfriTeVa (with caching)
   /// Priority: 1. Cache → 2. Backend API → 3. HuggingFace API → 4. Fallback
   Future<CanonicalPhraseResult> generateCanonical({

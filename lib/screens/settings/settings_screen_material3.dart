@@ -24,6 +24,7 @@ import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/config/url_constants.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -366,7 +367,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       title: Text('Terms of Service'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
                       onTap: () async {
-                        await kLaunchUrl('https://lingafriq.com/terms');
+                        await kLaunchUrl(UrlConstants.termsUrl);
                       },
                     ),
                     ListTile(
@@ -382,7 +383,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       title: Text('Help & Support'),
                       trailing: Icon(Icons.arrow_forward_ios, size: 16.sp),
                       onTap: () async {
-                        await kLaunchUrl('mailto:contact@lingafriq.com?subject=LingAfriq%20Support');
+                        await kLaunchUrl(UrlConstants.supportEmail);
                       },
                     ),
                   ],

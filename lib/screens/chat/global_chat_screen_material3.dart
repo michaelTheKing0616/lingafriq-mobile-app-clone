@@ -323,7 +323,6 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ],
         ),
       ),
-      ),
     ),
     );
   }

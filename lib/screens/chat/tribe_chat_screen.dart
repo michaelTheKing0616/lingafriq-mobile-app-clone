@@ -14,6 +14,7 @@ import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 
 /// Tribe Chat Screen with Material 3 Design
 class TribeChatScreen extends HookConsumerWidget {
@@ -46,6 +47,15 @@ class TribeChatScreen extends HookConsumerWidget {
       return [];
     }
 
+    String _connectionMessage(dynamic e) {
+      final msg = e.toString().toLowerCase();
+      if (msg.contains('socket') || msg.contains('connection') || msg.contains('unavailable') || msg.contains('failed host')) {
+        return 'Server unavailable. Check your connection and try again.';
+      }
+      if (msg.contains('timeout')) return 'Request timed out.';
+      return 'Unable to load messages.';
+    }
+
     Future<void> loadMessages() async {
       loadError.value = null;
       try {
@@ -66,15 +76,6 @@ class TribeChatScreen extends HookConsumerWidget {
         loadError.value = _connectionMessage(e);
         if (context.mounted) ErrorHandler.showError(context, e);
       }
-    }
-
-    String _connectionMessage(dynamic e) {
-      final msg = e.toString().toLowerCase();
-      if (msg.contains('socket') || msg.contains('connection') || msg.contains('unavailable') || msg.contains('failed host')) {
-        return 'Server unavailable. Check your connection and try again.';
-      }
-      if (msg.contains('timeout')) return 'Request timed out.';
-      return 'Unable to load messages.';
     }
 
     Future<void> loadMembers() async {

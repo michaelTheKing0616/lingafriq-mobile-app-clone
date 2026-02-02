@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../config/url_constants.dart';
 import '../../utils/api.dart';
 import '../../utils/supported_languages.dart';
 import '../env_config.dart';
@@ -13,9 +14,10 @@ import 'cache_service.dart';
 
 class TranslationService {
   final Dio _dio = Dio();
-  
-  // HuggingFace Inference API URL for NLLB-200
-  static const String _hfNllbUrl = "https://router.huggingface.co/models/facebook/nllb-200-distilled-600M";
+
+  /// Hugging Face model: NLLB-200 for translation.
+  static String get _hfNllbUrl =>
+      UrlConstants.huggingFaceModel('facebook/nllb-200-distilled-600M');
   
   /// Translate text using NLLB-200 (with caching)
   /// Priority: 1. Cache → 2. Backend API → 3. HuggingFace API → 4. Fallback

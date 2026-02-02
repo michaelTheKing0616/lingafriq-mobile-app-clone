@@ -64,7 +64,7 @@ class BiometricAuth {
     try {
       final supported = await _auth.isDeviceSupported();
       if (!supported) return false;
-      final canCheck = await _auth.canCheckBiometrics();
+      final canCheck = await _auth.canCheckBiometrics;
       return canCheck;
     } catch (e) {
       return false;

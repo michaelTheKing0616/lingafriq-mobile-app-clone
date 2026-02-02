@@ -27,6 +27,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
   bool _isLoading = false;
   List<Map<String, dynamic>> _availableTribes = [];
   String? _currentTribeId;
+  String? _loadError;
 
   @override
   void initState() {
@@ -35,11 +36,14 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
   }
 
   Future<void> _loadTribes() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadError = null;
+    });
     try {
       final tribesService = ref.read(tribesServiceProvider);
       final user = ref.read(userProvider);
-      
+
       // Fetch tribes from API
       final tribes = await tribesService.getAllTribes();
       _availableTribes = tribes.map((tribe) => {
@@ -49,7 +53,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
         'members_count': tribe['members_count'] as int?,
         'language_tag': tribe['language_tag'] as String?,
       }).toList();
-      
+
       // Get user's current tribe if exists
       if (user != null) {
         final userTribes = await tribesService.getUserTribes(user.id.toString());
@@ -58,10 +62,10 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
         }
       }
     } catch (e) {
+      _loadError = e.toString();
       if (mounted) {
         ErrorHandler.showError(context, e);
       }
-      // Fallback to empty list on error
       _availableTribes = [];
     } finally {
       setState(() => _isLoading = false);
