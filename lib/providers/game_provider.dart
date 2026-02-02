@@ -48,6 +48,10 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Load cards for the game
       final cards = await _loadCardsForGame(language: language, level: level, count: cardCount ?? 10);
 
+      // Expose loaded cards to game screens (they read gameProv.availableCards)
+      _availableCards.clear();
+      _availableCards.addAll(cards);
+
       // Create session
       final sessionId = 'sess_${DateTime.now().millisecondsSinceEpoch}';
       _currentSession = GameSession(

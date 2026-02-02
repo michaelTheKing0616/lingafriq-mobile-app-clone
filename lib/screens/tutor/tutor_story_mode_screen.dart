@@ -11,6 +11,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/utils/api_service.dart';
 
 /// Story Mode with Translation Toggle, Vocabulary Drawer, Interactive Quiz
 class TutorStoryModeScreen extends HookConsumerWidget {
@@ -37,20 +38,10 @@ class TutorStoryModeScreen extends HookConsumerWidget {
       required String userLevel,
     }) async {
       final groqKey = EnvConfig.groqApiKey;
-      if (groqKey.isEmpty) {
-        throw Exception(
-          'Story mode is unavailable because the AI service is not configured in this build.',
-        );
-      }
-
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 60),
-          sendTimeout: const Duration(seconds: 20),
-        ),
-      );
-
+      final useBackend = groqKey.isEmpty ||
+          groqKey.trim().isEmpty ||
+          groqKey == 'YOUR_GROQ_API_KEY' ||
+          groqKey.startsWith('YOUR_');
       final prompt = '''
 You are Polie, an elite African language tutor and storyteller.
 Create a culturally authentic short story based on the provided theme.
@@ -79,6 +70,43 @@ Quality requirements:
 - Include exactly 5 comprehension questions.
 - Keep content age-safe and culturally respectful.
 ''';
+
+      if (useBackend) {
+        final resp = await ApiService.post(
+          '/api/ai/chat/completion',
+          data: {
+            'messages': [{'role': 'user', 'content': prompt}],
+            'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
+            'temperature': 0.35,
+            'max_tokens': 1400,
+          },
+        );
+        if (resp.statusCode != 200 || resp.data == null) {
+          throw Exception('AI request failed. Please try again.');
+        }
+        final content = (resp.data is Map)
+            ? (resp.data['content']?.toString() ?? '')
+            : '';
+        if (content.trim().isEmpty) throw Exception('AI returned an empty response. Please try again.');
+        try {
+          return jsonDecode(content) as Map<String, dynamic>;
+        } catch (_) {
+          final start = content.indexOf('{');
+          final end = content.lastIndexOf('}');
+          if (start >= 0 && end > start) {
+            return jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
+          }
+          rethrow;
+        }
+      }
+
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 60),
+          sendTimeout: const Duration(seconds: 20),
+        ),
+      );
 
       final resp = await dio.post(
         'https://api.groq.com/openai/v1/chat/completions',
@@ -487,11 +515,11 @@ class _VocabularyDrawer extends StatelessWidget {
                   margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
                   child: ListTile(
                     title: Text(
-                      vocab['word'] ?? '',
+                      (vocab['word'] ?? vocab['term'] ?? '').toString(),
                       style: PanAfricanTypography.bodyMedium(context),
                     ),
                     subtitle: Text(
-                      vocab['meaning'] ?? '',
+                      (vocab['meaning'] ?? vocab['translation'] ?? '').toString(),
                       style: PanAfricanTypography.bodySmall(context),
                     ),
                     trailing: vocab['example'] != null
@@ -581,7 +609,9 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
             final index = entry.key;
             final option = entry.value;
             final isSelected = selectedAnswer == index;
-            final isCorrect = index == (question['answer'] as int?);
+            final rawCorrect = question['correctIndex'] ?? question['answer'];
+            final correctIdx = rawCorrect is int ? rawCorrect : (rawCorrect is num ? rawCorrect.toInt() : null);
+            final isCorrect = correctIdx != null && index == correctIdx;
 
             return Card(
               margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),

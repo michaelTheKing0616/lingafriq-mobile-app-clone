@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
@@ -51,6 +52,16 @@ class _RoomSelectionScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: 'Back',
+        ),
+        title: const Text('Live Classroom'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -157,28 +168,48 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                           }
 
                           isCreating.value = true;
-                          await safeAsync(
-                            context: context,
-                            operation: () async {
-                              // Create room and navigate (language is optional metadata for future use)
-                              final roomId = DateTime.now().millisecondsSinceEpoch.toString();
-                              if (context.mounted) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => _ClassroomView(
-                                      roomId: roomId,
-                                      roomName: roomNameController.text.trim(),
-                                    ),
-                                  ),
+                          try {
+                            await safeAsync(
+                              context: context,
+                              operation: () async {
+                                await ApiService.initialize();
+                                final name = roomNameController.text.trim();
+                                final lang = selectedLanguage.value ?? 'general';
+                                final resp = await ApiService.post(
+                                  Api.tribesClassrooms,
+                                  data: {
+                                    'name': name,
+                                    'language_tag': lang,
+                                  },
                                 );
-                              }
-                            },
-                            onError: (e) {
-                              ErrorHandler.showError(context, e);
-                            },
-                          );
-                          isCreating.value = false;
+                                String roomId;
+                                if (resp.statusCode == 201 && resp.data != null && resp.data is Map) {
+                                  final data = resp.data as Map<String, dynamic>;
+                                  final tribe = data['tribe'] ?? data;
+                                  final tribeMap = tribe is Map ? tribe as Map<String, dynamic> : data;
+                                  roomId = (tribeMap['_id'] ?? tribeMap['id'] ?? data['_id'] ?? data['id'])?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString();
+                                } else {
+                                  roomId = DateTime.now().millisecondsSinceEpoch.toString();
+                                }
+                                if (context.mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => _ClassroomView(
+                                        roomId: roomId,
+                                        roomName: name,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              onError: (e) {
+                                ErrorHandler.showError(context, e);
+                              },
+                            );
+                          } finally {
+                            if (context.mounted) isCreating.value = false;
+                          }
                         },
                 )
                     .animate()

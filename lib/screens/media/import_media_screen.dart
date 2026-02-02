@@ -396,11 +396,35 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['txt', 'pdf', 'doc', 'docx'],
+        allowedExtensions: ['txt'],
       );
 
       if (result != null && result.files.single.path != null) {
-        final file = File(result.files.single.path!);
+        final path = result.files.single.path!;
+        final ext = (result.files.single.name.split('.').lastOrNull ?? '').toLowerCase();
+        if (ext != 'txt') {
+          setState(() => _isLoading = false);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Only .txt files can be read directly. For PDF/DOC, paste text or use URL import.'),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
+          return;
+        }
+        final file = File(path);
+        final bytes = await file.length();
+        if (bytes > 2 * 1024 * 1024) {
+          setState(() => _isLoading = false);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('File too large. Use a file under 2 MB or paste text.')),
+            );
+          }
+          return;
+        }
         final text = await file.readAsString();
         setState(() {
           _importedText = text;
@@ -413,7 +437,10 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
       setState(() => _isLoading = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error importing file: $e')),
+          SnackBar(
+            content: Text(ErrorHandler.userFacingMessage(e)),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     }

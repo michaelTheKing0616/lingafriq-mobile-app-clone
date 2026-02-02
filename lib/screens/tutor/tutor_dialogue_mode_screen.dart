@@ -12,6 +12,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:uuid/uuid.dart';
 import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/utils/api_service.dart';
 
 /// Dialogue View with Chat Interface, Context Indicators, Correction Hints
 class TutorDialogueModeScreen extends HookConsumerWidget {
@@ -36,20 +37,10 @@ class TutorDialogueModeScreen extends HookConsumerWidget {
       required List<Map<String, String>> contextTurns,
     }) async {
       final groqKey = EnvConfig.groqApiKey;
-      if (groqKey.isEmpty) {
-        throw Exception(
-          'Dialogue mode is unavailable because the AI service is not configured in this build.',
-        );
-      }
-
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 45),
-          sendTimeout: const Duration(seconds: 20),
-        ),
-      );
-
+      final useBackend = groqKey.isEmpty ||
+          groqKey.trim().isEmpty ||
+          groqKey == 'YOUR_GROQ_API_KEY' ||
+          groqKey.startsWith('YOUR_');
       final prompt = '''
 You are Polie, an elite African language tutor.
 Run a friendly, realistic practice dialogue in the TARGET_LANGUAGE.
@@ -76,6 +67,46 @@ Rules:
 - If user message is already correct, return an empty array for "corrections".
 - Be concise: response 1-4 sentences.
 ''';
+
+      if (useBackend) {
+        final messages = <Map<String, String>>[
+          {'role': 'user', 'content': prompt},
+        ];
+        final resp = await ApiService.post(
+          '/api/ai/chat/completion',
+          data: {
+            'messages': messages.map((m) => {'role': m['role'], 'content': m['content']!}).toList(),
+            'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
+            'temperature': 0.3,
+            'max_tokens': 700,
+          },
+        );
+        if (resp.statusCode != 200 || resp.data == null) {
+          throw Exception('AI request failed. Please try again.');
+        }
+        final content = (resp.data is Map)
+            ? (resp.data['content']?.toString() ?? '')
+            : '';
+        if (content.trim().isEmpty) throw Exception('AI returned an empty response. Please try again.');
+        try {
+          return jsonDecode(content) as Map<String, dynamic>;
+        } catch (_) {
+          final start = content.indexOf('{');
+          final end = content.lastIndexOf('}');
+          if (start >= 0 && end > start) {
+            return jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
+          }
+          rethrow;
+        }
+      }
+
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 45),
+          sendTimeout: const Duration(seconds: 20),
+        ),
+      );
 
       final resp = await dio.post(
         'https://api.groq.com/openai/v1/chat/completions',

@@ -16,7 +16,13 @@ class ErrorHandler {
     } else if (error is TimeoutException) {
       return 'Request timed out. Please check your connection and try again.';
     } else if (error is Exception) {
-      return 'An error occurred: ${error.toString()}';
+      final msg = error.toString().replaceFirst(RegExp(r'^Exception:\s*'), '').trim();
+      if (msg.isEmpty) return 'Something went wrong. Please try again.';
+      final lower = msg.toLowerCase();
+      if (lower.contains('an error occurred') || lower.contains('error occurred') || lower == 'something went wrong') {
+        return 'Something went wrong. Please check your connection and try again.';
+      }
+      return msg.length > 200 ? '${msg.substring(0, 200)}…' : msg;
     } else {
       return 'Something went wrong. Please try again.';
     }

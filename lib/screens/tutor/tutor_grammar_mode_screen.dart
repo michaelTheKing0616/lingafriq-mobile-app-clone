@@ -10,6 +10,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/utils/api_service.dart';
 
 /// Grammar Explanation Mode Screen
 class TutorGrammarModeScreen extends HookConsumerWidget {
@@ -33,20 +34,10 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
       required String userLevel,
     }) async {
       final groqKey = EnvConfig.groqApiKey;
-      if (groqKey.isEmpty) {
-        throw Exception(
-          'Grammar mode is unavailable because the AI service is not configured in this build.',
-        );
-      }
-
-      final dio = Dio(
-        BaseOptions(
-          connectTimeout: const Duration(seconds: 20),
-          receiveTimeout: const Duration(seconds: 40),
-          sendTimeout: const Duration(seconds: 20),
-        ),
-      );
-
+      final useBackend = groqKey.isEmpty ||
+          groqKey.trim().isEmpty ||
+          groqKey == 'YOUR_GROQ_API_KEY' ||
+          groqKey.startsWith('YOUR_');
       final prompt = '''
 You are Polie, an elite African language tutor.
 Generate a world-class grammar explanation for the following topic.
@@ -74,6 +65,54 @@ Quality requirements:
 - Examples must be realistic and culturally appropriate.
 - Practice must be answerable and aligned to the rule.
 ''';
+
+      // Use backend proxy when app has no Groq key or placeholder
+      if (useBackend) {
+        final resp = await ApiService.post(
+          '/api/ai/chat/completion',
+          data: {
+            'messages': [
+              {'role': 'user', 'content': prompt},
+            ],
+            'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
+            'temperature': 0.2,
+            'max_tokens': 900,
+          },
+        );
+        if (resp.statusCode != 200 || resp.data == null) {
+          throw Exception('AI request failed. Please try again.');
+        }
+        final content = (resp.data is Map)
+            ? (resp.data['content']?.toString() ?? '')
+            : '';
+        if (content.trim().isEmpty) throw Exception('AI returned an empty response. Please try again.');
+        Map<String, dynamic>? parsed;
+        try {
+          parsed = jsonDecode(content) as Map<String, dynamic>;
+        } catch (_) {
+          final start = content.indexOf('{');
+          final end = content.lastIndexOf('}');
+          if (start >= 0 && end > start) {
+            parsed = jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
+          }
+        }
+        if (parsed == null || parsed.isEmpty) throw Exception('AI returned an invalid format. Please try again.');
+        return {
+          'canonicalRule': parsed['canonicalRule']?.toString() ?? '',
+          'examples': (parsed['examples'] is List) ? parsed['examples'] : const [],
+          'commonMistakes':
+              (parsed['commonMistakes'] is List) ? parsed['commonMistakes'] : const [],
+          'practice': (parsed['practice'] is List) ? parsed['practice'] : const [],
+        };
+      }
+
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 40),
+          sendTimeout: const Duration(seconds: 20),
+        ),
+      );
 
       final resp = await dio.post(
         'https://api.groq.com/openai/v1/chat/completions',

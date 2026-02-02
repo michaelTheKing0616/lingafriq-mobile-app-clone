@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/ai_chat_provider_huggingface.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -49,8 +49,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     _focusNode.unfocus();
 
     try {
-      await ref.read(huggingFaceChatProvider.notifier).sendMessage(message);
-      _scrollToBottom();
+      final notifier = ref.read(groqChatProvider.notifier);
+      await notifier.sendMessage(message);
+      if (mounted) _scrollToBottom();
     } catch (e) {
       if (mounted) {
         ErrorHandler.showError(context, e);
@@ -69,14 +70,14 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         );
 
     if (result == true) {
-      await ref.read(huggingFaceChatProvider.notifier).clearChat();
+      await ref.read(groqChatProvider.notifier).clearChat();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final chatNotifier = ref.read(huggingFaceChatProvider.notifier);
-    final chatState = ref.watch(huggingFaceChatProvider);
+    final chatNotifier = ref.read(groqChatProvider.notifier);
+    final chatState = ref.watch(groqChatProvider);
     final isDark = context.isDarkMode;
 
     return Scaffold(
@@ -219,7 +220,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildChatMessages(BuildContext context, HuggingFaceChatProvider chatProvider) {
+  Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider) {
     return ListView.builder(
       controller: _scrollController,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -327,7 +328,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(BuildContext context, HuggingFaceChatProvider chatProvider) {
+  Widget _buildMessageInput(BuildContext context, GroqChatProvider chatProvider) {
     final isDark = context.isDarkMode;
     final isLoading = chatProvider.isBusy;
 

@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/standard_app_bar.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer_material3.dart';
 import 'tutor_translation_mode_screen.dart';
 import 'tutor_grammar_mode_screen.dart';
 import 'tutor_pronunciation_mode_screen.dart';
@@ -99,7 +100,9 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       appBar: StandardAppBar(
         title: 'Polie Tutor',
         showBackButton: true,
+        showDrawerButton: true,
       ),
+      drawer: const AppDrawerMaterial3(),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -125,11 +128,17 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
               // Tab Bar
               _buildTabBar(context, isDark),
               
-              // Tab Views
+              // Tab Views (with consistent padding)
               Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: _modes.map((mode) => mode.screen).toList(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: _modes.map((mode) => mode.screen).toList(),
+                  ),
                 ),
               ),
             ],

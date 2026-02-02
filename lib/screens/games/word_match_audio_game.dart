@@ -56,8 +56,18 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
     final cards = gameProv.availableCards;
     if (cards.isEmpty) {
-      // Load cards for session
-      // Cards should be loaded by game provider
+      setState(() {
+        _leftTiles = [];
+        _rightTiles = [];
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No content for this language yet. Try another language or check your connection.'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
       return;
     }
 
@@ -185,7 +195,26 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         ),
       ),
       body: _leftTiles.isEmpty
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.sports_esports_outlined, size: 48, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
+                  Text(
+                    'No content for this language yet.',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  TextButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('Back'),
+                  ),
+                ],
+              ),
+            )
           : Padding(
               padding: EdgeInsets.all(4.w),
               child: Column(

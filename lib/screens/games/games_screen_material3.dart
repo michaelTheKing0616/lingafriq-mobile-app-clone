@@ -14,6 +14,7 @@ import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/game_router.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Beautiful Material 3 Games Screen
@@ -86,6 +87,11 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       message: 'Opening game...',
       child: Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: 'Back',
+        ),
         title: Text('Language Games (${allGames.length}+)'),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -249,17 +255,27 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                                 }
                                 if (!context.mounted) return;
                                 try {
-                                  Navigator.push(
+                                  final gameWidget = buildGameScreen(
+                                    gameType: gameType,
+                                    language: selectedLanguage.value,
+                                    onBack: () => Navigator.of(context).pop(),
+                                    ref: ref,
+                                  );
+                                  if (!context.mounted) return;
+                                  await Navigator.push(
                                     context,
                                     SmoothPageRoute(
-                                      child: buildGameScreen(
-                                        gameType: gameType,
-                                        language: selectedLanguage.value,
-                                        onBack: () => Navigator.of(context).pop(),
-                                        ref: ref,
+                                      child: ErrorBoundary(
+                                        errorMessage: 'This game could not load.',
+                                        onRetry: () => Navigator.of(context).pop(),
+                                        child: gameWidget,
                                       ),
                                     ),
                                   );
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    ErrorHandler.showError(context, e);
+                                  }
                                 } finally {
                                   isLoading.value = false;
                                 }

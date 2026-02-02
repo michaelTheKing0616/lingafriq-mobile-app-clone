@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../utils/error_handler.dart';
@@ -73,26 +74,38 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
   }
 
   Future<void> _joinTribe(String tribeId, String tribeName) async {
+    final id = tribeId.toString();
+    if (id.isEmpty) return;
     setState(() => _isLoading = true);
     try {
       final tribesService = ref.read(tribesServiceProvider);
-      await tribesService.joinTribe(tribeId);
-      
+      await tribesService.joinTribe(id);
+
       final gamification = ref.read(gamificationProvider.notifier);
       await gamification.selectTribe(tribeName);
-      
-      setState(() => _currentTribeId = tribeId);
-      
+
+      setState(() => _currentTribeId = id);
+
       if (mounted) {
         showLingAfriqSuccess(context, 'Joined $tribeName tribe!');
       }
     } catch (e) {
       if (mounted) {
-        ErrorHandler.showError(context, e);
+        ErrorHandler.showError(context, e, customMessage: _tribeJoinErrorMessage(e));
       }
     } finally {
       setState(() => _isLoading = false);
     }
+  }
+
+  String? _tribeJoinErrorMessage(dynamic e) {
+    if (e is DioException) {
+      final code = e.response?.statusCode;
+      if (code == 401) return 'Please sign in to join a tribe.';
+      if (code == 409) return 'You are already a member of this tribe.';
+      if (code == 404) return 'Tribe not found.';
+    }
+    return null;
   }
 
   @override

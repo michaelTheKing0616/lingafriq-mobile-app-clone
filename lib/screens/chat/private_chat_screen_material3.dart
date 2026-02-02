@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -45,13 +46,26 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
 
         if (response.statusCode == 200 && response.data != null) {
           final data = response.data as Map<String, dynamic>?;
-          final raw = data?['data'] ?? data?['messages'];
-          messages.value = raw is List
-              ? raw.map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()}).toList()
-              : [];
+          final raw = data?['data'];
+          List<dynamic> list = const [];
+          if (raw is List) {
+            list = raw;
+          } else if (raw is Map && raw['docs'] is List) {
+            list = raw['docs'] as List;
+          } else if (data?['messages'] is List) {
+            list = data!['messages'] as List;
+          }
+          messages.value = list
+              .map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()})
+              .toList();
         }
       } catch (e) {
-        loadError.value = 'Unable to load messages. Tap Retry to try again.';
+        final statusCode = e is DioException ? e.response?.statusCode : null;
+        if (statusCode == 401) {
+          loadError.value = 'Please sign in to view messages.';
+        } else {
+          loadError.value = 'Unable to load messages. Tap Retry to try again.';
+        }
         if (context.mounted) ErrorHandler.showError(context, e);
       }
     }
@@ -64,7 +78,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
         final response = await ApiService.post(
           '/chat/private',
           data: {
-            'recipient_id': otherUserId,
+            'recipientId': otherUserId,
             'message': messageController.text,
           },
         );
