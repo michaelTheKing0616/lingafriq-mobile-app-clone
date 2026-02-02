@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart' hide PanAfricanIcons;
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
@@ -49,13 +50,7 @@ class AppDrawer extends HookConsumerWidget {
       HapticFeedback.mediumImpact();
       
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Dark mode ${isDark.value ? 'enabled' : 'disabled'}'),
-            duration: Duration(seconds: 2),
-            backgroundColor: PanAfricanColors.primary,
-          ),
-        );
+        showLingAfriqInfo(context, 'Dark mode ${isDark.value ? 'enabled' : 'disabled'}');
       }
     }
 

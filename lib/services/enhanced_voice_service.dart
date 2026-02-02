@@ -187,7 +187,7 @@ class EnhancedVoiceService {
   ) async {
     try {
       // Use free Whisper API endpoint (Hugging Face or local deployment)
-      final serviceUrl = _secrets.pronunciationApiUrl ?? 'https://api-inference.huggingface.co';
+      final serviceUrl = _secrets.pronunciationApiUrl ?? 'https://router.huggingface.co';
       
       final formData = FormData.fromMap({
         'audio': await MultipartFile.fromFile(audioFile.path),

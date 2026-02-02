@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
@@ -110,6 +111,13 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref, String greeting, bool isDark) {
+    final user = ref.watch(userProvider);
+    final displayName = user?.username?.isNotEmpty == true
+        ? user!.username
+        : (user?.first_name?.isNotEmpty == true
+            ? '${user!.first_name} ${user.last_name}'.trim()
+            : null) ?? 'there';
+    final greetingLine = '$greeting, $displayName';
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AdaptiveLayout.sideMargin(context),
@@ -132,7 +140,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    greeting,
+                    greetingLine,
                     style: PanAfricanTypography.headlineMedium(context)
                         .copyWith(color: Colors.white),
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),

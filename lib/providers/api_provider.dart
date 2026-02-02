@@ -1692,9 +1692,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       );
       
       if (res.statusCode == 200 && res.data != null) {
-        final data = res.data is Map ? res.data : (res.data['data'] ?? {});
         // Backend returns: { success: true, data: { username: "...", available: true/false } }
-        return data['available'] ?? false;
+        final payload = res.data is Map ? res.data as Map : <String, dynamic>{};
+        final data = payload['data'] is Map ? payload['data'] as Map : payload;
+        return data['available'] == true;
       }
       // If endpoint doesn't exist or fails, assume available (allow user to continue)
       logger.warn('Username check endpoint returned unexpected response', context: {

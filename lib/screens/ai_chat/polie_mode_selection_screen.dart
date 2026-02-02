@@ -38,9 +38,9 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
       backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
       body: Stack(
         children: [
-          // Gradient Header
+          // Gradient Header (enough height for back button, icon, title, subtitle)
           Container(
-            height: 30.h,
+            height: 220.h,
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
@@ -121,9 +121,9 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          // Mode Selection Cards
+          // Mode Selection Cards (below header)
           Positioned(
-            top: 25.h,
+            top: 200.h,
             left: 0,
             right: 0,
             bottom: 0,

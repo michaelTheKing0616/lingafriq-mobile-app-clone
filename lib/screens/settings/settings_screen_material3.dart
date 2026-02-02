@@ -22,6 +22,8 @@ import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/widgets/primary_button.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -48,7 +50,14 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Settings'),
+            Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+          ],
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -65,7 +74,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                   ],
                 ),
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
@@ -93,13 +102,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         );
                         isDark.value = value;
                         HapticFeedback.mediumImpact();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Dark mode ${value ? 'enabled' : 'disabled'}'),
-                            duration: Duration(seconds: 2),
-                            backgroundColor: PanAfricanColors.primary,
-                          ),
-                        );
+                        if (context.mounted) {
+                          showLingAfriqInfo(context, 'Dark mode ${value ? 'enabled' : 'disabled'}');
+                        }
                       },
                       secondary: Icon(
                         isDark.value ? Icons.dark_mode : Icons.light_mode,
@@ -194,12 +199,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                               final prefs = await SharedPreferences.getInstance();
                               await prefs.setBool('biometric_enabled', true);
                               biometricEnabled.value = true;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Biometric authentication enabled'),
-                                  backgroundColor: PanAfricanColors.primary,
-                                ),
-                              );
+                              if (context.mounted) {
+                                showLingAfriqSuccess(context, 'Biometric authentication enabled');
+                              }
                             }
                           } else {
                             final prefs = await SharedPreferences.getInstance();
@@ -228,16 +230,10 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         await encryption.initialize();
                         await encryption.setEncryptionEnabled(value);
                         cacheEncryptionEnabled.value = value;
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              value
-                                  ? 'Cache encryption enabled'
-                                  : 'Cache encryption disabled',
-                            ),
-                            backgroundColor: PanAfricanColors.primary,
-                          ),
-                        );
+                        if (context.mounted) {
+                          showLingAfriqSuccess(context,
+                            value ? 'Cache encryption enabled' : 'Cache encryption disabled');
+                        }
                       },
                       secondary: Icon(Icons.lock, color: PanAfricanColors.primary),
                       activeColor: PanAfricanColors.primary,
@@ -395,18 +391,20 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.xl),
 
                 // Logout Button
-                ElevatedButton.icon(
-                  onPressed: () {
-                    _showLogoutDialog(context);
-                  },
-                  icon: Icon(Icons.logout),
-                  label: Text('Log Out'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PanAfricanColors.error,
-                    foregroundColor: Colors.white,
-                    minimumSize: Size(double.infinity, 50.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                PrimaryButton(
+                  text: 'Log Out',
+                  color: PanAfricanColors.error,
+                  textColor: Colors.white,
+                  onTap: () => _showLogoutDialog(context),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.logout, size: 20.sp, color: Colors.white),
+                        SizedBox(width: 8.w),
+                        Text('Log Out', style: TextStyle(color: Colors.white, fontSize: 18.sp)),
+                      ],
                     ),
                   ),
                 ),
@@ -486,12 +484,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           );
                           await DynamicLocalizationService.setLanguage(appLang.code);
                           Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Language changed to ${value}'),
-                              backgroundColor: PanAfricanColors.primary,
-                            ),
-                          );
+                          if (context.mounted) {
+                            showLingAfriqSuccess(context, 'Language changed to ${value}');
+                          }
                         }
                       },
                     );
@@ -603,22 +598,17 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               onPressed: () => Navigator.pop(context),
               child: Text('Close'),
             ),
-            ElevatedButton(
-              onPressed: () async {
+            PrimaryButton(
+              text: 'Clear Cache',
+              color: PanAfricanColors.error,
+              textColor: Colors.white,
+              onTap: () async {
                 await offlineService.clearCache(null);
-                Navigator.pop(context);
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Cache cleared'),
-                    backgroundColor: PanAfricanColors.primary,
-                  ),
-                );
+                if (context.mounted) Navigator.pop(context);
+                if (context.mounted) {
+                  showLingAfriqSuccess(context, 'Cache cleared');
+                }
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PanAfricanColors.error,
-                foregroundColor: Colors.white,
-              ),
-              child: Text('Clear Cache'),
             ),
           ],
         );
@@ -751,17 +741,14 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
               onPressed: () => Navigator.pop(context),
               child: Text('Cancel'),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Logout logic
+            PrimaryButton(
+              text: 'Log Out',
+              color: PanAfricanColors.error,
+              textColor: Colors.white,
+              onTap: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PanAfricanColors.error,
-                foregroundColor: Colors.white,
-              ),
-              child: Text('Log Out'),
             ),
           ],
         );

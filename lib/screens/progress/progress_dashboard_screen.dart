@@ -25,9 +25,11 @@ class ProgressDashboardScreen extends ConsumerWidget {
   }
 
   Widget _buildDashboard(BuildContext context, WidgetRef ref) {
-    final metrics = ref.watch(progressTrackingProvider.notifier).metrics;
-    final history = ref.watch(progressTrackingProvider.notifier).history;
-    final isDark = context.isDarkMode;
+    ref.watch(progressTrackingProvider);
+    final notifier = ref.read(progressTrackingProvider.notifier);
+    final metrics = notifier.metrics;
+    final history = notifier.history;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
@@ -41,7 +43,8 @@ class ProgressDashboardScreen extends ConsumerWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
         padding: EdgeInsets.all(16.sp),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,6 +65,7 @@ class ProgressDashboardScreen extends ConsumerWidget {
             _buildTimeChart(context, history, isDark),
           ],
         ),
+      ),
       ),
     );
   }
@@ -247,9 +251,12 @@ class ProgressDashboardScreen extends ConsumerWidget {
           sections: activities.entries.asMap().entries.map((entry) {
             final index = entry.key;
             final activity = entry.value;
+            final pct = metrics.timeSpentHours > 0
+                ? (activity.value / metrics.timeSpentHours * 100).toStringAsFixed(0)
+                : '0';
             return PieChartSectionData(
               value: activity.value,
-              title: '${(activity.value / metrics.timeSpentHours * 100).toStringAsFixed(0)}%',
+              title: '$pct%',
               color: colors[index % colors.length],
               radius: 60,
             );

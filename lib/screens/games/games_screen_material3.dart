@@ -244,7 +244,11 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                                 isLoading.value = true;
                                 try {
                                   await loader.loadGameOnDemand(gameType);
-                                  if (!context.mounted) return;
+                                } catch (_) {
+                                  // Preload is optional; still open the game
+                                }
+                                if (!context.mounted) return;
+                                try {
                                   Navigator.push(
                                     context,
                                     SmoothPageRoute(

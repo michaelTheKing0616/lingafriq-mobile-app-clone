@@ -10,8 +10,11 @@ import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -79,7 +82,8 @@ class _PrivateChatListScreenState
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      body: Stack(
+      body: ResponsiveSafeArea(
+        child: Stack(
         children: [
           // Gradient Header
           Container(
@@ -130,7 +134,7 @@ class _PrivateChatListScreenState
               children: [
                 // Search Bar
                 Padding(
-                  padding: EdgeInsets.all(4.w),
+                  padding: EdgeInsets.all(PanAfricanSpacing.md),
                   child: Container(
                     decoration: BoxDecoration(
                       color: isDark ? const Color(0xFF1F3527) : Colors.white,
@@ -162,6 +166,7 @@ class _PrivateChatListScreenState
           ),
         ],
       ),
+      ),
     );
   }
 
@@ -188,9 +193,9 @@ class _PrivateChatListScreenState
               style: TextStyle(color: Colors.red.shade300, fontSize: 16.sp),
             ),
             SizedBox(height: 2.h),
-            FilledButton(
-              onPressed: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
-              child: const Text('Retry'),
+            PrimaryButton(
+              text: 'Retry',
+              onTap: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
             ),
           ],
         ),
@@ -198,23 +203,15 @@ class _PrivateChatListScreenState
     }
     
     if (contacts.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.chat_bubble_outline, size: 64.sp, color: isDark ? Colors.grey[600] : Colors.grey[400]),
-            SizedBox(height: 2.h),
-            Text(
-              'No contacts found',
-              style: TextStyle(fontSize: 18.sp, color: isDark ? Colors.white70 : Colors.black54),
-            ),
-          ],
-        ),
+      return LingAfriqEmptyState(
+        icon: Icons.chat_bubble_outline,
+        title: 'No contacts yet',
+        subtitle: 'Start a LingAfriq chat from the community or add friends to see conversations here.',
       );
     }
     
     return OptimizedListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: 4.w),
+      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
       itemCount: contacts.length,
       itemBuilder: (context, index) {
         final contact = contacts[index];
@@ -244,7 +241,7 @@ class _PrivateChatListScreenState
                   radius: 24,
                   backgroundColor: AfricanTheme.primaryGreen,
                   child: Text(
-                    contact.name[0].toUpperCase(),
+                    contact.name.isNotEmpty ? contact.name[0].toUpperCase() : '?',
                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),

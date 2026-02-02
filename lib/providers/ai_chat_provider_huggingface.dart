@@ -25,7 +25,7 @@ class HuggingFaceChatProvider extends BaseProvider {
   static const String _apiKey = 'YOUR_HUGGINGFACE_TOKEN_HERE'; // Replace with your token from GitHub Secrets or environment
   static const String _modelName = 'meta-llama/Llama-2-7b-chat-hf'; // Free model
   
-  String get _apiUrl => 'https://api-inference.huggingface.co/models/$_modelName';
+  String get _apiUrl => 'https://router.huggingface.co/models/$_modelName';
   
   String _selectedLanguage = 'English';
   String? _systemPrompt;

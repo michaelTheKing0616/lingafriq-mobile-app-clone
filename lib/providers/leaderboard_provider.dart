@@ -65,37 +65,34 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       switch (type) {
         case LeaderboardType.global:
           final data = await leaderboardsService.getGlobalLeaderboard(period: 'weekly');
-          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
         case LeaderboardType.tribe:
           if (tribe != null) {
             final data = await leaderboardsService.getTribeLeaderboard(tribe, period: 'season');
-            entries = _parseLeaderboardEntries(data['entries'] ?? []);
+            entries = _parseLeaderboardEntries(_extractEntriesList(data));
           }
           break;
         case LeaderboardType.country:
-          // Use village leaderboard for country (language-based)
           if (country != null) {
             final data = await leaderboardsService.getVillageLeaderboard(country, period: 'monthly');
-            entries = _parseLeaderboardEntries(data['entries'] ?? []);
+            entries = _parseLeaderboardEntries(_extractEntriesList(data));
           }
           break;
         case LeaderboardType.continental:
-          // Use global leaderboard filtered by continent
           final data = await leaderboardsService.getGlobalLeaderboard(period: 'monthly');
-          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
         case LeaderboardType.weekly:
         case LeaderboardType.monthly:
         case LeaderboardType.allTime:
-          // Use global leaderboard with appropriate period
           final period = type == LeaderboardType.weekly 
               ? 'weekly' 
               : type == LeaderboardType.monthly 
                   ? 'monthly' 
                   : 'allTime';
           final data = await leaderboardsService.getGlobalLeaderboard(period: period);
-          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
       }
 
@@ -111,6 +108,18 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     } finally {
       state = state.copyWith(isLoading: false);
     }
+  }
+
+  /// Extract entries list from various backend response shapes
+  List<dynamic> _extractEntriesList(Map<String, dynamic> data) {
+    if (data['entries'] is List) return data['entries'] as List;
+    if (data['data'] is List) return data['data'] as List;
+    if (data['leaderboard'] is List) return data['leaderboard'] as List;
+    if (data['results'] is List) return data['results'] as List;
+    if (data['data'] is Map && (data['data'] as Map)['entries'] is List) {
+      return ((data['data'] as Map)['entries']) as List;
+    }
+    return [];
   }
 
   /// Parse API response to LeaderboardEntry list

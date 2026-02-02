@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
@@ -25,12 +26,22 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     final channels = useState<List<String>>(['general', 'yoruba', 'hausa', 'igbo', 'pidgin', 'swahili', 'zulu']);
     final selectedChannel = useState('general');
     final isLoading = useState(false);
+    final loadError = useState<String?>(null);
     final scrollController = useScrollController();
     final showChannels = useState(false);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    List<Map<String, dynamic>> _parseMessageList(dynamic raw) {
+      if (raw == null) return [];
+      if (raw is List) {
+        return raw.map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()}).toList();
+      }
+      return [];
+    }
+
     Future<void> loadMessages() async {
+      loadError.value = null;
       try {
         final response = await ApiService.get(
           Api.chatGlobal,
@@ -40,13 +51,20 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           },
         );
 
-        if (response.statusCode == 200 && response.data['data'] != null) {
-          messages.value = List<Map<String, dynamic>>.from(response.data['data']);
+        if (response.statusCode == 200 && response.data != null) {
+          List<Map<String, dynamic>> list = [];
+          final raw = response.data;
+          if (raw is List) {
+            list = _parseMessageList(raw);
+          } else if (raw is Map) {
+            final data = raw as Map;
+            list = _parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
+          }
+          messages.value = list;
         }
       } catch (e) {
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
-        }
+        loadError.value = 'Connection failed. Tap Retry to load messages.';
+        if (context.mounted) ErrorHandler.showError(context, e);
       }
     }
 
@@ -305,7 +323,8 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ],
         ),
       ),
-    ), // closes LoadingOverlay
+      ),
+    ),
     );
   }
 }
@@ -321,8 +340,14 @@ class _GlobalMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sender = message['sender_id'] as Map<String, dynamic>?;
-    final senderName = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
+    final sender = message['sender_id'] is Map
+        ? message['sender_id'] as Map<String, dynamic>
+        : null;
+    final rawName = sender?['username'] ??
+        sender?['first_name'] ??
+        message['username'] ??
+        message['sender'];
+    final senderName = rawName is String ? rawName : (rawName?.toString() ?? 'Unknown');
     final isToxic = message['flagged_toxic'] ?? false;
 
     return Container(
@@ -336,7 +361,7 @@ class _GlobalMessageBubble extends StatelessWidget {
                 ? PanAfricanColors.error
                 : PanAfricanColors.primary,
             child: Text(
-              senderName[0].toUpperCase(),
+              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
               style: PanAfricanTypography.labelMedium(context)
                   .copyWith(color: Colors.white),
             ),
@@ -385,7 +410,7 @@ class _GlobalMessageBubble extends StatelessWidget {
                     borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                   ),
                   child: Text(
-                    message['message'] ?? '',
+                    message['message'] ?? message['body'] ?? message['text'] ?? '',
                     style: PanAfricanTypography.bodyMedium(context),
                   ),
                 ),

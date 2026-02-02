@@ -4,7 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
 import '../../providers/social_audio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../widgets/lingafriq_ui_helpers.dart';
 import '../../widgets/loading/loading_overlay.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/responsive_safe_area.dart';
 import 'room_detail_screen.dart';
 import 'create_room_screen.dart';
 import 'scheduled_sessions_screen.dart';
@@ -53,7 +56,14 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Language Practice Rooms'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Language Practice Rooms'),
+            Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -83,7 +93,8 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
       ),
       body: LoadingOverlay(
         isLoading: state.isLoading,
-        child: Column(
+        child: ResponsiveSafeArea(
+          child: Column(
           children: [
             // Search and filters
             _buildSearchAndFilters(context, isDark, state),
@@ -110,7 +121,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
     SocialAudioState state,
   ) {
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         boxShadow: PanAfricanShadows.sm,
@@ -223,34 +234,20 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
 
   Widget _buildRoomsList(List<SocialAudioRoom> rooms, bool isDark) {
     if (rooms.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.radio, size: 64.sp, color: PanAfricanColors.neutralMedium),
-            SizedBox(height: 2.h),
-            Text(
-              'No rooms available',
-              style: TextStyle(fontSize: 16.sp, color: PanAfricanColors.neutralMedium),
+      return LingAfriqEmptyState(
+        icon: Icons.radio,
+        title: 'No rooms available',
+        subtitle: 'Start a LingAfriq practice room and invite others to join.',
+        actionLabel: 'Create First Room',
+        onAction: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CreateRoomScreen(),
             ),
-            SizedBox(height: 4.h),
-            FilledButton.icon(
-              onPressed: () async {
-                final result = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CreateRoomScreen(),
-                  ),
-                );
-                if (context.mounted) {
-                  _loadRooms();
-                }
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Create First Room'),
-            ),
-          ],
-        ),
+          );
+          if (context.mounted) _loadRooms();
+        },
       );
     }
 

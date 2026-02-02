@@ -14,7 +14,7 @@ class CanonicalPhraseService {
   final Dio _dio = Dio();
   
   // HuggingFace Inference API URL for AfriTeVa
-  static const String _hfAfritevaUrl = "https://api-inference.huggingface.co/models/castorini/afriteva_v2_large";
+  static const String _hfAfritevaUrl = "https://router.huggingface.co/models/castorini/afriteva_v2_large";
   
   /// Generate canonical phrase using AfriTeVa (with caching)
   /// Priority: 1. Cache → 2. Backend API → 3. HuggingFace API → 4. Fallback

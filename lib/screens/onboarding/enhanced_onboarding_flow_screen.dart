@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
@@ -550,9 +551,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 
     Future<void> saveAndNext() async {
       if (selectedLanguage.value == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a language')),
-        );
+        showLingAfriqError(context, 'Please select a language');
         return;
       }
 
@@ -797,9 +796,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
 
     Future<void> saveAndNext() async {
       if (selectedLanguage.value == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a language')),
-        );
+        showLingAfriqError(context, 'Please select a language');
         return;
       }
 
@@ -1895,9 +1892,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
       } catch (e) {
         logger.error('Error picking avatar', error: e);
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to pick image')),
-          );
+          showLingAfriqError(context, 'Failed to pick image. Please try again.');
         }
       }
     }
@@ -2141,10 +2136,7 @@ class _OnboardingStepTemplate extends ConsumerWidget {
     final syncState = ref.watch(backendSyncProvider);
     final isSyncing = syncState.isSyncing;
     final pendingSyncs = syncState.pendingSyncs;
-    final canGoBack = currentStep != null && 
-                      currentStep!.value > 0 && 
-                      pageController != null;
-    
+
     return Container(
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
@@ -2158,27 +2150,6 @@ class _OnboardingStepTemplate extends ConsumerWidget {
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
               children: [
-                // Back button row
-                if (canGoBack)
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        onPressed: () {
-                          if (pageController != null && currentStep != null) {
-                            currentStep!.value--;
-                            pageController!.previousPage(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                            HapticFeedback.lightImpact();
-                          }
-                        },
-                        tooltip: 'Go back',
-                      ),
-                      Spacer(),
-                    ],
-                  ),
                 Text(
                   title,
                   style: PanAfricanTypography.headlineMedium(context),

@@ -181,7 +181,7 @@ class EnhancedTTSService {
 
       // Use HuggingFace Inference API for MMS-TTS (FREE)
       final response = await _dio.post(
-        'https://api-inference.huggingface.co/models/facebook/mms-tts-${language.toLowerCase()}',
+        'https://router.huggingface.co/models/facebook/mms-tts-${language.toLowerCase()}',
         data: {'inputs': text},
         options: Options(
           headers: {

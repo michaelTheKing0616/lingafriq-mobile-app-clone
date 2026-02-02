@@ -5,9 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -43,6 +46,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final roomNameController = useTextEditingController();
+    final selectedLanguage = useState<String?>(null);
     final isCreating = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -55,7 +59,10 @@ class _RoomSelectionScreen extends HookConsumerWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(PanAfricanSpacing.xl),
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.xl,
+              vertical: PanAfricanSpacing.lg,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -105,6 +112,38 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     .animate()
                     .fadeIn(delay: 600.ms, duration: 400.ms)
                     .slideY(begin: 0.2, duration: 400.ms),
+                SizedBox(height: PanAfricanSpacing.md),
+                DropdownButtonFormField<String?>(
+                  value: selectedLanguage.value,
+                  style: PanAfricanTypography.bodyLarge(context),
+                  decoration: InputDecoration(
+                    labelText: 'Language (optional)',
+                    prefixIcon: Icon(Icons.language, color: PanAfricanColors.primary),
+                    filled: true,
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                    ),
+                  ),
+                  hint: const Text('Select language of instruction'),
+                  items: [
+                    const DropdownMenuItem<String?>(value: null, child: Text('None')),
+                    ...SupportedLanguages.allLanguages.map((langKey) {
+                      final info = SupportedLanguages.getLanguageInfo(langKey);
+                      final name = info['name'] as String? ?? langKey;
+                      return DropdownMenuItem<String?>(
+                        value: langKey,
+                        child: Text(name),
+                      );
+                    }),
+                  ],
+                  onChanged: (value) {
+                    selectedLanguage.value = value;
+                  },
+                )
+                    .animate()
+                    .fadeIn(delay: 650.ms, duration: 400.ms)
+                    .slideY(begin: 0.2, duration: 400.ms),
                 SizedBox(height: PanAfricanSpacing.lg),
                 PanAfricanButton(
                   label: 'Create Classroom',
@@ -113,12 +152,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                       ? null
                       : () async {
                           if (roomNameController.text.trim().isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Please enter a room name'),
-                                backgroundColor: PanAfricanColors.error,
-                              ),
-                            );
+                            showLingAfriqError(context, 'Please enter a room name');
                             return;
                           }
 
@@ -126,7 +160,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                           await safeAsync(
                             context: context,
                             operation: () async {
-                              // Create room and navigate
+                              // Create room and navigate (language is optional metadata for future use)
                               final roomId = DateTime.now().millisecondsSinceEpoch.toString();
                               if (context.mounted) {
                                 Navigator.pushReplacement(
@@ -766,17 +800,18 @@ class _ClassroomControls extends StatelessWidget {
             onPressed: () => onScreenShareToggle(!isScreenSharing),
             isDark: isDark,
           ),
-          ElevatedButton.icon(
-            onPressed: onLeave,
-            icon: Icon(Icons.call_end),
-            label: Text('Leave'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: PanAfricanColors.error,
-              foregroundColor: Colors.white,
-              padding: EdgeInsets.symmetric(
-                horizontal: PanAfricanSpacing.lg,
-                vertical: PanAfricanSpacing.md,
-              ),
+          PrimaryButton(
+            text: 'Leave',
+            color: PanAfricanColors.error,
+            textColor: Colors.white,
+            onTap: onLeave,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.call_end, size: 20.sp, color: Colors.white),
+                SizedBox(width: 8.w),
+                Text('Leave', style: TextStyle(color: Colors.white, fontSize: 18.sp)),
+              ],
             ),
           ),
         ],

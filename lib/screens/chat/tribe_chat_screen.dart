@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/config/app_config.dart';
@@ -30,25 +32,49 @@ class TribeChatScreen extends HookConsumerWidget {
     final messages = useState<List<Map<String, dynamic>>>([]);
     final members = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(false);
+    final loadError = useState<String?>(null);
     final scrollController = useScrollController();
     final showMembers = useState(false);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    List<Map<String, dynamic>> _parseList(dynamic raw) {
+      if (raw == null) return [];
+      if (raw is List) {
+        return raw.map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()}).toList();
+      }
+      return [];
+    }
+
     Future<void> loadMessages() async {
+      loadError.value = null;
       try {
         final response = await ApiService.get(
           '/chat/tribe/$tribeId',
         );
 
-        if (response.statusCode == 200 && response.data['data'] != null) {
-          messages.value = List<Map<String, dynamic>>.from(response.data['data']);
+        if (response.statusCode == 200 && response.data != null) {
+          final data = response.data as Map<String, dynamic>?;
+          final list = data?['data'] != null
+              ? _parseList(data!['data'])
+              : data?['messages'] != null
+                  ? _parseList(data!['messages'])
+                  : <Map<String, dynamic>>[];
+          messages.value = list;
         }
       } catch (e) {
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
-        }
+        loadError.value = _connectionMessage(e);
+        if (context.mounted) ErrorHandler.showError(context, e);
       }
+    }
+
+    String _connectionMessage(dynamic e) {
+      final msg = e.toString().toLowerCase();
+      if (msg.contains('socket') || msg.contains('connection') || msg.contains('unavailable') || msg.contains('failed host')) {
+        return 'Server unavailable. Check your connection and try again.';
+      }
+      if (msg.contains('timeout')) return 'Request timed out.';
+      return 'Unable to load messages.';
     }
 
     Future<void> loadMembers() async {
@@ -57,13 +83,13 @@ class TribeChatScreen extends HookConsumerWidget {
           '/chat/tribe/$tribeId/members',
         );
 
-        if (response.statusCode == 200 && response.data['data'] != null) {
-          members.value = List<Map<String, dynamic>>.from(response.data['data']);
+        if (response.statusCode == 200 && response.data != null) {
+          final data = response.data as Map<String, dynamic>?;
+          final raw = data?['data'] ?? data?['members'];
+          members.value = _parseList(raw);
         }
       } catch (e) {
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
-        }
+        if (context.mounted) ErrorHandler.showError(context, e);
       }
     }
 
@@ -114,7 +140,13 @@ class TribeChatScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      body: Row(
+      body: ResponsiveSafeArea(
+        child: loadError.value != null && messages.value.isEmpty
+            ? LingAfriqRetryBlock(
+                message: loadError.value!,
+                onRetry: () => loadMessages(),
+              )
+            : Row(
         children: [
           // Messages Area
           Expanded(
@@ -136,22 +168,10 @@ class TribeChatScreen extends HookConsumerWidget {
                   // Messages List
                   Expanded(
                     child: messages.value.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.chat_bubble_outline,
-                                  size: 64.sp,
-                                  color: PanAfricanColors.neutralMedium,
-                                ),
-                                SizedBox(height: PanAfricanSpacing.md),
-                                Text(
-                                  'No messages yet',
-                                  style: PanAfricanTypography.bodyLarge(context),
-                                ),
-                              ],
-                            ),
+                        ? LingAfriqEmptyState(
+                            icon: Icons.chat_bubble_outline,
+                            title: 'No messages yet',
+                            subtitle: 'Say hello and start the conversation.',
                           )
                         : OptimizedListView.builder(
                             controller: scrollController,
@@ -275,7 +295,8 @@ class TribeChatScreen extends HookConsumerWidget {
             ),
         ],
       ),
-    ), // closes LoadingOverlay
+      ),
+    ),
     );
   }
 }
@@ -292,7 +313,8 @@ class _TribeMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sender = message['sender_id'] as Map<String, dynamic>?;
-    final senderName = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
+    final raw = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
+    final senderName = raw != null && raw.toString().trim().isNotEmpty ? raw.toString() : 'Unknown';
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -303,7 +325,7 @@ class _TribeMessageBubble extends StatelessWidget {
             radius: 20.r,
             backgroundColor: PanAfricanColors.secondary,
             child: Text(
-              senderName[0].toUpperCase(),
+              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
               style: PanAfricanTypography.labelMedium(context)
                   .copyWith(color: Colors.white),
             ),

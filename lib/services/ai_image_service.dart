@@ -84,7 +84,7 @@ class AIImageService {
       case 'stability':
         return 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image';
       case 'huggingface':
-        return 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0';
+        return 'https://router.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0';
       case 'replicate':
         return 'https://api.replicate.com/v1/predictions';
       case 'leonardo':

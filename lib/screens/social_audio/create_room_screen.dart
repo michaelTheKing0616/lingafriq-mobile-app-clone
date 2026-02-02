@@ -5,7 +5,10 @@ import '../../models/social_audio/social_audio_room_model.dart';
 import '../../providers/social_audio_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../utils/supported_languages.dart';
 import '../../widgets/loading/loading_overlay.dart';
+import '../../widgets/pan_african_components.dart';
+import '../../widgets/lingafriq_ui_helpers.dart';
 import 'package:intl/intl.dart';
 
 /// Create Room Screen - Create a new language practice room
@@ -42,16 +45,12 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
 
     final user = ref.read(userProvider);
     if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please log in to create rooms')),
-      );
+      showLingAfriqError(context, 'Please log in to create rooms');
       return;
     }
 
     if (_selectedLanguage == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a language')),
-      );
+      showLingAfriqError(context, 'Please select a language');
       return;
     }
 
@@ -67,11 +66,17 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
           durationMinutes: _durationMinutes,
         );
 
-    if (room != null && mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Room created successfully!')),
-      );
+    if (!mounted) return;
+    if (room != null) {
+      showLingAfriqSuccess(context, 'Room created! You can invite others to join.');
       Navigator.pop(context, room);
+    } else {
+      final err = ref.read(socialAudioProvider).error;
+      showLingAfriqError(
+        context,
+        err?.isNotEmpty == true ? err! : 'Couldn\'t create room. Please try again.',
+        onRetry: () => _createRoom(),
+      );
     }
   }
 
@@ -129,12 +134,22 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Room'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Create Room'),
+            Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+          ],
+        ),
       ),
       body: LoadingOverlay(
         isLoading: state.isLoading,
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(4.w),
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.lg,
+            vertical: PanAfricanSpacing.md,
+          ),
           child: Form(
             key: _formKey,
             child: Column(
@@ -146,15 +161,16 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                   decoration: InputDecoration(
                     labelText: 'Room Name',
                     hintText: 'e.g., Yoruba Conversation Practice',
+                    helperText: 'At least 3 characters',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                     ),
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Please enter a room name';
+                      return 'Enter a room name';
                     }
-                    if (value.length < 3) {
+                    if (value.trim().length < 3) {
                       return 'Room name must be at least 3 characters';
                     }
                     return null;
@@ -182,7 +198,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                 ),
                 SizedBox(height: 4.h),
 
-                // Language selection
+                // Language selection — all supported African languages
                 DropdownButtonFormField<String>(
                   value: _selectedLanguage,
                   decoration: InputDecoration(
@@ -191,18 +207,20 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                       borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                     ),
                   ),
-                  items: ['Yoruba', 'Swahili', 'Zulu', 'Igbo', 'Hausa', 'Xhosa', 'Amharic']
-                      .map((lang) => DropdownMenuItem(
-                            value: lang,
-                            child: Text(lang),
-                          ))
-                      .toList(),
+                  items: SupportedLanguages.allLanguages.map((langKey) {
+                    final info = SupportedLanguages.getLanguageInfo(langKey);
+                    final name = info['name'] as String? ?? langKey;
+                    return DropdownMenuItem<String>(
+                      value: langKey,
+                      child: Text(name),
+                    );
+                  }).toList(),
                   onChanged: (value) {
                     setState(() => _selectedLanguage = value);
                   },
                   validator: (value) {
-                    if (value == null) {
-                      return 'Please select a language';
+                    if (value == null || value.isEmpty) {
+                      return 'Select a language for this room';
                     }
                     return null;
                   },
@@ -351,13 +369,10 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                 // Create button
                 SizedBox(
                   width: double.infinity,
-                  child: FilledButton.icon(
+                  child: PanAfricanButton(
+                    label: 'Create Room',
+                    icon: Icons.add,
                     onPressed: _createRoom,
-                    icon: const Icon(Icons.add),
-                    label: const Text('Create Room'),
-                    style: FilledButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 3.h),
-                    ),
                   ),
                 ),
               ],

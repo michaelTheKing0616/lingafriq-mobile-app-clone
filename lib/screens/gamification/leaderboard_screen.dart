@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/lingafriq_ui_helpers.dart';
 import '../../providers/leaderboard_provider.dart';
 import '../../providers/socket_provider.dart';
 import '../../models/leaderboard_entry_model.dart';
@@ -26,6 +28,9 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: LeaderboardType.global);
+    });
     _tabController.addListener(() {
       setState(() {
         switch (_tabController.index) {
@@ -41,7 +46,17 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         }
       });
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: _currentType);
+        final tribe = _currentType == LeaderboardType.tribe
+            ? ref.read(gamificationProvider.notifier).gamification.tribe
+            : null;
+        final country = _currentType == LeaderboardType.country
+            ? ref.read(userProvider)?.nationality
+            : null;
+        ref.read(leaderboardProvider.notifier).fetchLeaderboards(
+          type: _currentType,
+          tribe: tribe,
+          country: country,
+        );
       });
     });
   }
@@ -77,7 +92,14 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Leaderboards'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Leaderboards'),
+            Text('LingAfriq', style: TextStyle(fontSize: 12, color: Colors.grey)),
+          ],
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
@@ -121,27 +143,12 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
 
   Widget _buildLeaderboardList(LeaderboardType type, List<LeaderboardEntry> entries) {
     if (entries.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.leaderboard, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'No rankings yet',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            FilledButton(
-              onPressed: () {
-                ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type);
-              },
-              child: const Text('Refresh'),
-            ),
-          ],
-        ),
+      return LingAfriqEmptyState(
+        icon: Icons.leaderboard_outlined,
+        title: 'No rankings yet',
+        subtitle: 'Complete lessons and quizzes to climb the leaderboard.',
+        actionLabel: 'Refresh',
+        onAction: () => ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type),
       );
     }
 

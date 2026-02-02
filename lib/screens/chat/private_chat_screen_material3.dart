@@ -11,6 +11,9 @@ import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/widgets/primary_button.dart';
 
 /// Redesigned Private Chat with Material 3
 class PrivateChatScreenMaterial3 extends HookConsumerWidget {
@@ -28,23 +31,28 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
     final messageController = useTextEditingController();
     final messages = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(false);
+    final loadError = useState<String?>(null);
     final scrollController = useScrollController();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> loadMessages() async {
+      loadError.value = null;
       try {
         final response = await ApiService.get(
           '/chat/private/$otherUserId',
         );
 
-        if (response.statusCode == 200 && response.data['data'] != null) {
-          messages.value = List<Map<String, dynamic>>.from(response.data['data']);
+        if (response.statusCode == 200 && response.data != null) {
+          final data = response.data as Map<String, dynamic>?;
+          final raw = data?['data'] ?? data?['messages'];
+          messages.value = raw is List
+              ? raw.map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()}).toList()
+              : [];
         }
       } catch (e) {
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
-        }
+        loadError.value = 'Unable to load messages. Tap Retry to try again.';
+        if (context.mounted) ErrorHandler.showError(context, e);
       }
     }
 
@@ -102,7 +110,13 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-      body: Container(
+      body: ResponsiveSafeArea(
+        child: loadError.value != null && messages.value.isEmpty
+            ? LingAfriqRetryBlock(
+                message: loadError.value!,
+                onRetry: () => loadMessages(),
+              )
+            : Container(
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
