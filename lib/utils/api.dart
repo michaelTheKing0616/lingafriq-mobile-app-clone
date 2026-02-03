@@ -111,6 +111,7 @@ class Api {
   
   // Tribes API endpoints
   static const String tribes = 'api/tribes';
+  static const String tribesClassrooms = 'api/tribes/classrooms';
   static String tribeDetails(String id) => 'api/tribes/$id';
   static String tribeJoin(String id) => 'api/tribes/$id/join';
   static String tribeLeave(String id) => 'api/tribes/$id/leave';
