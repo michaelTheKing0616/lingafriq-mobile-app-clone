@@ -264,9 +264,12 @@ class ApiService {
     
     if (error.response != null) {
       final data = error.response!.data;
-      message = data is Map
-          ? (data['message'] ?? data['error'] ?? data['detail'] ?? message)
-          : message;
+      if (data is Map) {
+        final msg = data['message'] ?? data['error'] ?? data['detail'];
+        message = msg is String ? msg : (msg?.toString() ?? message);
+      } else if (data is String && data.trim().isNotEmpty) {
+        message = data.trim();
+      }
     } else if (error.type == DioExceptionType.connectionTimeout) {
       message = 'Connection timeout. Please check your internet connection.';
     } else if (error.type == DioExceptionType.receiveTimeout) {

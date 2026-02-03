@@ -28,6 +28,7 @@ import '../services/conversation_analytics_service.dart';
 import '../services/vocabulary_progress_service.dart';
 import '../services/review_progress_service.dart';
 import '../utils/structured_logger.dart';
+import '../utils/api_service.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -1269,10 +1270,6 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
         _turn = ConversationTurn.ai;
         _userInterrupt = false;
 
-        if (_groqApiKey == 'YOUR_GROQ_API_KEY' || _groqApiKey.isEmpty) {
-          throw Exception('AI Chat is not configured. Please set your Groq API key.');
-        }
-
         // Try different model names if previous one failed
         final currentModel = _modelNames[modelIndex];
 
@@ -1393,6 +1390,65 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
             .join('\n\n');
         if (enhancedSystemPrompt.isNotEmpty) {
           effectiveSystemPrompt = enhancedSystemPrompt;
+        }
+
+        // When app has no Groq key, use backend completion proxy (no streaming)
+        if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
+          try {
+            await ApiService.initialize();
+            final apiMessages = messagesList
+                .map<Map<String, dynamic>>((m) => {'role': m['role'] as String, 'content': m['content'] as String})
+                .toList();
+            final resp = await ApiService.post(
+              '/api/ai/chat/completion',
+              data: {
+                'messages': apiMessages,
+                'systemPrompt': effectiveSystemPrompt ?? systemPrompt,
+                'temperature': _mode == PolieMode.translation ? 0.2 : 0.7,
+                'max_tokens': 500,
+              },
+            );
+            if (resp.statusCode == 200 && resp.data != null) {
+              final content = (resp.data is Map) ? (resp.data['content']?.toString() ?? '').trim() : '';
+              if (content.isNotEmpty) {
+                final assistantMessage = ChatMessage(
+                  role: 'assistant',
+                  content: content,
+                  timestamp: DateTime.now(),
+                );
+                _messages.add(assistantMessage);
+                _turn = ConversationTurn.user;
+                state = state.copyWith(isLoading: false);
+                return;
+              }
+              throw Exception('AI returned an empty response. Please try again.');
+            }
+            // Non-200 response (e.g. if validateStatus allowed it): extract error from body
+            final respData = resp.data;
+            String errMsg = 'Request failed. Please try again.';
+            if (respData is Map) {
+              errMsg = (respData['error'] ?? respData['message'] ?? respData['detail'] ?? errMsg).toString();
+            } else if (respData is String && respData.trim().isNotEmpty) {
+              errMsg = respData.trim();
+            }
+            throw Exception(errMsg);
+          } on DioException catch (e) {
+            final data = e.response?.data;
+            String errMsg = 'Request failed. Please try again.';
+            if (data is Map) {
+              errMsg = (data['error'] ?? data['message'] ?? data['detail'] ?? errMsg).toString();
+            } else if (data is String && data.trim().isNotEmpty) {
+              errMsg = data.trim();
+            } else if (e.response?.statusCode == 401) {
+              errMsg = 'Please sign in to use AI chat.';
+            } else if (e.response?.statusCode == 429) {
+              errMsg = 'Too many requests. Please wait a moment and try again.';
+            } else if (e.type == DioExceptionType.connectionTimeout ||
+                e.type == DioExceptionType.receiveTimeout) {
+              errMsg = 'Connection timed out. Please check your connection and try again.';
+            }
+            throw Exception(errMsg);
+          }
         }
         
         // Log the final message structure for debugging

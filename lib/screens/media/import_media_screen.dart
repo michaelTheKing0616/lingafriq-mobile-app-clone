@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../../utils/error_handler.dart';
+import '../../utils/api_service.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -28,9 +30,15 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
   bool _isLoading = false;
   final TextEditingController _urlController = TextEditingController();
   final TextEditingController _textController = TextEditingController();
+  /// Media uploaded to backend (for transcription/translation/lesson)
+  String? _uploadedMediaId;
+  String _processingStatus = 'idle'; // idle | pending | processing | completed | failed
+  String? _processingError;
+  Timer? _pollTimer;
 
   @override
   void dispose() {
+    _pollTimer?.cancel();
     _urlController.dispose();
     _textController.dispose();
     super.dispose();
@@ -222,7 +230,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                       Expanded(
                         child: _FormatCard(
                           title: 'Images',
-                          formats: 'JPG, PNG',
+                          formats: 'JPG, PNG, WEBP',
                           isDark: isDark,
                         ),
                       ),
@@ -238,12 +246,67 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                       Expanded(
                         child: _FormatCard(
                           title: 'Audio',
-                          formats: 'MP3, WAV',
+                          formats: 'MP3, WAV, M4A',
                           isDark: isDark,
                         ),
                       ),
                     ],
                   ),
+                  SizedBox(height: 2.h),
+                  Text(
+                    'Text (TXT) is read directly. Images/audio/video are uploaded, transcribed, translated, and can become lessons.',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: isDark ? Colors.white60 : Colors.black54,
+                    ),
+                  ),
+                  SizedBox(height: 2.h),
+                  Text('Target language', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
+                  SizedBox(height: 1.h),
+                  _buildLanguageSelector(context, isDark),
+                  if (_processingStatus == 'pending' || _processingStatus == 'processing') ...[
+                    SizedBox(height: 3.h),
+                    LinearProgressIndicator(color: AppColors.primaryGreen),
+                    SizedBox(height: 1.h),
+                    Text(
+                      'Transcribing and translating…',
+                      style: TextStyle(fontSize: 14.sp, color: isDark ? Colors.white70 : Colors.black54),
+                    ),
+                  ],
+                  if (_processingError != null) ...[
+                    SizedBox(height: 2.h),
+                    Container(
+                      padding: EdgeInsets.all(4.w),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.error_outline, color: Colors.red, size: 20.sp),
+                          SizedBox(width: 2.w),
+                          Expanded(child: Text(_processingError!, style: TextStyle(fontSize: 13.sp, color: Colors.red))),
+                        ],
+                      ),
+                    ),
+                  ],
+                  if (_importedText != null && _importedText!.isNotEmpty) ...[
+                    SizedBox(height: 3.h),
+                    _buildPreviewCard(context, _importedText!, isDark),
+                    SizedBox(height: 2.h),
+                    FilledButton(
+                      onPressed: _isLoading ? null : () => _createLesson(context),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.primaryGreen,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                        ),
+                      ),
+                      child: const Text('Create lesson'),
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -391,36 +454,40 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
     );
   }
 
+  /// Backend-supported media extensions (upload → transcribe/translate → lesson)
+  static const List<String> _uploadExtensions = [
+    'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg',
+    'mp3', 'wav', 'ogg', 'webm', 'aac', 'm4a',
+    'mp4', 'mov',
+  ];
+
   Future<void> _importFromFile() async {
     setState(() => _isLoading = true);
+    _processingError = null;
     try {
       final result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['txt'],
+        allowedExtensions: ['txt', ..._uploadExtensions],
       );
 
-      if (result != null && result.files.single.path != null) {
-        final path = result.files.single.path!;
-        final ext = (result.files.single.name.split('.').lastOrNull ?? '').toLowerCase();
-        if (ext != 'txt') {
-          setState(() => _isLoading = false);
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Only .txt files can be read directly. For PDF/DOC, paste text or use URL import.'),
-                backgroundColor: Colors.orange,
-              ),
-            );
-          }
-          return;
-        }
+      if (result == null || result.files.single.path == null) {
+        setState(() => _isLoading = false);
+        return;
+      }
+
+      final path = result.files.single.path!;
+      final name = result.files.single.name;
+      final ext = (name.split('.').lastOrNull ?? '').toLowerCase();
+
+      // Text: read directly (safe; no binary)
+      if (ext == 'txt') {
         final file = File(path);
         final bytes = await file.length();
         if (bytes > 2 * 1024 * 1024) {
           setState(() => _isLoading = false);
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('File too large. Use a file under 2 MB or paste text.')),
+              const SnackBar(content: Text('Text file too large. Use a file under 2 MB.')),
             );
           }
           return;
@@ -428,22 +495,144 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
         final text = await file.readAsString();
         setState(() {
           _importedText = text;
+          _uploadedMediaId = null;
+          _processingStatus = 'idle';
           _isLoading = false;
         });
-      } else {
-        setState(() => _isLoading = false);
+        return;
       }
+
+      // Image/Audio/Video: upload to backend for transcription/translation/lesson
+      if (!_uploadExtensions.contains(ext)) {
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Supported: TXT (direct), or images/audio/video (upload for transcription).'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+
+      await ApiService.initialize();
+      final resp = await ApiService.uploadFile(
+        'media/upload',
+        path,
+        additionalData: {
+          'title': name,
+          if (_selectedLanguage != null) 'language': _selectedLanguage!,
+        },
+      );
+
+      if (resp.statusCode != 201 && resp.statusCode != 200) {
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(resp.data is Map ? (resp.data['message'] ?? resp.data['error'] ?? 'Upload failed').toString() : 'Upload failed'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+        return;
+      }
+
+      final data = resp.data is Map ? resp.data as Map<String, dynamic> : null;
+      final media = data?['data'] is Map ? data!['data'] as Map<String, dynamic> : data;
+      final id = media?['_id']?.toString() ?? media?['id']?.toString();
+      if (id == null || id.isEmpty) {
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Upload succeeded but server did not return media ID.'), backgroundColor: Colors.orange),
+          );
+        }
+        return;
+      }
+
+      setState(() {
+        _uploadedMediaId = id;
+        _processingStatus = 'pending';
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Uploaded. Transcribing and translating…'),
+            backgroundColor: AppColors.primaryGreen,
+          ),
+        );
+      }
+      _pollMediaStatus();
     } catch (e) {
       setState(() => _isLoading = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(ErrorHandler.userFacingMessage(e)),
+            content: Text(ErrorHandler.getUserFriendlyError(e)),
             backgroundColor: Colors.red,
           ),
         );
       }
     }
+  }
+
+  Future<void> _pollMediaStatus() async {
+    if (_uploadedMediaId == null) return;
+    _pollTimer?.cancel();
+    final id = _uploadedMediaId!;
+
+    Future<void> check() async {
+      try {
+        await ApiService.initialize();
+        final resp = await ApiService.get('media/$id/analysis');
+        if (resp.statusCode != 200 || resp.data == null) return;
+        final data = resp.data is Map ? resp.data as Map<String, dynamic> : null;
+        final analysis = data?['data'] is Map ? data!['data'] as Map<String, dynamic> : data;
+        final status = analysis?['processing_status']?.toString();
+        final transcription = analysis?['transcription']?.toString();
+        final translation = analysis?['translation']?.toString();
+        final error = analysis?['processing_error']?.toString();
+
+        if (!mounted) return;
+        if (status == 'completed') {
+          _pollTimer?.cancel();
+          setState(() {
+            _processingStatus = 'completed';
+            _importedText = (transcription ?? translation ?? '').trim();
+            _processingError = null;
+          });
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Transcription and translation ready.'), backgroundColor: AppColors.primaryGreen),
+            );
+          }
+          return;
+        }
+        if (status == 'failed') {
+          _pollTimer?.cancel();
+          setState(() {
+            _processingStatus = 'failed';
+            _processingError = error ?? 'Processing failed';
+          });
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(_processingError ?? 'Processing failed'), backgroundColor: Colors.red),
+            );
+          }
+          return;
+        }
+        setState(() => _processingStatus = status ?? 'processing');
+      } catch (_) {
+        // Ignore poll errors; will retry next tick
+      }
+    }
+
+    await check();
+    if (!mounted || _processingStatus == 'completed' || _processingStatus == 'failed') return;
+    _pollTimer = Timer.periodic(const Duration(seconds: 3), (_) => check());
   }
 
   void _showUrlImportDialog(BuildContext context, bool isDark) {
@@ -582,7 +771,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
       );
       return;
     }
-    
+
     if (_selectedLanguage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -592,9 +781,71 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
       );
       return;
     }
-    
-    // Use Polie to create a structured lesson from the imported text
+
+    if (_uploadedMediaId != null) {
+      _createLessonFromBackendMedia(context);
+      return;
+    }
     _createLessonWithPolie(context);
+  }
+
+  Future<void> _createLessonFromBackendMedia(BuildContext context) async {
+    if (_uploadedMediaId == null || _selectedLanguage == null) return;
+    setState(() => _isLoading = true);
+    try {
+      await ApiService.initialize();
+      final resp = await ApiService.post(
+        'media/$_uploadedMediaId/generate-lesson',
+        data: {
+          'language': _selectedLanguage!,
+          'userLevel': 'A1',
+        },
+      );
+      if (resp.statusCode == 200 && resp.data != null) {
+        final data = resp.data is Map ? resp.data as Map<String, dynamic> : null;
+        final lessonData = data?['data'] ?? data;
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Lesson created successfully!'),
+              backgroundColor: AppColors.primaryGreen,
+              action: SnackBarAction(
+                label: 'View',
+                onPressed: () {},
+              ),
+            ),
+          );
+          final lessonId = lessonData is Map ? lessonData['id'] ?? lessonData['_id'] : null;
+          if (lessonId != null) {
+            Navigator.pushNamed(context, '/lesson-detail', arguments: {'lessonId': lessonId})
+                .catchError((_) => Navigator.pushNamed(context, '/curriculum'));
+          } else {
+            Navigator.pushNamed(context, '/curriculum').catchError((_) {});
+          }
+        }
+      } else {
+        setState(() => _isLoading = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(resp.data is Map ? (resp.data['message'] ?? resp.data['error'] ?? 'Failed to create lesson').toString() : 'Failed to create lesson'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      setState(() => _isLoading = false);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(ErrorHandler.getUserFriendlyError(e)),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
   
   Future<void> _createLessonWithPolie(BuildContext context) async {
