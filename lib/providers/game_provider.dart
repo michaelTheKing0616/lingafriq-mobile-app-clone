@@ -127,8 +127,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Map result to SRS quality (0-5)
       final quality = _mapResultToQuality(result, confidence);
       
-      // Update SRS
-      await _updateSRS(_currentSession!.userId, cardId, quality);
+      // Update SRS (include language for backend sync key)
+      await _updateSRS(_currentSession!.userId, cardId, _currentSession!.language, quality);
 
       // Send telemetry
       await _sendTelemetry('game_turn', {
@@ -239,15 +239,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         for (var item in dataList) {
           if (item is Map<String, dynamic>) {
             try {
+              final cId = item['id'] ?? item['card_id'] ?? 'card_${cards.length}';
+              final lang = item['language'] ?? language;
               cards.add(PhraseCard(
-                cardId: item['id'] ?? item['card_id'] ?? 'card_${cards.length}',
-                language: item['language'] ?? language,
+                cardId: cId.toString(),
+                language: lang.toString(),
                 text: item['text'] ?? item['phrase'] ?? '',
                 ascii: item['ascii'] ?? item['text'] ?? '',
                 gloss: item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '',
                 level: item['level'] ?? level ?? 'A0',
                 tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${item['id'] ?? cards.length}'] ?? SRSState(),
+                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cId}_$lang'] ?? SRSState(),
               ));
             } catch (e) {
               logger.error('Error parsing card from API', tag: 'game-provider', error: e);
@@ -430,18 +432,19 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       ],
     };
 
-    final data = fallbackData[lang] ?? fallbackData['yoruba']!;
+      final data = fallbackData[lang] ?? fallbackData['yoruba']!;
     for (var i = 0; i < count && i < data.length; i++) {
       final item = data[i % data.length];
+      final cardId = '${lang}_card_$i';
       cards.add(PhraseCard(
-        cardId: '${lang}_card_${i}',
+        cardId: cardId,
         language: language,
         text: item['text'] as String,
         ascii: item['text'] as String, // Simplified
         gloss: item['gloss'] as String,
         level: level ?? 'A0',
         tags: (item['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
-        srs: _userSRS['${_currentSession?.userId ?? 'user'}_${lang}_card_$i'] ?? SRSState(),
+        srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
       ));
     }
 
@@ -469,9 +472,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Update SRS state for a card
-  Future<void> _updateSRS(String userId, String cardId, int quality) async {
-    final key = '${userId}_$cardId';
+  /// Update SRS state for a card. Key includes language for backend sync (cardId_language).
+  Future<void> _updateSRS(String userId, String cardId, String language, int quality) async {
+    final key = '${userId}_${cardId}_$language';
     final current = _userSRS[key] ?? SRSState();
 
     // SM-2 algorithm variant
@@ -518,12 +521,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final user = ref.read(userProvider);
       if (user == null) return;
 
+      final sessionJson = session.toJson();
+      sessionJson['duration_ms'] = session.durationMs;
+      sessionJson['accuracy'] = session.accuracy;
+      sessionJson['correct_count'] = session.correctCount;
+      sessionJson['total_turns'] = session.totalTurns;
       final syncProvider = ref.read(backendSyncProvider.notifier);
       await syncProvider.queueSync(SyncTask(
         type: SyncType.gameSession,
         data: {
           'user_id': user.id.toString(),
-          'session': session.toJson(),
+          'session': sessionJson,
           'timestamp': DateTime.now().toIso8601String(),
         },
       ));
@@ -532,7 +540,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Sync SRS to backend
+  /// Sync SRS to backend. Sends keys as "cardId|language" so backend can parse card_id and language.
   Future<void> _syncSRSToBackend() async {
     try {
       final user = ref.read(userProvider);
@@ -540,9 +548,19 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final syncProvider = ref.read(backendSyncProvider.notifier);
       final srsData = <String, dynamic>{};
+      final userIdPrefix = '${user.id}_';
       _userSRS.forEach((key, value) {
-        srsData[key] = value.toJson();
+        if (!key.startsWith(userIdPrefix)) return;
+        final rest = key.substring(userIdPrefix.length);
+        final lastUnderscore = rest.lastIndexOf('_');
+        if (lastUnderscore <= 0) return;
+        final language = rest.substring(lastUnderscore + 1);
+        if (language.isEmpty) return;
+        final cardId = rest.substring(0, lastUnderscore);
+        srsData['$cardId|$language'] = value.toJson();
       });
+
+      if (srsData.isEmpty) return;
 
       await syncProvider.queueSync(SyncTask(
         type: SyncType.gameSRS,

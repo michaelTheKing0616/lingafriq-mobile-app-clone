@@ -142,24 +142,24 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.lesson,
-                        label: 'Tutor Mode',
+                        label: 'Polie Tutor',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: TutorDashboardScreen()),
+                            SmoothPageRoute(child: const PolieModeSelectionScreen()),
                           );
                         },
                         isDark: isDark,
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.chat,
-                        label: 'AI Assistant (Polie)',
+                        label: 'AI Chat',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: PolieModeSelectionScreen()),
+                            SmoothPageRoute(child: AILanguageSelectionScreen()),
                           );
                         },
                         isDark: isDark,

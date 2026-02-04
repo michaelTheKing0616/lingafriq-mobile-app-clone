@@ -244,14 +244,13 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               isDark: isDark,
             ).animate(delay: 100.ms).fadeIn(duration: 300.ms).scale(begin: Offset(0.9, 0.9)),
             _QuickActionCard(
-              title: 'AI Assistant',
+              title: 'AI Chat',
               icon: Icons.chat_bubble,
               color: PanAfricanColors.kenteBlue,
               onTap: () {
                 Navigator.push(
                   context,
-                  SmoothPageRoute(child: AILanguageSelectionScreen(),
-                  ),
+                  SmoothPageRoute(child: AILanguageSelectionScreen()),
                 );
               },
               isDark: isDark,

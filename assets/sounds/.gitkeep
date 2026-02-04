@@ -1,0 +1,2 @@
+# Add sound files here: xp_gain.mp3, level_up.mp3, etc.
+# SoundEffectsService will use them; haptic feedback is used when files are missing.

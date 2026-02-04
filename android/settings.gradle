@@ -53,8 +53,8 @@ pluginManagement {
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
 
-    // ✅ Android Gradle Plugin (required by androidx dependencies)
-    id "com.android.application" version "8.9.1" apply false
+    // ✅ Android Gradle Plugin (compatible with Flutter 3.27+)
+    id "com.android.application" version "8.6.0" apply false
 
     // ✅ Google Services Plugin
     id "com.google.gms.google-services" version "4.4.2" apply false

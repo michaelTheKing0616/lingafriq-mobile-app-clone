@@ -1,18 +1,31 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/utils/supported_languages.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
-/// Grammar Explanation Mode Screen
+/// Common grammar topics for autocomplete (African languages + general).
+const List<String> _kGrammarTopicSuggestions = [
+  'Verb conjugation', 'Present tense', 'Past tense', 'Future tense',
+  'Noun classes', 'Noun agreement', 'Plural formation', 'Subject markers',
+  'Object markers', 'Possessive pronouns', 'Demonstratives', 'Adjectives',
+  'Word order', 'Questions', 'Negation', 'Imperative mood', 'Conditionals',
+  'Relative clauses', 'Tone and meaning', 'Honorifics', 'Greetings',
+  'Politeness markers', 'Proverbs and idioms',
+];
+
+/// Grammar Explanation Mode Screen — knowledge card, topic autocomplete, lesson view, Try It drawer.
 class TutorGrammarModeScreen extends HookConsumerWidget {
   const TutorGrammarModeScreen({Key? key}) : super(key: key);
 
@@ -25,8 +38,14 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
     final grammarResult = useState<Map<String, dynamic>?>(null);
     final localizationService = useMemoized(() => DynamicLocalizationService());
     final availableLanguages = AppLanguage.values;
+    final topicInput = useState('');
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final filteredTopics = _kGrammarTopicSuggestions
+        .where((s) =>
+            s.toLowerCase().contains(topicInput.value.trim().toLowerCase()))
+        .toList();
 
     Future<Map<String, dynamic>> _generateGrammarWithGroq({
       required String topic,
@@ -49,6 +68,12 @@ TOPIC: $topic
 Return STRICT JSON ONLY (no markdown, no code fences) in this exact shape:
 {
   "canonicalRule": "1-3 sentence rule explanation, concise but complete",
+  "grammarTree": "A short syntax tree or structure diagram in text (e.g. S -> NP VP, or one line per level). Show how a typical sentence in this topic is structured.",
+  "sentenceAnatomy": [
+    {"part": "exact word or phrase from an example", "label": "Subject|Verb|Object|Modifier|Particle|etc.", "colorHint": "subject"},
+    {"part": "...", "label": "...", "colorHint": "verb"}
+  ],
+  "compareENFR": "2-4 sentences: how this grammar differs in English vs French vs $language (word order, markers, etc.).",
   "examples": [
     {"target": "Example sentence in $language (with correct diacritics if applicable)", "translation": "English translation"},
     {"target": "...", "translation": "..."}
@@ -96,14 +121,15 @@ Quality requirements:
             parsed = jsonDecode(content.substring(start, end + 1)) as Map<String, dynamic>;
           }
         }
-        if (parsed == null || parsed.isEmpty) throw Exception('AI returned an invalid format. Please try again.');
-        return {
-          'canonicalRule': parsed['canonicalRule']?.toString() ?? '',
-          'examples': (parsed['examples'] is List) ? parsed['examples'] : const [],
-          'commonMistakes':
-              (parsed['commonMistakes'] is List) ? parsed['commonMistakes'] : const [],
-          'practice': (parsed['practice'] is List) ? parsed['practice'] : const [],
-        };
+        if (parsed == null || parsed.isEmpty) {
+          return {
+            'canonicalRule': content.trim(),
+            'examples': const [],
+            'commonMistakes': const [],
+            'practice': const [],
+          };
+        }
+        return _normalizeGrammarResult(parsed);
       }
 
       final dio = Dio(
@@ -162,15 +188,24 @@ Quality requirements:
       }
 
       if (parsed == null || parsed.isEmpty) {
-        throw Exception('AI returned an invalid format. Please try again.');
+        return {
+          'canonicalRule': content.trim(),
+          'examples': const [],
+          'commonMistakes': const [],
+          'practice': const [],
+        };
       }
+      return _normalizeGrammarResult(parsed);
+    }
 
-      // Normalize and defend against shape drift.
+    Map<String, dynamic> _normalizeGrammarResult(Map<String, dynamic> parsed) {
       return {
         'canonicalRule': parsed['canonicalRule']?.toString() ?? '',
+        'grammarTree': parsed['grammarTree']?.toString(),
+        'sentenceAnatomy': (parsed['sentenceAnatomy'] is List) ? parsed['sentenceAnatomy'] : null,
+        'compareENFR': parsed['compareENFR']?.toString(),
         'examples': (parsed['examples'] is List) ? parsed['examples'] : const [],
-        'commonMistakes':
-            (parsed['commonMistakes'] is List) ? parsed['commonMistakes'] : const [],
+        'commonMistakes': (parsed['commonMistakes'] is List) ? parsed['commonMistakes'] : const [],
         'practice': (parsed['practice'] is List) ? parsed['practice'] : const [],
       };
     }
@@ -202,259 +237,539 @@ Quality requirements:
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Generating grammar explanation...',
-      child: Container(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: SingleChildScrollView(
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: isDark
+                  ? [PolieColors.primaryDark, PolieColors.obsidian]
+                  : [PolieColors.surfaceContainerLight, Colors.white],
+            ),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(PolieSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  PolieGlassCard(
+                    padding: EdgeInsets.all(PolieSpacing.md),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: topicController,
+                          onChanged: (v) => topicInput.value = v,
+                          decoration: InputDecoration(
+                            hintText: 'e.g., verb conjugation, noun cases, tenses',
+                            hintStyle: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.zero,
+                          ),
+                          style: PolieTypography.body(context),
+                        ),
+                        if (filteredTopics.isNotEmpty) ...[
+                          SizedBox(height: PolieSpacing.sm),
+                          Text(
+                            'Suggestions',
+                            style: PolieTypography.label(context).copyWith(
+                              color: PolieColors.textSecondary,
+                            ),
+                          ),
+                          SizedBox(height: PolieSpacing.xs),
+                          Wrap(
+                            spacing: PolieSpacing.xs,
+                            runSpacing: PolieSpacing.xs,
+                            children: filteredTopics.take(8).map((topic) {
+                              return GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.selectionClick();
+                                  topicController.text = topic;
+                                  topicInput.value = topic;
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: PolieSpacing.sm,
+                                    vertical: PolieSpacing.xs,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: PolieColors.royalAmethyst.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(PolieRadius.pill),
+                                    border: Border.all(
+                                      color: PolieColors.royalAmethyst.withOpacity(0.5),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    topic,
+                                    style: PolieTypography.bodySmall(context),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: PolieSpacing.md),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PolieLanguagePill(
+                          label: selectedLanguage.value.name,
+                          regionTag: SupportedLanguages.getCountry(selectedLanguage.value.code),
+                          isSelected: true,
+                          accentColor: polieAccentForLanguage(
+                            SupportedLanguages.getKeyFromCode(selectedLanguage.value.code) ?? selectedLanguage.value.name.toLowerCase(),
+                          ),
+                          onTap: () => _showLanguagePicker(context, availableLanguages, selectedLanguage.value, (v) => selectedLanguage.value = v),
+                        ),
+                      ),
+                      SizedBox(width: PolieSpacing.sm),
+                      Expanded(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm),
+                          decoration: BoxDecoration(
+                            color: PolieColors.surfaceGlass,
+                            borderRadius: BorderRadius.circular(PolieRadius.md),
+                            border: Border.all(color: Colors.white.withOpacity(0.1)),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: userLevel.value,
+                              isExpanded: true,
+                              dropdownColor: PolieColors.surfaceContainer,
+                              items: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+                                  .map((l) => DropdownMenuItem(value: l, child: Text(l, style: PolieTypography.label(context))))
+                                  .toList(),
+                              onChanged: (v) { if (v != null) userLevel.value = v; },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: PolieSpacing.lg),
+                  Center(
+                    child: PoliePrimaryButton(
+                      label: 'Explain Grammar',
+                      loading: isLoading.value,
+                      enabled: !isLoading.value,
+                      icon: Icons.menu_book_rounded,
+                      onPressed: explainGrammar,
+                    ),
+                  ),
+                  if (grammarResult.value != null) ...[
+                    SizedBox(height: PolieSpacing.xl),
+                    _buildGrammarResult(context, grammarResult.value!, isDark, userLevel.value)
+                        .animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showLanguagePicker(
+    BuildContext context,
+    List<AppLanguage> languages,
+    AppLanguage current,
+    void Function(AppLanguage) onSelected,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => Container(
+        decoration: BoxDecoration(
+          color: Theme.of(ctx).brightness == Brightness.dark ? PolieColors.surfaceContainer : Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
+        ),
+        padding: EdgeInsets.symmetric(vertical: PolieSpacing.lg),
+        child: SafeArea(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min,
             children: [
-            // Topic Input
-            TextField(
-              controller: topicController,
-              decoration: InputDecoration(
-                labelText: 'Grammar Topic',
-                hintText: 'e.g., verb conjugation, noun cases, tenses',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                ),
-                filled: true,
-                fillColor: isDark
-                    ? PanAfricanColors.surfaceContainerDark
-                    : PanAfricanColors.surfaceContainerLight,
-              ),
-              style: PanAfricanTypography.bodyLarge(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.md),
+              Text('Select language', style: PolieTypography.h2(ctx)),
+              SizedBox(height: PolieSpacing.md),
+              ...languages.map((lang) => ListTile(
+                title: Text(lang.name, style: PolieTypography.body(ctx)),
+                onTap: () { HapticFeedback.selectionClick(); onSelected(lang); Navigator.pop(ctx); },
+              )),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-            // Language and Level Row
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownButtonFormField<AppLanguage>(
-                    value: selectedLanguage.value,
-                    decoration: InputDecoration(
-                      labelText: 'Language',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                      ),
-                      filled: true,
-                      fillColor: isDark
-                          ? PanAfricanColors.surfaceContainerDark
-                          : PanAfricanColors.surfaceContainerLight,
-                    ),
-                    items: availableLanguages.map((lang) => DropdownMenuItem<AppLanguage>(
-                      value: lang,
-                      child: Text(
-                        lang.name.substring(0, 1).toUpperCase() + lang.name.substring(1),
-                      ),
-                    )).toList(),
-                    onChanged: (value) {
-                      if (value != null) selectedLanguage.value = value;
-                    },
-                  ),
-                ),
-                SizedBox(width: PanAfricanSpacing.md),
-                Expanded(
-                  child: DropdownButtonFormField<String>(
-                    value: userLevel.value,
-                    decoration: InputDecoration(
-                      labelText: 'Level',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                      ),
-                      filled: true,
-                      fillColor: isDark
-                          ? PanAfricanColors.surfaceContainerDark
-                          : PanAfricanColors.surfaceContainerLight,
-                    ),
-                    items: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-                        .map((level) => DropdownMenuItem(
-                              value: level,
-                              child: Text(level),
-                            ))
-                        .toList(),
-                    onChanged: (value) {
-                      if (value != null) userLevel.value = value;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
-
-            // Explain Button
-            ElevatedButton(
-              onPressed: isLoading.value ? null : explainGrammar,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PanAfricanColors.primary,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                ),
-              ),
-              child: isLoading.value
-                  ? SizedBox(
-                      height: 20.h,
-                      width: 20.w,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                  : Text(
-                      'Explain Grammar',
-                      style: PanAfricanTypography.labelLarge(context)
-                          .copyWith(color: Colors.white),
-                    ),
-            ),
-            SizedBox(height: PanAfricanSpacing.xl),
-
-            // Grammar Result
-            if (grammarResult.value != null)
-              _buildGrammarResult(
-                context,
-                grammarResult.value!,
-                isDark,
-              ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
-          ],
-        ), // closes Column
-      ), // closes SingleChildScrollView
-    ), // closes Container
-  ); // closes LoadingOverlay
+  void _showTryItDrawer(BuildContext context, List<dynamic> practice, String userLevel) {
+    if (practice.isEmpty) return;
+    HapticFeedback.mediumImpact();
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => _TryItDrawerContent(
+        practice: practice,
+        userLevel: userLevel,
+      ),
+    );
   }
 
   Widget _buildGrammarResult(
     BuildContext context,
     Map<String, dynamic> result,
     bool isDark,
+    String userLevel,
   ) {
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-      decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        boxShadow: PanAfricanShadows.md,
-      ),
+    final practiceList = result['practice'] is List ? result['practice'] as List : <dynamic>[];
+    return PolieGlassCard(
+      hasGlow: true,
+      glowColor: PolieColors.goldEmber,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Canonical Rule
-          Text(
-            'Rule',
-            style: PanAfricanTypography.titleLarge(context),
+          Row(
+            children: [
+              Expanded(child: Text('Rule', style: PolieTypography.h2(context))),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+                decoration: BoxDecoration(
+                  color: PolieColors.goldEmber.withOpacity(0.25),
+                  borderRadius: BorderRadius.circular(PolieRadius.pill),
+                  border: Border.all(color: PolieColors.goldEmber.withOpacity(0.5)),
+                ),
+                child: Text(
+                  'Lesson view',
+                  style: PolieTypography.label(context).copyWith(
+                    color: PolieColors.goldEmber,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          Text(
-            result['canonicalRule'] ?? '',
-            style: PanAfricanTypography.bodyLarge(context),
-          ),
-          SizedBox(height: PanAfricanSpacing.lg),
-
-          // Examples
-          if (result['examples'] != null && (result['examples'] as List).isNotEmpty) ...[
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.md),
-            Text(
-              'Examples',
-              style: PanAfricanTypography.titleMedium(context),
+          SizedBox(height: PolieSpacing.sm),
+          Text(result['canonicalRule'] ?? '', style: PolieTypography.body(context)),
+          if (result['grammarTree'] != null && (result['grammarTree'] as String).trim().isNotEmpty) ...[
+            SizedBox(height: PolieSpacing.md),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.sm),
+            Text('Structure', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.xs),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(PolieSpacing.md),
+              decoration: BoxDecoration(
+                color: PolieColors.obsidian.withOpacity(0.5),
+                borderRadius: BorderRadius.circular(PolieRadius.sm),
+                border: Border.all(color: PolieColors.goldEmber.withOpacity(0.3)),
+              ),
+              child: SelectableText(
+                result['grammarTree'].toString().trim(),
+                style: PolieTypography.bodySmall(context).copyWith(height: 1.4),
+              ),
             ),
-            SizedBox(height: PanAfricanSpacing.sm),
+          ],
+          if (result['sentenceAnatomy'] != null && (result['sentenceAnatomy'] as List).isNotEmpty) ...[
+            SizedBox(height: PolieSpacing.md),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.sm),
+            Text('Sentence anatomy', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.xs),
+            Wrap(
+              spacing: PolieSpacing.xs,
+              runSpacing: PolieSpacing.xs,
+              children: (result['sentenceAnatomy'] as List).map((e) {
+                final m = e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{};
+                final part = m['part']?.toString() ?? '';
+                final label = m['label']?.toString() ?? '';
+                final hint = (m['colorHint']?.toString() ?? '').toLowerCase();
+                Color color = PolieColors.royalAmethyst;
+                if (hint.contains('subject')) color = PolieColors.electricTeal;
+                else if (hint.contains('verb')) color = PolieColors.goldEmber;
+                else if (hint.contains('object')) color = PolieColors.royalAmethyst;
+                return Container(
+                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+                  decoration: BoxDecoration(
+                    color: color.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(PolieRadius.sm),
+                    border: Border.all(color: color.withOpacity(0.5)),
+                  ),
+                  child: Text('$part ($label)', style: PolieTypography.bodySmall(context).copyWith(color: color)),
+                );
+              }).toList(),
+            ),
+          ],
+          if (result['compareENFR'] != null && (result['compareENFR'] as String).trim().isNotEmpty) ...[
+            SizedBox(height: PolieSpacing.md),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.sm),
+            Text('Compare EN / FR', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.xs),
+            Container(
+              padding: EdgeInsets.all(PolieSpacing.sm),
+              decoration: BoxDecoration(
+                color: PolieColors.electricTeal.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(PolieRadius.sm),
+                border: Border.all(color: PolieColors.electricTeal.withOpacity(0.3)),
+              ),
+              child: Text(result['compareENFR'].toString().trim(), style: PolieTypography.bodySmall(context)),
+            ),
+          ],
+          SizedBox(height: PolieSpacing.lg),
+          if (result['examples'] != null && (result['examples'] as List).isNotEmpty) ...[
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.md),
+            Text('Examples', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.sm),
             ...(result['examples'] as List).map((example) {
               final ex = example as Map<String, dynamic>;
-              return Card(
-                margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                color: isDark
-                    ? PanAfricanColors.surfaceContainerDark
-                    : PanAfricanColors.surfaceContainerLight,
-                child: ListTile(
-                  title: Text(
-                    ex['target'] ?? '',
-                    style: PanAfricanTypography.bodyMedium(context),
-                  ),
-                  subtitle: Text(
-                    ex['translation'] ?? '',
-                    style: PanAfricanTypography.bodySmall(context),
-                  ),
-                ),
-              );
-            }),
-          ],
-
-          // Common Mistakes
-          if (result['commonMistakes'] != null &&
-              (result['commonMistakes'] as List).isNotEmpty) ...[
-            SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.md),
-            Text(
-              'Common Mistakes',
-              style: PanAfricanTypography.titleMedium(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            ...(result['commonMistakes'] as List).map((mistake) {
               return Padding(
-                padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.warning_amber_rounded,
-                      color: PanAfricanColors.warning,
-                      size: 20.sp,
-                    ),
-                    SizedBox(width: PanAfricanSpacing.xs),
-                    Expanded(
-                      child: Text(
-                        mistake,
-                        style: PanAfricanTypography.bodyMedium(context),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ],
-
-          // Practice Exercises
-          if (result['practice'] != null && (result['practice'] as List).isNotEmpty) ...[
-            SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.md),
-            Text(
-              'Practice',
-              style: PanAfricanTypography.titleMedium(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            ...(result['practice'] as List).map((exercise) {
-              final ex = exercise as Map<String, dynamic>;
-              return Card(
-                margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                color: PanAfricanColors.primaryContainer.withOpacity(0.3),
-                child: Padding(
-                  padding: EdgeInsets.all(PanAfricanSpacing.md),
+                padding: EdgeInsets.only(bottom: PolieSpacing.sm),
+                child: Container(
+                  padding: EdgeInsets.all(PolieSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: PolieColors.surfaceGlass,
+                    borderRadius: BorderRadius.circular(PolieRadius.sm),
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        ex['prompt'] ?? '',
-                        style: PanAfricanTypography.bodyMedium(context),
-                      ),
-                      SizedBox(height: PanAfricanSpacing.xs),
-                      Text(
-                        'Answer: ${ex['answer'] ?? ''}',
-                        style: PanAfricanTypography.bodySmall(context)
-                            .copyWith(color: PanAfricanColors.primary),
-                      ),
+                      Text(ex['target'] ?? '', style: PolieTypography.body(context)),
+                      if (ex['translation'] != null && ex['translation'].toString().isNotEmpty)
+                        Text(ex['translation'] ?? '', style: PolieTypography.bodySmall(context)),
                     ],
                   ),
                 ),
               );
             }),
           ],
-        ], // closes Column children
-      ), // closes Column
-    ); // closes Container
+          if (result['commonMistakes'] != null && (result['commonMistakes'] as List).isNotEmpty) ...[
+            SizedBox(height: PolieSpacing.lg),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.md),
+            Text('Common Mistakes', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.sm),
+            ...(result['commonMistakes'] as List).map((mistake) => Padding(
+              padding: EdgeInsets.only(bottom: PolieSpacing.xs),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.warning_amber_rounded, color: PolieColors.error, size: 20),
+                  SizedBox(width: PolieSpacing.xs),
+                  Expanded(child: Text(mistake.toString(), style: PolieTypography.bodySmall(context))),
+                ],
+              ),
+            )),
+          ],
+          if (result['practice'] != null && (result['practice'] as List).isNotEmpty) ...[
+            SizedBox(height: PolieSpacing.lg),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.md),
+            Row(
+              children: [
+                Text('Practice', style: PolieTypography.label(context)),
+                SizedBox(width: PolieSpacing.md),
+                Text(
+                  'Level $userLevel',
+                  style: PolieTypography.bodySmall(context).copyWith(
+                    color: PolieColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: PolieSpacing.sm),
+            ...(result['practice'] as List).map((exercise) {
+              final ex = exercise as Map<String, dynamic>;
+              return Padding(
+                padding: EdgeInsets.only(bottom: PolieSpacing.sm),
+                child: Container(
+                  padding: EdgeInsets.all(PolieSpacing.md),
+                  decoration: BoxDecoration(
+                    color: PolieColors.royalAmethyst.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(PolieRadius.sm),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(ex['prompt'] ?? '', style: PolieTypography.body(context)),
+                      SizedBox(height: PolieSpacing.xs),
+                      Text('Answer: ${ex['answer'] ?? ''}', style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.royalAmethyst)),
+                    ],
+                  ),
+                ),
+              );
+            }),
+            SizedBox(height: PolieSpacing.sm),
+            Center(
+              child: PoliePrimaryButton(
+                label: 'Try It',
+                icon: Icons.touch_app_rounded,
+                onPressed: () => _showTryItDrawer(context, practiceList, userLevel),
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Try It drawer — micro-exercise: prompt, user input, reveal answer.
+class _TryItDrawerContent extends StatefulWidget {
+  final List<dynamic> practice;
+  final String userLevel;
+
+  const _TryItDrawerContent({
+    required this.practice,
+    required this.userLevel,
+  });
+
+  @override
+  State<_TryItDrawerContent> createState() => _TryItDrawerContentState();
+}
+
+class _TryItDrawerContentState extends State<_TryItDrawerContent> {
+  late int _index;
+  final _answerController = TextEditingController();
+  var _revealed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _index = 0;
+  }
+
+  @override
+  void dispose() {
+    _answerController.dispose();
+    super.dispose();
+  }
+
+  Map<String, dynamic> get _current {
+    final list = widget.practice;
+    if (list.isEmpty) return {};
+    final i = _index % list.length;
+    return list[i] is Map<String, dynamic>
+        ? list[i] as Map<String, dynamic>
+        : {};
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final prompt = _current['prompt']?.toString() ?? '';
+    final answer = _current['answer']?.toString() ?? '';
+    final hasNext = widget.practice.length > 1;
+
+    return Container(
+      padding: EdgeInsets.all(PolieSpacing.lg),
+      decoration: BoxDecoration(
+        color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
+        border: Border.all(color: PolieColors.royalAmethyst.withOpacity(0.3)),
+      ),
+      child: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Try It',
+                  style: PolieTypography.h2(context),
+                ),
+                SizedBox(width: PolieSpacing.sm),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: PolieColors.goldEmber.withOpacity(0.25),
+                    borderRadius: BorderRadius.circular(PolieRadius.pill),
+                  ),
+                  child: Text(
+                    '${_index + 1}/${widget.practice.length}',
+                    style: PolieTypography.bodySmall(context),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: PolieSpacing.md),
+            PolieGlassCard(
+              padding: EdgeInsets.all(PolieSpacing.md),
+              child: Text(prompt, style: PolieTypography.body(context)),
+            ),
+            SizedBox(height: PolieSpacing.md),
+            TextField(
+              controller: _answerController,
+              decoration: InputDecoration(
+                hintText: 'Type your answer...',
+                hintStyle: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(PolieRadius.md)),
+                filled: true,
+                fillColor: isDark ? PolieColors.obsidian.withOpacity(0.5) : Colors.white.withOpacity(0.9),
+              ),
+              style: PolieTypography.body(context),
+              maxLines: 2,
+            ),
+            SizedBox(height: PolieSpacing.md),
+            Row(
+              children: [
+                Expanded(
+                  child: PoliePrimaryButton(
+                    label: _revealed ? 'Correct answer' : 'Reveal answer',
+                    icon: _revealed ? Icons.check_circle : Icons.visibility,
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      setState(() => _revealed = true);
+                    },
+                  ),
+                ),
+                if (hasNext) ...[
+                  SizedBox(width: PolieSpacing.sm),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward_rounded, color: PolieColors.royalAmethyst),
+                    onPressed: () {
+                      HapticFeedback.selectionClick();
+                      _answerController.clear();
+                      setState(() {
+                        _index = (_index + 1) % widget.practice.length;
+                        _revealed = false;
+                      });
+                    },
+                  ),
+                ],
+              ],
+            ),
+            if (_revealed)
+              Padding(
+                padding: EdgeInsets.only(top: PolieSpacing.md),
+                child: PolieGlassCard(
+                  hasGlow: true,
+                  glowColor: PolieColors.electricTeal,
+                  padding: EdgeInsets.all(PolieSpacing.md),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Answer', style: PolieTypography.label(context)),
+                      SizedBox(height: PolieSpacing.xs),
+                      Text(answer, style: PolieTypography.body(context)),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

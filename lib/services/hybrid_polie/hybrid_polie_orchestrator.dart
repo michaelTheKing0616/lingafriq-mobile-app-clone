@@ -60,10 +60,14 @@ class HybridPolieOrchestrator {
           sourceLang: sourceLanguage ?? 'english',
           targetLang: targetLanguage,
           hfToken: effectiveHfToken,
+          includePhraseBreakdown: true,
         );
         rawOutput = translation.translation;
         modelUsed = translation.model;
         metadata['translation_confidence'] = translation.confidence;
+        if (translation.phraseBreakdowns != null && translation.phraseBreakdowns!.isNotEmpty) {
+          metadata['phraseBreakdowns'] = translation.phraseBreakdowns;
+        }
         break;
         
       case ModelType.afriteva:

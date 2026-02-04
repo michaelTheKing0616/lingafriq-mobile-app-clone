@@ -401,8 +401,8 @@ SUPPORTED AFRICAN LANGUAGES (verify accuracy):
 - Afrikaans (South Africa)
 - Pidgin English (Nigerian Pidgin)
 
-User's native language: $_sourceLanguage
-Target language: $_targetLanguage
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 
 AVOIDING WRONG-LANGUAGE RESPONSES:
 - Never begin Yoruba when asked about Swahili (or vice-versa).
@@ -528,8 +528,8 @@ SUPPORTED AFRICAN LANGUAGES:
 - Afrikaans
 - And many other African languages
 
-The user's native language is: $_sourceLanguage
-The user wants to learn: $_targetLanguage
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
+The user wants to learn: ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 
 TRANSLATION ACCURACY:
 - Always output **correct orthography + diacritics** for languages that require them
@@ -662,8 +662,8 @@ PROGRESS TRACKING:
 
 $scenarioContext
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current CEFR level: ${_cefrInfo.level}
 $examplesText
 
@@ -755,8 +755,8 @@ For common situations, provide starter templates:
 - Asking for help: "Ẹ lè ràn mí lọ́wọ́?"
 - Expressing opinions: "Mo rò pé..."
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current proficiency: ${_cefrInfo.level}
 
 Be warm, natural, encouraging, and culturally sensitive. Make conversation feel like talking to a friend who happens to be a native speaker.''';
@@ -859,8 +859,8 @@ OFFLINE MODE SUPPORT:
 - Support offline study
 - Sync progress when online
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current CEFR Level: ${_cefrInfo.level}
 
 Make vocabulary learning engaging, visual, and effective. Use spaced repetition to ensure long-term retention.''';
@@ -959,8 +959,8 @@ CUSTOM INTERVALS:
 - Support custom review schedules
 - Respect user preferences
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current CEFR Level: ${_cefrInfo.level}
 
 Make reviews efficient, engaging, and scientifically optimized for long-term retention. Celebrate progress and maintain motivation.''';
@@ -1406,6 +1406,10 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
                 'systemPrompt': effectiveSystemPrompt ?? systemPrompt,
                 'temperature': _mode == PolieMode.translation ? 0.2 : 0.7,
                 'max_tokens': 500,
+                'language': _targetLanguage,
+                'languageCode': SupportedLanguages.getLanguageCode(_targetLanguage),
+                'cefr': _cefrInfo.level,
+                'mode': _mode.name,
               },
             );
             if (resp.statusCode == 200 && resp.data != null) {

@@ -28,11 +28,19 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    static List<Map<String, dynamic>> _placeholderArticles() {
+      return [
+        {'_id': '1', 'title': 'Greetings Across Africa', 'slug': 'greetings-across-africa', 'excerpt': 'Learn how to say hello in Yoruba, Swahili, Zulu, and more.', 'category': 'language', 'published': true},
+        {'_id': '2', 'title': 'Proverbs and Wisdom', 'slug': 'proverbs-and-wisdom', 'excerpt': 'African proverbs that teach life lessons and cultural values.', 'category': 'culture', 'published': true},
+        {'_id': '3', 'title': 'Music and Rhythm', 'slug': 'music-and-rhythm', 'excerpt': 'The role of drumming and music in African languages and communication.', 'category': 'culture', 'published': true},
+        {'_id': '4', 'title': 'Family and Respect', 'slug': 'family-and-respect', 'excerpt': 'Terms for family members and showing respect in different African cultures.', 'category': 'language', 'published': true},
+        {'_id': '5', 'title': 'Markets and Bargaining', 'slug': 'markets-and-bargaining', 'excerpt': 'Essential phrases for shopping and bargaining in local markets.', 'category': 'language', 'published': true},
+      ];
+    }
+
     Future<void> loadArticles() async {
       isLoading.value = true;
       try {
-        // Use the canonical API route for articles (published content).
-        // The backend may return `data`, `results`, or a raw list depending on version.
         final response = await ApiService.get(
           Api.cultureArticles(published: true),
           queryParameters: selectedCategory.value != null
@@ -47,14 +55,19 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               : raw;
 
           if (listCandidate is List) {
-            articles.value =
-                List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+            final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+            articles.value = list.isNotEmpty ? list : _placeholderArticles();
+          } else {
+            articles.value = _placeholderArticles();
           }
+        } else {
+          articles.value = _placeholderArticles();
         }
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
+        articles.value = _placeholderArticles();
       } finally {
         isLoading.value = false;
       }

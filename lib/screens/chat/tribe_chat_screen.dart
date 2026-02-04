@@ -15,6 +15,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 
 /// Tribe Chat Screen with Material 3 Design
 class TribeChatScreen extends HookConsumerWidget {

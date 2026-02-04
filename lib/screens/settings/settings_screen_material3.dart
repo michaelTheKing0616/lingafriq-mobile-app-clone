@@ -25,6 +25,7 @@ import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/config/url_constants.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -41,11 +42,13 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     final biometricAvailable = useState<bool>(false);
     final biometricType = useState<String?>(null);
     final cacheEncryptionEnabled = useState<bool?>(null);
-    
-    // Check biometric availability
+    final polieSerifLanguageText = useState(false);
+
+    // Check biometric availability and load Polie serif preference
     useEffect(() {
       _checkBiometricAvailability(biometricAvailable, biometricType, biometricEnabled);
       _loadCacheEncryptionSetting(cacheEncryptionEnabled);
+      _loadPolieSerifPreference(polieSerifLanguageText);
       return null;
     }, []);
 
@@ -524,6 +527,13 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     final encryption = CacheEncryptionService();
     await encryption.initialize();
     enabled.value = await encryption.isEncryptionEnabled();
+  }
+
+  Future<void> _loadPolieSerifPreference(ValueNotifier<bool> value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final useSerif = prefs.getBool('polie_serif_language_text') ?? false;
+    value.value = useSerif;
+    PolieTypography.setUseSerifForLanguageText(useSerif);
   }
 
   void _showSyncSettings(BuildContext context, WidgetRef ref) async {

@@ -21,12 +21,14 @@ class TranslationService {
   
   /// Translate text using NLLB-200 (with caching)
   /// Priority: 1. Cache → 2. Backend API → 3. HuggingFace API → 4. Fallback
+  /// When [includePhraseBreakdown] is true, backend may return phraseBreakdowns for tap-to-highlight UI.
   Future<TranslationResult> translate({
     required String text,
     required String sourceLang,
     required String targetLang,
     String? hfToken,
     bool useCache = true,
+    bool includePhraseBreakdown = true,
   }) async {
     // Check cache first
     if (useCache) {
@@ -53,6 +55,7 @@ class TranslationService {
         text: text,
         sourceLang: sourceLang,
         targetLang: targetLang,
+        includePhraseBreakdown: includePhraseBreakdown,
       );
       if (backendResult != null) {
         // Cache successful result
@@ -144,6 +147,7 @@ class TranslationService {
     required String text,
     required String sourceLang,
     required String targetLang,
+    bool includePhraseBreakdown = false,
   }) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -154,6 +158,7 @@ class TranslationService {
           'text': text,
           'sourceLang': sourceLang,
           'targetLang': targetLang,
+          if (includePhraseBreakdown) 'includePhraseBreakdown': true,
         },
         options: Options(
           contentType: 'application/json',
@@ -163,14 +168,24 @@ class TranslationService {
       );
       
       if (response.statusCode == 200) {
-        final data = response.data;
+        final data = response.data as Map<String, dynamic>?;
+        if (data == null) return null;
+        List<Map<String, String>>? phraseBreakdowns;
+        if (data['phraseBreakdowns'] is List) {
+          phraseBreakdowns = (data['phraseBreakdowns'] as List)
+              .map((e) => e is Map ? Map<String, String>.from(e.map((k, v) => MapEntry(k.toString(), v?.toString() ?? ''))) : null)
+              .whereType<Map<String, String>>()
+              .toList();
+          if (phraseBreakdowns.isEmpty) phraseBreakdowns = null;
+        }
         return TranslationResult(
-          translation: data['translation'] ?? text,
+          translation: data['translation']?.toString() ?? text,
           sourceText: text,
           sourceLang: sourceLang,
           targetLang: targetLang,
-          model: data['model'] ?? 'NLLB-200-backend',
+          model: data['model']?.toString() ?? 'NLLB-200-backend',
           confidence: (data['confidence'] ?? 0.9).toDouble(),
+          phraseBreakdowns: phraseBreakdowns,
         );
       }
       return null;
@@ -189,6 +204,7 @@ class TranslationService {
       model: 'fallback',
       confidence: 0.3,
       error: error,
+      phraseBreakdowns: null,
     );
   }
   
@@ -223,6 +239,8 @@ class TranslationResult {
   final String model;
   final double confidence;
   final String? error;
+  /// Phrase-level breakdown for tap-to-highlight UI: sourcePhrase, targetPhrase, note.
+  final List<Map<String, String>>? phraseBreakdowns;
   
   TranslationResult({
     required this.translation,
@@ -232,5 +250,6 @@ class TranslationResult {
     required this.model,
     required this.confidence,
     this.error,
+    this.phraseBreakdowns,
   });
 }

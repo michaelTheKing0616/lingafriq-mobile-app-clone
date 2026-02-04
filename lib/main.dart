@@ -29,6 +29,7 @@ import 'services/monitoring/sentry_service.dart';
 import 'config/secrets_manager.dart';
 import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
+import 'utils/polie_design_tokens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,10 @@ void main() async {
   // Configure image cache for optimal performance
   ImageCacheManager.configureCache();
   final prefs = await SharedPreferences.getInstance();
+
+  // Polie: apply serif language text preference from settings
+  final polieSerif = prefs.getBool('polie_serif_language_text') ?? false;
+  PolieTypography.setUseSerifForLanguageText(polieSerif);
   
   // Initialize Firebase
   await Firebase.initializeApp(

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
+    show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/sound_effects_service.dart';
 import 'ai_mode_selection_screen.dart';
 
-/// Beautiful Material 3 Language Selection Screen
+/// AI Chat — Screen 1: Choose Your Language
+/// Full-screen globe abstraction with floating language orbs and color auras.
 class AILanguageSelectionScreen extends HookConsumerWidget {
   const AILanguageSelectionScreen({Key? key}) : super(key: key);
 
-  // Language data with flags - using AppLanguage enum
   List<Map<String, String>> get languages {
     final flagMap = {
       'yoruba': '🇳🇬',
@@ -33,13 +34,12 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
       'wolof': '🇸🇳',
       'somali': '🇸🇴',
     };
-    
     return AppLanguage.values.map((lang) {
       final name = lang.name.replaceAll('_', ' ');
-      final capitalizedName = name.split(' ').map((word) => 
-        word[0].toUpperCase() + word.substring(1)
-      ).join(' ');
-      
+      final capitalizedName = name
+          .split(' ')
+          .map((word) => word[0].toUpperCase() + word.substring(1))
+          .join(' ');
       return {
         'code': lang.name,
         'name': capitalizedName,
@@ -50,173 +50,289 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedLanguage = useState<String?>(null);
     final isLoading = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final soundEffects = ref.watch(soundEffectsProvider);
 
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Loading...',
       child: Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : PanAfricanGradients.forest,
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Header
-              Padding(
-                padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                child: Column(
-                  children: [
-                    Text(
-                      'Choose Your Language',
-                      style: PanAfricanTypography.displayMedium(context)
-                          .copyWith(color: Colors.white),
-                    ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
-                    SizedBox(height: PanAfricanSpacing.sm),
-                    Text(
-                      'Select the language you want to practice',
-                      style: PanAfricanTypography.bodyMedium(context)
-                          .copyWith(color: Colors.white70),
-                    ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
-                  ],
-                ),
-              ),
-
-              // Language Grid
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? PanAfricanColors.surfaceDark
-                        : PanAfricanColors.surfaceLight,
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(PanAfricanRadius.xl),
-                    ),
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: isDark
+                  ? [
+                      PolieColors.primary,
+                      PolieColors.primaryDark,
+                      PolieColors.obsidian,
+                    ]
+                  : [
+                      PolieColors.primary.withOpacity(0.95),
+                      PolieColors.primaryDark.withOpacity(0.9),
+                      PolieColors.obsidian.withOpacity(0.85),
+                    ],
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(PolieSpacing.lg),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Choose Your Language',
+                        style: PolieTypography.h1(context).copyWith(
+                          color: PolieColors.textPrimary,
+                        ),
+                      ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
+                      SizedBox(height: PolieSpacing.sm),
+                      Text(
+                        'Tap a language to begin • Long-press for dialects',
+                        style: PolieTypography.bodySmall(context).copyWith(
+                          color: PolieColors.textSecondary,
+                        ),
+                      ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
+                    ],
                   ),
-                  child: GridView.builder(
-                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: PanAfricanSpacing.md,
-                      mainAxisSpacing: PanAfricanSpacing.md,
-                      childAspectRatio: 1.2,
-                    ),
-                    itemCount: languages.length,
-                    itemBuilder: (context, index) {
-                      final lang = languages[index];
-                      final isSelected = selectedLanguage.value == lang['code'];
-
-                      return _LanguageCard(
-                        language: lang,
-                        isSelected: isSelected,
+                ),
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return _OrbGrid(
+                        languages: languages,
                         isDark: isDark,
-                        onTap: () {
-                          selectedLanguage.value = lang['code'];
+                        onTap: (lang) {
                           HapticFeedback.mediumImpact();
-                          Future.delayed(Duration(milliseconds: 300), () {
-                            Navigator.push(
-                              context,
-                              SmoothPageRoute(
-                                child: AIModeSelectionScreen(
-                                  language: lang['code']!,
-                                  languageName: lang['name']!,
-                                ),
+                          soundEffects.play(SoundEffect.buttonTap);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(
+                              child: AIModeSelectionScreen(
+                                language: lang['code']!,
+                                languageName: lang['name']!,
                               ),
-                            );
-                          });
+                            ),
+                          );
                         },
-                      )
-                          .animate(delay: (index * 50).ms)
-                          .fadeIn(duration: 300.ms)
-                          .scale(begin: Offset(0.8, 0.8), end: Offset(1, 1));
+                        onLongPress: (lang) => _showDialectsBottomSheet(
+                          context,
+                          lang['name']!,
+                          lang['code']!,
+                          isDark,
+                        ),
+                      );
                     },
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
+    );
+  }
+
+  void _showDialectsBottomSheet(
+    BuildContext context,
+    String languageName,
+    String code,
+    bool isDark,
+  ) {
+    HapticFeedback.mediumImpact();
+    final dialects = _getDialectsForLanguage(code);
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: EdgeInsets.all(PolieSpacing.lg),
+        decoration: BoxDecoration(
+          color: isDark
+              ? PolieColors.surfaceGlassDark
+              : PolieColors.surfaceGlass,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
+          border: Border.all(
+            color: PolieColors.royalAmethyst.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$languageName — Dialects & variants',
+              style: PolieTypography.h2(context),
+            ),
+            SizedBox(height: PolieSpacing.md),
+            ...dialects.map(
+              (d) => ListTile(
+                title: Text(d, style: PolieTypography.body(context)),
+                onTap: () => Navigator.pop(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  List<String> _getDialectsForLanguage(String code) {
+    switch (code.toLowerCase()) {
+      case 'yoruba':
+        return ['Standard Yorùbá', 'Ìgbómìnà', 'Ìjẹ̀bú', 'Èkìtì', 'Òǹdó'];
+      case 'hausa':
+        return ['Standard Hausa', 'Kano', 'Sokoto', 'Daura'];
+      case 'igbo':
+        return ['Standard Igbo', 'Central Igbo', 'Nigerian Igbo'];
+      case 'swahili':
+        return ['Kiswahili sanifu', 'Kiangazi', 'Kimvita', 'Kiunguja'];
+      case 'pidgin':
+      case 'nigerian_pidgin':
+        return ['Nigerian Pidgin', 'Wes Kos', 'Benín'];
+      default:
+        return ['Standard variety', 'Regional variants'];
+    }
+  }
+}
+
+/// Floating orbs with color aura; positions use simple grid with slight randomness for organic feel.
+class _OrbGrid extends StatelessWidget {
+  final List<Map<String, String>> languages;
+  final bool isDark;
+  final void Function(Map<String, String> lang) onTap;
+  final void Function(Map<String, String> lang) onLongPress;
+
+  const _OrbGrid({
+    required this.languages,
+    required this.isDark,
+    required this.onTap,
+    required this.onLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        spacing: PolieSpacing.lg,
+        runSpacing: PolieSpacing.lg,
+        children: List.generate(languages.length, (index) {
+          final lang = languages[index];
+          final code = lang['code'] ?? '';
+          final accent = polieAccentForLanguage(code);
+          final delay = (index * 60).ms;
+          return _LanguageOrb(
+            name: lang['name']!,
+            flag: lang['flag']!,
+            accentColor: accent,
+            isDark: isDark,
+            onTap: () => onTap(lang),
+            onLongPress: () => onLongPress(lang),
+          )
+              .animate(delay: delay)
+              .fadeIn(duration: 350.ms)
+              .scale(begin: Offset(0.6, 0.6), end: Offset(1, 1), curve: Curves.easeOut);
+        }),
+      ),
     );
   }
 }
 
-class _LanguageCard extends StatelessWidget {
-  final Map<String, String> language;
-  final bool isSelected;
+class _LanguageOrb extends StatelessWidget {
+  final String name;
+  final String flag;
+  final Color accentColor;
   final bool isDark;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
-  const _LanguageCard({
-    required this.language,
-    required this.isSelected,
+  const _LanguageOrb({
+    required this.name,
+    required this.flag,
+    required this.accentColor,
     required this.isDark,
     required this.onTap,
+    required this.onLongPress,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Container(
+        width: 100.w,
+        height: 110.h,
         decoration: BoxDecoration(
-          gradient: isSelected
-              ? PanAfricanGradients.sunset
-              : LinearGradient(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: accentColor.withOpacity(0.4),
+              blurRadius: 24,
+              spreadRadius: 0,
+            ),
+            BoxShadow(
+              color: accentColor.withOpacity(0.2),
+              blurRadius: 40,
+              spreadRadius: -4,
+            ),
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: onTap,
+            onLongPress: onLongPress,
+            customBorder: const CircleBorder(),
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    isDark
-                        ? PanAfricanColors.cardDark
-                        : PanAfricanColors.cardLight,
-                    isDark
-                        ? PanAfricanColors.surfaceContainerDark
-                        : PanAfricanColors.surfaceContainerLight,
+                    accentColor.withOpacity(0.35),
+                    accentColor.withOpacity(0.15),
                   ],
                 ),
-          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          boxShadow: isSelected ? PanAfricanShadows.glowGold(0.3) : PanAfricanShadows.md,
-          border: Border.all(
-            color: isSelected
-                ? PanAfricanColors.secondary
-                : PanAfricanColors.borderLight.withOpacity(0.3),
-            width: isSelected ? 3 : 1,
+                border: Border.all(
+                  color: accentColor.withOpacity(0.6),
+                  width: 2,
+                ),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(flag, style: TextStyle(fontSize: 32.sp)),
+                  SizedBox(height: PolieSpacing.xs),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: PolieSpacing.xs),
+                    child: Text(
+                      name,
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: PolieTypography.label(context).copyWith(
+                        color: isDark
+                            ? PolieColors.textPrimary
+                            : PolieColors.textPrimaryLight,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              language['flag'] ?? '🌍',
-              style: TextStyle(fontSize: 48.sp),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              language['name'] ?? '',
-              style: PanAfricanTypography.titleMedium(context).copyWith(
-                color: isSelected ? Colors.white : null,
-                fontWeight: FontWeight.w700,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            if (isSelected) ...[
-              SizedBox(height: PanAfricanSpacing.xs),
-              Icon(
-                Icons.check_circle,
-                color: Colors.white,
-                size: 24.sp,
-              ),
-            ],
-          ],
         ),
       ),
     );
   }
 }
-
