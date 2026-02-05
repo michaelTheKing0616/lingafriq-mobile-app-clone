@@ -40,7 +40,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    static const int _maxFileSizeBytes = 100 * 1024 * 1024; // 100 MB
+    const int maxFileSizeBytes = 100 * 1024 * 1024; // 100 MB
 
     Future<void> pickFile() async {
       try {
@@ -53,7 +53,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
         if (result != null && result.files.single.path != null) {
           final file = result.files.single;
           final size = file.size;
-          if (size > _maxFileSizeBytes && context.mounted) {
+          if (size > maxFileSizeBytes && context.mounted) {
             showLingAfriqError(context, 'File is too large. Please choose a file under 100 MB.');
             return;
           }
@@ -202,12 +202,20 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Import Media'),
-              Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+              Text('Import Media', style: PanAfricanTypography.titleLarge(context)),
+              Text('LingAfriq', style: PanAfricanTypography.labelSmall(context)),
             ],
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
           elevation: 0,
+          leading: IconButton(
+            icon: Icon(PanAfricanIcons.back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -273,6 +281,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   }).toList(),
                   onChanged: (value) {
                     if (value == null) return;
+                    HapticFeedback.selectionClick();
                     selectedLanguage.value = value;
                   },
                 ),
@@ -375,7 +384,10 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     bool isDark,
   ) {
     return GestureDetector(
-      onTap: onPick,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onPick();
+      },
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.xl),
         decoration: BoxDecoration(
@@ -466,6 +478,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   children: [
                     TextButton.icon(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         showDialog(
                           context: context,
                           builder: (context) => EditTranscriptionDialog(
@@ -485,6 +498,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     SizedBox(width: PanAfricanSpacing.sm),
                     TextButton.icon(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         showDialog(
                           context: context,
                           builder: (context) => CustomizeTranscriptionDialog(

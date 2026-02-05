@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
@@ -10,11 +12,11 @@ import '../../services/telemetry_service.dart';
 import '../../utils/gamification_integration.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../utils/performance_utils.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
 import '../../widgets/rive_global_guide.dart';
 import '../../games/animation/rive_asset_loader.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Base class for all game screens - handles common functionality
 abstract class BaseGameScreen extends ConsumerStatefulWidget {
@@ -150,16 +152,34 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   /// Show dialog when user runs out of hearts
   void _showOutOfHeartsDialog() {
+    HapticFeedback.mediumImpact();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         title: Row(
           children: [
-            Icon(Icons.favorite_border, color: Colors.red[400], size: 28),
-            const SizedBox(width: 8),
-            const Text('Out of Hearts!'),
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.xs),
+              decoration: BoxDecoration(
+                color: PanAfricanColors.kenteRed.withOpacity(0.1),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Icon(
+                Icons.favorite_border_rounded,
+                color: PanAfricanColors.kenteRed,
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Text(
+              'Out of Hearts!',
+              style: PanAfricanTypography.titleLarge(context),
+            ),
           ],
         ),
         content: Column(
@@ -167,32 +187,47 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           children: [
             Text(
               'You\'ve run out of hearts. Would you like to refill to continue?',
-              style: TextStyle(color: Colors.grey[700]),
+              style: PanAfricanTypography.bodyMedium(context),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: PanAfricanSpacing.md),
             const HeartsWidget(showRefill: false),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () {
+              HapticFeedback.lightImpact();
               Navigator.pop(ctx);
-              Navigator.pop(context); // Exit game
+              Navigator.pop(context);
             },
-            child: const Text('Exit Game'),
+            child: Text(
+              'Exit Game',
+              style: PanAfricanTypography.labelLarge(context),
+            ),
           ),
           FilledButton.icon(
             onPressed: () async {
+              HapticFeedback.lightImpact();
               final success = await GamificationIntegrationHelper.of(ref).refillHearts();
               if (success && mounted) {
                 Navigator.pop(ctx);
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Hearts refilled! Continue playing.')),
+                  SnackBar(
+                    content: Text(
+                      'Hearts refilled! Continue playing.',
+                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                    ),
+                    backgroundColor: PanAfricanColors.primary,
+                  ),
                 );
               }
             },
-            icon: const Icon(Icons.favorite),
-            label: const Text('Refill Hearts'),
+            icon: Icon(Icons.favorite_rounded, size: 20.sp),
+            label: Text('Refill Hearts', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
+            style: FilledButton.styleFrom(
+              backgroundColor: PanAfricanColors.kenteRed,
+              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+            ),
           ),
         ],
       ),
@@ -240,41 +275,63 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   void _showCompletionDialog(GameSession session, int xpEarned) {
     final isPerfect = session.accuracy >= 1.0;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    HapticFeedback.mediumImpact();
     
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         title: Row(
           children: [
-            Icon(
-              isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
-              color: isPerfect ? Colors.amber : Colors.green,
-              size: 28,
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.xs),
+              decoration: BoxDecoration(
+                color: isPerfect 
+                    ? PanAfricanColors.secondary.withOpacity(0.2)
+                    : PanAfricanColors.primary.withOpacity(0.1),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Icon(
+                isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
+                color: isPerfect ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                size: 24.sp,
+              ),
             ),
-            const SizedBox(width: 8),
-            Text(isPerfect ? 'Perfect Score! 🎉' : 'Game Complete!'),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Text(
+                isPerfect ? 'Perfect Score!' : 'Game Complete!',
+                style: PanAfricanTypography.titleLarge(context),
+              ),
+            ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildStatRow(Icons.track_changes, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
-            _buildStatRow(Icons.done_all, 'Correct', '${session.correctCount}/${session.totalTurns}'),
-            _buildStatRow(Icons.timer, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
-            const Divider(),
-            _buildStatRow(Icons.star, 'XP Earned', '+$xpEarned', isHighlight: true),
+            _buildStatRow(Icons.track_changes_rounded, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
+            _buildStatRow(Icons.done_all_rounded, 'Correct', '${session.correctCount}/${session.totalTurns}'),
+            _buildStatRow(Icons.timer_rounded, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
+            Divider(height: PanAfricanSpacing.lg, color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            _buildStatRow(Icons.star_rounded, 'XP Earned', '+$xpEarned', isHighlight: true),
           ],
         ),
         actions: [
           FilledButton.icon(
             onPressed: () {
+              HapticFeedback.lightImpact();
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.check),
-            label: const Text('Done'),
+            icon: Icon(Icons.check_rounded, size: 20.sp),
+            label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
+            style: FilledButton.styleFrom(
+              backgroundColor: PanAfricanColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+            ),
           ),
         ],
       ),
@@ -282,21 +339,31 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   }
 
   Widget _buildStatRow(IconData icon, String label, String value, {bool isHighlight = false}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final highlightColor = isHighlight ? PanAfricanColors.primary : null;
+    
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xs),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: isHighlight ? Colors.green : Colors.grey),
-          const SizedBox(width: 12),
-          Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+          Icon(
+            icon,
+            size: 20.sp,
+            color: isHighlight 
+                ? PanAfricanColors.primary 
+                : (isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          Text(
+            label,
+            style: PanAfricanTypography.bodyMedium(context),
+          ),
           const Spacer(),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: isHighlight ? FontWeight.bold : FontWeight.w500,
-              color: isHighlight ? Colors.green : Colors.black87,
-            ),
+            style: isHighlight
+                ? PanAfricanTypography.titleMedium(context, color: PanAfricanColors.primary)
+                : PanAfricanTypography.titleSmall(context),
           ),
         ],
       ),
@@ -305,29 +372,61 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          title: Text(
+            widget.getGameType().displayName,
+            style: PanAfricanTypography.titleMedium(context, color: Colors.white),
           ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              (widget.onBack ?? () => Navigator.pop(context))();
+            },
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
+          ),
+          elevation: 0,
         ),
-        body: Stack(
-          children: [
-            const Center(child: CircularProgressIndicator()),
-            // Rive guide in corner
-            Positioned(
-              top: 16,
-              right: 16,
-              child: RiveGlobalGuide(
-                width: 80.w,
-                height: 80.h,
-                showInCorner: true,
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark ? PanAfricanGradients.darkSurface : null,
+            color: isDark ? null : PanAfricanColors.surfaceLight,
+          ),
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      color: PanAfricanColors.primary,
+                      strokeWidth: 3,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    Text(
+                      'Loading game...',
+                      style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              Positioned(
+                top: PanAfricanSpacing.md,
+                right: PanAfricanSpacing.md,
+                child: RiveGlobalGuide(
+                  width: 80.w,
+                  height: 80.h,
+                  showInCorner: true,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -335,40 +434,90 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     if (_error != null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          title: Text(
+            widget.getGameType().displayName,
+            style: PanAfricanTypography.titleMedium(context, color: Colors.white),
           ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              (widget.onBack ?? () => Navigator.pop(context))();
+            },
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
+          ),
+          elevation: 0,
         ),
-        body: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text('Error: $_error'),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: _initializeGame,
-                    child: const Text('Retry'),
-                  ),
-                ],
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark ? PanAfricanGradients.darkSurface : null,
+            color: isDark ? null : PanAfricanColors.surfaceLight,
+          ),
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                      decoration: BoxDecoration(
+                        color: PanAfricanColors.error.withOpacity(0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        Icons.error_rounded,
+                        size: 48.sp,
+                        color: PanAfricanColors.error,
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    Text(
+                      'Something went wrong',
+                      style: PanAfricanTypography.titleMedium(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xs),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xl),
+                      child: Text(
+                        _error!,
+                        style: PanAfricanTypography.bodyMedium(context),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.lg),
+                    FilledButton.icon(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        _initializeGame();
+                      },
+                      icon: Icon(Icons.refresh_rounded, size: 20.sp),
+                      label: Text('Try Again', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
+                      style: FilledButton.styleFrom(
+                        backgroundColor: PanAfricanColors.primary,
+                        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.lg,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // Rive guide in corner
-            Positioned(
-              top: 16,
-              right: 16,
-              child: RiveGlobalGuide(
-                width: 80.w,
-                height: 80.h,
-                showInCorner: true,
+              Positioned(
+                top: PanAfricanSpacing.md,
+                right: PanAfricanSpacing.md,
+                child: RiveGlobalGuide(
+                  width: 80.w,
+                  height: 80.h,
+                  showInCorner: true,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }
@@ -376,10 +525,9 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     return Stack(
       children: [
         buildGameContent(context),
-        // Rive guide in corner for all games
         Positioned(
-          top: 16,
-          right: 16,
+          top: PanAfricanSpacing.md,
+          right: PanAfricanSpacing.md,
           child: RiveGlobalGuide(
             width: 80.w,
             height: 80.h,

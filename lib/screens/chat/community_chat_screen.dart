@@ -173,14 +173,41 @@ class CommunityChatScreen extends HookConsumerWidget {
                       decoration: InputDecoration(
                         hintText: 'Type a message...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: PanAfricanColors.primary,
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: isDark
                             ? PanAfricanColors.surfaceDark
                             : PanAfricanColors.surfaceLight,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
                       ),
-                      onSubmitted: (_) => sendMessage(),
+                      onSubmitted: (_) {
+                        HapticFeedback.lightImpact();
+                        sendMessage();
+                      },
                     ),
                   ),
                   SizedBox(width: PanAfricanSpacing.sm),
@@ -192,7 +219,12 @@ class CommunityChatScreen extends HookConsumerWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Icon(Icons.send),
-                    onPressed: isLoading.value ? null : sendMessage,
+                    onPressed: isLoading.value
+                        ? null
+                        : () {
+                            HapticFeedback.lightImpact();
+                            sendMessage();
+                          },
                     color: PanAfricanColors.primary,
                   ),
                 ],
@@ -218,7 +250,9 @@ class _CommunityMessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sender = message['sender_id'] as Map<String, dynamic>?;
-    final senderName = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
+    final rawName = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
+    final senderName = rawName is String && rawName.isNotEmpty ? rawName : 'Unknown';
+    final timestamp = message['createdAt'] ?? message['timestamp'];
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -227,10 +261,10 @@ class _CommunityMessageBubble extends StatelessWidget {
         children: [
           // Avatar
           CircleAvatar(
-            radius: 20.r,
+            radius: 20.w,
             backgroundColor: PanAfricanColors.primary,
             child: Text(
-              senderName[0].toUpperCase(),
+              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
               style: PanAfricanTypography.labelMedium(context)
                   .copyWith(color: Colors.white),
             ),
@@ -241,19 +275,34 @@ class _CommunityMessageBubble extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  senderName,
-                  style: PanAfricanTypography.labelSmall(context)
-                      .copyWith(color: PanAfricanColors.primary),
+                Row(
+                  children: [
+                    Text(
+                      senderName,
+                      style: PanAfricanTypography.labelMedium(context)
+                          .copyWith(color: PanAfricanColors.primary),
+                    ),
+                    if (timestamp != null) ...[
+                      SizedBox(width: PanAfricanSpacing.xs),
+                      Text(
+                        _formatTimestamp(timestamp.toString()),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
+                      ),
+                    ],
+                  ],
                 ),
                 SizedBox(height: PanAfricanSpacing.xxs),
                 Container(
-                  padding: EdgeInsets.all(PanAfricanSpacing.md),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? PanAfricanColors.surfaceContainerDark
-                        : PanAfricanColors.surfaceContainerLight,
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                        ? PanAfricanColors.cardDark
+                        : PanAfricanColors.cardLight,
+                    borderRadius: PanAfricanRadius.lgBR,
                   ),
                   child: Text(
                     message['message'] ?? '',
@@ -266,6 +315,20 @@ class _CommunityMessageBubble extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatTimestamp(String timestamp) {
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m';
+      if (diff.inDays < 1) return '${diff.inHours}h';
+      return '${date.day}/${date.month}';
+    } catch (_) {
+      return '';
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -85,49 +87,60 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
       (user) => user['userId']?.toString() == widget.contact.id.toString(),
     );
 
+    final isDark = context.isDarkMode;
+    
     return Scaffold(
+      backgroundColor: isDark 
+          ? PanAfricanColors.surfaceDark 
+          : PanAfricanColors.surfaceLight,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
         titleSpacing: 0,
         title: Row(
           children: [
             CircleAvatar(
-              radius: 20,
-              backgroundColor: AppColors.primaryGreen,
+              radius: 20.w,
+              backgroundColor: PanAfricanColors.primary,
               child: Text(
                 widget.contact.username.isNotEmpty
                     ? widget.contact.username[0].toUpperCase()
                     : '?',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: PanAfricanTypography.labelMedium(context)
+                    .copyWith(color: Colors.white),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: PanAfricanSpacing.sm),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.contact.username,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: PanAfricanTypography.titleSmall(context),
                 ),
                 Row(
                   children: [
                     Icon(
                       Icons.circle,
                       size: 10,
-                      color: isPartnerOnline ? Colors.green : Colors.grey,
+                      color: isPartnerOnline 
+                          ? PanAfricanColors.success 
+                          : PanAfricanColors.neutralMedium,
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: PanAfricanSpacing.xxs),
                     Text(
                       isPartnerOnline ? 'Online' : 'Offline',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: isPartnerOnline ? Colors.green : Colors.grey,
+                      style: PanAfricanTypography.labelSmall(context).copyWith(
+                        color: isPartnerOnline 
+                            ? PanAfricanColors.success 
+                            : PanAfricanColors.neutralMedium,
                       ),
                     ),
                   ],
@@ -140,82 +153,100 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
+              HapticFeedback.selectionClick();
               Scaffold.of(context).openDrawer();
             },
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(Icons.lock_outline, size: 20),
+          Padding(
+            padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
+            child: Icon(Icons.lock_outline, size: 20, color: PanAfricanColors.neutralMedium),
           ),
         ],
       ),
       body: Column(
         children: [
+          // Encryption notice
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.md,
+              vertical: PanAfricanSpacing.sm,
+            ),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.08),
+              color: PanAfricanColors.primary.withOpacity(0.08),
               border: Border(
                 bottom: BorderSide(
-                  color: AppColors.primaryGreen.withOpacity(0.3),
+                  color: PanAfricanColors.primary.withOpacity(0.3),
                 ),
               ),
             ),
             child: Row(
               children: [
-                const Icon(Icons.shield, color: AppColors.primaryGreen, size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.shield, color: PanAfricanColors.primary, size: 20),
+                SizedBox(width: PanAfricanSpacing.sm),
                 Expanded(
                   child: Text(
                     'Messages are end-to-end encrypted. Only you and ${widget.contact.username} can read them.',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColors.primaryGreen.withOpacity(0.9),
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
+                      color: PanAfricanColors.primary.withOpacity(0.9),
                     ),
                   ),
                 ),
               ],
             ),
           ),
+          // Messages
           Expanded(
             child: messages.isEmpty
                 ? Center(
-                    child: Text(
-                      'No messages yet. Say hello to ${widget.contact.username} 👋',
-                      style: TextStyle(color: context.adaptive54),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.chat_bubble_outline,
+                          size: 64.w,
+                          color: PanAfricanColors.neutralMedium,
+                        ),
+                        SizedBox(height: PanAfricanSpacing.md),
+                        Text(
+                          'No messages yet',
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.xs),
+                        Text(
+                          'Say hello to ${widget.contact.username} 👋',
+                          style: PanAfricanTypography.bodySmall(context)
+                              .copyWith(color: PanAfricanColors.neutralMedium),
+                        ),
+                      ],
                     ),
                   )
                 : OptimizedListView.builder(
                     controller: _scrollController,
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
                       final isMe =
                           message['userId'] == currentUser.id.toString();
-                      return _buildMessageBubble(message, isMe);
+                      return _buildMessageBubble(message, isMe, isDark);
                     },
                   ),
           ),
-          _buildInput(isConnected && _roomId.isNotEmpty, currentUser),
+          _buildInput(isConnected && _roomId.isNotEmpty, currentUser, isDark),
         ],
       ),
     );
   }
 
-  Widget _buildInput(bool canSend, ProfileModel currentUser) {
+  Widget _buildInput(bool canSend, ProfileModel currentUser, bool isDark) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: context.isDarkMode
-                ? const Color(0xFF2A4A35)
-                : Colors.grey.shade200,
-          ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        boxShadow: PanAfricanShadows.md,
       ),
       child: Row(
         children: [
@@ -230,23 +261,54 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
                     ? 'Message ${widget.contact.username}...'
                     : 'Connecting...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide.none,
+                  borderRadius: PanAfricanRadius.lgBR,
+                  borderSide: BorderSide(
+                    color: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: PanAfricanRadius.lgBR,
+                  borderSide: BorderSide(
+                    color: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: PanAfricanRadius.lgBR,
+                  borderSide: BorderSide(
+                    color: PanAfricanColors.primary,
+                    width: 2,
+                  ),
                 ),
                 filled: true,
-                fillColor: context.isDarkMode
-                    ? const Color(0xFF102216)
-                    : Colors.grey.shade100,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                fillColor: isDark
+                    ? PanAfricanColors.surfaceDark
+                    : PanAfricanColors.surfaceLight,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: PanAfricanSpacing.md,
+                  vertical: PanAfricanSpacing.sm,
+                ),
               ),
+              style: PanAfricanTypography.bodyMedium(context),
+              onSubmitted: canSend ? (_) {
+                HapticFeedback.lightImpact();
+                _sendMessage(currentUser);
+              } : null,
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: PanAfricanSpacing.sm),
           IconButton.filled(
-            onPressed: canSend ? () => _sendMessage(currentUser) : null,
+            onPressed: canSend
+                ? () {
+                    HapticFeedback.lightImpact();
+                    _sendMessage(currentUser);
+                  }
+                : null,
             style: IconButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
+              backgroundColor: PanAfricanColors.primary,
               foregroundColor: Colors.white,
             ),
             icon: const Icon(Icons.send_rounded),
@@ -257,31 +319,27 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
   }
 
   Widget _buildMessageBubble(
-      Map<String, dynamic> message, bool isMe) {
+      Map<String, dynamic> message, bool isMe, bool isDark) {
     final timestamp = message['timestamp']?.toString();
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.sm,
+        ),
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
           color: isMe
-              ? AppColors.primaryGreen
-              : (context.isDarkMode ? const Color(0xFF2A4A35) : Colors.white),
-          borderRadius: BorderRadius.circular(18).copyWith(
+              ? PanAfricanColors.primary
+              : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+          borderRadius: PanAfricanRadius.lgBR.copyWith(
             bottomRight: isMe ? const Radius.circular(4) : null,
             bottomLeft: !isMe ? const Radius.circular(4) : null,
           ),
-          border: isMe
-              ? null
-              : Border.all(
-                  color: context.isDarkMode
-                      ? const Color(0xFF365640)
-                      : Colors.grey.shade200,
-                ),
         ),
         child: Column(
           crossAxisAlignment:
@@ -289,17 +347,17 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           children: [
             Text(
               message['message'] ?? '',
-              style: TextStyle(
-                color: isMe ? Colors.white : context.adaptive,
-                fontSize: 15.sp,
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: isMe ? Colors.white : null,
               ),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: PanAfricanSpacing.xxs),
             Text(
               _formatTime(timestamp),
-              style: TextStyle(
-                color: (isMe ? Colors.white70 : context.adaptive54),
-                fontSize: 10.sp,
+              style: PanAfricanTypography.labelSmall(context).copyWith(
+                color: isMe 
+                    ? Colors.white.withOpacity(0.7) 
+                    : PanAfricanColors.neutralMedium,
               ),
             ),
           ],

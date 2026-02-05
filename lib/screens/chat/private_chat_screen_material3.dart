@@ -207,14 +207,41 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                       decoration: InputDecoration(
                         hintText: 'Type a message...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: PanAfricanColors.primary,
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: isDark
                             ? PanAfricanColors.surfaceDark
                             : PanAfricanColors.surfaceLight,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
                       ),
-                      onSubmitted: (_) => sendMessage(),
+                      onSubmitted: (_) {
+                        HapticFeedback.lightImpact();
+                        sendMessage();
+                      },
                     ),
                   ),
                   SizedBox(width: PanAfricanSpacing.sm),
@@ -226,7 +253,12 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Icon(Icons.send),
-                    onPressed: isLoading.value ? null : sendMessage,
+                    onPressed: isLoading.value
+                        ? null
+                        : () {
+                            HapticFeedback.lightImpact();
+                            sendMessage();
+                          },
                     color: PanAfricanColors.primary,
                   ),
                 ],
@@ -253,37 +285,67 @@ class _PrivateMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timestamp = message['createdAt'] ?? message['timestamp'];
+
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
         constraints: BoxConstraints(maxWidth: 0.7.sw),
-        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.sm,
+        ),
         decoration: BoxDecoration(
           color: isMe
               ? PanAfricanColors.primary
               : (isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(PanAfricanRadius.md),
-            topRight: Radius.circular(PanAfricanRadius.md),
-            bottomLeft: isMe
-                ? Radius.circular(PanAfricanRadius.md)
-                : Radius.circular(0),
-            bottomRight: isMe
-                ? Radius.circular(0)
-                : Radius.circular(PanAfricanRadius.md),
+                  ? PanAfricanColors.cardDark
+                  : PanAfricanColors.cardLight),
+          borderRadius: PanAfricanRadius.lgBR.copyWith(
+            bottomLeft: isMe ? null : const Radius.circular(4),
+            bottomRight: isMe ? const Radius.circular(4) : null,
           ),
         ),
-        child: Text(
-          message['message'] ?? '',
-          style: PanAfricanTypography.bodyMedium(context).copyWith(
-            color: isMe ? Colors.white : null,
-          ),
+        child: Column(
+          crossAxisAlignment:
+              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              message['message'] ?? '',
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: isMe ? Colors.white : null,
+              ),
+            ),
+            if (timestamp != null) ...[
+              SizedBox(height: PanAfricanSpacing.xxs),
+              Text(
+                _formatTimestamp(timestamp.toString()),
+                style: PanAfricanTypography.labelSmall(context).copyWith(
+                  color: isMe
+                      ? Colors.white.withOpacity(0.7)
+                      : PanAfricanColors.neutralMedium,
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );
+  }
+
+  String _formatTimestamp(String timestamp) {
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m';
+      if (diff.inDays < 1) return '${diff.inHours}h';
+      return '${date.day}/${date.month}';
+    } catch (_) {
+      return '';
+    }
   }
 }
 

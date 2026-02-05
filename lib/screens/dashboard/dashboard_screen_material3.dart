@@ -130,8 +130,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                icon: Icon(Icons.menu_rounded, color: Colors.white, size: 24.sp),
                 onPressed: () {
+                  HapticFeedback.lightImpact();
                   ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                 },
                 tooltip: 'Menu',
@@ -153,9 +154,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 ],
               ),
               CircleAvatar(
-                radius: 28.r,
+                radius: 24.r,
                 backgroundColor: Colors.white.withOpacity(0.2),
-                child: Icon(Icons.person, color: Colors.white, size: 28.sp),
+                child: Icon(Icons.person, color: Colors.white, size: 24.sp),
               ),
             ],
           ),
@@ -328,6 +329,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       : 0.0;
                   return GestureDetector(
                     onTap: () {
+                      HapticFeedback.lightImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -343,17 +345,21 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         color: isDark
                             ? PanAfricanColors.cardDark
                             : PanAfricanColors.cardLight,
-                        borderRadius:
-                            BorderRadius.circular(PanAfricanRadius.lg),
-                        boxShadow: PanAfricanShadows.md,
+                        borderRadius: PanAfricanRadius.lgBR,
+                        boxShadow: PanAfricanShadows.sm,
+                        border: Border.all(
+                          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                          width: 1,
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(PanAfricanRadius.lg),
+                              child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(PanAfricanRadius.lg),
+                                topRight: Radius.circular(PanAfricanRadius.lg),
                               ),
                               child: CachedNetworkImage(
                                 imageUrl: language.background ?? '',
@@ -364,7 +370,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                                   child: Icon(
                                     Icons.language,
                                     color: PanAfricanColors.neutralMedium,
-                                    size: 32.sp,
+                                    size: 24.sp,
                                   ),
                                 ),
                                 errorWidget: (_, __, ___) => Container(
@@ -372,7 +378,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                                   child: Icon(
                                     Icons.language,
                                     color: PanAfricanColors.neutralMedium,
-                                    size: 32.sp,
+                                    size: 24.sp,
                                   ),
                                 ),
                               ),
@@ -440,7 +446,12 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         color: isDark
             ? PanAfricanColors.cardDark
             : PanAfricanColors.cardLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
+        border: Border.all(
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+          width: 1,
+        ),
       ),
       child: Text(
         'Start a course to see progress',
@@ -480,14 +491,21 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     ? (language.completed / language.total_count)
                         .clamp(0.0, 1.0)
                     : 0.0;
-                return Card(
+                return Container(
                   margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-                  color:
-                      isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                  decoration: BoxDecoration(
+                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                    borderRadius: PanAfricanRadius.lgBR,
+                    boxShadow: PanAfricanShadows.sm,
+                    border: Border.all(
+                      color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                      width: 1,
+                    ),
+                  ),
                   child: ListTile(
+                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
                     leading: ClipRRect(
-                      borderRadius:
-                          BorderRadius.circular(PanAfricanRadius.md),
+                      borderRadius: PanAfricanRadius.mdBR,
                       child: CachedNetworkImage(
                         imageUrl: language.background ?? '',
                         width: 48.w,
@@ -526,8 +544,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                                     color: PanAfricanColors.neutralMedium),
                           ),
                     trailing: Icon(Icons.chevron_right_rounded,
-                        color: PanAfricanColors.neutralMedium),
+                        color: PanAfricanColors.neutralMedium, size: 24.sp),
                     onTap: () {
+                      HapticFeedback.lightImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -586,12 +605,16 @@ class _StatCard extends StatelessWidget {
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        boxShadow: PanAfricanShadows.md,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
+        border: Border.all(
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+          width: 1,
+        ),
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 32.sp),
+          Icon(icon, color: color, size: 24.sp),
           SizedBox(height: PanAfricanSpacing.sm),
           Text(
             value,
@@ -627,7 +650,7 @@ class _QuickActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        HapticFeedback.mediumImpact();
+        HapticFeedback.lightImpact();
         onTap();
       },
       child: Container(
@@ -640,13 +663,13 @@ class _QuickActionCard extends StatelessWidget {
               color.withOpacity(0.7),
             ],
           ),
-          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          boxShadow: PanAfricanShadows.md,
+          borderRadius: PanAfricanRadius.lgBR,
+          boxShadow: PanAfricanShadows.sm,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 32.sp),
+            Icon(icon, color: Colors.white, size: 24.sp),
             SizedBox(height: PanAfricanSpacing.sm),
             Text(
               title,

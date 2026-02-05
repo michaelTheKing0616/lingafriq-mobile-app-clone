@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/socket_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../services/gamification/competitions_service.dart';
 import '../../utils/error_handler.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import '../../providers/tribe_vs_tribe_provider.dart';
@@ -90,6 +93,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
     final currentEvent = eventProvider.currentEvent;
     final leaderboard = eventProvider.getLeaderboard();
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
       return const Scaffold(
@@ -108,92 +112,149 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
 
     if (displayEvent == null) {
       return Scaffold(
+        backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
         appBar: AppBar(
           title: const Text('Tribe vs Tribe'),
+          backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+          elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
           ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            ),
-          ],
         ),
-        body: const Center(
-          child: Text('No active event'),
+        body: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.groups_outlined, size: 56.w, color: PanAfricanColors.textSecondary),
+              SizedBox(height: PanAfricanSpacing.md),
+              Text(
+                'No active event',
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: PanAfricanColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
     return Scaffold(
+      backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
       appBar: AppBar(
         title: const Text('Tribe vs Tribe'),
+        backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
+              HapticFeedback.lightImpact();
               _loadCompetitions();
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
             },
           ),
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         children: [
           // Event header
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    displayEvent['name'] ?? 'Competition',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          Container(
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
+            decoration: BoxDecoration(
+              gradient: PanAfricanGradients.forest,
+              borderRadius: PanAfricanRadius.lgBR,
+              boxShadow: PanAfricanShadows.sm,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.2),
+                        borderRadius: PanAfricanRadius.mdBR,
+                      ),
+                      child: Icon(Icons.emoji_events, color: Colors.white, size: 24.sp),
+                    ),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Expanded(
+                      child: Text(
+                        displayEvent['name'] ?? 'Competition',
+                        style: PanAfricanTypography.titleLarge(context).copyWith(
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
+                Text(
+                  displayEvent['description'] ?? '',
+                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                    color: Colors.white.withOpacity(0.9),
                   ),
-                  const SizedBox(height: 8),
-                  Text(displayEvent['description'] ?? ''),
-                  const SizedBox(height: 16),
-                  Row(
+                ),
+                SizedBox(height: PanAfricanSpacing.md),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.sm,
+                    vertical: PanAfricanSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: displayEvent['isActive'] == true 
+                        ? PanAfricanColors.success.withOpacity(0.2)
+                        : Colors.white.withOpacity(0.2),
+                    borderRadius: PanAfricanRadius.roundBR,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.timer, size: 16),
-                      const SizedBox(width: 4),
+                      Icon(
+                        displayEvent['isActive'] == true ? Icons.bolt : Icons.timer,
+                        size: 14.sp,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: PanAfricanSpacing.xs),
                       Text(
                         displayEvent['isActive'] == true
                             ? 'Active Competition'
                             : 'Upcoming Competition',
+                        style: PanAfricanTypography.labelLarge(context).copyWith(
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: PanAfricanSpacing.lg),
           // Leaderboard
           Text(
             'Tribe Leaderboard',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: PanAfricanTypography.titleLarge(context).copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: PanAfricanSpacing.sm),
           ...(_competitionResults.isNotEmpty
               ? _competitionResults.asMap().entries.map((entry) {
                   final index = entry.key;
@@ -222,49 +283,69 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                     isUserTribe: isUserTribe,
                   );
                 })),
-          const SizedBox(height: 16),
+          SizedBox(height: PanAfricanSpacing.md),
           // Your contribution
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Contribute to Your Tribe',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Every XP you earn contributes to your tribe\'s score! '
-                    'Keep learning to help your tribe win!',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  const SizedBox(height: 16),
-                  if (gamification.tribe != null)
-                    FilledButton(
-                      onPressed: () {
-                        // XP contribution happens automatically via gamification
+          Container(
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
+            decoration: BoxDecoration(
+              color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+              borderRadius: PanAfricanRadius.lgBR,
+              boxShadow: PanAfricanShadows.sm,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.favorite, color: PanAfricanColors.primary, size: 20.sp),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Text(
+                      'Contribute to Your Tribe',
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
+                Text(
+                  'Every XP you earn contributes to your tribe\'s score! '
+                  'Keep learning to help your tribe win!',
+                  style: PanAfricanTypography.bodyMedium(context),
+                ),
+                SizedBox(height: PanAfricanSpacing.md),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    style: FilledButton.styleFrom(
+                      backgroundColor: PanAfricanColors.primary,
+                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: PanAfricanRadius.lgBR,
+                      ),
+                    ),
+                    onPressed: () {
+                      HapticFeedback.mediumImpact();
+                      if (gamification.tribe != null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text('Your XP automatically contributes to your tribe!'),
                           ),
                         );
-                      },
-                      child: const Text('Learn Now'),
-                    )
-                  else
-                    FilledButton(
-                      onPressed: () {
-                        // Navigate to tribe selection
+                      } else {
                         Navigator.pushNamed(context, '/tribe-selection');
-                      },
-                      child: const Text('Join a Tribe First'),
+                      }
+                    },
+                    child: Text(
+                      gamification.tribe != null ? 'Learn Now' : 'Join a Tribe First',
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -312,41 +393,74 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
     required int points,
     required bool isUserTribe,
   }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      elevation: isUserTribe ? 4 : 1,
-      color: isUserTribe
-          ? Theme.of(context).colorScheme.primaryContainer
-          : null,
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
+    return Container(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: isUserTribe
+            ? PanAfricanColors.primary.withOpacity(0.1)
+            : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: isUserTribe ? PanAfricanShadows.md : PanAfricanShadows.sm,
+        border: isUserTribe
+            ? Border.all(color: PanAfricanColors.primary, width: 2)
+            : null,
+      ),
       child: ListTile(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.xs,
+        ),
         leading: CircleAvatar(
+          radius: 20.w,
           backgroundColor: _getRankColor(index),
           child: Text(
             '${index + 1}',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              fontSize: 14.sp,
             ),
           ),
         ),
         title: Text(
           _getTribeName(tribeId),
-          style: TextStyle(
-            fontWeight: isUserTribe ? FontWeight.bold : FontWeight.normal,
+          style: PanAfricanTypography.titleMedium(context).copyWith(
+            fontWeight: isUserTribe ? FontWeight.bold : FontWeight.w500,
           ),
         ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.star, size: 16, color: Colors.amber),
-            const SizedBox(width: 4),
-            Text(
-              '$points',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ],
+        subtitle: isUserTribe
+            ? Text(
+                'Your Tribe',
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                  color: PanAfricanColors.primary,
+                ),
+              )
+            : null,
+        trailing: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.sm,
+            vertical: PanAfricanSpacing.xs,
+          ),
+          decoration: BoxDecoration(
+            color: PanAfricanColors.gold.withOpacity(0.15),
+            borderRadius: PanAfricanRadius.roundBR,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.star, size: 16.sp, color: PanAfricanColors.gold),
+              SizedBox(width: PanAfricanSpacing.xs),
+              Text(
+                '$points',
+                style: PanAfricanTypography.titleMedium(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: PanAfricanColors.gold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

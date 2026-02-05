@@ -519,11 +519,11 @@ class _GameCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final category = game['category'] ?? 'game';
     final color = game['color'] as Color? ?? PanAfricanColors.primary;
-    final icon = game['icon'] as IconData? ?? Icons.sports_esports;
+    final icon = game['icon'] as IconData? ?? Icons.sports_esports_rounded;
 
     return GestureDetector(
       onTap: () {
-        HapticFeedback.mediumImpact();
+        HapticFeedback.lightImpact();
         onTap();
       },
       child: PanAfricanCard(
@@ -534,7 +534,7 @@ class _GameCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -545,33 +545,50 @@ class _GameCard extends StatelessWidget {
                   ],
                 ),
                 shape: BoxShape.circle,
+                boxShadow: PanAfricanShadows.glow(color),
               ),
               child: Icon(
                 icon,
-                size: 32.sp,
+                size: 24.sp,
                 color: Colors.white,
               ),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              game['name'] ?? 'Game',
-              style: PanAfricanTypography.titleSmall(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['name'] ?? 'Game',
+                style: PanAfricanTypography.titleSmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['description'] ?? '',
+                style: PanAfricanTypography.bodySmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.xs),
-            Text(
-              game['description'] ?? '',
-              style: PanAfricanTypography.bodySmall(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: PanAfricanSpacing.xs),
-            PanAfricanBadge(
-              label: category,
-              color: color,
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.sm,
+                vertical: PanAfricanSpacing.xxs,
+              ),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.15),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Text(
+                category,
+                style: PanAfricanTypography.labelSmall(context, color: color),
+              ),
             ),
           ],
         ),

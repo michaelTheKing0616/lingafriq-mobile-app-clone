@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
@@ -7,7 +8,7 @@ import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
@@ -84,22 +85,29 @@ class _GlobalPeopleSearchScreenState
     final isDark = context.isDarkMode;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
       appBar: AppBar(
         title: const Text('Find People'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(4.w),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Container(
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1F3527) : Colors.white,
-                borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                boxShadow: DesignSystem.shadowMedium,
+                color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                borderRadius: PanAfricanRadius.lgBR,
+                boxShadow: PanAfricanShadows.sm,
               ),
               child: TextField(
                 controller: _searchController,
@@ -108,38 +116,66 @@ class _GlobalPeopleSearchScreenState
                 },
                 decoration: InputDecoration(
                   hintText: 'Search by @handle...',
-                  prefixIcon: const Icon(Icons.alternate_email_rounded),
+                  hintStyle: PanAfricanTypography.bodyMedium(context).copyWith(
+                    color: PanAfricanColors.textSecondary,
+                  ),
+                  prefixIcon: Icon(Icons.alternate_email_rounded, color: PanAfricanColors.primary),
                   border: InputBorder.none,
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
                 ),
+                style: PanAfricanTypography.bodyMedium(context),
               ),
             ),
           ),
           if (_isLoading)
-            const LinearProgressIndicator(minHeight: 2),
+            LinearProgressIndicator(
+              minHeight: 2,
+              color: PanAfricanColors.primary,
+              backgroundColor: PanAfricanColors.primary.withOpacity(0.2),
+            ),
           if (_error != null)
             Padding(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Text(
                 _error!,
-                style: TextStyle(color: Colors.red.shade300, fontSize: 14.sp),
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: PanAfricanColors.error,
+                ),
               ),
             ),
           Expanded(
             child: _results.isEmpty && !_isLoading
                 ? Center(
-                    child: Text(
-                      'Search for friends, classmates, or teachers by @handle.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: isDark ? Colors.white70 : Colors.black54,
-                        fontSize: 14.sp,
+                    child: Padding(
+                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.people_outline_rounded,
+                            size: 56.w,
+                            color: PanAfricanColors.textSecondary,
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md),
+                          Text(
+                            'Search for friends, classmates, or teachers by @handle.',
+                            textAlign: TextAlign.center,
+                            style: PanAfricanTypography.bodyMedium(context).copyWith(
+                              color: PanAfricanColors.textSecondary,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   )
                 : OptimizedListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.md,
+                      vertical: PanAfricanSpacing.sm,
+                    ),
                     itemCount: _results.length,
                     itemBuilder: (context, index) {
                       final contact = _results[index];
@@ -158,32 +194,32 @@ class _GlobalPeopleSearchScreenState
     bool isDark,
   ) {
     return Container(
-      margin: EdgeInsets.only(bottom: 2.h),
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: ListTile(
-        contentPadding: EdgeInsets.all(4.w),
+        contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
         leading: CircleAvatar(
-          radius: 24,
-          backgroundColor: AfricanTheme.primaryGreen,
+          radius: 24.w,
+          backgroundColor: PanAfricanColors.primary,
           child: Text(
             contact.username.isNotEmpty
                 ? contact.username[0].toUpperCase()
                 : '?',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              fontSize: 18.sp,
             ),
           ),
         ),
         title: Text(
           contact.username,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+          style: PanAfricanTypography.titleMedium(context).copyWith(
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Text(
@@ -191,16 +227,16 @@ class _GlobalPeopleSearchScreenState
             if (contact.email != null) contact.email!,
             if (contact.language != null) contact.language!,
           ].join(' • '),
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: isDark ? Colors.white70 : Colors.black54,
+          style: PanAfricanTypography.bodyMedium(context).copyWith(
+            color: PanAfricanColors.textSecondary,
           ),
         ),
         trailing: Icon(
           Icons.chat_bubble_outline_rounded,
-          color: AfricanTheme.primaryGreen,
+          color: PanAfricanColors.primary,
         ),
         onTap: () {
+          HapticFeedback.lightImpact();
           Navigator.push(
             context,
             SmoothPageRoute(

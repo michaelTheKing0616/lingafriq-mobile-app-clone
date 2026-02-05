@@ -120,12 +120,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           IconButton(
             icon: Icon(Icons.person_search),
             onPressed: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 SmoothPageRoute(
                   child: UserSearchGlobalIdScreen(
                     onUserSelected: (user) {
-                      // Mention user in chat or open private chat
                       messageController.text = '@${user['global_id'] ?? user['username']} ';
                     },
                     currentChatType: 'global',
@@ -137,12 +137,16 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ),
           IconButton(
             icon: Icon(Icons.tag),
-            onPressed: () => showChannels.value = !showChannels.value,
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              showChannels.value = !showChannels.value;
+            },
             tooltip: 'Channels',
           ),
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
+              HapticFeedback.selectionClick();
               // Moderation tools
             },
             tooltip: 'More',
@@ -288,14 +292,41 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                             decoration: InputDecoration(
                               hintText: 'Type a message...',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                                borderRadius: PanAfricanRadius.lgBR,
+                                borderSide: BorderSide(
+                                  color: isDark
+                                      ? PanAfricanColors.borderDark
+                                      : PanAfricanColors.borderLight,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: PanAfricanRadius.lgBR,
+                                borderSide: BorderSide(
+                                  color: isDark
+                                      ? PanAfricanColors.borderDark
+                                      : PanAfricanColors.borderLight,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: PanAfricanRadius.lgBR,
+                                borderSide: BorderSide(
+                                  color: PanAfricanColors.primary,
+                                  width: 2,
+                                ),
                               ),
                               filled: true,
                               fillColor: isDark
                                   ? PanAfricanColors.surfaceDark
                                   : PanAfricanColors.surfaceLight,
+                              contentPadding: EdgeInsets.symmetric(
+                                horizontal: PanAfricanSpacing.md,
+                                vertical: PanAfricanSpacing.sm,
+                              ),
                             ),
-                            onSubmitted: (_) => sendMessage(),
+                            onSubmitted: (_) {
+                              HapticFeedback.lightImpact();
+                              sendMessage();
+                            },
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
@@ -304,14 +335,15 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                               ? SizedBox(
                                   width: 20.w,
                                   height: 20.h,
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  ),
+                                  child: CircularProgressIndicator(strokeWidth: 2),
                                 )
                               : Icon(Icons.send),
-                          onPressed: isLoading.value ? null : sendMessage,
+                          onPressed: isLoading.value
+                              ? null
+                              : () {
+                                  HapticFeedback.lightImpact();
+                                  sendMessage();
+                                },
                           color: PanAfricanColors.primary,
                         ),
                       ],
@@ -348,6 +380,7 @@ class _GlobalMessageBubble extends StatelessWidget {
         message['sender'];
     final senderName = rawName is String ? rawName : (rawName?.toString() ?? 'Unknown');
     final isToxic = message['flagged_toxic'] ?? false;
+    final timestamp = message['createdAt'] ?? message['timestamp'];
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -355,7 +388,7 @@ class _GlobalMessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 20.r,
+            radius: 20.w,
             backgroundColor: isToxic
                 ? PanAfricanColors.error
                 : PanAfricanColors.primary,
@@ -374,11 +407,19 @@ class _GlobalMessageBubble extends StatelessWidget {
                   children: [
                     Text(
                       senderName,
-                      style: PanAfricanTypography.labelSmall(context)
+                      style: PanAfricanTypography.labelMedium(context)
                           .copyWith(color: PanAfricanColors.primary),
                     ),
-                    SizedBox(width: PanAfricanSpacing.xs),
-                    if (isToxic)
+                    if (timestamp != null) ...[
+                      SizedBox(width: PanAfricanSpacing.xs),
+                      Text(
+                        _formatTimestamp(timestamp.toString()),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
+                      ),
+                    ],
+                    if (isToxic) ...[
+                      SizedBox(width: PanAfricanSpacing.xs),
                       Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: PanAfricanSpacing.xs,
@@ -397,16 +438,20 @@ class _GlobalMessageBubble extends StatelessWidget {
                           ),
                         ),
                       ),
+                    ],
                   ],
                 ),
                 SizedBox(height: PanAfricanSpacing.xxs),
                 Container(
-                  padding: EdgeInsets.all(PanAfricanSpacing.md),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
+                  ),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? PanAfricanColors.surfaceContainerDark
-                        : PanAfricanColors.surfaceContainerLight,
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                        ? PanAfricanColors.cardDark
+                        : PanAfricanColors.cardLight,
+                    borderRadius: PanAfricanRadius.lgBR,
                   ),
                   child: Text(
                     message['message'] ?? message['body'] ?? message['text'] ?? '',
@@ -419,6 +464,20 @@ class _GlobalMessageBubble extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatTimestamp(String timestamp) {
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m';
+      if (diff.inDays < 1) return '${diff.inHours}h';
+      return '${date.day}/${date.month}';
+    } catch (_) {
+      return '';
+    }
   }
 }
 

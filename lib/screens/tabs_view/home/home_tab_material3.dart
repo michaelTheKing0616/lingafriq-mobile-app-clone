@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,6 +101,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.search_rounded),
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -112,6 +114,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.menu_rounded),
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                     },
                     tooltip: 'Menu',
@@ -134,10 +137,15 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                        padding: EdgeInsets.fromLTRB(
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.lg,
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.sm,
+                        ),
                         child: Text(
                           'Featured Languages',
-                          style: PanAfricanTypography.headlineSmall(context),
+                          style: PanAfricanTypography.headlineMedium(context),
                         ),
                       ),
                       Expanded(
@@ -165,7 +173,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
 
                             return ListView.builder(
                               padding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.lg,
+                                horizontal: PanAfricanSpacing.md,
                               ),
                               itemCount: languages.results.length,
                               itemBuilder: (context, index) {
@@ -174,6 +182,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                                   language: language,
                                   isDark: isDark,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -234,18 +243,20 @@ class _LanguageCard extends StatelessWidget {
         ? (language.total_score / 100).clamp(0.0, 1.0)
         : 0.0;
 
-    return Card(
-      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+    return Container(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: PanAfricanRadius.lgBR,
+          child: Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Row(
             children: [
               // Language Flag/Image
@@ -320,6 +331,7 @@ class _LanguageCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

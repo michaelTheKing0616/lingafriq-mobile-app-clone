@@ -28,7 +28,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    static List<Map<String, dynamic>> _placeholderArticles() {
+    List<Map<String, dynamic>> placeholderArticles() {
       return [
         {'_id': '1', 'title': 'Greetings Across Africa', 'slug': 'greetings-across-africa', 'excerpt': 'Learn how to say hello in Yoruba, Swahili, Zulu, and more.', 'category': 'language', 'published': true},
         {'_id': '2', 'title': 'Proverbs and Wisdom', 'slug': 'proverbs-and-wisdom', 'excerpt': 'African proverbs that teach life lessons and cultural values.', 'category': 'culture', 'published': true},
@@ -56,18 +56,18 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
           if (listCandidate is List) {
             final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
-            articles.value = list.isNotEmpty ? list : _placeholderArticles();
+            articles.value = list.isNotEmpty ? list : placeholderArticles();
           } else {
-            articles.value = _placeholderArticles();
+            articles.value = placeholderArticles();
           }
         } else {
-          articles.value = _placeholderArticles();
+          articles.value = placeholderArticles();
         }
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
-        articles.value = _placeholderArticles();
+        articles.value = placeholderArticles();
       } finally {
         isLoading.value = false;
       }
@@ -101,13 +101,24 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cultural Magazine'),
-        backgroundColor: Colors.transparent,
+        title: Text('Cultural Magazine', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
-            onPressed: () => showTranslation.value = !showTranslation.value,
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              showTranslation.value = !showTranslation.value;
+            },
             tooltip: 'Toggle Translation',
           ),
         ],
@@ -219,13 +230,15 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
           return Padding(
             padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
             child: FilterChip(
-              label: Text(category),
+              label: Text(category, style: PanAfricanTypography.labelMedium(context)),
               selected: isSelected,
               onSelected: (selected) {
+                HapticFeedback.selectionClick();
                 onCategoryChanged(selected && category != 'All' ? category.toLowerCase() : null);
               },
               selectedColor: PanAfricanColors.primaryContainer,
               checkmarkColor: PanAfricanColors.primary,
+              backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
             ),
           );
         },
@@ -256,7 +269,10 @@ class _ArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -295,13 +311,19 @@ class _ArticleCard extends StatelessWidget {
                               color: isFavorite ? PanAfricanColors.error : Colors.white,
                               size: 20.sp,
                             ),
-                            onPressed: onFavorite,
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              onFavorite();
+                            },
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                           ),
                           IconButton(
                             icon: Icon(Icons.share, color: Colors.white, size: 20.sp),
-                            onPressed: onShare,
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              onShare();
+                            },
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                           ),

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/gamification/tribes_service.dart';
 import 'package:lingafriq/providers/gamification_services_provider.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:flutter/services.dart';
 
 class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String tribeId;
@@ -71,32 +70,78 @@ class _ClassroomDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Classroom: ${widget.tribeName}'),
+        title: Text(
+          'Classroom: ${widget.tribeName}',
+          style: PanAfricanTypography.headlineMedium(context),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           if (widget.classroomCode != null)
             IconButton(
               icon: const Icon(Icons.copy_rounded),
               tooltip: 'Copy class code',
               onPressed: () {
+                HapticFeedback.lightImpact();
                 Clipboard.setData(ClipboardData(text: widget.classroomCode!));
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Class code copied')),
+                  SnackBar(
+                    content: Text(
+                      'Class code copied',
+                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                    ),
+                    backgroundColor: PanAfricanColors.success,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                  ),
                 );
               },
             ),
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(
+              child: CircularProgressIndicator(
+                color: PanAfricanColors.primary,
+              ),
+            )
           : _error != null
               ? Center(
-                  child: Text(
-                    _error!,
-                    style: TextStyle(color: Colors.red.shade300),
+                  child: Padding(
+                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error_outline_rounded,
+                          size: 64.sp,
+                          color: PanAfricanColors.error,
+                        ),
+                        SizedBox(height: PanAfricanSpacing.md),
+                        Text(
+                          _error!,
+                          textAlign: TextAlign.center,
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.lg),
+                        FilledButton(
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            _load();
+                          },
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : _buildContent(context, isDark),
@@ -110,10 +155,11 @@ class _ClassroomDashboardScreenState
         Map<String, dynamic>.from(_data?['aggregate'] ?? const {});
 
     return RefreshIndicator(
+      color: PanAfricanColors.primary,
       onRefresh: _load,
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.all(4.w),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -121,19 +167,16 @@ class _ClassroomDashboardScreenState
                 .animate()
                 .fadeIn(duration: 300.ms)
                 .slideY(begin: 0.1),
-            SizedBox(height: 2.h),
-            _buildPoliePromptCard(isDark),
-            SizedBox(height: 2.h),
+            SizedBox(height: PanAfricanSpacing.md),
+            _buildPoliePromptCard(context, isDark),
+            SizedBox(height: PanAfricanSpacing.md),
             Text(
               'Learners',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: PanAfricanTypography.titleMedium(context),
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.sm),
             ...classroom
-                .map((m) => _buildMemberCard(m, isDark)
+                .map((m) => _buildMemberCard(context, m, isDark)
                     .animate()
                     .fadeIn(duration: 300.ms)
                     .slideY(begin: 0.05))
@@ -151,87 +194,68 @@ class _ClassroomDashboardScreenState
         List<String>.from(aggregate['languagesStudied'] ?? const []);
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AfricanTheme.primaryGreen,
-            AfricanTheme.accentGold,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        gradient: PanAfricanGradients.celebration,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Class Overview',
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+            style: PanAfricanTypography.titleLarge(context, color: Colors.white),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.md),
           Row(
             children: [
               _buildAggregateStat(
+                context,
                 'Study Minutes',
                 totalMinutes.toString(),
               ),
               _buildAggregateStat(
+                context,
                 'Sessions',
                 totalSessions.toString(),
               ),
               _buildAggregateStat(
+                context,
                 'Learners',
                 (aggregate['classSize'] ?? 0).toString(),
               ),
             ],
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Text(
-            'Languages in this class: ${languages.join(', ')}',
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.white70,
-            ),
+            'Languages: ${languages.isEmpty ? 'None yet' : languages.join(', ')}',
+            style: PanAfricanTypography.bodySmall(context, color: Colors.white.withOpacity(0.85)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildAggregateStat(String label, String value) {
+  Widget _buildAggregateStat(BuildContext context, String label, String value) {
     return Expanded(
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 1.h),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.white70,
-              ),
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            value,
+            style: PanAfricanTypography.displaySmall(context, color: Colors.white),
+          ),
+          Text(
+            label,
+            style: PanAfricanTypography.labelSmall(context, color: Colors.white.withOpacity(0.85)),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildMemberCard(Map<String, dynamic> member, bool isDark) {
+  Widget _buildMemberCard(BuildContext context, Map<String, dynamic> member, bool isDark) {
     final username = member['username']?.toString() ?? 'Learner';
     final globalId = member['globalId']?.toString();
     final summary = Map<String, dynamic>.from(member['summary'] ?? {});
@@ -239,141 +263,197 @@ class _ClassroomDashboardScreenState
         List<Map<String, dynamic>>.from(member['languages'] ?? const []);
 
     return Container(
-      margin: EdgeInsets.only(top: 1.h, bottom: 1.h),
-      padding: EdgeInsets.all(4.w),
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        border: Border.all(
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+        ),
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: AfricanTheme.primaryGreen,
-                child: Text(
-                  username.isNotEmpty ? username[0].toUpperCase() : '?',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
+              Container(
+                width: 44.w,
+                height: 44.w,
+                decoration: BoxDecoration(
+                  color: PanAfricanColors.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Text(
+                    username.isNotEmpty ? username[0].toUpperCase() : '?',
+                    style: PanAfricanTypography.titleMedium(context, color: Colors.white),
                   ),
                 ),
               ),
-              SizedBox(width: 3.w),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    username,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (globalId != null && globalId.isNotEmpty)
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      '@$globalId',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: isDark ? Colors.white70 : Colors.black54,
+                      username,
+                      style: PanAfricanTypography.titleSmall(context),
+                    ),
+                    if (globalId != null && globalId.isNotEmpty)
+                      Text(
+                        '@$globalId',
+                        style: PanAfricanTypography.labelSmall(context),
                       ),
+                    SizedBox(height: PanAfricanSpacing.xxxs),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.timer_outlined,
+                          size: 14.sp,
+                          color: PanAfricanColors.neutralMedium,
+                        ),
+                        SizedBox(width: PanAfricanSpacing.xxxs),
+                        Text(
+                          '${summary['totalMinutes'] ?? 0} min',
+                          style: PanAfricanTypography.labelSmall(context),
+                        ),
+                        SizedBox(width: PanAfricanSpacing.sm),
+                        Icon(
+                          Icons.play_circle_outline_rounded,
+                          size: 14.sp,
+                          color: PanAfricanColors.neutralMedium,
+                        ),
+                        SizedBox(width: PanAfricanSpacing.xxxs),
+                        Text(
+                          '${summary['totalSessions'] ?? 0} sessions',
+                          style: PanAfricanTypography.labelSmall(context),
+                        ),
+                      ],
                     ),
-                  Text(
-                    '${summary['totalMinutes'] ?? 0} min • ${summary['totalSessions'] ?? 0} sessions',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: isDark ? Colors.white70 : Colors.black54,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
-          SizedBox(height: 1.h),
-          Wrap(
-            spacing: 6,
-            runSpacing: 4,
-            children: languages
-                .map((lang) => Chip(
-                      label: Text(
-                        '${lang['language']} • ${lang['level'] ?? 'A1'}',
-                        style: TextStyle(fontSize: 11.sp),
-                      ),
-                      backgroundColor: isDark
-                          ? const Color(0xFF163424)
-                          : Colors.green.shade50,
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ))
-                .toList(),
-          ),
+          if (languages.isNotEmpty) ...[
+            SizedBox(height: PanAfricanSpacing.sm),
+            Wrap(
+              spacing: PanAfricanSpacing.xs,
+              runSpacing: PanAfricanSpacing.xs,
+              children: languages
+                  .map((lang) => Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.xs,
+                          vertical: PanAfricanSpacing.xxxs,
+                        ),
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.primaryContainer,
+                          borderRadius: PanAfricanRadius.roundBR,
+                        ),
+                        child: Text(
+                          '${lang['language']} • ${lang['level'] ?? 'A1'}',
+                          style: PanAfricanTypography.labelSmall(
+                            context,
+                            color: PanAfricanColors.onPrimaryContainer,
+                          ),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ],
         ],
       ),
     );
   }
 
-  Widget _buildPoliePromptCard(bool isDark) {
+  Widget _buildPoliePromptCard(BuildContext context, bool isDark) {
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF102216) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        border: Border.all(
+          color: PanAfricanColors.ankaraPurple.withOpacity(0.3),
+        ),
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.smart_toy_rounded),
-              SizedBox(width: 2.w),
-              Text(
-                'Polie: Class Activity Ideas',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
+              Container(
+                width: 36.w,
+                height: 36.w,
+                decoration: BoxDecoration(
+                  color: PanAfricanColors.ankaraPurple.withOpacity(0.15),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.smart_toy_rounded,
+                  color: PanAfricanColors.ankaraPurple,
+                  size: 20.sp,
+                ),
+              ),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Text(
+                  'Polie: Class Activity Ideas',
+                  style: PanAfricanTypography.titleSmall(context),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Text(
-            'Need an idea for today\'s session? Ask Polie to suggest a short warm‑up or practice activity for ${widget.languageTag}.',
-            style: TextStyle(
-              fontSize: 13.sp,
-              color: isDark ? Colors.white70 : Colors.black87,
-            ),
+            'Need an idea for today\'s session? Ask Polie to suggest a short warm-up or practice activity for ${widget.languageTag}.',
+            style: PanAfricanTypography.bodySmall(context),
           ),
-          SizedBox(height: 1.h),
-          if (_poliePrompt != null)
+          if (_poliePrompt != null) ...[
+            SizedBox(height: PanAfricanSpacing.sm),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(3.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF163424) : Colors.green.shade50,
-                borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                color: isDark
+                    ? PanAfricanColors.surfaceContainerHighDark
+                    : PanAfricanColors.surfaceContainerHighLight,
+                borderRadius: PanAfricanRadius.mdBR,
               ),
               child: Text(
                 _poliePrompt!,
-                style: TextStyle(fontSize: 13.sp),
+                style: PanAfricanTypography.bodySmall(context),
               ),
             ),
-          SizedBox(height: 1.h),
+          ],
+          SizedBox(height: PanAfricanSpacing.sm),
           Align(
             alignment: Alignment.centerRight,
-            child: ElevatedButton.icon(
-              onPressed: _isAskingPolie ? null : _askPolieForActivity,
+            child: FilledButton.icon(
+              style: FilledButton.styleFrom(
+                backgroundColor: PanAfricanColors.ankaraPurple,
+              ),
+              onPressed: _isAskingPolie
+                  ? null
+                  : () {
+                      HapticFeedback.lightImpact();
+                      _askPolieForActivity();
+                    },
               icon: _isAskingPolie
                   ? SizedBox(
                       width: 16.sp,
                       height: 16.sp,
-                      child: const CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                     )
-                  : const Icon(Icons.auto_awesome_rounded),
+                  : Icon(Icons.auto_awesome_rounded, size: 18.sp),
               label: Text(
                 _isAskingPolie ? 'Asking Polie…' : 'Ask Polie',
+                style: PanAfricanTypography.labelMedium(context, color: Colors.white),
               ),
             ),
           ),

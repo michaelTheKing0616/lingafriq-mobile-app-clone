@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
-import '../../utils/pan_african_design_system.dart';
 import '../../utils/performance_utils.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/gamification_services_provider.dart';
@@ -112,6 +114,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
   Widget build(BuildContext context) {
     final gamification = ref.watch(gamificationProvider.notifier);
     final currentTribe = gamification.gamification.tribe;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     if (_isLoading && _availableTribes.isEmpty && _loadError == null) {
       return const Scaffold(
@@ -122,10 +125,16 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
     if (_loadError != null && _availableTribes.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Choose Your Tribe'),
+          title: Text(
+            'Choose Your Tribe',
+            style: PanAfricanTypography.headlineMedium(context),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
           ),
         ),
         body: ResponsiveSafeArea(
@@ -135,17 +144,24 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.cloud_off, size: 64, color: PanAfricanColors.error),
+                  Icon(
+                    Icons.cloud_off_rounded,
+                    size: 64.sp,
+                    color: PanAfricanColors.error,
+                  ),
                   SizedBox(height: PanAfricanSpacing.md),
                   Text(
                     _loadError!,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: PanAfricanTypography.bodyLarge(context),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                   PrimaryButton(
                     text: 'Try again',
-                    onTap: () => _loadTribes(),
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      _loadTribes();
+                    },
                   ),
                 ],
               ),
@@ -180,81 +196,159 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose Your Tribe'),
+        title: Text(
+          'Choose Your Tribe',
+          style: PanAfricanTypography.headlineMedium(context),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+            // Header card with gradient
+            Container(
+              decoration: BoxDecoration(
+                gradient: PanAfricanGradients.forest,
+                borderRadius: PanAfricanRadius.lgBR,
+                boxShadow: PanAfricanShadows.md,
+              ),
+              padding: EdgeInsets.all(PanAfricanSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Join a Tribe',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.groups_rounded,
+                        color: Colors.white,
+                        size: 32.sp,
+                      ),
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      Text(
+                        'Join a Tribe',
+                        style: PanAfricanTypography.titleLarge(context, color: Colors.white),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Text(
                     'Tribes compete in leaderboards and events. '
                     'Choose the tribe that represents your heritage or interests!',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: PanAfricanTypography.bodyMedium(context, color: Colors.white.withOpacity(0.9)),
                   ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          ...tribes.map((tribe) => Card(
-                margin: const EdgeInsets.only(bottom: 12),
-                elevation: currentTribe == tribe['name'] ? 4 : 1,
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Text(
-                      tribeEmojis[tribe['name']] ?? '🏛️',
-                      style: const TextStyle(fontSize: 24),
+            SizedBox(height: PanAfricanSpacing.lg),
+            Text(
+              'Available Tribes',
+              style: PanAfricanTypography.titleMedium(context),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            ...tribes.map((tribe) {
+              final isSelected = currentTribe == tribe['name'] || _currentTribeId == tribe['id'];
+              return GestureDetector(
+                onTap: _isLoading
+                    ? null
+                    : () {
+                        HapticFeedback.lightImpact();
+                        _joinTribe(tribe['id'], tribe['name']);
+                      },
+                child: Container(
+                  margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                    borderRadius: PanAfricanRadius.lgBR,
+                    border: Border.all(
+                      color: isSelected
+                          ? PanAfricanColors.success
+                          : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+                      width: isSelected ? 2 : 1,
+                    ),
+                    boxShadow: isSelected ? PanAfricanShadows.md : PanAfricanShadows.sm,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48.w,
+                          height: 48.w,
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? PanAfricanColors.success.withOpacity(0.15)
+                                : PanAfricanColors.primaryContainer,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              tribeEmojis[tribe['name']] ?? '🏛️',
+                              style: TextStyle(fontSize: 24.sp),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: PanAfricanSpacing.sm),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                tribe['name'],
+                                style: PanAfricanTypography.titleSmall(
+                                  context,
+                                  color: isSelected ? PanAfricanColors.success : null,
+                                ),
+                              ),
+                              SizedBox(height: PanAfricanSpacing.xxxs),
+                              Text(
+                                'Join the ${tribe['name']} tribe',
+                                style: PanAfricanTypography.bodySmall(context),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (isSelected)
+                          Container(
+                            padding: EdgeInsets.all(PanAfricanSpacing.xxs),
+                            decoration: BoxDecoration(
+                              color: PanAfricanColors.success.withOpacity(0.15),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.check_circle_rounded,
+                              color: PanAfricanColors.success,
+                              size: 24.sp,
+                            ),
+                          )
+                        else if (_isLoading)
+                          SizedBox(
+                            width: 24.w,
+                            height: 24.w,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: PanAfricanColors.primary,
+                            ),
+                          )
+                        else
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 16.sp,
+                            color: PanAfricanColors.neutralMedium,
+                          ),
+                      ],
                     ),
                   ),
-                  title: Text(
-                    tribe['name'],
-                    style: TextStyle(
-                      fontWeight: currentTribe == tribe['name']
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
-                  ),
-                  subtitle: Text('Join the ${tribe['name']} tribe and compete in leaderboards'),
-                  trailing: currentTribe == tribe['name'] || _currentTribeId == tribe['id']
-                      ? const Icon(Icons.check_circle, color: Colors.green)
-                      : _isLoading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.arrow_forward_ios, size: 16),
-                  onTap: _isLoading
-                      ? null
-                      : () => _joinTribe(tribe['id'], tribe['name']),
                 ),
-              )),
+              );
+            }),
           ],
         ),
       ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -94,21 +96,25 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
       appBar: AppBar(
         title: const Text('Connect with Learners'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
-          onPressed: () => Navigator.of(context).pop(),
+          icon: Icon(Icons.arrow_back, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.lock_outline),
             tooltip: 'Private chats',
             onPressed: () {
+              HapticFeedback.lightImpact();
               Navigator.push(
                 context,
                 SmoothPageRoute(
@@ -123,8 +129,8 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         children: [
           // Search Bar
           Container(
-            padding: EdgeInsets.all(16.sp),
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
+            color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
             child: TextField(
               onChanged: (value) {
                 _searchDebouncer.run(() {
@@ -135,41 +141,40 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
               },
               decoration: InputDecoration(
                 hintText: 'Search users...',
-                prefixIcon: Icon(Icons.search, color: isDark ? Colors.grey[400] : Colors.grey[600]),
+                prefixIcon: Icon(Icons.search, color: PanAfricanColors.textSecondary),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.lgBR,
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[100],
-                contentPadding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 12.sp),
+                fillColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.sm),
               ),
-              style: TextStyle(color: isDark ? Colors.white : Colors.black87),
+              style: PanAfricanTypography.bodyMedium(context),
             ),
           ),
           
           // Connection Status
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.sp, vertical: 8.sp),
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.sm),
+            color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
             child: Row(
               children: [
                 Container(
-                  width: 8.sp,
-                  height: 8.sp,
+                  width: 8.w,
+                  height: 8.w,
                   decoration: BoxDecoration(
-                    color: isConnected ? Colors.green : Colors.red,
+                    color: isConnected ? PanAfricanColors.success : PanAfricanColors.error,
                     shape: BoxShape.circle,
                   ),
                 ),
-                SizedBox(width: 8.sp),
+                SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   isConnected
                       ? '${onlineUsers.length} users online'
                       : 'Connecting...',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                  style: PanAfricanTypography.labelLarge(context).copyWith(
+                    color: PanAfricanColors.textSecondary,
                   ),
                 ),
               ],
@@ -185,15 +190,14 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                       children: [
                         Icon(
                           Icons.person_off,
-                          size: 64.sp,
-                          color: isDark ? Colors.grey[600] : Colors.grey[400],
+                          size: 56.w,
+                          color: PanAfricanColors.textSecondary,
                         ),
-                        SizedBox(height: 16.sp),
+                        SizedBox(height: PanAfricanSpacing.md),
                         Text(
                           'Please log in to connect with users',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: isDark ? Colors.grey[400] : Colors.grey[600],
+                          style: PanAfricanTypography.bodyMedium(context).copyWith(
+                            color: PanAfricanColors.textSecondary,
                           ),
                         ),
                       ],
@@ -206,15 +210,14 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                           children: [
                             Icon(
                               Icons.wifi_off,
-                              size: 64.sp,
-                              color: isDark ? Colors.grey[600] : Colors.grey[400],
+                              size: 56.w,
+                              color: PanAfricanColors.textSecondary,
                             ),
-                            SizedBox(height: 16.sp),
+                            SizedBox(height: PanAfricanSpacing.md),
                             Text(
                               'Connecting...',
-                              style: TextStyle(
-                                fontSize: 16.sp,
-                                color: isDark ? Colors.grey[400] : Colors.grey[600],
+                              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                color: PanAfricanColors.textSecondary,
                               ),
                             ),
                           ],
@@ -227,26 +230,25 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                               children: [
                                 Icon(
                                   Icons.people_outline,
-                                  size: 64.sp,
-                                  color: isDark ? Colors.grey[600] : Colors.grey[400],
+                                  size: 56.w,
+                                  color: PanAfricanColors.textSecondary,
                                 ),
-                                SizedBox(height: 16.sp),
+                                SizedBox(height: PanAfricanSpacing.md),
                                 Text(
                                   _searchQuery.isEmpty
                                       ? 'No users online'
                                       : 'No users found',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                    color: PanAfricanColors.textSecondary,
                                   ),
                                 ),
                               ],
                             ),
                           )
                         : OptimizedListView(
-                            padding: EdgeInsets.all(16.sp),
+                            padding: EdgeInsets.all(PanAfricanSpacing.md),
                             itemCount: filteredUsers.length,
-                            itemExtent: 80.sp, // Approximate item height for better performance
+                            itemExtent: 80.h,
                             itemBuilder: (context, index) {
                               final user = filteredUsers[index];
                               final isCurrentUser = user['userId'] == currentUser.id.toString();
@@ -266,25 +268,27 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
     final isOnline = userData['isOnline'] ?? true;
 
     return Container(
-      margin: EdgeInsets.only(bottom: 12.sp),
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
-        ),
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: ListTile(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.xs,
+        ),
         leading: Stack(
           children: [
             CircleAvatar(
-              radius: 24.sp,
-              backgroundColor: AppColors.primaryGreen,
+              radius: 24.w,
+              backgroundColor: PanAfricanColors.primary,
               child: Text(
                 username[0].toUpperCase(),
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -294,13 +298,13 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  width: 14.sp,
-                  height: 14.sp,
+                  width: 12.w,
+                  height: 12.w,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: PanAfricanColors.success,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
+                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
                       width: 2,
                     ),
                   ),
@@ -310,24 +314,20 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         ),
         title: Text(
           username,
-          style: TextStyle(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+          style: PanAfricanTypography.titleMedium(context).copyWith(
+            fontWeight: FontWeight.w600,
           ),
         ),
         subtitle: Text(
           isOnline ? 'Online' : 'Offline',
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: isOnline
-                ? Colors.green
-                : (isDark ? Colors.grey[500] : Colors.grey[500]),
+          style: PanAfricanTypography.labelLarge(context).copyWith(
+            color: isOnline ? PanAfricanColors.success : PanAfricanColors.textSecondary,
           ),
         ),
         trailing: IconButton(
-          icon: Icon(Icons.lock_outline, color: AppColors.primaryGreen),
+          icon: Icon(Icons.chat_bubble_outline_rounded, color: PanAfricanColors.primary),
           onPressed: () {
+            HapticFeedback.lightImpact();
             final contact = PrivateChatContact.fromOnlineMap(userData);
             if (contact.id < 0) {
               ScaffoldMessenger.of(context).showSnackBar(

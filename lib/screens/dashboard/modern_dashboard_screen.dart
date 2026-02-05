@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/screens/goals/daily_challenges_screen.dart';
 import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
@@ -42,7 +42,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
     final todayGoal = totalGoals > 0 ? (completedGoals / totalGoals * 100).round() : 0;
     
     return Scaffold(
-      backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       drawer: const AppDrawer(),
       body: Stack(
         children: [
@@ -50,25 +50,12 @@ class ModernDashboardScreen extends HookConsumerWidget {
           Container(
             height: 35.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFCE1126), // Red
-                  Color(0xFFFF6B35), // Orange
-                ],
+              gradient: isDark ? PanAfricanGradients.darkSurface : PanAfricanGradients.forest,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(PanAfricanRadius.xxl),
+                bottomRight: Radius.circular(PanAfricanRadius.xxl),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: Stack(
               children: [
@@ -82,7 +69,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                 ),
                 ResponsiveSafeArea(
                   child: Padding(
-                    padding: EdgeInsets.all(4.w),
+                    padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
                     child: Column(
                       children: [
                         // Top Bar
@@ -123,32 +110,28 @@ class ModernDashboardScreen extends HookConsumerWidget {
                                               )
                                             : null,
                                       ),
-                                SizedBox(width: 3.w),
+                                SizedBox(width: PanAfricanSpacing.sm),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       'Hello,',
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.white.withOpacity(0.9),
-                                      ),
+                                      style: PanAfricanTypography.bodyMedium(context)
+                                          .copyWith(color: Colors.white.withOpacity(0.9)),
                                     ),
                                     Text(
                                       '${user?.username ?? 'User'}!',
-                                      style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
+                                      style: PanAfricanTypography.titleLarge(context)
+                                          .copyWith(color: Colors.white),
                                     ),
                                   ],
                                 ),
                               ],
                             ),
                             IconButton(
-                              icon: const Icon(Icons.settings_rounded, color: Colors.white),
+                              icon: Icon(Icons.settings_rounded, color: Colors.white, size: 24.sp),
                               onPressed: () {
+                                HapticFeedback.lightImpact();
                                 Navigator.push(
                                   context,
                                   SmoothPageRoute(
@@ -163,7 +146,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 3.h),
+                        SizedBox(height: PanAfricanSpacing.md),
                         // Stats Cards
                         Row(
                           children: [
@@ -172,27 +155,27 @@ class ModernDashboardScreen extends HookConsumerWidget {
                                 icon: Icons.local_fire_department_rounded,
                                 value: '$currentStreak',
                                 label: 'Day Streak',
-                                color: const Color(0xFFFF6B35),
+                                color: PanAfricanColors.tertiary,
                                 isDark: isDark,
                               ),
                             ),
-                            SizedBox(width: 2.w),
+                            SizedBox(width: PanAfricanSpacing.sm),
                             Expanded(
                               child: _StatCard(
                                 icon: Icons.bolt_rounded,
                                 value: '${user?.completed_point ?? 0}',
                                 label: 'Total XP',
-                                color: const Color(0xFFCE1126),
+                                color: PanAfricanColors.kenteRed,
                                 isDark: isDark,
                               ),
                             ),
-                            SizedBox(width: 2.w),
+                            SizedBox(width: PanAfricanSpacing.sm),
                             Expanded(
                               child: _StatCard(
                                 icon: Icons.star_rounded,
                                 value: 'Lvl ${user?.level ?? 1}',
                                 label: 'Current',
-                                color: const Color(0xFF007A3D),
+                                color: PanAfricanColors.primary,
                                 isDark: isDark,
                               ),
                             ),
@@ -212,17 +195,22 @@ class ModernDashboardScreen extends HookConsumerWidget {
             right: 0,
             bottom: 0,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: PanAfricanSpacing.lg),
                   // Today's Goal Card
                   Container(
-                    padding: EdgeInsets.all(5.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     decoration: BoxDecoration(
-                      color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      boxShadow: DesignSystem.shadowLarge,
+                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      borderRadius: PanAfricanRadius.lgBR,
+                      boxShadow: PanAfricanShadows.sm,
+                      border: Border.all(
+                        color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                        width: 1,
+                      ),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,48 +222,44 @@ class ModernDashboardScreen extends HookConsumerWidget {
                               children: [
                                 Icon(
                                   Icons.track_changes_rounded,
-                                  color: AfricanTheme.primaryGreen,
-                                  size: 20,
+                                  color: PanAfricanColors.primary,
+                                  size: 20.sp,
                                 ),
-                                SizedBox(width: 2.w),
+                                SizedBox(width: PanAfricanSpacing.xs),
                                 Text(
                                   'Today\'s Goal',
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: isDark ? Colors.white : Colors.black87,
-                                  ),
+                                  style: PanAfricanTypography.titleMedium(context),
                                 ),
                               ],
                             ),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: PanAfricanSpacing.sm,
+                                vertical: PanAfricanSpacing.xxs,
+                              ),
                               decoration: BoxDecoration(
-                                color: AfricanTheme.primaryGreen.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                                color: PanAfricanColors.primary.withOpacity(0.1),
+                                borderRadius: PanAfricanRadius.roundBR,
                               ),
                               child: Text(
                                 '$todayGoal%',
-                                style: TextStyle(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: AfricanTheme.primaryGreen,
-                                ),
+                                style: PanAfricanTypography.labelMedium(context)
+                                    .copyWith(color: PanAfricanColors.primary),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: PanAfricanSpacing.md),
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: PanAfricanRadius.smBR,
                           child: LinearProgressIndicator(
                             value: (todayGoal / 100).clamp(0.0, 1.0),
-                            backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
-                            valueColor: AlwaysStoppedAnimation<Color>(AfricanTheme.primaryGreen),
-                            minHeight: 12,
+                            backgroundColor: isDark ? PanAfricanColors.neutralMedium : PanAfricanColors.neutralLight,
+                            valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                            minHeight: 8,
                           ),
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: PanAfricanSpacing.md),
                         Row(
                           children: [
                             Expanded(
@@ -283,25 +267,25 @@ class ModernDashboardScreen extends HookConsumerWidget {
                                 label: 'Vocabulary',
                                 completed: 15,
                                 total: 20,
-                                color: const Color(0xFFCE1126),
+                                color: PanAfricanColors.kenteRed,
                               ),
                             ),
-                            SizedBox(width: 2.w),
+                            SizedBox(width: PanAfricanSpacing.sm),
                             Expanded(
                               child: _ProgressItem(
                                 label: 'Grammar',
                                 completed: 8,
                                 total: 10,
-                                color: const Color(0xFF007A3D),
+                                color: PanAfricanColors.primary,
                               ),
                             ),
-                            SizedBox(width: 2.w),
+                            SizedBox(width: PanAfricanSpacing.sm),
                             Expanded(
                               child: _ProgressItem(
                                 label: 'Speaking',
                                 completed: 5,
                                 total: 5,
-                                color: const Color(0xFFFCD116),
+                                color: PanAfricanColors.secondary,
                               ),
                             ),
                           ],
@@ -309,33 +293,29 @@ class ModernDashboardScreen extends HookConsumerWidget {
                       ],
                     ),
                   ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
+                  SizedBox(height: PanAfricanSpacing.lg),
                   // Quick Actions
                   Text(
                     'Quick Actions',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
+                    style: PanAfricanTypography.titleLarge(context),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: PanAfricanSpacing.md),
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 2,
-                    crossAxisSpacing: 3.w,
-                    mainAxisSpacing: 3.w,
+                    crossAxisSpacing: PanAfricanSpacing.md,
+                    mainAxisSpacing: PanAfricanSpacing.md,
                     childAspectRatio: 1.3,
                     children: [
                       _QuickActionCard(
                         icon: Icons.menu_book_rounded,
                         label: 'Continue Learning',
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
+                        gradient: LinearGradient(
+                          colors: [PanAfricanColors.kenteRed, PanAfricanColors.tertiary],
                         ),
                         onTap: () {
-                          // Navigate to language games screen (which includes lessons)
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(
@@ -347,10 +327,11 @@ class ModernDashboardScreen extends HookConsumerWidget {
                       _QuickActionCard(
                         icon: Icons.chat_bubble_rounded,
                         label: 'AI Tutor',
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
+                        gradient: LinearGradient(
+                          colors: [PanAfricanColors.primary, PanAfricanColors.kenteBlue],
                         ),
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(
@@ -364,10 +345,11 @@ class ModernDashboardScreen extends HookConsumerWidget {
                       _QuickActionCard(
                         icon: Icons.track_changes_rounded,
                         label: 'Daily Challenge',
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFFFCD116), Color(0xFFFF6B35)],
+                        gradient: LinearGradient(
+                          colors: [PanAfricanColors.secondary, PanAfricanColors.tertiary],
                         ),
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const DailyChallengesScreen()),
@@ -377,10 +359,11 @@ class ModernDashboardScreen extends HookConsumerWidget {
                       _QuickActionCard(
                         icon: Icons.emoji_events_rounded,
                         label: 'Games',
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF7B2CBF), Color(0xFFCE1126)],
+                        gradient: LinearGradient(
+                          colors: [PanAfricanColors.ankaraPurple, PanAfricanColors.kenteRed],
                         ),
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const LanguageGamesScreen()),
@@ -389,28 +372,19 @@ class ModernDashboardScreen extends HookConsumerWidget {
                       ),
                     ],
                   ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
+                  SizedBox(height: PanAfricanSpacing.lg),
                   // Explore More Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Explore More',
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'Explore More',
+                    style: PanAfricanTypography.titleLarge(context),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: PanAfricanSpacing.md),
                   GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 2,
-                    crossAxisSpacing: 3.w,
-                    mainAxisSpacing: 3.w,
+                    crossAxisSpacing: PanAfricanSpacing.md,
+                    mainAxisSpacing: PanAfricanSpacing.md,
                     childAspectRatio: 1.5,
                     children: [
                       _ExploreCard(
@@ -418,6 +392,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         title: 'Community Chat',
                         subtitle: 'Join the conversation',
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const GlobalChatScreen()),
@@ -429,6 +404,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         title: 'Magazines',
                         subtitle: 'Culture & stories',
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const CultureMagazineScreen()),
@@ -440,6 +416,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         title: 'Global Ranking',
                         subtitle: 'See your position',
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const GlobalProgressScreen()),
@@ -451,6 +428,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                         title: 'Progress',
                         subtitle: 'Track your journey',
                         onTap: () {
+                          HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const ProgressDashboardScreen()),
@@ -459,7 +437,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                       ),
                     ],
                   ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
+                  SizedBox(height: PanAfricanSpacing.lg),
                 ],
               ),
             ),
@@ -488,38 +466,33 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(3.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.sm),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(1.5.w),
+            padding: EdgeInsets.all(PanAfricanSpacing.xxs),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+              borderRadius: PanAfricanRadius.mdBR,
             ),
-            child: Icon(icon, color: color, size: 16),
+            child: Icon(icon, color: color, size: 20.sp),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.xs),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 22.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.black87 : Colors.black87,
-            ),
+            style: PanAfricanTypography.headlineMedium(context)
+                .copyWith(color: PanAfricanColors.textPrimaryLight),
           ),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: Colors.black54,
-            ),
+            style: PanAfricanTypography.bodySmall(context)
+                .copyWith(color: PanAfricanColors.textSecondaryLight),
           ),
         ],
       ),
@@ -542,23 +515,24 @@ class _ProgressItem extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Column(
       children: [
         Container(
           height: 4,
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(2),
+            borderRadius: PanAfricanRadius.xsBR,
           ),
         ),
-        SizedBox(height: 0.5.h),
+        SizedBox(height: PanAfricanSpacing.xxs),
         Text(
           label,
-          style: TextStyle(fontSize: 11.sp, color: Colors.black54),
+          style: PanAfricanTypography.bodySmall(context),
         ),
         Text(
           '$completed/$total',
-          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.bold),
+          style: PanAfricanTypography.labelMedium(context),
         ),
       ],
     );
@@ -584,27 +558,24 @@ class _QuickActionCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: PanAfricanRadius.lgBR,
         child: Container(
           decoration: BoxDecoration(
             gradient: gradient,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowMedium,
+            borderRadius: PanAfricanRadius.lgBR,
+            boxShadow: PanAfricanShadows.sm,
           ),
-          padding: EdgeInsets.all(4.w),
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(icon, color: Colors.white, size: 32),
-              SizedBox(height: 1.h),
+              Icon(icon, color: Colors.white, size: 24.sp),
+              SizedBox(height: PanAfricanSpacing.xs),
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                style: PanAfricanTypography.titleMedium(context)
+                    .copyWith(color: Colors.white),
               ),
             ],
           ),
@@ -635,15 +606,16 @@ class _ExploreCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: PanAfricanRadius.lgBR,
         child: Container(
-          padding: EdgeInsets.all(4.w),
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
           decoration: BoxDecoration(
-            color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowMedium,
+            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            borderRadius: PanAfricanRadius.lgBR,
+            boxShadow: PanAfricanShadows.sm,
             border: Border.all(
-              color: isDark ? AfricanTheme.stitchBorderDark : Colors.transparent,
+              color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+              width: 1,
             ),
           ),
           child: Column(
@@ -652,25 +624,18 @@ class _ExploreCard extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: AfricanTheme.primaryGreen,
-                size: 24,
+                color: PanAfricanColors.primary,
+                size: 24.sp,
               ),
-              SizedBox(height: 1.h),
+              SizedBox(height: PanAfricanSpacing.xs),
               Text(
                 title,
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
-                ),
+                style: PanAfricanTypography.titleSmall(context),
               ),
-              SizedBox(height: 0.5.h),
+              SizedBox(height: PanAfricanSpacing.xxs),
               Text(
                 subtitle,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  color: isDark ? Colors.white70 : Colors.black54,
-                ),
+                style: PanAfricanTypography.bodySmall(context),
               ),
             ],
           ),

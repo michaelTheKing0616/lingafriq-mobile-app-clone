@@ -34,7 +34,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
     final availableLanguages = AppLanguage.values;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isListening = useState(false);
-    final resultViewMode = useState<'stacked' | 'sideBySide'>('stacked');
+    final resultViewMode = useState<String>('stacked');
     final speech = useMemoized(() => stt.SpeechToText(), []);
 
     Future<void> translate() async {
@@ -100,7 +100,7 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
         return;
       }
       final available = await speech.initialize(
-        onStatus: (s) => isListening.value = s == stt.SpeechListenState.listening,
+        onStatus: (s) => isListening.value = s == 'listening',
         onError: (_) => isListening.value = false,
       );
       if (!available) {
@@ -133,15 +133,17 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Translating...',
-      child: Scaffold(
+        child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: isDark
-                  ? [PolieColors.primaryDark, PolieColors.obsidian]
-                  : [PolieColors.surfaceContainerLight, Colors.white],
+              colors: [
+                PolieColors.primary,
+                PolieColors.primaryDark,
+                PolieColors.obsidian,
+              ],
             ),
           ),
           child: SafeArea(

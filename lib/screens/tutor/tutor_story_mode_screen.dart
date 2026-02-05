@@ -35,8 +35,28 @@ class TutorStoryModeScreen extends HookConsumerWidget {
     final localizationService = useMemoized(() => DynamicLocalizationService());
     final availableLanguages = AppLanguage.values;
     final flutterTts = useMemoized(() => FlutterTts());
+    final revealedParagraphs = useState(1);
+    final savedToLibrary = useState(false);
+    final alternateEnding = useState<String?>(null);
+    final isLoadingAlternate = useState(false);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    String ttsLocaleForLanguage(String code) {
+      const localeMap = {
+        'yo': 'yo-NG',
+        'ig': 'ig-NG',
+        'ha': 'ha-NG',
+        'sw': 'sw-KE',
+        'zu': 'zu-ZA',
+        'xh': 'xh-ZA',
+        'af': 'af-ZA',
+        'am': 'am-ET',
+        'en': 'en-US',
+        'fr': 'fr-FR',
+      };
+      return localeMap[code] ?? code;
+    }
 
     Future<void> speakParagraph(String text, String languageCode) async {
       try {
@@ -454,6 +474,7 @@ Quality requirements:
     String? alternateEnding,
     bool isLoadingAlternate,
     VoidCallback onGenerateAlternateEnding,
+    void Function(String)? onSpeakParagraph,
   ) {
     final storyText = (result['story'] ?? '') as String;
     final translationText = (result['translation'] ?? '') as String;
@@ -858,13 +879,15 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
   @override
   Widget build(BuildContext context) {
     if (widget.currentIndex == null || widget.currentIndex! >= widget.questions.length) {
-      return PolieGlassCard(
-        margin: EdgeInsets.all(PolieSpacing.md),
-        child: Center(
-          child: PoliePrimaryButton(
-            label: 'Start Quiz',
-            onPressed: () => widget.onIndexChanged(0),
-            icon: Icons.quiz_rounded,
+      return Padding(
+        padding: EdgeInsets.all(PolieSpacing.md),
+        child: PolieGlassCard(
+          child: Center(
+            child: PoliePrimaryButton(
+              label: 'Start Quiz',
+              onPressed: () => widget.onIndexChanged(0),
+              icon: Icons.quiz_rounded,
+            ),
           ),
         ),
       );

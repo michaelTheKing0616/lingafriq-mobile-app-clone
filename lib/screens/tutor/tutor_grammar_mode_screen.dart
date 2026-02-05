@@ -6,12 +6,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
@@ -47,7 +48,7 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
             s.toLowerCase().contains(topicInput.value.trim().toLowerCase()))
         .toList();
 
-    Future<Map<String, dynamic>> _generateGrammarWithGroq({
+    Future<Map<String, dynamic>> generateGrammarWithGroq({
       required String topic,
       required String language,
       required String userLevel,
@@ -129,7 +130,7 @@ Quality requirements:
             'practice': const [],
           };
         }
-        return _normalizeGrammarResult(parsed);
+        return normalizeGrammarResult(parsed);
       }
 
       final dio = Dio(
@@ -195,19 +196,7 @@ Quality requirements:
           'practice': const [],
         };
       }
-      return _normalizeGrammarResult(parsed);
-    }
-
-    Map<String, dynamic> _normalizeGrammarResult(Map<String, dynamic> parsed) {
-      return {
-        'canonicalRule': parsed['canonicalRule']?.toString() ?? '',
-        'grammarTree': parsed['grammarTree']?.toString(),
-        'sentenceAnatomy': (parsed['sentenceAnatomy'] is List) ? parsed['sentenceAnatomy'] : null,
-        'compareENFR': parsed['compareENFR']?.toString(),
-        'examples': (parsed['examples'] is List) ? parsed['examples'] : const [],
-        'commonMistakes': (parsed['commonMistakes'] is List) ? parsed['commonMistakes'] : const [],
-        'practice': (parsed['practice'] is List) ? parsed['practice'] : const [],
-      };
+      return normalizeGrammarResult(parsed);
     }
 
     Future<void> explainGrammar() async {
@@ -222,7 +211,7 @@ Quality requirements:
       await safeAsync(
         context: context,
         operation: () async {
-          grammarResult.value = await _generateGrammarWithGroq(
+          grammarResult.value = await generateGrammarWithGroq(
             topic: topicController.text,
             language: selectedLanguage.value.name,
             userLevel: userLevel.value,
@@ -237,15 +226,17 @@ Quality requirements:
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Generating grammar explanation...',
-      child: Scaffold(
+        child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: isDark
-                  ? [PolieColors.primaryDark, PolieColors.obsidian]
-                  : [PolieColors.surfaceContainerLight, Colors.white],
+              colors: [
+                PolieColors.primary,
+                PolieColors.primaryDark,
+                PolieColors.obsidian,
+              ],
             ),
           ),
           child: SafeArea(

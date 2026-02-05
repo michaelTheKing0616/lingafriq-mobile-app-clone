@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 
@@ -121,231 +124,247 @@ class _ShadowingExerciseScreenState
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Shadowing Exercise'),
-        backgroundColor: AppColors.primaryGreen,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              color: isDark ? Colors.grey[800] : Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              PolieColors.primary,
+              PolieColors.primaryDark,
+              PolieColors.obsidian,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
+                child: Row(
                   children: [
-                    Text(
-                      'Reference Text',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
-                        color: context.adaptive,
-                      ),
+                    IconButton(
+                      icon: Icon(PanAfricanIcons.back, color: PolieColors.textPrimary),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      widget.referenceText,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        color: AppColors.primaryGreen,
-                        fontWeight: FontWeight.w500,
+                    Expanded(
+                      child: Text(
+                        'Shadowing Exercise',
+                        style: PolieTypography.h2(context).copyWith(color: PolieColors.textPrimary),
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Center(
-              child: GestureDetector(
-                onTap: _isRecording ? _stopRecording : _startRecording,
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: _isRecording
-                          ? [Colors.red, Colors.redAccent]
-                          : [AppColors.primaryGreen, AppColors.accentGold],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: (_isRecording ? Colors.red : AppColors.primaryGreen)
-                            .withOpacity(0.3),
-                        blurRadius: 20,
-                        spreadRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: Icon(
-                    _isRecording ? Icons.stop : Icons.mic,
-                    color: Colors.white,
-                    size: 48,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Center(
-              child: Text(
-                _isRecording
-                    ? 'Recording... Tap to stop'
-                    : 'Tap to start recording',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  color: context.adaptive54,
-                ),
-              ),
-            ),
-            if (_isEvaluating) ...[
-              const SizedBox(height: 24),
-              const Center(child: CircularProgressIndicator()),
-              const SizedBox(height: 8),
-              Center(
-                child: Text(
-                  'Evaluating your pronunciation...',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: context.adaptive54,
-                  ),
-                ),
-              ),
-            ],
-            if (_feedback != null) ...[
-              const SizedBox(height: 24),
-              Card(
-                color: isDark ? Colors.grey[800] : Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.all(PolieSpacing.md),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Results',
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: context.adaptive,
+                      // Reference text card
+                      PolieGlassCard(
+                        padding: EdgeInsets.all(PolieSpacing.md),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Reference Text',
+                              style: PolieTypography.label(context),
+                            ),
+                            SizedBox(height: PolieSpacing.sm),
+                            Text(
+                              widget.referenceText,
+                              style: PolieTypography.body(context).copyWith(
+                                color: PolieColors.electricTeal,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          _buildScoreCard(
-                            'Score',
-                            '${((_feedback!['score'] as num) * 100).toStringAsFixed(1)}%',
-                            AppColors.primaryGreen,
-                          ),
-                          _buildScoreCard(
-                            'WER',
-                            '${((_feedback!['wer'] as num) * 100).toStringAsFixed(1)}%',
-                            Colors.orange,
-                          ),
-                        ],
-                      ),
-                      if (_feedback!['userText'] != null &&
-                          (_feedback!['userText'] as String).isNotEmpty) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          'You said:',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: context.adaptive54,
+                      SizedBox(height: PolieSpacing.xl),
+                      // Record button orb
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            _isRecording ? _stopRecording() : _startRecording();
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: _isRecording ? 140.w : 120.w,
+                            height: _isRecording ? 140.w : 120.w,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: _isRecording
+                                    ? [PolieColors.error, PolieColors.errorMuted]
+                                    : [PolieColors.electricTeal, PolieColors.electricTealLight],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: (_isRecording ? PolieColors.error : PolieColors.electricTeal)
+                                      .withOpacity(0.5),
+                                  blurRadius: _isRecording ? 32 : 24,
+                                  spreadRadius: _isRecording ? 4 : 0,
+                                ),
+                              ],
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.3),
+                                width: 2,
+                              ),
+                            ),
+                            child: Icon(
+                              _isRecording ? Icons.stop_rounded : Icons.mic_rounded,
+                              color: Colors.white,
+                              size: 48.sp,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _feedback!['userText'] as String,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: context.adaptive,
+                      ),
+                      SizedBox(height: PolieSpacing.md),
+                      Center(
+                        child: Text(
+                          _isRecording
+                              ? 'Recording... Tap to stop'
+                              : 'Tap to start recording',
+                          style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+                        ),
+                      ),
+                      if (_isEvaluating) ...[
+                        SizedBox(height: PolieSpacing.xl),
+                        Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(PolieColors.electricTeal),
+                          ),
+                        ),
+                        SizedBox(height: PolieSpacing.sm),
+                        Center(
+                          child: Text(
+                            'Evaluating your pronunciation...',
+                            style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
                           ),
                         ),
                       ],
-                      if (_feedback!['corrections'] != null &&
-                          (_feedback!['corrections'] as List).isNotEmpty) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          'Corrections:',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: context.adaptive54,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        ...((_feedback!['corrections'] as List).map((e) => Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                      if (_feedback != null) ...[
+                        SizedBox(height: PolieSpacing.xl),
+                        PolieGlassCard(
+                          hasGlow: true,
+                          glowColor: PolieColors.electricTeal,
+                          padding: EdgeInsets.all(PolieSpacing.md),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Results',
+                                style: PolieTypography.h2(context),
+                              ),
+                              SizedBox(height: PolieSpacing.lg),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
-                                  Icon(
-                                    Icons.info_outline,
-                                    size: 16,
-                                    color: AppColors.accentGold,
+                                  _buildScoreCard(
+                                    'Score',
+                                    '${((_feedback!['score'] as num) * 100).toStringAsFixed(1)}%',
+                                    PolieColors.success,
                                   ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Text(
-                                      '${e['original']} → ${e['correction']}\n${e['explanation']}',
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: context.adaptive,
-                                      ),
-                                    ),
+                                  _buildScoreCard(
+                                    'WER',
+                                    '${((_feedback!['wer'] as num) * 100).toStringAsFixed(1)}%',
+                                    PolieColors.goldEmber,
                                   ),
                                 ],
                               ),
-                            ))),
+                              if (_feedback!['userText'] != null &&
+                                  (_feedback!['userText'] as String).isNotEmpty) ...[
+                                SizedBox(height: PolieSpacing.lg),
+                                Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+                                SizedBox(height: PolieSpacing.md),
+                                Text(
+                                  'You said:',
+                                  style: PolieTypography.label(context),
+                                ),
+                                SizedBox(height: PolieSpacing.xs),
+                                Text(
+                                  _feedback!['userText'] as String,
+                                  style: PolieTypography.body(context),
+                                ),
+                              ],
+                              if (_feedback!['corrections'] != null &&
+                                  (_feedback!['corrections'] as List).isNotEmpty) ...[
+                                SizedBox(height: PolieSpacing.lg),
+                                Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+                                SizedBox(height: PolieSpacing.md),
+                                Text(
+                                  'Corrections:',
+                                  style: PolieTypography.label(context),
+                                ),
+                                SizedBox(height: PolieSpacing.sm),
+                                ...((_feedback!['corrections'] as List).map((e) => Padding(
+                                      padding: EdgeInsets.only(bottom: PolieSpacing.sm),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Icon(
+                                            Icons.info_outline_rounded,
+                                            size: 18.sp,
+                                            color: PolieColors.goldEmber,
+                                          ),
+                                          SizedBox(width: PolieSpacing.sm),
+                                          Expanded(
+                                            child: Text(
+                                              '${e['original']} → ${e['correction']}\n${e['explanation']}',
+                                              style: PolieTypography.bodySmall(context),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ))),
+                              ],
+                            ],
+                          ),
+                        ),
                       ],
                     ],
                   ),
                 ),
               ),
             ],
-          ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildScoreCard(String label, String value, Color color) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 14.sp,
-            color: context.adaptive54,
+    return Container(
+      padding: EdgeInsets.all(PolieSpacing.md),
+      decoration: BoxDecoration(
+        color: PolieColors.surfaceGlass,
+        borderRadius: BorderRadius.circular(PolieRadius.md),
+        border: Border.all(color: color.withOpacity(0.3)),
+      ),
+      child: Column(
+        children: [
+          Text(
+            label,
+            style: PolieTypography.bodySmall(context),
           ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: color.withOpacity(0.3)),
-          ),
-          child: Text(
+          SizedBox(height: PolieSpacing.xs),
+          Text(
             value,
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+            style: PolieTypography.h2(context).copyWith(color: color),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -130,15 +131,17 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Analyzing pronunciation...',
-      child: Scaffold(
+        child: Scaffold(
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: isDark
-                  ? [PolieColors.primaryDark, PolieColors.obsidian]
-                  : [PolieColors.surfaceContainerLight, Colors.white],
+              colors: [
+                PolieColors.primary,
+                PolieColors.primaryDark,
+                PolieColors.obsidian,
+              ],
             ),
           ),
           child: SafeArea(

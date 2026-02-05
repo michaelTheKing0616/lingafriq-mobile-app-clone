@@ -43,14 +43,38 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
 
     if (isLoading.value) {
       return Scaffold(
-        appBar: AppBar(title: Text('Flashcards')),
-        body: Center(child: CircularProgressIndicator()),
+        backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+        appBar: AppBar(
+          title: Text('Flashcards', style: PanAfricanTypography.titleLarge(context)),
+          backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+          leading: IconButton(
+            icon: Icon(PanAfricanIcons.back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: Center(child: CircularProgressIndicator(color: PanAfricanColors.primary)),
       );
     }
 
     if (words.value.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: Text('Flashcards')),
+        backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+        appBar: AppBar(
+          title: Text('Flashcards', style: PanAfricanTypography.titleLarge(context)),
+          backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+          leading: IconButton(
+            icon: Icon(PanAfricanIcons.back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,14 +96,23 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flashcards'),
-        backgroundColor: Colors.transparent,
+        title: Text('Flashcards', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           Builder(
             builder: (context) => IconButton(
               icon: Icon(Icons.filter_list),
               onPressed: () async {
+                HapticFeedback.lightImpact();
                 await _showCategoryFilter(context, vocabService, words, isLoading);
               },
             ),
@@ -211,6 +244,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                       icon: Icon(Icons.skip_previous),
                       onPressed: currentIndex.value > 0
                           ? () {
+                              HapticFeedback.lightImpact();
                               currentIndex.value--;
                               isFlipped.value = false;
                               showAnswer.value = false;
@@ -227,6 +261,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                       icon: Icon(Icons.skip_next),
                       onPressed: currentIndex.value < words.value.length - 1
                           ? () {
+                              HapticFeedback.lightImpact();
                               currentIndex.value++;
                               isFlipped.value = false;
                               showAnswer.value = false;
@@ -278,33 +313,50 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
           .toList()
         ..sort();
       
+      final isDark = Theme.of(context).brightness == Brightness.dark;
       final selectedCategory = await showModalBottomSheet<String?>(
         context: context,
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: PanAfricanRadius.xlBR.topLeft),
         ),
         builder: (context) => Container(
-          padding: EdgeInsets.all(16.sp),
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Container(
+                width: 40,
+                height: 4,
+                margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+                decoration: BoxDecoration(
+                  color: PanAfricanColors.neutralMedium,
+                  borderRadius: PanAfricanRadius.roundBR,
+                ),
+              ),
               Text(
                 'Filter by Category',
                 style: PanAfricanTypography.titleLarge(context),
               ),
-              SizedBox(height: 16.h),
+              SizedBox(height: PanAfricanSpacing.md),
               ListTile(
-                title: Text('All Categories'),
-                leading: Icon(Icons.all_inclusive),
-                onTap: () => Navigator.pop(context, null),
+                title: Text('All Categories', style: PanAfricanTypography.bodyLarge(context)),
+                leading: Icon(Icons.all_inclusive, color: PanAfricanColors.primary),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context, null);
+                },
               ),
               Divider(),
               ...categories.map((cat) => ListTile(
-                title: Text(cat),
-                leading: Icon(Icons.category),
-                onTap: () => Navigator.pop(context, cat),
+                title: Text(cat, style: PanAfricanTypography.bodyLarge(context)),
+                leading: Icon(Icons.category, color: PanAfricanColors.primary),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.pop(context, cat);
+                },
               )),
-              SizedBox(height: 16.h),
+              SizedBox(height: PanAfricanSpacing.md),
             ],
           ),
         ),
@@ -439,12 +491,12 @@ class _Flashcard extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.5,
-      child: Card(
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.xlBR,
+          boxShadow: PanAfricanShadows.md,
         ),
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         child: Padding(
           padding: EdgeInsets.all(PanAfricanSpacing.xl),
           child: Column(

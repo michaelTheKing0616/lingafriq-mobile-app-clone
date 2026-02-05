@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -113,7 +114,10 @@ class _PrivateChatListScreenState
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.of(context).pop();
+                      },
                       style: IconButton.styleFrom(
                         backgroundColor: Colors.white.withOpacity(0.2),
                         shape: const CircleBorder(),
@@ -148,10 +152,30 @@ class _PrivateChatListScreenState
                           ref.read(privateChatProvider.notifier).search(value)),
                       decoration: InputDecoration(
                         hintText: 'Search by name, email, or language...',
-                        prefixIcon: const Icon(Icons.search),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                        hintStyle: PanAfricanTypography.bodyMedium(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
+                        prefixIcon: Icon(Icons.search, color: PanAfricanColors.neutralMedium),
+                        border: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: PanAfricanColors.primary,
+                            width: 2,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
                       ),
+                      style: PanAfricanTypography.bodyMedium(context),
                     ),
                   ),
                 ),
@@ -235,15 +259,16 @@ class _PrivateChatListScreenState
             boxShadow: DesignSystem.shadowMedium,
           ),
           child: ListTile(
-            contentPadding: EdgeInsets.all(4.w),
+            contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
             leading: Stack(
               children: [
                 CircleAvatar(
-                  radius: 24,
-                  backgroundColor: AfricanTheme.primaryGreen,
+                  radius: 24.w,
+                  backgroundColor: PanAfricanColors.primary,
                   child: Text(
                     contact.name.isNotEmpty ? contact.name[0].toUpperCase() : '?',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: PanAfricanTypography.labelMedium(context)
+                        .copyWith(color: Colors.white),
                   ),
                 ),
                 if (isOnline)
@@ -251,12 +276,17 @@ class _PrivateChatListScreenState
                     right: 0,
                     bottom: 0,
                     child: Container(
-                      width: 12,
-                      height: 12,
+                      width: 12.w,
+                      height: 12.w,
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: PanAfricanColors.success,
                         shape: BoxShape.circle,
-                        border: Border.all(color: isDark ? const Color(0xFF1F3527) : Colors.white, width: 2),
+                        border: Border.all(
+                          color: isDark 
+                              ? PanAfricanColors.surfaceContainerDark 
+                              : PanAfricanColors.surfaceContainerLight,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -264,16 +294,12 @@ class _PrivateChatListScreenState
             ),
             title: Text(
               contact.name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+              style: PanAfricanTypography.titleSmall(context),
             ),
             subtitle: Text(
               contact.lastMessage ?? 'No messages yet',
-              style: TextStyle(
-                color: isDark ? Colors.white70 : Colors.black54,
-              ),
+              style: PanAfricanTypography.bodySmall(context)
+                  .copyWith(color: PanAfricanColors.neutralMedium),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -283,27 +309,30 @@ class _PrivateChatListScreenState
               children: [
                 Text(
                   _formatTime(_getLastMessageTimestamp(roomMessages)),
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    color: isDark ? Colors.white70 : Colors.black54,
-                  ),
+                  style: PanAfricanTypography.labelSmall(context)
+                      .copyWith(color: PanAfricanColors.neutralMedium),
                 ),
                 if (unreadCount > 0)
                   Container(
-                    margin: EdgeInsets.only(top: 0.5.h),
-                    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    margin: EdgeInsets.only(top: PanAfricanSpacing.xxs),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.sm,
+                      vertical: PanAfricanSpacing.xxs,
+                    ),
                     decoration: BoxDecoration(
-                      color: AfricanTheme.primaryGreen,
-                      shape: BoxShape.circle,
+                      color: PanAfricanColors.primary,
+                      borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
                       unreadCount.toString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                      style: PanAfricanTypography.labelSmall(context)
+                          .copyWith(color: Colors.white),
                     ),
                   ),
               ],
             ),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 SmoothPageRoute(
@@ -363,56 +392,53 @@ class _ContactTile extends StatelessWidget {
         ? contact.username[0].toUpperCase()
         : '?';
     return Material(
-      color: isDark ? const Color(0xFF1F3527) : Colors.white,
-      borderRadius: BorderRadius.circular(16),
+      color: isDark 
+          ? PanAfricanColors.surfaceContainerDark 
+          : PanAfricanColors.surfaceContainerLight,
+      borderRadius: PanAfricanRadius.lgBR,
       child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        borderRadius: PanAfricanRadius.lgBR,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.sm,
+            vertical: PanAfricanSpacing.sm,
+          ),
           child: Row(
             children: [
               CircleAvatar(
-                radius: 26,
-                backgroundColor: AppColors.primaryGreen,
+                radius: 24.w,
+                backgroundColor: PanAfricanColors.primary,
                 child: Text(
                   initials,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: PanAfricanTypography.titleSmall(context)
+                      .copyWith(color: Colors.white),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: PanAfricanSpacing.sm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       contact.username,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: PanAfricanTypography.titleSmall(context),
                     ),
                     if (contact.email != null)
                       Text(
                         contact.email!,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        ),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
                     if (contact.language != null &&
                         contact.language!.trim().isNotEmpty)
                       Text(
                         contact.language!,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.grey[500] : Colors.grey[600],
-                        ),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
                   ],
                 ),
@@ -421,14 +447,17 @@ class _ContactTile extends StatelessWidget {
                 children: [
                   Icon(
                     isOnline ? Icons.circle : Icons.circle_outlined,
-                    color: isOnline ? Colors.green : Colors.grey,
+                    color: isOnline 
+                        ? PanAfricanColors.success 
+                        : PanAfricanColors.neutralMedium,
                     size: 14,
                   ),
                   Text(
                     isOnline ? 'Online' : 'Offline',
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      color: isOnline ? Colors.green : Colors.grey,
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
+                      color: isOnline 
+                          ? PanAfricanColors.success 
+                          : PanAfricanColors.neutralMedium,
                     ),
                   ),
                 ],

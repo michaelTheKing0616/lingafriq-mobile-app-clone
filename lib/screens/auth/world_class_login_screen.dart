@@ -70,17 +70,17 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             ),
           ),
           child: ResponsiveSafeArea(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(
-                horizontal: AdaptiveLayout.sideMargin(context),
-                vertical: 24,
-              ),
+            child:               SingleChildScrollView(
+                padding: EdgeInsets.symmetric(
+                  horizontal: AdaptiveLayout.sideMargin(context),
+                  vertical: PanAfricanSpacing.lg,
+                ),
               child: Form(
                 key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 40.h),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     
                     // Logo with animation
                     _buildLogo(context)
@@ -88,7 +88,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                         .fadeIn(duration: 400.ms)
                         .scale(begin: Offset(0.8, 0.8), duration: 400.ms),
                     
-                    SizedBox(height: 48.h),
+                    SizedBox(height: PanAfricanSpacing.xxl),
                     
                     // Welcome text
                     _buildWelcomeText(context, isDark)
@@ -96,7 +96,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                         .fadeIn(delay: 200.ms, duration: 400.ms)
                         .slideY(begin: 0.1, duration: 400.ms),
                     
-                    SizedBox(height: 32.h),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     
                     // Email field with auto-fill
                     _buildEmailField(
@@ -109,7 +109,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                         .fadeIn(delay: 300.ms, duration: 400.ms)
                         .slideX(begin: -0.1, duration: 400.ms),
                     
-                    SizedBox(height: 16.h),
+                    SizedBox(height: PanAfricanSpacing.md),
                     
                     // Password field
                     _buildPasswordField(
@@ -122,14 +122,14 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                         .fadeIn(delay: 400.ms, duration: 400.ms)
                         .slideX(begin: -0.1, duration: 400.ms),
                     
-                    SizedBox(height: 12.h),
+                    SizedBox(height: PanAfricanSpacing.sm),
                     
                     // Forgot password
                     _buildForgotPassword(context, ref)
                         .animate()
                         .fadeIn(delay: 500.ms, duration: 400.ms),
                     
-                    SizedBox(height: 32.h),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     
                     // Login button
                     _buildLoginButton(
@@ -145,7 +145,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                         .fadeIn(delay: 600.ms, duration: 400.ms)
                         .scale(delay: 600.ms, duration: 400.ms),
                     
-                    SizedBox(height: 24.h),
+                    SizedBox(height: PanAfricanSpacing.lg),
                     
                     // Biometric login
                     if (isBiometricAvailable.value == true)
@@ -162,21 +162,21 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                           .fadeIn(delay: 700.ms, duration: 400.ms)
                           .scale(delay: 700.ms, duration: 400.ms),
                     
-                    SizedBox(height: 32.h),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     
                     // Divider
                     _buildDivider(context, isDark)
                         .animate()
                         .fadeIn(delay: 800.ms, duration: 400.ms),
                     
-                    SizedBox(height: 24.h),
+                    SizedBox(height: PanAfricanSpacing.lg),
                     
                     // Sign up link
                     _buildSignUpLink(context, ref)
                         .animate()
                         .fadeIn(delay: 900.ms, duration: 400.ms),
                     
-                    SizedBox(height: 40.h),
+                    SizedBox(height: PanAfricanSpacing.xl),
                   ],
                 ),
               ),
@@ -225,10 +225,10 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           'Welcome Back!',
           style: PanAfricanTypography.headlineLarge(context).copyWith(
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : PanAfricanColors.textDark,
+            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
           ),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: PanAfricanSpacing.xs),
         Text(
           'Sign in to continue your language journey',
           style: PanAfricanTypography.bodyLarge(context).copyWith(
@@ -252,10 +252,10 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           'Email',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textDark,
+            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
           ),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: PanAfricanSpacing.xs),
         TextFormField(
           controller: controller,
           keyboardType: TextInputType.emailAddress,
@@ -264,39 +264,39 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           style: PanAfricanTypography.bodyLarge(context),
           decoration: InputDecoration(
             hintText: 'Enter your email',
-            prefixIcon: Icon(Icons.email_outlined, color: PanAfricanColors.primaryLight),
+            prefixIcon: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
             suffixIcon: controller.text.isNotEmpty
                 ? IconButton(
-                    icon: Icon(Icons.clear, size: 20.sp),
+                    icon: Icon(Icons.clear, size: 20.sp, color: PanAfricanColors.textSecondaryLight),
                     onPressed: () => controller.clear(),
                   )
                 : null,
             filled: true,
             fillColor: isDark
-                ? Colors.grey[900]!.withOpacity(0.5)
-                : Colors.grey[100],
+                ? PanAfricanColors.surfaceContainerDark
+                : PanAfricanColors.surfaceContainerLight,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide(
-                color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide(
-                color: PanAfricanColors.primaryLight,
+                color: PanAfricanColors.primary,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red, width: 2),
+              borderRadius: PanAfricanRadius.lgBR,
+              borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
           ),
         ),
       ],
@@ -316,10 +316,10 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           'Password',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textDark,
+            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
           ),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: PanAfricanSpacing.xs),
         TextFormField(
           controller: controller,
           obscureText: !showPassword.value,
@@ -328,40 +328,43 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           style: PanAfricanTypography.bodyLarge(context),
           decoration: InputDecoration(
             hintText: 'Enter your password',
-            prefixIcon: Icon(Icons.lock_outline, color: PanAfricanColors.primaryLight),
+            prefixIcon: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
             suffixIcon: IconButton(
               icon: Icon(
                 showPassword.value ? Icons.visibility_off : Icons.visibility,
-                color: Colors.grey[600],
+                color: PanAfricanColors.textSecondaryLight,
               ),
-              onPressed: () => showPassword.value = !showPassword.value,
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                showPassword.value = !showPassword.value;
+              },
             ),
             filled: true,
             fillColor: isDark
-                ? Colors.grey[900]!.withOpacity(0.5)
-                : Colors.grey[100],
+                ? PanAfricanColors.surfaceContainerDark
+                : PanAfricanColors.surfaceContainerLight,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide(
-                color: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
               ),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide(
-                color: PanAfricanColors.primaryLight,
+                color: PanAfricanColors.primary,
                 width: 2,
               ),
             ),
             errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: Colors.red, width: 2),
+              borderRadius: PanAfricanRadius.lgBR,
+              borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
           ),
         ),
       ],
@@ -373,6 +376,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
       alignment: Alignment.centerRight,
       child: TextButton(
         onPressed: () {
+          HapticFeedback.lightImpact();
           Navigator.push(
             context,
             SmoothPageRoute(child: const ForgotPasswordScreen()),
@@ -381,7 +385,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         child: Text(
           'Forgot Password?',
           style: PanAfricanTypography.bodyMedium(context).copyWith(
-            color: PanAfricanColors.primaryLight,
+            color: PanAfricanColors.primary,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -429,20 +433,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
       child: Container(
         height: 56.h,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              PanAfricanColors.primaryLight,
-              PanAfricanColors.secondaryLight,
-            ],
-          ),
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: [
-            BoxShadow(
-              color: PanAfricanColors.primaryLight.withOpacity(0.4),
-              blurRadius: 20,
-              offset: Offset(0, 10),
-            ),
-          ],
+          gradient: PanAfricanGradients.forest,
+          borderRadius: PanAfricanRadius.lgBR,
+          boxShadow: PanAfricanShadows.glowGreen(0.3),
         ),
         child: Center(
           child: Text(
@@ -480,7 +473,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
 
         return ScaleOnTap(
           onTap: () async {
-            HapticFeedback.lightImpact();
+            HapticFeedback.mediumImpact();
             
             final authenticated = await biometricAuth.authenticate(
               localizedReason: 'Use biometric to sign in',
@@ -510,22 +503,22 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             height: 56.h,
             decoration: BoxDecoration(
               color: isDark
-                  ? Colors.grey[900]!.withOpacity(0.5)
-                  : Colors.grey[100],
-              borderRadius: BorderRadius.circular(16),
+                  ? PanAfricanColors.surfaceContainerDark
+                  : PanAfricanColors.surfaceContainerLight,
+              borderRadius: PanAfricanRadius.lgBR,
               border: Border.all(
-                color: isDark ? Colors.grey[700]! : Colors.grey[300]!,
+                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
               ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: PanAfricanColors.primaryLight, size: 24.sp),
-                SizedBox(width: 12.w),
+                Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
+                SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
                   style: PanAfricanTypography.bodyLarge(context).copyWith(
-                    color: isDark ? Colors.white : PanAfricanColors.textDark,
+                    color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -540,17 +533,17 @@ class WorldClassLoginScreen extends HookConsumerWidget {
   Widget _buildDivider(BuildContext context, bool isDark) {
     return Row(
       children: [
-        Expanded(child: Divider(color: isDark ? Colors.grey[700] : Colors.grey[300])),
+        Expanded(child: Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight)),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
           child: Text(
             'OR',
-            style: PanAfricanTypography.bodySmall(context).copyWith(
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+            style: PanAfricanTypography.labelMedium(context).copyWith(
+              color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight,
             ),
           ),
         ),
-        Expanded(child: Divider(color: isDark ? Colors.grey[700] : Colors.grey[300])),
+        Expanded(child: Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight)),
       ],
     );
   }
@@ -565,6 +558,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         ),
         TextButton(
           onPressed: () {
+            HapticFeedback.lightImpact();
             Navigator.push(
               context,
               SmoothPageRoute(child: const WorldClassSignupScreen()),
@@ -573,7 +567,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           child: Text(
             'Sign Up',
             style: PanAfricanTypography.bodyMedium(context).copyWith(
-              color: PanAfricanColors.primaryLight,
+              color: PanAfricanColors.primary,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -1,21 +1,21 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/api_service.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
   const ImportMediaScreen({Key? key}) : super(key: key);
@@ -64,57 +64,45 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
     }
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: Stack(
         children: [
           // Gradient Header
           Container(
             height: 25.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF007A3D), // Green
-                  Color(0xFF00A8E8), // Blue
-                ],
-              ),
+              gradient: PanAfricanGradients.forest,
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(40),
                 bottomRight: Radius.circular(40),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(PanAfricanIcons.back, color: Colors.white),
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.of(context).pop();
+                          },
                           style: IconButton.styleFrom(
                             backgroundColor: Colors.white.withOpacity(0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
+                          icon: Icon(PanAfricanIcons.menu, color: Colors.white),
                           onPressed: () {
-                            // CRITICAL FIX: Add null check for scaffold state
+                            HapticFeedback.lightImpact();
                             final scaffoldState = Scaffold.of(context);
-                            if (scaffoldState != null) {
-                              scaffoldState.openDrawer();
-                            }
+                            scaffoldState.openDrawer();
                           },
                           style: IconButton.styleFrom(
                             backgroundColor: Colors.white.withOpacity(0.2),
@@ -123,28 +111,21 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 2.h),
+                    SizedBox(height: PanAfricanSpacing.sm),
                     const Icon(
                       Icons.upload_rounded,
                       color: Colors.white,
                       size: 64,
                     ),
-                    SizedBox(height: 1.h),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Text(
                       'Media Import',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      style: PanAfricanTypography.headlineMedium(context, color: Colors.white),
                     ),
-                    SizedBox(height: 0.5.h),
+                    SizedBox(height: PanAfricanSpacing.xxs),
                     Text(
                       'Share your content with the community',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.white.withOpacity(0.9),
-                      ),
+                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white.withOpacity(0.9)),
                     ),
                   ],
                 ),
@@ -158,73 +139,65 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             right: 0,
             bottom: 0,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
                 children: [
                   // Upload Card
                   Container(
-                    padding: EdgeInsets.all(8.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.xl),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      borderRadius: PanAfricanRadius.xlBR,
                       border: Border.all(
-                        color: AppColors.primaryGreen.withOpacity(0.3),
+                        color: PanAfricanColors.primary.withOpacity(0.3),
                         width: 2,
                         style: BorderStyle.solid,
                       ),
-                      boxShadow: DesignSystem.shadowLarge,
+                      boxShadow: PanAfricanShadows.md,
                     ),
                     child: Column(
                       children: [
                         Icon(
                           Icons.image_rounded,
-                          size: 64,
-                          color: AppColors.primaryGreen,
+                          size: 64.sp,
+                          color: PanAfricanColors.primary,
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: PanAfricanSpacing.md),
                         Text(
                           'Upload Media',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
+                          style: PanAfricanTypography.titleLarge(context),
                         ),
-                        SizedBox(height: 1.h),
+                        SizedBox(height: PanAfricanSpacing.xs),
                         Text(
                           'Drag and drop or click to browse',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white70 : Colors.black54,
-                          ),
+                          style: PanAfricanTypography.bodyMedium(context, color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
                         ),
-                        SizedBox(height: 3.h),
+                        SizedBox(height: PanAfricanSpacing.lg),
                         FilledButton(
-                          onPressed: () => _importFromFile(),
+                          onPressed: () {
+                            HapticFeedback.mediumImpact();
+                            _importFromFile();
+                          },
                           style: FilledButton.styleFrom(
-                            backgroundColor: AppColors.primaryGreen,
+                            backgroundColor: PanAfricanColors.primary,
                             foregroundColor: Colors.white,
-                            padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg, vertical: PanAfricanSpacing.sm),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                              borderRadius: PanAfricanRadius.roundBR,
                             ),
                           ),
-                          child: const Text('Select Files'),
+                          child: Text('Select Files', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 3.h),
+                  SizedBox(height: PanAfricanSpacing.lg),
                   // Supported Formats
                   Text(
                     'Supported Formats',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
+                    style: PanAfricanTypography.titleMedium(context),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: PanAfricanSpacing.md),
                   Row(
                     children: [
                       Expanded(
@@ -234,7 +207,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                           isDark: isDark,
                         ),
                       ),
-                      SizedBox(width: 2.w),
+                      SizedBox(width: PanAfricanSpacing.sm),
                       Expanded(
                         child: _FormatCard(
                           title: 'Videos',
@@ -242,7 +215,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                           isDark: isDark,
                         ),
                       ),
-                      SizedBox(width: 2.w),
+                      SizedBox(width: PanAfricanSpacing.sm),
                       Expanded(
                         child: _FormatCard(
                           title: 'Audio',
@@ -252,59 +225,59 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: PanAfricanSpacing.md),
                   Text(
                     'Text (TXT) is read directly. Images/audio/video are uploaded, transcribed, translated, and can become lessons.',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: isDark ? Colors.white60 : Colors.black54,
-                    ),
+                    style: PanAfricanTypography.bodySmall(context),
                   ),
-                  SizedBox(height: 2.h),
-                  Text('Target language', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black87)),
-                  SizedBox(height: 1.h),
+                  SizedBox(height: PanAfricanSpacing.md),
+                  Text('Target language', style: PanAfricanTypography.titleSmall(context)),
+                  SizedBox(height: PanAfricanSpacing.xs),
                   _buildLanguageSelector(context, isDark),
                   if (_processingStatus == 'pending' || _processingStatus == 'processing') ...[
-                    SizedBox(height: 3.h),
-                    LinearProgressIndicator(color: AppColors.primaryGreen),
-                    SizedBox(height: 1.h),
+                    SizedBox(height: PanAfricanSpacing.lg),
+                    LinearProgressIndicator(color: PanAfricanColors.primary),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Text(
                       'Transcribing and translating…',
-                      style: TextStyle(fontSize: 14.sp, color: isDark ? Colors.white70 : Colors.black54),
+                      style: PanAfricanTypography.bodyMedium(context, color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
                     ),
                   ],
                   if (_processingError != null) ...[
-                    SizedBox(height: 2.h),
+                    SizedBox(height: PanAfricanSpacing.md),
                     Container(
-                      padding: EdgeInsets.all(4.w),
+                      padding: EdgeInsets.all(PanAfricanSpacing.md),
                       decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                        color: PanAfricanColors.error.withOpacity(0.15),
+                        borderRadius: PanAfricanRadius.lgBR,
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.error_outline, color: Colors.red, size: 20.sp),
-                          SizedBox(width: 2.w),
-                          Expanded(child: Text(_processingError!, style: TextStyle(fontSize: 13.sp, color: Colors.red))),
+                          Icon(PanAfricanIcons.error, color: PanAfricanColors.error, size: 20.sp),
+                          SizedBox(width: PanAfricanSpacing.sm),
+                          Expanded(child: Text(_processingError!, style: PanAfricanTypography.bodySmall(context, color: PanAfricanColors.error))),
                         ],
                       ),
                     ),
                   ],
                   if (_importedText != null && _importedText!.isNotEmpty) ...[
-                    SizedBox(height: 3.h),
+                    SizedBox(height: PanAfricanSpacing.lg),
                     _buildPreviewCard(context, _importedText!, isDark),
-                    SizedBox(height: 2.h),
+                    SizedBox(height: PanAfricanSpacing.md),
                     FilledButton(
-                      onPressed: _isLoading ? null : () => _createLesson(context),
+                      onPressed: _isLoading ? null : () {
+                        HapticFeedback.mediumImpact();
+                        _createLesson(context);
+                      },
                       style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.primaryGreen,
+                        backgroundColor: PanAfricanColors.primary,
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 3.h),
+                        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg, vertical: PanAfricanSpacing.sm),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                          borderRadius: PanAfricanRadius.roundBR,
                         ),
                       ),
-                      child: const Text('Create lesson'),
+                      child: Text('Create lesson', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
                     ),
                   ],
                 ],
@@ -396,25 +369,22 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
     ];
 
     return Wrap(
-      spacing: 8.sp,
-      runSpacing: 8.sp,
+      spacing: PanAfricanSpacing.xs,
+      runSpacing: PanAfricanSpacing.xs,
       children: languages.map((lang) {
         final isSelected = _selectedLanguage == lang;
         return FilterChip(
-          label: Text(lang),
+          label: Text(lang, style: PanAfricanTypography.labelMedium(context, color: isSelected ? Colors.white : (isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight))),
           selected: isSelected,
           onSelected: (selected) {
+            HapticFeedback.selectionClick();
             setState(() {
               _selectedLanguage = selected ? lang : null;
             });
           },
-          selectedColor: AppColors.primaryGreen,
+          selectedColor: PanAfricanColors.primary,
           checkmarkColor: Colors.white,
-          labelStyle: TextStyle(
-            color: isSelected ? Colors.white : (isDark ? Colors.white : Colors.black87),
-            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-          ),
-          backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
+          backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         );
       }).toList(),
     );
@@ -422,32 +392,26 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
   Widget _buildPreviewCard(BuildContext context, String text, bool isDark) {
     return Container(
-      padding: EdgeInsets.all(16.sp),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
         border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
         ),
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             text.length > 200 ? '${text.substring(0, 200)}...' : text,
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: isDark ? Colors.grey[300] : Colors.grey[700],
-              height: 1.5,
-            ),
+            style: PanAfricanTypography.bodyMedium(context),
           ),
-          SizedBox(height: 8.sp),
+          SizedBox(height: PanAfricanSpacing.xs),
           Text(
             '${text.split(' ').length} words',
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: isDark ? Colors.grey[500] : Colors.grey[500],
-            ),
+            style: PanAfricanTypography.labelSmall(context),
           ),
         ],
       ),
@@ -926,30 +890,23 @@ class _FormatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-        boxShadow: DesignSystem.shadowSmall,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
-            ),
+            style: PanAfricanTypography.labelLarge(context),
           ),
-          SizedBox(height: 0.5.h),
+          SizedBox(height: PanAfricanSpacing.xxs),
           Text(
             formats,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
+            style: PanAfricanTypography.labelSmall(context),
           ),
         ],
       ),

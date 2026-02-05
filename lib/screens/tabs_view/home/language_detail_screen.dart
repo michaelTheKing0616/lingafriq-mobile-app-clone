@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
@@ -8,6 +10,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
@@ -27,7 +30,12 @@ class LanguageDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       body: Column(
         children: [
           TopGradientBox(
@@ -35,13 +43,17 @@ class LanguageDetailScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const BackButton(color: Colors.white),
-                // const PointsAndProfileImageBuilder(),
-                // 0.05.sh.heightBox,
-                GreetingsBuilder(
-                  greetingTitle: '',
-                  pageTitle: language.name,
-                )
+                _BackButtonWithHaptic(isDark: isDark),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+                  child: Text(
+                    language.name ?? 'Language',
+                    style: PanAfricanTypography.headlineMedium(context).copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
               ],
             ),
           ),
@@ -63,7 +75,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                       child: LayoutBuilder(
                         builder: (context, constraints) {
                           return Padding(
-                            padding: EdgeInsets.all(16.0.sp),
+                            padding: EdgeInsets.all(PanAfricanSpacing.md),
                             child: Stack(
                               children: [
                                 IgnorePointer(
@@ -73,18 +85,9 @@ class LanguageDetailScreen extends ConsumerWidget {
                                 Positioned(
                                   left: constraints.maxWidth * 0.12,
                                   top: constraints.maxHeight * 0.075,
-                                  // child: PrimaryButton(
-                                  //   elevation: 4,
-                                  //   verticalPadding: 10,
-                                  //   onTap: () {
-                                  //     ref
-                                  //         .read(navigationProvider)
-                                  //         .navigateTo(LessonsListScreen(language: language));
-                                  //   },
-                                  //   text: "Lessons",
-                                  // ).w(0.35.sw),
                                   child: _LessonTextBuilder(
                                     onTap: () {
+                                      HapticFeedback.lightImpact();
                                       ref
                                           .read(navigationProvider)
                                           .navigateTo(LessonsListScreen(language: language));
@@ -94,18 +97,9 @@ class LanguageDetailScreen extends ConsumerWidget {
                                 Positioned(
                                   left: constraints.maxWidth * 0.365,
                                   top: constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
-                                  // child: PrimaryButton(
-                                  //   elevation: 4,
-                                  //   verticalPadding: 10,
-                                  //   onTap: () {
-                                  //     ref
-                                  //         .read(navigationProvider)
-                                  //         .navigateTo(MannerismsListScreen(language: language));
-                                  //   },
-                                  //   text: "Mannerisms",
-                                  // ).w(0.4.sw),
                                   child: _MannerismTextBuilder(
                                     onTap: () {
+                                      HapticFeedback.lightImpact();
                                       ref
                                           .read(navigationProvider)
                                           .navigateTo(MannerismsListScreen(language: language));
@@ -115,42 +109,30 @@ class LanguageDetailScreen extends ConsumerWidget {
                                 Positioned(
                                   left: constraints.maxWidth * (context.isSmall ? 0.45 : 0.425),
                                   top: constraints.maxHeight * (context.isSmall ? 0.6 : 0.475),
-                                  // child: PrimaryButton(
-                                  //   elevation: 4,
-                                  //   verticalPadding: 10,
-                                  //   onTap: () {
-                                  //     ref
-                                  //         .read(navigationProvider)
-                                  //         .navigateTo(LessonsListScreen(language: language));
-                                  //   },
-                                  //   text: "History",
-                                  // ).w(0.3.sw),
                                   child: _HistoryTextBuilder(
                                     size: Size(18.sp, 18.sp),
                                     onTap: () {
+                                      HapticFeedback.lightImpact();
                                       ref
                                           .read(navigationProvider)
                                           .navigateTo(HistoryListScreen(language: language));
                                     },
                                   ).animate(effects: kGradientTextEffects),
                                 ),
-                                // const _MannerismTextBuilder(),
-                                // const _HistoryTextBuilder(),
                               ],
                             ),
                           );
                         },
                       ).px16(),
                     ),
-                    20.heightBox,
-                    PrimaryButton(
-                      width: 0.6.sw,
+                    SizedBox(height: PanAfricanSpacing.lg),
+                    _QuizButton(
                       onTap: () {
+                        HapticFeedback.mediumImpact();
                         ref.read(navigationProvider).navigateTo(TakeQuizScreen(language: language));
                       },
-                      color: AppColors.primaryGreen,
-                      text: "Take Quiz",
-                    ).centered(),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.lg),
                   ],
                 ),
               )
@@ -162,19 +144,87 @@ class LanguageDetailScreen extends ConsumerWidget {
   }
 }
 
+class _BackButtonWithHaptic extends StatelessWidget {
+  final bool isDark;
+
+  const _BackButtonWithHaptic({required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: PanAfricanSpacing.xs,
+        top: PanAfricanSpacing.xs,
+      ),
+      child: IconButton(
+        icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          Navigator.of(context).pop();
+        },
+        tooltip: 'Back',
+      ),
+    );
+  }
+}
+
+class _QuizButton extends StatelessWidget {
+  final VoidCallback onTap;
+
+  const _QuizButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      width: 0.6.sw,
+      decoration: BoxDecoration(
+        gradient: PanAfricanGradients.forest,
+        borderRadius: PanAfricanRadius.roundBR,
+        boxShadow: PanAfricanShadows.md,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: PanAfricanRadius.roundBR,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.lg,
+              vertical: PanAfricanSpacing.md,
+            ),
+            child: Center(
+              child: Text(
+                'Take Quiz',
+                style: PanAfricanTypography.titleMedium(context).copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _LessonTextBuilder extends StatelessWidget {
   final VoidCallback onTap;
   const _LessonTextBuilder({Key? key, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: PanAfricanRadius.smBR,
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.xs),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: ['l', 'e', 's', 's', 'o', 'n', 's'].map((e) {
               return Image.asset(
                 "assets/alphabets/$e.png",
@@ -183,12 +233,7 @@ class _LessonTextBuilder extends StatelessWidget {
               );
             }).toList(),
           ),
-          // 8.heightBox,
-          // SizedBox(
-          //   width: 20.sp * 6.5,
-          //   child: const LinearProgressIndicator(value: 1).offset(offset: Offset(8.sp, 0)),
-          // ),
-        ],
+        ),
       ),
     );
   }
@@ -204,13 +249,15 @@ class _MannerismTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: PanAfricanRadius.smBR,
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.xs),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: ['m', 'a', 'n', 'n', 'e', 'r', 'i', 's', 'm', 's'].map((e) {
               return Image.asset(
                 "assets/alphabets/$e.png",
@@ -219,14 +266,7 @@ class _MannerismTextBuilder extends StatelessWidget {
               );
             }).toList(),
           ),
-          // 8.heightBox,
-          // SizedBox(
-          //   width: 14.sp * 9.5,
-          //   child: const LinearProgressIndicator(value: 1).offset(
-          //     offset: Offset(8.sp, 0),
-          //   ),
-          // ),
-        ],
+        ),
       ),
     );
   }
@@ -244,13 +284,15 @@ class _HistoryTextBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: PanAfricanRadius.smBR,
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.xs),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             children: ['h', 'i', 's', 't', 'o', 'r', 'y'].map((e) {
               return Image.asset(
                 "assets/alphabets/$e.png",
@@ -259,14 +301,7 @@ class _HistoryTextBuilder extends StatelessWidget {
               );
             }).toList(),
           ),
-          // 8.heightBox,
-          // SizedBox(
-          //   width: (size?.width ?? 20.sp) * 6.5,
-          //   child: const LinearProgressIndicator(value: 1).offset(
-          //     offset: Offset(8.sp, 0),
-          //   ),
-          // ),
-        ],
+        ),
       ),
     );
   }

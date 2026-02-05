@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
@@ -34,27 +37,52 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
   Widget build(BuildContext context) {
     final questNotifier = ref.watch(questProvider.notifier);
     final chapters = questNotifier.chapters;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('The Great Journey'),
+        title: Text(
+          'The Great Journey',
+          style: PanAfricanTypography.headlineMedium(context),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () {
+              HapticFeedback.lightImpact();
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('The Great Journey'),
-                  content: const Text(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: PanAfricanRadius.lgBR,
+                  ),
+                  title: Text(
+                    'The Great Journey',
+                    style: PanAfricanTypography.titleLarge(context),
+                  ),
+                  content: Text(
                     'Embark on an epic 12-chapter adventure across Africa! '
                     'Each chapter teaches you a new language and culture. '
                     'Complete lessons to unlock the next chapter and earn rewards!',
+                    style: PanAfricanTypography.bodyMedium(context),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Got it'),
+                      child: Text(
+                        'Got it',
+                        style: PanAfricanTypography.labelLarge(
+                          context,
+                          color: PanAfricanColors.primary,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -64,7 +92,7 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
         ],
       ),
       body: OptimizedListView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         itemCount: chapters.length,
         itemBuilder: (context, index) {
           final chapter = chapters[index];
@@ -73,9 +101,10 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
           return _ChapterCard(
             chapter: chapter,
             progress: progress,
+            isDark: isDark,
             onTap: chapter.isUnlocked
                 ? () {
-                    // Navigate to chapter details
+                    HapticFeedback.lightImpact();
                     Navigator.push(
                       context,
                       SmoothPageRoute(
@@ -94,104 +123,169 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
 class _ChapterCard extends StatelessWidget {
   final QuestChapter chapter;
   final double progress;
+  final bool isDark;
   final VoidCallback? onTap;
 
   const _ChapterCard({
     required this.chapter,
     required this.progress,
+    required this.isDark,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 16),
-      elevation: chapter.isUnlocked ? 4 : 1,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+        decoration: BoxDecoration(
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.lgBR,
+          border: Border.all(
+            color: chapter.isCompleted
+                ? PanAfricanColors.success
+                : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            width: chapter.isCompleted ? 2 : 1,
+          ),
+          boxShadow: chapter.isUnlocked ? PanAfricanShadows.md : PanAfricanShadows.sm,
+        ),
         child: Opacity(
           opacity: chapter.isUnlocked ? 1.0 : 0.6,
           child: Padding(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
-                    Text(
-                      chapter.icon,
-                      style: const TextStyle(fontSize: 32),
+                    Container(
+                      width: 48.w,
+                      height: 48.w,
+                      decoration: BoxDecoration(
+                        color: chapter.isCompleted
+                            ? PanAfricanColors.success.withOpacity(0.15)
+                            : PanAfricanColors.primaryContainer,
+                        borderRadius: PanAfricanRadius.mdBR,
+                      ),
+                      child: Center(
+                        child: Text(
+                          chapter.icon,
+                          style: TextStyle(fontSize: 28.sp),
+                        ),
+                      ),
                     ),
-                    const SizedBox(width: 12),
+                    SizedBox(width: PanAfricanSpacing.sm),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Chapter ${chapter.chapterNumber}',
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: PanAfricanTypography.labelSmall(context),
                           ),
                           Text(
                             chapter.title,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            style: PanAfricanTypography.titleMedium(context),
                           ),
                         ],
                       ),
                     ),
                     if (chapter.isCompleted)
-                      const Icon(Icons.check_circle, color: Colors.green),
+                      Container(
+                        padding: EdgeInsets.all(PanAfricanSpacing.xxs),
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.success.withOpacity(0.15),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.check_circle_rounded,
+                          color: PanAfricanColors.success,
+                          size: 24.sp,
+                        ),
+                      ),
                     if (!chapter.isUnlocked)
-                      const Icon(Icons.lock, color: Colors.grey),
+                      Icon(
+                        Icons.lock_rounded,
+                        color: PanAfricanColors.neutralMedium,
+                        size: 24.sp,
+                      ),
                   ],
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: PanAfricanSpacing.sm),
                 Text(
                   chapter.description,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: PanAfricanTypography.bodyMedium(context),
                 ),
                 if (chapter.isUnlocked && !chapter.isCompleted) ...[
-                  const SizedBox(height: 12),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Row(
                     children: [
                       Expanded(
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          minHeight: 8,
+                        child: Container(
+                          height: 8.h,
+                          decoration: BoxDecoration(
+                            color: isDark
+                                ? PanAfricanColors.surfaceContainerHighDark
+                                : PanAfricanColors.surfaceContainerHighLight,
+                            borderRadius: PanAfricanRadius.roundBR,
+                          ),
+                          child: FractionallySizedBox(
+                            alignment: Alignment.centerLeft,
+                            widthFactor: progress,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: PanAfricanGradients.forest,
+                                borderRadius: PanAfricanRadius.roundBR,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: PanAfricanSpacing.xs),
                       Text(
                         '${(progress * 100).toStringAsFixed(0)}%',
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: PanAfricanTypography.labelSmall(context),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
                     '${chapter.lessons.where((l) => l.isCompleted).length}/${chapter.lessons.length} lessons',
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: PanAfricanTypography.bodySmall(context),
                   ),
                 ],
                 if (chapter.isUnlocked) ...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Row(
                     children: [
-                      const Icon(Icons.star, size: 16, color: Colors.amber),
-                      const SizedBox(width: 4),
+                      Icon(
+                        Icons.star_rounded,
+                        size: 18.sp,
+                        color: PanAfricanColors.secondary,
+                      ),
+                      SizedBox(width: PanAfricanSpacing.xxs),
                       Text(
                         '${chapter.xpReward} XP',
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: PanAfricanTypography.labelSmall(
+                          context,
+                          color: PanAfricanColors.secondary,
+                        ),
                       ),
                       if (chapter.badgeReward != null) ...[
-                        const SizedBox(width: 16),
-                        const Icon(Icons.workspace_premium, size: 16, color: Colors.purple),
-                        const SizedBox(width: 4),
+                        SizedBox(width: PanAfricanSpacing.md),
+                        Icon(
+                          Icons.workspace_premium_rounded,
+                          size: 18.sp,
+                          color: PanAfricanColors.ankaraPurple,
+                        ),
+                        SizedBox(width: PanAfricanSpacing.xxs),
                         Text(
                           'Badge',
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: PanAfricanTypography.labelSmall(
+                            context,
+                            color: PanAfricanColors.ankaraPurple,
+                          ),
                         ),
                       ],
                     ],
@@ -283,13 +377,21 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (_isGeneratingStory || _isGeneratingLessons) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.chapter.title),
+          title: Text(
+            widget.chapter.title,
+            style: PanAfricanTypography.headlineMedium(context),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
           ),
         ),
         body: const DynamicLoadingScreen(),
@@ -299,23 +401,45 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
     if (_errorMessage != null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.chapter.title),
+          title: Text(
+            widget.chapter.title,
+            style: PanAfricanTypography.headlineMedium(context),
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
           ),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(_errorMessage!),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _generateStoryAndLessons,
-                child: const Text('Retry'),
-              ),
-            ],
+          child: Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.error_outline_rounded,
+                  size: 64.sp,
+                  color: PanAfricanColors.error,
+                ),
+                SizedBox(height: PanAfricanSpacing.md),
+                Text(
+                  _errorMessage!,
+                  style: PanAfricanTypography.bodyLarge(context),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: PanAfricanSpacing.lg),
+                FilledButton(
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    _generateStoryAndLessons();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -323,75 +447,83 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.chapter.title),
+        title: Text(
+          widget.chapter.title,
+          style: PanAfricanTypography.headlineMedium(context),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          // Chapter header with generated story
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
+            // Chapter header with generated story
+            Container(
+              decoration: BoxDecoration(
+                color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                borderRadius: PanAfricanRadius.lgBR,
+                border: Border.all(
+                  color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                ),
+                boxShadow: PanAfricanShadows.sm,
+              ),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.chapter.icon,
-                    style: const TextStyle(fontSize: 48),
+                    style: TextStyle(fontSize: 48.sp),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Text(
                     widget.chapter.description,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: PanAfricanTypography.bodyLarge(context),
                   ),
                   if (_generatedStory != null) ...[
-                    const SizedBox(height: 16),
-                    const Divider(),
-                    const SizedBox(height: 16),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+                    SizedBox(height: PanAfricanSpacing.md),
                     Text(
                       'Story',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                      style: PanAfricanTypography.titleMedium(context),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: PanAfricanSpacing.sm),
                     Text(
                       _generatedStory!.story,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: PanAfricanTypography.bodyMedium(context),
                     ),
                     if (_generatedStory!.vocabulary.isNotEmpty) ...[
-                      const SizedBox(height: 16),
-                      const Divider(),
-                      const SizedBox(height: 8),
+                      SizedBox(height: PanAfricanSpacing.md),
+                      Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+                      SizedBox(height: PanAfricanSpacing.sm),
                       Text(
                         'Key Vocabulary',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: PanAfricanTypography.titleMedium(context),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: PanAfricanSpacing.sm),
                       ..._generatedStory!.vocabulary.map((vocab) => Padding(
-                            padding: const EdgeInsets.only(bottom: 4),
+                            padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxs),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Icon(
+                                  Icons.circle,
+                                  size: 6.sp,
+                                  color: PanAfricanColors.primary,
+                                ),
+                                SizedBox(width: PanAfricanSpacing.xs),
                                 Expanded(
                                   child: Text(
                                     '${vocab.word} - ${vocab.translation}',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: PanAfricanTypography.bodySmall(context),
                                   ),
                                 ),
                               ],
@@ -399,80 +531,135 @@ class _ChapterDetailScreenState extends ConsumerState<_ChapterDetailScreen> {
                           )),
                     ],
                     if (_generatedStory!.culturalNotes.isNotEmpty) ...[
-                      const SizedBox(height: 16),
-                      const Divider(),
-                      const SizedBox(height: 8),
+                      SizedBox(height: PanAfricanSpacing.md),
+                      Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+                      SizedBox(height: PanAfricanSpacing.sm),
                       Text(
                         'Cultural Notes',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: PanAfricanTypography.titleMedium(context),
                       ),
-                      const SizedBox(height: 8),
+                      SizedBox(height: PanAfricanSpacing.sm),
                       Text(
                         _generatedStory!.culturalNotes,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: PanAfricanTypography.bodySmall(context),
                       ),
                     ],
                   ],
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          // Lessons (use generated lessons if available, otherwise fallback to chapter lessons)
-          Text(
-            'Lessons',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 8),
-          ...(_generatedLessons.isNotEmpty ? _generatedLessons : widget.chapter.lessons).map((lesson) => Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: lesson.isCompleted
-                        ? Colors.green
-                        : Theme.of(context).colorScheme.primary,
-                    child: lesson.isCompleted
-                        ? const Icon(Icons.check, color: Colors.white)
-                        : Text(
-                            '${lesson.order}',
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                  ),
-                  title: Text(lesson.title),
-                  subtitle: Text(lesson.description),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.star, size: 16, color: Colors.amber),
-                      const SizedBox(width: 4),
-                      Text('${lesson.xpReward} XP'),
-                    ],
-                  ),
-                  onTap: lesson.isCompleted
-                      ? null
-                      : () async {
-                          // Navigate to lesson screen (to be implemented)
-                          // For now, complete lesson via quest provider
-                          final questNotifier = ref.read(questProvider.notifier);
-                          await questNotifier.completeLesson(lesson.id);
-                          
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Completed: ${lesson.title}! +${lesson.xpReward} XP'),
-                                backgroundColor: Colors.green,
-                              ),
-                            );
-                            Navigator.pop(context); // Return to chapter list
-                          }
-                        },
-                ),
-              )),
+            SizedBox(height: PanAfricanSpacing.lg),
+            // Lessons
+            Text(
+              'Lessons',
+              style: PanAfricanTypography.titleMedium(context),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            ...(_generatedLessons.isNotEmpty ? _generatedLessons : widget.chapter.lessons).map((lesson) => _buildLessonCard(context, lesson, isDark)),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLessonCard(BuildContext context, QuestLesson lesson, bool isDark) {
+    return GestureDetector(
+      onTap: lesson.isCompleted
+          ? null
+          : () async {
+              HapticFeedback.lightImpact();
+              final questNotifier = ref.read(questProvider.notifier);
+              await questNotifier.completeLesson(lesson.id);
+
+              if (context.mounted) {
+                HapticFeedback.mediumImpact();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Completed: ${lesson.title}! +${lesson.xpReward} XP',
+                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                    ),
+                    backgroundColor: PanAfricanColors.success,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                  ),
+                );
+                Navigator.pop(context);
+              }
+            },
+      child: Container(
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+        decoration: BoxDecoration(
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.lgBR,
+          border: Border.all(
+            color: lesson.isCompleted
+                ? PanAfricanColors.success
+                : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+          ),
+          boxShadow: PanAfricanShadows.sm,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
+          child: Row(
+            children: [
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: lesson.isCompleted
+                      ? PanAfricanColors.success
+                      : PanAfricanColors.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: lesson.isCompleted
+                      ? Icon(Icons.check_rounded, color: Colors.white, size: 20.sp)
+                      : Text(
+                          '${lesson.order}',
+                          style: PanAfricanTypography.titleSmall(context, color: Colors.white),
+                        ),
+                ),
+              ),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      lesson.title,
+                      style: PanAfricanTypography.titleSmall(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xxxs),
+                    Text(
+                      lesson.description,
+                      style: PanAfricanTypography.bodySmall(context),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.star_rounded,
+                    size: 16.sp,
+                    color: PanAfricanColors.secondary,
+                  ),
+                  SizedBox(width: PanAfricanSpacing.xxs),
+                  Text(
+                    '${lesson.xpReward} XP',
+                    style: PanAfricanTypography.labelSmall(
+                      context,
+                      color: PanAfricanColors.secondary,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

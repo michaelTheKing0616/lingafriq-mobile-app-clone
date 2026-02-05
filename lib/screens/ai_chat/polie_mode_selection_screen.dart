@@ -1,9 +1,11 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
 import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
@@ -101,7 +103,11 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                       icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
                       onPressed: () {
                         HapticFeedback.lightImpact();
-                        onBack?.call() ?? Navigator.of(context).pop();
+                        if (onBack != null) {
+                          onBack!();
+                        } else {
+                          Navigator.of(context).pop();
+                        }
                       },
                     ),
                     Expanded(

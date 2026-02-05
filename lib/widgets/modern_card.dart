@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -15,6 +17,7 @@ class ModernCard extends StatelessWidget {
   final bool showShadow;
   final Gradient? gradient;
   final Border? border;
+  final bool animate;
 
   const ModernCard({
     Key? key,
@@ -28,34 +31,26 @@ class ModernCard extends StatelessWidget {
     this.showShadow = true,
     this.gradient,
     this.border,
+    this.animate = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-    final cardColor = color ?? (isDark ? AppColors.surfaceDark : AppColors.surfaceLight);
-    final defaultBorderRadius = borderRadius ?? BorderRadius.circular(20);
-    final defaultElevation = elevation ?? (showShadow ? 4.0 : 0.0);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = color ?? (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
+    final defaultBorderRadius = borderRadius ?? PanAfricanRadius.lgBR;
 
     Widget cardContent = Container(
-      padding: padding ?? const EdgeInsets.all(16),
+      padding: padding ?? EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
         color: gradient == null ? cardColor : null,
         gradient: gradient,
         borderRadius: defaultBorderRadius,
-        border: border,
-        boxShadow: showShadow
-            ? [
-                BoxShadow(
-                  color: isDark
-                      ? Colors.black.withOpacity(0.3)
-                      : Colors.black.withOpacity(0.08),
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                  spreadRadius: 0,
-                ),
-              ]
-            : null,
+        border: border ?? Border.all(
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+          width: 1,
+        ),
+        boxShadow: showShadow ? PanAfricanShadows.sm : null,
       ),
       child: child,
     );
@@ -65,21 +60,33 @@ class ModernCard extends StatelessWidget {
         color: Colors.transparent,
         borderRadius: defaultBorderRadius,
         child: InkWell(
-          onTap: onTap,
+          onTap: () {
+            HapticFeedback.lightImpact();
+            onTap!();
+          },
           borderRadius: defaultBorderRadius,
-          splashColor: AppColors.primaryGreen.withOpacity(0.1),
-          highlightColor: AppColors.primaryGreen.withOpacity(0.05),
+          splashColor: PanAfricanColors.primary.withOpacity(0.08),
+          highlightColor: PanAfricanColors.primary.withOpacity(0.04),
           child: cardContent,
         ),
       );
     }
 
-    return Container(
-      margin: margin ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    final card = Container(
+      margin: margin ?? EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.md,
+        vertical: PanAfricanSpacing.sm,
+      ),
       child: cardContent,
-    ).animate()
-        .fadeIn(duration: 300.ms, delay: 50.ms)
-        .slideY(begin: 0.1, end: 0, duration: 300.ms, delay: 50.ms);
+    );
+
+    if (animate) {
+      return card.animate()
+          .fadeIn(duration: 250.ms, delay: 50.ms)
+          .slideY(begin: 0.05, end: 0, duration: 250.ms, delay: 50.ms);
+    }
+    
+    return card;
   }
 }
 
@@ -106,7 +113,6 @@ class LanguageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
     final progress = totalCount > 0 ? completed / totalCount : 0.0;
 
     return ModernCard(
@@ -114,11 +120,12 @@ class LanguageCard extends StatelessWidget {
       padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,
       showShadow: true,
+      border: Border.all(color: Colors.transparent),
       child: Stack(
         children: [
           // Background Image
           ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: PanAfricanRadius.lgBR,
             child: backgroundImage != null && backgroundImage!.isNotEmpty
                 ? Image.network(
                     backgroundImage!,
@@ -139,16 +146,16 @@ class LanguageCard extends StatelessWidget {
           // Gradient Overlay
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: PanAfricanRadius.lgBR,
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black.withOpacity(0.7),
-                  Colors.black.withOpacity(0.9),
+                  Colors.black.withOpacity(0.6),
+                  Colors.black.withOpacity(0.85),
                 ],
-                stops: const [0.0, 0.6, 1.0],
+                stops: const [0.0, 0.5, 1.0],
               ),
             ),
           ),
@@ -159,7 +166,7 @@ class LanguageCard extends StatelessWidget {
             left: 0,
             right: 0,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -169,10 +176,7 @@ class LanguageCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           name,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
+                          style: PanAfricanTypography.titleLarge(context, color: Colors.white).copyWith(
                             shadows: [
                               Shadow(
                                 color: Colors.black.withOpacity(0.5),
@@ -186,78 +190,67 @@ class LanguageCard extends StatelessWidget {
                       ),
                       if (isFeatured)
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: PanAfricanSpacing.sm,
+                            vertical: PanAfricanSpacing.xxs,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.accentGold,
-                            borderRadius: BorderRadius.circular(8),
+                            color: PanAfricanColors.secondary,
+                            borderRadius: PanAfricanRadius.smBR,
                           ),
                           child: Text(
                             'Featured',
-                            style: TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: PanAfricanTypography.labelSmall(context, color: PanAfricanColors.neutralDarkest),
                           ),
                         ),
                     ],
                   ),
                   
-                  const SizedBox(height: 8),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   
                   // Progress Info
                   if (totalCount > 0) ...[
                     Row(
                       children: [
                         Icon(
-                          Icons.check_circle_outline,
-                          color: AppColors.accentGold,
+                          Icons.check_circle_outline_rounded,
+                          color: PanAfricanColors.secondary,
                           size: 16.sp,
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: PanAfricanSpacing.xxs),
                         Text(
                           '$completed/$totalCount lessons',
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 12.sp,
-                          ),
+                          style: PanAfricanTypography.bodySmall(context, color: Colors.white.withOpacity(0.9)),
                         ),
                         const Spacer(),
                         if (totalScore > 0)
                           Row(
                             children: [
                               Icon(
-                                Icons.star,
-                                color: AppColors.accentGold,
+                                Icons.star_rounded,
+                                color: PanAfricanColors.secondary,
                                 size: 16.sp,
                               ),
-                              const SizedBox(width: 4),
+                              SizedBox(width: PanAfricanSpacing.xxs),
                               Text(
                                 '$totalScore',
-                                style: TextStyle(
-                                  color: AppColors.accentGold,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: PanAfricanTypography.labelMedium(context, color: PanAfricanColors.secondary),
                               ),
                             ],
                           ),
                       ],
                     ),
                     
-                    const SizedBox(height: 8),
+                    SizedBox(height: PanAfricanSpacing.sm),
                     
                     // Progress Bar
                     ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: PanAfricanRadius.roundBR,
                       child: LinearProgressIndicator(
                         value: progress,
                         backgroundColor: Colors.white.withOpacity(0.2),
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          AppColors.accentGold,
+                          PanAfricanColors.secondary,
                         ),
                         minHeight: 6,
                       ),
@@ -265,9 +258,7 @@ class LanguageCard extends StatelessWidget {
                   ] else
                     Text(
                       'Start learning',
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.8),
-                        fontSize: 14.sp,
+                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white.withOpacity(0.8)).copyWith(
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -284,22 +275,14 @@ class LanguageCard extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primaryGreen,
-            AppColors.accentGold,
-            AppColors.accentOrange,
-          ],
-        ),
+      decoration: const BoxDecoration(
+        gradient: PanAfricanGradients.sunset,
       ),
       child: Center(
         child: Icon(
-          Icons.language,
-          color: Colors.white.withOpacity(0.5),
-          size: 48,
+          Icons.language_rounded,
+          color: Colors.white.withOpacity(0.4),
+          size: 48.sp,
         ),
       ),
     );
