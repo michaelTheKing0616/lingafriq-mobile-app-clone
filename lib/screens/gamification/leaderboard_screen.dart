@@ -156,14 +156,29 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
       );
     }
 
-    return OptimizedListView.builder(
+    // Use ListView.builder directly with proper iOS physics to prevent scroll errors
+    return ListView.builder(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       itemCount: entries.length,
+      // Use BouncingScrollPhysics for iOS-native feel and ClampingScrollPhysics fallback
+      physics: const AlwaysScrollableScrollPhysics(
+        parent: BouncingScrollPhysics(),
+      ),
+      // Add item extent estimate for better scroll performance
+      itemExtent: null, // Let items size naturally
+      // Add key for proper widget recycling
+      key: ValueKey('leaderboard_${type.name}'),
       itemBuilder: (context, index) {
+        // Bounds check to prevent RangeError on rapid scrolling
+        if (index < 0 || index >= entries.length) {
+          return const SizedBox.shrink();
+        }
+        
         final entry = entries[index];
         final isCurrentUser = entry.userId == 'current_user';
         
         return _LeaderboardCard(
+          key: ValueKey('leaderboard_card_${entry.userId}_$index'),
           entry: entry,
           isCurrentUser: isCurrentUser,
           rank: index + 1,
@@ -181,6 +196,7 @@ class _LeaderboardCard extends StatelessWidget {
   final bool isDark;
 
   const _LeaderboardCard({
+    super.key,
     required this.entry,
     required this.isCurrentUser,
     required this.rank,
@@ -201,10 +217,14 @@ class _LeaderboardCard extends StatelessWidget {
   }
 
   Widget _buildRankBadge(BuildContext context, int rank) {
+    // Use fixed size with ScreenUtil, but with a fallback for robustness
+    final badgeSize = 48.0.w.clamp(40.0, 56.0);
+    final iconSize = 28.0.sp.clamp(22.0, 32.0);
+    
     if (rank <= 3) {
       return Container(
-        width: 48.w,
-        height: 48.w,
+        width: badgeSize,
+        height: badgeSize,
         decoration: BoxDecoration(
           gradient: rank == 1
               ? PanAfricanGradients.savannaGold
@@ -217,14 +237,14 @@ class _LeaderboardCard extends StatelessWidget {
           child: Icon(
             Icons.emoji_events_rounded,
             color: _getRankColor(rank),
-            size: 28.sp,
+            size: iconSize,
           ),
         ),
       );
     }
     return Container(
-      width: 48.w,
-      height: 48.w,
+      width: badgeSize,
+      height: badgeSize,
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         shape: BoxShape.circle,
@@ -306,24 +326,30 @@ class _LeaderboardCard extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.local_fire_department_rounded,
-                          size: 16.sp,
+                          size: 16.0.sp.clamp(14.0, 20.0),
                           color: PanAfricanColors.tertiary,
                         ),
                         SizedBox(width: PanAfricanSpacing.xxs),
-                        Text(
-                          '${entry.dailyStreak} day streak',
-                          style: PanAfricanTypography.labelSmall(context),
+                        Flexible(
+                          child: Text(
+                            '${entry.dailyStreak} day streak',
+                            style: PanAfricanTypography.labelSmall(context),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                         SizedBox(width: PanAfricanSpacing.md),
                         Icon(
                           Icons.star_rounded,
-                          size: 16.sp,
+                          size: 16.0.sp.clamp(14.0, 20.0),
                           color: PanAfricanColors.secondary,
                         ),
                         SizedBox(width: PanAfricanSpacing.xxs),
-                        Text(
-                          '${entry.xp} XP',
-                          style: PanAfricanTypography.labelSmall(context),
+                        Flexible(
+                          child: Text(
+                            '${entry.xp} XP',
+                            style: PanAfricanTypography.labelSmall(context),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),

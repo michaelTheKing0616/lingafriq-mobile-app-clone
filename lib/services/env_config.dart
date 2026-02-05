@@ -36,6 +36,17 @@ class EnvConfig {
   /// Check if Stability AI is configured
   static bool get isStabilityAiConfigured => stabilityAiKey.isNotEmpty;
   
+  /// MFA (Montreal Forced Aligner) Service URL for pronunciation scoring
+  /// Set via: --dart-define=MFA_SERVICE_URL=xxx during build
+  /// Optional - falls back to basic scoring if not configured
+  static String? get mfaServiceUrl {
+    const url = String.fromEnvironment('MFA_SERVICE_URL', defaultValue: '');
+    return url.isNotEmpty ? url : null;
+  }
+  
+  /// Check if MFA service is configured
+  static bool get isMFAConfigured => mfaServiceUrl != null && mfaServiceUrl!.isNotEmpty;
+  
   /// Backend base URL
   /// For production: set via --dart-define=BACKEND_URL=https://your-api.com during build.
   /// Ensure the backend has CORS configured to allow your app origin (e.g. in backend env: CORS_ORIGIN).
@@ -50,6 +61,7 @@ class EnvConfig {
     'groq': isGroqConfigured,
     'huggingface': isHuggingFaceConfigured,
     'stability': isStabilityAiConfigured,
+    'mfa': isMFAConfigured,
   };
 }
 

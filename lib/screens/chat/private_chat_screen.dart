@@ -7,11 +7,13 @@ import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/services/polie_mention_handler.dart';
 
 class PrivateChatScreen extends ConsumerStatefulWidget {
   final PrivateChatContact contact;
@@ -366,11 +368,15 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
     );
   }
 
-  void _sendMessage(ProfileModel currentUser) {
+  void _sendMessage(ProfileModel currentUser) async {
     final text = _messageController.text.trim();
     if (text.isEmpty || _roomId.isEmpty) return;
+    
+    final socket = ref.read(socketProvider.notifier);
+    final polieHandler = ref.read(polieMentionHandlerProvider);
+    
     try {
-      final socket = ref.read(socketProvider.notifier);
+      // Send the user's message first
       socket.sendMessage(
         _roomId,
         text,
@@ -379,6 +385,39 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
       );
       _messageController.clear();
       _scrollToBottom();
+      
+      // Check for @Polie mention and process
+      if (polieHandler.hasMention(text)) {
+        // Get user's learning language
+        final onboarding = ref.read(onboardingProvider);
+        final userLanguage = onboarding.selectedLanguage ?? 'english';
+        
+        // Show typing indicator
+        socket.sendMessage(
+          _roomId,
+          '🤖 Polie is thinking...',
+          'polie_bot',
+          'Polie',
+        );
+        
+        // Process the mention
+        final result = await polieHandler.processMessage(
+          message: text,
+          userLanguage: userLanguage,
+        );
+        
+        // Send Polie's response
+        final formattedResponse = polieHandler.formatResponseForChat(result);
+        if (formattedResponse.isNotEmpty) {
+          socket.sendMessage(
+            _roomId,
+            formattedResponse,
+            'polie_bot',
+            'Polie',
+          );
+        }
+        _scrollToBottom();
+      }
     } catch (e) {
       if (mounted) {
         ErrorHandler.showError(context, e);

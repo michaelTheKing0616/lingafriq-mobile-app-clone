@@ -12,6 +12,8 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
@@ -21,10 +23,15 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final articles = useState<List<Map<String, dynamic>>>([]);
+    final translatedArticles = useState<Map<String, Map<String, String>>>({});
     final isLoading = useState(false);
+    final isTranslating = useState(false);
     final selectedCategory = useState<String?>(null);
     final showTranslation = useState(false);
     final favoriteArticles = useState<Set<String>>({});
+    final translationService = useMemoized(() => TranslationService());
+    final onboarding = ref.watch(onboardingProvider);
+    final userLanguage = (onboarding.selectedLanguage ?? 'english').toLowerCase();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -74,8 +81,52 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     }
 
     Future<void> toggleTranslation(String articleId, String language) async {
-      // In production, this would call Polie translation API
+      // Toggle translation view
       showTranslation.value = !showTranslation.value;
+      
+      // If enabling translation and not already translated, translate all articles
+      if (showTranslation.value && translatedArticles.value.isEmpty) {
+        isTranslating.value = true;
+        
+        try {
+          final translations = <String, Map<String, String>>{};
+          
+          for (final article in articles.value) {
+            final id = article['_id']?.toString() ?? '';
+            final title = article['title']?.toString() ?? '';
+            final excerpt = article['excerpt']?.toString() ?? '';
+            
+            if (id.isEmpty) continue;
+            
+            // Translate title
+            final titleResult = await translationService.translate(
+              text: title,
+              sourceLang: 'english',
+              targetLang: language,
+            );
+            
+            // Translate excerpt
+            final excerptResult = await translationService.translate(
+              text: excerpt,
+              sourceLang: 'english',
+              targetLang: language,
+            );
+            
+            translations[id] = {
+              'title': titleResult.translation,
+              'excerpt': excerptResult.translation,
+            };
+          }
+          
+          translatedArticles.value = translations;
+        } catch (e) {
+          if (context.mounted) {
+            ErrorHandler.showError(context, e);
+          }
+        } finally {
+          isTranslating.value = false;
+        }
+      }
     }
 
     Future<void> toggleFavorite(String articleId) async {
@@ -113,14 +164,24 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              showTranslation.value = !showTranslation.value;
-            },
-            tooltip: 'Toggle Translation',
-          ),
+          if (isTranslating.value)
+            Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              child: SizedBox(
+                width: 24.w,
+                height: 24.w,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            )
+          else
+            IconButton(
+              icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                toggleTranslation('', userLanguage);
+              },
+              tooltip: showTranslation.value ? 'Show Original' : 'Translate to $userLanguage',
+            ),
         ],
       ),
       body: Container(
@@ -168,8 +229,20 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                           itemCount: articles.value.length,
                           itemBuilder: (context, index) {
                             final article = articles.value[index];
+                            final articleId = article['_id']?.toString() ?? '';
+                            final translated = translatedArticles.value[articleId];
+                            
+                            // Create display article with translations if available
+                            final displayArticle = showTranslation.value && translated != null
+                                ? {
+                                    ...article,
+                                    'title': translated['title'] ?? article['title'],
+                                    'excerpt': translated['excerpt'] ?? article['excerpt'],
+                                  }
+                                : article;
+                            
                             return _ArticleCard(
-                              article: article,
+                              article: displayArticle,
                               showTranslation: showTranslation.value,
                               isFavorite: favoriteArticles.value.contains(article['_id']),
                               onFavorite: () => toggleFavorite(article['_id']),
@@ -180,6 +253,10 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                   SmoothPageRoute(
                                     child: ArticleDetailEnhanced(
                                       article: article,
+                                      translatedTitle: translated?['title'],
+                                      translatedExcerpt: translated?['excerpt'],
+                                      showTranslation: showTranslation.value,
+                                      userLanguage: userLanguage,
                                     ),
                                   ),
                                 );

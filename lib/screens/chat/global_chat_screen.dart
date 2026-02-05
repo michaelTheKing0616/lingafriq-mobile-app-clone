@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
@@ -12,6 +13,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/services/polie_mention_handler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GlobalChatScreen extends ConsumerStatefulWidget {
@@ -389,25 +391,57 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                           ),
                           child: IconButton(
                             onPressed: user != null && isConnected && _messageController.text.isNotEmpty
-                                ? () {
+                                ? () async {
                                     HapticFeedback.lightImpact();
+                                    final text = _messageController.text.trim();
+                                    if (text.isEmpty) return;
+                                    
+                                    final socket = ref.read(socketProvider.notifier);
+                                    final polieHandler = ref.read(polieMentionHandlerProvider);
+                                    
                                     try {
-                                      ref.read(socketProvider.notifier).sendMessage(
+                                      // Send user's message
+                                      socket.sendMessage(
                                         _selectedRoom,
-                                        _messageController.text,
+                                        text,
                                         user.id.toString(),
                                         user.username,
                                       );
                                       _messageController.clear();
-                                      Future.delayed(const Duration(milliseconds: 100), () {
-                                        if (_scrollController.hasClients) {
-                                          _scrollController.animateTo(
-                                            _scrollController.position.maxScrollExtent,
-                                            duration: const Duration(milliseconds: 300),
-                                            curve: Curves.easeOut,
+                                      _scrollToBottom();
+                                      
+                                      // Check for @Polie mention
+                                      if (polieHandler.hasMention(text)) {
+                                        final onboarding = ref.read(onboardingProvider);
+                                        final userLanguage = onboarding.selectedLanguage ?? 'english';
+                                        
+                                        // Show typing indicator
+                                        socket.sendMessage(
+                                          _selectedRoom,
+                                          '🤖 Polie is thinking...',
+                                          'polie_bot',
+                                          'Polie',
+                                        );
+                                        _scrollToBottom();
+                                        
+                                        // Process mention
+                                        final result = await polieHandler.processMessage(
+                                          message: text,
+                                          userLanguage: userLanguage,
+                                        );
+                                        
+                                        // Send Polie's response
+                                        final formattedResponse = polieHandler.formatResponseForChat(result);
+                                        if (formattedResponse.isNotEmpty) {
+                                          socket.sendMessage(
+                                            _selectedRoom,
+                                            formattedResponse,
+                                            'polie_bot',
+                                            'Polie',
                                           );
                                         }
-                                      });
+                                        _scrollToBottom();
+                                      }
                                     } catch (e) {
                                       if (mounted) {
                                         ErrorHandler.showError(context, e);
