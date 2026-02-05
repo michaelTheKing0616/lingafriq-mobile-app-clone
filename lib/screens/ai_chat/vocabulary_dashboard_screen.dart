@@ -199,7 +199,7 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
           if (wordsByCategory.isEmpty)
             _buildEmptyWordsState(context)
           else
-            ...wordsByCategory.take(20).asMap().entries.map((entry) {
+            ...wordsByCategory.take(20).toList().asMap().entries.map((entry) {
               final index = entry.key;
               final word = entry.value;
               return _WordCard(word: word)

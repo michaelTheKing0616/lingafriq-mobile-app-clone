@@ -16,6 +16,19 @@ import 'package:lingafriq/services/localization/dynamic_localization_service.dar
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
+/// Normalizes the grammar result from AI to ensure all required fields exist.
+Map<String, dynamic> normalizeGrammarResult(Map<String, dynamic> parsed) {
+  return {
+    'canonicalRule': parsed['canonicalRule']?.toString() ?? '',
+    'grammarTree': parsed['grammarTree']?.toString() ?? '',
+    'sentenceAnatomy': (parsed['sentenceAnatomy'] as List?)?.cast<Map<String, dynamic>>() ?? [],
+    'compareENFR': parsed['compareENFR']?.toString() ?? '',
+    'examples': (parsed['examples'] as List?)?.cast<Map<String, dynamic>>() ?? [],
+    'commonMistakes': (parsed['commonMistakes'] as List?)?.cast<String>() ?? [],
+    'practice': (parsed['practice'] as List?)?.cast<Map<String, dynamic>>() ?? [],
+  };
+}
+
 /// Common grammar topics for autocomplete (African languages + general).
 const List<String> _kGrammarTopicSuggestions = [
   'Verb conjugation', 'Present tense', 'Past tense', 'Future tense',

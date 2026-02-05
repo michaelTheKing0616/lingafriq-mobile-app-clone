@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart' hide PanAfricanIcons;
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';

@@ -61,7 +61,7 @@ class TutorStoryModeScreen extends HookConsumerWidget {
     Future<void> speakParagraph(String text, String languageCode) async {
       try {
         await flutterTts.stop();
-        await flutterTts.setLanguage(_ttsLocaleForLanguage(languageCode));
+        await flutterTts.setLanguage(ttsLocaleForLanguage(languageCode));
         await flutterTts.setVolume(1.0);
         await flutterTts.setSpeechRate(0.45);
         await flutterTts.speak(text);
