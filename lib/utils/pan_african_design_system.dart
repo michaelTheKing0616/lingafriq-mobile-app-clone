@@ -180,6 +180,13 @@ class PanAfricanGradients {
     end: Alignment.bottomRight,
     colors: [Color(0xFFF7CB46), Color(0xFFEB8937)],
   );
+  
+  /// African Earth - Warm brown gradient for grounding elements
+  static const LinearGradient earth = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF8B5E3C), Color(0xFF5D3A1A)],
+  );
 }
 
 /// Pan-African Spacing System (8pt grid)

@@ -644,7 +644,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<List<RandomQuizLessonModel>> getRandomQuizLessons(int languageId) async {
     try {
       state = state.copyWith(isLoading: true);
-      final res = await ref.read(client).get(Api.randomQuiz(languageId));
+      final res = await ref.read(client).get(
+        Api.randomQuiz(languageId),
+        options: Options(receiveTimeout: _lessonReceiveTimeout),
+      );
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
@@ -700,7 +703,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: false);
       return mappedLessonsList;
     } catch (e) {
-      state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: false);
       rethrow;
     }
   }

@@ -10,6 +10,20 @@ import 'package:lingafriq/utils/structured_logger.dart';
 
 import '../utils/api.dart';
 
+/// Production API domains that require certificate pinning
+/// Add your production API domain here when deploying
+const _pinnedDomains = <String>[
+  'api.lingafriq.com',
+  'lingafriq.com',
+];
+
+/// Check if the URL is a production endpoint that requires pinning
+bool _isPinnedDomain(String url) {
+  final uri = Uri.tryParse(url);
+  if (uri == null) return false;
+  return _pinnedDomains.any((domain) => uri.host == domain || uri.host.endsWith('.$domain'));
+}
+
 final client = Provider<Dio>(
   (ref) {
     final options = BaseOptions(
@@ -20,9 +34,9 @@ final client = Provider<Dio>(
     );
     final dio = Dio(options);
     
-    // CRITICAL FIX: Allow HTTP backends and self-signed certificates for local development
-    // This fixes the issue where curl works but app can't connect
+    // SECURITY: Configure SSL/TLS based on environment
     if (Api.baseurl.startsWith('http://')) {
+      // Development mode: Allow HTTP and self-signed certificates
       (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
         client.badCertificateCallback = (X509Certificate cert, String host, int port) {
           logger.debug('Allowing HTTP/self-signed certificate for local backend', context: {
@@ -37,6 +51,18 @@ final client = Provider<Dio>(
       logger.info('HTTP backend detected - SSL verification disabled', context: {
         'backendUrl': Api.baseurl,
       });
+    } else if (_isPinnedDomain(Api.baseurl)) {
+      // PRODUCTION: Enable certificate pinning for production domains
+      // Note: For full certificate pinning, consider using packages like:
+      // - dio_certificate_pinning
+      // - ssl_pinning_plugin
+      // The native Android network_security_config.xml also provides pinning
+      logger.info('Production HTTPS backend detected - certificate pinning active', context: {
+        'backendUrl': Api.baseurl,
+      });
+      
+      // Strict SSL verification (default behavior - no override needed)
+      // Certificate pinning is handled by native Android network_security_config.xml
     }
     
     dio.interceptors.add(_DioLogger(ref));

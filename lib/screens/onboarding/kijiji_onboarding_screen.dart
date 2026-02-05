@@ -17,6 +17,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 
 /// Comprehensive 10-Step Story-Driven Onboarding
 /// "Kijiji cha Lugha" - The Language Village
@@ -124,10 +125,15 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                       animationController: animationController,
                       onboardingNotifier: onboardingNotifier,
                       onComplete: () async {
+                        // Save all onboarding data to local storage and queue for backend sync
                         await onboardingNotifier.saveOnboardingData();
+                        
+                        // Mark onboarding as truly complete (not just "seen")
+                        final prefs = ref.read(sharedPreferencesProvider).prefs;
+                        await prefs.setString('onboarding_complete', 'true');
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                        // Navigate to login screen (not TabsView) so user can log in
-                        // Login screen will pre-fill credentials if available
+                        
+                        // Navigate to login screen for authentication
                         ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                       },
                     );
@@ -532,6 +538,25 @@ class _WeaverScreen extends HookConsumerWidget {
     required this.onNext,
   });
   
+  /// Convert language display name to language code for DynamicLocalizationService
+  String _getLanguageCode(String languageName) {
+    const languageCodeMap = {
+      'Swahili': 'sw',
+      'Yoruba': 'yo',
+      'Amharic': 'am',
+      'Zulu': 'zu',
+      'Hausa': 'ha',
+      'Igbo': 'ig',
+      'Nigerian Pidgin English': 'pcm',
+      'Xhosa': 'xh',
+      'Twi': 'tw',
+      'Afrikaans': 'af',
+      'Wolof': 'wo',
+      'Somali': 'so',
+    };
+    return languageCodeMap[languageName] ?? 'en';
+  }
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLanguage = useState<String?>(null);
@@ -599,10 +624,13 @@ class _WeaverScreen extends HookConsumerWidget {
                   return FilterChip(
                     selected: isSelected,
                     label: Text(lang),
-                    onSelected: (selected) {
+                    onSelected: (selected) async {
                       selectedLanguage.value = selected ? lang : null;
                       if (selected) {
                         onboardingNotifier.updateLanguage(lang);
+                        // Also set app locale for unified language storage
+                        final languageCode = _getLanguageCode(lang);
+                        await DynamicLocalizationService.setLanguage(languageCode);
                       }
                     },
                     backgroundColor: Colors.white.withOpacity(0.2),
@@ -1287,61 +1315,319 @@ class _PlacementTestScreen extends HookConsumerWidget {
     required this.onboardingNotifier,
     required this.onComplete,
   });
+
+  // Simple placement questions for quick level assessment
+  static const _placementQuestions = [
+    {
+      'question': 'How would you describe your familiarity with African languages?',
+      'options': [
+        {'text': 'Complete beginner - never learned one', 'level': 'A0'},
+        {'text': 'Some exposure - know a few words', 'level': 'A1'},
+        {'text': 'Basic - can introduce myself', 'level': 'A2'},
+        {'text': 'Intermediate - can hold conversations', 'level': 'B1'},
+        {'text': 'Advanced - speak fluently', 'level': 'B2'},
+      ],
+    },
+    {
+      'question': 'Can you read or write in the African language you want to learn?',
+      'options': [
+        {'text': 'Not at all', 'level': 'A0'},
+        {'text': 'I can recognize some letters/characters', 'level': 'A1'},
+        {'text': 'I can read simple words', 'level': 'A2'},
+        {'text': 'I can read sentences', 'level': 'B1'},
+        {'text': 'I can read fluently', 'level': 'B2'},
+      ],
+    },
+    {
+      'question': 'How confident are you in understanding spoken African languages?',
+      'options': [
+        {'text': 'Cannot understand anything', 'level': 'A0'},
+        {'text': 'Understand greetings and simple words', 'level': 'A1'},
+        {'text': 'Understand short, simple conversations', 'level': 'A2'},
+        {'text': 'Understand most everyday conversations', 'level': 'B1'},
+        {'text': 'Understand complex discussions', 'level': 'B2'},
+      ],
+    },
+  ];
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentQuestion = useState(0);
+    final answers = useState<List<String>>([]);
+    final showIntro = useState(true);
+    final isSubmitting = useState(false);
+    
+    // Calculate final level based on answers
+    String calculateLevel(List<String> answerLevels) {
+      if (answerLevels.isEmpty) return 'A0';
+      
+      final levelScores = {'A0': 0, 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4};
+      final totalScore = answerLevels.fold<int>(0, (sum, level) => sum + (levelScores[level] ?? 0));
+      final avgScore = totalScore / answerLevels.length;
+      
+      if (avgScore < 0.5) return 'A0';
+      if (avgScore < 1.5) return 'A1';
+      if (avgScore < 2.5) return 'A2';
+      if (avgScore < 3.5) return 'B1';
+      return 'B2';
+    }
+    
+    void submitTest() async {
+      isSubmitting.value = true;
+      final level = calculateLevel(answers.value);
+      onboardingNotifier.updatePlacementTest({
+        'completed': true,
+        'level': level,
+        'answers': answers.value,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+      
+      // Also update proficiency level
+      onboardingNotifier.updateProficiencyLevel(level.toLowerCase());
+      
+      // Brief delay for UX
+      await Future.delayed(const Duration(milliseconds: 300));
+      isSubmitting.value = false;
+      onComplete();
+    }
+    
+    void selectAnswer(String level) {
+      HapticFeedback.selectionClick();
+      answers.value = [...answers.value, level];
+      
+      if (currentQuestion.value < _placementQuestions.length - 1) {
+        currentQuestion.value++;
+      } else {
+        submitTest();
+      }
+    }
+    
+    void skipTest() {
+      HapticFeedback.lightImpact();
+      onboardingNotifier.updatePlacementTest({'skipped': true});
+      onComplete();
+    }
+    
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.quiz_rounded, size: 120, color: Colors.white),
-                    const SizedBox(height: 32),
-                    Text(
-                      'Let us see where you stand, traveler.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'A short placement test will help us personalize your journey.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.9)),
-                    ),
-                  ],
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          child: showIntro.value
+              ? _buildIntroView(context, () {
+                  HapticFeedback.mediumImpact();
+                  showIntro.value = false;
+                }, skipTest)
+              : _buildQuestionView(
+                  context,
+                  _placementQuestions[currentQuestion.value],
+                  currentQuestion.value,
+                  _placementQuestions.length,
+                  selectAnswer,
+                  skipTest,
+                  isSubmitting.value,
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: FilledButton(
-                onPressed: () {
-                  // For now, skip placement test and complete onboarding
-                  onboardingNotifier.updatePlacementTest({'skipped': true});
-                  onComplete();
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
-                  ),
-                ),
-                child: const Text(
-                  'Begin Test',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
+    );
+  }
+  
+  Widget _buildIntroView(BuildContext context, VoidCallback onStart, VoidCallback onSkip) {
+    return Column(
+      key: const ValueKey('intro'),
+      children: [
+        Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.quiz_rounded, size: 80.sp, color: Colors.white),
+                ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+                SizedBox(height: 32.h),
+                Text(
+                  'Let us see where you stand, traveler.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Colors.white),
+                ).animate().fadeIn(delay: 200.ms),
+                SizedBox(height: 16.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
+                  child: Text(
+                    'Answer 3 quick questions to help us personalize your learning journey.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16.sp, color: Colors.white.withOpacity(0.9)),
+                  ),
+                ).animate().fadeIn(delay: 400.ms),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(24.w),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: onStart,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: AfricanTheme.primaryGreen,
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                    ),
+                  ),
+                  child: Text(
+                    'Start Assessment',
+                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
+              SizedBox(height: 12.h),
+              TextButton(
+                onPressed: onSkip,
+                child: Text(
+                  'Skip for now (start as beginner)',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.8),
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ).animate().fadeIn(delay: 800.ms),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildQuestionView(
+    BuildContext context,
+    Map<String, dynamic> question,
+    int questionIndex,
+    int totalQuestions,
+    Function(String) onSelect,
+    VoidCallback onSkip,
+    bool isSubmitting,
+  ) {
+    final options = question['options'] as List<Map<String, String>>;
+    
+    return Column(
+      key: ValueKey('question_$questionIndex'),
+      children: [
+        // Progress indicator
+        Padding(
+          padding: EdgeInsets.only(top: 60.h, left: 24.w, right: 24.w),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Question ${questionIndex + 1} of $totalQuestions',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.8),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: onSkip,
+                    child: Text(
+                      'Skip test',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              LinearProgressIndicator(
+                value: (questionIndex + 1) / totalQuestions,
+                backgroundColor: Colors.white.withOpacity(0.2),
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ],
+          ),
+        ),
+        
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(24.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 32.h),
+                Text(
+                  question['question'] as String,
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                    height: 1.3,
+                  ),
+                ).animate().fadeIn().slideX(begin: 0.1, end: 0),
+                SizedBox(height: 32.h),
+                
+                // Options
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: options.length,
+                    separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                    itemBuilder: (context, index) {
+                      final option = options[index];
+                      return Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: isSubmitting ? null : () => onSelect(option['level']!),
+                          borderRadius: BorderRadius.circular(12.r),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
+                                color: Colors.white.withOpacity(0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              option['text']!,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ).animate(delay: Duration(milliseconds: 100 * index))
+                          .fadeIn()
+                          .slideX(begin: 0.05, end: 0);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
+        if (isSubmitting)
+          Padding(
+            padding: EdgeInsets.all(24.w),
+            child: const CircularProgressIndicator(color: Colors.white),
+          ),
+      ],
     );
   }
 }
