@@ -130,7 +130,7 @@ class _LessonItem extends ConsumerWidget {
       child: InkWell(
         onTap: enabled
             ? () async {
-                ref.read(navigationProvider).naviateTo(LessonSectionsListScreen(lesson: lesson));
+                ref.read(navigationProvider).navigateTo(LessonSectionsListScreen(lesson: lesson));
               }
             : null,
         child: Column(

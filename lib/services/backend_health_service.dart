@@ -63,7 +63,7 @@ class BackendHealthService {
     // If health endpoint doesn't exist, try a lightweight endpoint
     try {
       final response = await _dio.get(
-        '${Api.baseurl}health/',
+        '${Api.baseurl}healthcheck',
         options: Options(
           receiveTimeout: const Duration(seconds: 5),
           sendTimeout: const Duration(seconds: 5),
@@ -146,8 +146,8 @@ class BackendHealthService {
     // Check telemetry endpoint
     try {
       final response = await _dio.head(
-        // Matches `apiProvider.sendTelemetry` which POSTs to `/api/telemetry`
-        '${Api.baseurl}api/telemetry',
+        // Use a safe, side-effect-free endpoint. Telemetry is POST-only.
+        '${Api.baseurl}healthcheck',
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),

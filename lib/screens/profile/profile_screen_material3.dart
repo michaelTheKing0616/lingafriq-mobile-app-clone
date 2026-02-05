@@ -11,11 +11,15 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen.dart';
 import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
+import 'package:lingafriq/screens/gamification/quest_screen.dart';
+import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/profile_model.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Beautiful Material 3 Profile Screen with Pan-African Design
 class ProfileScreenMaterial3 extends HookConsumerWidget {
@@ -25,6 +29,9 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(userProvider);
+    // Watch state so UI updates when gamification changes.
+    ref.watch(gamificationProvider);
+    final gamification = ref.read(gamificationProvider.notifier).gamification;
 
     return Scaffold(
       body: Container(
@@ -33,7 +40,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header
@@ -59,7 +66,13 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                         SizedBox(height: PanAfricanSpacing.lg),
 
                         // Stats
-                        _buildStats(context, isDark),
+                        _buildStats(
+                          context,
+                          isDark,
+                          streak: gamification.dailyStreak,
+                          totalXp: gamification.xp,
+                          level: gamification.level,
+                        ),
                         SizedBox(height: PanAfricanSpacing.lg),
 
                         // Menu Items
@@ -217,13 +230,19 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
     ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2);
   }
 
-  Widget _buildStats(BuildContext context, bool isDark) {
+  Widget _buildStats(
+    BuildContext context,
+    bool isDark, {
+    required int streak,
+    required int totalXp,
+    required int level,
+  }) {
     return Row(
       children: [
         Expanded(
           child: _StatItem(
             label: 'Streak',
-            value: '7',
+            value: '$streak',
             icon: Icons.local_fire_department,
             color: PanAfricanColors.tertiary,
             isDark: isDark,
@@ -233,7 +252,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
         Expanded(
           child: _StatItem(
             label: 'XP',
-            value: '2,450',
+            value: _formatCompactNumber(totalXp),
             icon: Icons.star,
             color: PanAfricanColors.secondary,
             isDark: isDark,
@@ -243,7 +262,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
         Expanded(
           child: _StatItem(
             label: 'Level',
-            value: '12',
+            value: '$level',
             icon: Icons.trending_up,
             color: PanAfricanColors.primary,
             isDark: isDark,
@@ -251,6 +270,13 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
         ),
       ],
     );
+  }
+
+  String _formatCompactNumber(int value) {
+    if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
+    if (value >= 10000) return '${(value / 1000).toStringAsFixed(1)}K';
+    if (value >= 1000) return '${(value / 1000).toStringAsFixed(2)}K';
+    return value.toString();
   }
 
   Widget _buildMenuItems(BuildContext context, bool isDark) {
@@ -283,13 +309,23 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
         'title': 'Achievements',
         'icon': Icons.stars,
         'color': PanAfricanColors.kenteBlue,
-        'onTap': () {},
+        'onTap': () {
+          Navigator.push(
+            context,
+            SmoothPageRoute(child: const QuestScreen()),
+          );
+        },
       },
       {
         'title': 'Progress',
         'icon': Icons.timeline,
         'color': PanAfricanColors.primary,
-        'onTap': () {},
+        'onTap': () {
+          Navigator.push(
+            context,
+            SmoothPageRoute(child: const ProgressDashboardScreen()),
+          );
+        },
       },
       {
         'title': 'Settings',

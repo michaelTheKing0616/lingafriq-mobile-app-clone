@@ -5,8 +5,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/animated/animated_button.dart';
 import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Change Password Screen - Full production implementation
 class ChangePasswordScreen extends HookConsumerWidget {
@@ -39,22 +41,12 @@ class ChangePasswordScreen extends HookConsumerWidget {
         );
 
         if (success && context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Password changed successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
+          showLingAfriqSuccess(context, 'Password changed successfully!');
           Navigator.pop(context);
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error changing password: ${ErrorHandler.getUserFriendlyMessage(e)}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showLingAfriqError(context, 'Error changing password: ${ErrorHandler.getUserFriendlyError(e)}');
         }
       } finally {
         isLoading.value = false;
@@ -63,8 +55,15 @@ class ChangePasswordScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Change Password'),
-        backgroundColor: PanAfricanColors.primaryGreen,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Change Password'),
+            Text('LingAfriq', style: TextStyle(fontSize: 12, color: Colors.white70)),
+          ],
+        ),
+        backgroundColor: PanAfricanColors.primary,
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -72,7 +71,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.sp),
             child: Form(
@@ -86,22 +85,22 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   Container(
                     padding: EdgeInsets.all(16.sp),
                     decoration: BoxDecoration(
-                      color: PanAfricanColors.primaryGreen.withOpacity(0.1),
+                      color: PanAfricanColors.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: PanAfricanColors.primaryGreen.withOpacity(0.3),
+                        color: PanAfricanColors.primary.withOpacity(0.3),
                       ),
                     ),
                     child: Row(
                       children: [
                         Icon(
                           Icons.info_outline,
-                          color: PanAfricanColors.primaryGreen,
+                          color: PanAfricanColors.primary,
                         ),
                         SizedBox(width: 12.w),
                         Expanded(
                           child: Text(
-                            'Your password must be at least 8 characters long and contain a mix of letters and numbers.',
+                            'Use at least 8 characters with a mix of letters and numbers.',
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: isDark ? Colors.white70 : Colors.black87,
@@ -127,9 +126,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showCurrentPassword.value = !showCurrentPassword.value;
-                          });
+                          showCurrentPassword.value = !showCurrentPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -159,9 +156,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showNewPassword.value = !showNewPassword.value;
-                          });
+                          showNewPassword.value = !showNewPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(
@@ -197,9 +192,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                               : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() {
-                            showConfirmPassword.value = !showConfirmPassword.value;
-                          });
+                          showConfirmPassword.value = !showConfirmPassword.value;
                         },
                       ),
                       border: OutlineInputBorder(

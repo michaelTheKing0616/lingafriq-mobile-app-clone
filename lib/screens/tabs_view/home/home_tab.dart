@@ -157,7 +157,7 @@ class HomeTab extends HookConsumerWidget {
                     return StreamErrorWidget(
                       error: e,
                       onTryAgain: () {
-                        // ref.read(navigationProvider).naviateTo(
+                        // ref.read(navigationProvider).navigateTo(
                         //       LanguageDetailScreen(
                         //         language: Language(
                         //           id: 2,
@@ -206,10 +206,10 @@ class LanguageItem extends ConsumerWidget {
         onTap?.call();
         final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
         if (result) {
-          ref.read(navigationProvider).naviateTo(IntroductionScreen(language: language));
+          ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
           return;
         }
-        ref.read(navigationProvider).naviateTo(LanguageDetailScreen(language: language));
+        ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
       },
       child: Container(
         width: double.infinity,

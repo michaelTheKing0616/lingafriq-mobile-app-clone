@@ -59,10 +59,16 @@ class BiometricAuth {
     }
   }
 
-  /// Check if biometrics are enabled in settings
+  /// Check if biometrics are enabled in settings (device supports and user has enabled)
   static Future<bool> isBiometricsEnabled() async {
-    final prefs = await _auth.isDeviceSupported();
-    return prefs;
+    try {
+      final supported = await _auth.isDeviceSupported();
+      if (!supported) return false;
+      final canCheck = await _auth.canCheckBiometrics;
+      return canCheck;
+    } catch (e) {
+      return false;
+    }
   }
 
   /// Get human-readable name for biometric type

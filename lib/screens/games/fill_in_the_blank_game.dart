@@ -11,6 +11,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/modern_card.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FillInTheBlankGame extends ConsumerStatefulWidget {
@@ -154,7 +155,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
     // Sync with backend: ProgressIntegration + gamification + learner activity
     try {
       await ProgressIntegration.onGameCompleted(
-        ref,
+        ref as Ref,
         wordsLearned: _correctAnswers,
         pointsEarned: _score,
         perfect: _correctAnswers == _questions.length,
@@ -262,7 +263,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     SizedBox(height: 24.h),
                     PrimaryButton(
                       text: 'Play Again',
-                      onPressed: _restartGame,
+                      onTap: _restartGame,
                     ),
                     SizedBox(height: 12.h),
                     TextButton(
@@ -329,7 +330,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   ],
                 ),
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(16.sp),
             child: Column(

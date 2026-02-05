@@ -9,14 +9,14 @@ import 'package:flutter/foundation.dart';
 
 enum AppLanguage {
   english('en', 'English'),
-  french('fr', 'FranÃ§ais'),
-  yoruba('yo', 'YorÃ¹bÃ¡'),
+  french('fr', 'Français'),
+  yoruba('yo', 'Yorùbá'),
   hausa('ha', 'Hausa'),
   igbo('ig', 'Igbo'),
   swahili('sw', 'Kiswahili'),
   zulu('zu', 'isiZulu'),
   xhosa('xh', 'isiXhosa'),
-  amharic('am', 'áŠ áˆ›áˆ­áŠ›'),
+  amharic('am', 'አማርኛ'),
   twi('tw', 'Twi'),
   afrikaans('af', 'Afrikaans'),
   pidgin('pcm', 'Nigerian Pidgin'),

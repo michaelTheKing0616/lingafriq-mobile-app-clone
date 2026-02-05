@@ -11,6 +11,7 @@ import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 import '../widgets/points_and_profile_image_builder.dart';
+import '../widgets/responsive_safe_area.dart';
 import 'quiz_answers_screen.dart';
 
 class QuizIndexNotifier extends Notifier<int> {
@@ -107,7 +108,7 @@ class QuizScreen extends HookConsumerWidget {
                 ),
               ),
               if (quiz.length != 1) _DotIndicator(quiz: quiz).pOnly(top: 4),
-              SafeArea(
+              ResponsiveSafeArea(
                 top: false,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -172,7 +173,7 @@ class QuizScreen extends HookConsumerWidget {
                             }
 
                             if (index == quiz.length - 1) {
-                              ref.read(navigationProvider).naviateTo(QuizAnswersScreen(
+                              ref.read(navigationProvider).navigateTo(QuizAnswersScreen(
                                     quiz: quiz,
                                     title: title,
                                     selectedAnswers: selectedAnswer.map((e) => e.value).toList(),

@@ -41,18 +41,26 @@ class ProgressMetrics {
     'timeByActivity': timeByActivity,
   };
 
-  factory ProgressMetrics.fromMap(Map<String, dynamic> map) => ProgressMetrics(
-    wordsLearned: map['wordsLearned'] ?? 0,
-    listeningHours: (map['listeningHours'] ?? 0.0).toDouble(),
-    speakingHours: (map['speakingHours'] ?? 0.0).toDouble(),
-    readingWords: (map['readingWords'] ?? 0.0).toDouble(),
-    writtenWords: map['writtenWords'] ?? 0,
-    knownWords: map['knownWords'] ?? 0,
-    timeSpentMinutes: (map['timeSpentMinutes'] ?? 0.0).toDouble(),
-    lastUpdated: DateTime.parse(map['lastUpdated']),
-    wordsByLanguage: Map<String, int>.from(map['wordsByLanguage'] ?? {}),
-    timeByActivity: Map<String, double>.from(map['timeByActivity'] ?? {}),
-  );
+  factory ProgressMetrics.fromMap(Map<String, dynamic> map) {
+    DateTime lastUpdated = DateTime.now();
+    try {
+      if (map['lastUpdated'] != null) {
+        lastUpdated = DateTime.parse(map['lastUpdated'].toString());
+      }
+    } catch (_) {}
+    return ProgressMetrics(
+      wordsLearned: map['wordsLearned'] ?? 0,
+      listeningHours: (map['listeningHours'] ?? 0.0).toDouble(),
+      speakingHours: (map['speakingHours'] ?? 0.0).toDouble(),
+      readingWords: (map['readingWords'] ?? 0.0).toDouble(),
+      writtenWords: map['writtenWords'] ?? 0,
+      knownWords: map['knownWords'] ?? 0,
+      timeSpentMinutes: (map['timeSpentMinutes'] ?? 0.0).toDouble(),
+      lastUpdated: lastUpdated,
+      wordsByLanguage: Map<String, int>.from(map['wordsByLanguage'] ?? {}),
+      timeByActivity: Map<String, double>.from(map['timeByActivity'] ?? {}),
+    );
+  }
 
   String toJson() => jsonEncode(toMap());
   factory ProgressMetrics.fromJson(String json) => ProgressMetrics.fromMap(jsonDecode(json));

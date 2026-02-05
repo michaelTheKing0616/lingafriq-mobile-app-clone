@@ -6,9 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/leaderboard_entry_model.dart';
 import '../models/user_gamification_model.dart';
 import 'base_provider.dart';
-import 'gamification_provider.dart';
-import 'user_provider.dart';
 import 'gamification_services_provider.dart';
+import 'user_provider.dart';
 import '../utils/structured_logger.dart';
 
 final leaderboardProvider =
@@ -66,37 +65,34 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       switch (type) {
         case LeaderboardType.global:
           final data = await leaderboardsService.getGlobalLeaderboard(period: 'weekly');
-          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
         case LeaderboardType.tribe:
           if (tribe != null) {
             final data = await leaderboardsService.getTribeLeaderboard(tribe, period: 'season');
-            entries = _parseLeaderboardEntries(data['entries'] ?? []);
+            entries = _parseLeaderboardEntries(_extractEntriesList(data));
           }
           break;
         case LeaderboardType.country:
-          // Use village leaderboard for country (language-based)
           if (country != null) {
             final data = await leaderboardsService.getVillageLeaderboard(country, period: 'monthly');
-            entries = _parseLeaderboardEntries(data['entries'] ?? []);
+            entries = _parseLeaderboardEntries(_extractEntriesList(data));
           }
           break;
         case LeaderboardType.continental:
-          // Use global leaderboard filtered by continent
           final data = await leaderboardsService.getGlobalLeaderboard(period: 'monthly');
-          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
         case LeaderboardType.weekly:
         case LeaderboardType.monthly:
         case LeaderboardType.allTime:
-          // Use global leaderboard with appropriate period
           final period = type == LeaderboardType.weekly 
               ? 'weekly' 
               : type == LeaderboardType.monthly 
                   ? 'monthly' 
                   : 'allTime';
           final data = await leaderboardsService.getGlobalLeaderboard(period: period);
-          entries = _parseLeaderboardEntries(data['entries'] ?? []);
+          entries = _parseLeaderboardEntries(_extractEntriesList(data));
           break;
       }
 
@@ -107,24 +103,23 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       await _cacheLeaderboards();
     } catch (e) {
       logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
-      // Fallback to cached data or mock data only if no cache available
-      final gamification = ref.read(gamificationProvider.notifier).gamification;
-      final user = ref.read(userProvider);
-
-      if (user != null) {
-        final mockEntries = _generateMockLeaderboard(
-          user.username,
-          gamification.xp,
-          gamification.level,
-          gamification.levelTitle,
-          gamification.dailyStreak,
-          gamification.tribe,
-        );
-        _cache[type] = mockEntries;
-      }
+      // Fail closed: keep last known cached data (if any). Never fabricate leaderboard entries.
+      _cache.putIfAbsent(type, () => []);
     } finally {
       state = state.copyWith(isLoading: false);
     }
+  }
+
+  /// Extract entries list from various backend response shapes
+  List<dynamic> _extractEntriesList(Map<String, dynamic> data) {
+    if (data['entries'] is List) return data['entries'] as List;
+    if (data['data'] is List) return data['data'] as List;
+    if (data['leaderboard'] is List) return data['leaderboard'] as List;
+    if (data['results'] is List) return data['results'] as List;
+    if (data['data'] is Map && (data['data'] as Map)['entries'] is List) {
+      return ((data['data'] as Map)['entries']) as List;
+    }
+    return [];
   }
 
   /// Parse API response to LeaderboardEntry list
@@ -186,51 +181,6 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
   int _calculateLevelFromXP(int xp) {
     // Simple level calculation: level = sqrt(xp / 100)
     return math.sqrt(xp / 100).floor().clamp(1, 999);
-  }
-
-  /// Generate mock leaderboard data (for testing)
-  List<LeaderboardEntry> _generateMockLeaderboard(
-    String currentUsername,
-    int currentXP,
-    int currentLevel,
-    String currentTitle,
-    int currentStreak,
-    String? currentTribe,
-  ) {
-    final entries = <LeaderboardEntry>[];
-    
-    // Add current user at rank 1
-    entries.add(LeaderboardEntry(
-      userId: 'current_user',
-      username: currentUsername,
-      xp: currentXP,
-      level: currentLevel,
-      levelTitle: currentTitle,
-      dailyStreak: currentStreak,
-      tribe: currentTribe,
-      rank: 1,
-    ));
-
-    // Add mock entries
-    final mockNames = [
-      'Kwame', 'Amina', 'Thabo', 'Fatima', 'Kofi',
-      'Zainab', 'Sipho', 'Ngozi', 'Yusuf', 'Mariam',
-    ];
-
-    for (int i = 0; i < 10; i++) {
-      entries.add(LeaderboardEntry(
-        userId: 'user_$i',
-        username: mockNames[i % mockNames.length],
-        xp: currentXP - (i + 1) * 100,
-        level: (currentLevel - (i + 1)).clamp(1, 999),
-        levelTitle: 'Village Storyteller',
-        dailyStreak: currentStreak - (i + 1),
-        tribe: currentTribe,
-        rank: i + 2,
-      ));
-    }
-
-    return entries;
   }
 
   /// Get user's rank

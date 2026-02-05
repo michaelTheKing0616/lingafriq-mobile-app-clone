@@ -31,15 +31,25 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     Future<void> loadArticles() async {
       isLoading.value = true;
       try {
+        // Use the canonical API route for articles (published content).
+        // The backend may return `data`, `results`, or a raw list depending on version.
         final response = await ApiService.get(
-          AppConfig.cultureMagazine,
+          Api.cultureArticles(published: true),
           queryParameters: selectedCategory.value != null
               ? {'category': selectedCategory.value}
               : null,
         );
 
-        if (response.statusCode == 200 && response.data['data'] != null) {
-          articles.value = List<Map<String, dynamic>>.from(response.data['data']);
+        if (response.statusCode == 200) {
+          final raw = response.data;
+          final dynamic listCandidate = raw is Map
+              ? (raw['data'] ?? raw['results'] ?? raw['articles'])
+              : raw;
+
+          if (listCandidate is List) {
+            articles.value =
+                List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+          }
         }
       } catch (e) {
         if (context.mounted) {

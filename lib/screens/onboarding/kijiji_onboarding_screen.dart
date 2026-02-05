@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Comprehensive 10-Step Story-Driven Onboarding
 /// "Kijiji cha Lugha" - The Language Village
@@ -127,7 +128,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         // Navigate to login screen (not TabsView) so user can log in
                         // Login screen will pre-fill credentials if available
-                        ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+                        ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                       },
                     );
                   default:
@@ -175,7 +176,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                     // Mark onboarding as seen
                     await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                     // Navigate directly to login screen (with pre-filled credentials if available)
-                    ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+                    ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                   },
                   child: Text(
                     'Skip',
@@ -218,7 +219,7 @@ class _WelcomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Column(
           children: [
             Expanded(
@@ -345,7 +346,7 @@ class _ElderScreen extends HookConsumerWidget {
       decoration: BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -543,7 +544,7 @@ class _WeaverScreen extends HookConsumerWidget {
       decoration: BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -722,7 +723,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
       decoration: BoxDecoration(
         gradient: AfricanTheme.africanSavanna,
       ),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -814,7 +815,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
     
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -899,7 +900,7 @@ class _PathChooserScreen extends HookConsumerWidget {
     
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -992,7 +993,7 @@ class _GriotScreen extends HookConsumerWidget {
     
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -1088,7 +1089,7 @@ class _HealerScreen extends HookConsumerWidget {
     
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -1154,7 +1155,7 @@ class _SocialScreen extends HookConsumerWidget {
     
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -1219,7 +1220,7 @@ class _NamingScreen extends HookConsumerWidget {
     
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -1291,7 +1292,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Column(
           children: [
             Expanded(

@@ -365,7 +365,8 @@ class SyncOperations {
           
           // Sync roleplay session data
           await ApiService.initialize();
-          final response = await ApiService.post('/api/ai-chat/history', data: roleplayData);
+          // Canonical backend route: POST /api/ai/chat/history/sync/
+          final response = await ApiService.post('/api/ai/chat/history/sync/', data: roleplayData);
           
           if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
             synced++;
@@ -429,7 +430,8 @@ class SyncOperations {
           
           // Sync tutor session data
           await ApiService.initialize();
-          final response = await ApiService.post('/api/ai-chat/history', data: tutorData);
+          // Canonical backend route: POST /api/ai/chat/history/sync/
+          final response = await ApiService.post('/api/ai/chat/history/sync/', data: tutorData);
           
           if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
             synced++;

@@ -16,6 +16,7 @@ import '../../../lessons/screens/lessons_list_screen.dart';
 import '../../../mannerisms/screens/mannerism_list_screen.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../widgets/greegins_builder.dart';
+import '../../../widgets/responsive_safe_area.dart';
 
 class LanguageDetailScreen extends ConsumerWidget {
   final Language language;
@@ -55,7 +56,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              SafeArea(
+              ResponsiveSafeArea(
                 child: Column(
                   children: [
                     Expanded(
@@ -78,7 +79,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                   //   onTap: () {
                                   //     ref
                                   //         .read(navigationProvider)
-                                  //         .naviateTo(LessonsListScreen(language: language));
+                                  //         .navigateTo(LessonsListScreen(language: language));
                                   //   },
                                   //   text: "Lessons",
                                   // ).w(0.35.sw),
@@ -86,7 +87,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                     onTap: () {
                                       ref
                                           .read(navigationProvider)
-                                          .naviateTo(LessonsListScreen(language: language));
+                                          .navigateTo(LessonsListScreen(language: language));
                                     },
                                   ),
                                 ).animate(effects: kGradientTextEffects),
@@ -99,7 +100,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                   //   onTap: () {
                                   //     ref
                                   //         .read(navigationProvider)
-                                  //         .naviateTo(MannerismsListScreen(language: language));
+                                  //         .navigateTo(MannerismsListScreen(language: language));
                                   //   },
                                   //   text: "Mannerisms",
                                   // ).w(0.4.sw),
@@ -107,7 +108,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                     onTap: () {
                                       ref
                                           .read(navigationProvider)
-                                          .naviateTo(MannerismsListScreen(language: language));
+                                          .navigateTo(MannerismsListScreen(language: language));
                                     },
                                   ).animate(effects: kGradientTextEffects),
                                 ),
@@ -120,7 +121,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                   //   onTap: () {
                                   //     ref
                                   //         .read(navigationProvider)
-                                  //         .naviateTo(LessonsListScreen(language: language));
+                                  //         .navigateTo(LessonsListScreen(language: language));
                                   //   },
                                   //   text: "History",
                                   // ).w(0.3.sw),
@@ -129,7 +130,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                                     onTap: () {
                                       ref
                                           .read(navigationProvider)
-                                          .naviateTo(HistoryListScreen(language: language));
+                                          .navigateTo(HistoryListScreen(language: language));
                                     },
                                   ).animate(effects: kGradientTextEffects),
                                 ),
@@ -145,7 +146,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                     PrimaryButton(
                       width: 0.6.sw,
                       onTap: () {
-                        ref.read(navigationProvider).naviateTo(TakeQuizScreen(language: language));
+                        ref.read(navigationProvider).navigateTo(TakeQuizScreen(language: language));
                       },
                       color: AppColors.primaryGreen,
                       text: "Take Quiz",

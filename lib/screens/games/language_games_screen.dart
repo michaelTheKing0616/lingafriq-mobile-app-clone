@@ -14,6 +14,7 @@ import 'package:lingafriq/screens/games/lazy_game_list.dart';
 import 'language_games_screen_components.dart';
 import 'game_router.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Modern Language Games Screen - Based on Figma Make Design
@@ -28,6 +29,8 @@ class LanguageGamesScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String>('yoruba');
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(userProvider);
+    final backAction = onBack ??
+        (Navigator.of(context).canPop() ? () => Navigator.of(context).pop() : null);
     
     if (selectedGame.value != null) {
       return buildGameScreen(
@@ -77,17 +80,17 @@ class LanguageGamesScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                SafeArea(
+                ResponsiveSafeArea(
                   child: Padding(
                     padding: EdgeInsets.all(4.w),
                     child: Column(
                       children: [
-                        if (onBack != null)
+                        if (backAction != null)
                           Align(
                             alignment: Alignment.topLeft,
                             child: IconButton(
                               icon: const Icon(Icons.arrow_back, color: Colors.white),
-                              onPressed: onBack,
+                              onPressed: backAction,
                               style: IconButton.styleFrom(
                                 backgroundColor: Colors.white.withOpacity(0.2),
                                 shape: const CircleBorder(),

@@ -70,14 +70,14 @@ class LoginScreen extends HookConsumerWidget {
                 children: [
                   const Spacer(),
                   "Forgot password?".text.make().p8().mdClick(() {
-                    ref.read(navigationProvider).naviateTo(const ForgotPasswordScreen());
+                    ref.read(navigationProvider).navigateTo(const ForgotPasswordScreen());
                   }).make(),
                 ],
               ),
               24.heightBox,
               PrimaryButton(
                 onTap: () {
-                  if (!formKey.currentState!.validate()) return;
+                  if (formKey.currentState == null || !formKey.currentState!.validate()) return;
                   ref.read(authProvider.notifier).login(
                         email: emailController.text.trim(),
                         password: passwordController.text.trim(),
@@ -101,7 +101,7 @@ class LoginScreen extends HookConsumerWidget {
                   .make()
                   .p8()
                   .mdClick(() {
-                    ref.read(navigationProvider).naviateTo(const SignupScreen());
+                    ref.read(navigationProvider).navigateTo(const SignupScreen());
                   })
                   .make()
             ],

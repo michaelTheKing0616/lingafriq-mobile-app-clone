@@ -164,7 +164,7 @@ class _SectionHistoryList extends ConsumerWidget {
       endpointToHit: Api.completeHistoryTutorial(history.id, sectionHistory.id),
       isCompleted: sectionHistory.completed_by != null,
     );
-    return await ref.read(navigationProvider).naviateTo(tutorialScreen);
+    return await ref.read(navigationProvider).navigateTo(tutorialScreen);
   }
 
   Future<bool?> openChoiceQuizScreen(SectionHistoryModel sectionHistory, WidgetRef ref) async {
@@ -180,7 +180,7 @@ class _SectionHistoryList extends ConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: sectionHistory.title,
             quiz: quiz,
             endpointToHit: Api.completeHistoryQuiz(history.id, sectionHistory.id),
@@ -188,7 +188,7 @@ class _SectionHistoryList extends ConsumerWidget {
           ));
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }
@@ -223,7 +223,7 @@ class _SectionHistoryList extends ConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: sectionHistory.title,
               score: sectionHistory.score,
@@ -234,7 +234,7 @@ class _SectionHistoryList extends ConsumerWidget {
           );
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }

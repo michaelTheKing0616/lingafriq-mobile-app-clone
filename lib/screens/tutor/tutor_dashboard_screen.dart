@@ -7,6 +7,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/widgets/standard_app_bar.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'tutor_translation_mode_screen.dart';
 import 'tutor_grammar_mode_screen.dart';
 import 'tutor_pronunciation_mode_screen.dart';
@@ -94,6 +96,10 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      appBar: StandardAppBar(
+        title: 'Polie Tutor',
+        showBackButton: true,
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -110,7 +116,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
         child: SafeArea(
           child: Column(
             children: [
-              // Header
+              // Header (kept for rich intro copy)
               _buildHeader(context, isDark),
               
               // Mode Cards Grid (for quick access)

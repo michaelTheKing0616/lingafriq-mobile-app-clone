@@ -19,9 +19,10 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/config/secrets_manager.dart';
+import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/api_retry_service.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 
 enum VoiceModel {
   wav2vec2, // Best for African languages
@@ -187,7 +188,7 @@ class EnhancedVoiceService {
   ) async {
     try {
       // Use free Whisper API endpoint (Hugging Face or local deployment)
-      final serviceUrl = _secrets.pronunciationApiUrl ?? 'https://api-inference.huggingface.co';
+      final serviceUrl = _secrets.pronunciationApiUrl ?? UrlConstants.huggingFacePronunciationFallback;
       
       final formData = FormData.fromMap({
         'audio': await MultipartFile.fromFile(audioFile.path),

@@ -7,6 +7,9 @@ import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../utils/supported_languages.dart';
+import '../../widgets/lingafriq_ui_helpers.dart';
+import '../../widgets/primary_button.dart';
 import '../../screens/chat/live_classroom_screen_material3.dart';
 import 'package:flutter/services.dart';
 
@@ -22,7 +25,14 @@ class LanguageVillagesScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Language Villages'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Language Villages'),
+            Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -50,32 +60,17 @@ class LanguageVillagesScreen extends ConsumerWidget {
     List<LanguageVillage> villages,
   ) {
     if (villages.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.location_city, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'No villages available',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            FilledButton(
-              onPressed: () {
-                _showCreateVillageDialog(context, ref);
-              },
-              child: const Text('Create Village'),
-            ),
-          ],
-        ),
+      return LingAfriqEmptyState(
+        icon: Icons.location_city_outlined,
+        title: 'No villages available',
+        subtitle: 'Create a village to practice your target language with others.',
+        actionLabel: 'Create Village',
+        onAction: () => _showCreateVillageDialog(context, ref),
       );
     }
 
     return OptimizedListView.builder(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       itemCount: villages.length,
       itemBuilder: (context, index) {
         final village = villages[index];
@@ -90,9 +85,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
                     .joinVillage(village.id);
                 if (context.mounted) {
                   if (success) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Joined ${village.name}!')),
-                    );
+                    showLingAfriqSuccess(context, 'Joined ${village.name}!');
                   } else {
                     throw Exception('Failed to join village');
                   }
@@ -217,71 +210,107 @@ class LanguageVillagesScreen extends ConsumerWidget {
 
   void _showCreateVillageDialog(BuildContext context, WidgetRef ref) {
     final nameController = TextEditingController();
-    final languageController = TextEditingController();
     final descriptionController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+    String? selectedLanguage;
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Create Language Village'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Village Name',
-                hintText: 'e.g., Yoruba Village',
-              ),
-            ),
-            TextField(
-              controller: languageController,
-              decoration: const InputDecoration(
-                labelText: 'Language',
-                hintText: 'e.g., Yoruba',
-              ),
-            ),
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description',
-                hintText: 'What is this village about?',
-              ),
-              maxLines: 3,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              await safeAsync(
-                context: context,
-                operation: () async {
-                  final success = await ref
-                      .read(languageVillageProvider.notifier)
-                      .createVillage(
-                        name: nameController.text,
-                        language: languageController.text,
-                        description: descriptionController.text,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) {
+          return AlertDialog(
+            title: const Text('Create Language Village'),
+            content: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Village Name',
+                      hintText: 'e.g., Yoruba Village',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.md),
+                  DropdownButtonFormField<String>(
+                    value: selectedLanguage,
+                    decoration: InputDecoration(
+                      labelText: 'Language *',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                      ),
+                    ),
+                    hint: const Text('Select language'),
+                    items: SupportedLanguages.allLanguages.map((langKey) {
+                      final info = SupportedLanguages.getLanguageInfo(langKey);
+                      final name = info['name'] as String? ?? langKey;
+                      return DropdownMenuItem<String>(
+                        value: langKey,
+                        child: Text(name),
                       );
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                    if (success) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Village created!')),
-                      );
-                    }
-                  }
+                    }).toList(),
+                    onChanged: (value) {
+                      setDialogState(() => selectedLanguage = value);
+                    },
+                  ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: InputDecoration(
+                        labelText: 'Description',
+                        hintText: 'What is this village about?',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                        ),
+                      ),
+                      maxLines: 3,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(dialogContext),
+                child: const Text('Cancel'),
+              ),
+              PrimaryButton(
+                text: 'Create',
+                onTap: () async {
+                  if (formKey.currentState == null || !formKey.currentState!.validate()) return;
+                  final name = nameController.text.trim();
+                  final description = descriptionController.text.trim();
+                  if (selectedLanguage == null || selectedLanguage!.isEmpty) return;
+                  await safeAsync(
+                    context: context,
+                    operation: () async {
+                      final success = await ref
+                          .read(languageVillageProvider.notifier)
+                          .createVillage(
+                            name: name,
+                            language: selectedLanguage!,
+                            description: description,
+                          );
+                      if (context.mounted) {
+                        Navigator.pop(dialogContext);
+                        if (success) {
+                          showLingAfriqSuccess(context, 'Village created!');
+                        }
+                      }
+                    },
+                    errorContext: 'createVillage',
+                    showError: true,
+                  );
                 },
-              );
-            },
-            child: const Text('Create'),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -326,11 +355,10 @@ class _VillageCard extends StatelessWidget {
             ),
           ],
         ),
-        trailing: FilledButton(
-          onPressed: village.currentParticipants >= village.maxParticipants
-              ? null
-              : onJoin,
-          child: const Text('Join'),
+        trailing: PrimaryButton(
+          text: 'Join',
+          enabled: village.currentParticipants < village.maxParticipants,
+          onTap: onJoin,
         ),
       ),
     );
@@ -478,9 +506,9 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
                   },
                   tooltip: _isVideoEnabled ? 'Turn off video' : 'Turn on video',
                 ),
-                FilledButton.icon(
-                  onPressed: () {
-                    // Navigate to full classroom view
+                PrimaryButton(
+                  text: 'Full View',
+                  onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -491,8 +519,18 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.fullscreen),
-                  label: const Text('Full View'),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.fullscreen, size: 20.sp, color: Colors.white),
+                        SizedBox(width: 8.w),
+                        Text('Full View', style: TextStyle(color: Colors.white, fontSize: 16.sp)),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

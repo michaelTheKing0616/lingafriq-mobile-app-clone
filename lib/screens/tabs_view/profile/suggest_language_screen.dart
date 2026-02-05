@@ -30,7 +30,7 @@ class SuggestLanguageScreen extends HookConsumerWidget {
           ProfileImageBuilder(
             showEditIcon: false,
             size: Size(0.2.sw, 0.2.sw),
-            onTap: () {},
+            onTap: null,
           ).centered(),
           24.heightBox,
           const ProfileDetailsBuilder(

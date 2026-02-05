@@ -6,7 +6,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart' hide PanAfricanIcons;
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
@@ -48,18 +50,12 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
       await ref.read(themeModeProvider.notifier).toggleDarkMode();
       if (!context.mounted) return;
       final enabled = Theme.of(context).brightness == Brightness.dark;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Dark mode ${enabled ? 'enabled' : 'disabled'}'),
-          duration: const Duration(seconds: 2),
-          backgroundColor: PanAfricanColors.primary,
-        ),
-      );
+      showLingAfriqInfo(context, 'Dark mode ${enabled ? 'enabled' : 'disabled'}');
     }
 
     return Drawer(
       backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Column(
           children: [
             // Header with User Info

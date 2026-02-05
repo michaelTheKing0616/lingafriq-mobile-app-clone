@@ -6,19 +6,24 @@ class LeaderboardsService {
 
   LeaderboardsService(this._dio);
 
-  /// Get global leaderboard
+  /// Get global leaderboard (tries api/leaderboards/global then gamification league)
   Future<Map<String, dynamic>> getGlobalLeaderboard({
     String period = 'weekly',
     int limit = 100,
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/leaderboards/global',
+        'api/leaderboards/global',
         queryParameters: {'period': period, 'limit': limit},
       );
-      return response.data;
-    } catch (e) {
-      rethrow;
+      return response.data is Map ? response.data as Map<String, dynamic> : {'entries': <dynamic>[]};
+    } catch (_) {
+      try {
+        final fallback = await _dio.get(Api.leagueLeaderboard, queryParameters: {'limit': limit});
+        return fallback.data is Map ? fallback.data as Map<String, dynamic> : {'entries': <dynamic>[]};
+      } catch (__) {
+        rethrow;
+      }
     }
   }
 
@@ -30,10 +35,10 @@ class LeaderboardsService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/leaderboards/tribe/$tribeId',
+        'api/leaderboards/tribe/$tribeId',
         queryParameters: {'period': period, 'limit': limit},
       );
-      return response.data;
+      return response.data is Map ? response.data as Map<String, dynamic> : {'entries': <dynamic>[]};
     } catch (e) {
       rethrow;
     }
@@ -47,10 +52,10 @@ class LeaderboardsService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/leaderboards/village/$lang',
+        'api/leaderboards/village/$lang',
         queryParameters: {'period': period, 'limit': limit},
       );
-      return response.data;
+      return response.data is Map ? response.data as Map<String, dynamic> : {'entries': <dynamic>[]};
     } catch (e) {
       rethrow;
     }
@@ -59,8 +64,8 @@ class LeaderboardsService {
   /// Get user ranks across all leaderboards
   Future<Map<String, dynamic>> getUserRanks(String userId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/leaderboards/user/$userId/ranks');
-      return response.data;
+      final response = await _dio.get('api/leaderboards/user/$userId/ranks');
+      return response.data is Map ? response.data as Map<String, dynamic> : {};
     } catch (e) {
       rethrow;
     }

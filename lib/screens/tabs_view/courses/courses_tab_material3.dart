@@ -16,7 +16,9 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
+import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// Beautiful Material 3 Courses Tab with Pan-African Design
@@ -36,7 +38,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header with Pan-African App Bar
@@ -70,7 +72,12 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                        padding: EdgeInsets.fromLTRB(
+                          AdaptiveLayout.sideMargin(context),
+                          PanAfricanSpacing.md,
+                          AdaptiveLayout.sideMargin(context),
+                          PanAfricanSpacing.xs,
+                        ),
                         child: Text(
                           'Your Progress',
                           style: PanAfricanTypography.headlineSmall(context),
@@ -115,7 +122,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                               color: PanAfricanColors.primary,
                               child: OptimizedListView.builder(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: PanAfricanSpacing.lg,
+                                  horizontal: AdaptiveLayout.sideMargin(context),
                                 ),
                                 itemCount: displayLanguages.length,
                                 itemBuilder: (context, index) {
@@ -124,7 +131,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                                     language: language,
                                     isDark: isDark,
                                     onTap: () {
-                                      ref.read(navigationProvider).naviateTo(
+                                      ref.read(navigationProvider).navigateTo(
                                         LanguageDetailScreen(language: language),
                                       );
                                     },

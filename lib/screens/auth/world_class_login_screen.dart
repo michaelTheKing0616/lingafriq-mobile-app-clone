@@ -15,6 +15,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/utils/validators.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/screens/auth/world_class_signup_screen.dart';
@@ -68,9 +69,12 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     ],
             ),
           ),
-          child: SafeArea(
+          child: ResponsiveSafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(24.sp),
+              padding: EdgeInsets.symmetric(
+                horizontal: AdaptiveLayout.sideMargin(context),
+                vertical: 24,
+              ),
               child: Form(
                 key: formKey,
                 child: Column(

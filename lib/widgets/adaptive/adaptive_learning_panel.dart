@@ -141,13 +141,13 @@ class AdaptiveLearningPanel extends ConsumerWidget {
     switch (actionType) {
       case AdaptiveActionType.reviewWords:
       case AdaptiveActionType.continuePolieTutor:
-        nav.naviateTo(const AiChatLanguageSetupScreen());
+        nav.navigateTo(const AiChatLanguageSetupScreen());
         break;
       case AdaptiveActionType.playGame:
-        nav.naviateTo(const LanguageGamesScreen());
+        nav.navigateTo(const LanguageGamesScreen());
         break;
       case AdaptiveActionType.completeLesson:
-        nav.naviateTo(const ProgressDashboardScreen());
+        nav.navigateTo(const ProgressDashboardScreen());
         break;
       case AdaptiveActionType.joinChat:
         // Can be wired to global chat screen when appropriate

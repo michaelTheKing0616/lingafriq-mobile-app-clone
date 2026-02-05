@@ -20,6 +20,7 @@ import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -30,9 +31,6 @@ class ModernDashboardScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    // NOTE: Using ref.read(notifier) here is necessary due to DailyGoalsProvider architecture
-    // The provider stores goals/streak as private fields with getters, not in BaseProviderState
-    // TODO: Refactor DailyGoalsProvider to use a proper state model instead of BaseProviderState
     final dailyGoalsNotifier = ref.read(dailyGoalsProvider.notifier);
     final dailyGoals = dailyGoalsNotifier.goals;
     final currentStreak = dailyGoalsNotifier.currentStreak;
@@ -82,7 +80,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
-                SafeArea(
+                ResponsiveSafeArea(
                   child: Padding(
                     padding: EdgeInsets.all(4.w),
                     child: Column(
@@ -93,7 +91,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                user?.avater != null
+                                user?.avater != null && user!.avater!.isNotEmpty
                                     ? ClipOval(
                                         child: LazyImage(
                                           imageUrl: user!.avater!,

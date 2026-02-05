@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 class ModernOnboardingScreen extends HookConsumerWidget {
   const ModernOnboardingScreen({Key? key}) : super(key: key);
@@ -67,7 +68,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                       onGetStarted: () async {
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
                         ref.read(apiProvider.notifier).registerDevice();
-                        ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+                        ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
                       },
                       onLogin: () {
                         ref.read(navigationProvider).navigateTo(const WorldClassLoginScreen());
@@ -153,7 +154,7 @@ class _WelcomeScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: AfricanTheme.africanSavanna,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               Expanded(
@@ -286,7 +287,7 @@ class _FeaturesScreen extends StatelessWidget {
     
     return Container(
       color: AfricanTheme.backgroundLight,
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Column(
           children: [
             Expanded(
@@ -449,7 +450,7 @@ class _AdventureScreen extends StatelessWidget {
               child: Container(),
             ),
           ),
-          SafeArea(
+          ResponsiveSafeArea(
             child: Column(
               children: [
                 Expanded(
@@ -584,7 +585,7 @@ class _GetStartedScreen extends StatelessWidget {
     
     return Container(
       color: AfricanTheme.backgroundLight,
-      child: SafeArea(
+      child: ResponsiveSafeArea(
         child: Column(
           children: [
             Expanded(

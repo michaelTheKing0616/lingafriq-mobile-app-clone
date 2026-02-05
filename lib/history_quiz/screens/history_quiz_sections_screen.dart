@@ -204,7 +204,7 @@ class HistoryQuizSectionsList extends HookConsumerWidget {
           choices: choices.map((e) => e['text'] as String).toList(),
         );
       }).toList();
-      final result = await ref.read(navigationProvider).naviateTo(QuizScreen(
+      final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: sectionHistory.title,
             quiz: quiz,
             isTakeQuiz: true,
@@ -213,7 +213,7 @@ class HistoryQuizSectionsList extends HookConsumerWidget {
           ));
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }
@@ -253,7 +253,7 @@ class HistoryQuizSectionsList extends HookConsumerWidget {
         );
       }).toList();
 
-      final result = await ref.read(navigationProvider).naviateTo(
+      final result = await ref.read(navigationProvider).navigateTo(
             CorrectionScreen(
               title: sectionHistory.title,
               score: sectionHistory.score,
@@ -265,7 +265,7 @@ class HistoryQuizSectionsList extends HookConsumerWidget {
           );
       return result;
     } catch (e) {
-      ref.read(dialogProvider(e)).showPlatformDialogue(title: "Error Parsing");
+      ref.read(dialogProvider(e)).showExceptionDialog();
       if (kDebugMode) rethrow;
       return false;
     }

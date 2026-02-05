@@ -15,7 +15,11 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
+import 'package:lingafriq/utils/supported_languages.dart';
 
 /// Enhanced Import Media Screen with Transcription Preview, Lesson Generation Preview, Edit/Customize
 class ImportMediaScreenEnhanced extends HookConsumerWidget {
@@ -24,7 +28,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedFile = useState<PlatformFile?>(null);
-    final languageController = useTextEditingController(text: 'yoruba');
+    final selectedLanguage = useState<String>('yoruba');
     final transcriptionResult = useState<Map<String, dynamic>?>(null);
     final lessonResult = useState<Map<String, dynamic>?>(null);
     final isUploading = useState(false);
@@ -80,21 +84,25 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
     Future<void> uploadAndTranscribe() async {
       if (selectedFile.value == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please select a file first')),
-        );
+        showLingAfriqError(context, 'Please select a file first');
         return;
       }
 
       isUploading.value = true;
       try {
+        // Validate language via allowlist (treat input as hostile).
+        final lang = selectedLanguage.value.toLowerCase().trim();
+        if (!SupportedLanguages.allLanguages.contains(lang)) {
+          throw Exception('Unsupported language selected.');
+        }
+
         // Upload file
         final uploadResponse = await ApiService.uploadFile(
           Api.mediaUpload(),
           selectedFile.value!.path!,
           additionalData: {
             'title': selectedFile.value!.name,
-            'language': languageController.text,
+            'language': lang,
           },
         );
 
@@ -106,7 +114,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           final transcribeResponse = await ApiService.post(
             Api.mediaTranscribe(mediaId),
             data: {
-              'language': languageController.text,
+              'language': lang,
             },
           );
 
@@ -116,9 +124,13 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           }
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Upload/transcription failed: ${e.toString()}')),
-        );
+        final msg = e.toString().toLowerCase();
+        String friendly = 'Upload or transcription failed. Please check your connection and try again.';
+        if (msg.contains('unsupported language')) friendly = 'Please select a supported language.';
+        else if (msg.contains('timeout') || msg.contains('socket')) friendly = 'Connection timed out. Please try again.';
+        if (context.mounted) {
+          showLingAfriqError(context, friendly);
+        }
       } finally {
         isUploading.value = false;
         isTranscribing.value = false;
@@ -127,19 +139,22 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
     Future<void> generateLesson() async {
       if (transcriptionResult.value == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please transcribe media first')),
-        );
+        showLingAfriqError(context, 'Please transcribe media first');
         return;
       }
 
       isGeneratingLesson.value = true;
       try {
+        final lang = selectedLanguage.value.toLowerCase().trim();
+        if (!SupportedLanguages.allLanguages.contains(lang)) {
+          throw Exception('Unsupported language selected.');
+        }
+
         final mediaId = transcriptionResult.value!['mediaId'];
         final response = await ApiService.post(
           Api.mediaGenerateLesson(mediaId),
           data: {
-            'language': languageController.text,
+            'language': lang,
             'userLevel': 'A1',
           },
         );
@@ -149,9 +164,9 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
           showLessonPreview.value = true;
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Lesson generation failed: ${e.toString()}')),
-        );
+        if (context.mounted) {
+          showLingAfriqError(context, 'Lesson generation failed. You can try again or use the transcription only.');
+        }
       } finally {
         isGeneratingLesson.value = false;
       }
@@ -160,11 +175,24 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     final isLoading = useState(false);
     
     return LoadingOverlay(
-      isLoading: isLoading.value,
-      message: 'Processing media...',
+      isLoading: isUploading.value || isTranscribing.value || isGeneratingLesson.value,
+      message: isUploading.value
+          ? 'Uploading...'
+          : isTranscribing.value
+              ? 'Transcribing...'
+              : isGeneratingLesson.value
+                  ? 'Generating lesson...'
+                  : 'Processing media...',
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Import Media'),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Import Media'),
+              Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+            ],
+          ),
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
@@ -187,6 +215,16 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Purpose
+                Text(
+                  'Import audio or video to get a transcription and an optional lesson. '
+                  'Pick a file, choose the language, then upload.',
+                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                    color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: PanAfricanSpacing.md),
                 // File Picker
                 _buildFilePicker(
                   context,
@@ -197,8 +235,8 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.lg),
 
                 // Language Selector
-                TextField(
-                  controller: languageController,
+                DropdownButtonFormField<String>(
+                  value: selectedLanguage.value,
                   decoration: InputDecoration(
                     labelText: 'Language',
                     border: OutlineInputBorder(
@@ -209,34 +247,45 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                         ? PanAfricanColors.surfaceContainerDark
                         : PanAfricanColors.surfaceContainerLight,
                   ),
+                  items: SupportedLanguages.allLanguages.map((lang) {
+                    final info = SupportedLanguages.getLanguageInfo(lang);
+                    final name = (info['name']?.toString().isNotEmpty ?? false)
+                        ? info['name'].toString()
+                        : lang;
+                    final flag = info['flag']?.toString() ?? '';
+                    return DropdownMenuItem<String>(
+                      value: lang,
+                      child: Text(flag.isNotEmpty ? '$flag  $name' : name),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value == null) return;
+                    selectedLanguage.value = value;
+                  },
                 ),
                 SizedBox(height: PanAfricanSpacing.lg),
 
                 // Upload & Transcribe Button
-                ElevatedButton.icon(
-                  onPressed: (isUploading.value || isTranscribing.value) ? null : uploadAndTranscribe,
-                  icon: (isUploading.value || isTranscribing.value)
+                PrimaryButton(
+                  text: isTranscribing.value
+                      ? 'Transcribing...'
+                      : isUploading.value
+                          ? 'Uploading...'
+                          : 'Upload & Transcribe',
+                  enabled: !isUploading.value && !isTranscribing.value,
+                  onTap: uploadAndTranscribe,
+                  child: (isUploading.value || isTranscribing.value)
                       ? SizedBox(
-                          width: 20.w,
-                          height: 20.h,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          height: 48,
+                          child: Center(
+                            child: SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                            ),
+                          ),
                         )
-                      : Icon(Icons.upload_file),
-                  label: Text(
-                    isTranscribing.value
-                        ? 'Transcribing...'
-                        : isUploading.value
-                            ? 'Uploading...'
-                            : 'Upload & Transcribe',
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: PanAfricanColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                    ),
-                  ),
+                      : null,
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
 
@@ -264,28 +313,24 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 // Generate Lesson Button
                 if (transcriptionResult.value != null && !showLessonPreview.value) ...[
                   SizedBox(height: PanAfricanSpacing.lg),
-                  ElevatedButton.icon(
-                    onPressed: isGeneratingLesson.value ? null : generateLesson,
-                    icon: isGeneratingLesson.value
+                  PrimaryButton(
+                    text: isGeneratingLesson.value ? 'Generating Lesson...' : 'Generate Lesson',
+                    enabled: !isGeneratingLesson.value,
+                    color: PanAfricanColors.secondary,
+                    textColor: Colors.black,
+                    onTap: generateLesson,
+                    child: isGeneratingLesson.value
                         ? SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: CircularProgressIndicator(strokeWidth: 2),
+                            height: 48,
+                            child: Center(
+                              child: SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(strokeWidth: 2),
+                              ),
+                            ),
                           )
-                        : Icon(Icons.auto_stories),
-                    label: Text(
-                      isGeneratingLesson.value
-                          ? 'Generating Lesson...'
-                          : 'Generate Lesson',
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PanAfricanColors.secondary,
-                      foregroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                      ),
-                    ),
+                        : null,
                   ),
                 ],
 
@@ -297,7 +342,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     lessonResult.value!,
                     showLessonPreview.value,
                     (show) => showLessonPreview.value = show,
-                    languageController,
+                    selectedLanguage.value,
                     transcriptionResult,
                     isDark,
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
@@ -456,7 +501,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     Map<String, dynamic> lesson,
     bool isExpanded,
     Function(bool) onToggle,
-    TextEditingController languageController,
+    String language,
     ValueNotifier<Map<String, dynamic>?> transcriptionResult,
     bool isDark,
   ) {
@@ -517,13 +562,11 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                       label: Text('Edit'),
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),
-                    ElevatedButton.icon(
-                      onPressed: () async {
-                        // Save lesson to backend
+                    PrimaryButton(
+                      text: 'Save Lesson',
+                      onTap: () async {
                         try {
                           final ugcService = ref.read(userGeneratedContentServiceProvider);
-                          
-                          // Convert sections to content string
                           final sections = lesson['sections'] as List? ?? [];
                           final contentString = sections.map((s) {
                             final sec = s as Map<String, dynamic>;
@@ -531,7 +574,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           }).join('\n\n');
 
                           final result = await ugcService.createLesson(
-                            language: languageController.text,
+                            language: language,
                             title: lesson['title']?.toString() ?? 'Generated Lesson',
                             content: contentString,
                             description: 'Lesson generated from imported media',
@@ -539,34 +582,18 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           );
 
                           if (result != null) {
-                            // Link media to lesson
                             if (transcriptionResult.value?['mediaId'] != null) {
                               try {
                                 await ApiService.post(
                                   'media/${transcriptionResult.value!['mediaId']}/link-lesson',
-                                  data: {
-                                    'lesson_id': result['id'],
-                                  },
+                                  data: {'lesson_id': result['id']},
                                 );
                               } catch (e) {
-                                // Non-critical error
                                 debugPrint('Failed to link media to lesson: $e');
                               }
                             }
-
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Lesson saved successfully!'),
-                                  backgroundColor: Colors.green,
-                                  action: SnackBarAction(
-                                    label: 'View',
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                              );
+                              showLingAfriqSuccess(context, 'Lesson saved successfully!');
                               Navigator.pop(context);
                             }
                           } else {
@@ -574,17 +601,18 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           }
                         } catch (e) {
                           if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Failed to save lesson: ${e.toString()}'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
+                            showLingAfriqError(context, 'Failed to save lesson. Please try again.');
                           }
                         }
                       },
-                      icon: Icon(Icons.save),
-                      label: Text('Save Lesson'),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.save, size: 20),
+                          SizedBox(width: 8),
+                          Text('Save Lesson'),
+                        ],
+                      ),
                     ),
                   ],
                 ),

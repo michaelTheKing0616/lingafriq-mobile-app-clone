@@ -23,8 +23,9 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/config/secrets_manager.dart';
+import 'package:lingafriq/config/url_constants.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -181,7 +182,7 @@ class EnhancedTTSService {
 
       // Use HuggingFace Inference API for MMS-TTS (FREE)
       final response = await _dio.post(
-        'https://api-inference.huggingface.co/models/facebook/mms-tts-${language.toLowerCase()}',
+        UrlConstants.huggingFaceModel('facebook/mms-tts-${language.toLowerCase()}'),
         data: {'inputs': text},
         options: Options(
           headers: {

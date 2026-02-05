@@ -86,7 +86,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         await prefs.remove('onboarding_complete');
         await prefs.remove('onboarding_data');
       }
-      ref.read(navigationProvider).naviateOffAll(const OnboardingScreenMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
       return;
     }
 
@@ -98,7 +98,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // This prevents unnecessary API calls on every splash screen load
     if (currentUser != null && (apiNotifier.token?.isNotEmpty ?? false)) {
       // Already logged in, navigate to tabs view
-      ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+      ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
       return;
     }
 
@@ -107,7 +107,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final storedCredentials = await credentialStorage.getStoredCredentials();
     
     if (storedCredentials == null) {
-      ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
+      ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
       return;
     }
 
@@ -126,7 +126,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         logger.info('Auto-login successful');
         ref.read(userProvider.notifier).overrideUser(user);
         unawaited(ref.read(apiProvider.notifier).registerDevice()); // Non-blocking
-        ref.read(navigationProvider).naviateOffAll(const TabsViewMaterial3());
+        ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
         return;
       }
     } catch (e) {
@@ -144,7 +144,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
 
     // Navigate to login screen (either no credentials or login failed)
-    ref.read(navigationProvider).naviateOffAll(const WorldClassLoginScreen());
+    ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
   }
 
   Future<ProfileModel?> login({
@@ -195,7 +195,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // World-class UX: always navigate to the correct next screen after explicit login/register.
       if (storeCredentials && !updateProfile) {
         final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
-        ref.read(navigationProvider).naviateOffAll(
+        ref.read(navigationProvider).navigateOffAll(
           isOnboardingSeen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
         );
       }
@@ -233,7 +233,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       //           const Text("Please check your inbox to activate your account"),
       //     );
 
-      // ref.read(navigationProvider).naviateOffAll(const LoginScreen());
+      // ref.read(navigationProvider).navigateOffAll(const LoginScreen());
       state = state.copyWith(isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false);

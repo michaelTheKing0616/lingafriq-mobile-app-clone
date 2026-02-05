@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../utils/performance_utils.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/gamification_services_provider.dart';
@@ -9,6 +10,9 @@ import '../../providers/user_provider.dart';
 import '../../models/user_gamification_model.dart';
 import '../../services/gamification/tribes_service.dart';
 import '../../widgets/error_boundary.dart';
+import '../../widgets/lingafriq_ui_helpers.dart';
+import '../../widgets/primary_button.dart';
+import '../../widgets/responsive_safe_area.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// Tribe Selection Screen
@@ -23,6 +27,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
   bool _isLoading = false;
   List<Map<String, dynamic>> _availableTribes = [];
   String? _currentTribeId;
+  String? _loadError;
 
   @override
   void initState() {
@@ -31,11 +36,14 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
   }
 
   Future<void> _loadTribes() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _loadError = null;
+    });
     try {
       final tribesService = ref.read(tribesServiceProvider);
       final user = ref.read(userProvider);
-      
+
       // Fetch tribes from API
       final tribes = await tribesService.getAllTribes();
       _availableTribes = tribes.map((tribe) => {
@@ -45,7 +53,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
         'members_count': tribe['members_count'] as int?,
         'language_tag': tribe['language_tag'] as String?,
       }).toList();
-      
+
       // Get user's current tribe if exists
       if (user != null) {
         final userTribes = await tribesService.getUserTribes(user.id.toString());
@@ -54,10 +62,10 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
         }
       }
     } catch (e) {
+      _loadError = e.toString();
       if (mounted) {
         ErrorHandler.showError(context, e);
       }
-      // Fallback to empty list on error
       _availableTribes = [];
     } finally {
       setState(() => _isLoading = false);
@@ -76,12 +84,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
       setState(() => _currentTribeId = tribeId);
       
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Joined $tribeName tribe!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        showLingAfriqSuccess(context, 'Joined $tribeName tribe!');
       }
     } catch (e) {
       if (mounted) {
@@ -97,9 +100,45 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
     final gamification = ref.watch(gamificationProvider.notifier);
     final currentTribe = gamification.gamification.tribe;
     
-    if (_isLoading && _availableTribes.isEmpty) {
+    if (_isLoading && _availableTribes.isEmpty && _loadError == null) {
       return const Scaffold(
         body: DynamicLoadingScreen(),
+      );
+    }
+
+    if (_loadError != null && _availableTribes.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Choose Your Tribe'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ),
+        body: ResponsiveSafeArea(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.cloud_off, size: 64, color: PanAfricanColors.error),
+                  SizedBox(height: PanAfricanSpacing.md),
+                  Text(
+                    _loadError!,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  PrimaryButton(
+                    text: 'Try again',
+                    onTap: () => _loadTribes(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       );
     }
     

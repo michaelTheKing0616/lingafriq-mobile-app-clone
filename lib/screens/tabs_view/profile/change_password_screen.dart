@@ -39,7 +39,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
             children: [
               ProfileImageBuilder(
                 showEditIcon: false,
-                onTap: () {},
+                onTap: null,
               ).centered(),
               24.heightBox,
               const ProfileDetailsBuilder(
@@ -82,7 +82,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
               PrimaryButton(
                 width: 0.6.sw,
                 onTap: () async {
-                  if (!formKey.currentState!.validate()) return;
+                  if (formKey.currentState == null || !formKey.currentState!.validate()) return;
                   
                   await safeAsync(
                     context: context,

@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -40,7 +41,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                 ? PanAfricanGradients.darkSurface
                 : PanAfricanGradients.forest,
           ),
-          child: SafeArea(
+          child: ResponsiveSafeArea(
             child: Column(
               children: [
                 // Header with Pan-African App Bar
@@ -60,14 +61,17 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                 // Profile Header
                 Container(
-                  padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AdaptiveLayout.sideMargin(context),
+                    vertical: PanAfricanSpacing.md,
+                  ),
                   child: Row(
                     children: [
                       // Profile Image
                       _ProfileImageBuilder(
                         showEditIcon: user != null,
                         onTap: () {
-                          ref.read(navigationProvider).naviateTo(
+                          ref.read(navigationProvider).navigateTo(
                             const ProfileEditScreen(),
                           );
                         },
@@ -113,7 +117,10 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                       ),
                     ),
                     child: SingleChildScrollView(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AdaptiveLayout.sideMargin(context),
+                        vertical: PanAfricanSpacing.md,
+                      ),
                       child: Column(
                         children: [
                           // Currency Display
@@ -135,7 +142,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                   const Spacer(),
                                   Chip(
                                     label: Text(
-                                      user!.rank.toString(),
+                                      (user?.rank ?? 0).toString(),
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),
@@ -172,7 +179,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               ),
                             ),
                             onTap: () {
-                              ref.read(navigationProvider).naviateTo(
+                              ref.read(navigationProvider).navigateTo(
                                 const ChangePasswordScreen(),
                               );
                             },
@@ -195,7 +202,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               ),
                             ),
                             onTap: () {
-                              ref.read(navigationProvider).naviateTo(
+                              ref.read(navigationProvider).navigateTo(
                                 const SuggestLanguageScreen(),
                               );
                             },

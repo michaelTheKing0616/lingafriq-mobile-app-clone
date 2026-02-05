@@ -1,14 +1,16 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/config/app_config.dart';
+import 'package:dio/dio.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/env_config.dart';
 
 /// Comprehensive Proficiency Assessment Screen
 class TutorAssessModeScreen extends HookConsumerWidget {
@@ -25,24 +27,128 @@ class TutorAssessModeScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    Future<Map<String, dynamic>> _generateAssessmentWithGroq({
+      required String language,
+      required String assessmentType,
+      String? knownCefrLevel,
+    }) async {
+      final groqKey = EnvConfig.groqApiKey;
+      if (groqKey.isEmpty) {
+        throw Exception(
+          'Assessment mode is unavailable because the AI service is not configured in this build.',
+        );
+      }
+
+      final dio = Dio(
+        BaseOptions(
+          connectTimeout: const Duration(seconds: 20),
+          receiveTimeout: const Duration(seconds: 60),
+          sendTimeout: const Duration(seconds: 20),
+        ),
+      );
+
+      final prompt = '''
+You are Polie, an elite African language tutor.
+Generate a world-class proficiency assessment summary.
+
+TARGET_LANGUAGE: $language
+ASSESSMENT_TYPE: $assessmentType
+${knownCefrLevel != null ? 'KNOWN_CEFR_LEVEL: $knownCefrLevel' : ''}
+
+Return STRICT JSON ONLY (no markdown) in this exact shape:
+{
+  "proficiencyLevel": "A1|A2|B1|B2|C1|C2",
+  "strengths": ["..."],
+  "weaknesses": ["..."],
+  "recommendations": ["..."],
+  "nextSteps": [
+    {"title": "Actionable next step", "detail": "How to do it in the app"},
+    {"title": "...", "detail": "..."}
+  ]
+}
+
+Rules:
+- If KNOWN_CEFR_LEVEL is provided, use it unless clearly inconsistent.
+- Keep lists practical and specific (no fluff).
+- Use culturally appropriate examples when referencing practice activities.
+''';
+
+      final resp = await dio.post(
+        'https://api.groq.com/openai/v1/chat/completions',
+        data: {
+          'model': 'llama-3.1-70b-versatile',
+          'temperature': 0.2,
+          'max_tokens': 800,
+          'messages': [
+            {
+              'role': 'system',
+              'content': 'You output only valid JSON. Never include markdown or commentary.',
+            },
+            {'role': 'user', 'content': prompt},
+          ],
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $groqKey',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+
+      if (resp.statusCode != 200) {
+        throw Exception('AI request failed (${resp.statusCode}). Please try again.');
+      }
+
+      final content = (resp.data is Map)
+          ? (resp.data['choices']?[0]?['message']?['content']?.toString() ?? '')
+          : '';
+      if (content.trim().isEmpty) {
+        throw Exception('AI returned an empty response. Please try again.');
+      }
+
+      try {
+        return jsonDecode(content) as Map<String, dynamic>;
+      } catch (_) {
+        final start = content.indexOf('{');
+        final end = content.lastIndexOf('}');
+        if (start >= 0 && end > start) {
+          final slice = content.substring(start, end + 1);
+          return jsonDecode(slice) as Map<String, dynamic>;
+        }
+        rethrow;
+      }
+    }
+
     Future<void> assessProficiency() async {
       isLoading.value = true;
       await safeAsync(
         context: context,
         operation: () async {
-          final response = await ApiService.post(
-            AppConfig.tutorAssess,
-            data: {
-              'language': selectedLanguage.value.name,
-              'assessmentType': assessmentType.value,
-            },
+          String? knownCefr;
+          try {
+            // If authenticated, we can derive a CEFR estimate from backend progress.
+            // Backend route: GET /api/cefr-assessment?language=...
+            final resp = await ApiService.get(
+              '/api/cefr-assessment',
+              queryParameters: {'language': selectedLanguage.value.name},
+            );
+            if (resp.statusCode == 200 && resp.data is Map) {
+              final data = (resp.data as Map)['data'];
+              if (data is Map && data['cefr_level'] != null) {
+                knownCefr = data['cefr_level']?.toString();
+              }
+            }
+          } catch (_) {
+            // If backend is unavailable or user is not authenticated, proceed with AI-only assessment.
+          }
+
+          final result = await _generateAssessmentWithGroq(
+            language: selectedLanguage.value.name,
+            assessmentType: assessmentType.value,
+            knownCefrLevel: knownCefr,
           );
 
-          if (response.statusCode == 200) {
-            assessmentResult.value = response.data;
-          } else {
-            throw Exception('Failed to generate assessment');
-          }
+          assessmentResult.value = result;
         },
         errorContext: 'assessProficiency',
         showError: true,

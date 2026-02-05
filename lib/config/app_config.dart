@@ -1,4 +1,5 @@
 import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/config/url_constants.dart';
 
 /// Application Configuration
 /// Centralized configuration for API endpoints and app settings
@@ -31,6 +32,6 @@ class AppConfig {
   
   // Chat & LiveKit endpoints
   static String chatClassroomToken(String roomId) => 'api/chat/classroom/$roomId/token';
-  static const String liveKitUrl = 'wss://lingafriq.livekit.cloud';
+  static const String liveKitUrl = UrlConstants.liveKitWss;
 }
 

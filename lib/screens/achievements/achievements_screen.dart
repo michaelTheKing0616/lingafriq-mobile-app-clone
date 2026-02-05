@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/achievement_model.dart';
@@ -9,6 +11,9 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AchievementsScreen extends ConsumerWidget {
@@ -19,7 +24,7 @@ class AchievementsScreen extends ConsumerWidget {
     return ErrorBoundary(
       errorMessage: 'Unable to load achievements. Please check your connection and try again.',
       onRetry: () {
-        // Retry by rebuilding
+        ref.invalidate(achievementsProvider);
       },
       child: _buildContent(context, ref),
     );
@@ -151,8 +156,10 @@ class AchievementsScreen extends ConsumerWidget {
             left: 0,
             right: 0,
             bottom: 0,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
+            child: ResponsiveSafeArea(
+              top: false,
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -197,6 +204,7 @@ class AchievementsScreen extends ConsumerWidget {
                   ),
                 ],
               ),
+            ),
             ),
           ),
         ],
@@ -340,7 +348,13 @@ class AchievementsScreen extends ConsumerWidget {
     final rarityColor = _getRarityColor(achievement.rarity, isDark);
     final isUnlocked = achievement.isUnlocked;
 
-    return Container(
+    return InkWell(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        _showAchievementDetail(context, achievement, isDark);
+      },
+      borderRadius: BorderRadius.circular(20),
+      child: Container(
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1F3527) : Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -438,6 +452,69 @@ class AchievementsScreen extends ConsumerWidget {
             ],
           ],
         ),
+      ),
+      ),
+    );
+  }
+
+  void _showAchievementDetail(BuildContext context, Achievement achievement, bool isDark) {
+    final rarityColor = _getRarityColor(achievement.rarity, isDark);
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+        title: Row(
+          children: [
+            Text(achievement.icon, style: const TextStyle(fontSize: 28)),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Text(
+                achievement.name,
+                style: PanAfricanTypography.titleMedium(context),
+              ),
+            ),
+          ],
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                achievement.description,
+                style: PanAfricanTypography.bodyMedium(context),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+              Text('+${achievement.xpReward} XP', style: TextStyle(color: rarityColor, fontWeight: FontWeight.bold)),
+              if (achievement.isUnlocked && achievement.unlockedAt != null)
+                Padding(
+                  padding: EdgeInsets.only(top: PanAfricanSpacing.sm),
+                  child: Text(
+                    'Unlocked ${_formatDate(achievement.unlockedAt!)}',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Close'),
+          ),
+          PrimaryButton(
+            text: 'Practice with Polie',
+            onTap: () {
+              Navigator.pop(ctx);
+              if (context.mounted) {
+                Navigator.push(
+                  context,
+                  SmoothPageRoute(child: PolieModeSelectionScreen()),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }

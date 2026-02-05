@@ -12,6 +12,7 @@ import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 // Re-export for consumers that imported from tabs_view_material3
 export 'package:lingafriq/providers/tab_scaffold_provider.dart'
@@ -89,37 +90,40 @@ class _Material3BottomNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return NavigationBar(
-      selectedIndex: currentIndex,
-      onDestinationSelected: onTap,
-      backgroundColor: isDark
-          ? PanAfricanColors.surfaceContainerDark
-          : PanAfricanColors.surfaceContainerLight,
-      indicatorColor: PanAfricanColors.primaryContainer,
-      labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-      elevation: 8,
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home_rounded),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.folder_copy_outlined),
-          selectedIcon: Icon(Icons.folder_copy_rounded),
-          label: 'Courses',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.bar_chart_outlined),
-          selectedIcon: Icon(Icons.bar_chart_rounded),
-          label: 'Standings',
-        ),
-        NavigationDestination(
-          icon: Icon(Icons.person_outline),
-          selectedIcon: Icon(Icons.person_rounded),
-          label: 'Profile',
-        ),
-      ],
+    return ResponsiveSafeArea(
+      top: false,
+      child: NavigationBar(
+        selectedIndex: currentIndex,
+        onDestinationSelected: onTap,
+        backgroundColor: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        indicatorColor: PanAfricanColors.primaryContainer,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        elevation: 8,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(PanAfricanIcons.home),
+            selectedIcon: Icon(PanAfricanIcons.homeSelected),
+            label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(PanAfricanIcons.courses),
+            selectedIcon: Icon(PanAfricanIcons.coursesSelected),
+            label: 'Courses',
+          ),
+          NavigationDestination(
+            icon: Icon(PanAfricanIcons.standings),
+            selectedIcon: Icon(PanAfricanIcons.standingsSelected),
+            label: 'Standings',
+          ),
+          NavigationDestination(
+            icon: Icon(PanAfricanIcons.profile),
+            selectedIcon: Icon(PanAfricanIcons.profileSelected),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
 }

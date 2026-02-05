@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
@@ -17,6 +18,7 @@ import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
@@ -50,7 +52,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               ? PanAfricanGradients.darkSurface
               : PanAfricanGradients.forest,
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header
@@ -68,7 +70,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     ),
                   ),
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: AdaptiveLayout.sideMargin(context),
+                      vertical: PanAfricanSpacingResponsive.verticalContent(context),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -106,8 +111,18 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
   }
 
   Widget _buildHeader(BuildContext context, WidgetRef ref, String greeting, bool isDark) {
+    final user = ref.watch(userProvider);
+    final displayName = user?.username?.isNotEmpty == true
+        ? user!.username
+        : (user?.first_name?.isNotEmpty == true
+            ? '${user!.first_name} ${user.last_name}'.trim()
+            : null) ?? 'there';
+    final greetingLine = '$greeting, $displayName';
     return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      padding: EdgeInsets.symmetric(
+        horizontal: AdaptiveLayout.sideMargin(context),
+        vertical: PanAfricanSpacingResponsive.screenPaddingVertical(context),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -125,7 +140,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    greeting,
+                    greetingLine,
                     style: PanAfricanTypography.headlineMedium(context)
                         .copyWith(color: Colors.white),
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
@@ -299,7 +314,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           data: (languages) {
             final list = languages.results;
             if (list.isEmpty) {
-              return _placeholderContinueLearning(isDark);
+              return _placeholderContinueLearning(context, isDark);
             }
             return SizedBox(
               height: 120.h,
@@ -530,9 +545,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               }),
             );
           },
-          loading: () => const Padding(
+          loading: () => Padding(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: AdaptiveProgressIndicator(message: 'Loading languages...'),
+            child: const AdaptiveProgressIndicator(message: 'Loading languages...'),
           ),
           error: (e, _) => StreamErrorWidget(
             error: e,
