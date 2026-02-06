@@ -10,7 +10,7 @@ import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/services/polie_mention_handler.dart';

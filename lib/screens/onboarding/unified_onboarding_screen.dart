@@ -483,7 +483,7 @@ class _VillageWelcomeStep extends StatelessWidget {
                     foregroundColor: Colors.black,
                     padding: EdgeInsets.symmetric(vertical: 18.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.full),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: Text(
@@ -1698,7 +1698,7 @@ class _ContinueButton extends StatelessWidget {
             disabledForegroundColor: Colors.white38,
             padding: EdgeInsets.symmetric(vertical: 16.h),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(PanAfricanRadius.full),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.round),
             ),
           ),
           child: Text(

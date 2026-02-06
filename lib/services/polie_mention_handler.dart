@@ -241,7 +241,7 @@ Keep responses concise for chat format (2-3 sentences max per point).''';
         prompt = query;
         
         // Try direct translation first for simple requests
-        final translationMatch = RegExp(r'(?:translate|how do you say)\s+["\']?(.+?)["\']?\s+(?:to|in|into)\s+(\w+)', 
+        final translationMatch = RegExp(r'(?:translate|how do you say)\s+["\x27]?(.+?)["\x27]?\s+(?:to|in|into)\s+(\w+)', 
             caseSensitive: false).firstMatch(query);
         if (translationMatch != null) {
           final textToTranslate = translationMatch.group(1)?.trim() ?? query;
@@ -314,9 +314,8 @@ The user is learning $userLanguage.''';
       prompt = 'Context: $chatContext\n\nUser question: $prompt';
     }
     
-    // Get response from AI
-    await chatProvider.setSystemPrompt(systemContext);
-    final response = await chatProvider.sendMessage(prompt);
+    // Get response from AI using systemPromptOverride
+    final response = await chatProvider.sendMessage(prompt, systemPromptOverride: systemContext);
     
     return response;
   }

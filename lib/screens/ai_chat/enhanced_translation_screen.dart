@@ -412,7 +412,7 @@ Please provide your response in this format:
         .replaceAll(RegExp(r'^[\d\.\)\-\*\#]+\s*'), '') // Remove leading numbers/bullets
         .replaceAll(RegExp(r'^(translation|primary|result)\s*:\s*', caseSensitive: false), '')
         .replaceAll(RegExp(r'\*+'), '') // Remove markdown bold
-        .replaceAll(RegExp(r'^\s*["\'「『]|["\'」』]\s*$'), '') // Remove surrounding quotes
+        .replaceAll(RegExp(r'^\s*["\x27]+|["\x27]+\s*$'), '') // Remove surrounding quotes
         .trim();
   }
 

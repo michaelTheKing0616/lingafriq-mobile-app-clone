@@ -192,11 +192,8 @@ class BiometricAuth {
           BiometricAuthError.lockedOut,
           'Too many failed attempts. Please wait and try again.',
         );
-      case auth_error.permanentLockout:
-        return BiometricAuthResult.failure(
-          BiometricAuthError.permanentlyLockedOut,
-          'Biometric authentication is locked. Please unlock your device with PIN/password.',
-        );
+      // Note: permanentLockout was removed in newer local_auth versions
+      // Biometric lockout is now handled via lockedOut or platform-specific codes
       case auth_error.passcodeNotSet:
         return BiometricAuthResult.failure(
           BiometricAuthError.passcodeNotSet,
