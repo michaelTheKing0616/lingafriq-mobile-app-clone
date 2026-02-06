@@ -1812,9 +1812,9 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
   }
 
   // Non-streaming version (fallback)
-  Future<String> sendMessage(String userMessage) async {
+  Future<String> sendMessage(String userMessage, {String? systemPromptOverride}) async {
     String fullResponse = '';
-    await for (final chunk in sendMessageStream(userMessage)) {
+    await for (final chunk in sendMessageStream(userMessage, systemPromptOverride: systemPromptOverride)) {
       fullResponse += chunk;
     }
     return fullResponse;

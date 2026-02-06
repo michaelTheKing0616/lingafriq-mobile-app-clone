@@ -125,6 +125,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
                     PolieColors.primary.withOpacity(0.92),
                     PolieColors.primaryDark.withOpacity(0.88),
                   ],
+          ),
         ),
         child: SafeArea(
           child: Column(
