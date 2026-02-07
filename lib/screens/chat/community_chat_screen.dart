@@ -10,6 +10,7 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 /// Community Chat (Language Villages) with Material 3 Design
 class CommunityChatScreen extends HookConsumerWidget {
@@ -260,14 +261,9 @@ class _CommunityMessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Avatar
-          CircleAvatar(
-            radius: 20.w,
-            backgroundColor: PanAfricanColors.primary,
-            child: Text(
-              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
-              style: PanAfricanTypography.labelMedium(context)
-                  .copyWith(color: Colors.white),
-            ),
+          LingAfriqAvatar.fromInitials(
+            username: senderName.isNotEmpty ? senderName : '?',
+            size: 40.w,
           ),
           SizedBox(width: PanAfricanSpacing.sm),
           // Message Content

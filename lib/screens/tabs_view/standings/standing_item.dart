@@ -6,6 +6,7 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 class StandingItem extends ConsumerWidget {
   final ProfileModel profile;
@@ -38,16 +39,13 @@ class StandingItem extends ConsumerWidget {
                     ref.read(tabIndexProvider.notifier).setIndex(3);
                   }
                 : null,
-            child: () {
-              if (profile.avater != null) {
-                return CachedNetworkImage(imageUrl: profile.avatarUrl);
-              }
-              return Image.asset(kAvatarsList.values.first);
-            }.call(),
+            child: isMe
+                ? const LingAfriqAvatar(size: 56)
+                : LingAfriqAvatar.fromInitials(
+                    username: profile.username,
+                    size: 56,
+                  ),
           ).expand(flex: 2),
-
-          // if (profile.avater != null)
-          //   CachedNetworkImage(imageUrl: profile.avatarUrl).expand(flex: 2),
           16.widthBox,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

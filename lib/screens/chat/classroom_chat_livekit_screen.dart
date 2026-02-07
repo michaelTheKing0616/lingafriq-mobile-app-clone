@@ -10,6 +10,7 @@ import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:livekit_client/livekit_client.dart';
 import '../../widgets/whiteboard/interactive_whiteboard.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 /// LiveKit Classroom Chat with Video/Audio and Whiteboard
 class ClassroomChatLiveKitScreen extends HookConsumerWidget {
@@ -451,14 +452,9 @@ class _VideoTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 40.r,
-            backgroundColor: PanAfricanColors.primary,
-            child: Text(
-              (participant['name'] ?? 'U')[0].toUpperCase(),
-              style: PanAfricanTypography.headlineSmall(context)
-                  .copyWith(color: Colors.white),
-            ),
+          LingAfriqAvatar.fromInitials(
+            username: participant['name'] ?? 'U',
+            size: 80.r,
           ),
           SizedBox(height: PanAfricanSpacing.sm),
           Text(
@@ -502,12 +498,9 @@ class _VideoTile extends StatelessWidget {
                   final remoteParticipant = remoteParticipants[participantId];
                   
                   return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: PanAfricanColors.primaryGreen,
-                      child: Icon(
-                        isLocal ? Icons.person : Icons.person_outline,
-                        color: Colors.white,
-                      ),
+                    leading: LingAfriqAvatar.fromInitials(
+                      username: participant['name'] ?? 'U',
+                      size: 40,
                     ),
                     title: Text(
                       participant['name'] ?? 'Unknown',

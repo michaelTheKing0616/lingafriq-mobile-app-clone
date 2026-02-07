@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../avatar_providers.dart';
 
 /// User avatar customization options
 class UserAvatarConfig {
@@ -571,32 +573,149 @@ class UserAvatarDisplay extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
+    final skinColor = config.skinTone < SkinToneOption.options.length
+        ? SkinToneOption.options[config.skinTone].color
+        : SkinToneOption.options[0].color;
+    final outfitColor = config.outfit < OutfitOption.options.length
+        ? OutfitOption.options[config.outfit].primaryColor
+        : OutfitOption.options[0].primaryColor;
+    final hairIcon = config.hairStyle < HairStyleOption.options.length
+        ? HairStyleOption.options[config.hairStyle].icon
+        : Icons.person;
+    final accessoryIcon = config.accessory > 0 && config.accessory < AccessoryOption.options.length
+        ? AccessoryOption.options[config.accessory].icon
+        : null;
+    
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: SkinToneOption.options[config.skinTone].color,
+        color: skinColor,
         border: showBorder
-            ? Border.all(
-                color: OutfitOption.options[config.outfit].primaryColor,
-                width: 2,
-              )
+            ? Border.all(color: outfitColor, width: 2)
             : null,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: outfitColor.withOpacity(0.25),
             blurRadius: 8,
+            spreadRadius: 1,
+          ),
+        ],
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Base person icon with hair style icon
+          Icon(
+            hairIcon,
+            size: size * 0.5,
+            color: Colors.white.withOpacity(0.9),
+          ),
+          // Accessory badge (small, positioned at bottom-right)
+          if (accessoryIcon != null)
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                width: size * 0.3,
+                height: size * 0.3,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: outfitColor,
+                  border: Border.all(color: Colors.white, width: 1),
+                ),
+                child: Icon(
+                  accessoryIcon,
+                  size: size * 0.17,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Drop-in avatar widget that auto-reads from Riverpod provider.
+/// Use this anywhere you would use CircleAvatar for the current user.
+/// 
+/// For other users (chat messages from others), use [UserAvatarDisplay] 
+/// with their config, or [LingAfriqAvatar.fromInitials] as a fallback.
+class LingAfriqAvatar extends ConsumerWidget {
+  final double size;
+  final bool showBorder;
+  final VoidCallback? onTap;
+  
+  const LingAfriqAvatar({
+    super.key,
+    this.size = 40,
+    this.showBorder = true,
+    this.onTap,
+  });
+  
+  /// Fallback avatar for other users (when we don't have their config).
+  /// Shows initials with a color derived from their username.
+  static Widget fromInitials({
+    required String username,
+    double size = 40,
+    Color? backgroundColor,
+  }) {
+    final initial = username.isNotEmpty ? username[0].toUpperCase() : 'U';
+    // Deterministic color from username
+    final hash = username.codeUnits.fold<int>(0, (sum, c) => sum + c);
+    final colors = [
+      const Color(0xFF2D5F2D), // forest
+      const Color(0xFFD4AF37), // gold
+      const Color(0xFF8B4513), // earth
+      const Color(0xFF1A6B6B), // teal
+      const Color(0xFF6B3FA0), // amethyst
+      const Color(0xFFCC5500), // sunset
+      const Color(0xFF4A7C59), // sage
+      const Color(0xFFB8860B), // amber
+    ];
+    final color = backgroundColor ?? colors[hash % colors.length];
+    
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: color,
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.3),
+            blurRadius: 6,
           ),
         ],
       ),
       child: Center(
-        child: Icon(
-          Icons.person,
-          size: size * 0.5,
-          color: Colors.white.withOpacity(0.8),
+        child: Text(
+          initial,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: size * 0.4,
+            fontWeight: FontWeight.w700,
+          ),
         ),
       ),
     );
+  }
+  
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final config = ref.watch(userAvatarConfigProvider);
+    
+    final avatar = UserAvatarDisplay(
+      config: config,
+      size: size,
+      showBorder: showBorder,
+    );
+    
+    if (onTap != null) {
+      return GestureDetector(onTap: onTap, child: avatar);
+    }
+    return avatar;
   }
 }

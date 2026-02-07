@@ -6,7 +6,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -14,6 +13,7 @@ import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/services/polie_mention_handler.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GlobalChatScreen extends ConsumerStatefulWidget {
@@ -249,14 +249,9 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                CircleAvatar(
-                                  radius: 18.w,
-                                  backgroundColor: PanAfricanColors.primary,
-                                  child: Text(
-                                    (onlineUser['username'] as String? ?? 'U')[0].toUpperCase(),
-                                    style: PanAfricanTypography.labelMedium(context)
-                                        .copyWith(color: Colors.white),
-                                  ),
+                                LingAfriqAvatar.fromInitials(
+                                  username: onlineUser['username'] as String? ?? 'U',
+                                  size: 36.w,
                                 ),
                                 SizedBox(height: PanAfricanSpacing.xxs),
                                 Container(
@@ -475,52 +470,72 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
     bool isMe,
     bool isDark,
   ) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-        constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-        padding: EdgeInsets.symmetric(
-          horizontal: PanAfricanSpacing.md,
-          vertical: PanAfricanSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color: isMe
-              ? PanAfricanColors.primary
-              : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
-          borderRadius: PanAfricanRadius.lgBR.copyWith(
-            bottomRight: isMe ? const Radius.circular(4) : null,
-            bottomLeft: !isMe ? const Radius.circular(4) : null,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!isMe)
-              Text(
-                message['username'] ?? 'Anonymous',
-                style: PanAfricanTypography.labelMedium(context).copyWith(
-                  color: isMe ? Colors.white : PanAfricanColors.primary,
+    final username = message['username'] as String? ?? 'Anonymous';
+    
+    return Padding(
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      child: Row(
+        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          // Avatar for other users
+          if (!isMe) ...[
+            LingAfriqAvatar.fromInitials(username: username, size: 28),
+            SizedBox(width: PanAfricanSpacing.xs),
+          ],
+          // Message bubble
+          Flexible(
+            child: Container(
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md,
+                vertical: PanAfricanSpacing.sm,
+              ),
+              decoration: BoxDecoration(
+                color: isMe
+                    ? PanAfricanColors.primary
+                    : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+                borderRadius: PanAfricanRadius.lgBR.copyWith(
+                  bottomRight: isMe ? const Radius.circular(4) : null,
+                  bottomLeft: !isMe ? const Radius.circular(4) : null,
                 ),
               ),
-            if (!isMe) SizedBox(height: PanAfricanSpacing.xxs),
-            Text(
-              message['message'] ?? '',
-              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                color: isMe ? Colors.white : null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (!isMe)
+                    Text(
+                      username,
+                      style: PanAfricanTypography.labelMedium(context).copyWith(
+                        color: PanAfricanColors.primary,
+                      ),
+                    ),
+                  if (!isMe) SizedBox(height: PanAfricanSpacing.xxs),
+                  Text(
+                    message['message'] ?? '',
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      color: isMe ? Colors.white : null,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  Text(
+                    _formatTime(message['timestamp']),
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
+                      color: isMe
+                          ? Colors.white.withOpacity(0.7)
+                          : PanAfricanColors.neutralMedium,
+                    ),
+                  ),
+                ],
               ),
             ),
-            SizedBox(height: PanAfricanSpacing.xxs),
-            Text(
-              _formatTime(message['timestamp']),
-              style: PanAfricanTypography.labelSmall(context).copyWith(
-                color: isMe
-                    ? Colors.white.withOpacity(0.7)
-                    : PanAfricanColors.neutralMedium,
-              ),
-            ),
+          ),
+          // Self avatar
+          if (isMe) ...[
+            SizedBox(width: PanAfricanSpacing.xs),
+            const LingAfriqAvatar(size: 28, showBorder: false),
           ],
-        ),
+        ],
       ),
     );
   }
