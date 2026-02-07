@@ -323,6 +323,67 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  // ============================================
+  // AVATAR API METHODS
+  // ============================================
+
+  /// Fetch user's avatar configuration from the backend.
+  /// Returns null if network fails (offline-safe).
+  Future<Map<String, dynamic>?> getAvatarConfig() async {
+    try {
+      final res = await ref.read(client).get(
+        '${Api.baseurl}${Api.avatarConfig}',
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        final data = res.data;
+        if (data['success'] == true && data['data'] is Map) {
+          return Map<String, dynamic>.from(data['data']);
+        }
+        return Map<String, dynamic>.from(data);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Failed to fetch avatar config: $e');
+      return null;
+    }
+  }
+
+  /// Save user's avatar configuration to the backend.
+  /// Returns true on success, false on failure (changes are kept locally).
+  Future<bool> saveAvatarConfig(Map<String, dynamic> config) async {
+    try {
+      final res = await ref.read(client).put(
+        '${Api.baseurl}${Api.avatarConfig}',
+        data: config,
+      );
+      return res.statusCode == 200 && res.data?['success'] == true;
+    } catch (e) {
+      debugPrint('Failed to save avatar config: $e');
+      return false;
+    }
+  }
+
+  /// Unlock a premium avatar item (outfit, accessory, or hair style).
+  /// Called when user purchases with cowries or earns through achievements.
+  Future<Map<String, dynamic>?> unlockAvatarItem({
+    required String itemType,
+    required int itemId,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        '${Api.baseurl}${Api.avatarUnlock}',
+        data: {'itemType': itemType, 'itemId': itemId},
+      );
+      if (res.statusCode == 200 && res.data?['success'] == true) {
+        return Map<String, dynamic>.from(res.data['data']);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Failed to unlock avatar item: $e');
+      return null;
+    }
+  }
+
   Future<LanguageResponse> getLanguages() async {
     try {
       final res = await ref.read(client).get(Api.language);

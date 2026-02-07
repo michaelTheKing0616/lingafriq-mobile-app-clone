@@ -9,6 +9,7 @@ import 'all_games_registry.dart';
 import '../widgets/game_answer_tile.dart';
 import '../widgets/progress_meter.dart';
 import 'game_result.dart';
+import '../../avatars/avatars.dart';
 
 /// Universal game screen that works for any game using GenericGame
 /// This allows all 37+ games to use the same GameKit implementation
@@ -44,11 +45,44 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 10;
+  
+  // Game avatar controller
+  GameAvatarController? _avatarController;
+  GameCategory _gameCategory = GameCategory.vocabulary;
+  final GlobalKey<GameAvatarWidgetState> _avatarKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
     _game = AllGamesRegistry.createGame(ref, widget.gameId);
+    _initializeAvatar();
+  }
+  
+  void _initializeAvatar() {
+    // Determine game category based on gameId
+    _gameCategory = _getCategoryForGame(widget.gameId);
+    _avatarController = GameAvatarController(_gameCategory);
+    _avatarController?.initialize();
+  }
+  
+  GameCategory _getCategoryForGame(String gameId) {
+    // Map game IDs to categories
+    if (gameId.contains('vocab') || gameId.contains('word') || gameId.contains('match')) {
+      return GameCategory.vocabulary;
+    } else if (gameId.contains('tone') || gameId.contains('pronunciation') || gameId.contains('sound')) {
+      return GameCategory.pronunciation;
+    } else if (gameId.contains('culture') || gameId.contains('proverb') || gameId.contains('story')) {
+      return GameCategory.cultural;
+    } else if (gameId.contains('grammar') || gameId.contains('sentence') || gameId.contains('fill')) {
+      return GameCategory.grammar;
+    }
+    return GameCategory.vocabulary; // Default
+  }
+  
+  @override
+  void dispose() {
+    _avatarController?.dispose();
+    super.dispose();
   }
 
   @override
@@ -121,6 +155,13 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
         _showResult = true;
         if (result.score.isCorrect) {
           _score++;
+          // Avatar celebrates correct answer
+          _avatarController?.reactToCorrectAnswer(isPerfect: result.score.accuracy >= 1.0);
+          _avatarKey.currentState?.celebrate();
+        } else {
+          // Avatar shows encouragement for incorrect answer
+          _avatarController?.reactToIncorrectAnswer();
+          _avatarKey.currentState?.showDisappointment();
         }
       });
 
@@ -206,6 +247,13 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
           onPressed: widget.onBack ?? () => Navigator.pop(context),
         ),
         actions: [
+          // Game Avatar in app bar
+          GameAvatarWidget(
+            key: _avatarKey,
+            category: _gameCategory,
+            size: 40,
+            isMinimized: true,
+          ),
           Padding(
             padding: EdgeInsets.all(8.sp),
             child: Column(

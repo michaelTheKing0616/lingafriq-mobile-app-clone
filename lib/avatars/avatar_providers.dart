@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'avatar_engine.dart';
 import 'emotion_system.dart';
 import 'personality_system.dart';
 import 'social/user_avatar_customizer.dart';
+import '../providers/api_provider.dart';
+import '../providers/shared_preferences_provider.dart';
 
 /// Main avatar engine provider (singleton)
 final avatarEngineProvider = Provider<AvatarEngine>((ref) {
@@ -33,41 +38,126 @@ final personalitySystemProvider = Provider<PersonalitySystem>((ref) {
   return engine.personalitySystem;
 });
 
-/// User avatar configuration state
+/// User avatar configuration state — persists locally and syncs with backend.
+/// 
+/// Data flow:
+/// 1. On init: load from SharedPreferences (instant, offline-safe)
+/// 2. Then fetch from backend in background (source of truth)
+/// 3. On change: save to SharedPreferences immediately, then sync to backend
 class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
-  UserAvatarConfigNotifier() : super(const UserAvatarConfig());
+  final Ref _ref;
+  static const _storageKey = 'user_avatar_config';
+  bool _isInitialized = false;
+  
+  UserAvatarConfigNotifier(this._ref) : super(const UserAvatarConfig()) {
+    _initialize();
+  }
+  
+  /// Load from local storage first, then sync from backend
+  Future<void> _initialize() async {
+    if (_isInitialized) return;
+    _isInitialized = true;
+    
+    // Step 1: Load from local storage (fast, offline-safe)
+    await _loadFromLocalStorage();
+    
+    // Step 2: Sync from backend in background (source of truth)
+    _syncFromBackend();
+  }
+  
+  Future<void> _loadFromLocalStorage() async {
+    try {
+      final prefs = _ref.read(sharedPreferencesProvider).prefs;
+      final jsonStr = prefs.getString(_storageKey);
+      if (jsonStr != null) {
+        final map = json.decode(jsonStr) as Map<String, dynamic>;
+        state = UserAvatarConfig.fromJson(map);
+      }
+    } catch (e) {
+      debugPrint('Avatar: Failed to load from local storage: $e');
+    }
+  }
+  
+  Future<void> _saveToLocalStorage() async {
+    try {
+      final prefs = _ref.read(sharedPreferencesProvider).prefs;
+      await prefs.setString(_storageKey, json.encode(state.toJson()));
+    } catch (e) {
+      debugPrint('Avatar: Failed to save to local storage: $e');
+    }
+  }
+  
+  Future<void> _syncFromBackend() async {
+    try {
+      final api = _ref.read(apiProvider.notifier);
+      final remoteConfig = await api.getAvatarConfig();
+      if (remoteConfig != null && remoteConfig['isDefault'] != true) {
+        state = UserAvatarConfig.fromJson(remoteConfig);
+        await _saveToLocalStorage();
+      }
+    } catch (e) {
+      debugPrint('Avatar: Failed to sync from backend: $e');
+    }
+  }
+  
+  Future<void> _syncToBackend() async {
+    try {
+      final api = _ref.read(apiProvider.notifier);
+      await api.saveAvatarConfig(state.toJson());
+    } catch (e) {
+      debugPrint('Avatar: Failed to sync to backend: $e');
+      // Silently fail — local state is preserved, will sync on next opportunity
+    }
+  }
+  
+  void _onChanged() {
+    _saveToLocalStorage();
+    _syncToBackend();
+  }
   
   void updateSkinTone(int skinTone) {
     state = state.copyWith(skinTone: skinTone);
+    _onChanged();
   }
   
   void updateHairStyle(int hairStyle) {
     state = state.copyWith(hairStyle: hairStyle);
+    _onChanged();
   }
   
   void updateOutfit(int outfit) {
     state = state.copyWith(outfit: outfit);
+    _onChanged();
   }
   
   void updateAccessory(int accessory) {
     state = state.copyWith(accessory: accessory);
+    _onChanged();
   }
   
   void updateTribeEmblem(String? emblem) {
     state = state.copyWith(tribeEmblem: emblem);
+    _onChanged();
   }
   
   void setConfig(UserAvatarConfig config) {
     state = config;
+    _onChanged();
   }
   
   void reset() {
     state = const UserAvatarConfig();
+    _onChanged();
+  }
+  
+  /// Force a refresh from the backend
+  Future<void> refreshFromBackend() async {
+    await _syncFromBackend();
   }
 }
 
 final userAvatarConfigProvider = StateNotifierProvider<UserAvatarConfigNotifier, UserAvatarConfig>((ref) {
-  return UserAvatarConfigNotifier();
+  return UserAvatarConfigNotifier(ref);
 });
 
 /// Avatar state for current screen/context

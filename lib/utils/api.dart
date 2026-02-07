@@ -118,6 +118,11 @@ class Api {
   static String tribeActivity(String id) => 'api/tribes/$id/activity';
   static String tribeDepositXP(String id) => 'api/tribes/$id/deposit-xp';
   
+  // Avatar API endpoints
+  static const String avatarBase = 'api/avatar/';
+  static const String avatarConfig = '${avatarBase}config';
+  static const String avatarUnlock = '${avatarBase}unlock';
+  
   // Currency API endpoints
   static const String currencyBalance = '${gamificationBase}currency/balance';
   static const String currencyAward = '${gamificationBase}currency/award';

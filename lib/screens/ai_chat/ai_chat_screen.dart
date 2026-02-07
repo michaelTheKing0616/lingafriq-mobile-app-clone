@@ -9,8 +9,10 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 class AiChatScreen extends ConsumerStatefulWidget {
   const AiChatScreen({Key? key}) : super(key: key);
@@ -157,11 +159,30 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   ),
                 ),
                 SizedBox(height: PolieSpacing.xs),
-                Text(
-                  'Practice African languages',
-                  style: PolieTypography.bodySmall(context).copyWith(
-                    color: PolieColors.textSecondary,
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: PolieColors.electricTeal,
+                        shape: BoxShape.circle,
+                        boxShadow: [
+                          BoxShadow(
+                            color: PolieColors.electricTeal.withOpacity(0.6),
+                            blurRadius: 8,
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: PolieSpacing.xs),
+                    Text(
+                      'Polie is online',
+                      style: PolieTypography.bodySmall(context).copyWith(
+                        color: PolieColors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -184,50 +205,103 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Glowing icon container
-            Container(
-              padding: EdgeInsets.all(PolieSpacing.xl),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    PolieColors.royalAmethyst.withOpacity(0.3),
-                    PolieColors.electricTeal.withOpacity(0.2),
-                  ],
+            PolieGlassCard(
+              hasGlow: true,
+              glowColor: PolieColors.royalAmethyst,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(PolieSpacing.xl),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: LinearGradient(
+                        colors: [
+                          PolieColors.royalAmethyst.withOpacity(0.35),
+                          PolieColors.electricTeal.withOpacity(0.25),
+                        ],
+                      ),
+                      boxShadow: PolieElevation.level2(
+                        context,
+                        glowColor: PolieColors.royalAmethyst,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      size: 64.sp,
+                      color: PolieColors.textPrimary,
+                    ),
+                  ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
+                  SizedBox(height: PolieSpacing.lg),
+                  Text(
+                    'Start Learning',
+                    style: PolieTypography.h1(context).copyWith(
+                      color: PolieColors.textPrimary,
+                    ),
+                  ).animate().fadeIn(delay: 100.ms),
+                  SizedBox(height: PolieSpacing.sm),
+                  Text(
+                    'Chat with Polie to practice African languages, translate phrases, and explore grammar with guidance.',
+                    textAlign: TextAlign.center,
+                    style: PolieTypography.body(context).copyWith(
+                      color: PolieColors.textSecondary,
+                    ),
+                  ).animate().fadeIn(delay: 200.ms),
+                  SizedBox(height: PolieSpacing.lg),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildFeaturePill(
+                        context,
+                        icon: Icons.translate_rounded,
+                        label: 'Translate',
+                      ),
+                      SizedBox(width: PolieSpacing.sm),
+                      _buildFeaturePill(
+                        context,
+                        icon: Icons.theater_comedy_rounded,
+                        label: 'Roleplay',
+                      ),
+                      SizedBox(width: PolieSpacing.sm),
+                      _buildFeaturePill(
+                        context,
+                        icon: Icons.school_rounded,
+                        label: 'Tutor',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: PolieSpacing.lg),
+                  PoliePrimaryButton(
+                    label: 'Try a greeting',
+                    icon: Icons.auto_awesome,
+                    onPressed: () {
+                      _messageController.text = 'Teach me a warm greeting in Swahili';
+                      _sendMessage();
+                    },
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: PolieSpacing.xl),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Suggested prompts',
+                style: PolieTypography.label(context).copyWith(
+                  color: PolieColors.textSecondary,
+                  fontWeight: FontWeight.w600,
                 ),
-                boxShadow: PolieElevation.level2(context, glowColor: PolieColors.royalAmethyst),
               ),
-              child: Icon(
-                Icons.chat_bubble_outline_rounded,
-                size: 64.sp,
-                color: PolieColors.textPrimary,
-              ),
-            ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
-            SizedBox(height: PolieSpacing.xl),
-            Text(
-              'Start Learning',
-              style: PolieTypography.h1(context).copyWith(
-                color: PolieColors.textPrimary,
-              ),
-            ).animate().fadeIn(delay: 100.ms),
+            ),
             SizedBox(height: PolieSpacing.sm),
-            Text(
-              'Chat with our AI tutor to practice African languages.\nAsk questions, have conversations, or get help with translations.',
-              textAlign: TextAlign.center,
-              style: PolieTypography.body(context).copyWith(
-                color: PolieColors.textSecondary,
-              ),
-            ).animate().fadeIn(delay: 200.ms),
-            SizedBox(height: PolieSpacing.xl),
             Wrap(
               spacing: PolieSpacing.sm,
               runSpacing: PolieSpacing.sm,
               alignment: WrapAlignment.center,
               children: [
-                _buildSuggestionChip('How do I say hello in Swahili?', PolieColors.electricTeal),
-                _buildSuggestionChip('Translate "thank you" to Yoruba', PolieColors.goldEmber),
-                _buildSuggestionChip('Practice Pidgin English', PolieColors.royalAmethyst),
-                _buildSuggestionChip('Explain Igbo grammar', PolieColors.electricTealLight),
+                _buildSuggestionChip(context, 'How do I say hello in Swahili?', PolieColors.electricTeal),
+                _buildSuggestionChip(context, 'Translate "thank you" to Yoruba', PolieColors.goldEmber),
+                _buildSuggestionChip(context, 'Practice Pidgin English', PolieColors.royalAmethyst),
+                _buildSuggestionChip(context, 'Explain Igbo grammar', PolieColors.electricTealLight),
               ],
             ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1),
           ],
@@ -236,7 +310,8 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildSuggestionChip(String text, Color accentColor) {
+  Widget _buildSuggestionChip(BuildContext context, String text, Color accentColor) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -249,7 +324,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
           vertical: PolieSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: PolieColors.surfaceGlass,
+          color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
             color: accentColor.withOpacity(0.4),
@@ -273,24 +348,68 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
+  Widget _buildFeaturePill(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: PolieSpacing.sm,
+        vertical: PolieSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: PolieColors.surfaceGlass,
+        borderRadius: BorderRadius.circular(PolieRadius.pill),
+        border: Border.all(
+          color: PolieColors.royalAmethyst.withOpacity(0.3),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, size: 14.sp, color: PolieColors.royalAmethyst),
+          SizedBox(width: PolieSpacing.xxs),
+          Text(
+            label,
+            style: PolieTypography.label(context).copyWith(
+              color: PolieColors.textPrimary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider) {
+    final isTyping = chatProvider.isBusy;
     return ListView.builder(
       controller: _scrollController,
       padding: EdgeInsets.symmetric(
         horizontal: PolieSpacing.md,
         vertical: PolieSpacing.sm,
       ),
-      itemCount: chatProvider.messages.length,
+      itemCount: chatProvider.messages.length + (isTyping ? 1 : 0),
       itemBuilder: (context, index) {
+        if (index >= chatProvider.messages.length) {
+          return _buildTypingIndicator(context);
+        }
+
         final message = chatProvider.messages[index];
-        return _buildMessageBubble(context, message, index);
+        final previousRole =
+            index > 0 ? chatProvider.messages[index - 1].role : null;
+        final showLabel = previousRole == null || previousRole != message.role;
+        return _buildMessageBubble(context, message, index, showLabel);
       },
     );
   }
 
-  Widget _buildMessageBubble(BuildContext context, ChatMessage message, int index) {
+  Widget _buildMessageBubble(
+    BuildContext context,
+    ChatMessage message,
+    int index,
+    bool showLabel,
+  ) {
     final isUser = message.role == 'user';
-    final accentColor = isUser ? PolieColors.goldEmber : PolieColors.royalAmethyst;
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: PolieSpacing.xs),
@@ -306,57 +425,34 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             SizedBox(width: PolieSpacing.sm),
           ],
           Flexible(
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(PolieRadius.lg),
-                topRight: Radius.circular(PolieRadius.lg),
-                bottomLeft: Radius.circular(isUser ? PolieRadius.lg : PolieRadius.sm),
-                bottomRight: Radius.circular(isUser ? PolieRadius.sm : PolieRadius.lg),
-              ),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PolieSpacing.md,
-                    vertical: PolieSpacing.sm,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isUser
-                        ? PolieColors.goldEmber.withOpacity(0.2)
-                        : PolieColors.surfaceGlass,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(PolieRadius.lg),
-                      topRight: Radius.circular(PolieRadius.lg),
-                      bottomLeft: Radius.circular(isUser ? PolieRadius.lg : PolieRadius.sm),
-                      bottomRight: Radius.circular(isUser ? PolieRadius.sm : PolieRadius.lg),
-                    ),
-                    border: Border.all(
-                      color: accentColor.withOpacity(0.3),
-                      width: 1,
+            child: Column(
+              crossAxisAlignment: isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                if (showLabel) ...[
+                  Text(
+                    isUser ? 'You' : 'Polie',
+                    style: PolieTypography.label(context).copyWith(
+                      color: PolieColors.textSecondary,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        message.content,
-                        style: PolieTypography.body(context).copyWith(
-                          color: PolieColors.textPrimary,
-                          height: 1.5,
-                        ),
-                      ),
-                      SizedBox(height: PolieSpacing.xs),
-                      Text(
-                        _formatTime(message.timestamp),
-                        style: PolieTypography.bodySmall(context).copyWith(
-                          color: PolieColors.textSecondary,
-                          fontSize: 11.sp,
-                        ),
-                      ),
-                    ],
+                  SizedBox(height: PolieSpacing.xxs),
+                ],
+                PolieChatBubble(
+                  text: message.content,
+                  role: isUser
+                      ? PolieChatBubbleRole.user
+                      : PolieChatBubbleRole.assistant,
+                ),
+                SizedBox(height: PolieSpacing.xxs),
+                Text(
+                  _formatTime(message.timestamp),
+                  style: PolieTypography.bodySmall(context).copyWith(
+                    color: PolieColors.textSecondary.withOpacity(0.8),
+                    fontSize: 11.sp,
                   ),
                 ),
-              ),
+              ],
             ),
           ),
           if (isUser) ...[
@@ -369,6 +465,60 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         ],
       ),
     ).animate().fadeIn(duration: 200.ms).slideX(begin: isUser ? 0.1 : -0.1);
+  }
+
+  Widget _buildTypingIndicator(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: PolieSpacing.xs),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildAvatar(
+            icon: Icons.smart_toy_rounded,
+            gradient: [PolieColors.royalAmethyst, PolieColors.electricTeal],
+          ),
+          SizedBox(width: PolieSpacing.sm),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: PolieSpacing.md,
+              vertical: PolieSpacing.sm,
+            ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? PolieColors.surfaceGlassDark
+                  : PolieColors.surfaceGlass,
+              borderRadius: BorderRadius.circular(PolieRadius.md),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.08),
+              ),
+            ),
+            child: Row(
+              children: [
+                _buildDot(delay: 0.ms),
+                SizedBox(width: PolieSpacing.xs),
+                _buildDot(delay: 150.ms),
+                SizedBox(width: PolieSpacing.xs),
+                _buildDot(delay: 300.ms),
+              ],
+            ),
+          ).animate().fadeIn(duration: 150.ms),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDot({required Duration delay}) {
+    return Container(
+      width: 6,
+      height: 6,
+      decoration: BoxDecoration(
+        color: PolieColors.electricTeal,
+        shape: BoxShape.circle,
+      ),
+    )
+        .animate(onPlay: (controller) => controller.repeat())
+        .fadeIn(delay: delay, duration: 300.ms)
+        .fadeOut(delay: delay + 300.ms, duration: 300.ms);
   }
 
   Widget _buildAvatar({required IconData icon, required List<Color> gradient}) {
@@ -392,6 +542,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
 
   Widget _buildMessageInput(BuildContext context, GroqChatProvider chatProvider) {
     final isLoading = chatProvider.isBusy;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return ClipRRect(
       child: BackdropFilter(
@@ -404,7 +555,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             bottom: MediaQuery.of(context).padding.bottom + PolieSpacing.sm,
           ),
           decoration: BoxDecoration(
-            color: PolieColors.surfaceGlass,
+            color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
             border: Border(
               top: BorderSide(
                 color: Colors.white.withOpacity(0.1),
@@ -415,37 +566,14 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
           child: Row(
             children: [
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: PolieColors.surfaceGlassDark,
-                    borderRadius: BorderRadius.circular(PolieRadius.pill),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.1),
-                      width: 1,
-                    ),
-                  ),
-                  child: TextField(
-                    controller: _messageController,
-                    focusNode: _focusNode,
-                    enabled: !isLoading,
-                    maxLines: null,
-                    textInputAction: TextInputAction.send,
-                    onSubmitted: (_) => _sendMessage(),
-                    style: PolieTypography.body(context).copyWith(
-                      color: PolieColors.textPrimary,
-                    ),
-                    decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      hintStyle: PolieTypography.body(context).copyWith(
-                        color: PolieColors.textSecondary,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: PolieSpacing.lg,
-                        vertical: PolieSpacing.sm,
-                      ),
-                    ),
-                  ),
+                child: PolieInputField(
+                  controller: _messageController,
+                  focusNode: _focusNode,
+                  enabled: !isLoading,
+                  hintText: 'Type your message...',
+                  maxLines: 4,
+                  onSubmitted: (_) => _sendMessage(),
+                  prefixIcon: Icons.auto_awesome,
                 ),
               ),
               SizedBox(width: PolieSpacing.sm),

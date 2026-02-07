@@ -13,6 +13,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 // Re-export for consumers that imported from tabs_view_material3
 export 'package:lingafriq/providers/tab_scaffold_provider.dart'
@@ -45,14 +46,17 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
       key: scaffoldKey,
       drawer: const AppDrawerMaterial3(),
       body: OfflineIndicator(
-        child: IndexedStack(
-          index: index,
-          children: const [
-            DashboardScreenMaterial3(),
-            CoursesTabMaterial3(),
-            StandingsTabMaterial3(),
-            ProfileTabMaterial3(),
-          ],
+        child: GamificationAvatarOverlay(
+          // Gamification overlay shows Polie avatar that reacts to XP, levels, streaks
+          child: IndexedStack(
+            index: index,
+            children: const [
+              DashboardScreenMaterial3(),
+              CoursesTabMaterial3(),
+              StandingsTabMaterial3(),
+              ProfileTabMaterial3(),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: _Material3BottomNavigationBar(
