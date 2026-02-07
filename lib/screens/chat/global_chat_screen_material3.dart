@@ -14,6 +14,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
 class GlobalChatScreenMaterial3 extends HookConsumerWidget {
@@ -201,23 +202,17 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                           final channel = channels.value[index];
                           final isSelected = selectedChannel.value == channel;
 
-                          return ListTile(
-                            selected: isSelected,
+                          return PanAfricanListTile(
+                            title: '#$channel',
                             leading: Icon(
                               Icons.tag,
                               color: isSelected
                                   ? PanAfricanColors.primary
                                   : PanAfricanColors.neutralMedium,
                             ),
-                            title: Text(
-                              '#$channel',
-                              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
-                                color: isSelected
-                                    ? PanAfricanColors.primary
-                                    : null,
-                              ),
-                            ),
+                            trailing: isSelected
+                                ? Icon(Icons.check_circle, color: PanAfricanColors.primary)
+                                : null,
                             onTap: () {
                               selectedChannel.value = channel;
                               HapticFeedback.mediumImpact();
@@ -237,27 +232,16 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                   // Messages List
                   Expanded(
                     child: messages.value.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.chat_bubble_outline,
-                                  size: 64.sp,
-                                  color: PanAfricanColors.neutralMedium,
-                                ),
-                                SizedBox(height: PanAfricanSpacing.md),
-                                Text(
-                                  'No messages yet',
-                                  style: PanAfricanTypography.bodyLarge(context),
-                                ),
-                                SizedBox(height: PanAfricanSpacing.xs),
-                                Text(
-                                  'Be the first to start the conversation!',
-                                  style: PanAfricanTypography.bodySmall(context),
-                                ),
-                              ],
-                            ),
+                        ? PanAfricanEmptyState(
+                            icon: Icons.chat_bubble_outline,
+                            title: 'No messages yet',
+                            description: 'Be the first to start the conversation!',
+                            actionLabel: 'Say hello',
+                            onAction: () {
+                              messageController.text =
+                                  'Hello everyone! Excited to learn together.';
+                              sendMessage();
+                            },
                           )
                         : OptimizedListView.builder(
                             controller: scrollController,
@@ -287,64 +271,26 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: PanAfricanTextField(
                             controller: messageController,
-                            decoration: InputDecoration(
-                              hintText: 'Type a message...',
-                              border: OutlineInputBorder(
-                                borderRadius: PanAfricanRadius.lgBR,
-                                borderSide: BorderSide(
-                                  color: isDark
-                                      ? PanAfricanColors.borderDark
-                                      : PanAfricanColors.borderLight,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: PanAfricanRadius.lgBR,
-                                borderSide: BorderSide(
-                                  color: isDark
-                                      ? PanAfricanColors.borderDark
-                                      : PanAfricanColors.borderLight,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: PanAfricanRadius.lgBR,
-                                borderSide: BorderSide(
-                                  color: PanAfricanColors.primary,
-                                  width: 2,
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: isDark
-                                  ? PanAfricanColors.surfaceDark
-                                  : PanAfricanColors.surfaceLight,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.md,
-                                vertical: PanAfricanSpacing.sm,
-                              ),
-                            ),
-                            onSubmitted: (_) {
-                              HapticFeedback.lightImpact();
-                              sendMessage();
-                            },
+                            hint: 'Type a message...',
+                            maxLines: 3,
+                            onChanged: (_) {},
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        IconButton(
-                          icon: isLoading.value
-                              ? SizedBox(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : Icon(Icons.send),
+                        PanAfricanButton(
+                          label: 'Send',
+                          icon: Icons.send_rounded,
+                          isLoading: isLoading.value,
                           onPressed: isLoading.value
                               ? null
                               : () {
                                   HapticFeedback.lightImpact();
                                   sendMessage();
                                 },
-                          color: PanAfricanColors.primary,
+                          backgroundColor: PanAfricanColors.primary,
+                          foregroundColor: Colors.white,
                         ),
                       ],
                     ),
@@ -381,22 +327,26 @@ class _GlobalMessageBubble extends StatelessWidget {
     final senderName = rawName is String ? rawName : (rawName?.toString() ?? 'Unknown');
     final isToxic = message['flagged_toxic'] ?? false;
     final timestamp = message['createdAt'] ?? message['timestamp'];
+    final avatarUrl = sender?['avatar_url'] ?? sender?['avatar'] ?? message['avatar'];
+    final globalId = sender?['global_id'] ?? message['global_id'];
+    final messageText = message['message'] ?? message['body'] ?? message['text'] ?? '';
+    final bubbleColor = isToxic
+        ? PanAfricanColors.error.withOpacity(0.08)
+        : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight);
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 20.w,
-            backgroundColor: isToxic
-                ? PanAfricanColors.error
-                : PanAfricanColors.primary,
-            child: Text(
-              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
-              style: PanAfricanTypography.labelMedium(context)
-                  .copyWith(color: Colors.white),
-            ),
+          PanAfricanAvatar(
+            imageUrl: avatarUrl is String ? avatarUrl : null,
+            initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
+            size: 40.w,
+            backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+            borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+            showBadge: isToxic,
+            badgeColor: PanAfricanColors.error,
           ),
           SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
@@ -405,56 +355,51 @@ class _GlobalMessageBubble extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      senderName,
-                      style: PanAfricanTypography.labelMedium(context)
-                          .copyWith(color: PanAfricanColors.primary),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text(
+                            senderName,
+                            style: PanAfricanTypography.labelMedium(context)
+                                .copyWith(color: PanAfricanColors.primary),
+                          ),
+                          if (globalId != null) ...[
+                            SizedBox(width: PanAfricanSpacing.xxs),
+                            Text(
+                              '@${globalId.toString()}',
+                              style: PanAfricanTypography.labelSmall(context).copyWith(
+                                color: PanAfricanColors.neutralMedium,
+                              ),
+                            ),
+                          ],
+                          if (isToxic) ...[
+                            SizedBox(width: PanAfricanSpacing.xs),
+                            PanAfricanBadge(
+                              label: 'Flagged',
+                              color: PanAfricanColors.error,
+                              icon: Icons.report_problem_rounded,
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
-                    if (timestamp != null) ...[
-                      SizedBox(width: PanAfricanSpacing.xs),
+                    if (timestamp != null)
                       Text(
                         _formatTimestamp(timestamp.toString()),
                         style: PanAfricanTypography.labelSmall(context)
                             .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
-                    ],
-                    if (isToxic) ...[
-                      SizedBox(width: PanAfricanSpacing.xs),
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: PanAfricanSpacing.xs,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: PanAfricanColors.error.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          'FLAGGED',
-                          style: PanAfricanTypography.labelSmall(context)
-                              .copyWith(
-                            color: PanAfricanColors.error,
-                            fontSize: 10.sp,
-                          ),
-                        ),
-                      ),
-                    ],
                   ],
                 ),
                 SizedBox(height: PanAfricanSpacing.xxs),
-                Container(
+                PanAfricanCard(
                   padding: EdgeInsets.symmetric(
                     horizontal: PanAfricanSpacing.md,
                     vertical: PanAfricanSpacing.sm,
                   ),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? PanAfricanColors.cardDark
-                        : PanAfricanColors.cardLight,
-                    borderRadius: PanAfricanRadius.lgBR,
-                  ),
+                  backgroundColor: bubbleColor,
                   child: Text(
-                    message['message'] ?? message['body'] ?? message['text'] ?? '',
+                    messageText,
                     style: PanAfricanTypography.bodyMedium(context),
                   ),
                 ),

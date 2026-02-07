@@ -10,6 +10,7 @@ import 'package:lingafriq/screens/tabs_view/home/home_tab.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/screens/tabs_view/standings/standings_tab.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 
 class TabIndexNotifier extends Notifier<int> {
@@ -77,9 +78,9 @@ class _BottomNavigationBar extends HookConsumerWidget {
       child: AnimatedBottomNavigationBar(
         gapLocation: GapLocation.none,
         backgroundColor: context.primaryColor,
-        activeColor: context.isDarkMode ? Colors.black : AppColors.primaryOrange,
+        activeColor: context.isDarkMode ? Colors.black : PanAfricanColors.tertiary,
         inactiveColor: Colors.white54,
-        splashColor: context.isDarkMode ? AppColors.primaryGreen : AppColors.primaryOrange,
+        splashColor: context.isDarkMode ? PanAfricanColors.primary : PanAfricanColors.tertiary,
         splashRadius: 30.sp,
         icons: const [
           Icons.home_rounded,

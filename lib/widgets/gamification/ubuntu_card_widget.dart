@@ -3,8 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../providers/gamification_provider.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/design_system.dart';
+import '../../utils/pan_african_design_system.dart';
 
 /// Ubuntu Streak card
 /// -------------------
@@ -21,33 +20,29 @@ class UbuntuCardWidget extends ConsumerWidget {
     // For now we surface the flag; the backend keeps aggregate donation stats
     // in the gamification document (ubuntu_streak_active plus donation metrics).
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-      ),
-      child: Container(
-        padding: EdgeInsets.all(4.w),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.accentGreen.withOpacity(0.25),
-              AppColors.accentGold.withOpacity(0.15),
-            ],
-          ),
+    return Container(
+      padding: EdgeInsets.all(PanAfricanSpacing.xs),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            PanAfricanColors.primary.withOpacity(0.25),
+            PanAfricanColors.secondary.withOpacity(0.15),
+          ],
         ),
-        child: Column(
+        boxShadow: PanAfricanShadows.sm,
+      ),
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.all(6.w),
+                  padding: EdgeInsets.all(PanAfricanSpacing.xs),
                   decoration: BoxDecoration(
-                    color: AppColors.accentGreen.withOpacity(0.15),
+                    color: PanAfricanColors.primary.withOpacity(0.15),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
@@ -56,19 +51,18 @@ class UbuntuCardWidget extends ConsumerWidget {
                     size: 18,
                   ),
                 ),
-                SizedBox(width: 3.w),
+                SizedBox(width: PanAfricanSpacing.xxs),
                 Text(
                   'Ubuntu Streak',
-                  style: TextStyle(
-                    fontSize: 14.sp,
+                  style: PanAfricanTypography.bodyMedium(context).copyWith(
                     fontWeight: FontWeight.w700,
-                    color: AppColors.accentGreen,
+                    color: PanAfricanColors.primary,
                   ),
                 ),
                 const Spacer(),
                 Switch.adaptive(
                   value: isUbuntuOn,
-                  activeColor: AppColors.accentGreen,
+                  activeColor: PanAfricanColors.primary,
                   onChanged: (value) async {
                     final notifier = ref.read(gamificationProvider.notifier);
                     if (!value) {
@@ -80,21 +74,19 @@ class UbuntuCardWidget extends ConsumerWidget {
                 ),
               ],
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.xxxs),
             Text(
               isUbuntuOn
                   ? 'If you ever miss a day, your hard‑earned streak will be turned into lessons and XP for other learners instead of disappearing.'
                   : 'Turn this on to let your streak protect others: when you miss a day, your progress becomes a gift of lessons for the community.',
-              style: TextStyle(
-                fontSize: 12.sp,
+              style: PanAfricanTypography.bodySmall(context).copyWith(
                 color: Colors.white.withOpacity(0.9),
               ),
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.xxxs),
             _buildDonationChips(context, gamification),
           ],
         ),
-      ),
     );
   }
 
@@ -139,11 +131,14 @@ class _StatPill extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
-        margin: EdgeInsets.only(top: 4.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.xs,
+          vertical: PanAfricanSpacing.xxs,
+        ),
+        margin: EdgeInsets.only(top: PanAfricanSpacing.xs),
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
         ),
         child: Row(
           children: [
@@ -152,23 +147,21 @@ class _StatPill extends StatelessWidget {
               size: 16.sp,
               color: Colors.white,
             ),
-            SizedBox(width: 2.w),
+            SizedBox(width: PanAfricanSpacing.xxxs),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     label,
-                    style: TextStyle(
-                      fontSize: 9.sp,
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
                       color: Colors.white70,
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
                     value,
-                    style: TextStyle(
-                      fontSize: 13.sp,
+                    style: PanAfricanTypography.labelLarge(context).copyWith(
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
                     ),

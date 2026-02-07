@@ -31,6 +31,10 @@ class PolieModeSelectionScreen extends ConsumerWidget {
 
   Widget _buildContent(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textPrimary =
+        isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
 
     final modes = [
       _ModeData(
@@ -100,7 +104,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
+                      icon: Icon(Icons.arrow_back_rounded, color: textPrimary),
                       onPressed: () {
                         HapticFeedback.lightImpact();
                         if (onBack != null) {
@@ -113,7 +117,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         'Polie Tutor',
-                        style: PolieTypography.h2(context).copyWith(color: PolieColors.textPrimary),
+                        style: PolieTypography.h2(context).copyWith(color: textPrimary),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -121,9 +125,50 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-              Text(
-                'Choose your learning mode',
-                style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
+                child: PolieGlassCard(
+                  hasGlow: true,
+                  glowColor: PolieColors.royalAmethyst,
+                  padding: EdgeInsets.all(PolieSpacing.lg),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
+                          ),
+                          shape: BoxShape.circle,
+                          boxShadow: PolieElevation.level2(context, glowColor: PolieColors.royalAmethyst),
+                        ),
+                        child: Icon(Icons.auto_awesome, color: Colors.white, size: 28),
+                      ),
+                      SizedBox(width: PolieSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Choose your learning mode',
+                              style: PolieTypography.h2(context).copyWith(
+                                color: textPrimary,
+                              ),
+                            ),
+                            SizedBox(height: PolieSpacing.xs),
+                            Text(
+                              'Translate, practice, roleplay, or review with Polie.',
+                              style: PolieTypography.bodySmall(context).copyWith(
+                                color: textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               SizedBox(height: PolieSpacing.lg),
               Expanded(
@@ -163,12 +208,16 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                                     children: [
                                       Text(
                                         data.title,
-                                        style: PolieTypography.h2(context),
+                                        style: PolieTypography.h2(context).copyWith(
+                                          color: textPrimary,
+                                        ),
                                       ),
                                       SizedBox(height: PolieSpacing.xs),
                                       Text(
                                         data.description,
-                                        style: PolieTypography.bodySmall(context),
+                                        style: PolieTypography.bodySmall(context).copyWith(
+                                          color: textSecondary,
+                                        ),
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -178,7 +227,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                                 Icon(
                                   Icons.arrow_forward_ios_rounded,
                                   size: 16,
-                                  color: PolieColors.textSecondary,
+                                  color: textSecondary,
                                 ),
                               ],
                             ),

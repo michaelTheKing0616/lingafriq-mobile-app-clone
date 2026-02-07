@@ -7,7 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/config/app_config.dart';
@@ -16,6 +16,7 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 /// Tribe Chat Screen with Material 3 Design
 class TribeChatScreen extends HookConsumerWidget {
@@ -131,20 +132,29 @@ class TribeChatScreen extends HookConsumerWidget {
       message: 'Sending message...',
       child: Scaffold(
         appBar: AppBar(
-        title: Text(tribeName),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.people),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              showMembers.value = !showMembers.value;
-            },
-            tooltip: 'Tribe Members',
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(tribeName),
+              Text(
+                '${members.value.length} members',
+                style: PanAfricanTypography.bodySmall(context),
+              ),
+            ],
           ),
-        ],
-      ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.people),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                showMembers.value = !showMembers.value;
+              },
+              tooltip: 'Tribe Members',
+            ),
+          ],
+        ),
       body: ResponsiveSafeArea(
         child: loadError.value != null && messages.value.isEmpty
             ? LingAfriqRetryBlock(
@@ -173,10 +183,47 @@ class TribeChatScreen extends HookConsumerWidget {
                   // Messages List
                   Expanded(
                     child: messages.value.isEmpty
-                        ? LingAfriqEmptyState(
-                            icon: Icons.chat_bubble_outline,
-                            title: 'No messages yet',
-                            subtitle: 'Say hello and start the conversation.',
+                        ? Center(
+                            child: PanAfricanCard(
+                              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                              hasGlow: true,
+                              glowColor: PanAfricanColors.secondary,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.forum_outlined,
+                                    size: 56.sp,
+                                    color: PanAfricanColors.secondary,
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  Text(
+                                    'No messages yet',
+                                    style: PanAfricanTypography.titleMedium(context),
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.xs),
+                                  Text(
+                                    'Say hello and start the conversation.',
+                                    style: PanAfricanTypography.bodySmall(context).copyWith(
+                                      color: PanAfricanColors.textSecondary,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: PanAfricanSpacing.md),
+                                  PanAfricanButton(
+                                    label: 'Introduce yourself',
+                                    icon: Icons.waving_hand_rounded,
+                                    backgroundColor: PanAfricanColors.secondary,
+                                    foregroundColor: PanAfricanColors.neutralDarkest,
+                                    onPressed: () {
+                                      messageController.text =
+                                          'Hello tribe! Excited to learn together.';
+                                      sendMessage();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           )
                         : OptimizedListView.builder(
                             controller: scrollController,
@@ -206,64 +253,26 @@ class TribeChatScreen extends HookConsumerWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: PanAfricanTextField(
                             controller: messageController,
-                            decoration: InputDecoration(
-                              hintText: 'Type a message...',
-                              border: OutlineInputBorder(
-                                borderRadius: PanAfricanRadius.lgBR,
-                                borderSide: BorderSide(
-                                  color: isDark
-                                      ? PanAfricanColors.borderDark
-                                      : PanAfricanColors.borderLight,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: PanAfricanRadius.lgBR,
-                                borderSide: BorderSide(
-                                  color: isDark
-                                      ? PanAfricanColors.borderDark
-                                      : PanAfricanColors.borderLight,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: PanAfricanRadius.lgBR,
-                                borderSide: BorderSide(
-                                  color: PanAfricanColors.primary,
-                                  width: 2,
-                                ),
-                              ),
-                              filled: true,
-                              fillColor: isDark
-                                  ? PanAfricanColors.surfaceDark
-                                  : PanAfricanColors.surfaceLight,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.md,
-                                vertical: PanAfricanSpacing.sm,
-                              ),
-                            ),
-                            onSubmitted: (_) {
-                              HapticFeedback.lightImpact();
-                              sendMessage();
-                            },
+                            hint: 'Type a message...',
+                            maxLines: 3,
+                            onChanged: (_) {},
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        IconButton(
-                          icon: isLoading.value
-                              ? SizedBox(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  child: CircularProgressIndicator(strokeWidth: 2),
-                                )
-                              : Icon(Icons.send),
+                        PanAfricanButton(
+                          label: 'Send',
+                          icon: Icons.send_rounded,
+                          isLoading: isLoading.value,
                           onPressed: isLoading.value
                               ? null
                               : () {
                                   HapticFeedback.lightImpact();
                                   sendMessage();
                                 },
-                          color: PanAfricanColors.primary,
+                          backgroundColor: PanAfricanColors.secondary,
+                          foregroundColor: PanAfricanColors.neutralDarkest,
                         ),
                       ],
                     ),
@@ -304,19 +313,15 @@ class TribeChatScreen extends HookConsumerWidget {
                       itemCount: members.value.length,
                       itemBuilder: (context, index) {
                         final member = members.value[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: PanAfricanColors.primary,
-                            child: Text(
-                              (member['username'] ?? member['first_name'] ?? 'U')[0]
-                                  .toUpperCase(),
-                              style: PanAfricanTypography.labelSmall(context)
-                                  .copyWith(color: Colors.white),
-                            ),
-                          ),
-                          title: Text(
-                            member['username'] ?? member['first_name'] ?? 'Unknown',
-                            style: PanAfricanTypography.bodyMedium(context),
+                        final name =
+                            member['username'] ?? member['first_name'] ?? 'Unknown';
+                        final globalId = member['global_id'] ?? member['globalId'];
+                        return PanAfricanListTile(
+                          title: name,
+                          subtitle: globalId != null ? '@${globalId.toString()}' : null,
+                          leading: LingAfriqAvatar.fromInitials(
+                            username: name.toString().isNotEmpty ? name.toString() : 'U',
+                            size: 36.w,
                           ),
                         );
                       },
@@ -348,20 +353,21 @@ class _TribeMessageBubble extends StatelessWidget {
     final raw = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
     final senderName = raw != null && raw.toString().trim().isNotEmpty ? raw.toString() : 'Unknown';
     final timestamp = message['createdAt'] ?? message['timestamp'];
+    final avatarUrl = sender?['avatar_url'] ?? sender?['avatar'] ?? message['avatar'];
+    final globalId = sender?['global_id'] ?? message['global_id'];
+    final messageText = message['message'] ?? message['body'] ?? message['text'] ?? '';
+    final bubbleColor = isDark
+        ? PanAfricanColors.surfaceContainerDark
+        : PanAfricanColors.surfaceContainerLight;
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 20.w,
-            backgroundColor: PanAfricanColors.secondary,
-            child: Text(
-              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
-              style: PanAfricanTypography.labelMedium(context)
-                  .copyWith(color: Colors.white),
-            ),
+          LingAfriqAvatar.fromInitials(
+            username: senderName.isNotEmpty ? senderName : '?',
+            size: 40.w,
           ),
           SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
@@ -370,35 +376,42 @@ class _TribeMessageBubble extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      senderName,
-                      style: PanAfricanTypography.labelMedium(context)
-                          .copyWith(color: PanAfricanColors.secondary),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text(
+                            senderName,
+                            style: PanAfricanTypography.labelMedium(context)
+                                .copyWith(color: PanAfricanColors.secondary),
+                          ),
+                          if (globalId != null) ...[
+                            SizedBox(width: PanAfricanSpacing.xxs),
+                            Text(
+                              '@${globalId.toString()}',
+                              style: PanAfricanTypography.labelSmall(context)
+                                  .copyWith(color: PanAfricanColors.neutralMedium),
+                            ),
+                          ],
+                        ],
+                      ),
                     ),
-                    if (timestamp != null) ...[
-                      SizedBox(width: PanAfricanSpacing.xs),
+                    if (timestamp != null)
                       Text(
                         _formatTimestamp(timestamp.toString()),
                         style: PanAfricanTypography.labelSmall(context)
                             .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
-                    ],
                   ],
                 ),
                 SizedBox(height: PanAfricanSpacing.xxs),
-                Container(
+                PanAfricanCard(
                   padding: EdgeInsets.symmetric(
                     horizontal: PanAfricanSpacing.md,
                     vertical: PanAfricanSpacing.sm,
                   ),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? PanAfricanColors.cardDark
-                        : PanAfricanColors.cardLight,
-                    borderRadius: PanAfricanRadius.lgBR,
-                  ),
+                  backgroundColor: bubbleColor,
                   child: Text(
-                    message['message'] ?? '',
+                    messageText,
                     style: PanAfricanTypography.bodyMedium(context),
                   ),
                 ),

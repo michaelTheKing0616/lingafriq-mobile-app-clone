@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -124,7 +124,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
             FilledButton.icon(
               onPressed: _loadCurriculum,
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
+                backgroundColor: PanAfricanColors.primary,
                 foregroundColor: Colors.white,
                 padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),
               ),
@@ -185,7 +185,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                     onSelected: (selected) {
                       ref.read(curriculumProvider.notifier).setSelectedLanguage(lang);
                     },
-                    selectedColor: AppColors.primaryGreen,
+                    selectedColor: PanAfricanColors.primary,
                     checkmarkColor: Colors.white,
                     labelStyle: TextStyle(
                       color: isSelected ? Colors.white : (isDark ? Colors.white : Colors.black87),
@@ -254,7 +254,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         leading: Container(
           padding: EdgeInsets.all(12.sp),
           decoration: BoxDecoration(
-            color: AppColors.primaryGreen.withOpacity(0.2),
+            color: PanAfricanColors.primary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -262,7 +262,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryGreen,
+              color: PanAfricanColors.primary,
             ),
           ),
         ),
@@ -284,7 +284,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                 value: level.calculatedProgress,
                 minHeight: 8,
                 backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
               ),
             ),
             SizedBox(height: 4.sp),
@@ -336,7 +336,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               ),
               SizedBox(width: 8.sp),
               if (unit.isCompleted)
-                Icon(Icons.check_circle, color: AppColors.primaryGreen, size: 20.sp),
+                Icon(Icons.check_circle, color: PanAfricanColors.primary, size: 20.sp),
             ],
           ),
           SizedBox(height: 4.sp),
@@ -354,7 +354,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
               value: unit.calculatedProgress,
               minHeight: 6,
               backgroundColor: isDark ? const Color(0xFF3A5A45) : Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
             ),
           ),
           SizedBox(height: 12.sp),
@@ -380,13 +380,13 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         height: 40.sp,
         decoration: BoxDecoration(
           color: lesson.isCompleted
-              ? AppColors.primaryGreen.withOpacity(0.2)
+              ? PanAfricanColors.primary.withOpacity(0.2)
               : (isDark ? const Color(0xFF3A5A45) : Colors.grey[200]),
           shape: BoxShape.circle,
         ),
         child: Center(
           child: lesson.isCompleted
-              ? Icon(Icons.check, color: AppColors.primaryGreen, size: 20.sp)
+              ? Icon(Icons.check, color: PanAfricanColors.primary, size: 20.sp)
               : Text(
                   '${lesson.vocab.length}',
                   style: TextStyle(
@@ -416,7 +416,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         icon: Icon(
           lesson.isCompleted ? Icons.undo : Icons.play_circle_outline,
           color: lesson.isCompleted
-              ? AppColors.primaryGreen
+              ? PanAfricanColors.primary
               : (isDark ? Colors.grey[400] : Colors.grey[600]),
         ),
         onPressed: () {

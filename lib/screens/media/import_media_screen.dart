@@ -314,10 +314,10 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             Container(
               padding: EdgeInsets.all(12.sp),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: PanAfricanColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: AppColors.primaryGreen, size: 24.sp),
+              child: Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
             ),
             SizedBox(width: 16.sp),
             Expanded(
@@ -525,7 +525,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Uploaded. Transcribing and translating…'),
-            backgroundColor: AppColors.primaryGreen,
+            backgroundColor: PanAfricanColors.primary,
           ),
         );
       }
@@ -570,7 +570,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
           });
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Transcription and translation ready.'), backgroundColor: AppColors.primaryGreen),
+              const SnackBar(content: Text('Transcription and translation ready.'), backgroundColor: PanAfricanColors.primary),
             );
           }
           return;
@@ -631,7 +631,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
               _importFromUrl(_urlController.text);
             },
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
+              backgroundColor: PanAfricanColors.primary,
               foregroundColor: Colors.white,
             ),
             child: const Text('Import'),
@@ -681,7 +681,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
               }
             },
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
+              backgroundColor: PanAfricanColors.primary,
               foregroundColor: Colors.white,
             ),
             child: const Text('Import'),
@@ -773,7 +773,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Lesson created successfully!'),
-              backgroundColor: AppColors.primaryGreen,
+              backgroundColor: PanAfricanColors.primary,
               action: SnackBarAction(
                 label: 'View',
                 onPressed: () {},
@@ -832,7 +832,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('Lesson created successfully!'),
-            backgroundColor: AppColors.primaryGreen,
+            backgroundColor: PanAfricanColors.primary,
             action: SnackBarAction(
               label: 'View',
               onPressed: () {

@@ -637,6 +637,10 @@ class PanAfricanIcons {
   static const IconData standingsSelected = Icons.bar_chart_rounded;
   static const IconData profile = Icons.person_outline;
   static const IconData profileSelected = Icons.person_rounded;
+  static const IconData ai = Icons.auto_awesome_outlined;
+  static const IconData aiSelected = Icons.auto_awesome_rounded;
+  static const IconData social = Icons.people_outline;
+  static const IconData socialSelected = Icons.people_rounded;
   static const IconData menu = Icons.menu_rounded;
   static const IconData back = Icons.arrow_back_rounded;
   static const IconData close = Icons.close_rounded;

@@ -6,9 +6,10 @@ import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer_material3.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/courses/courses_tab_material3.dart';
-import 'package:lingafriq/screens/tabs_view/standings/standings_tab_material3.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_tab_material3.dart';
 import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
+import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
+import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
@@ -53,7 +54,8 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
             children: const [
               DashboardScreenMaterial3(),
               CoursesTabMaterial3(),
-              StandingsTabMaterial3(),
+              PolieModeSelectionScreen(),
+              LanguageVillagesScreen(),
               ProfileTabMaterial3(),
             ],
           ),
@@ -117,9 +119,14 @@ class _Material3BottomNavigationBar extends StatelessWidget {
             label: 'Courses',
           ),
           NavigationDestination(
-            icon: Icon(PanAfricanIcons.standings),
-            selectedIcon: Icon(PanAfricanIcons.standingsSelected),
-            label: 'Standings',
+            icon: Icon(PanAfricanIcons.ai),
+            selectedIcon: Icon(PanAfricanIcons.aiSelected),
+            label: 'AI',
+          ),
+          NavigationDestination(
+            icon: Icon(PanAfricanIcons.social),
+            selectedIcon: Icon(PanAfricanIcons.socialSelected),
+            label: 'Social',
           ),
           NavigationDestination(
             icon: Icon(PanAfricanIcons.profile),

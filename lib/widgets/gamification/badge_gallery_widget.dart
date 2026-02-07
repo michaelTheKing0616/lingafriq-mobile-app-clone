@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
 import '../../models/badge_model.dart' show Badge;
-import '../../utils/app_colors.dart';
-import '../../utils/design_system.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../widgets/pan_african_components.dart';
 import '../../utils/utils.dart';
 
 /// Material 3 compliant badge gallery widget
@@ -35,13 +35,12 @@ class BadgeGalleryWidget extends ConsumerWidget {
     if (badgesToShow.isEmpty) {
       return Center(
         child: Padding(
-          padding: EdgeInsets.all(8.w),
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
           child: Text(
             showLocked 
                 ? 'No badges available'
                 : 'No badges unlocked yet. Keep learning!',
-            style: TextStyle(
-              fontSize: 14.sp,
+            style: PanAfricanTypography.bodySmall(context).copyWith(
               color: context.adaptive54,
             ),
             textAlign: TextAlign.center,
@@ -55,8 +54,8 @@ class BadgeGalleryWidget extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 3.w,
-        mainAxisSpacing: 3.h,
+        crossAxisSpacing: PanAfricanSpacing.xs,
+        mainAxisSpacing: PanAfricanSpacing.xs,
         childAspectRatio: 0.9,
       ),
       itemCount: badgesToShow.length,
@@ -95,26 +94,26 @@ class _BadgeCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: isUnlocked
-              ? (isDark ? AppColors.surfaceDark : AppColors.surfaceLight)
+              ? (isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight)
               : (isDark ? Colors.grey[900] : Colors.grey[200]),
-          borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
           border: Border.all(
             color: isUnlocked
-                ? AppColors.accentGold
+                ? PanAfricanColors.secondary
                 : (isDark ? Colors.grey[700]! : Colors.grey[300]!),
             width: isUnlocked ? 2 : 1,
           ),
-          boxShadow: isUnlocked ? DesignSystem.shadowMedium : null,
+          boxShadow: isUnlocked ? PanAfricanShadows.md : null,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Badge Icon
             Container(
-              padding: EdgeInsets.all(3.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.xs),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? AppColors.accentGold.withOpacity(0.2)
+                    ? PanAfricanColors.secondary.withOpacity(0.2)
                     : Colors.transparent,
                 shape: BoxShape.circle,
               ),
@@ -122,17 +121,15 @@ class _BadgeCard extends StatelessWidget {
                 _getBadgeIcon(badge.category.name),
                 size: 32.sp,
                 color: isUnlocked
-                    ? AppColors.accentGold
+                    ? PanAfricanColors.secondary
                     : (isDark ? Colors.grey[600] : Colors.grey[400]),
               ),
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.xxs),
             // Badge Name
             Text(
               badge.name,
-              style: TextStyle(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w600,
+              style: PanAfricanTypography.labelSmall(context).copyWith(
                 color: isUnlocked
                     ? context.adaptive
                     : (isDark ? Colors.grey[600] : Colors.grey[400]),
@@ -142,19 +139,21 @@ class _BadgeCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             if (isUnlocked) ...[
-              SizedBox(height: 0.5.h),
+              SizedBox(height: PanAfricanSpacing.xxxs),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: PanAfricanSpacing.xs,
+                  vertical: PanAfricanSpacing.xxxs,
+                ),
                 decoration: BoxDecoration(
-                  color: AppColors.accentGold.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                  color: PanAfricanColors.secondary.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                 ),
                 child: Text(
                   'Unlocked',
-                  style: TextStyle(
-                    fontSize: 9.sp,
-                    color: AppColors.accentGold,
-                    fontWeight: FontWeight.bold,
+                  style: PanAfricanTypography.labelSmall(context).copyWith(
+                    color: PanAfricanColors.secondary,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),
@@ -202,77 +201,78 @@ class BadgeDetailDialog extends StatelessWidget {
     
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
       ),
       child: Container(
-        padding: EdgeInsets.all(6.w),
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         decoration: BoxDecoration(
-          color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
-          borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+          color: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             // Badge Icon
             Container(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? AppColors.accentGold.withOpacity(0.2)
+                    ? PanAfricanColors.secondary.withOpacity(0.2)
                     : Colors.grey.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.workspace_premium_rounded,
                 size: 64.sp,
-                color: isUnlocked ? AppColors.accentGold : Colors.grey,
+                color: isUnlocked ? PanAfricanColors.secondary : Colors.grey,
               ),
             ),
-            SizedBox(height: 3.h),
+            SizedBox(height: PanAfricanSpacing.md),
             // Badge Name
             Text(
               badge.name,
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
+              style: PanAfricanTypography.headlineSmall(context).copyWith(
                 color: context.adaptive,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.xs),
             // Badge Description
             Text(
               badge.description,
-              style: TextStyle(
-                fontSize: 14.sp,
+              style: PanAfricanTypography.bodySmall(context).copyWith(
                 color: context.adaptive54,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 3.h),
+            SizedBox(height: PanAfricanSpacing.md),
             // Status
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md,
+                vertical: PanAfricanSpacing.xs,
+              ),
               decoration: BoxDecoration(
                 color: isUnlocked
-                    ? AppColors.accentGold.withOpacity(0.2)
+                    ? PanAfricanColors.secondary.withOpacity(0.2)
                     : Colors.grey.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.round),
               ),
               child: Text(
                 isUnlocked ? 'Unlocked' : 'Locked',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: isUnlocked ? AppColors.accentGold : Colors.grey,
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                  color: isUnlocked ? PanAfricanColors.secondary : Colors.grey,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
-            SizedBox(height: 3.h),
+            SizedBox(height: PanAfricanSpacing.md),
             // Close Button
-            FilledButton(
+            PanAfricanButton(
+              label: 'Close',
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              backgroundColor: PanAfricanColors.secondary,
+              foregroundColor: PanAfricanColors.onSecondaryContainer,
             ),
           ],
         ),

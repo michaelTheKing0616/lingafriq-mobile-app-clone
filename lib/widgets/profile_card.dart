@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/modern_card.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 /// Modern profile card component
@@ -27,20 +27,26 @@ class ProfileCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
 
-    return ModernCard(
+    return PanAfricanCard(
       padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          AppColors.primaryGreen,
-          AppColors.accentGold,
-          AppColors.accentOrange,
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
+      hasGradientBorder: true,
+      gradientStart: PanAfricanColors.primary,
+      gradientEnd: PanAfricanColors.secondary,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              PanAfricanColors.primary,
+              PanAfricanColors.secondary,
+              PanAfricanColors.tertiary,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        ),
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Row(
           children: [
             // Avatar
@@ -55,13 +61,7 @@ class ProfileCard extends StatelessWidget {
                       color: Colors.white,
                       width: 4,
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
+                    boxShadow: PanAfricanShadows.md,
                   ),
                   child: ClipOval(
                     child: avatarPath != null
@@ -82,21 +82,15 @@ class ProfileCard extends StatelessWidget {
                     child: GestureDetector(
                       onTap: onEditTap,
                       child: Container(
-                        padding: const EdgeInsets.all(8),
+                        padding: EdgeInsets.all(PanAfricanSpacing.xs),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 8,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
+                          boxShadow: PanAfricanShadows.sm,
                         ),
                         child: Icon(
                           Icons.edit_rounded,
-                          color: AppColors.primaryGreen,
+                          color: PanAfricanColors.primary,
                           size: 20.sp,
                         ),
                       ),
@@ -104,7 +98,7 @@ class ProfileCard extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(width: 20),
+            SizedBox(width: PanAfricanSpacing.md),
             // User Info
             Expanded(
               child: Column(
@@ -113,48 +107,31 @@ class ProfileCard extends StatelessWidget {
                   if (username != null)
                     Text(
                       username!,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
+                      style: PanAfricanTypography.headlineSmall(context)
+                          .copyWith(color: Colors.white),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   if (email != null) ...[
-                    const SizedBox(height: 4),
+                    SizedBox(height: PanAfricanSpacing.xxxs),
                     Text(
                       email!,
-                      style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
-                        fontSize: 14.sp,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 4,
-                          ),
-                        ],
-                      ),
+                      style: PanAfricanTypography.bodySmall(context)
+                          .copyWith(color: Colors.white.withOpacity(0.9)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
                   if (rank != null) ...[
-                    const SizedBox(height: 12),
+                    SizedBox(height: PanAfricanSpacing.sm),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: PanAfricanSpacing.sm,
+                        vertical: PanAfricanSpacing.xxs,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
                         border: Border.all(
                           color: Colors.white.withOpacity(0.3),
                           width: 1,
@@ -165,17 +142,14 @@ class ProfileCard extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.emoji_events,
-                            color: AppColors.accentGold,
+                            color: PanAfricanColors.secondary,
                             size: 18.sp,
                           ),
-                          const SizedBox(width: 6),
+                          SizedBox(width: PanAfricanSpacing.xxs),
                           Text(
                             'Rank #$rank',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: PanAfricanTypography.labelLarge(context)
+                                .copyWith(color: Colors.white),
                           ),
                         ],
                       ),
@@ -197,8 +171,8 @@ class ProfileCard extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.accentGold,
-            AppColors.accentOrange,
+            PanAfricanColors.secondary,
+            PanAfricanColors.tertiary,
           ],
         ),
       ),
@@ -232,19 +206,22 @@ class ProfileMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
     final defaultIconColor = iconColor ?? 
-        (isDark ? AppColors.accentGold : AppColors.primaryGreen);
+        (isDark ? PanAfricanColors.secondary : PanAfricanColors.primary);
 
-    return ModernCard(
+    return PanAfricanCard(
       onTap: onTap,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      margin: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.lg,
+        vertical: PanAfricanSpacing.md,
+      ),
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(PanAfricanSpacing.sm),
             decoration: BoxDecoration(
               color: defaultIconColor.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             ),
             child: Icon(
               icon,
@@ -252,14 +229,15 @@ class ProfileMenuItem extends StatelessWidget {
               size: 24,
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: PanAfricanSpacing.md),
           Expanded(
             child: Text(
               title,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w500,
-                color: isDark ? Colors.white : AppColors.textPrimary,
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                fontWeight: FontWeight.w600,
+                color: isDark
+                    ? PanAfricanColors.textPrimaryDark
+                    : PanAfricanColors.textPrimaryLight,
               ),
             ),
           ),
@@ -267,8 +245,8 @@ class ProfileMenuItem extends StatelessWidget {
               Icon(
                 Icons.chevron_right_rounded,
                 color: isDark
-                    ? Colors.white.withOpacity(0.5)
-                    : AppColors.textSecondary,
+                    ? PanAfricanColors.textSecondaryDark
+                    : PanAfricanColors.textSecondaryLight,
               ),
         ],
       ),

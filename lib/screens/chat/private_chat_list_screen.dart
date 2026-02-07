@@ -8,18 +8,15 @@ import 'package:lingafriq/providers/private_chat_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
-import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -83,7 +80,8 @@ class _PrivateChatListScreenState
         .toList();
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor:
+          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: ResponsiveSafeArea(
         child: Stack(
         children: [
@@ -91,25 +89,12 @@ class _PrivateChatListScreenState
           Container(
             height: 15.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF7B2CBF), // Purple
-                  Color(0xFFCE1126), // Red
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
+              gradient: PanAfricanGradients.kenteVibrant,
+              boxShadow: PanAfricanShadows.md,
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Row(
                   children: [
                     IconButton(
@@ -142,9 +127,11 @@ class _PrivateChatListScreenState
                   padding: EdgeInsets.all(PanAfricanSpacing.md),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      boxShadow: DesignSystem.shadowMedium,
+                      color: isDark
+                          ? PanAfricanColors.cardDark
+                          : PanAfricanColors.cardLight,
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+                      boxShadow: PanAfricanShadows.md,
                     ),
                     child: TextField(
                       controller: _searchController,
@@ -182,7 +169,9 @@ class _PrivateChatListScreenState
                 // Contacts List
                 Expanded(
                   child: Container(
-                    color: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+                    color: isDark
+                        ? PanAfricanColors.surfaceDark
+                        : PanAfricanColors.surfaceLight,
                     child: _buildContactsList(context, state, contacts, onlineIds, isDark),
                   ),
                 ),
@@ -215,12 +204,15 @@ class _PrivateChatListScreenState
             SizedBox(height: 2.h),
             Text(
               state.error!,
-              style: TextStyle(color: Colors.red.shade300, fontSize: 16.sp),
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: PanAfricanColors.error,
+              ),
             ),
             SizedBox(height: 2.h),
-            PrimaryButton(
-              text: 'Retry',
-              onTap: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
+            PanAfricanButton(
+              label: 'Retry',
+              onPressed: () =>
+                  ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
             ),
           ],
         ),
@@ -254,9 +246,13 @@ class _PrivateChatListScreenState
         return Container(
           margin: EdgeInsets.only(bottom: 2.h),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowMedium,
+            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+            boxShadow: PanAfricanShadows.md,
+            border: Border.all(
+              color:
+                  isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+            ),
           ),
           child: ListTile(
             contentPadding: EdgeInsets.all(PanAfricanSpacing.md),

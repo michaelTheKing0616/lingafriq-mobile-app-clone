@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
@@ -41,19 +40,20 @@ class AiChatSelectScreen extends HookConsumerWidget {
       builder: (context) => Container(
         height: 70.h,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1F3527) : Colors.white,
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
+          boxShadow: PolieElevation.level3(context),
         ),
         child: Column(
           children: [
             // Header
             Container(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PolieSpacing.lg),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF7B2CBF), Color(0xFFCE1126)],
+                  colors: [PolieColors.royalAmethyst, PolieColors.goldEmber],
                 ),
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
               ),
               child: SafeArea(
                 bottom: false,
@@ -67,27 +67,24 @@ class AiChatSelectScreen extends HookConsumerWidget {
                         ),
                         Expanded(
                           child: Text(
-                            mode == PolieMode.translation 
+                            mode == PolieMode.translation
                                 ? 'Select Language to Translate'
                                 : 'Select Language to Learn',
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.bold,
+                            style: PolieTypography.h2(context).copyWith(
                               color: Colors.white,
                             ),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(width: 48), // Balance the back button
+                        SizedBox(width: PolieSpacing.xl), // Balance the back button
                       ],
                     ),
-                    SizedBox(height: 1.h),
+                    SizedBox(height: PolieSpacing.xs),
                     Text(
                       mode == PolieMode.translation
                           ? 'Choose the language you want to translate to/from'
                           : 'Choose the language you want to practice',
-                      style: TextStyle(
-                        fontSize: 13.sp,
+                      style: PolieTypography.bodySmall(context).copyWith(
                         color: Colors.white.withOpacity(0.9),
                       ),
                       textAlign: TextAlign.center,
@@ -99,39 +96,46 @@ class AiChatSelectScreen extends HookConsumerWidget {
             // Language List
             Expanded(
               child: ListView.builder(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PolieSpacing.lg),
                 itemCount: languages.length,
                 itemBuilder: (context, index) {
                   final lang = languages[index];
-                  return Card(
-                    margin: EdgeInsets.only(bottom: 2.h),
-                    color: isDark ? const Color(0xFF2A4034) : Colors.white,
-                    elevation: 2,
+                  return Container(
+                    margin: EdgeInsets.only(bottom: PolieSpacing.sm),
+                    decoration: BoxDecoration(
+                      color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+                      borderRadius: BorderRadius.circular(PolieRadius.lg),
+                      border: Border.all(
+                        color: isDark
+                            ? Colors.white.withOpacity(0.08)
+                            : Colors.black.withOpacity(0.06),
+                      ),
+                      boxShadow: PolieElevation.level1(context),
+                    ),
                     child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: PolieSpacing.md,
+                        vertical: PolieSpacing.sm,
+                      ),
                       leading: Text(
                         lang['flag']!,
                         style: TextStyle(fontSize: 32.sp),
                       ),
                       title: Text(
                         lang['name']!,
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: PolieTypography.body(context).copyWith(
                           fontWeight: FontWeight.w600,
-                          color: isDark ? Colors.white : Colors.black87,
                         ),
                       ),
                       subtitle: Text(
                         mode == PolieMode.translation
                             ? 'English ↔ ${lang['name']}'
                             : 'Learn ${lang['name']} with Polie',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.white70 : Colors.black54,
-                        ),
+                        style: PolieTypography.bodySmall(context),
                       ),
                       trailing: Icon(
                         Icons.arrow_forward_ios,
-                        color: isDark ? Colors.white54 : Colors.black45,
+                        color: isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight,
                         size: 16,
                       ),
                       onTap: () {
@@ -174,8 +178,8 @@ class AiChatSelectScreen extends HookConsumerWidget {
     // Show loading while transitioning
     return Scaffold(
       backgroundColor: Theme.of(context).brightness == Brightness.dark 
-          ? AfricanTheme.backgroundDark 
-          : AfricanTheme.backgroundLight,
+          ? PolieColors.obsidian 
+          : PolieColors.surfaceContainerLight,
       body: const Center(
         child: CircularProgressIndicator(),
       ),
@@ -208,63 +212,58 @@ class _ModeCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PolieRadius.xl),
         child: Container(
-          padding: EdgeInsets.all(6.w),
+          padding: EdgeInsets.all(PolieSpacing.lg),
           decoration: BoxDecoration(
-            color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowLarge,
+            color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+            borderRadius: BorderRadius.circular(PolieRadius.xl),
+            boxShadow: PolieElevation.level2(context),
             border: Border.all(
-              color: isDark ? AfricanTheme.stitchBorderDark : Colors.transparent,
+              color: isDark
+                  ? Colors.white.withOpacity(0.08)
+                  : Colors.black.withOpacity(0.06),
             ),
           ),
           child: Row(
             children: [
               Container(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PolieSpacing.md),
                 decoration: BoxDecoration(
                   gradient: gradient,
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-                  boxShadow: DesignSystem.shadowMedium,
+                  borderRadius: BorderRadius.circular(PolieRadius.lg),
+                  boxShadow: PolieElevation.level1(context),
                 ),
                 child: Icon(icon, color: Colors.white, size: 32),
               ),
-              SizedBox(width: 4.w),
+              SizedBox(width: PolieSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: PolieTypography.h2(context),
                     ),
-                    SizedBox(height: 1.h),
+                    SizedBox(height: PolieSpacing.xs),
                     Text(
                       description,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: isDark ? Colors.white70 : Colors.black54,
-                        height: 1.4,
-                      ),
+                      style: PolieTypography.bodySmall(context),
                     ),
-                    SizedBox(height: 1.h),
+                    SizedBox(height: PolieSpacing.xs),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: PolieSpacing.sm,
+                        vertical: PolieSpacing.xs,
+                      ),
                       decoration: BoxDecoration(
                         color: gradient.colors.first.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                        borderRadius: BorderRadius.circular(PolieRadius.pill),
                       ),
                       child: Text(
                         badge,
-                        style: TextStyle(
-                          fontSize: 11.sp,
+                        style: PolieTypography.label(context).copyWith(
                           color: gradient.colors.first,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),

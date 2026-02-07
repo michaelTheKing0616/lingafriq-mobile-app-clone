@@ -230,45 +230,38 @@ class AIChatScreen extends HookConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
+                    child: PolieInputField(
                       controller: messageController,
-                      style: PolieTypography.body(context),
-                      decoration: InputDecoration(
-                        hintText: 'Type your message...',
-                        hintStyle: PolieTypography.body(context).copyWith(
-                          color: PolieColors.textSecondary,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PolieRadius.md),
-                        ),
-                        filled: true,
-                        fillColor: isDark
-                            ? PolieColors.surfaceGlassDark
-                            : PolieColors.surfaceGlass,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: PolieSpacing.md,
-                          vertical: PolieSpacing.sm,
-                        ),
-                      ),
+                      enabled: !isLoading.value,
+                      hintText: 'Type your message...',
+                      maxLines: 4,
                       onSubmitted: (_) => sendMessage(),
-                      maxLines: null,
+                      prefixIcon: Icons.auto_awesome,
                     ),
                   ),
                   SizedBox(width: PolieSpacing.sm),
-                  IconButton(
-                    icon: isLoading.value
-                        ? SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                PolieColors.royalAmethyst,
+                  GestureDetector(
+                    onTap: isLoading.value ? null : sendMessage,
+                    child: Container(
+                      width: 48.w,
+                      height: 48.w,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
+                        ),
+                        shape: BoxShape.circle,
+                        boxShadow: PolieElevation.level2(context, glowColor: PolieColors.royalAmethyst),
+                      ),
+                      child: isLoading.value
+                          ? Padding(
+                              padding: EdgeInsets.all(12.w),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
-                            ),
-                          )
-                        : Icon(Icons.send, color: PolieColors.royalAmethyst),
-                    onPressed: isLoading.value ? null : sendMessage,
+                            )
+                          : Icon(Icons.send_rounded, color: Colors.white, size: 22.sp),
+                    ),
                   ),
                 ],
               ),

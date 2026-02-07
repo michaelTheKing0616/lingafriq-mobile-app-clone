@@ -4,8 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
@@ -18,6 +16,7 @@ import 'language_games_screen_components.dart';
 import 'game_router.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Modern Language Games Screen - Based on Figma Make Design
 class LanguageGamesScreen extends HookConsumerWidget {
@@ -104,12 +103,13 @@ class LanguageGamesScreen extends HookConsumerWidget {
                         Container(
                           padding: EdgeInsets.all(PanAfricanSpacing.md),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            gradient: PanAfricanGradients.savannaGold,
                             shape: BoxShape.circle,
+                            boxShadow: PanAfricanShadows.glowGold(0.6),
                           ),
                           child: Icon(
                             Icons.emoji_events_rounded,
-                            color: PanAfricanColors.secondary,
+                            color: PanAfricanColors.neutralDarkest,
                             size: 48.sp,
                           ),
                         ),
@@ -122,6 +122,24 @@ class LanguageGamesScreen extends HookConsumerWidget {
                         Text(
                           'Learn while having fun!',
                           style: PanAfricanTypography.bodyMedium(context, color: Colors.white.withOpacity(0.9)),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.sm),
+                        Wrap(
+                          spacing: PanAfricanSpacing.xs,
+                          runSpacing: PanAfricanSpacing.xs,
+                          alignment: WrapAlignment.center,
+                          children: [
+                            PanAfricanBadge(
+                              label: '37 games',
+                              color: PanAfricanColors.secondary,
+                              icon: Icons.extension_rounded,
+                            ),
+                            PanAfricanBadge(
+                              label: 'Daily XP',
+                              color: PanAfricanColors.tertiary,
+                              icon: Icons.local_fire_department_rounded,
+                            ),
+                          ],
                         ),
                       ],
                     ),

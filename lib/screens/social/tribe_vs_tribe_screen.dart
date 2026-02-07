@@ -12,6 +12,7 @@ import '../../widgets/error_boundary.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
 import '../../providers/tribe_vs_tribe_provider.dart';
 import '../../providers/gamification_provider.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 /// Tribe vs Tribe Events Screen
 class TribeVsTribeScreen extends ConsumerStatefulWidget {
@@ -412,15 +413,28 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
           horizontal: PanAfricanSpacing.md,
           vertical: PanAfricanSpacing.xs,
         ),
-        leading: CircleAvatar(
-          radius: 20.w,
-          backgroundColor: _getRankColor(index),
-          child: Text(
-            '${index + 1}',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 14.sp,
+        leading: Container(
+          width: 40.w,
+          height: 40.w,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _getRankColor(index),
+            boxShadow: [
+              BoxShadow(
+                color: _getRankColor(index).withOpacity(0.3),
+                blurRadius: 8,
+                spreadRadius: 1,
+              ),
+            ],
+          ),
+          child: Center(
+            child: Text(
+              '${index + 1}',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 14.sp,
+              ),
             ),
           ),
         ),

@@ -451,7 +451,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
               )
             else
               Container(
-                color: AppColors.primaryGreen,
+                color: PanAfricanColors.primary,
                 child: Center(
                   child: Text(
                     _getTypeIcon(content.type),
@@ -489,7 +489,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryGreen,
+                        color: PanAfricanColors.primary,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -557,7 +557,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
               child: Container(
                 width: 100.sp,
                 height: 100.sp,
-                color: AppColors.primaryGreen.withOpacity(0.2),
+                color: PanAfricanColors.primary.withOpacity(0.2),
                 child: content.imageUrl != null
                     ? CachedNetworkImage(
                         imageUrl: content.imageUrl!,
@@ -586,8 +586,8 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 6.sp, vertical: 2.sp),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryGreen.withOpacity(0.2),
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.primary.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -595,7 +595,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                             style: TextStyle(
                               fontSize: 9.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primaryGreen,
+                              color: PanAfricanColors.primary,
                             ),
                           ),
                         ),

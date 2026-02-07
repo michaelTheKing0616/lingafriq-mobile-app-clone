@@ -16,6 +16,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/dialog_provider.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/pan_african_design_system.dart';
 import 'delete_account_dialogue.dart';
 
 class ProfileTab extends HookConsumerWidget {
@@ -64,7 +65,7 @@ class ProfileTab extends HookConsumerWidget {
                       Chip(
                         labelPadding:
                             const EdgeInsets.symmetric(horizontal: 12),
-                        backgroundColor: AppColors.primaryGreen,
+                        backgroundColor: PanAfricanColors.primary,
                         visualDensity: VisualDensity.compact,
                         label: Text(user?.rank.toString()??'',style: TextStyle(
                           color: Colors.white
@@ -233,7 +234,7 @@ class ProfileImageBuilder extends ConsumerWidget {
                   ),
                   child: Icon(
                     Icons.edit_outlined,
-                    color: AppColors.primaryOrange,
+                    color: PanAfricanColors.tertiary,
                     size: 24.sp,
                   ),
                 ),

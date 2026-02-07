@@ -1,52 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Pan-African Theme Colors and Design Elements
 /// Inspired by African cultures, landscapes, and traditions
 
 class AfricanTheme {
   // Pan-African Color Palette
-  static const Color primaryGreen = Color(0xFF2BEE6C); // Vibrant African green
-  static const Color accentGold = Color(0xFFF7CB46); // African gold
-  static const Color earthBrown = Color(0xFF8B4513); // Rich earth tone
-  static const Color sunsetOrange = Color(0xFFFF6B35); // African sunset
-  static const Color skyBlue = Color(0xFF1CB0F6); // African sky
-  static const Color deepRed = Color(0xFFC4413A); // African red
-  static const Color vibrantPurple = Color(0xFFA733EC); // African purple
-  static const Color stitchCardDark = Color(0xFF1F3527);
-  static const Color stitchBorderDark = Color(0xFF2A4A35);
+  static const Color primaryGreen = PanAfricanColors.primary; // Legacy alias
+  static const Color accentGold = PanAfricanColors.secondary;
+  static const Color earthBrown = PanAfricanColors.neutralDark;
+  static const Color sunsetOrange = PanAfricanColors.tertiary;
+  static const Color skyBlue = PanAfricanColors.kenteBlue;
+  static const Color deepRed = PanAfricanColors.kenteRed;
+  static const Color vibrantPurple = PanAfricanColors.ankaraPurple;
+  static const Color stitchCardDark = PanAfricanColors.cardDark;
+  static const Color stitchBorderDark = PanAfricanColors.borderDark;
   
   // Background Colors
-  static const Color backgroundLight = Color(0xFFF6F8F6);
-  static const Color backgroundDark = Color(0xFF102216);
+  static const Color backgroundLight = PanAfricanColors.surfaceLight;
+  static const Color backgroundDark = PanAfricanColors.surfaceDark;
   
   // Text Colors
-  static const Color textDark = Color(0xFF0D1B12);
-  static const Color textLight = Color(0xFFE0F8E7);
+  static const Color textDark = PanAfricanColors.textPrimaryLight;
+  static const Color textLight = PanAfricanColors.textPrimaryDark;
   
   // Gradients
-  static const LinearGradient africanSunset = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [sunsetOrange, accentGold],
-  );
-  
-  static const LinearGradient africanSavanna = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [skyBlue, primaryGreen],
-  );
-  
-  static const LinearGradient africanEarth = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [earthBrown, deepRed],
-  );
-  
-  static const LinearGradient africanVibrancy = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [primaryGreen, vibrantPurple, accentGold],
-  );
+  static const LinearGradient africanSunset = PanAfricanGradients.sunset;
+  static const LinearGradient africanSavanna = PanAfricanGradients.forest;
+  static const LinearGradient africanEarth = PanAfricanGradients.earth;
+  static const LinearGradient africanVibrancy = PanAfricanGradients.kenteVibrant;
   
   // African Pattern Decorations
   static BoxDecoration kentePattern(Color baseColor) {
@@ -77,19 +59,7 @@ class AfricanTheme {
   ];
   
   // African-inspired shadows
-  static List<BoxShadow> get africanShadow => [
-    BoxShadow(
-      color: primaryGreen.withOpacity(0.3),
-      blurRadius: 20,
-      offset: const Offset(0, 10),
-      spreadRadius: 2,
-    ),
-    BoxShadow(
-      color: accentGold.withOpacity(0.2),
-      blurRadius: 10,
-      offset: const Offset(0, 5),
-    ),
-  ];
+  static List<BoxShadow> get africanShadow => PanAfricanShadows.lg;
   
   // Text Styles
   static Color textPrimary(BuildContext context) {

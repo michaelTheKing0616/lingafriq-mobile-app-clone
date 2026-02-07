@@ -328,6 +328,100 @@ class PoliePrimaryButton extends StatelessWidget {
   }
 }
 
+/// Glass morphism input field for Polie AI chat
+class PolieInputField extends StatelessWidget {
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final String? hintText;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final IconData? prefixIcon;
+  final IconData? suffixIcon;
+  final VoidCallback? onSuffixTap;
+  final bool enabled;
+  final int maxLines;
+
+  const PolieInputField({
+    Key? key,
+    this.controller,
+    this.focusNode,
+    this.hintText,
+    this.onChanged,
+    this.onSubmitted,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.onSuffixTap,
+    this.enabled = true,
+    this.maxLines = 1,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor = isDark
+        ? Colors.white.withOpacity(0.12)
+        : Colors.black.withOpacity(0.08);
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(PolieRadius.lg),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(
+          sigmaX: PolieSpacing.md,
+          sigmaY: PolieSpacing.md,
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: PolieSpacing.md,
+            vertical: PolieSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            border: Border.all(color: borderColor),
+            boxShadow: PolieElevation.level1(context),
+          ),
+          child: Row(
+            children: [
+              if (prefixIcon != null) ...[
+                Icon(prefixIcon, color: PolieColors.textSecondary, size: PolieSpacing.md),
+                SizedBox(width: PolieSpacing.sm),
+              ],
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  enabled: enabled,
+                  maxLines: maxLines,
+                  onChanged: onChanged,
+                  onSubmitted: onSubmitted,
+                  style: PolieTypography.body(context).copyWith(
+                    color: PolieColors.textPrimary,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: PolieTypography.body(context).copyWith(
+                      color: PolieColors.textSecondary,
+                    ),
+                    border: InputBorder.none,
+                    isDense: true,
+                  ),
+                ),
+              ),
+              if (suffixIcon != null) ...[
+                SizedBox(width: PolieSpacing.sm),
+                GestureDetector(
+                  onTap: onSuffixTap,
+                  child: Icon(suffixIcon, color: PolieColors.textSecondary, size: PolieSpacing.md),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Floating language pill for Polie/AI Chat — always visible (e.g. top-right).
 /// Use inside a Stack with Positioned, or as an AppBar action.
 class PolieFloatingLanguagePill extends StatelessWidget {

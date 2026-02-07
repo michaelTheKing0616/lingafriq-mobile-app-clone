@@ -7,9 +7,8 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -230,8 +229,8 @@ class AchievementsScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen,
-            AppColors.primaryOrange,
+            PanAfricanColors.primary,
+            PanAfricanColors.tertiary,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -239,7 +238,7 @@ class AchievementsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryGreen.withValues(alpha: 0.3),
+            color: PanAfricanColors.primary.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -502,9 +501,9 @@ class AchievementsScreen extends ConsumerWidget {
             onPressed: () => Navigator.pop(ctx),
             child: const Text('Close'),
           ),
-          PrimaryButton(
-            text: 'Practice with Polie',
-            onTap: () {
+          PanAfricanButton(
+            label: 'Practice with Polie',
+            onPressed: () {
               Navigator.pop(ctx);
               if (context.mounted) {
                 Navigator.push(
@@ -530,9 +529,9 @@ class AchievementsScreen extends ConsumerWidget {
       case AchievementRarity.epic:
         return Colors.purple;
       case AchievementRarity.legendary:
-        return AppColors.primaryOrange;
+        return PanAfricanColors.tertiary;
       default:
-        return AppColors.primaryGreen;
+        return PanAfricanColors.primary;
     }
   }
 
@@ -600,13 +599,13 @@ class AchievementsScreen extends ConsumerWidget {
         return Container(
           padding: EdgeInsets.all(4.w),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: achievement.isUnlocked ? DesignSystem.shadowMedium : [],
+            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+            boxShadow: achievement.isUnlocked ? PanAfricanShadows.md : [],
             border: achievement.isUnlocked
                 ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withValues(alpha: 0.2), width: 2)
                 : Border.all(
-                    color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+                    color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
                     width: 1,
                   ),
           ),
@@ -653,9 +652,9 @@ class AchievementsScreen extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.all(5.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -695,7 +694,7 @@ class AchievementsScreen extends ConsumerWidget {
                   color: index < 5
                       ? const Color(0xFFFF6B35)
                       : (isDark ? Colors.grey[800] : Colors.grey[200]),
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
               );
             }),
@@ -707,7 +706,9 @@ class AchievementsScreen extends ConsumerWidget {
 
   Widget _buildErrorState(BuildContext context, bool isDark) {
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -747,9 +748,9 @@ class AchievementsScreen extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.all(5.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -757,7 +758,7 @@ class AchievementsScreen extends ConsumerWidget {
           Icon(
             Icons.bolt_rounded,
             size: 64,
-            color: AppColors.primaryGreen,
+            color: PanAfricanColors.primary,
           ),
           SizedBox(height: 2.h),
           Text(
@@ -782,7 +783,7 @@ class AchievementsScreen extends ConsumerWidget {
             child: LinearProgressIndicator(
               value: progress,
               backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
               minHeight: 12,
             ),
           ),

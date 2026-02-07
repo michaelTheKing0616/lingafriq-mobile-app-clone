@@ -10,7 +10,7 @@ import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/lessons/screens/lessons_list_screen.dart';
 import 'package:lingafriq/screens/vocabulary/vocabulary_screen.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -52,14 +52,14 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
     final isDark = context.isDarkMode;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: AppBar(
-        title: const Text('Daily Goals'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        title: Text('Daily Goals', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          icon: Icon(Icons.arrow_back, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -98,30 +98,17 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
   Widget _buildStreakCard(BuildContext context, int streak, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.primaryGreen,
-            AppColors.primaryGreen.withOpacity(0.7),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryGreen.withOpacity(0.3),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        gradient: PanAfricanGradients.forest,
+        borderRadius: PanAfricanRadius.xlBR,
+        boxShadow: PanAfricanShadows.glowGreen(0.3),
       ),
       child: Padding(
-        padding: EdgeInsets.all(24.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Row(
           children: [
             // Fire Icon
             Container(
-              padding: EdgeInsets.all(16.sp),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
                 color: Colors.white.withOpacity(0.2),
                 shape: BoxShape.circle,
@@ -131,28 +118,21 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                 style: TextStyle(fontSize: 32.sp),
               ),
             ),
-            SizedBox(width: 16.sp),
+            SizedBox(width: PanAfricanSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     '$streak Day Streak',
-                    style: TextStyle(
-                      fontSize: 28.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                    style: PanAfricanTypography.headlineMedium(context, color: Colors.white),
                   ),
-                  SizedBox(height: 4.sp),
+                  SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
                     streak > 0 
-                        ? 'Keep it up! You\'re on fire! 🔥'
+                        ? 'Keep it up! You\'re on fire!'
                         : 'Start your learning journey today!',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      color: Colors.white.withOpacity(0.9),
-                    ),
+                    style: PanAfricanTypography.bodyMedium(context, color: Colors.white.withOpacity(0.9)),
                   ),
                 ],
               ),
@@ -206,26 +186,20 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
 
     return InkWell(
       onTap: () => _navigateToGoalModule(context, goal.type),
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: PanAfricanRadius.xlBR,
       child: Container(
-        margin: EdgeInsets.only(bottom: 16.sp),
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1F3527) : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.xlBR,
           border: Border.all(
-            color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+            color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
             width: 1,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
+          boxShadow: PanAfricanShadows.sm,
         ),
         child: Padding(
-        padding: EdgeInsets.all(20.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -233,80 +207,66 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
               children: [
                 // Icon Container
                 Container(
-                  padding: EdgeInsets.all(12.sp),
+                  padding: EdgeInsets.all(PanAfricanSpacing.sm),
                   decoration: BoxDecoration(
                     color: isCompleted 
-                        ? AppColors.primaryGreen.withOpacity(0.2)
-                        : (isDark ? const Color(0xFF2A4A35) : Colors.grey[100]!),
-                    borderRadius: BorderRadius.circular(12),
+                        ? PanAfricanColors.primary.withOpacity(0.2)
+                        : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight),
+                    borderRadius: PanAfricanRadius.mdBR,
                   ),
                   child: Text(
                     icon,
                     style: TextStyle(fontSize: 24.sp),
                   ),
                 ),
-                SizedBox(width: 16.sp),
+                SizedBox(width: PanAfricanSpacing.md),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
+                        style: PanAfricanTypography.titleMedium(context, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight),
                       ),
-                      SizedBox(height: 4.sp),
+                      SizedBox(height: PanAfricanSpacing.xxs),
                       Text(
                         '${goal.current} / ${goal.target}',
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        ),
+                        style: PanAfricanTypography.bodyMedium(context, color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
                       ),
                     ],
                   ),
                 ),
                 if (isCompleted)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 6.sp),
+                    padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: PanAfricanSpacing.xxs),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen,
-                      borderRadius: BorderRadius.circular(20),
+                      color: PanAfricanColors.primary,
+                      borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
                       '✓ Done',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      style: PanAfricanTypography.labelSmall(context, color: Colors.white),
                     ),
                   ),
               ],
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             // Progress Bar
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: PanAfricanRadius.smBR,
               child: LinearProgressIndicator(
                 value: progress,
                 minHeight: 8,
-                backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
+                backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  isCompleted ? AppColors.primaryGreen : AppColors.primaryOrange,
+                  isCompleted ? PanAfricanColors.primary : PanAfricanColors.tertiary,
                 ),
               ),
             ),
-            SizedBox(height: 8.sp),
+            SizedBox(height: PanAfricanSpacing.xs),
             Text(
               '${(progress * 100).toInt()}% complete',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
+              style: PanAfricanTypography.labelSmall(context, color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
             ),
           ],
         ),
@@ -419,7 +379,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                   ),
                   const SizedBox(height: 16),
                   ...languages.results.take(5).map((language) => ListTile(
-                    leading: Icon(Icons.book, color: AppColors.primaryGreen),
+                    leading: Icon(Icons.book, color: PanAfricanColors.primary),
                     title: Text(
                       language.name,
                       style: TextStyle(color: context.adaptive),
@@ -485,7 +445,7 @@ class _DailyGoalsScreenState extends ConsumerState<DailyGoalsScreen> {
                   ),
                   const SizedBox(height: 16),
                   ...languages.results.take(5).map((language) => ListTile(
-                    leading: Icon(Icons.language, color: AppColors.primaryGreen),
+                    leading: Icon(Icons.language, color: PanAfricanColors.primary),
                     title: Text(
                       language.name,
                       style: TextStyle(color: context.adaptive),

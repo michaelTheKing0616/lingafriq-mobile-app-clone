@@ -373,6 +373,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final gamification = ref.watch(gamificationProvider.notifier).gamification;
+    final heartsState = ref.watch(heartsProvider);
     
     if (_isLoading) {
       return Scaffold(
@@ -527,6 +529,17 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
         buildGameContent(context),
         Positioned(
           top: PanAfricanSpacing.md,
+          left: PanAfricanSpacing.md,
+          child: _GameHud(
+            isDark: isDark,
+            level: gamification.level,
+            xp: gamification.xp,
+            streak: gamification.dailyStreak,
+            showHearts: heartsState.challengeModeEnabled,
+          ),
+        ),
+        Positioned(
+          top: PanAfricanSpacing.md,
           right: PanAfricanSpacing.md,
           child: RiveGlobalGuide(
             width: 80.w,
@@ -540,5 +553,67 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   /// Override to build the actual game UI
   Widget buildGameContent(BuildContext context);
+}
+
+class _GameHud extends StatelessWidget {
+  final bool isDark;
+  final int level;
+  final int xp;
+  final int streak;
+  final bool showHearts;
+
+  const _GameHud({
+    required this.isDark,
+    required this.level,
+    required this.xp,
+    required this.streak,
+    required this.showHearts,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PanAfricanCard(
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.md,
+        vertical: PanAfricanSpacing.xs,
+      ),
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceContainerDark
+          : PanAfricanColors.surfaceContainerLight,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          PanAfricanBadge(
+            label: 'Lv $level',
+            color: PanAfricanColors.primary,
+            icon: Icons.trending_up_rounded,
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          PanAfricanBadge(
+            label: '${_formatCompactNumber(xp)} XP',
+            color: PanAfricanColors.secondary,
+            icon: Icons.star_rounded,
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          PanAfricanBadge(
+            label: '$streak',
+            color: PanAfricanColors.tertiary,
+            icon: Icons.local_fire_department_rounded,
+          ),
+          if (showHearts) ...[
+            SizedBox(width: PanAfricanSpacing.sm),
+            const HeartsWidget(compact: true),
+          ],
+        ],
+      ),
+    );
+  }
+
+  String _formatCompactNumber(int value) {
+    if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
+    if (value >= 10000) return '${(value / 1000).toStringAsFixed(1)}K';
+    if (value >= 1000) return '${(value / 1000).toStringAsFixed(2)}K';
+    return value.toString();
+  }
 }
 

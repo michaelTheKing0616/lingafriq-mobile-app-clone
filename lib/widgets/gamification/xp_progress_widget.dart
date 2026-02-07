@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/design_system.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../utils/utils.dart';
 
 /// Material 3 compliant XP progress widget
@@ -41,9 +40,9 @@ class XPProgressWidget extends ConsumerWidget {
         : 1.0;
 
     final effectiveProgressColor = progressColor ?? 
-        (isDark ? AppColors.accentGold : AppColors.primaryGreen);
+        (isDark ? PanAfricanColors.secondary : PanAfricanColors.primary);
     final effectiveBackgroundColor = backgroundColor ?? 
-        (isDark ? AppColors.surfaceDark : AppColors.surfaceLight);
+        (isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight);
 
     if (compact) {
       return _buildCompact(context, currentLevel, levelTitle, progress, 
@@ -51,12 +50,12 @@ class XPProgressWidget extends ConsumerWidget {
     }
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.xs),
       decoration: BoxDecoration(
         color: effectiveBackgroundColor,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         border: Border.all(
-          color: isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight,
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
           width: 0.5,
         ),
       ),
@@ -69,44 +68,42 @@ class XPProgressWidget extends ConsumerWidget {
               children: [
                 Text(
                   'Level $currentLevel',
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     color: context.adaptive,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.xs,
+                    vertical: PanAfricanSpacing.xxxs,
+                  ),
                   decoration: BoxDecoration(
                     color: effectiveProgressColor.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                   ),
                   child: Text(
                     '$currentXP XP',
-                    style: TextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
+                    style: PanAfricanTypography.labelLarge(context).copyWith(
                       color: effectiveProgressColor,
                     ),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.xxxs),
             if (levelTitle.isNotEmpty)
               Text(
                 levelTitle,
-                style: TextStyle(
-                  fontSize: 12.sp,
+                style: PanAfricanTypography.labelSmall(context).copyWith(
                   color: context.adaptive54,
                   fontStyle: FontStyle.italic,
                 ),
               ),
-            SizedBox(height: 2.h),
+            SizedBox(height: PanAfricanSpacing.xxxs),
           ],
           // Progress bar
           ClipRRect(
-            borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.round),
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 8.h,
@@ -114,21 +111,19 @@ class XPProgressWidget extends ConsumerWidget {
               valueColor: AlwaysStoppedAnimation<Color>(effectiveProgressColor),
             ),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.xxxs),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 '${xpInCurrentLevel.toStringAsFixed(0)} / $xpNeededForNextLevel XP',
-                style: TextStyle(
-                  fontSize: 11.sp,
+                style: PanAfricanTypography.labelSmall(context).copyWith(
                   color: context.adaptive54,
                 ),
               ),
               Text(
                 '${(progress * 100).toStringAsFixed(0)}% to Level ${currentLevel + 1}',
-                style: TextStyle(
-                  fontSize: 11.sp,
+                style: PanAfricanTypography.labelSmall(context).copyWith(
                   color: context.adaptive54,
                 ),
               ),
@@ -149,10 +144,13 @@ class XPProgressWidget extends ConsumerWidget {
     bool isDark,
   ) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.xs,
+        vertical: PanAfricanSpacing.xxs,
+      ),
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       ),
       child: Row(
         children: [
@@ -168,7 +166,7 @@ class XPProgressWidget extends ConsumerWidget {
               size: 20.sp,
             ),
           ),
-          SizedBox(width: 2.w),
+          SizedBox(width: PanAfricanSpacing.xxxs),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,15 +174,13 @@ class XPProgressWidget extends ConsumerWidget {
               children: [
                 Text(
                   'Level $level',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
+                  style: PanAfricanTypography.labelLarge(context).copyWith(
                     color: context.adaptive,
                   ),
                 ),
-                SizedBox(height: 0.5.h),
+                SizedBox(height: PanAfricanSpacing.xxxs),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                   child: LinearProgressIndicator(
                     value: progress,
                     minHeight: 4.h,
@@ -285,9 +281,9 @@ class _XPGainAnimationState extends State<XPGainAnimation>
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
             decoration: BoxDecoration(
-              color: AppColors.accentGold,
-              borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-              boxShadow: DesignSystem.shadowLarge,
+              color: PanAfricanColors.secondary,
+              borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

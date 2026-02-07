@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 // Font fallback to ensure diacritics/emoji render correctly on all devices.
 const _globalFontFallback = <String>[
@@ -29,7 +30,7 @@ final lightTheme = ThemeData(
   ),
   canvasColor: Colors.white,
   scaffoldBackgroundColor: Colors.white,
-  cardColor: AppColors.filledLight,
+  cardColor: PanAfricanColors.cardLight,
   dividerColor: Colors.black.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
@@ -83,7 +84,7 @@ final darkTheme = ThemeData(
   ),
   canvasColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
-  cardColor: AppColors.filledDark,
+  cardColor: PanAfricanColors.cardDark,
   dividerColor: Colors.white.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,

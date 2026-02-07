@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString and build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.6.0+155
+version: 1.6.0+136
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -63,8 +63,7 @@ dependencies:
   file_picker: ^8.1.2
   image_picker: ^1.0.7
   # ML Kit for OCR/Text Recognition
-  # Upgraded to 0.14.0+ to resolve GoogleDataTransport version conflict with firebase_messaging
-  google_mlkit_text_recognition: ^0.14.0
+  google_mlkit_text_recognition: ^0.13.0
   # Offline & Background Services
   # livekit_client >=2.3.x requires connectivity_plus ^6.x
   connectivity_plus: ^6.1.5

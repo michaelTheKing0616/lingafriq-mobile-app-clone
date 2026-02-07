@@ -10,7 +10,6 @@ import 'package:lingafriq/screens/tabs_view/profile/profile_tab.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/validators.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:lingafriq/widgets/titled_drop_down.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
@@ -23,6 +22,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 class ProfileEditScreen extends HookConsumerWidget {
   const ProfileEditScreen({Key? key}) : super(key: key);
@@ -44,40 +44,46 @@ class ProfileEditScreen extends HookConsumerWidget {
         appBar: AppBar(systemOverlayStyle: SystemUiOverlayStyle.dark),
         body: Column(
           children: [
-            // ✅ Avatar section
-            ProfileImageBuilder(
-              onTap: () async {
-                final user = ref.read(userProvider);
-                if (user == null) return;
-
-                final current = kAvatarsList.containsKey(user.avater)
-                    ? kAvatarsList[user.avater]!
-                    : kAvatarsList.values.first;
-
-                final selectedAvatar = await _AvatarSelector.showAvatarSelectorDialog(
-                  context,
-                  selectedAvatar: current,
-                );
-
-                if (selectedAvatar == null) return;
-
-                final updatedUser = user.copyWith(avater: selectedAvatar);
-                await safeAsync(
-                  context: context,
-                  operation: () async {
-                    await ref.read(apiProvider.notifier).updateProfile(updatedUser.toMap());
-                    ref.read(userProvider.notifier).overrideUser(updatedUser);
-                    
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      HapticFeedback.lightImpact();
-                      VxToast.show(context, msg: 'Avatar updated');
-                    }
+            // Avatar section - uses new Avatar Intelligence System
+            Column(
+              children: [
+                LingAfriqAvatar(
+                  size: 100,
+                  showBorder: true,
+                  onTap: () {
+                    // Open avatar customizer
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (context) => DraggableScrollableSheet(
+                        initialChildSize: 0.85,
+                        maxChildSize: 0.95,
+                        minChildSize: 0.5,
+                        builder: (context, scrollController) => Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(24),
+                            ),
+                          ),
+                          child: SingleChildScrollView(
+                            controller: scrollController,
+                            child: const UserAvatarCustomizer(),
+                          ),
+                        ),
+                      ),
+                    );
                   },
-                  errorContext: 'updateAvatar',
-                  showError: true,
-                );
-              },
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Tap to customize',
+                  style: PanAfricanTypography.labelSmall(context).copyWith(
+                    color: PanAfricanColors.neutralMedium,
+                  ),
+                ),
+              ],
             ).centered(),
             24.heightBox,
             const ProfileDetailsBuilder(crossAxisAlignment: CrossAxisAlignment.center).centered(),
@@ -144,9 +150,9 @@ class ProfileEditScreen extends HookConsumerWidget {
             24.heightBox,
 
             // ✅ Save button
-            PrimaryButton(
+            PanAfricanButton(
               width: 0.6.sw,
-              onTap: () async {
+              onPressed: () async {
                 final user = ref.read(userProvider);
                 if (user == null) return;
 
@@ -163,16 +169,17 @@ class ProfileEditScreen extends HookConsumerWidget {
                 HapticFeedback.lightImpact();
                 VxToast.show(context, msg: 'Success');
               },
-              text: "Save",
+              label: "Save",
             ),
             24.heightBox,
 
             // ✅ Delete Account Button
-            PrimaryButton(
+            PanAfricanButton(
               width: 0.6.sw,
-              text: "Delete Account",
-              color: AppColors.red,
-              onTap: () async {
+              label: "Delete Account",
+              backgroundColor: PanAfricanColors.error,
+              foregroundColor: Colors.white,
+              onPressed: () async {
                 final confirm = await DeleteAccountDialog.showDeleteAccountDialog(context);
                 if (confirm == true) {
                   final password = await EnterPasswordDialog.show(context);
@@ -245,15 +252,16 @@ class _AvatarSelector extends HookWidget {
               }).toList(),
             ),
             12.heightBox,
-            PrimaryButton(
-              color: AppColors.red,
-              onTap: () {
+            PanAfricanButton(
+              backgroundColor: PanAfricanColors.primary,
+              foregroundColor: Colors.white,
+              onPressed: () {
                 final assetName = selectedAvatar.value.split("/").last;
                 final avatarUrl = "${Api.baseurl}media/avatars/$assetName";
                 Navigator.of(context).pop(avatarUrl);
               },
               width: 0.5.sw,
-              text: "Select Avatar",
+              label: "Select Avatar",
             ),
           ],
         ),

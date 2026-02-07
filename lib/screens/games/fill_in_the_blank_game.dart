@@ -7,10 +7,9 @@ import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/modern_card.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -195,8 +194,8 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.primaryGreen,
-                  AppColors.accentGold,
+                  PanAfricanColors.primary,
+                  PanAfricanColors.secondary,
                 ],
               ),
             ),
@@ -217,13 +216,13 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      AppColors.primaryGreen.withOpacity(0.1),
-                      AppColors.accentGold.withOpacity(0.1),
+                      PanAfricanColors.primary.withOpacity(0.1),
+                      PanAfricanColors.secondary.withOpacity(0.1),
                     ],
                   ),
           ),
           child: Center(
-            child: ModernCard(
+            child: PanAfricanCard(
               child: Padding(
                 padding: EdgeInsets.all(24.sp),
                 child: Column(
@@ -232,7 +231,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                     Icon(
                       _score >= 70 ? Icons.celebration : Icons.check_circle,
                       size: 80.sp,
-                      color: _score >= 70 ? AppColors.accentGold : AppColors.primaryGreen,
+                      color: _score >= 70 ? PanAfricanColors.secondary : PanAfricanColors.primary,
                     ),
                     SizedBox(height: 16.h),
                     Text(
@@ -249,7 +248,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       style: TextStyle(
                         fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryGreen,
+                        color: PanAfricanColors.primary,
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -261,16 +260,18 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       ),
                     ),
                     SizedBox(height: 24.h),
-                    PrimaryButton(
-                      text: 'Play Again',
-                      onTap: _restartGame,
+                    PanAfricanButton(
+                      label: 'Play Again',
+                      onPressed: _restartGame,
+                      backgroundColor: PanAfricanColors.primary,
+                      foregroundColor: Colors.white,
                     ),
                     SizedBox(height: 12.h),
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: Text(
                         'Back to Games',
-                        style: TextStyle(color: AppColors.primaryGreen),
+                        style: TextStyle(color: PanAfricanColors.primary),
                       ),
                     ),
                   ],
@@ -303,8 +304,8 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppColors.primaryGreen,
-                AppColors.accentGold,
+                PanAfricanColors.primary,
+                PanAfricanColors.secondary,
               ],
             ),
           ),
@@ -325,8 +326,8 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AppColors.primaryGreen.withOpacity(0.1),
-                    AppColors.accentGold.withOpacity(0.1),
+                    PanAfricanColors.primary.withOpacity(0.1),
+                    PanAfricanColors.secondary.withOpacity(0.1),
                   ],
                 ),
         ),
@@ -353,7 +354,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryGreen,
+                        color: PanAfricanColors.primary,
                       ),
                     ),
                   ],
@@ -362,12 +363,12 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                 LinearProgressIndicator(
                   value: (_currentIndex + 1) / _questions.length,
                   backgroundColor: Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 ),
                 SizedBox(height: 32.h),
                 
                 // Question card
-                ModernCard(
+                PanAfricanCard(
                   child: Padding(
                     padding: EdgeInsets.all(20.sp),
                     child: Column(
@@ -392,7 +393,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                             fontSize: 22.sp,
                             fontWeight: FontWeight.w500,
                             color: _showResult
-                                ? (isCorrect ? AppColors.primaryGreen : Colors.red)
+                                ? (isCorrect ? PanAfricanColors.primary : Colors.red)
                                 : context.adaptive,
                           ),
                         ),
@@ -402,7 +403,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                             padding: EdgeInsets.all(12.sp),
                             decoration: BoxDecoration(
                               color: isCorrect
-                                  ? AppColors.primaryGreen.withOpacity(0.1)
+                                  ? PanAfricanColors.primary.withOpacity(0.1)
                                   : Colors.red.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -410,7 +411,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                               children: [
                                 Icon(
                                   isCorrect ? Icons.check_circle : Icons.cancel,
-                                  color: isCorrect ? AppColors.primaryGreen : Colors.red,
+                                  color: isCorrect ? PanAfricanColors.primary : Colors.red,
                                 ),
                                 SizedBox(width: 8.w),
                                 Expanded(
@@ -448,7 +449,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   ...question.options.map((option) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 12.h),
-                      child: ModernCard(
+                      child: PanAfricanCard(
                         onTap: () => _selectAnswer(option),
                         child: Padding(
                           padding: EdgeInsets.all(16.sp),

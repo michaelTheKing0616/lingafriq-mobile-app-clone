@@ -5,7 +5,7 @@ import '../../utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -32,20 +32,20 @@ class ProgressDashboardScreen extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: AppBar(
-        title: const Text('Progress Dashboard'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        title: Text('Progress Dashboard', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          icon: Icon(Icons.arrow_back, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -214,12 +214,12 @@ class ProgressDashboardScreen extends ConsumerWidget {
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              color: AppColors.primaryGreen,
+              color: PanAfricanColors.primary,
               barWidth: 3,
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(
                 show: true,
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: PanAfricanColors.primary.withOpacity(0.1),
               ),
             ),
           ],
@@ -236,11 +236,11 @@ class ProgressDashboardScreen extends ConsumerWidget {
     }
 
     final colors = [
-      AppColors.primaryGreen,
-      AppColors.primaryOrange,
-      Colors.blue,
-      Colors.purple,
-      Colors.pink,
+      PanAfricanColors.primary,
+      PanAfricanColors.tertiary,
+      PanAfricanColors.kenteBlue,
+      PanAfricanColors.ankaraPurple,
+      PanAfricanColors.maasaiRed,
     ];
 
     return _buildChartContainer(
@@ -288,12 +288,12 @@ class ProgressDashboardScreen extends ConsumerWidget {
             LineChartBarData(
               spots: spots,
               isCurved: true,
-              color: AppColors.primaryOrange,
+              color: PanAfricanColors.tertiary,
               barWidth: 3,
               dotData: FlDotData(show: false),
               belowBarData: BarAreaData(
                 show: true,
-                color: AppColors.primaryOrange.withOpacity(0.1),
+                color: PanAfricanColors.tertiary.withOpacity(0.1),
               ),
             ),
           ],
@@ -310,26 +310,23 @@ class ProgressDashboardScreen extends ConsumerWidget {
     bool isDark,
   ) {
     return Container(
-      padding: EdgeInsets.all(20.sp),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.xlBR,
         border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
         ),
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
-            ),
+            style: PanAfricanTypography.titleMedium(context, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight),
           ),
-          SizedBox(height: 16.sp),
+          SizedBox(height: PanAfricanSpacing.md),
           SizedBox(
             height: 200.sp,
             child: chart,
@@ -346,9 +343,7 @@ class ProgressDashboardScreen extends ConsumerWidget {
       Center(
         child: Text(
           'No data yet. Start learning to see your progress!',
-          style: TextStyle(
-            color: isDark ? Colors.grey[400] : Colors.grey[600],
-          ),
+          style: PanAfricanTypography.bodyMedium(context, color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
         ),
       ),
       isDark,

@@ -314,7 +314,7 @@ The user is learning $userLanguage.''';
       prompt = 'Context: $chatContext\n\nUser question: $prompt';
     }
     
-    // Get response from AI using systemPromptOverride
+    // Get response from AI (use systemPromptOverride instead of setSystemPrompt)
     final response = await chatProvider.sendMessage(prompt, systemPromptOverride: systemContext);
     
     return response;

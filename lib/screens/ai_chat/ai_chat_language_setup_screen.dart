@@ -4,7 +4,7 @@ import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -70,25 +70,30 @@ class _AiChatLanguageSetupScreenState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textPrimary =
+        isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
     final languages = ref.read(groqChatProvider.notifier).supportedLanguageOptions;
 
     return ErrorBoundary(
       errorMessage: 'Unable to load AI Chat setup. Please check your connection and try again.',
       onRetry: () => setState(() {}),
       child: Scaffold(
-        backgroundColor: isDark ? const Color(0xFF0F1F15) : Colors.white,
+        backgroundColor:
+            isDark ? PolieColors.obsidian : PolieColors.surfaceContainerLight,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
               Padding(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PolieSpacing.md),
                 child: Row(
                   children: [
                     IconButton(
                       icon: const Icon(Icons.arrow_back),
-                      color: isDark ? Colors.white : Colors.black87,
+                      color: textPrimary,
                       onPressed: widget.onBack ??
                           () {
                             Navigator.of(context).pop();
@@ -100,17 +105,14 @@ class _AiChatLanguageSetupScreenState
                         children: [
                           Text(
                             'Choose your language',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : Colors.black87,
+                            style: PolieTypography.h2(context).copyWith(
+                              color: textPrimary,
                             ),
                           ),
                           Text(
                             'Polie will default to this language unless you ask otherwise.',
-                            style: TextStyle(
-                              fontSize: 12.sp,
-                              color: isDark ? Colors.white70 : Colors.black54,
+                            style: PolieTypography.bodySmall(context).copyWith(
+                              color: textSecondary,
                             ),
                           ),
                         ],
@@ -121,39 +123,44 @@ class _AiChatLanguageSetupScreenState
               ),
               // Mode display (read-only, shows selected mode)
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: PolieSpacing.md,
+                  vertical: PolieSpacing.sm,
+                ),
                 child: Container(
-                  padding: EdgeInsets.all(4.w),
+                  padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E3325) : const Color(0xFFF5F7F5),
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                    color: isDark
+                        ? PolieColors.surfaceGlassDark
+                        : PolieColors.surfaceGlass,
+                    borderRadius: BorderRadius.circular(PolieRadius.lg),
                     border: Border.all(
-                      color: const Color(0xFF00A86B).withValues(alpha: 0.3),
+                      color: (isDark ? Colors.white : Colors.black)
+                          .withOpacity(0.08),
                     ),
+                    boxShadow: PolieElevation.level1(context),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         _getModeIcon(_mode),
-                        color: const Color(0xFF00A86B),
+                        color: PolieColors.electricTeal,
                         size: 20.sp,
                       ),
-                      SizedBox(width: 2.w),
+                      SizedBox(width: PolieSpacing.xs),
                       Text(
                         _getModeName(_mode),
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
+                        style: PolieTypography.body(context).copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: textPrimary,
                         ),
                       ),
-                      SizedBox(width: 2.w),
+                      SizedBox(width: PolieSpacing.xs),
                       Text(
                         'Mode',
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.white70 : Colors.black54,
+                        style: PolieTypography.bodySmall(context).copyWith(
+                          color: textSecondary,
                         ),
                       ),
                     ],
@@ -163,12 +170,12 @@ class _AiChatLanguageSetupScreenState
               // Language grid
               Expanded(
                 child: GridView.builder(
-                  padding: EdgeInsets.all(4.w),
+                  padding: EdgeInsets.all(PolieSpacing.md),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount:
                         MediaQuery.of(context).size.width > 600 ? 3 : 2,
-                    mainAxisSpacing: 3.w,
-                    crossAxisSpacing: 3.w,
+                    mainAxisSpacing: PolieSpacing.sm,
+                    crossAxisSpacing: PolieSpacing.sm,
                     childAspectRatio: 1.2,
                   ),
                   itemCount: languages.length,
@@ -176,24 +183,25 @@ class _AiChatLanguageSetupScreenState
                     final lang = languages[index];
                     final name = lang['name'] ?? '';
                     final flag = lang['flag'] ?? '🌍';
+                    final accent = polieAccentForLanguage(name);
 
                     return InkWell(
                       onTap: () => _selectLanguage(name),
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                      borderRadius: BorderRadius.circular(PolieRadius.xl),
                       child: Container(
                         decoration: BoxDecoration(
                           color: isDark
-                              ? const Color(0xFF1E3325)
-                              : const Color(0xFFF5F7F5),
+                              ? PolieColors.surfaceGlassDark
+                              : PolieColors.surfaceGlass,
                           borderRadius:
-                              BorderRadius.circular(DesignSystem.radiusXL),
+                              BorderRadius.circular(PolieRadius.xl),
                           border: Border.all(
-                            color: const Color(0xFF00A86B).withValues(alpha: 0.2),
+                            color: accent.withOpacity(0.2),
                             width: 1.2,
                           ),
-                          boxShadow: DesignSystem.shadowMedium,
+                          boxShadow: PolieElevation.level1(context),
                         ),
-                        padding: EdgeInsets.all(3.w),
+                        padding: EdgeInsets.all(PolieSpacing.md),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -201,25 +209,21 @@ class _AiChatLanguageSetupScreenState
                               flag,
                               style: TextStyle(fontSize: 32.sp),
                             ),
-                            SizedBox(height: 1.h),
+                            SizedBox(height: PolieSpacing.xs),
                             Text(
                               name,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 15.sp,
+                              style: PolieTypography.body(context).copyWith(
                                 fontWeight: FontWeight.w700,
-                                color: isDark ? Colors.white : Colors.black87,
+                                color: textPrimary,
                               ),
                             ),
-                            SizedBox(height: 0.5.h),
+                            SizedBox(height: PolieSpacing.xxxs),
                             Text(
                               _getModeDescription(_mode, name),
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 11.sp,
-                                color: isDark
-                                    ? Colors.white70
-                                    : Colors.black54,
+                              style: PolieTypography.bodySmall(context).copyWith(
+                                color: textSecondary,
                               ),
                             ),
                           ],

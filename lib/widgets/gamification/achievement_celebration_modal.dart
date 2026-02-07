@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/app_colors.dart';
+import '../../utils/pan_african_design_system.dart';
 
 /// A beautiful achievement celebration modal with confetti effect
 /// Shows when user unlocks badges, completes milestones, or achieves special goals
@@ -122,9 +122,9 @@ class _AchievementCelebrationModalState
 
   Color _getConfettiColor() {
     final colors = [
-      AppColors.accentGold,
-      AppColors.primaryOrange,
-      AppColors.primaryGreen,
+      PanAfricanColors.secondary,
+      PanAfricanColors.tertiary,
+      PanAfricanColors.primary,
       Colors.red,
       Colors.blue,
       Colors.purple,
@@ -142,7 +142,7 @@ class _AchievementCelebrationModalState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accentColor = widget.accentColor ?? AppColors.accentGold;
+    final accentColor = widget.accentColor ?? PanAfricanColors.secondary;
 
     return Stack(
       children: [
@@ -303,7 +303,7 @@ class _AchievementCelebrationModalState
                                 if (widget.xpReward > 0) ...[
                                   Icon(
                                     Icons.star_rounded,
-                                    color: AppColors.accentGold,
+                                    color: PanAfricanColors.secondary,
                                     size: 24.sp,
                                   ),
                                   SizedBox(width: 6.w),
@@ -312,7 +312,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.accentGold,
+                                      color: PanAfricanColors.secondary,
                                     ),
                                   ),
                                 ],
@@ -329,7 +329,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryOrange,
+                                      color: PanAfricanColors.tertiary,
                                     ),
                                   ),
                                 ],
@@ -443,7 +443,7 @@ void showBadgeUnlockCelebration(
     iconEmoji: badgeEmoji,
     xpReward: xpReward,
     currencyReward: currencyReward,
-    accentColor: AppColors.accentGold,
+    accentColor: PanAfricanColors.secondary,
   );
 }
 
@@ -462,7 +462,7 @@ void showLevelUpCelebration(
     iconEmoji: '🌟',
     xpReward: bonusXP,
     currencyReward: bonusCurrency,
-    accentColor: AppColors.primaryGreen,
+    accentColor: PanAfricanColors.primary,
   );
 }
 
@@ -480,7 +480,7 @@ void showStreakMilestoneCelebration(
     iconEmoji: '🔥',
     xpReward: bonusXP,
     currencyReward: bonusCurrency,
-    accentColor: AppColors.primaryOrange,
+    accentColor: PanAfricanColors.tertiary,
   );
 }
 

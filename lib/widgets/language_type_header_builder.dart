@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 import 'greegins_builder.dart';
 
@@ -65,7 +66,7 @@ class LangguageTypeHeaderBuilder extends StatelessWidget {
           child: LinearProgressIndicator(
             value: count == 0 ? 1 : completed / count,
             color: Colors.white,
-            backgroundColor: AppColors.primaryGreen,
+            backgroundColor: PanAfricanColors.primary,
           ),
         ).px16(),
         12.heightBox,

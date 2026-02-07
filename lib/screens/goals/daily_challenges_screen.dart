@@ -5,9 +5,9 @@ import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Daily Challenges Screen - Based on Figma Make Design
 class DailyChallengesScreen extends HookConsumerWidget {
@@ -28,36 +28,24 @@ class DailyChallengesScreen extends HookConsumerWidget {
         .fold(0, (sum, goal) => sum + _getXpReward(goal.type));
 
     return Scaffold(
-      backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
+      backgroundColor:
+          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: Stack(
         children: [
           // Gradient Header
           Container(
             height: 25.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF007A3D), // Green
-                  Color(0xFF00A8E8), // Blue
-                ],
+              gradient: PanAfricanGradients.forest,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(PanAfricanRadius.xxl),
+                bottomRight: Radius.circular(PanAfricanRadius.xxl),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Column(
                   children: [
                     if (onBack != null)
@@ -81,17 +69,14 @@ class DailyChallengesScreen extends HookConsumerWidget {
                     SizedBox(height: 1.h),
                     Text(
                       'Daily Challenges',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
+                      style: PanAfricanTypography.headlineLarge(context).copyWith(
                         color: Colors.white,
                       ),
                     ),
                     SizedBox(height: 0.5.h),
                     Text(
                       'Complete challenges to earn extra XP',
-                      style: TextStyle(
-                        fontSize: 16.sp,
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
                         color: Colors.white.withOpacity(0.9),
                       ),
                     ),
@@ -107,16 +92,24 @@ class DailyChallengesScreen extends HookConsumerWidget {
             right: 0,
             bottom: 0,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
                 children: [
+                  if (dailyGoals.goals.isEmpty)
+                    const PanAfricanEmptyState(
+                      icon: Icons.track_changes_rounded,
+                      title: 'No challenges yet',
+                      description: 'Check back later for your daily goals.',
+                    )
+                  else ...[
                   // Progress Card
                   Container(
-                    padding: EdgeInsets.all(5.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
                     decoration: BoxDecoration(
-                      color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      boxShadow: DesignSystem.shadowLarge,
+                      color:
+                          isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+                      boxShadow: PanAfricanShadows.lg,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,33 +119,35 @@ class DailyChallengesScreen extends HookConsumerWidget {
                           children: [
                             Text(
                               'Today\'s Progress',
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                color: isDark ? Colors.white : Colors.black87,
+                              style: PanAfricanTypography.titleMedium(context).copyWith(
+                                color: isDark
+                                    ? PanAfricanColors.textPrimaryDark
+                                    : PanAfricanColors.textPrimaryLight,
                               ),
                             ),
                             SizedBox(height: 0.5.h),
                             Text(
                               '$totalXP XP earned',
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                                color: isDark ? Colors.white70 : Colors.black54,
+                              style: PanAfricanTypography.bodySmall(context).copyWith(
+                                color: isDark
+                                    ? PanAfricanColors.textSecondaryDark
+                                    : PanAfricanColors.textSecondaryLight,
                               ),
                             ),
                           ],
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: PanAfricanSpacing.md,
+                            vertical: PanAfricanSpacing.xs,
+                          ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF007A3D),
-                            borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                            color: PanAfricanColors.primary,
+                            borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                           ),
                           child: Text(
                             '$completedCount/$totalCount',
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
+                            style: PanAfricanTypography.labelLarge(context).copyWith(
                               color: Colors.white,
                             ),
                           ),
@@ -168,14 +163,15 @@ class DailyChallengesScreen extends HookConsumerWidget {
 
                     return Container(
                       margin: EdgeInsets.only(bottom: 2.h),
-                      padding: EdgeInsets.all(5.w),
+                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
                       decoration: BoxDecoration(
-                        color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                        boxShadow: DesignSystem.shadowMedium,
+                        color:
+                            isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+                        boxShadow: PanAfricanShadows.md,
                         border: Border.all(
                           color: isCompleted
-                              ? const Color(0xFF007A3D)
+                              ? PanAfricanColors.primary
                               : Colors.transparent,
                           width: 2,
                         ),
@@ -187,11 +183,11 @@ class DailyChallengesScreen extends HookConsumerWidget {
                             height: 10.w,
                             decoration: BoxDecoration(
                               color: isCompleted
-                                  ? const Color(0xFF007A3D)
+                                  ? PanAfricanColors.primary
                                   : (isDark
                                       ? Colors.grey[800]
                                       : Colors.grey[200]),
-                              borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                             ),
                             child: Icon(
                               isCompleted ? Icons.check : Icons.track_changes_rounded,
@@ -199,29 +195,32 @@ class DailyChallengesScreen extends HookConsumerWidget {
                               size: 20,
                             ),
                           ),
-                          SizedBox(width: 4.w),
+                          SizedBox(width: PanAfricanSpacing.md),
                           Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   _getGoalTitle(goal.type),
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                                    color: isDark ? Colors.white : Colors.black87,
+                                  style: PanAfricanTypography.bodyLarge(context).copyWith(
+                                    fontWeight: FontWeight.w700,
+                                    color: isDark
+                                        ? PanAfricanColors.textPrimaryDark
+                                        : PanAfricanColors.textPrimaryLight,
                                   ),
                                 ),
                                 SizedBox(height: 1.h),
                                 ClipRRect(
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
                                   child: LinearProgressIndicator(
                                     value: progress.clamp(0.0, 1.0),
                                     backgroundColor: isDark
                                         ? Colors.grey[800]
                                         : Colors.grey[200],
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                      const Color(0xFF007A3D),
+                                      isCompleted
+                                          ? PanAfricanColors.primary
+                                          : PanAfricanColors.secondary,
                                     ),
                                     minHeight: 8,
                                   ),
@@ -232,9 +231,10 @@ class DailyChallengesScreen extends HookConsumerWidget {
                                   children: [
                                     Text(
                                       '${goal.current}/${goal.target}',
-                                      style: TextStyle(
-                                        fontSize: 12.sp,
-                                        color: isDark ? Colors.white70 : Colors.black54,
+                                      style: PanAfricanTypography.labelSmall(context).copyWith(
+                                        color: isDark
+                                            ? PanAfricanColors.textSecondaryDark
+                                            : PanAfricanColors.textSecondaryLight,
                                       ),
                                     ),
                                     Row(
@@ -247,9 +247,10 @@ class DailyChallengesScreen extends HookConsumerWidget {
                                         SizedBox(width: 0.5.w),
                                         Text(
                                           '${_getXpReward(goal.type)} XP',
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: isDark ? Colors.white70 : Colors.black54,
+                                          style: PanAfricanTypography.labelSmall(context).copyWith(
+                                            color: isDark
+                                                ? PanAfricanColors.textSecondaryDark
+                                                : PanAfricanColors.textSecondaryLight,
                                           ),
                                         ),
                                       ],
@@ -263,6 +264,7 @@ class DailyChallengesScreen extends HookConsumerWidget {
                       ),
                     );
                   }).toList(),
+                  ],
                 ],
               ),
             ),

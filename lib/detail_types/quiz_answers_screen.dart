@@ -3,7 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/quiz_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
@@ -57,26 +58,47 @@ class QuizAnswersScreen extends ConsumerWidget {
               ),
             ),
             ListView(
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.symmetric(vertical: 12.h),
               children: [
-                12.heightBox,
-                if (allCorrect)
-                  "Congratulations!!!. "
-                      .richText
-                      .withTextSpanChildren([
-                        "You have answered all questions correctly."
-                            .textSpan
-                            .color(Colors.green)
-                            .make()
-                      ])
-                      .xl
-                      .make()
-                      .px24()
-                else
-                  "You score ${correctAnswers.length} correct answers out of ${quiz.length}. See where you made a mistake to try again."
-                      .text
-                      .make()
-                      .px24(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 24.w),
+                  child: PanAfricanCard(
+                    hasGradientBorder: true,
+                    gradientStart: allCorrect
+                        ? PanAfricanColors.success
+                        : PanAfricanColors.secondary,
+                    gradientEnd: PanAfricanColors.tertiary,
+                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          allCorrect ? 'Excellent work!' : 'Quiz summary',
+                          style: PanAfricanTypography.titleLarge(context),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.xs),
+                        Text(
+                          allCorrect
+                              ? 'You answered every question correctly.'
+                              : 'You scored ${correctAnswers.length} correct answers out of ${quiz.length}. Review the questions below.',
+                          style: PanAfricanTypography.bodyMedium(context).copyWith(
+                            color: PanAfricanColors.textSecondary,
+                          ),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.md),
+                        PanAfricanBadge(
+                          label: '${correctAnswers.length}/${quiz.length} correct',
+                          color: allCorrect
+                              ? PanAfricanColors.success
+                              : PanAfricanColors.secondary,
+                          icon: allCorrect
+                              ? Icons.celebration_rounded
+                              : Icons.analytics_rounded,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 ...quiz.asMap().entries.map((e) {
                   final index = e.key;
                   final currentQuiz = quiz[index];
@@ -93,9 +115,9 @@ class QuizAnswersScreen extends ConsumerWidget {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      PrimaryButton(
+                      PanAfricanButton(
                         width: 0.6.sw,
-                        onTap: () async {
+                        onPressed: () async {
                           if (allCorrect) {
                             if (!isCompleted) {
                               await ref.read(apiProvider.notifier).markAsComplete(endpointToHit);
@@ -104,7 +126,11 @@ class QuizAnswersScreen extends ConsumerWidget {
                           }
                           Navigator.of(context).pop(true);
                         },
-                        text: allCorrect ? "Continue" : "Try Again",
+                        label: allCorrect ? "Continue" : "Try Again",
+                        backgroundColor: allCorrect
+                            ? PanAfricanColors.success
+                            : PanAfricanColors.primary,
+                        foregroundColor: Colors.white,
                       ).pOnly(bottom: 24, top: 16),
                     ],
                   ),

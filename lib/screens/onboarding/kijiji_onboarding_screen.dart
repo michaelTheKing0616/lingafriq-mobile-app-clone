@@ -9,7 +9,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/screens/auth/login_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
@@ -309,7 +309,7 @@ class _WelcomeScreen extends StatelessWidget {
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: const Text(
@@ -420,7 +420,7 @@ class _ElderScreen extends HookConsumerWidget {
                           color: isSelected
                               ? Colors.white
                               : Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                           border: Border.all(
                             color: Colors.white,
                             width: 2,
@@ -504,7 +504,7 @@ class _ElderScreen extends HookConsumerWidget {
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                     disabledBackgroundColor: Colors.white.withOpacity(0.3),
                   ),
@@ -667,7 +667,7 @@ class _WeaverScreen extends HookConsumerWidget {
                         color: isSelected
                             ? Colors.white
                             : Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                       ),
                       child: Text(
                         level.toUpperCase(),
@@ -694,7 +694,7 @@ class _WeaverScreen extends HookConsumerWidget {
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: const Text('Next'),
@@ -810,7 +810,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: const Text('Next'),
@@ -1481,7 +1481,7 @@ class _PlacementTestScreen extends HookConsumerWidget {
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: EdgeInsets.symmetric(vertical: 16.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: Text(
