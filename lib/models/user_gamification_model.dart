@@ -20,6 +20,7 @@ class UserGamificationModel {
   // Additional progress tracking properties
   final int lessonsCompleted;
   final int wordsLearned;
+  final int languagesLearned;
   final int totalXP; // Alias for xp, kept for backward compatibility
   final String? currentLanguage;
   final int quizzesCompleted;
@@ -48,6 +49,7 @@ class UserGamificationModel {
     this.ubuntuStreakActive = false,
     this.lessonsCompleted = 0,
     this.wordsLearned = 0,
+    this.languagesLearned = 0,
     this.totalXP = 0,
     this.currentLanguage,
     this.quizzesCompleted = 0,
@@ -77,6 +79,7 @@ class UserGamificationModel {
     bool? ubuntuStreakActive,
     int? lessonsCompleted,
     int? wordsLearned,
+    int? languagesLearned,
     int? totalXP,
     String? currentLanguage,
     int? quizzesCompleted,
@@ -105,6 +108,7 @@ class UserGamificationModel {
       ubuntuStreakActive: ubuntuStreakActive ?? this.ubuntuStreakActive,
       lessonsCompleted: lessonsCompleted ?? this.lessonsCompleted,
       wordsLearned: wordsLearned ?? this.wordsLearned,
+      languagesLearned: languagesLearned ?? this.languagesLearned,
       totalXP: totalXP ?? this.totalXP,
       currentLanguage: currentLanguage ?? this.currentLanguage,
       quizzesCompleted: quizzesCompleted ?? this.quizzesCompleted,
@@ -135,6 +139,7 @@ class UserGamificationModel {
         'ubuntuStreakActive': ubuntuStreakActive,
         'lessonsCompleted': lessonsCompleted,
         'wordsLearned': wordsLearned,
+        'languagesLearned': languagesLearned,
         'totalXP': totalXP,
         'currentLanguage': currentLanguage,
         'quizzesCompleted': quizzesCompleted,
@@ -175,6 +180,7 @@ class UserGamificationModel {
         ubuntuStreakActive: json['ubuntuStreakActive'] as bool? ?? false,
         lessonsCompleted: json['lessonsCompleted'] as int? ?? 0,
         wordsLearned: json['wordsLearned'] as int? ?? 0,
+        languagesLearned: json['languagesLearned'] as int? ?? 0,
         totalXP: json['totalXP'] as int? ?? json['xp'] as int? ?? 0,
         currentLanguage: json['currentLanguage'] as String?,
         quizzesCompleted: json['quizzesCompleted'] as int? ?? 0,

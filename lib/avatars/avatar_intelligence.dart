@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'avatar_engine.dart';
 import 'emotion_system.dart';
 import 'personality_system.dart';
+import 'avatar_providers.dart';
 
 /// Avatar Intelligence System
 /// 
@@ -377,9 +378,4 @@ class AvatarSynergyManager {
 
 final avatarSynergyManagerProvider = Provider<AvatarSynergyManager>((ref) {
   return AvatarSynergyManager(ref);
-});
-
-// Export the avatarEngineProvider from avatar_providers
-final avatarEngineProvider = Provider<AvatarEngine>((ref) {
-  return AvatarEngine();
 });

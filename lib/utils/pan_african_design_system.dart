@@ -65,6 +65,8 @@ class PanAfricanColors {
   static const Color ankaraPurple = Color(0xFF9B59B6);
   /// Kitenge Teal
   static const Color kitengeTeal = Color(0xFF16A085);
+  // Backward-compatible alias for earlier usage.
+  static const Color kenteTeal = kitengeTeal;
   /// Maasai Red
   static const Color maasaiRed = Color(0xFFE74C3C);
   
@@ -291,6 +293,7 @@ class PanAfricanRadius {
   static double get xl => 24.r;
   static double get xxl => 32.r;
   static double get round => 100.r;
+  static double get pill => round;
   
   static BorderRadius get xsBR => BorderRadius.circular(xs);
   static BorderRadius get smBR => BorderRadius.circular(sm);

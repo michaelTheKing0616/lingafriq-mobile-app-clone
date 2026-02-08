@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/foundation.dart';
 
 /// Extended emotion states for avatars

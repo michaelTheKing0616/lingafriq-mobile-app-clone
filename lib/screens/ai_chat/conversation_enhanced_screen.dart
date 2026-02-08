@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -312,7 +312,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
   ) {
     return ClipRRect(
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+        filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
         child: Container(
           padding: EdgeInsets.all(PolieSpacing.md),
           decoration: BoxDecoration(
@@ -545,7 +545,7 @@ class _MessageBubble extends StatelessWidget {
                 bottomRight: Radius.circular(message.isUser ? PolieRadius.sm : PolieRadius.lg),
               ),
               child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                 child: Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: PolieSpacing.md,

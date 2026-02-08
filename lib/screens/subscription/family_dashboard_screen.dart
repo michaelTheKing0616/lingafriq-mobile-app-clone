@@ -35,8 +35,8 @@ class _FamilyDashboardScreenState
   }
 
   Future<void> _load() async {
-    final sub = ref.read(subscriptionProvider);
-    if (sub.tier != SubscriptionTier.family) {
+    final subNotifier = ref.read(subscriptionProvider.notifier);
+    if (!subNotifier.canAccessFamilyDashboard()) {
       setState(() {
         _isLoading = false;
       });
@@ -64,9 +64,11 @@ class _FamilyDashboardScreenState
   @override
   Widget build(BuildContext context) {
     final sub = ref.watch(subscriptionProvider);
+    final canAccessFamily =
+        ref.read(subscriptionProvider.notifier).canAccessFamilyDashboard();
     final isDark = context.isDarkMode;
 
-    if (sub.tier != SubscriptionTier.family) {
+    if (!canAccessFamily) {
       return Scaffold(
         backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
         appBar: AppBar(

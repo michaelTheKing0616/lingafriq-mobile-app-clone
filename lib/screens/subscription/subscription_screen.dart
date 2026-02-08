@@ -133,6 +133,27 @@ class SubscriptionScreen extends ConsumerWidget {
                 ref.read(subscriptionProvider.notifier).subscribe(SubscriptionTier.lifetime);
               },
             ),
+            SizedBox(height: PanAfricanSpacing.lg),
+            Center(
+              child: TextButton(
+                onPressed: () async {
+                  HapticFeedback.lightImpact();
+                  final ok = await ref.read(subscriptionProvider.notifier).restorePurchases();
+                  if (!context.mounted) return;
+                  if (ok) {
+                    ErrorHandler.showSuccess(context, 'Purchases restored');
+                  } else {
+                    ErrorHandler.showError(context, 'No purchases found to restore');
+                  }
+                },
+                child: Text(
+                  'Restore purchases',
+                  style: PanAfricanTypography.labelLarge(context).copyWith(
+                    color: PanAfricanColors.primary,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

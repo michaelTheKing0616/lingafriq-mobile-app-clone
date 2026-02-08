@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -563,7 +563,7 @@ class _PolieGlassCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(PolieRadius.lg),
       child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
           padding: EdgeInsets.all(PolieSpacing.lg),
           decoration: BoxDecoration(

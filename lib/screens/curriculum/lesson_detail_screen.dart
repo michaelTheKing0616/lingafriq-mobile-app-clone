@@ -66,6 +66,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
     try {
       final curriculumService = ref.read(curriculumServiceProvider);
       final vocabObjects = widget.lesson.vocabObjects;
+      final grammar = widget.lesson.grammar ?? const <String>[];
       
       // Add timeout to prevent endless loading
       final content = await curriculumService.generateLessonContent(
@@ -73,7 +74,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
         level: widget.level,
         lessonTitle: widget.lesson.title,
         vocab: vocabObjects.map((v) => v.toMap()).toList(),
-        grammar: widget.lesson.grammar,
+        grammar: grammar,
         topic: widget.lesson.title,
       ).timeout(
         const Duration(seconds: 45),
@@ -287,7 +288,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
   Widget _buildLessonHero(BuildContext context, bool isDark) {
     final lessonTitle = widget.lesson.title;
     final vocabCount = widget.lesson.vocabObjects.length;
-    final grammarCount = widget.lesson.grammar.length;
+    final grammarCount = (widget.lesson.grammar ?? const <String>[]).length;
     return Padding(
       padding: EdgeInsets.fromLTRB(
         PanAfricanSpacing.md,

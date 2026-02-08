@@ -15,6 +15,7 @@ import '../../utils/integration_helpers.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../utils/performance_utils.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
+import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
 import '../../games/animation/rive_asset_loader.dart';
 

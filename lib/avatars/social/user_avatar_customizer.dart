@@ -138,18 +138,25 @@ class AccessoryOption {
   final String name;
   final String description;
   final bool isPremium;
+  final IconData? icon;
   
-  const AccessoryOption(this.id, this.name, this.description, {this.isPremium = false});
+  const AccessoryOption(
+    this.id,
+    this.name,
+    this.description, {
+    this.isPremium = false,
+    this.icon,
+  });
   
   static const List<AccessoryOption> options = [
     AccessoryOption(0, 'None', 'No accessory'),
-    AccessoryOption(1, 'Beads', 'Traditional beaded necklace'),
-    AccessoryOption(2, 'Gele', 'Head wrap'),
-    AccessoryOption(3, 'Kufi', 'Traditional cap'),
-    AccessoryOption(4, 'Earrings', 'Gold earrings'),
-    AccessoryOption(5, 'Glasses', 'Modern glasses'),
-    AccessoryOption(6, 'Crown', 'Tribal crown', isPremium: true),
-    AccessoryOption(7, 'Warrior Mark', 'Ceremonial marking', isPremium: true),
+    AccessoryOption(1, 'Beads', 'Traditional beaded necklace', icon: Icons.circle),
+    AccessoryOption(2, 'Gele', 'Head wrap', icon: Icons.checkroom),
+    AccessoryOption(3, 'Kufi', 'Traditional cap', icon: Icons.emoji_people),
+    AccessoryOption(4, 'Earrings', 'Gold earrings', icon: Icons.star_outline),
+    AccessoryOption(5, 'Glasses', 'Modern glasses', icon: Icons.visibility),
+    AccessoryOption(6, 'Crown', 'Tribal crown', isPremium: true, icon: Icons.emoji_events),
+    AccessoryOption(7, 'Warrior Mark', 'Ceremonial marking', isPremium: true, icon: Icons.brush),
   ];
 }
 

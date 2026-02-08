@@ -80,8 +80,8 @@ class TakeQuizScreen extends ConsumerWidget {
                               children: [
                                 IgnorePointer(
                                   ignoring: true,
-                                  child:
-                                      Image.asset(Images.map).offset(offset: Offset(0, -12.sp)),
+                                  child: Image.asset(Images.map)
+                                      .offset(offset: Offset(0, -12.sp)),
                                 ),
                                 Positioned(
                                   left: constraints.maxWidth * 0.12,
@@ -90,43 +90,44 @@ class TakeQuizScreen extends ConsumerWidget {
                                     onTap: () => _loadRandomQuiz(context, ref),
                                   ).animate(effects: kGradientTextEffects),
                                 ),
-                                  Positioned(
-                                    left: constraints.maxWidth * 0.365,
-                                    top: constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
-                                    child: _LanguageTextBuilder(
-                                      onTap: () {
-                                        ref.read(navigationProvider).navigateTo(
-                                              LanguageQuizSectionsListScreen(language: language),
-                                            );
-                                      },
-                                    ).animate(effects: kGradientTextEffects),
-                                  ),
-                                  Positioned(
-                                    left: constraints.maxWidth * (context.isSmall ? 0.45 : 0.425),
-                                    top: constraints.maxHeight * (context.isSmall ? 0.6 : 0.475),
-                                    child: _HistoryTextBuilder(
-                                      size: Size(18.sp, 18.sp),
-                                      onTap: () {
-                                        ref.read(navigationProvider).navigateTo(
-                                              HistoryQuizSectionsListScreen(language: language),
-                                            );
-                                      },
-                                    ).animate(effects: kGradientTextEffects),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ).px16(),
-                      ),
-                      20.heightBox,
-                    ],
-                  ),
-                )
-              ],
-            ).expand()
-          ],
-        ),
+                                Positioned(
+                                  left: constraints.maxWidth * 0.365,
+                                  top:
+                                      constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
+                                  child: _LanguageTextBuilder(
+                                    onTap: () {
+                                      ref.read(navigationProvider).navigateTo(
+                                            LanguageQuizSectionsListScreen(language: language),
+                                          );
+                                    },
+                                  ).animate(effects: kGradientTextEffects),
+                                ),
+                                Positioned(
+                                  left: constraints.maxWidth * (context.isSmall ? 0.45 : 0.425),
+                                  top:
+                                      constraints.maxHeight * (context.isSmall ? 0.6 : 0.475),
+                                  child: _HistoryTextBuilder(
+                                    size: Size(18.sp, 18.sp),
+                                    onTap: () {
+                                      ref.read(navigationProvider).navigateTo(
+                                            HistoryQuizSectionsListScreen(language: language),
+                                          );
+                                    },
+                                  ).animate(effects: kGradientTextEffects),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ).px16(),
+                    ),
+                    20.heightBox,
+                  ],
+                ),
+              ),
+            ],
+          ).expand(),
+        ],
       ),
     );
   }

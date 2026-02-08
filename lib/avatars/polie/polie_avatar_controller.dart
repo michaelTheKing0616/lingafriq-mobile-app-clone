@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:state_notifier/state_notifier.dart';
 import '../avatar_engine.dart';
+import '../avatar_providers.dart';
 import '../emotion_system.dart';
 
 /// Polie Avatar state
@@ -51,15 +53,16 @@ class PolieAvatarState {
 
 /// Polie Avatar Controller Provider
 final polieAvatarControllerProvider = StateNotifierProvider<PolieAvatarControllerNotifier, PolieAvatarState>((ref) {
-  return PolieAvatarControllerNotifier();
+  return PolieAvatarControllerNotifier(ref);
 });
 
 /// Polie Avatar Controller Notifier
 class PolieAvatarControllerNotifier extends StateNotifier<PolieAvatarState> {
+  final Ref _ref;
   AvatarController? _avatarController;
   StreamSubscription? _stateSubscription;
   
-  PolieAvatarControllerNotifier() : super(const PolieAvatarState()) {
+  PolieAvatarControllerNotifier(this._ref) : super(const PolieAvatarState()) {
     _initialize();
   }
   
@@ -69,7 +72,8 @@ class PolieAvatarControllerNotifier extends StateNotifier<PolieAvatarState> {
   /// Initialize the Polie avatar
   Future<void> _initialize() async {
     try {
-      _avatarController = await AvatarEngine().getController(AvatarType.polie);
+      final engine = _ref.read(avatarEngineProvider);
+      _avatarController = await engine.getController(AvatarType.polie);
       
       // Listen to state changes
       _stateSubscription = _avatarController!.stateStream.listen((avatarState) {

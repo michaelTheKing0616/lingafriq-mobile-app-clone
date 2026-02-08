@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -125,6 +124,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
                     PolieColors.primary.withOpacity(0.92),
                     PolieColors.primaryDark.withOpacity(0.88),
                   ],
+          ),
         ),
         child: SafeArea(
           child: Column(
