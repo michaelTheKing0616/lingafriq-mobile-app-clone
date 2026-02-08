@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' hide LinearGradient, RadialGradient;
 import '../avatar_engine.dart';
 import '../emotion_system.dart';
 import '../personality_system.dart';

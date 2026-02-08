@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:state_notifier/state_notifier.dart';
 import '../avatar_engine.dart';
 import '../avatar_providers.dart';
 import '../emotion_system.dart';
@@ -52,18 +51,22 @@ class PolieAvatarState {
 }
 
 /// Polie Avatar Controller Provider
-final polieAvatarControllerProvider = StateNotifierProvider<PolieAvatarControllerNotifier, PolieAvatarState>((ref) {
-  return PolieAvatarControllerNotifier(ref);
-});
+final polieAvatarControllerProvider = NotifierProvider<PolieAvatarControllerNotifier, PolieAvatarState>(
+  PolieAvatarControllerNotifier.new,
+);
 
 /// Polie Avatar Controller Notifier
-class PolieAvatarControllerNotifier extends StateNotifier<PolieAvatarState> {
-  final Ref _ref;
+class PolieAvatarControllerNotifier extends Notifier<PolieAvatarState> {
   AvatarController? _avatarController;
   StreamSubscription? _stateSubscription;
   
-  PolieAvatarControllerNotifier(this._ref) : super(const PolieAvatarState()) {
+  @override
+  PolieAvatarState build() {
+    ref.onDispose(() {
+      _stateSubscription?.cancel();
+    });
     _initialize();
+    return const PolieAvatarState();
   }
   
   /// Get the underlying avatar controller
@@ -72,7 +75,7 @@ class PolieAvatarControllerNotifier extends StateNotifier<PolieAvatarState> {
   /// Initialize the Polie avatar
   Future<void> _initialize() async {
     try {
-      final engine = _ref.read(avatarEngineProvider);
+      final engine = ref.read(avatarEngineProvider);
       _avatarController = await engine.getController(AvatarType.polie);
       
       // Listen to state changes
