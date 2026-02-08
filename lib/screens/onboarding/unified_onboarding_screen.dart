@@ -22,6 +22,7 @@ import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/avatars/avatars.dart';

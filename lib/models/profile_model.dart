@@ -19,6 +19,7 @@ class ProfileModel {
   final String? global_id; // User's unique handle/identifier
   final String? level; // User's learning level (A0, A1, A2, etc.)
   final String? learningLanguage; // Currently learning language code
+  final int streak;
   
   ProfileModel({
     required this.id,
@@ -35,6 +36,7 @@ class ProfileModel {
     this.global_id,
     this.level,
     this.learningLanguage,
+    this.streak = 0,
   });
 
   ProfileModel copyWith({
@@ -52,6 +54,7 @@ class ProfileModel {
     String? global_id,
     String? level,
     String? learningLanguage,
+    int? streak,
   }) {
     return ProfileModel(
       id: id ?? this.id,
@@ -68,6 +71,7 @@ class ProfileModel {
       global_id: global_id ?? this.global_id,
       level: level ?? this.level,
       learningLanguage: learningLanguage ?? this.learningLanguage,
+      streak: streak ?? this.streak,
     );
   }
 
@@ -96,6 +100,7 @@ class ProfileModel {
     if (learningLanguage != null) {
       result.addAll({'learning_language': learningLanguage});
     }
+    result.addAll({'streak': streak});
 
     return result;
   }
@@ -124,6 +129,7 @@ class ProfileModel {
       completed_point: map['completed_point'] is String
           ? num.parse(map['completed_point']).toInt()
           : map['completed_point']?.toInt() ?? 0,
+      streak: map['streak'] is String ? num.parse(map['streak']).toInt() : map['streak']?.toInt() ?? 0,
     );
   }
 

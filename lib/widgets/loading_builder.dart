@@ -34,7 +34,7 @@ class LoadingBuilder extends StatelessWidget {
           ),
         ),
         12.heightBox,
-        ...List.generate(4, (_) => _).map((e) {
+        ...List.generate(4, (index) {
           return Container(
             width: double.infinity,
             margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
@@ -66,7 +66,7 @@ class LoadingBuilder extends StatelessWidget {
               ],
             ),
           ).shimmer();
-        }).toList()
+        }).toList(),
         // LessonsList(language: language).expand(),
       ],
     );

@@ -44,6 +44,8 @@ class PolieColors {
 class PolieSpacing {
   PolieSpacing._();
 
+  static double get xxxs => 2.w;
+  static double get xxs => 4.w;
   static double get xs => 4.w;
   static double get sm => 8.w;
   static double get md => 16.w;

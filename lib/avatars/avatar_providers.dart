@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:state_notifier/state_notifier.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'avatar_engine.dart';
 import 'emotion_system.dart';
@@ -45,13 +44,14 @@ final personalitySystemProvider = Provider<PersonalitySystem>((ref) {
 /// 1. On init: load from SharedPreferences (instant, offline-safe)
 /// 2. Then fetch from backend in background (source of truth)
 /// 3. On change: save to SharedPreferences immediately, then sync to backend
-class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
-  final Ref _ref;
+class UserAvatarConfigNotifier extends Notifier<UserAvatarConfig> {
   static const _storageKey = 'user_avatar_config';
   bool _isInitialized = false;
   
-  UserAvatarConfigNotifier(this._ref) : super(const UserAvatarConfig()) {
+  @override
+  UserAvatarConfig build() {
     _initialize();
+    return const UserAvatarConfig();
   }
   
   /// Load from local storage first, then sync from backend
@@ -68,7 +68,7 @@ class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
   
   Future<void> _loadFromLocalStorage() async {
     try {
-      final prefs = _ref.read(sharedPreferencesProvider).prefs;
+      final prefs = ref.read(sharedPreferencesProvider).prefs;
       final jsonStr = prefs.getString(_storageKey);
       if (jsonStr != null) {
         final map = json.decode(jsonStr) as Map<String, dynamic>;
@@ -81,7 +81,7 @@ class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
   
   Future<void> _saveToLocalStorage() async {
     try {
-      final prefs = _ref.read(sharedPreferencesProvider).prefs;
+      final prefs = ref.read(sharedPreferencesProvider).prefs;
       await prefs.setString(_storageKey, json.encode(state.toJson()));
     } catch (e) {
       debugPrint('Avatar: Failed to save to local storage: $e');
@@ -90,7 +90,7 @@ class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
   
   Future<void> _syncFromBackend() async {
     try {
-      final api = _ref.read(apiProvider.notifier);
+      final api = ref.read(apiProvider.notifier);
       final remoteConfig = await api.getAvatarConfig();
       if (remoteConfig != null && remoteConfig['isDefault'] != true) {
         state = UserAvatarConfig.fromJson(remoteConfig);
@@ -103,7 +103,7 @@ class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
   
   Future<void> _syncToBackend() async {
     try {
-      final api = _ref.read(apiProvider.notifier);
+      final api = ref.read(apiProvider.notifier);
       await api.saveAvatarConfig(state.toJson());
     } catch (e) {
       debugPrint('Avatar: Failed to sync to backend: $e');
@@ -157,9 +157,9 @@ class UserAvatarConfigNotifier extends StateNotifier<UserAvatarConfig> {
   }
 }
 
-final userAvatarConfigProvider = StateNotifierProvider<UserAvatarConfigNotifier, UserAvatarConfig>((ref) {
-  return UserAvatarConfigNotifier(ref);
-});
+final userAvatarConfigProvider = NotifierProvider<UserAvatarConfigNotifier, UserAvatarConfig>(
+  UserAvatarConfigNotifier.new,
+);
 
 /// Avatar state for current screen/context
 class AvatarContextState {
@@ -194,10 +194,9 @@ class AvatarContextState {
   }
 }
 
-class AvatarContextNotifier extends StateNotifier<AvatarContextState> {
-  final Ref _ref;
-  
-  AvatarContextNotifier(this._ref) : super(const AvatarContextState());
+class AvatarContextNotifier extends Notifier<AvatarContextState> {
+  @override
+  AvatarContextState build() => const AvatarContextState();
   
   void setActiveAvatar(AvatarType type) {
     state = state.copyWith(activeAvatar: type);
@@ -228,9 +227,9 @@ class AvatarContextNotifier extends StateNotifier<AvatarContextState> {
   }
 }
 
-final avatarContextProvider = StateNotifierProvider<AvatarContextNotifier, AvatarContextState>((ref) {
-  return AvatarContextNotifier(ref);
-});
+final avatarContextProvider = NotifierProvider<AvatarContextNotifier, AvatarContextState>(
+  AvatarContextNotifier.new,
+);
 
 /// Avatar event types for cross-system communication
 enum AvatarEvent {

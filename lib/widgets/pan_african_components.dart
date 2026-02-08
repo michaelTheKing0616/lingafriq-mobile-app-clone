@@ -1371,4 +1371,5 @@ class PanAfricanIcons {
   static const IconData add = Icons.add;
   static const IconData edit = Icons.edit;
   static const IconData delete = Icons.delete;
+  static const IconData error = Icons.error_outline;
 }

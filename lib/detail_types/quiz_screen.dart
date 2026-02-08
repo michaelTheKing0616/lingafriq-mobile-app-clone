@@ -64,7 +64,7 @@ class QuizScreen extends HookConsumerWidget {
           child: Builder(builder: (context) {
             if (quiz.length == 1 || isTakeQuiz) {
               final isCorrect = showIndicator.value['isCorrect'] as bool;
-              return singleQuizIndicatorBuilder(isCorrect);
+              return singleQuizIndicatorBuilder(context, isCorrect);
             }
             return multiQuizIndicatorBuilder();
           }),
@@ -233,7 +233,7 @@ class QuizScreen extends HookConsumerWidget {
     );
   }
 
-  Widget singleQuizIndicatorBuilder(bool isCorrect) {
+  Widget singleQuizIndicatorBuilder(BuildContext context, bool isCorrect) {
     final accent = isCorrect ? PanAfricanColors.success : PanAfricanColors.error;
     return Column(
       children: [

@@ -37,6 +37,7 @@ class ProfileEditScreen extends HookConsumerWidget {
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
     final isUpdatingHandle = useState(false);
     final handleError = useState<String?>(null);
+    final avatarConfig = ref.watch(userAvatarConfigProvider);
 
     return LoadingOverlayPro(
       isLoading: isLoading,
@@ -69,7 +70,12 @@ class ProfileEditScreen extends HookConsumerWidget {
                           ),
                           child: SingleChildScrollView(
                             controller: scrollController,
-                            child: const UserAvatarCustomizer(),
+                            child: UserAvatarCustomizer(
+                              initialConfig: avatarConfig,
+                              onConfigChanged: (config) {
+                                ref.read(userAvatarConfigProvider.notifier).setConfig(config);
+                              },
+                            ),
                           ),
                         ),
                       ),
