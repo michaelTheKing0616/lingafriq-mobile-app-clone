@@ -36,6 +36,13 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
     final scrollController = useScrollController();
 
     useEffect(() {
+      // Atomically set mode + language ONCE on screen entry.
+      // This ensures the correct history key (conversation × language) is used.
+      chatProvider.setModeAndLanguage(
+        mode: PolieMode.conversation,
+        targetLanguage: languageName,
+        sourceLanguage: language,
+      );
       _loadTopicSuggestions(analyticsService, topicSuggestions);
       return null;
     }, []);
@@ -63,7 +70,9 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
       isLoading.value = true;
 
       try {
-        await chatProvider.setMode(PolieMode.conversation);
+        // Mode+language already set atomically in useEffect init below.
+        // Do NOT call setMode/setModeAndLanguage per-message — it triggers
+        // a full save/clear/load cycle which would wipe the visible messages.
         final response = await chatProvider.sendMessage(text);
         
         final aiMessage = _Message(

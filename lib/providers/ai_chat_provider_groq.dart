@@ -1044,6 +1044,49 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     logger.info('Switched mode', tag: 'ai-chat', context: {'mode': modeName, 'messagesCount': _messages.length});
   }
   
+  /// Atomically set mode AND language in one operation.
+  /// This avoids the race condition where setMode saves/loads with the wrong
+  /// language, then setLanguage saves/loads again with the wrong mode key.
+  /// The chat history key is: ai_chat_history_groq_{mode}_{language}
+  Future<void> setModeAndLanguage({
+    required PolieMode mode,
+    required String targetLanguage,
+    String sourceLanguage = 'English',
+  }) async {
+    // 1. Save current history under the CURRENT key before switching anything
+    await _saveChatHistory();
+
+    // 2. Update all fields at once (no intermediate save/load)
+    _mode = mode;
+    _tutorMode = mode == PolieMode.tutor;
+    _sourceLanguage = sourceLanguage;
+    _targetLanguage = targetLanguage;
+    _selectedLanguage = targetLanguage;
+
+    if (mode != PolieMode.roleplay) {
+      _currentRoleplayScenario = null;
+      _roleplayTurnCount = 0;
+      _roleplayBranches.clear();
+    }
+
+    // 3. Persist preferences
+    await _saveModeAndLanguage();
+
+    // 4. Clear and load history for the NEW key (correct mode × language)
+    _messages.clear();
+    await _loadChatHistory();
+    _initializeSystemPrompt();
+
+    state = state.copyWith();
+
+    final modeName = _mode.toString().split('.').last;
+    logger.info('Switched mode+language atomically', tag: 'ai-chat', context: {
+      'mode': modeName,
+      'language': targetLanguage,
+      'messagesCount': _messages.length,
+    });
+  }
+
   /// Set the current roleplay scenario
   Future<void> setRoleplayScenario(RoleplayEntry scenario) async {
     _currentRoleplayScenario = scenario;

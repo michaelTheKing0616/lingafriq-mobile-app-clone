@@ -244,8 +244,11 @@ class PolieModeSelectionScreen extends ConsumerWidget {
     );
   }
 
-  void _navigateToMode(BuildContext context, WidgetRef ref, PolieMode mode) async {
-    await ref.read(groqChatProvider.notifier).setMode(mode);
+  void _navigateToMode(BuildContext context, WidgetRef ref, PolieMode mode) {
+    // NOTE: Do NOT call setMode() here. The language setup screen will call
+    // setModeAndLanguage() atomically once the user picks a language.
+    // Calling setMode() prematurely triggers save/load with (new mode × old language),
+    // which is the wrong history key and causes unnecessary state churn.
 
     if (mode == PolieMode.roleplay) {
       Navigator.push(

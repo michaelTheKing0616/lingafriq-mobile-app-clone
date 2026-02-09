@@ -42,52 +42,62 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   }
 
   Future<void> _initializeGame() async {
-    final user = ref.read(userProvider);
-    if (user == null) return;
+    try {
+      // Use logged-in user if available; fall back to guest ID so games
+      // always work even if userProvider hasn't been populated yet.
+      final user = ref.read(userProvider);
+      final userId = user?.id.toString() ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
 
-    final gameProv = ref.read(gameProvider.notifier);
-    _session = await gameProv.startGame(
-      userId: user.id.toString(),
-      gameType: GameType.wordMatchAudio,
-      language: widget.language,
-      level: widget.level,
-      cardCount: 10,
-    );
+      final gameProv = ref.read(gameProvider.notifier);
+      _session = await gameProv.startGame(
+        userId: userId,
+        gameType: GameType.wordMatchAudio,
+        language: widget.language,
+        level: widget.level,
+        cardCount: 10,
+      );
 
-    final cards = gameProv.availableCards;
-    if (cards.isEmpty) {
+      final cards = gameProv.availableCards;
+      if (cards.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('No content for this language yet. Try another language or check your connection.'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+        return;
+      }
+
       setState(() {
-        _leftTiles = [];
-        _rightTiles = [];
+        _startTime = DateTime.now();
+        _leftTiles = cards.map((c) => _GameTile(
+              id: c.cardId,
+              label: c.text,
+              audioUrl: c.audioNativeUrl,
+              ascii: c.ascii,
+            )).toList();
+        _rightTiles = cards.map((c) => _GameTile(
+              id: c.cardId,
+              label: c.gloss,
+            )).toList();
+
+        // Shuffle both lists
+        _leftTiles.shuffle(Random());
+        _rightTiles.shuffle(Random());
       });
+    } catch (e) {
+      debugPrint('Error initializing WordMatchAudioGame: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('No content for this language yet. Try another language or check your connection.'),
-            backgroundColor: Colors.orange,
+          SnackBar(
+            content: Text('Failed to start game: $e'),
+            backgroundColor: Colors.red,
           ),
         );
       }
-      return;
     }
-
-    setState(() {
-      _startTime = DateTime.now();
-      _leftTiles = cards.map((c) => _GameTile(
-            id: c.cardId,
-            label: c.text,
-            audioUrl: c.audioNativeUrl,
-            ascii: c.ascii,
-          )).toList();
-      _rightTiles = cards.map((c) => _GameTile(
-            id: c.cardId,
-            label: c.gloss,
-          )).toList();
-
-      // Shuffle both lists
-      _leftTiles.shuffle(Random());
-      _rightTiles.shuffle(Random());
-    });
   }
 
   Future<void> _playAudio(String? url) async {

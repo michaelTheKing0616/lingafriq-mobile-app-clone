@@ -138,12 +138,14 @@ class AiChatSelectScreen extends HookConsumerWidget {
                         color: isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight,
                         size: 16,
                       ),
-                      onTap: () {
-                        // Set language and navigate to chat
-                        ref.read(groqChatProvider.notifier).setLanguageDirection(
-                          'English',
-                          lang['name']!,
+                      onTap: () async {
+                        // Atomically set mode + language for correct history key scoping
+                        await ref.read(groqChatProvider.notifier).setModeAndLanguage(
+                          mode: mode,
+                          targetLanguage: lang['name']!,
+                          sourceLanguage: 'English',
                         );
+                        if (!context.mounted) return;
                         Navigator.pop(context); // Close language selector
                         Navigator.push(
                           context,

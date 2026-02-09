@@ -43,11 +43,15 @@ class _AiChatLanguageSetupScreenState
     
     try {
       final chat = ref.read(groqChatProvider.notifier);
-      // Prime mode and language before entering chat
-      // This will load the scoped chat history for this mode × language combination
-      await chat.setMode(_mode);
-      await chat.setLanguageDirection('English', language);
-      await chat.setLanguage(language);
+      // Atomically set mode + language so the correct chat history key
+      // (ai_chat_history_groq_{mode}_{language}) is used for loading.
+      // This avoids the race condition where sequential setMode/setLanguage
+      // would save/load with intermediate (wrong) keys.
+      await chat.setModeAndLanguage(
+        mode: _mode,
+        targetLanguage: language,
+        sourceLanguage: 'English',
+      );
       if (!mounted) return;
       
       // If callback provided, call it (for roleplay scenario selection)

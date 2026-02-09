@@ -150,10 +150,13 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
-        // Use Groq provider for AI responses
+        // Atomic mode+language switch for correct history scoping
         final polieMode = _mapModeToPolieMode(mode);
-        await chatProvider.setMode(polieMode);
-        await chatProvider.setLanguageDirection(language, languageName);
+        await chatProvider.setModeAndLanguage(
+          mode: polieMode,
+          targetLanguage: languageName,
+          sourceLanguage: language,
+        );
 
         final response = await chatProvider.sendMessage(userMessageText);
 

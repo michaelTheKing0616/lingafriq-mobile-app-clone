@@ -76,27 +76,36 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   Future<void> _initializeGame() async {
     setState(() => _isLoading = true);
     try {
+      // Use logged-in user if available; fall back to guest ID so games
+      // always work even if userProvider hasn't been populated yet.
       final user = ref.read(userProvider);
-      if (user == null) {
-        setState(() {
-          _error = 'User not logged in';
-          _isLoading = false;
-        });
-        return;
-      }
+      final userId = user?.id.toString() ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
 
-      // Optimize: Preload game if not already loaded
-      final lazyLoader = ref.read(lazyGameLoaderProvider);
-      await lazyLoader.loadGameOnDemand(widget.getGameType());
+      // Optional preload — failure must never block game start
+      try {
+        final lazyLoader = ref.read(lazyGameLoaderProvider);
+        await lazyLoader.loadGameOnDemand(widget.getGameType());
+      } catch (_) {
+        // Preload is non-critical; continue to game
+      }
 
       final gameProv = ref.read(gameProvider.notifier);
       _session = await gameProv.startGame(
-        userId: user.id.toString(),
+        userId: userId,
         gameType: widget.getGameType(),
         language: widget.language,
         level: widget.level,
         cardCount: getCardCount(),
       );
+
+      if (gameProv.availableCards.isEmpty) {
+        setState(() {
+          _error = 'No content available for ${widget.language} yet.\n'
+              'Try selecting a different language (e.g. Yoruba, Swahili).';
+          _isLoading = false;
+        });
+        return;
+      }
 
       _startTime = DateTime.now();
       await onGameInitialized();
@@ -104,7 +113,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       setState(() => _isLoading = false);
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = 'Could not start game: $e';
         _isLoading = false;
       });
     }

@@ -124,8 +124,11 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
       HapticFeedback.mediumImpact();
       
       final chat = ref.read(groqChatProvider.notifier);
-      await chat.setMode(PolieMode.roleplay);
-      await chat.setLanguage(languageName);
+      // Atomic mode+language switch to avoid history key mismatch
+      await chat.setModeAndLanguage(
+        mode: PolieMode.roleplay,
+        targetLanguage: languageName,
+      );
       await chat.setRoleplayScenario(scenario);
       
       if (context.mounted) {

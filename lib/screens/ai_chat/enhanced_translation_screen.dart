@@ -59,9 +59,12 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
 
       while (retryCount <= maxRetries) {
         try {
-          // Set translation mode
-          await chatProvider.setMode(PolieMode.translation);
-          await chatProvider.setLanguageDirection(sourceLanguage, targetLanguage);
+          // Atomic mode+language switch for correct history scoping
+          await chatProvider.setModeAndLanguage(
+            mode: PolieMode.translation,
+            targetLanguage: targetLanguage,
+            sourceLanguage: sourceLanguage,
+          );
 
           // Build structured prompt for better parsing
           final prompt = '''Translate the following text from $sourceLanguage to $targetLanguage.
