@@ -98,29 +98,34 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     
                     SizedBox(height: PanAfricanSpacing.xl),
                     
-                    // Email field with auto-fill
-                    _buildEmailField(
-                      context,
-                      emailController,
-                      credentialStorage,
-                      isDark,
-                    )
-                        .animate()
-                        .fadeIn(delay: 300.ms, duration: 400.ms)
-                        .slideX(begin: -0.1, duration: 400.ms),
-                    
-                    SizedBox(height: PanAfricanSpacing.md),
-                    
-                    // Password field
-                    _buildPasswordField(
-                      context,
-                      passwordController,
-                      showPassword,
-                      isDark,
-                    )
-                        .animate()
-                        .fadeIn(delay: 400.ms, duration: 400.ms)
-                        .slideX(begin: -0.1, duration: 400.ms),
+                    // Email & password with AutofillGroup for Smart Lock / password managers
+                    AutofillGroup(
+                      child: Column(
+                        children: [
+                          _buildEmailField(
+                            context,
+                            emailController,
+                            credentialStorage,
+                            isDark,
+                          )
+                              .animate()
+                              .fadeIn(delay: 300.ms, duration: 400.ms)
+                              .slideX(begin: -0.1, duration: 400.ms),
+                          
+                          SizedBox(height: PanAfricanSpacing.md),
+                          
+                          _buildPasswordField(
+                            context,
+                            passwordController,
+                            showPassword,
+                            isDark,
+                          )
+                              .animate()
+                              .fadeIn(delay: 400.ms, duration: 400.ms)
+                              .slideX(begin: -0.1, duration: 400.ms),
+                        ],
+                      ),
+                    ),
                     
                     SizedBox(height: PanAfricanSpacing.sm),
                     
@@ -261,6 +266,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
           validator: Validators.emailValidator,
+          autofillHints: const [AutofillHints.email, AutofillHints.username],
           style: PanAfricanTypography.bodyLarge(context),
           decoration: InputDecoration(
             hintText: 'Enter your email',
@@ -323,8 +329,11 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         TextFormField(
           controller: controller,
           obscureText: !showPassword.value,
+          keyboardType: TextInputType.visiblePassword,
+          enableSuggestions: false,
           textInputAction: TextInputAction.done,
           validator: Validators.passwordValidator,
+          autofillHints: const [AutofillHints.password],
           style: PanAfricanTypography.bodyLarge(context),
           decoration: InputDecoration(
             hintText: 'Enter your password',

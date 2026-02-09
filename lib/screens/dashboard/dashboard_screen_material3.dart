@@ -157,21 +157,28 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                 },
                 tooltip: 'Menu',
               ).animate().fadeIn(duration: 250.ms),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    greetingLine,
-                    style: PanAfricanTypography.headlineMedium(context)
-                        .copyWith(color: Colors.white),
-                  ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
-                  SizedBox(height: PanAfricanSpacing.xs),
-                  Text(
-                    'Ready to learn?',
-                    style: PanAfricanTypography.bodyMedium(context)
-                        .copyWith(color: Colors.white70),
-                  ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
-                ],
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        greetingLine,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: PanAfricanTypography.headlineMedium(context)
+                            .copyWith(color: Colors.white),
+                      ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
+                      SizedBox(height: PanAfricanSpacing.xs),
+                      Text(
+                        'Ready to learn?',
+                        style: PanAfricanTypography.bodyMedium(context)
+                            .copyWith(color: Colors.white70),
+                      ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
+                    ],
+                  ),
+                ),
               ),
               CircleAvatar(
                 radius: 24.r,
