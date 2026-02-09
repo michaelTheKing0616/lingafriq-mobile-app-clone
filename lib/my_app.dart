@@ -10,6 +10,30 @@ import 'providers/navigation_provider.dart';
 import 'providers/theme_mode_provider.dart';
 import 'screens/splash/splash_screen.dart';
 
+// Route screen imports
+import 'screens/ai_chat/ai_mode_selection_screen.dart';
+import 'screens/curriculum/curriculum_screen.dart';
+import 'screens/games/games_screen.dart';
+import 'screens/goals/daily_goals_screen.dart';
+import 'screens/progress/progress_dashboard_screen.dart';
+import 'screens/achievements/achievements_screen.dart';
+import 'screens/gamification/leaderboard_screen.dart';
+import 'screens/social/tribe_vs_tribe_screen.dart';
+import 'screens/social/language_villages_screen.dart';
+import 'screens/chat/global_chat_screen.dart';
+import 'screens/social/user_connections_screen.dart';
+import 'screens/gamification/quest_screen.dart';
+import 'screens/gamification/seasonal_events_screen.dart';
+import 'screens/gamification/magic_items_screen.dart';
+import 'screens/social/ancestral_tree_screen.dart';
+import 'screens/magazine/culture_magazine_screen.dart';
+import 'screens/ugc/ugc_hub_screen.dart';
+import 'screens/voice_contribution/voice_contribution_screen.dart';
+import 'screens/media/import_media_screen.dart';
+import 'screens/settings/settings_screen_material3.dart';
+import 'screens/help/features_guide_screen.dart';
+import 'screens/tabs_view/profile/app_policy_screen.dart';
+
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -80,14 +104,69 @@ class _MyAppState extends ConsumerState<MyApp> {
                   ),
                 );
               },
+              onGenerateRoute: _onGenerateRoute,
               home: child,
-              // home: const OnboardingScreen(),
             );
           },
         );
       },
     );
   }
+}
+
+/// Route name -> Screen widget mapping for drawer navigation.
+Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+  final routes = <String, WidgetBuilder>{
+    'ai_chat_select': (_) => const AIModeSelectionScreen(),
+    'curriculum': (_) => const CurriculumScreen(),
+    'games': (_) => const GamesScreen(),
+    'daily_goals': (_) => const DailyGoalsScreen(),
+    'progress': (_) => const ProgressDashboardScreen(),
+    'achievements': (_) => const AchievementsScreen(),
+    'badges': (_) => const AchievementsScreen(), // Badges tab within Achievements
+    'leaderboard': (_) => const LeaderboardScreen(),
+    'tribe': (_) => const TribeVsTribeScreen(), // No separate TribeScreen; reuse
+    'tribe_vs_tribe': (_) => const TribeVsTribeScreen(),
+    'villages': (_) => const LanguageVillagesScreen(),
+    'global_chat': (_) => const GlobalChatScreen(),
+    'connections': (_) => const UserConnectionsScreen(),
+    'quest': (_) => const QuestScreen(),
+    'events': (_) => const SeasonalEventsScreen(),
+    'magic_items': (_) => const MagicItemsScreen(),
+    'ancestral_tree': (_) => const AncestralTreeScreen(),
+    'magazine': (_) => const CultureMagazineScreen(),
+    'ugc': (_) => const UGCHubScreen(),
+    'contribute_voice': (_) => const VoiceContributionScreen(),
+    'import_media': (_) => const ImportMediaScreen(),
+    'settings': (_) => const SettingsScreenMaterial3(),
+    'features_guide': (_) => const FeaturesGuideScreen(),
+    'policy': (_) => const AppPolicyScreen(),
+  };
+
+  final builder = routes[settings.name];
+  if (builder != null) {
+    return MaterialPageRoute(builder: builder, settings: settings);
+  }
+
+  // Fallback: "Coming Soon" placeholder for unknown routes
+  return MaterialPageRoute(
+    settings: settings,
+    builder: (_) => Scaffold(
+      appBar: AppBar(title: Text(settings.name ?? 'Coming Soon')),
+      body: const Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.construction_rounded, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text('Coming Soon', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+            SizedBox(height: 8),
+            Text('This feature is under development.', style: TextStyle(color: Colors.grey)),
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 class _Unfocus extends StatelessWidget {

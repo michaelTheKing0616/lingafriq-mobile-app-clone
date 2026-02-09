@@ -67,29 +67,31 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         },
       );
 
-      // Send telemetry (legacy method for backward compatibility)
-      await _sendTelemetry('game_start', {
-        'session_id': sessionId,
-        'game': gameType.name,
-        'language': language,
-        'level': level,
-      });
-      
-      // Enhanced telemetry tracking
-      final telemetry = ref.read(telemetryServiceProvider);
-      await telemetry.trackFeatureUsage(
-        featureName: 'games',
-        metadata: {
-          'action': 'game_start',
-          'game_type': gameType.name,
+      // Non-critical: telemetry + gamification should never block gameplay
+      try {
+        await _sendTelemetry('game_start', {
+          'session_id': sessionId,
+          'game': gameType.name,
           'language': language,
           'level': level,
-        },
-      );
+        });
+        
+        final telemetry = ref.read(telemetryServiceProvider);
+        await telemetry.trackFeatureUsage(
+          featureName: 'games',
+          metadata: {
+            'action': 'game_start',
+            'game_type': gameType.name,
+            'language': language,
+            'level': level,
+          },
+        );
 
-      // Award XP for starting game
-      final gamification = ref.read(gamificationProvider.notifier);
-      await gamification.awardXP('game_start');
+        final gamification = ref.read(gamificationProvider.notifier);
+        await gamification.awardXP('game_start');
+      } catch (e) {
+        logger.error('Non-critical telemetry/gamification error (game continues)', tag: 'game-provider', error: e);
+      }
 
       state = state.copyWith(isLoading: false);
       return _currentSession!;

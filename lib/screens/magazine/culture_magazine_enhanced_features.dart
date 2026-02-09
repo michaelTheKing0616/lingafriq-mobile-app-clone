@@ -282,7 +282,17 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                           } catch (e) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Translation failed')),
+                                SnackBar(
+                                  content: Text('Translation failed. Check your connection.'),
+                                  action: SnackBarAction(
+                                    label: 'Retry',
+                                    onPressed: () {
+                                      // Re-trigger translation on next tap
+                                      contentTranslation.value = null;
+                                      showTranslationState.value = false;
+                                    },
+                                  ),
+                                ),
                               );
                             }
                           } finally {

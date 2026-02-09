@@ -132,7 +132,7 @@ Rules:
       final resp = await dio.post(
         'https://api.groq.com/openai/v1/chat/completions',
         data: {
-          'model': 'llama-3.1-70b-versatile',
+          'model': 'llama-3.3-70b-versatile',
           'temperature': 0.3,
           'max_tokens': 700,
           'messages': [
