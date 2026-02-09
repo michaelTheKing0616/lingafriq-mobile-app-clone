@@ -123,6 +123,17 @@ class PanAfricanColors {
   static const Color textPrimaryDark = Color(0xFFF4F6F5);
   static const Color textSecondaryDark = Color(0xFFB8C4BD);
   static const Color textDisabledDark = Color(0xFF6B7D72);
+  
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BACKWARD-COMPATIBLE ALIASES
+  // ═══════════════════════════════════════════════════════════════════════════
+  
+  /// Background aliases for dark/light themes
+  static const Color backgroundDark = surfaceDark;
+  static const Color backgroundLight = surfaceLight;
+  
+  /// Gold accent - African wealth and success
+  static const Color gold = Color(0xFFF7CB46);
 }
 
 /// Pan-African Gradients
@@ -149,6 +160,13 @@ class PanAfricanGradients {
     end: Alignment.bottomRight,
     colors: [Color(0xFFF7CB46), Color(0xFFE8A817), Color(0xFFF7CB46)],
     stops: [0.0, 0.5, 1.0],
+  );
+  
+  /// Primary Header - Gradient for app bars and header sections
+  static const LinearGradient primaryHeader = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF1B7340), Color(0xFF2BEE6C)],
   );
   
   /// Kente Vibrant - Celebratory/achievement gradient

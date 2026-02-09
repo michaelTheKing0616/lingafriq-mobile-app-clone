@@ -93,7 +93,7 @@ dependencies:
   # pitch_detector: ^0.1.0  # Package not available on pub.dev - removed
   speech_to_text: ^7.0.0
   # Haptic Feedback
-  flutter_vibrate: ^1.2.0
+  flutter_vibrate: ^1.4.0
   # Permissions
   permission_handler: ^11.3.1
   # Charts & Visualization

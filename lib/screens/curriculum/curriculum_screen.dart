@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';

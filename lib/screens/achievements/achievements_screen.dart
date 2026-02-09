@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/performance_utils.dart';

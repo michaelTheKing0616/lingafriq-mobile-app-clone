@@ -19,8 +19,8 @@ class AIModeSelectionScreen extends ConsumerWidget {
 
   const AIModeSelectionScreen({
     Key? key,
-    required this.language,
-    required this.languageName,
+    this.language = '',
+    this.languageName = '',
   }) : super(key: key);
 
   static const List<Map<String, dynamic>> modes = [

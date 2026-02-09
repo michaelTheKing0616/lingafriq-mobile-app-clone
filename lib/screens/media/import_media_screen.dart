@@ -441,7 +441,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
       final path = result.files.single.path!;
       final name = result.files.single.name;
-      final ext = (name.split('.').lastOrNull ?? '').toLowerCase();
+      final ext = (name.split('.').lastOrNull?.toString() ?? '').toLowerCase();
 
       // Text: read directly (safe; no binary)
       if (ext == 'txt') {
@@ -769,17 +769,17 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
         final data = resp.data is Map ? resp.data as Map<String, dynamic> : null;
         final lessonData = data?['data'] ?? data;
         setState(() => _isLoading = false);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Lesson created successfully!'),
-              backgroundColor: PanAfricanColors.primary,
-              action: SnackBarAction(
-                label: 'View',
-                onPressed: () {},
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: const Text('Lesson created successfully!'),
+                backgroundColor: PanAfricanColors.primary,
+                action: SnackBarAction(
+                  label: 'View',
+                  onPressed: () {},
+                ),
               ),
-            ),
-          );
+            );
           final lessonId = lessonData is Map ? lessonData['id'] ?? lessonData['_id'] : null;
           if (lessonId != null) {
             Navigator.pushNamed(context, '/lesson-detail', arguments: {'lessonId': lessonId})

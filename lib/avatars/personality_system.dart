@@ -533,10 +533,14 @@ class PersonalitySystem {
         return _personalities['weaver']!;
       case OnboardingStep.goals:
         return _personalities['pathfinder']!;
+      case OnboardingStep.learningStyle:
+        return _personalities['weaver']!; // Learning style guided by Adisa
       case OnboardingStep.schedule:
         return _personalities['timekeeper']!;
       case OnboardingStep.story:
         return _personalities['griot']!;
+      case OnboardingStep.profile:
+        return _personalities['elder']!; // Profile setup guided by elder
       case OnboardingStep.complete:
         return _personalities['elder']!;
     }

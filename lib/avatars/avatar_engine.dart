@@ -448,6 +448,8 @@ class AvatarEngine {
         return 'okonkwo';
       case AvatarType.nneka:
         return 'nneka';
+      case AvatarType.rhythmMaster:
+        return 'polie'; // Rhythm master uses default personality
       case AvatarType.userCustom:
         return 'polie'; // Default personality for custom avatars
     }

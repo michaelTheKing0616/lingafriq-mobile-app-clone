@@ -8,7 +8,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
