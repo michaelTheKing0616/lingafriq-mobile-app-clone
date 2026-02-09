@@ -60,10 +60,14 @@ class HybridPolieOrchestrator {
           sourceLang: sourceLanguage ?? 'english',
           targetLang: targetLanguage,
           hfToken: effectiveHfToken,
+          includePhraseBreakdown: true,
         );
         rawOutput = translation.translation;
         modelUsed = translation.model;
         metadata['translation_confidence'] = translation.confidence;
+        if (translation.phraseBreakdowns != null && translation.phraseBreakdowns!.isNotEmpty) {
+          metadata['phraseBreakdowns'] = translation.phraseBreakdowns;
+        }
         break;
         
       case ModelType.afriteva:
@@ -115,7 +119,7 @@ class HybridPolieOrchestrator {
           prompt: enhancedPrompt,
           systemPrompt: groqProvider.currentSystemPrompt,
         );
-        modelUsed = 'llama-3.1-70b-versatile';
+        modelUsed = 'llama-3.3-70b-versatile';
         metadata['canonical_phrase'] = canonicalPhrase;
         break;
         
@@ -235,7 +239,7 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
       final response = await _dio.post(
         'https://api.groq.com/openai/v1/chat/completions',
         data: {
-          'model': 'llama-3.1-70b-versatile',
+          'model': 'llama-3.3-70b-versatile',
           'messages': messages,
           'max_tokens': 2048,
           'temperature': 0.7,

@@ -334,8 +334,15 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                         Expanded(
                           child: TextField(
                             controller: messageController,
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black87,
+                              fontSize: 15,
+                            ),
                             decoration: InputDecoration(
                               hintText: 'Type your message...',
+                              hintStyle: TextStyle(
+                                color: isDark ? Colors.white54 : Colors.black38,
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                               ),

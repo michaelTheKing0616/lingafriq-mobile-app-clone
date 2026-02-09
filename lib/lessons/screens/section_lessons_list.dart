@@ -168,12 +168,21 @@ class _SectionLessonsList extends ConsumerWidget {
   Future<bool?> openChoiceQuizScreen(SectionLessonModel sectionLesson, WidgetRef ref) async {
     'openChoiceQuizScreen'.log("openChoiceQuizScreen");
     try {
-      final questions = sectionLesson.otherData['question'] as List;
+      final rawQuestions = sectionLesson.otherData['question'];
+      if (rawQuestions == null || rawQuestions is! List || rawQuestions.isEmpty) {
+        ref.read(dialogProvider('No quiz questions available for this lesson.')).showExceptionDialog();
+        return false;
+      }
+      final questions = rawQuestions;
 
-      final quiz = questions.map((e) {
+      final quiz = questions.where((e) {
+        // Defensive: skip malformed entries
+        return e is Map && e['question'] is Map && e['choices'] is List;
+      }).map((e) {
         final question = e['question']["question"] as String;
         final choices = e["choices"] as List;
         final correctAnswersList = choices.where((e) => e['correct_answer'] == true);
+        if (correctAnswersList.isEmpty) return null;
 
         return QuizModel(
           question: question,
@@ -181,7 +190,13 @@ class _SectionLessonsList extends ConsumerWidget {
           answer: correctAnswersList.first['text'],
           choices: choices.map((e) => e['text'] as String).toList(),
         );
-      }).toList();
+      }).whereType<QuizModel>().toList();
+
+      if (quiz.isEmpty) {
+        ref.read(dialogProvider('Quiz data is incomplete. Please try again later.')).showExceptionDialog();
+        return false;
+      }
+
       final result = await ref.read(navigationProvider).navigateTo(QuizScreen(
             title: sectionLesson.title,
             quiz: quiz,

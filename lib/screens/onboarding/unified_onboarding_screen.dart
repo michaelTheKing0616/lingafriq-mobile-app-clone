@@ -22,8 +22,10 @@ import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 import 'placement_test_screen.dart';
 
 /// Unified Onboarding: "Kijiji cha Lugha" - The Language Village
@@ -183,26 +185,61 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             else
               SizedBox(width: 48.w),
             
-            // Progress dots
+            // Progress bar
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: List.generate(total, (index) {
-                  final isActive = current > index;
-                  final isCurrent = current == index;
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: EdgeInsets.symmetric(horizontal: 3.w),
-                    width: isCurrent ? 20.w : (isActive ? 16.w : 8.w),
-                    height: 6.h,
-                    decoration: BoxDecoration(
-                      color: isActive || isCurrent
-                          ? Colors.white
-                          : Colors.white.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(3.r),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final progress = total == 0
+                                ? 0.0
+                                : ((current + 1) / total).clamp(0.0, 1.0);
+                            return Stack(
+                              children: [
+                                Container(
+                                  height: 6.h,
+                                  color: Colors.white.withOpacity(0.2),
+                                ),
+                                AnimatedContainer(
+                                  duration: const Duration(milliseconds: 300),
+                                  height: 6.h,
+                                  width: constraints.maxWidth * progress,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        PanAfricanColors.secondary,
+                                        Colors.white,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
                     ),
-                  );
-                }),
+                    SizedBox(width: 10.w),
+                    Text(
+                      '${current + 1}/$total',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.9),
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             
@@ -381,13 +418,12 @@ class _VillageWelcomeStep extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Baobab tree with African sunset glow
+                    // Pa LingAfriq avatar with African sunset glow
                     Container(
-                      width: 260.w,
-                      height: 260.w,
+                      width: 200.w,
+                      height: 200.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: PanAfricanGradients.sunset,
                         boxShadow: [
                           BoxShadow(
                             color: PanAfricanColors.secondary.withOpacity(0.4),
@@ -396,17 +432,10 @@ class _VillageWelcomeStep extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            Icons.park_rounded,
-                            size: 100.sp,
-                            color: Colors.white,
-                          )
-                              .animate(onPlay: (c) => c.repeat(reverse: true))
-                              .shimmer(duration: 2500.ms, color: Colors.white.withOpacity(0.3)),
-                        ],
+                      child: OnboardingAvatarWidget(
+                        step: OnboardingStep.welcome,
+                        size: 200.w,
+                        animate: true,
                       ),
                     )
                         .animate()
@@ -415,9 +444,7 @@ class _VillageWelcomeStep extends StatelessWidget {
                     SizedBox(height: 48.h),
                     Text(
                       'Welcome to',
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w500,
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
                         color: Colors.white.withOpacity(0.9),
                         letterSpacing: 1,
                       ),
@@ -426,10 +453,8 @@ class _VillageWelcomeStep extends StatelessWidget {
                     Text(
                       'Kijiji cha Lugha',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 42.sp,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
+                      style: PanAfricanTypography.displaySmall(context, color: Colors.white)
+                          .copyWith(
                         height: 1.1,
                         letterSpacing: -1,
                         shadows: [
@@ -445,10 +470,8 @@ class _VillageWelcomeStep extends StatelessWidget {
                     Text(
                       'The Language Village',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18.sp,
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
                         color: PanAfricanColors.secondary,
-                        fontWeight: FontWeight.w600,
                         letterSpacing: 0.5,
                       ),
                     ).animate().fadeIn(delay: 600.ms),
@@ -458,10 +481,8 @@ class _VillageWelcomeStep extends StatelessWidget {
                       child: Text(
                         'Your journey to mastering African languages begins here.',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16.sp,
+                        style: PanAfricanTypography.bodyMedium(context).copyWith(
                           color: Colors.white.withOpacity(0.85),
-                          height: 1.5,
                         ),
                       ),
                     ).animate().fadeIn(delay: 700.ms),
@@ -473,26 +494,19 @@ class _VillageWelcomeStep extends StatelessWidget {
               padding: EdgeInsets.all(24.w),
               child: SizedBox(
                 width: double.infinity,
-                child: FilledButton(
+                child: PanAfricanButton(
+                  label: 'Begin Your Journey',
                   onPressed: () {
                     HapticFeedback.mediumImpact();
                     onNext();
                   },
-                  style: FilledButton.styleFrom(
-                    backgroundColor: PanAfricanColors.secondary,
-                    foregroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(vertical: 18.h),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.full),
-                    ),
-                  ),
-                  child: Text(
-                    'Begin Your Journey',
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  hasGradient: true,
+                  gradientColors: [
+                    PanAfricanColors.secondary,
+                    PanAfricanColors.tertiary,
+                  ],
+                  foregroundColor: PanAfricanColors.neutralDarkest,
+                  height: 56.h,
                 ),
               ).animate().fadeIn(delay: 800.ms).slideY(begin: 0.3, end: 0),
             ),
@@ -535,6 +549,7 @@ class _ElderStep extends HookConsumerWidget {
       characterName: 'Pa LingAfriq',
       dialogue: 'Karibu, traveler! I am Pa LingAfriq,\nkeeper of the village memory.',
       question: 'Tell me — what language flows from your tongue?',
+      avatarStep: OnboardingStep.welcome,
       child: Column(
         children: [
           Expanded(
@@ -618,6 +633,7 @@ class _WeaverStep extends HookConsumerWidget {
       characterName: 'Adisa the Weaver',
       dialogue: 'I weave the threads of languages\ninto patterns of understanding.',
       question: 'Which African tongue calls to your spirit?',
+      avatarStep: OnboardingStep.languageSelection,
       child: Column(
         children: [
           Expanded(
@@ -691,6 +707,7 @@ class _ElderQuestionStep extends HookConsumerWidget {
       characterName: 'Pa LingAfriq',
       dialogue: 'Every learner has a story.\nShare yours with me.',
       question: 'Who are you, and why do you seek knowledge?',
+      avatarStep: OnboardingStep.welcome,
       child: Column(
         children: [
           // Age selection
@@ -719,8 +736,14 @@ class _ElderQuestionStep extends HookConsumerWidget {
                         HapticFeedback.selectionClick();
                         selectedAge.value = sel ? age : null;
                       },
-                      backgroundColor: Colors.white.withOpacity(0.15),
+                      backgroundColor: Colors.white.withOpacity(0.25),
                       selectedColor: PanAfricanColors.secondary,
+                      side: BorderSide(
+                        color: isSelected
+                            ? PanAfricanColors.secondary
+                            : Colors.white.withOpacity(0.4),
+                        width: 1.2,
+                      ),
                       labelStyle: TextStyle(
                         color: isSelected ? Colors.black : Colors.white,
                         fontWeight: FontWeight.w600,
@@ -828,9 +851,10 @@ class _PathChooserStep extends HookConsumerWidget {
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.forest,
       characterIcon: Icons.fork_right_rounded,
-      characterName: 'The Path Chooser',
+      characterName: 'Zuri the Pathfinder',
       dialogue: 'Many paths lead through our village.\nEach offers different wisdom.',
       question: 'Which path calls to you?',
+      avatarStep: OnboardingStep.goals,
       child: Column(
         children: [
           Expanded(
@@ -904,6 +928,7 @@ class _RhythmMasterStep extends HookConsumerWidget {
       characterName: 'Nuru the Rhythm Master',
       dialogue: 'Language is music, traveler.\nEach soul dances differently.',
       question: 'How does your spirit best receive knowledge?',
+      avatarStep: OnboardingStep.learningStyle,
       child: Column(
         children: [
           Expanded(
@@ -974,10 +999,13 @@ class _TimekeeperStep extends HookConsumerWidget {
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.earth,
       characterIcon: Icons.schedule_rounded,
-      characterName: 'Zawadi the Timekeeper',
+      characterName: 'Kofi the Timekeeper',
       dialogue: 'Time is the gift we give ourselves.\nHow much will you invest?',
       question: 'When and how long shall we train?',
-      child: Column(
+      avatarStep: OnboardingStep.schedule,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16.h),
+        child: Column(
         children: [
           Padding(
             padding: EdgeInsets.all(16.w),
@@ -1054,32 +1082,33 @@ class _TimekeeperStep extends HookConsumerWidget {
               ],
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.8,
-                crossAxisSpacing: 10.w,
-                mainAxisSpacing: 10.h,
-              ),
-              itemCount: _times.length,
-              itemBuilder: (context, index) {
-                final time = _times[index];
-                final isSelected = selectedTime.value == time['id'];
-                return _TimeCard(
-                  icon: time['icon'] as IconData,
-                  label: time['label'] as String,
-                  time: time['time'] as String,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedTime.value = time['id'] as String;
-                  },
-                );
-              },
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.8,
+              crossAxisSpacing: 10.w,
+              mainAxisSpacing: 10.h,
             ),
+            itemCount: _times.length,
+            itemBuilder: (context, index) {
+              final time = _times[index];
+              final isSelected = selectedTime.value == time['id'];
+              return _TimeCard(
+                icon: time['icon'] as IconData,
+                label: time['label'] as String,
+                time: time['time'] as String,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  selectedTime.value = time['id'] as String;
+                },
+              );
+            },
           ),
+          SizedBox(height: 8.h),
           // Reminders toggle
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -1114,6 +1143,7 @@ class _TimekeeperStep extends HookConsumerWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -1147,10 +1177,13 @@ class _GriotStep extends HookConsumerWidget {
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.sunset,
       characterIcon: Icons.campaign_rounded,
-      characterName: 'Amina the Griot',
+      characterName: 'Amara the Griot',
       dialogue: 'I am the storyteller, the voice\nthat guides your journey.',
       question: 'How shall I speak to you?',
-      child: Column(
+      avatarStep: OnboardingStep.story,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16.h),
+        child: Column(
         children: [
           // Tone selection
           Padding(
@@ -1277,7 +1310,7 @@ class _GriotStep extends HookConsumerWidget {
               ],
             ),
           ),
-          const Spacer(),
+          SizedBox(height: 24.h),
           _ContinueButton(
             enabled: selectedTone.value != null,
             onPressed: () async {
@@ -1295,6 +1328,7 @@ class _GriotStep extends HookConsumerWidget {
             },
           ),
         ],
+      ),
       ),
     );
   }
@@ -1407,6 +1441,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
       characterName: 'The Naming Ceremony',
       dialogue: 'A learner without a name is a\ndrum without a rhythm!',
       question: 'Tell us what you wish to be called.',
+      avatarStep: OnboardingStep.profile,
       child: Column(
         children: [
           SizedBox(height: 16.h),
@@ -1589,6 +1624,7 @@ class _CharacterStepTemplate extends StatelessWidget {
   final String dialogue;
   final String question;
   final Widget child;
+  final OnboardingStep? avatarStep;
 
   const _CharacterStepTemplate({
     required this.gradient,
@@ -1597,6 +1633,7 @@ class _CharacterStepTemplate extends StatelessWidget {
     required this.dialogue,
     required this.question,
     required this.child,
+    this.avatarStep,
   });
 
   @override
@@ -1607,17 +1644,28 @@ class _CharacterStepTemplate extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 60.h),
-            // Character avatar
-            Container(
-              width: 100.w,
-              height: 100.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.15),
-                border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
-              ),
-              child: Icon(characterIcon, size: 50.sp, color: Colors.white),
-            ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
+            // Character avatar — use OnboardingAvatarWidget when step is provided
+            if (avatarStep != null)
+              SizedBox(
+                width: 100.w,
+                height: 100.w,
+                child: OnboardingAvatarWidget(
+                  step: avatarStep!,
+                  size: 100.w,
+                  animate: true,
+                ),
+              ).animate().scale(duration: 400.ms, curve: Curves.easeOut)
+            else
+              Container(
+                width: 100.w,
+                height: 100.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.15),
+                  border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                ),
+                child: Icon(characterIcon, size: 50.sp, color: Colors.white),
+              ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
             SizedBox(height: 16.h),
             // Character name
             Text(
@@ -1630,34 +1678,48 @@ class _CharacterStepTemplate extends StatelessWidget {
               ),
             ).animate().fadeIn(delay: 200.ms),
             SizedBox(height: 12.h),
-            // Dialogue
+            // Dialogue + Question panel
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              child: Text(
-                dialogue,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w700,
-                  height: 1.3,
+              padding: EdgeInsets.symmetric(horizontal: 24.w),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.18),
+                      blurRadius: 18,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      dialogue,
+                      textAlign: TextAlign.center,
+                      style: PanAfricanTypography.headlineSmall(context, color: Colors.white)
+                          .copyWith(height: 1.3),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      question,
+                      textAlign: TextAlign.center,
+                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white)
+                          .copyWith(
+                        fontStyle: FontStyle.italic,
+                        color: Colors.white.withOpacity(0.85),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ).animate().fadeIn(delay: 300.ms),
-            SizedBox(height: 8.h),
-            // Question
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              child: Text(
-                question,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.85),
-                  fontSize: 15.sp,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-            ).animate().fadeIn(delay: 400.ms),
+            ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.08, end: 0),
             SizedBox(height: 24.h),
             // Content
             Expanded(child: child),
@@ -1686,24 +1748,20 @@ class _ContinueButton extends StatelessWidget {
       padding: EdgeInsets.all(20.w),
       child: SizedBox(
         width: double.infinity,
-        child: FilledButton(
-          onPressed: enabled ? () {
-            HapticFeedback.mediumImpact();
-            onPressed();
-          } : null,
-          style: FilledButton.styleFrom(
+        child: Opacity(
+          opacity: enabled ? 1 : 0.5,
+          child: PanAfricanButton(
+            label: label,
+            onPressed: enabled
+                ? () {
+                    HapticFeedback.mediumImpact();
+                    onPressed();
+                  }
+                : null,
             backgroundColor: PanAfricanColors.secondary,
-            foregroundColor: Colors.black,
-            disabledBackgroundColor: Colors.white.withOpacity(0.2),
-            disabledForegroundColor: Colors.white38,
-            padding: EdgeInsets.symmetric(vertical: 16.h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(PanAfricanRadius.full),
-            ),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w700),
+            foregroundColor: PanAfricanColors.neutralDarkest,
+            width: double.infinity,
+            height: 52.h,
           ),
         ),
       ),
@@ -1742,6 +1800,13 @@ class _LanguageCard extends StatelessWidget {
               color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isSelected ? 0.2 : 0.12),
+                blurRadius: isSelected ? 16 : 10,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1759,6 +1824,10 @@ class _LanguageCard extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+              if (isSelected) ...[
+                SizedBox(width: 8.w),
+                Icon(Icons.check_circle_rounded, color: PanAfricanColors.secondary, size: 18.sp),
+              ],
             ],
           ),
         ),
@@ -1801,6 +1870,13 @@ class _LanguageListTile extends StatelessWidget {
               color: isSelected ? PanAfricanColors.secondary : Colors.transparent,
               width: 2,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isSelected ? 0.18 : 0.12),
+                blurRadius: isSelected ? 18 : 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Row(
             children: [
@@ -1828,8 +1904,11 @@ class _LanguageListTile extends StatelessWidget {
                   ],
                 ),
               ),
-              if (isSelected)
-                Icon(Icons.check_circle_rounded, color: PanAfricanColors.secondary, size: 24.sp),
+              Icon(
+                isSelected ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
+                color: isSelected ? PanAfricanColors.secondary : Colors.white54,
+                size: 24.sp,
+              ),
             ],
           ),
         ),
@@ -1869,11 +1948,32 @@ class _ReasonCard extends StatelessWidget {
               color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isSelected ? 0.2 : 0.12),
+                blurRadius: isSelected ? 16 : 10,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: isSelected ? PanAfricanColors.secondary : Colors.white, size: 28.sp),
+              Container(
+                width: 44.w,
+                height: 44.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? PanAfricanColors.secondary.withOpacity(0.2)
+                      : Colors.white.withOpacity(0.08),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  size: 24.sp,
+                ),
+              ),
               SizedBox(height: 6.h),
               Text(
                 label,
@@ -1925,14 +2025,31 @@ class _GoalCard extends StatelessWidget {
               color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isSelected ? 0.2 : 0.12),
+                blurRadius: isSelected ? 18 : 12,
+                offset: const Offset(0, 8),
+              ),
+            ],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                color: isSelected ? PanAfricanColors.secondary : Colors.white,
-                size: 36.sp,
+              Container(
+                width: 56.w,
+                height: 56.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? PanAfricanColors.secondary.withOpacity(0.2)
+                      : Colors.white.withOpacity(0.08),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  size: 28.sp,
+                ),
               ),
               SizedBox(height: 8.h),
               Text(
@@ -2003,11 +2120,32 @@ class _TimeCard extends StatelessWidget {
               color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isSelected ? 0.2 : 0.12),
+                blurRadius: isSelected ? 16 : 10,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: isSelected ? PanAfricanColors.secondary : Colors.white, size: 24.sp),
+              Container(
+                width: 40.w,
+                height: 40.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? PanAfricanColors.secondary.withOpacity(0.2)
+                      : Colors.white.withOpacity(0.08),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  size: 20.sp,
+                ),
+              ),
               SizedBox(width: 10.w),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -2073,11 +2211,32 @@ class _ToneCard extends StatelessWidget {
               color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isSelected ? 0.2 : 0.12),
+                blurRadius: isSelected ? 16 : 10,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, color: isSelected ? PanAfricanColors.secondary : Colors.white, size: 28.sp),
+              Container(
+                width: 44.w,
+                height: 44.w,
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? PanAfricanColors.secondary.withOpacity(0.2)
+                      : Colors.white.withOpacity(0.08),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  icon,
+                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  size: 24.sp,
+                ),
+              ),
               SizedBox(height: 6.h),
               Text(
                 label,
