@@ -662,3 +662,4 @@ class PanAfricanIcons {
   static const IconData trophy = Icons.emoji_events;
   static const IconData settings = Icons.settings;
 }
+
