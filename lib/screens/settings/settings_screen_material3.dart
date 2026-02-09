@@ -25,6 +25,7 @@ import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
@@ -231,16 +232,36 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           onChanged: (value) async {
                             HapticFeedback.mediumImpact();
                             if (value) {
-                              final authenticated = await BiometricAuth.authenticate(
-                                localizedReason: 'Enable biometric authentication',
-                              );
-                              if (authenticated) {
-                                final prefs = await SharedPreferences.getInstance();
-                                await prefs.setBool('biometric_enabled', true);
-                                biometricEnabled.value = true;
+                              try {
+                                final authenticated = await BiometricAuth.authenticate(
+                                  localizedReason: 'Enable biometric authentication',
+                                );
+                                if (authenticated) {
+                                  final prefs = await SharedPreferences.getInstance();
+                                  await prefs.setBool('biometric_enabled', true);
+                                  biometricEnabled.value = true;
+                                  if (context.mounted) {
+                                    showLingAfriqSuccess(
+                                        context, 'Biometric authentication enabled');
+                                  }
+                                } else if (context.mounted) {
+                                  showLingAfriqError(
+                                      context, 'Biometric authentication failed. Please try again or check your device settings.');
+                                }
+                              } catch (e) {
+                                logger.error(
+                                  'Biometric auth failed',
+                                  tag: 'biometric',
+                                  error: e,
+                                );
                                 if (context.mounted) {
-                                  showLingAfriqSuccess(
-                                      context, 'Biometric authentication enabled');
+                                  final errorMsg = e.toString().replaceAll('Exception: ', '');
+                                  showLingAfriqError(
+                                      context, errorMsg.contains('NotEnrolled')
+                                          ? 'Please set up Face ID or fingerprint in your device settings first.'
+                                          : errorMsg.contains('LockedOut')
+                                              ? 'Too many failed attempts. Please wait and try again.'
+                                              : 'Biometric not available: $errorMsg');
                                 }
                               }
                             } else {
@@ -526,7 +547,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
           child: Text(
             title,
             style: PanAfricanTypography.titleMedium(context).copyWith(
-              color: PanAfricanColors.primary,
+              color: isDark
+                  ? PanAfricanColors.textPrimaryDark
+                  : PanAfricanColors.textPrimaryLight,
               fontWeight: FontWeight.w600,
             ),
           ),

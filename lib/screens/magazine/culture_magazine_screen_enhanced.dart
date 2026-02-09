@@ -170,7 +170,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               child: SizedBox(
                 width: 24.w,
                 height: 24.w,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: CircularProgressIndicator(strokeWidth: 2, color: PanAfricanColors.primary),
               ),
             )
           else
@@ -210,12 +210,63 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
             // Articles Grid
             Expanded(
               child: isLoading.value
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(
+                            color: PanAfricanColors.primary,
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md),
+                          Text(
+                            'Loading articles...',
+                            style: PanAfricanTypography.bodyMedium(context).copyWith(
+                              color: isDark ? Colors.white54 : Colors.black45,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   : articles.value.isEmpty
                       ? Center(
-                          child: Text(
-                            'No articles found',
-                            style: PanAfricanTypography.bodyLarge(context),
+                          child: Padding(
+                            padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.article_outlined,
+                                  size: 64,
+                                  color: isDark
+                                      ? PanAfricanColors.neutralMedium
+                                      : PanAfricanColors.neutralLight,
+                                ),
+                                SizedBox(height: PanAfricanSpacing.md),
+                                Text(
+                                  'No articles yet',
+                                  style: PanAfricanTypography.titleMedium(context),
+                                ),
+                                SizedBox(height: PanAfricanSpacing.xs),
+                                Text(
+                                  'Check back soon for cultural content.',
+                                  textAlign: TextAlign.center,
+                                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                    color: isDark ? Colors.white54 : Colors.black45,
+                                  ),
+                                ),
+                                SizedBox(height: PanAfricanSpacing.lg),
+                                TextButton.icon(
+                                  onPressed: () => loadArticles(),
+                                  icon: Icon(Icons.refresh_rounded, size: 20, color: PanAfricanColors.primary),
+                                  label: Text(
+                                    'Retry',
+                                    style: PanAfricanTypography.labelLarge(context).copyWith(
+                                      color: PanAfricanColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       : GridView.builder(

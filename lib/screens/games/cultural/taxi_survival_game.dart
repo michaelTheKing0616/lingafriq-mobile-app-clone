@@ -84,10 +84,14 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
+      // Use fallback content so game is still playable
+      final fallbackPhrases = _getFallbackPhrases();
       setState(() {
-        setLoading(false);
-        _phraseOptions = _getFallbackPhrases();
+        _currentScenario = {'content': 'You need to take a taxi to the market'};
+        _round++;
         _scenarioText = 'You need to take a taxi to the market';
+        _phraseOptions = fallbackPhrases;
+        setLoading(false);
       });
     }
   }

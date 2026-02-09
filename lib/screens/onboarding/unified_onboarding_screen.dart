@@ -418,13 +418,12 @@ class _VillageWelcomeStep extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Baobab tree with African sunset glow
+                    // Pa LingAfriq avatar with African sunset glow
                     Container(
-                      width: 260.w,
-                      height: 260.w,
+                      width: 200.w,
+                      height: 200.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: PanAfricanGradients.sunset,
                         boxShadow: [
                           BoxShadow(
                             color: PanAfricanColors.secondary.withOpacity(0.4),
@@ -433,17 +432,10 @@ class _VillageWelcomeStep extends StatelessWidget {
                           ),
                         ],
                       ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            Icons.park_rounded,
-                            size: 100.sp,
-                            color: Colors.white,
-                          )
-                              .animate(onPlay: (c) => c.repeat(reverse: true))
-                              .shimmer(duration: 2500.ms, color: Colors.white.withOpacity(0.3)),
-                        ],
+                      child: OnboardingAvatarWidget(
+                        step: OnboardingStep.welcome,
+                        size: 200.w,
+                        animate: true,
                       ),
                     )
                         .animate()
@@ -557,6 +549,7 @@ class _ElderStep extends HookConsumerWidget {
       characterName: 'Pa LingAfriq',
       dialogue: 'Karibu, traveler! I am Pa LingAfriq,\nkeeper of the village memory.',
       question: 'Tell me — what language flows from your tongue?',
+      avatarStep: OnboardingStep.welcome,
       child: Column(
         children: [
           Expanded(
@@ -640,6 +633,7 @@ class _WeaverStep extends HookConsumerWidget {
       characterName: 'Adisa the Weaver',
       dialogue: 'I weave the threads of languages\ninto patterns of understanding.',
       question: 'Which African tongue calls to your spirit?',
+      avatarStep: OnboardingStep.languageSelection,
       child: Column(
         children: [
           Expanded(
@@ -713,6 +707,7 @@ class _ElderQuestionStep extends HookConsumerWidget {
       characterName: 'Pa LingAfriq',
       dialogue: 'Every learner has a story.\nShare yours with me.',
       question: 'Who are you, and why do you seek knowledge?',
+      avatarStep: OnboardingStep.welcome,
       child: Column(
         children: [
           // Age selection
@@ -741,8 +736,14 @@ class _ElderQuestionStep extends HookConsumerWidget {
                         HapticFeedback.selectionClick();
                         selectedAge.value = sel ? age : null;
                       },
-                      backgroundColor: Colors.white.withOpacity(0.15),
+                      backgroundColor: Colors.white.withOpacity(0.25),
                       selectedColor: PanAfricanColors.secondary,
+                      side: BorderSide(
+                        color: isSelected
+                            ? PanAfricanColors.secondary
+                            : Colors.white.withOpacity(0.4),
+                        width: 1.2,
+                      ),
                       labelStyle: TextStyle(
                         color: isSelected ? Colors.black : Colors.white,
                         fontWeight: FontWeight.w600,
@@ -850,9 +851,10 @@ class _PathChooserStep extends HookConsumerWidget {
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.forest,
       characterIcon: Icons.fork_right_rounded,
-      characterName: 'The Path Chooser',
+      characterName: 'Zuri the Pathfinder',
       dialogue: 'Many paths lead through our village.\nEach offers different wisdom.',
       question: 'Which path calls to you?',
+      avatarStep: OnboardingStep.goals,
       child: Column(
         children: [
           Expanded(
@@ -926,6 +928,7 @@ class _RhythmMasterStep extends HookConsumerWidget {
       characterName: 'Nuru the Rhythm Master',
       dialogue: 'Language is music, traveler.\nEach soul dances differently.',
       question: 'How does your spirit best receive knowledge?',
+      avatarStep: OnboardingStep.learningStyle,
       child: Column(
         children: [
           Expanded(
@@ -996,10 +999,13 @@ class _TimekeeperStep extends HookConsumerWidget {
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.earth,
       characterIcon: Icons.schedule_rounded,
-      characterName: 'Zawadi the Timekeeper',
+      characterName: 'Kofi the Timekeeper',
       dialogue: 'Time is the gift we give ourselves.\nHow much will you invest?',
       question: 'When and how long shall we train?',
-      child: Column(
+      avatarStep: OnboardingStep.schedule,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16.h),
+        child: Column(
         children: [
           Padding(
             padding: EdgeInsets.all(16.w),
@@ -1076,32 +1082,33 @@ class _TimekeeperStep extends HookConsumerWidget {
               ],
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 16.w),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.8,
-                crossAxisSpacing: 10.w,
-                mainAxisSpacing: 10.h,
-              ),
-              itemCount: _times.length,
-              itemBuilder: (context, index) {
-                final time = _times[index];
-                final isSelected = selectedTime.value == time['id'];
-                return _TimeCard(
-                  icon: time['icon'] as IconData,
-                  label: time['label'] as String,
-                  time: time['time'] as String,
-                  isSelected: isSelected,
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    selectedTime.value = time['id'] as String;
-                  },
-                );
-              },
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 1.8,
+              crossAxisSpacing: 10.w,
+              mainAxisSpacing: 10.h,
             ),
+            itemCount: _times.length,
+            itemBuilder: (context, index) {
+              final time = _times[index];
+              final isSelected = selectedTime.value == time['id'];
+              return _TimeCard(
+                icon: time['icon'] as IconData,
+                label: time['label'] as String,
+                time: time['time'] as String,
+                isSelected: isSelected,
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  selectedTime.value = time['id'] as String;
+                },
+              );
+            },
           ),
+          SizedBox(height: 8.h),
           // Reminders toggle
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -1136,6 +1143,7 @@ class _TimekeeperStep extends HookConsumerWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -1169,10 +1177,13 @@ class _GriotStep extends HookConsumerWidget {
     return _CharacterStepTemplate(
       gradient: PanAfricanGradients.sunset,
       characterIcon: Icons.campaign_rounded,
-      characterName: 'Amina the Griot',
+      characterName: 'Amara the Griot',
       dialogue: 'I am the storyteller, the voice\nthat guides your journey.',
       question: 'How shall I speak to you?',
-      child: Column(
+      avatarStep: OnboardingStep.story,
+      child: SingleChildScrollView(
+        padding: EdgeInsets.only(bottom: 16.h),
+        child: Column(
         children: [
           // Tone selection
           Padding(
@@ -1299,7 +1310,7 @@ class _GriotStep extends HookConsumerWidget {
               ],
             ),
           ),
-          const Spacer(),
+          SizedBox(height: 24.h),
           _ContinueButton(
             enabled: selectedTone.value != null,
             onPressed: () async {
@@ -1317,6 +1328,7 @@ class _GriotStep extends HookConsumerWidget {
             },
           ),
         ],
+      ),
       ),
     );
   }
@@ -1429,6 +1441,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
       characterName: 'The Naming Ceremony',
       dialogue: 'A learner without a name is a\ndrum without a rhythm!',
       question: 'Tell us what you wish to be called.',
+      avatarStep: OnboardingStep.profile,
       child: Column(
         children: [
           SizedBox(height: 16.h),
@@ -1611,6 +1624,7 @@ class _CharacterStepTemplate extends StatelessWidget {
   final String dialogue;
   final String question;
   final Widget child;
+  final OnboardingStep? avatarStep;
 
   const _CharacterStepTemplate({
     required this.gradient,
@@ -1619,6 +1633,7 @@ class _CharacterStepTemplate extends StatelessWidget {
     required this.dialogue,
     required this.question,
     required this.child,
+    this.avatarStep,
   });
 
   @override
@@ -1629,17 +1644,28 @@ class _CharacterStepTemplate extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 60.h),
-            // Character avatar
-            Container(
-              width: 100.w,
-              height: 100.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.15),
-                border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
-              ),
-              child: Icon(characterIcon, size: 50.sp, color: Colors.white),
-            ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
+            // Character avatar — use OnboardingAvatarWidget when step is provided
+            if (avatarStep != null)
+              SizedBox(
+                width: 100.w,
+                height: 100.w,
+                child: OnboardingAvatarWidget(
+                  step: avatarStep!,
+                  size: 100.w,
+                  animate: true,
+                ),
+              ).animate().scale(duration: 400.ms, curve: Curves.easeOut)
+            else
+              Container(
+                width: 100.w,
+                height: 100.w,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white.withOpacity(0.15),
+                  border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                ),
+                child: Icon(characterIcon, size: 50.sp, color: Colors.white),
+              ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
             SizedBox(height: 16.h),
             // Character name
             Text(

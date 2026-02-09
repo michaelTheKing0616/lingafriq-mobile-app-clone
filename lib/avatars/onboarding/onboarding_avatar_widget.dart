@@ -417,6 +417,32 @@ class OnboardingAvatarInfo {
         'For in every word lies the wisdom of generations.',
       ],
     ),
+    OnboardingStep.learningStyle: OnboardingAvatarInfo(
+      step: OnboardingStep.learningStyle,
+      name: 'Nuru',
+      title: 'The Rhythm Master',
+      primaryColor: Color(0xFFFF6B35),
+      secondaryColor: Color(0xFFE85D26),
+      icon: Icons.music_note_rounded,
+      defaultDialogues: [
+        'Language is music, traveler!',
+        'Each soul dances differently to the rhythm of words.',
+        'How does your spirit best receive knowledge?',
+      ],
+    ),
+    OnboardingStep.profile: OnboardingAvatarInfo(
+      step: OnboardingStep.profile,
+      name: 'Pa LingAfriq',
+      title: 'Village Elder',
+      primaryColor: Color(0xFFD4AF37),
+      secondaryColor: Color(0xFFA67C00),
+      icon: Icons.person_add_rounded,
+      defaultDialogues: [
+        'Now it is time for your naming ceremony.',
+        'Every villager must have a name.',
+        'Choose wisely — it will be known across the village.',
+      ],
+    ),
     OnboardingStep.complete: OnboardingAvatarInfo(
       step: OnboardingStep.complete,
       name: 'Pa LingAfriq',

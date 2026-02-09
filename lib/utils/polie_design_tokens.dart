@@ -28,9 +28,9 @@ class PolieColors {
   static const Color error = Color(0xFFB91C1C);
   static const Color errorMuted = Color(0xFF991B1B);
 
-  // Surfaces (glass-friendly)
-  static const Color surfaceGlass = Color(0x14FFFFFF);
-  static const Color surfaceGlassDark = Color(0x0DFFFFFF);
+  // Surfaces (glass-friendly — increased opacity for better text contrast)
+  static const Color surfaceGlass = Color(0x1FFFFFFF);
+  static const Color surfaceGlassDark = Color(0x2BFFFFFF);
   static const Color surfaceContainer = Color(0xFF1E293B);
   static const Color surfaceContainerLight = Color(0xFFF1F5F9);
 

@@ -157,7 +157,38 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                             ),
                         ],
                       ),
-                    ),
+                      ),
+                    if (!isConnected)
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.sm,
+                          vertical: PanAfricanSpacing.xs,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.redAccent.withOpacity(0.25),
+                          borderRadius: PanAfricanRadius.roundBR,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 12,
+                              height: 12,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            SizedBox(width: PanAfricanSpacing.xxs),
+                            Text(
+                              'Connecting...',
+                              style: PanAfricanTypography.labelSmall(context)
+                                  .copyWith(color: Colors.white70),
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (isConnected)
                     Container(
                       padding: EdgeInsets.symmetric(
                         horizontal: PanAfricanSpacing.sm,

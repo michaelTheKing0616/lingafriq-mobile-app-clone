@@ -50,6 +50,7 @@ enum AvatarType {
   timekeeper,     // Kofi
   griot,          // Amara
   pathfinder,     // Zuri
+  rhythmMaster,   // Nuru (learning style guide)
   malaika,        // Vocabulary games
   baba,           // Cultural games
   okonkwo,        // Pronunciation games
@@ -83,6 +84,8 @@ class AvatarAssets {
         return '${basePath}okonkwo.riv';
       case AvatarType.nneka:
         return '${basePath}nneka.riv';
+      case AvatarType.rhythmMaster:
+        return '${basePath}rhythm_master.riv';
       case AvatarType.userCustom:
         return '${basePath}user_avatar_base.riv';
     }
@@ -512,10 +515,14 @@ class AvatarEngine {
         return AvatarType.weaver;
       case OnboardingStep.goals:
         return AvatarType.pathfinder;
+      case OnboardingStep.learningStyle:
+        return AvatarType.rhythmMaster;
       case OnboardingStep.schedule:
         return AvatarType.timekeeper;
       case OnboardingStep.story:
         return AvatarType.griot;
+      case OnboardingStep.profile:
+        return AvatarType.elder;
       case OnboardingStep.complete:
         return AvatarType.elder;
     }

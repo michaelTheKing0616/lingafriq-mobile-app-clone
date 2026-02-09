@@ -630,9 +630,7 @@ extension PanAfricanContext on BuildContext {
 
 /// Unified icon set for bottom nav and key screens (outlined / rounded pairs).
 class PanAfricanIcons {
-  PanAfricanIcons._();
-
-  static const IconData home = Icons.home_outlined;
+  PanAfricanIcons._();  static const IconData home = Icons.home_outlined;
   static const IconData homeSelected = Icons.home_rounded;
   static const IconData courses = Icons.folder_copy_outlined;
   static const IconData coursesSelected = Icons.folder_copy_rounded;
@@ -648,9 +646,7 @@ class PanAfricanIcons {
   static const IconData back = Icons.arrow_back_rounded;
   static const IconData close = Icons.close_rounded;
   static const IconData error = Icons.error_outline_rounded;
-  static const IconData loading = Icons.hourglass_empty_rounded;
-
-  // Drawer / app menu (unified with pan_african_components semantics)
+  static const IconData loading = Icons.hourglass_empty_rounded;  // Drawer / app menu (unified with pan_african_components semantics)
   static const IconData book = Icons.menu_book;
   static const IconData lesson = Icons.school;
   static const IconData quiz = Icons.quiz;
@@ -662,4 +658,3 @@ class PanAfricanIcons {
   static const IconData trophy = Icons.emoji_events;
   static const IconData settings = Icons.settings;
 }
-

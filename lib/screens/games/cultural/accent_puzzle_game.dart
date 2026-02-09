@@ -81,12 +81,14 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
       });
     } catch (e) {
       debugPrint('Error loading puzzle: $e');
+      // Use fallback content so game is still playable
+      final regions = ['Northern', 'Southern', 'Central', 'Eastern']..shuffle(Random());
       setState(() {
-        setLoading(false);
+        _round++;
         _targetWord = _getFallbackWord();
         _correctRegion = 'Central';
-        _regionOptions = ['Northern', 'Southern', 'Central', 'Eastern'];
-        _regionOptions.shuffle(Random());
+        _regionOptions = regions;
+        setLoading(false);
       });
     }
   }

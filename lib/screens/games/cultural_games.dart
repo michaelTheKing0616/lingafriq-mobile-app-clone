@@ -97,14 +97,19 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
       });
     } catch (e) {
       debugPrint('Error loading proverb: $e');
+      // Use fallback content so game is still playable
       setState(() {
+        _currentProverb = {
+          'proverb': 'Wisdom is like a baobab tree; no one individual can embrace it.',
+          'translation': 'Knowledge requires community effort.',
+          'meaning': 'Collective wisdom surpasses individual understanding.',
+          'context': 'A traditional saying emphasizing community learning.',
+          'language': widget.language,
+        };
+        _round++;
+        _shuffledOptions = _createOptions(_currentProverb!);
         _isLoadingProverb = false;
       });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading proverb. Please try again.')),
-        );
-      }
     }
   }
 
@@ -460,10 +465,14 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
       });
     } catch (e) {
       debugPrint('Error loading story: $e');
+      // Use fallback content so game is still playable
+      final fallbackParts = _getFallbackParts();
       setState(() {
-        _isLoading = false;
-        _storyParts = _getFallbackParts();
+        _currentStory = {'title': 'Build a clan story', 'content': fallbackParts.join('. ')};
+        _round++;
         _storyPrompt = 'Build a clan story';
+        _storyParts = fallbackParts;
+        _isLoading = false;
       });
     }
   }
@@ -1073,10 +1082,14 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
+      // Use fallback content so game is still playable
+      final fallbackPhrases = _getFallbackPhrases();
       setState(() {
-        _isLoading = false;
-        _phraseOptions = _getFallbackPhrases();
+        _currentScenario = {'content': 'You need to take a taxi to the market'};
+        _round++;
         _scenarioText = 'You need to take a taxi to the market';
+        _phraseOptions = fallbackPhrases;
+        _isLoading = false;
       });
     }
   }
@@ -1389,10 +1402,14 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
       });
     } catch (e) {
       debugPrint('Error loading food quest: $e');
+      // Use fallback content so game is still playable
+      final fallbackFoods = _getFallbackFoods();
       setState(() {
-        _isLoadingFood = false;
-        _foodOptions = _getFallbackFoods();
+        _currentFood = {'content': 'Traditional African food'};
+        _round++;
         _foodDescription = 'Traditional African food';
+        _foodOptions = fallbackFoods;
+        _isLoadingFood = false;
       });
     }
   }

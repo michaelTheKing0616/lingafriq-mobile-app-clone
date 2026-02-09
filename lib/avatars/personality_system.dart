@@ -556,7 +556,9 @@ enum OnboardingStep {
   welcome,
   languageSelection,
   goals,
+  learningStyle,
   schedule,
   story,
+  profile,
   complete,
 }

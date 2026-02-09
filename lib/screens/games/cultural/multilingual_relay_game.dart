@@ -81,12 +81,14 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
       });
     } catch (e) {
       debugPrint('Error loading relay: $e');
+      // Use fallback content so game is still playable
+      final options = ['Sannu', 'Habari', 'Bawo', 'Kedu']..shuffle(Random());
       setState(() {
-        setLoading(false);
+        _round++;
         _sourcePhrase = 'Hello';
         _intermediatePhrase = 'Hola';
-        _targetOptions = ['Sannu', 'Habari', 'Bawo', 'Kedu'];
-        _targetOptions.shuffle(Random());
+        _targetOptions = options;
+        setLoading(false);
       });
     }
   }

@@ -734,8 +734,15 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
       });
     } catch (e) {
       debugPrint('Error starting conversation: $e');
+      // Use fallback content so game is still playable
+      final fallbackPrompt = 'Start a conversation in ${widget.language}';
       setState(() {
-        _currentPrompt = 'Start a conversation in ${widget.language}';
+        _currentPrompt = fallbackPrompt;
+        _conversationHistory.add({
+          'type': 'system',
+          'text': fallbackPrompt,
+          'timestamp': DateTime.now(),
+        });
       });
     }
   }

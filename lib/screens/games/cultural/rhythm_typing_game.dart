@@ -84,10 +84,12 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
       });
     } catch (e) {
       debugPrint('Error loading challenge: $e');
+      // Use fallback content so game is still playable
       setState(() {
-        setLoading(false);
+        _round++;
         _targetText = _getFallbackText();
         _rhythmPattern = 'DUM da-da DUM';
+        setLoading(false);
       });
     }
   }

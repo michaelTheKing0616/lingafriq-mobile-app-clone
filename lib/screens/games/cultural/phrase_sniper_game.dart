@@ -84,10 +84,14 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
       });
     } catch (e) {
       debugPrint('Error loading phrase: $e');
+      // Use fallback content so game is still playable
+      final fallbackTranslations = _getFallbackTranslations();
       setState(() {
-        setLoading(false);
-        _translationOptions = _getFallbackTranslations();
+        _currentPhrase = {'content': _getFallbackPhrase()};
+        _round++;
         _targetPhrase = _getFallbackPhrase();
+        _translationOptions = fallbackTranslations;
+        setLoading(false);
       });
     }
   }
