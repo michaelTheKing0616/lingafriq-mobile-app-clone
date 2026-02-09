@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '15.0'
+platform :ios, '16.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -39,8 +39,8 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
     target.build_configurations.each do |config|
       config.build_settings['DEVELOPMENT_TEAM'] = 'Z5YSG5V5DV'
-      # Set minimum iOS deployment target to 15.0 for Firebase 12.4.0
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.0'
+      # Set minimum iOS deployment target to 16.0 (google_mlkit_commons requires ≥15.5; 16.0 for headroom)
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
       # Fix for TARGET_OS_SIMULATOR not found error - ensure TargetConditionals.h is available
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
       config.build_settings['OTHER_SWIFT_FLAGS'] ||= ['$(inherited)']

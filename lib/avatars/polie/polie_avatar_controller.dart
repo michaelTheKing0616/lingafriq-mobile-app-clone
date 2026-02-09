@@ -264,11 +264,7 @@ class PolieAvatarControllerNotifier extends Notifier<PolieAvatarState> {
     );
   }
   
-  @override
-  void dispose() {
-    _stateSubscription?.cancel();
-    super.dispose();
-  }
+  // Cleanup is handled via ref.onDispose in build().
 }
 
 /// Extension for easy access in widgets
