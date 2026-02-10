@@ -30,6 +30,10 @@ class UrlConstants {
   static const String groqChatCompletions =
       'https://api.groq.com/openai/v1/chat/completions';
 
+  /// Groq Whisper audio transcriptions (OpenAI-compatible).
+  static const String groqAudioTranscriptions =
+      'https://api.groq.com/openai/v1/audio/transcriptions';
+
   // ─── LingAfriq Backend & Web ──────────────────────────────────────────────
   /// Backend API default (override via BACKEND_URL / BACKEND_API_URL at build or runtime).
   static const String backendDefault = 'https://api.lingafriq.com';
@@ -44,4 +48,8 @@ class UrlConstants {
   // ─── LiveKit (Live Classroom) ─────────────────────────────────────────────
   /// LiveKit WebSocket URL (project-specific; set via backend token endpoint).
   static const String liveKitWss = 'wss://lingafriq.livekit.cloud';
+
+  // ─── Connectivity probe ───────────────────────────────────────────────────
+  /// Well-known URL for internet connectivity checks (not backend-specific).
+  static const String connectivityProbe = 'https://www.google.com';
 }

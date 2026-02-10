@@ -15,6 +15,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Certificate pinning configuration
@@ -43,7 +44,7 @@ class CertificatePinningConfig {
         : <String>[];
     
     // Check if backend URL is HTTP (not HTTPS) - disable pinning for HTTP
-    final backendUrl = const String.fromEnvironment('BACKEND_URL', defaultValue: 'https://api.lingafriq.com');
+    final backendUrl = EnvConfig.backendBaseUrl;
     final isHttp = backendUrl.startsWith('http://');
     
     return CertificatePinningConfig(

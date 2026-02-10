@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import '../config/url_constants.dart';
 import '../utils/api.dart';
-import '../services/env_config.dart';
 
 /// Test result structure for backend connectivity tests
 class ConnectivityResult {
@@ -44,7 +44,7 @@ class BackendConnectivityTest {
   Future<bool> testInternetConnectivity() async {
     try {
       final response = await _dio.head(
-        'https://www.google.com',
+        UrlConstants.connectivityProbe,
         options: Options(
           receiveTimeout: const Duration(seconds: 5),
           sendTimeout: const Duration(seconds: 5),

@@ -95,6 +95,7 @@ class _Material3BottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return ResponsiveSafeArea(
       top: false,
@@ -104,9 +105,9 @@ class _Material3BottomNavigationBar extends StatelessWidget {
         backgroundColor: isDark
             ? PanAfricanColors.surfaceContainerDark
             : PanAfricanColors.surfaceContainerLight,
-        indicatorColor: PanAfricanColors.primaryContainer,
+        indicatorColor: colorScheme.primaryContainer,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        elevation: 8,
+        elevation: 0,
         destinations: const [
           NavigationDestination(
             icon: Icon(PanAfricanIcons.home),

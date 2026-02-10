@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
@@ -309,7 +310,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               ),
                             ),
                             onTap: () {
-                              kLaunchUrl('https://lingafriq.com/#about-us');
+                              kLaunchUrl('${EnvConfig.appWebUrl}/#about-us');
                             },
                           ),
 
@@ -328,7 +329,7 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               ),
                             ),
                             onTap: () {
-                              kLaunchUrl('https://lingafriq.com/app-policy.html');
+                              kLaunchUrl('${EnvConfig.appWebUrl}/app-policy.html');
                             },
                           ),
 

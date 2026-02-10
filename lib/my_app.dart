@@ -33,6 +33,7 @@ import 'screens/media/import_media_screen.dart';
 import 'screens/settings/settings_screen_material3.dart';
 import 'screens/help/features_guide_screen.dart';
 import 'screens/tabs_view/profile/app_policy_screen.dart';
+import 'widgets/empty_state_widget.dart';
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -153,17 +154,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     settings: settings,
     builder: (_) => Scaffold(
       appBar: AppBar(title: Text(settings.name ?? 'Coming Soon')),
-      body: const Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.construction_rounded, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text('Coming Soon', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
-            SizedBox(height: 8),
-            Text('This feature is under development.', style: TextStyle(color: Colors.grey)),
-          ],
-        ),
+      body: const AppEmptyState(
+        icon: Icons.construction_rounded,
+        title: 'Coming Soon',
+        subtitle: 'This feature is being built. We\'ll notify you when it\'s ready!',
       ),
     ),
   );

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Lightweight connectivity check without additional dependencies.
@@ -11,6 +12,12 @@ class ConnectivityHelper {
   static bool? _lastResult;
   static const _cacheDuration = Duration(seconds: 5);
 
+  /// Host to probe for connectivity (derived from backend URL)
+  static String get _connectivityHost {
+    final uri = Uri.tryParse(EnvConfig.backendBaseUrl);
+    return uri?.host ?? 'api.lingafriq.com';
+  }
+
   /// Quick connectivity check with 5-second caching to avoid excessive lookups.
   static Future<bool> hasConnection() async {
     final now = DateTime.now();
@@ -20,7 +27,7 @@ class ConnectivityHelper {
       return _lastResult!;
     }
     try {
-      final result = await InternetAddress.lookup('api.lingafriq.com')
+      final result = await InternetAddress.lookup(_connectivityHost)
           .timeout(const Duration(seconds: 3));
       _lastResult = result.isNotEmpty && result[0].rawAddress.isNotEmpty;
     } on SocketException catch (_) {

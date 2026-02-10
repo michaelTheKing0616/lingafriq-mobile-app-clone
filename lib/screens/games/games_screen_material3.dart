@@ -97,18 +97,9 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceDark
+            : PanAfricanColors.surfaceLight,
         child: Column(
           children: [
             // Language Selector
@@ -168,7 +159,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                           HapticFeedback.lightImpact();
                         }
                       },
-                      selectedColor: PanAfricanColors.secondaryContainer,
+                      selectedColor: PanAfricanColors.primaryContainer,
                       labelStyle: PanAfricanTypography.labelMedium(context),
                     ),
                   ),
@@ -313,7 +304,6 @@ class _GameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final category = game['category'] ?? 'game';
-    final color = _getCategoryColor(category);
     final icon = game['icon'] as IconData? ?? Icons.sports_esports_rounded;
 
     return GestureDetector(
@@ -323,24 +313,15 @@ class _GameCard extends StatelessWidget {
       },
       child: PanAfricanCard(
         hasHoverEffect: true,
-        hasGlow: true,
-        glowColor: color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    color,
-                    color.withOpacity(0.7),
-                  ],
-                ),
+                color: PanAfricanColors.primary,
                 shape: BoxShape.circle,
-                boxShadow: PanAfricanShadows.glow(color),
+                boxShadow: PanAfricanShadows.sm,
               ),
               child: Icon(
                 icon,
@@ -377,33 +358,21 @@ class _GameCard extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: PanAfricanColors.primaryContainer.withOpacity(0.5),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(
                 category,
-                style: PanAfricanTypography.labelSmall(context, color: color),
+                style: PanAfricanTypography.labelSmall(
+                  context,
+                  color: PanAfricanColors.primary,
+                ),
               ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Color _getCategoryColor(String category) {
-    switch (category.toLowerCase()) {
-      case 'vocabulary':
-        return PanAfricanColors.primary;
-      case 'grammar':
-        return PanAfricanColors.kenteBlue;
-      case 'pronunciation':
-        return PanAfricanColors.tertiary;
-      case 'cultural':
-        return PanAfricanColors.kenteRed;
-      default:
-        return PanAfricanColors.secondary;
-    }
   }
 }
 

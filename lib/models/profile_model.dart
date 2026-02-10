@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import '../services/env_config.dart';
 import '../utils/api.dart';
 
 class ProfileModel {
@@ -179,12 +180,14 @@ class ProfileModel {
 
   String get fullName => "$first_name $last_name";
 
-  //Support for old server urls
+  //Support for old server urls (migrate legacy avatar URLs to current backend)
   String get avatarUrl {
     final a = avatar;
     if (a == null) return '';
-    if (a.contains('http://34.121.156.251:8000/')) {
-      return a.replaceAll('http://34.121.156.251:8000/', Api.baseurl);
+    for (final prefix in EnvConfig.legacyBackendUrlPrefixes) {
+      if (a.contains(prefix)) {
+        return a.replaceAll(prefix, Api.baseurl);
+      }
     }
     return a;
   }

@@ -7,6 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
@@ -104,7 +105,7 @@ class MagazineEnhancedFeatures {
 
   /// Share article
   static Future<void> shareArticle(String articleId, String title) async {
-    final url = 'https://lingafriq.com/magazine/$articleId';
+    final url = '${EnvConfig.appWebUrl}/magazine/$articleId';
     // Use share_plus package in production
     // await Share.share('Check out this article: $title\n$url');
   }

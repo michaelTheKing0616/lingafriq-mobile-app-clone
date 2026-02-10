@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -141,7 +142,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     Future<void> shareArticle(Map<String, dynamic> article) async {
       // Share functionality
-      final url = 'https://lingafriq.com/magazine/${article['slug']}';
+      final url = '${EnvConfig.appWebUrl}/magazine/${article['slug']}';
       // Use share_plus package in production
     }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -100,14 +101,14 @@ class ProfileTab extends HookConsumerWidget {
                 _ProfileItem(
                   title: "Who are we?",
                   onTap: () {
-                    kLaunchUrl('https://lingafriq.com/#about-us');
+                    kLaunchUrl('${EnvConfig.appWebUrl}/#about-us');
                     // ref.read(navigationProvider).navigateTo(const AboutUsScreen());
                   },
                 ),
                 _ProfileItem(
                   title: "App Privacy and User Policy",
                   onTap: () {
-                    kLaunchUrl('https://lingafriq.com/app-policy.html');
+                    kLaunchUrl('${EnvConfig.appWebUrl}/app-policy.html');
                     // ref.read(navigationProvider).navigateTo(const AppPolicyScreen());
                   },
                 ),

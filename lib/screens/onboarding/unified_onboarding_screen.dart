@@ -215,12 +215,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                                   height: 6.h,
                                   width: constraints.maxWidth * progress,
                                   decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        PanAfricanColors.secondary,
-                                        Colors.white,
-                                      ],
-                                    ),
+                                    color: Theme.of(context).colorScheme.primaryContainer,
                                   ),
                                 ),
                               ],
@@ -406,9 +401,7 @@ class _VillageWelcomeStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: PanAfricanGradients.forest,
-      ),
+      color: PanAfricanColors.primary,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
@@ -418,20 +411,9 @@ class _VillageWelcomeStep extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Pa LingAfriq avatar with African sunset glow
                     Container(
                       width: 200.w,
                       height: 200.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: PanAfricanColors.secondary.withOpacity(0.4),
-                            blurRadius: 40,
-                            spreadRadius: 10,
-                          ),
-                        ],
-                      ),
                       child: OnboardingAvatarWidget(
                         step: OnboardingStep.welcome,
                         size: 200.w,
@@ -454,17 +436,7 @@ class _VillageWelcomeStep extends StatelessWidget {
                       'Kijiji cha Lugha',
                       textAlign: TextAlign.center,
                       style: PanAfricanTypography.displaySmall(context, color: Colors.white)
-                          .copyWith(
-                        height: 1.1,
-                        letterSpacing: -1,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
+                          .copyWith(height: 1.1, letterSpacing: -1),
                     ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.2, end: 0),
                     SizedBox(height: 12.h),
                     Text(
@@ -494,18 +466,14 @@ class _VillageWelcomeStep extends StatelessWidget {
               padding: EdgeInsets.all(24.w),
               child: SizedBox(
                 width: double.infinity,
-                child: PanAfricanButton(
+                child:                 PanAfricanButton(
                   label: 'Begin Your Journey',
                   onPressed: () {
                     HapticFeedback.mediumImpact();
                     onNext();
                   },
-                  hasGradient: true,
-                  gradientColors: [
-                    PanAfricanColors.secondary,
-                    PanAfricanColors.tertiary,
-                  ],
-                  foregroundColor: PanAfricanColors.neutralDarkest,
+                  backgroundColor: PanAfricanColors.primary,
+                  foregroundColor: Colors.white,
                   height: 56.h,
                 ),
               ).animate().fadeIn(delay: 800.ms).slideY(begin: 0.3, end: 0),
@@ -1679,13 +1647,6 @@ class _CharacterStepTemplate extends StatelessWidget {
                     color: Colors.white.withOpacity(0.2),
                     width: 1,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.18),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: Column(
                   children: [

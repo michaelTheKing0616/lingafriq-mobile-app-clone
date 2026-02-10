@@ -11,6 +11,7 @@ import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/avatars/avatars.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
 /// Community Chat (Language Villages) with Material 3 Design
 class CommunityChatScreen extends HookConsumerWidget {
@@ -102,18 +103,9 @@ class CommunityChatScreen extends HookConsumerWidget {
           elevation: 0,
         ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceDark
+            : PanAfricanColors.surfaceLight,
         child: Column(
           children: [
             // Messages List
@@ -147,9 +139,17 @@ class CommunityChatScreen extends HookConsumerWidget {
                       itemCount: messages.value.length,
                       itemBuilder: (context, index) {
                         final message = messages.value[index];
+                        final currentUser = ref.read(userProvider);
+                        final senderId = message['sender_id'] is Map
+                            ? (message['sender_id'] as Map)['id']
+                            : message['sender_id'];
+                        final isFromCurrentUser = currentUser != null &&
+                            senderId != null &&
+                            senderId.toString() == currentUser.id.toString();
                         return _CommunityMessageBubble(
                           message: message,
                           isDark: isDark,
+                          isFromCurrentUser: isFromCurrentUser,
                         )
                             .animate(delay: (index * 30).ms)
                             .fadeIn(duration: 200.ms);
@@ -242,10 +242,12 @@ class CommunityChatScreen extends HookConsumerWidget {
 class _CommunityMessageBubble extends StatelessWidget {
   final Map<String, dynamic> message;
   final bool isDark;
+  final bool isFromCurrentUser;
 
   const _CommunityMessageBubble({
     required this.message,
     required this.isDark,
+    this.isFromCurrentUser = false,
   });
 
   @override
@@ -254,24 +256,29 @@ class _CommunityMessageBubble extends StatelessWidget {
     final rawName = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
     final senderName = rawName is String && rawName.isNotEmpty ? rawName : 'Unknown';
     final timestamp = message['createdAt'] ?? message['timestamp'];
+    final bubbleColor = isFromCurrentUser
+        ? PanAfricanColors.primary
+        : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Avatar
-          LingAfriqAvatar.fromInitials(
-            username: senderName.isNotEmpty ? senderName : '?',
-            size: 40.w,
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          // Message Content
+          if (!isFromCurrentUser)
+            LingAfriqAvatar.fromInitials(
+              username: senderName.isNotEmpty ? senderName : '?',
+              size: 40.w,
+            ),
+          if (!isFromCurrentUser) SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment:
+                  isFromCurrentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment:
+                      isFromCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
                   children: [
                     Text(
                       senderName,
@@ -295,19 +302,27 @@ class _CommunityMessageBubble extends StatelessWidget {
                     vertical: PanAfricanSpacing.sm,
                   ),
                   decoration: BoxDecoration(
-                    color: isDark
-                        ? PanAfricanColors.cardDark
-                        : PanAfricanColors.cardLight,
+                    color: bubbleColor,
                     borderRadius: PanAfricanRadius.lgBR,
                   ),
                   child: Text(
                     message['message'] ?? '',
-                    style: PanAfricanTypography.bodyMedium(context),
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      color: isFromCurrentUser
+                          ? Colors.white
+                          : (isDark ? null : PanAfricanColors.textPrimary),
+                    ),
                   ),
                 ),
               ],
             ),
           ),
+          if (isFromCurrentUser) SizedBox(width: PanAfricanSpacing.sm),
+          if (isFromCurrentUser)
+            LingAfriqAvatar.fromInitials(
+              username: senderName.isNotEmpty ? senderName : '?',
+              size: 40.w,
+            ),
         ],
       ),
     );

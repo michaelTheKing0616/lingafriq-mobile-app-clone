@@ -15,6 +15,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/providers/user_provider.dart';
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
 class GlobalChatScreenMaterial3 extends HookConsumerWidget {
@@ -155,18 +156,9 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceDark
+            : PanAfricanColors.surfaceLight,
         child: Row(
           children: [
             // Channels Sidebar
@@ -249,9 +241,17 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                             itemCount: messages.value.length,
                             itemBuilder: (context, index) {
                               final message = messages.value[index];
+                              final currentUser = ref.read(userProvider);
+                              final senderId = message['sender_id'] is Map
+                                  ? (message['sender_id'] as Map)['id']
+                                  : message['sender_id'];
+                              final isFromCurrentUser = currentUser != null &&
+                                  senderId != null &&
+                                  senderId.toString() == currentUser.id.toString();
                               return _GlobalMessageBubble(
                                 message: message,
                                 isDark: isDark,
+                                isFromCurrentUser: isFromCurrentUser,
                               )
                                   .animate(delay: (index * 30).ms)
                                   .fadeIn(duration: 200.ms);

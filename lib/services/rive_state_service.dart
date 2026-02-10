@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../config/app_config.dart' as config;
+import '../services/env_config.dart';
 
 /// Service to persist Rive character state across sessions
 class RiveStateService {
@@ -9,7 +10,7 @@ class RiveStateService {
 
   RiveStateService({Dio? dio, String? baseUrl})
       : _dio = dio ?? Dio(),
-        baseUrl = baseUrl ?? 'https://api.lingafriq.com';
+        baseUrl = baseUrl ?? EnvConfig.backendBaseUrl;
 
   /// Save Rive state to backend
   Future<bool> saveState({

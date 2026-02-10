@@ -12,6 +12,7 @@ import 'base_provider.dart';
 import 'api_provider.dart';
 import 'backend_sync_provider.dart';
 import 'user_provider.dart';
+import '../config/url_constants.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
@@ -201,7 +202,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // API Configuration - uses centralized EnvConfig
   static String get _groqApiKey => EnvConfig.groqApiKey;
 
-  static const String _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
+  static String get _groqUrl => UrlConstants.groqChatCompletions;
   // Groq model names to try in order (favor accuracy for African languages)
   // Note: Aya 8B can be less reliable for some translations (e.g., Yoruba),
   // so we prefer the larger Llama model first for quality, then fall back.
@@ -2103,7 +2104,7 @@ Return only valid JSON.
   Future<String> transcribeAudio(Uint8List audioData) async {
     try {
       final response = await _dio.post(
-        "https://api.groq.com/openai/v1/audio/transcriptions",
+        UrlConstants.groqAudioTranscriptions,
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
           'model': 'whisper-large-v3',
@@ -2127,7 +2128,7 @@ Return only valid JSON.
   Future<double> scorePronunciation(Uint8List audioData) async {
     try {
       final response = await _dio.post(
-        "https://api.groq.com/openai/v1/audio/transcriptions",
+        UrlConstants.groqAudioTranscriptions,
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
           'model': 'whisper-large-v3',
@@ -2161,7 +2162,7 @@ Return only valid JSON.
     try {
       // Transcribe user audio using Groq Whisper
       final transResp = await _dio.post(
-        "https://api.groq.com/openai/v1/audio/transcriptions",
+        UrlConstants.groqAudioTranscriptions,
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(userAudio, filename: 'speech.wav'),
           'model': 'whisper-large-v3',
