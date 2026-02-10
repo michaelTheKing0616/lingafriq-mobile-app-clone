@@ -11,7 +11,7 @@ class User {
   final String nationality;
   final bool agree_to_privacy_terms;
   final String? image_url;
-  final String? avater;
+  final String? avatar;
   final String ranks;
   final String points;
   final String level;
@@ -25,7 +25,7 @@ class User {
     required this.nationality,
     required this.agree_to_privacy_terms,
     required this.image_url,
-    this.avater,
+    this.avatar,
     required this.ranks,
     required this.points,
     required this.level,
@@ -41,7 +41,7 @@ class User {
     String? nationality,
     bool? agree_to_privacy_terms,
     String? image_url,
-    String? avater,
+    String? avatar,
     String? ranks,
     String? points,
     String? level,
@@ -56,7 +56,7 @@ class User {
       nationality: nationality ?? this.nationality,
       agree_to_privacy_terms: agree_to_privacy_terms ?? this.agree_to_privacy_terms,
       image_url: image_url ?? this.image_url,
-      avater: avater ?? this.avater,
+      avatar: avatar ?? this.avatar,
       ranks: ranks ?? this.ranks,
       points: points ?? this.points,
       level: level ?? this.level,
@@ -77,8 +77,8 @@ class User {
     if (image_url != null) {
       result.addAll({'image_url': image_url});
     }
-    if (avater != null) {
-      result.addAll({'avater': avater});
+    if (avatar != null) {
+      result.addAll({'avatar': avatar});
     }
     if (global_id != null) {
       result.addAll({'global_id': global_id});
@@ -99,8 +99,8 @@ class User {
   //   if (image_url != null) {
   //     result.addAll({'image_url': image_url});
   //   }
-  //   if (avater != null) {
-  //     result.addAll({'avater': avater});
+  //   if (avatar != null) {
+  //     result.addAll({'avatar': avatar});
   //   }
 
   //   return result;
@@ -116,7 +116,7 @@ class User {
       nationality: map['nationality'] ?? '',
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
       image_url: map['image_url'],
-      avater: map['avater'],
+      avatar: map['avatar'] ?? map['avater'],
       global_id: map['global_id'],
       ranks: map['ranks'] ?? '',
       points: map['points'] ?? '',
@@ -130,7 +130,7 @@ class User {
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, image_url: $image_url, avater: $avater, global_id: $global_id, ranks: $ranks, points: $points, level: $level)';
+    return 'User(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, image_url: $image_url, avatar: $avatar, global_id: $global_id, ranks: $ranks, points: $points, level: $level)';
   }
 
   @override
@@ -146,7 +146,7 @@ class User {
         other.nationality == nationality &&
         other.agree_to_privacy_terms == agree_to_privacy_terms &&
         other.image_url == image_url &&
-        other.avater == avater &&
+        other.avatar == avatar &&
         other.global_id == global_id &&
         other.ranks == ranks &&
         other.points == points &&
@@ -163,7 +163,7 @@ class User {
         nationality.hashCode ^
         agree_to_privacy_terms.hashCode ^
         image_url.hashCode ^
-        avater.hashCode ^
+        avatar.hashCode ^
         global_id.hashCode ^
         ranks.hashCode ^
         points.hashCode ^

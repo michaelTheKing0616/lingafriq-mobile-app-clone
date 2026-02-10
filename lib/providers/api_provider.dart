@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -47,6 +48,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   String? token;
   String? refreshToken;
+  Completer<String?>? _refreshLock;
 
   /// Load tokens from SharedPreferences on provider initialization
   void _loadTokensFromStorage() {
@@ -64,6 +66,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {
+    if (_refreshLock != null) {
+      return _refreshLock!.future;
+    }
+    final completer = Completer<String?>();
+    _refreshLock = completer;
     try {
       if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
         // Try to get from shared preferences
@@ -72,6 +79,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
+        if (!completer.isCompleted) completer.complete(null);
         return null;
       }
 
@@ -96,14 +104,19 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             await prefs.storeAuthTokens(token!, refreshToken!);
           }
 
+          if (!completer.isCompleted) completer.complete(token);
           return token;
         }
       }
+      if (!completer.isCompleted) completer.complete(null);
       return null;
     } catch (e) {
       token = null;
       refreshToken = null;
+      if (!completer.isCompleted) completer.complete(null);
       return null;
+    } finally {
+      _refreshLock = null;
     }
   }
 

@@ -63,7 +63,7 @@ class _GlobalPeopleSearchScreenState
                   id: (m['id'] as num?)?.toInt() ?? -1,
                   username: (m['username'] ?? '') as String,
                   email: m['email']?.toString(),
-                  avatarUrl: m['avater']?.toString(),
+                  avatarUrl: (m['avatar'] ?? m['avater'])?.toString(),
                   language: m['nationality']?.toString(),
                 ))
             .toList();

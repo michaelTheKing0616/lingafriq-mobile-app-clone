@@ -14,7 +14,7 @@ class ProfileModel {
   final int? rank;
   final String nationality;
   final bool agree_to_privacy_terms;
-  final String? avater;
+  final String? avatar;
   final int completed_point;
   final String? global_id; // User's unique handle/identifier
   final String? level; // User's learning level (A0, A1, A2, etc.)
@@ -31,7 +31,7 @@ class ProfileModel {
     required this.rank,
     required this.nationality,
     required this.agree_to_privacy_terms,
-    required this.avater,
+    required this.avatar,
     required this.completed_point,
     this.global_id,
     this.level,
@@ -49,7 +49,7 @@ class ProfileModel {
     int? rank,
     String? nationality,
     bool? agree_to_privacy_terms,
-    String? avater,
+    String? avatar,
     int? completed_point,
     String? global_id,
     String? level,
@@ -66,7 +66,7 @@ class ProfileModel {
       rank: rank ?? this.rank,
       nationality: nationality ?? this.nationality,
       agree_to_privacy_terms: agree_to_privacy_terms ?? this.agree_to_privacy_terms,
-      avater: avater ?? this.avater,
+      avatar: avatar ?? this.avatar,
       completed_point: completed_point ?? this.completed_point,
       global_id: global_id ?? this.global_id,
       level: level ?? this.level,
@@ -87,8 +87,8 @@ class ProfileModel {
     result.addAll({'rank': rank});
     result.addAll({'nationality': nationality});
     result.addAll({'agree_to_privacy_terms': agree_to_privacy_terms});
-    if (avater != null) {
-      result.addAll({'avater': avater});
+    if (avatar != null) {
+      result.addAll({'avatar': avatar});
     }
     result.addAll({'completed_point': completed_point});
     if (global_id != null) {
@@ -122,7 +122,7 @@ class ProfileModel {
       }.call(),
       nationality: map['nationality'] ?? '',
       agree_to_privacy_terms: map['agree_to_privacy_terms'] ?? false,
-      avater: map['avater'],
+      avatar: map['avatar'] ?? map['avater'],
       global_id: map['global_id'],
       level: map['level']?.toString(),
       learningLanguage: map['learning_language']?.toString() ?? map['learningLanguage']?.toString(),
@@ -139,7 +139,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, is_current_user: $is_current_user, rank: $rank, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, avater: $avater, completed_point: $completed_point)';
+    return 'ProfileModel(id: $id, email: $email, username: $username, first_name: $first_name, last_name: $last_name, is_current_user: $is_current_user, rank: $rank, nationality: $nationality, agree_to_privacy_terms: $agree_to_privacy_terms, avatar: $avatar, completed_point: $completed_point)';
   }
 
   @override
@@ -157,7 +157,7 @@ class ProfileModel {
     // other.rank == rank &&
     // other.nationality == nationality &&
     // other.agree_to_privacy_terms == agree_to_privacy_terms &&
-    // other.avater == avater &&
+    // other.avatar == avatar &&
     // other.completed_point == completed_point;
   }
 
@@ -173,7 +173,7 @@ class ProfileModel {
     // rank.hashCode ^
     // nationality.hashCode ^
     // agree_to_privacy_terms.hashCode ^
-    // avater.hashCode ^
+    // avatar.hashCode ^
     // completed_point.hashCode;
   }
 
@@ -181,10 +181,11 @@ class ProfileModel {
 
   //Support for old server urls
   String get avatarUrl {
-    if (avater!.contains('http://34.121.156.251:8000/')) {
-      return avater!.replaceAll('http://34.121.156.251:8000/', Api.baseurl);
+    final a = avatar;
+    if (a == null) return '';
+    if (a.contains('http://34.121.156.251:8000/')) {
+      return a.replaceAll('http://34.121.156.251:8000/', Api.baseurl);
     }
-
-    return avater!;
+    return a;
   }
 }

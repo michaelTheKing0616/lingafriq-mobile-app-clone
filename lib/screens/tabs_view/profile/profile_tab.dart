@@ -200,8 +200,8 @@ class ProfileImageBuilder extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final current = kAvatarsList.containsKey(user?.avater)
-        ? kAvatarsList[user?.avater]!
+    final current = kAvatarsList.containsKey(user?.avatar)
+        ? kAvatarsList[user?.avatar]!
         : kAvatarsList.values.first;
 
     return Container(

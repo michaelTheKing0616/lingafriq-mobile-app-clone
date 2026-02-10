@@ -216,7 +216,7 @@ class _UserResultCard extends StatelessWidget {
     final globalId = user['global_id'] ?? '';
     final username = user['username'] ?? 'Unknown';
     final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
-    final avatar = user['avater'] ?? '';
+    final avatar = user['avatar'] ?? user['avater'] ?? '';
     final nationality = user['nationality'] ?? '';
 
     return PanAfricanCard(

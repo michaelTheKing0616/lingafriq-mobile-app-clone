@@ -50,36 +50,36 @@ class LessonItem {
 
   factory LessonItem.fromJson(Map<String, dynamic> json) {
     return LessonItem(
-      id: json['id'] as String,
-      language: json['language'] as String,
-      languageCode: json['language_code'] as String,
-      level: json['level'] as String,
-      category: json['category'] as String,
-      type: json['type'] as String,
-      text: json['text'] as String,
+      id: (json['id'] as String?) ?? '',
+      language: (json['language'] as String?) ?? '',
+      languageCode: (json['language_code'] as String?) ?? '',
+      level: (json['level'] as String?) ?? '',
+      category: (json['category'] as String?) ?? '',
+      type: (json['type'] as String?) ?? '',
+      text: (json['text'] as String?) ?? '',
       ipa: json['ipa'] as String?,
       transliteration: json['transliteration'] as String?,
-      translation: json['translation'] as String,
+      translation: (json['translation'] as String?) ?? '',
       tonePattern: json['tone_pattern'] != null
-          ? List<String>.from(json['tone_pattern'] as List)
+          ? List<String>.from((json['tone_pattern'] as List<dynamic>?) ?? [])
           : null,
-      difficulty: (json['difficulty'] as num).toDouble(),
+      difficulty: (json['difficulty'] as num?)?.toDouble() ?? 0.0,
       culturalNote: json['cultural_note'] as String?,
-      usageContext: json['usage_context'] as String? ?? 'general',
+      usageContext: (json['usage_context'] as String?) ?? 'general',
       exampleSentences: json['example_sentences'] != null
-          ? (json['example_sentences'] as List)
-              .map((e) => ExampleSentence.fromJson(e as Map<String, dynamic>))
+          ? ((json['example_sentences'] as List<dynamic>?) ?? [])
+              .map((e) => ExampleSentence.fromJson(Map<String, dynamic>.from((e is Map) ? e : {})))
               .toList()
           : null,
       relatedWords: json['related_words'] != null
-          ? List<String>.from(json['related_words'] as List)
+          ? List<String>.from((json['related_words'] as List<dynamic>?) ?? [])
           : null,
       grammarNotes: json['grammar_notes'] as String?,
       qualityScore: (json['quality_score'] as num?)?.toDouble() ?? 0.0,
       verifiedByNative: json['verified_by_native'] as bool? ?? false,
       audioUrl: json['audio_url'] as String?,
       createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'] as String)
+          ? DateTime.tryParse((json['created_at'] as String?) ?? '')
           : null,
     );
   }
@@ -126,8 +126,8 @@ class ExampleSentence {
 
   factory ExampleSentence.fromJson(Map<String, dynamic> json) {
     return ExampleSentence(
-      text: json['text'] as String,
-      translation: json['translation'] as String,
+      text: (json['text'] as String?) ?? '',
+      translation: (json['translation'] as String?) ?? '',
       ipa: json['ipa'] as String?,
       audioUrl: json['audio_url'] as String?,
     );

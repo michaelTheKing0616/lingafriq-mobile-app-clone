@@ -52,12 +52,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     return OfflineIndicator(
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : PanAfricanGradients.forest,
-        ),
-        child: ResponsiveSafeArea(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          child: ResponsiveSafeArea(
           child: Column(
             children: [
               // Header
@@ -138,6 +134,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             ? '${user!.first_name} ${user.last_name}'.trim()
             : null) ?? 'there';
     final greetingLine = '$greeting, $displayName';
+    final onSurface = Theme.of(context).colorScheme.onSurface;
+    final onSurfaceVariant = Theme.of(context).colorScheme.onSurfaceVariant;
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AdaptiveLayout.sideMargin(context),
@@ -150,7 +148,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: Icon(Icons.menu_rounded, color: Colors.white, size: 24.sp),
+                icon: Icon(Icons.menu_rounded, color: onSurface, size: 24.sp),
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   ref.read(scaffoldKeyProvider).currentState?.openDrawer();
@@ -168,13 +166,13 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: PanAfricanTypography.headlineMedium(context)
-                            .copyWith(color: Colors.white),
+                            .copyWith(color: onSurface),
                       ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
                       SizedBox(height: PanAfricanSpacing.xs),
                       Text(
                         'Ready to learn?',
                         style: PanAfricanTypography.bodyMedium(context)
-                            .copyWith(color: Colors.white70),
+                            .copyWith(color: onSurfaceVariant),
                       ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
                     ],
                   ),
@@ -182,8 +180,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               ),
               CircleAvatar(
                 radius: 24.r,
-                backgroundColor: Colors.white.withOpacity(0.2),
-                child: Icon(Icons.person, color: Colors.white, size: 24.sp),
+                backgroundColor: onSurface.withOpacity(0.1),
+                child: Icon(Icons.person, color: onSurface, size: 24.sp),
               ),
             ],
           ),
@@ -261,7 +259,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             _QuickActionCard(
               title: 'Polie Tutor',
               icon: Icons.school,
-              color: PanAfricanColors.primary,
               onTap: () {
                 Navigator.push(
                   context,
@@ -274,7 +271,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             _QuickActionCard(
               title: 'AI Chat',
               icon: Icons.chat_bubble,
-              color: PanAfricanColors.kenteBlue,
               onTap: () {
                 Navigator.push(
                   context,
@@ -286,7 +282,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             _QuickActionCard(
               title: 'Magazine',
               icon: Icons.article,
-              color: PanAfricanColors.kenteRed,
               onTap: () {
                 Navigator.push(
                   context,
@@ -299,7 +294,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             _QuickActionCard(
               title: 'Games',
               icon: Icons.sports_esports,
-              color: PanAfricanColors.secondary,
               onTap: () {
                 Navigator.push(
                   context,
@@ -620,11 +614,12 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
   }) {
     final progress = _calculateDailyGoalProgress(dailyGoals);
     final progressLabel = '${(progress * 100).toInt()}%';
+    final surfaceColor = Theme.of(context).colorScheme.surfaceContainerHighest;
     return Container(
       decoration: BoxDecoration(
-        gradient: PanAfricanGradients.sunset,
+        color: surfaceColor,
         borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
-        boxShadow: PanAfricanShadows.lg,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
@@ -642,9 +637,9 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                   ),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
-                    'Your village awaits. Let’s make progress today.',
+                    'Let’s make progress today.',
                     style: PanAfricanTypography.bodyMedium(context).copyWith(
-                      color: PanAfricanColors.neutralDark,
+                      color: PanAfricanColors.neutralMedium,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.md),
@@ -674,8 +669,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         SmoothPageRoute(child: const TutorDashboardScreen()),
                       );
                     },
-                    backgroundColor: PanAfricanColors.neutralDarkest,
-                    foregroundColor: PanAfricanColors.secondaryLight,
+                    backgroundColor: PanAfricanColors.primary,
+                    foregroundColor: Colors.white,
                   ),
                 ],
               ),
@@ -966,20 +961,20 @@ class _StatCard extends StatelessWidget {
 class _QuickActionCard extends StatelessWidget {
   final String title;
   final IconData icon;
-  final Color color;
   final VoidCallback onTap;
   final bool isDark;
 
   const _QuickActionCard({
     required this.title,
     required this.icon,
-    required this.color,
     required this.onTap,
     required this.isDark,
   });
 
   @override
   Widget build(BuildContext context) {
+    final bgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
+    final textColor = Theme.of(context).colorScheme.onSurface;
     return GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
@@ -987,26 +982,19 @@ class _QuickActionCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              color,
-              color.withOpacity(0.7),
-            ],
-          ),
+          color: bgColor,
           borderRadius: PanAfricanRadius.lgBR,
           boxShadow: PanAfricanShadows.sm,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: Colors.white, size: 24.sp),
+            Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
             SizedBox(height: PanAfricanSpacing.sm),
             Text(
               title,
               style: PanAfricanTypography.titleMedium(context)
-                  .copyWith(color: Colors.white),
+                  .copyWith(color: textColor),
               textAlign: TextAlign.center,
             ),
           ],

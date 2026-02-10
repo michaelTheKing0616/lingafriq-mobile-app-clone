@@ -111,17 +111,21 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
         ),
       );
     } else if (widget.hasGradient) {
+      final subtleGradient = [
+        bgColor,
+        Color.lerp(bgColor, Colors.white, 0.08) ?? bgColor,
+      ];
       button = Container(
         width: widget.width,
         height: widget.height ?? 48.h,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: gradientColors,
+            colors: subtleGradient,
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          boxShadow: PanAfricanShadows.md,
+          boxShadow: PanAfricanShadows.sm,
         ),
         child: Material(
           color: Colors.transparent,
@@ -330,7 +334,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
             ? PanAfricanShadows.glowGreen(_glowAnimation.value)
             : (widget.elevation != null
                 ? PanAfricanShadows.md
-                : PanAfricanShadows.md),
+                : PanAfricanShadows.sm),
         border: widget.hasGradientBorder
             ? Border.all(
                 width: 2,
@@ -882,6 +886,7 @@ class PanAfricanEmptyState extends StatelessWidget {
   final String description;
   final String? actionLabel;
   final VoidCallback? onAction;
+  final bool hasGlow;
 
   const PanAfricanEmptyState({
     Key? key,
@@ -890,6 +895,7 @@ class PanAfricanEmptyState extends StatelessWidget {
     required this.description,
     this.actionLabel,
     this.onAction,
+    this.hasGlow = false,
   }) : super(key: key);
 
   @override
@@ -900,7 +906,7 @@ class PanAfricanEmptyState extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: PanAfricanCard(
-          hasGlow: true,
+          hasGlow: hasGlow,
           glowColor: iconColor,
           padding: EdgeInsets.all(PanAfricanSpacing.lg),
           child: Column(

@@ -78,10 +78,10 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                user?.avater != null && user!.avater!.isNotEmpty
+                                user?.avatar != null && user!.avatar!.isNotEmpty
                                     ? ClipOval(
                                         child: LazyImage(
-                                          imageUrl: user!.avater!,
+                                          imageUrl: user!.avatar!,
                                           width: 48,
                                           height: 48,
                                           placeholder: CircleAvatar(
@@ -100,7 +100,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                                     : CircleAvatar(
                                         radius: 24,
                                         backgroundColor: Colors.white,
-                                        child: user?.avater == null
+                                        child: user?.avatar == null
                                             ? Text(
                                                 (user?.username ?? 'U')[0].toUpperCase(),
                                                 style: TextStyle(

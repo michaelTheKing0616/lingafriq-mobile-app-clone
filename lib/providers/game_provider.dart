@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -22,6 +23,7 @@ final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
 /// Game Provider - Manages all game sessions, SRS integration, and telemetry
 class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   GameSession? _currentSession;
+  Completer<GameSession>? _startGameLock;
   final List<PhraseCard> _availableCards = [];
   final Map<String, SRSState> _userSRS = {}; // user_id + card_id -> SRSState
 
@@ -42,8 +44,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? level,
     int? cardCount,
   }) async {
+    if (_startGameLock != null) {
+      return _startGameLock!.future;
+    }
+    final completer = Completer<GameSession>();
+    _startGameLock = completer;
     state = state.copyWith(isLoading: true);
-
     try {
       // Load cards for the game
       final cards = await _loadCardsForGame(language: language, level: level, count: cardCount ?? 10);
@@ -94,11 +100,15 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
 
       state = state.copyWith(isLoading: false);
+      if (!completer.isCompleted) completer.complete(_currentSession!);
       return _currentSession!;
     } catch (e) {
       logger.error('Error starting game', tag: 'game-provider', error: e, context: {'gameType': gameType});
       state = state.copyWith(isLoading: false);
+      if (!completer.isCompleted) completer.completeError(e);
       rethrow;
+    } finally {
+      _startGameLock = null;
     }
   }
 

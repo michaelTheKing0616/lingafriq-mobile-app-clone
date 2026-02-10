@@ -247,7 +247,7 @@ class AncestralTreeScreen extends ConsumerWidget {
             kind: kind,
             username: (person['username'] ?? person['global_id'] ?? 'Unknown').toString(),
             globalId: person['global_id']?.toString(),
-            avatar: person['avater']?.toString(),
+            avatar: (person['avatar'] ?? person['avater'])?.toString(),
           ),
         );
       }

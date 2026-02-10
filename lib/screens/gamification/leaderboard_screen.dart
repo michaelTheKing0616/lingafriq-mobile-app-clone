@@ -189,7 +189,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
   }
 }
 
-class _LeaderboardCard extends StatelessWidget {
+class _LeaderboardCard extends StatefulWidget {
   final LeaderboardEntry entry;
   final bool isCurrentUser;
   final int rank;
@@ -203,40 +203,45 @@ class _LeaderboardCard extends StatelessWidget {
     required this.isDark,
   });
 
+  @override
+  State<_LeaderboardCard> createState() => _LeaderboardCardState();
+}
+
+class _LeaderboardCardState extends State<_LeaderboardCard> {
+
   Color _getRankColor(int rank) {
     switch (rank) {
       case 1:
         return PanAfricanColors.secondary; // Gold
       case 2:
-        return PanAfricanColors.neutralMedium; // Silver
+        return const Color(0xFFA8A8A8); // Silver
       case 3:
-        return PanAfricanColors.tertiary; // Bronze
+        return const Color(0xFFCD7F32); // Bronze
       default:
         return PanAfricanColors.primary;
     }
   }
 
   Widget _buildRankBadge(BuildContext context, int rank) {
-    // Use fixed size with ScreenUtil, but with a fallback for robustness
     final badgeSize = 48.0.w.clamp(40.0, 56.0);
     final iconSize = 28.0.sp.clamp(22.0, 32.0);
-    
+
     if (rank <= 3) {
+      final bgColor = _getRankColor(rank);
       return Container(
         width: badgeSize,
         height: badgeSize,
         decoration: BoxDecoration(
-          gradient: rank == 1
-              ? PanAfricanGradients.savannaGold
-              : null,
-          color: rank != 1 ? _getRankColor(rank).withOpacity(0.2) : null,
+          color: bgColor,
           shape: BoxShape.circle,
-          boxShadow: rank == 1 ? PanAfricanShadows.glowGold(0.3) : null,
+          border: rank == 1
+              ? Border.all(color: PanAfricanColors.secondary.withOpacity(0.5), width: 1)
+              : null,
         ),
         child: Center(
           child: Icon(
             Icons.emoji_events_rounded,
-            color: _getRankColor(rank),
+            color: Colors.white,
             size: iconSize,
           ),
         ),
@@ -246,7 +251,7 @@ class _LeaderboardCard extends StatelessWidget {
       width: badgeSize,
       height: badgeSize,
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        color: widget.isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         shape: BoxShape.circle,
       ),
       child: Center(
@@ -260,44 +265,64 @@ class _LeaderboardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final expanded = _expandedState;
     return GestureDetector(
-      onTap: () => HapticFeedback.lightImpact(),
+      onTap: () {
+        HapticFeedback.lightImpact();
+        setState(() => _expandedState = !_expandedState);
+      },
       child: Container(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
         decoration: BoxDecoration(
-          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           borderRadius: PanAfricanRadius.lgBR,
           border: Border.all(
-            color: isCurrentUser
+            color: widget.isCurrentUser
                 ? PanAfricanColors.primary
-                : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
-            width: isCurrentUser ? 2 : 1,
+                : (widget.isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            width: widget.isCurrentUser ? 2 : 1,
           ),
-          boxShadow: isCurrentUser ? PanAfricanShadows.md : PanAfricanShadows.sm,
+          boxShadow: widget.isCurrentUser ? PanAfricanShadows.md : PanAfricanShadows.sm,
         ),
         child: Padding(
           padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Row(
             children: [
-              _buildRankBadge(context, rank),
+              _buildRankBadge(context, widget.rank),
               SizedBox(width: PanAfricanSpacing.sm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
+                    Text(
+                      widget.entry.username,
+                      style: PanAfricanTypography.titleMedium(
+                        context,
+                        color: widget.isCurrentUser ? PanAfricanColors.primary : null,
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xxs),
                     Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            entry.username,
-                            style: PanAfricanTypography.titleMedium(
-                              context,
-                              color: isCurrentUser ? PanAfricanColors.primary : null,
-                            ),
-                          ),
+                        Icon(
+                          Icons.star_rounded,
+                          size: 14.0.sp,
+                          color: PanAfricanColors.secondary,
                         ),
-                        if (entry.tribe != null)
-                          Container(
+                        SizedBox(width: PanAfricanSpacing.xxs),
+                        Text(
+                          '${widget.entry.xp} XP',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                      ],
+                    ),
+                    if (expanded) ...[
+                      SizedBox(height: PanAfricanSpacing.xs),
+                      if (widget.entry.tribe != null)
+                        Padding(
+                          padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxs),
+                          child: Container(
                             padding: EdgeInsets.symmetric(
                               horizontal: PanAfricanSpacing.xs,
                               vertical: PanAfricanSpacing.xxxs,
@@ -307,73 +332,55 @@ class _LeaderboardCard extends StatelessWidget {
                               borderRadius: PanAfricanRadius.roundBR,
                             ),
                             child: Text(
-                              entry.tribe!,
+                              widget.entry.tribe!,
                               style: PanAfricanTypography.labelSmall(
                                 context,
                                 color: PanAfricanColors.onPrimaryContainer,
                               ),
                             ),
                           ),
-                      ],
-                    ),
-                    SizedBox(height: PanAfricanSpacing.xxs),
-                    Text(
-                      'Level ${entry.level} • ${entry.levelTitle}',
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.xxs),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.local_fire_department_rounded,
-                          size: 16.0.sp.clamp(14.0, 20.0),
-                          color: PanAfricanColors.tertiary,
                         ),
-                        SizedBox(width: PanAfricanSpacing.xxs),
-                        Flexible(
-                          child: Text(
-                            '${entry.dailyStreak} day streak',
-                            style: PanAfricanTypography.labelSmall(context),
-                            overflow: TextOverflow.ellipsis,
+                      Text(
+                        'Level ${widget.entry.level} • ${widget.entry.levelTitle}',
+                        style: PanAfricanTypography.bodySmall(context),
+                      ),
+                      SizedBox(height: PanAfricanSpacing.xxs),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.local_fire_department_rounded,
+                            size: 14.0.sp,
+                            color: PanAfricanColors.tertiary,
                           ),
-                        ),
-                        SizedBox(width: PanAfricanSpacing.md),
-                        Icon(
-                          Icons.star_rounded,
-                          size: 16.0.sp.clamp(14.0, 20.0),
-                          color: PanAfricanColors.secondary,
-                        ),
-                        SizedBox(width: PanAfricanSpacing.xxs),
-                        Flexible(
-                          child: Text(
-                            '${entry.xp} XP',
+                          SizedBox(width: PanAfricanSpacing.xxs),
+                          Text(
+                            '${widget.entry.dailyStreak} day streak',
                             style: PanAfricanTypography.labelSmall(context),
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Lv. ${entry.level}',
-                    style: PanAfricanTypography.titleLarge(
-                      context,
-                      color: PanAfricanColors.primary,
-                    ),
-                  ),
-                ],
+              Icon(
+                expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                color: PanAfricanColors.neutralMedium,
+                size: 20.sp,
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  late bool _expandedState;
+
+  @override
+  void initState() {
+    super.initState();
+    _expandedState = widget.isCurrentUser;
   }
 }
 

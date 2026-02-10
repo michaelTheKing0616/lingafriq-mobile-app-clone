@@ -95,7 +95,6 @@ class EditProfileScreen extends HookConsumerWidget {
           final imageBytes = await selectedImage.value!.readAsBytes();
           final base64Image = base64Encode(imageBytes);
           updateData['avatar'] = 'data:image/jpeg;base64,$base64Image';
-          updateData['avater'] = 'data:image/jpeg;base64,$base64Image';
         }
 
         final success = await apiNotifier.updateProfile(updateData);
@@ -242,12 +241,12 @@ class EditProfileScreen extends HookConsumerWidget {
                             backgroundColor: PanAfricanColors.primary,
                             backgroundImage: selectedImage.value != null
                                 ? FileImage(File(selectedImage.value!.path))
-                                : (user?.avater != null
-                                        ? NetworkImage(user!.avater!)
+                                : (user?.avatar != null
+                                        ? NetworkImage(user!.avatar!)
                                         : null)
                                     as ImageProvider?,
                             child: (selectedImage.value == null &&
-                                    user?.avater == null)
+                                    user?.avatar == null)
                                 ? Icon(
                                     Icons.person_rounded,
                                     size: 50.sp,

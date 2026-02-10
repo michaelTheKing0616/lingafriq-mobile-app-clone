@@ -67,6 +67,9 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
 
   @override
   BackendSyncState build() {
+    ref.onDispose(() {
+      _syncTimer?.cancel();
+    });
     _loadSyncQueue();
     _startPeriodicSync();
 

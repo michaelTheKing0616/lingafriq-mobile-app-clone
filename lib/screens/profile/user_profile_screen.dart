@@ -105,7 +105,7 @@ class UserProfileScreen extends ConsumerWidget {
                             border: Border.all(color: Colors.white, width: 4),
                             boxShadow: PanAfricanShadows.lg,
                           ),
-                          child: user?.avater != null
+                          child: user?.avatar != null
                               ? ClipOval(
                                   child: LazyImage(
                                     imageUrl: user!.avatarUrl,

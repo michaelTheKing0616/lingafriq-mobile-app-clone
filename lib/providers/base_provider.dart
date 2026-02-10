@@ -2,12 +2,27 @@ import 'package:riverpod/riverpod.dart';
 
 class BaseProviderState {
   final bool isLoading;
+  final String? errorMessage;
+  final DateTime? errorTimestamp;
 
-  BaseProviderState({this.isLoading = false});
+  BaseProviderState({
+    this.isLoading = false,
+    this.errorMessage,
+    this.errorTimestamp,
+  });
 
-  BaseProviderState copyWith({bool? isLoading}) {
+  bool get hasError => errorMessage != null;
+
+  BaseProviderState copyWith({
+    bool? isLoading,
+    String? errorMessage,
+    DateTime? errorTimestamp,
+    bool clearError = false,
+  }) {
     return BaseProviderState(
       isLoading: isLoading ?? this.isLoading,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      errorTimestamp: clearError ? null : (errorTimestamp ?? this.errorTimestamp),
     );
   }
 }

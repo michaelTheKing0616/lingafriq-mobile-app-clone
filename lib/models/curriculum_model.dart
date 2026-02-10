@@ -14,10 +14,10 @@ class CurriculumMeta {
   });
 
   factory CurriculumMeta.fromMap(Map<String, dynamic> map) => CurriculumMeta(
-    title: map['title'] ?? '',
-    generatedAt: DateTime.parse(map['generated_at'] ?? DateTime.now().toIso8601String()),
-    languages: List<String>.from(map['languages'] ?? []),
-    levels: List<String>.from(map['levels'] ?? []),
+    title: (map['title'] as String?) ?? '',
+    generatedAt: DateTime.tryParse((map['generated_at'] as String?) ?? '') ?? DateTime.now(),
+    languages: List<String>.from((map['languages'] as List<dynamic>?) ?? []),
+    levels: List<String>.from((map['levels'] as List<dynamic>?) ?? []),
   );
 }
 
@@ -31,8 +31,8 @@ class CurriculumExercise {
   });
 
   factory CurriculumExercise.fromMap(Map<String, dynamic> map) => CurriculumExercise(
-    type: map['type'] ?? '',
-    items: List<String>.from(map['items'] ?? []),
+    type: (map['type'] as String?) ?? '',
+    items: List<String>.from((map['items'] as List<dynamic>?) ?? []),
   );
 }
 
@@ -52,11 +52,11 @@ class CurriculumVocab {
   });
 
   factory CurriculumVocab.fromMap(Map<String, dynamic> map) => CurriculumVocab(
-    word: map['word'] ?? '',
-    meaning: map['meaning'] ?? '',
-    pos: map['pos'],
-    example: map['example'],
-    pronunciation: map['pronunciation'],
+    word: (map['word'] as String?) ?? '',
+    meaning: (map['meaning'] as String?) ?? '',
+    pos: map['pos'] as String?,
+    example: map['example'] as String?,
+    pronunciation: map['pronunciation'] as String?,
   );
 
   Map<String, dynamic> toMap() => {
@@ -80,12 +80,11 @@ class CurriculumDialogue {
   });
 
   factory CurriculumDialogue.fromMap(Map<String, dynamic> map) => CurriculumDialogue(
-    script: (map['script'] as List?)
-            ?.map((e) => Map<String, String>.from(e as Map))
-            .toList() ??
-        [],
-    notes: map['notes'],
-    culturalContext: map['cultural_context'] ?? map['culturalContext'],
+    script: ((map['script'] as List<dynamic>?) ?? [])
+        .map((e) => Map<String, String>.from((e is Map) ? Map.from(e) : {}))
+        .toList(),
+    notes: map['notes'] as String?,
+    culturalContext: (map['cultural_context'] as String?) ?? (map['culturalContext'] as String?),
   );
 }
 
@@ -113,29 +112,34 @@ class CurriculumLesson {
   });
 
   factory CurriculumLesson.fromMap(Map<String, dynamic> map) {
-    // Handle vocab - can be List<String> or List<Map>
-    final vocabList = map['vocab'] as List? ?? [];
+    final vocabList = (map['vocab'] as List<dynamic>?) ?? [];
     final vocab = vocabList.map((v) {
       if (v is String) return v;
-      if (v is Map) return CurriculumVocab.fromMap(v as Map<String, dynamic>);
+      if (v is Map) return CurriculumVocab.fromMap(Map<String, dynamic>.from(v));
       return v;
     }).toList();
 
+    final progressVal = map['progress'];
+    final progress = progressVal is num
+        ? progressVal.toDouble()
+        : (double.tryParse(progressVal?.toString() ?? '0') ?? 0.0);
+
     return CurriculumLesson(
-      id: map['id'] ?? '',
-      title: map['title'] ?? '',
+      id: (map['id'] as String?) ?? '',
+      title: (map['title'] as String?) ?? '',
       vocab: vocab,
-      exercises: (map['exercises'] as List?)
-              ?.map((e) => CurriculumExercise.fromMap(e as Map<String, dynamic>))
-              .toList() ??
-          [],
-      grammar: map['grammar'] != null ? List<String>.from(map['grammar']) : null,
-      dialogue: map['dialogue'] != null 
-          ? CurriculumDialogue.fromMap(map['dialogue'] as Map<String, dynamic>)
+      exercises: ((map['exercises'] as List<dynamic>?) ?? [])
+          .map((e) => CurriculumExercise.fromMap(Map<String, dynamic>.from((e is Map) ? e : {})))
+          .toList(),
+      grammar: map['grammar'] != null ? List<String>.from((map['grammar'] as List<dynamic>?) ?? []) : null,
+      dialogue: map['dialogue'] != null && map['dialogue'] is Map
+          ? CurriculumDialogue.fromMap(Map<String, dynamic>.from(map['dialogue'] as Map))
           : null,
-      durationMin: map['duration_min'] ?? map['durationMin'],
-      isCompleted: map['isCompleted'] ?? false,
-      progress: (map['progress'] ?? 0.0).toDouble(),
+      durationMin: (map['duration_min'] ?? map['durationMin']) is int
+          ? (map['duration_min'] ?? map['durationMin']) as int?
+          : int.tryParse((map['duration_min'] ?? map['durationMin'])?.toString() ?? ''),
+      isCompleted: map['isCompleted'] as bool? ?? false,
+      progress: progress,
     );
   }
 
@@ -174,16 +178,23 @@ class CurriculumUnit {
     this.progress = 0.0,
   });
 
-  factory CurriculumUnit.fromMap(Map<String, dynamic> map) => CurriculumUnit(
-    unit: map['unit'] ?? 0,
-    title: map['title'] ?? '',
-    lessons: (map['lessons'] as List?)
-            ?.map((e) => CurriculumLesson.fromMap(e as Map<String, dynamic>))
-            .toList() ??
-        [],
-    isCompleted: map['isCompleted'] ?? false,
-    progress: (map['progress'] ?? 0.0).toDouble(),
-  );
+  factory CurriculumUnit.fromMap(Map<String, dynamic> map) {
+    final progressVal = map['progress'];
+    final progress = progressVal is num
+        ? progressVal.toDouble()
+        : (double.tryParse(progressVal?.toString() ?? '0') ?? 0.0);
+    return CurriculumUnit(
+      unit: (map['unit'] is int)
+          ? (map['unit'] as int?) ?? 0
+          : (int.tryParse((map['unit'] ?? 0).toString()) ?? 0),
+      title: (map['title'] as String?) ?? '',
+      lessons: ((map['lessons'] as List<dynamic>?) ?? [])
+          .map((e) => CurriculumLesson.fromMap(Map<String, dynamic>.from((e is Map) ? e : {})))
+          .toList(),
+      isCompleted: map['isCompleted'] as bool? ?? false,
+      progress: progress,
+    );
+  }
 
   double get calculatedProgress {
     if (lessons.isEmpty) return 0.0;
@@ -205,15 +216,20 @@ class CurriculumLevel {
     this.progress = 0.0,
   });
 
-  factory CurriculumLevel.fromMap(Map<String, dynamic> map) => CurriculumLevel(
-    level: map['level'] ?? '',
-    units: (map['units'] as List?)
-            ?.map((e) => CurriculumUnit.fromMap(e as Map<String, dynamic>))
-            .toList() ??
-        [],
-    isCompleted: map['isCompleted'] ?? false,
-    progress: (map['progress'] ?? 0.0).toDouble(),
-  );
+  factory CurriculumLevel.fromMap(Map<String, dynamic> map) {
+    final progressVal = map['progress'];
+    final progress = progressVal is num
+        ? progressVal.toDouble()
+        : (double.tryParse(progressVal?.toString() ?? '0') ?? 0.0);
+    return CurriculumLevel(
+      level: (map['level'] as String?) ?? '',
+      units: ((map['units'] as List<dynamic>?) ?? [])
+          .map((e) => CurriculumUnit.fromMap(Map<String, dynamic>.from((e is Map) ? e : {})))
+          .toList(),
+      isCompleted: map['isCompleted'] as bool? ?? false,
+      progress: progress,
+    );
+  }
 
   double get calculatedProgress {
     if (units.isEmpty) return 0.0;
@@ -232,7 +248,10 @@ class Curriculum {
   });
 
   factory Curriculum.fromMap(Map<String, dynamic> map) {
-    final meta = CurriculumMeta.fromMap(map['meta'] as Map<String, dynamic>);
+    final metaMap = map['meta'];
+    final meta = metaMap is Map
+        ? CurriculumMeta.fromMap(Map<String, dynamic>.from(metaMap))
+        : CurriculumMeta(title: '', generatedAt: DateTime.now(), languages: [], levels: []);
     final languagesMap = <String, Map<String, List<CurriculumUnit>>>{};
 
     if (map['languages'] != null) {

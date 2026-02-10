@@ -17,16 +17,16 @@ const _globalFontFallback = <String>[
 ];
 
 final lightTheme = ThemeData(
-  useMaterial3: true, // ✅ Material 3 Enabled
-  fontFamily: 'dosis',
+  useMaterial3: true,
+  fontFamily: 'Lato',
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.light,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: primarySwatchLight.shade500, // Use primary color as seed
+    seedColor: PanAfricanColors.primary,
     brightness: Brightness.light,
-    primary: primarySwatchLight.shade500,
-    secondary: primarySwatchDark.shade400,
-    tertiary: primarySwatchLight.shade300,
+    primary: PanAfricanColors.primary,
+    secondary: PanAfricanColors.secondary,
+    tertiary: PanAfricanColors.tertiary,
   ),
   canvasColor: Colors.white,
   scaffoldBackgroundColor: Colors.white,
@@ -40,7 +40,7 @@ final lightTheme = ThemeData(
       color: Colors.black,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'dosis',
+      fontFamily: 'Lato',
     ),
     centerTitle: true,
   ),
@@ -71,16 +71,16 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
-  useMaterial3: true, // ✅ Material 3 Enabled
-  fontFamily: 'dosis',
+  useMaterial3: true,
+  fontFamily: 'Lato',
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.dark,
   colorScheme: ColorScheme.fromSeed(
-    seedColor: primarySwatchDark.shade400, // Use primary color as seed
+    seedColor: PanAfricanColors.primary,
     brightness: Brightness.dark,
-    primary: primarySwatchDark.shade400,
-    secondary: primarySwatchLight.shade300,
-    tertiary: primarySwatchDark.shade300,
+    primary: PanAfricanColors.primaryLight,
+    secondary: PanAfricanColors.secondary,
+    tertiary: PanAfricanColors.tertiary,
   ),
   canvasColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
@@ -94,7 +94,7 @@ final darkTheme = ThemeData(
       color: Colors.white,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'dosis',
+      fontFamily: 'Lato',
     ),
     centerTitle: true,
   ),

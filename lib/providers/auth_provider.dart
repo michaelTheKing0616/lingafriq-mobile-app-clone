@@ -24,7 +24,7 @@ final authProvider = NotifierProvider<AuthProvider, BaseProviderState>(() {
 });
 
 class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
-  bool _isLoggingIn = false; // Prevent duplicate login requests
+  Completer<ProfileModel?>? _loginLock;
   
   @override
   BaseProviderState build() {
@@ -154,14 +154,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     bool splashlogin = false,
     bool updateProfile = false,
   }) async {
-    // CRITICAL: Prevent duplicate login requests
-    if (_isLoggingIn) {
-      return null; // Login already in progress
+    if (_loginLock != null) {
+      return _loginLock!.future;
     }
-    
+    final completer = Completer<ProfileModel?>();
+    _loginLock = completer;
     final shouldShowLoading = storeCredentials || splashlogin;
     try {
-      _isLoggingIn = true;
       if (shouldShowLoading) {
         state = state.copyWith(isLoading: true);
       }
@@ -200,6 +199,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         );
       }
 
+      if (!completer.isCompleted) completer.complete(user);
       return user;
     } catch (e) {
       state = state.copyWith(isLoading: false);
@@ -208,12 +208,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (!splashlogin) {
         await ref.read(dialogProvider(e)).showExceptionDialog();
       }
+      if (!completer.isCompleted) completer.complete(null);
       return null;
     } finally {
       if (shouldShowLoading) {
         state = state.copyWith(isLoading: false);
       }
-      _isLoggingIn = false; // Always reset flag
+      _loginLock = null;
     }
   }
 

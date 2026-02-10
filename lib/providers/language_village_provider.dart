@@ -108,7 +108,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
               _participants.add(VillageParticipant(
                 userId: user.id.toString(),
                 username: user.username ?? 'User',
-                avatar: user.avater,
+                avatar: user.avatar,
                 isSpeaking: false,
                 joinedAt: DateTime.now(),
               ));

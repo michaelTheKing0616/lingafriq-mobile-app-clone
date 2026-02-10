@@ -99,26 +99,28 @@ class Badge {
       };
 
   factory Badge.fromJson(Map<String, dynamic> json) => Badge(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        description: json['description'] as String,
+        id: (json['id'] as String?) ?? '',
+        name: (json['name'] as String?) ?? '',
+        description: (json['description'] as String?) ?? '',
         rarity: BadgeRarity.values.firstWhere(
-          (e) => e.name == json['rarity'],
+          (e) => e.name == (json['rarity'] as String?),
           orElse: () => BadgeRarity.common,
         ),
         category: BadgeCategory.values.firstWhere(
-          (e) => e.name == json['category'],
+          (e) => e.name == (json['category'] as String?),
           orElse: () => BadgeCategory.learning,
         ),
-        icon: json['icon'] as String,
-        xpReward: json['xpReward'] as int? ?? 50,
-        cowriesReward: json['cowriesReward'] as int? ?? 0,
-        beadsReward: json['beadsReward'] as int? ?? 0,
+        icon: (json['icon'] as String?) ?? '',
+        xpReward: (json['xpReward'] as num?)?.toInt() ?? 50,
+        cowriesReward: (json['cowriesReward'] as num?)?.toInt() ?? 0,
+        beadsReward: (json['beadsReward'] as num?)?.toInt() ?? 0,
         language: json['language'] as String?,
-        requirements: json['requirements'] as Map<String, dynamic>?,
+        requirements: json['requirements'] is Map
+            ? Map<String, dynamic>.from(json['requirements'] as Map)
+            : null,
         isUnlocked: json['isUnlocked'] as bool? ?? false,
         unlockedAt: json['unlockedAt'] != null
-            ? DateTime.parse(json['unlockedAt'] as String)
+            ? DateTime.tryParse((json['unlockedAt'] as String?) ?? '')
             : null,
       );
 }

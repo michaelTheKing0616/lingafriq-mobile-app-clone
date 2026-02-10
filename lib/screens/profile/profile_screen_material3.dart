@@ -32,11 +32,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : PanAfricanGradients.forest,
-        ),
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: ResponsiveSafeArea(
           child: Column(
             children: [
@@ -89,6 +85,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
   }
 
   Widget _buildHeader(BuildContext context, bool isDark) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Padding(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       child: Row(
@@ -105,7 +102,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
             child: Text(
               'Profile',
               style: PanAfricanTypography.headlineMedium(context)
-                  .copyWith(color: Colors.white),
+                  .copyWith(color: onSurface),
             ),
           ),
           _HeaderIconButton(
@@ -131,7 +128,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
         ? '${user.first_name} ${user.last_name}'.trim()
         : 'User';
     final globalId = user?.global_id ?? user?.username ?? 'username';
-    final avatar = user?.avater;
+    final avatar = user?.avatar;
 
     return Container(
       decoration: BoxDecoration(
@@ -147,7 +144,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  boxShadow: PanAfricanShadows.md,
+                  boxShadow: PanAfricanShadows.sm,
                 ),
                 child: CircleAvatar(
                   radius: 50.w,
@@ -170,7 +167,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                 child: Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.xxs),
                   decoration: BoxDecoration(
-                    color: PanAfricanColors.secondary,
+                    color: PanAfricanColors.primary,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: isDark
@@ -182,7 +179,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                   child: Icon(
                     Icons.camera_alt_rounded,
                     size: 16.sp,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -234,7 +231,6 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                 ),
               );
             },
-            hasGradient: true,
           ),
         ],
       ),
@@ -294,11 +290,12 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
   }
 
   Widget _buildMenuItems(BuildContext context, bool isDark) {
+    final iconColor = PanAfricanColors.primary;
     final menuItems = [
       _MenuItem(
         title: 'Badges',
         icon: Icons.workspace_premium_rounded,
-        color: PanAfricanColors.secondary,
+        color: iconColor,
         onTap: () {
           Navigator.push(
             context,
@@ -311,7 +308,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
       _MenuItem(
         title: 'Leaderboard',
         icon: Icons.emoji_events_rounded,
-        color: PanAfricanColors.tertiary,
+        color: iconColor,
         onTap: () {
           Navigator.push(
             context,
@@ -324,7 +321,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
       _MenuItem(
         title: 'Achievements',
         icon: Icons.stars_rounded,
-        color: PanAfricanColors.kenteBlue,
+        color: iconColor,
         onTap: () {
           Navigator.push(
             context,
@@ -335,7 +332,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
       _MenuItem(
         title: 'Progress',
         icon: Icons.timeline_rounded,
-        color: PanAfricanColors.primary,
+        color: iconColor,
         onTap: () {
           Navigator.push(
             context,
@@ -346,7 +343,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
       _MenuItem(
         title: 'Settings',
         icon: Icons.settings_rounded,
-        color: PanAfricanColors.neutralMedium,
+        color: iconColor,
         onTap: () {
           Navigator.push(
             context,
@@ -430,15 +427,16 @@ class _HeaderIconButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final onSurface = Theme.of(context).colorScheme.onSurface;
     return Material(
-      color: Colors.white.withOpacity(0.15),
+      color: onSurface.withOpacity(0.1),
       shape: const CircleBorder(),
       child: InkWell(
         onTap: onTap,
         customBorder: const CircleBorder(),
         child: Padding(
           padding: EdgeInsets.all(PanAfricanSpacing.sm),
-          child: Icon(icon, color: Colors.white, size: 24.sp),
+          child: Icon(icon, color: onSurface, size: 24.sp),
         ),
       ),
     );

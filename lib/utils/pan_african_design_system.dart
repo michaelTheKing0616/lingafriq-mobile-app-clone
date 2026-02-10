@@ -136,76 +136,77 @@ class PanAfricanColors {
   static const Color gold = Color(0xFFF7CB46);
 }
 
-/// Pan-African Gradients
+/// Pan-African Gradients (subtle, flat variants - no bold gradients)
 class PanAfricanGradients {
   PanAfricanGradients._();
-  
-  /// African Sunset - Warm gradient for headers and CTAs
+
+  static const Color _primary = Color(0xFF1B7340);
+  static const Color _primaryDark = Color(0xFF0D4D29);
+  static const Color _primaryContainer = Color(0xFFB7F5CD);
+  static const Color _surface = Color(0xFFFAFAFA);
+  static const Color _neutralLightest = Color(0xFFF4F6F5);
+
+  /// African Sunset - Barely visible warm tint
   static const LinearGradient sunset = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFEB8937), Color(0xFFF7CB46)],
+    colors: [Color(0xFFFFF8F0), Color(0xFFFFFBF5)],
   );
-  
-  /// African Forest - Cool gradient for backgrounds
+
+  /// African Forest - Very subtle (was bold green; now flat surface)
   static const LinearGradient forest = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF1B7340), Color(0xFF0D4D29)],
+    colors: [_surface, _surface],
   );
-  
-  /// Savanna Gold - Premium feel
+
+  /// Savanna Gold - Barely there warm tint
   static const LinearGradient savannaGold = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFF7CB46), Color(0xFFE8A817), Color(0xFFF7CB46)],
-    stops: [0.0, 0.5, 1.0],
+    colors: [Color(0xFFFFF8E7), Color(0xFFFFFDF5)],
   );
-  
-  /// Primary Header - Gradient for app bars and header sections
+
+  /// Primary Header - Subtle green
   static const LinearGradient primaryHeader = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF1B7340), Color(0xFF2BEE6C)],
+    colors: [_primary, _primary],
   );
-  
-  /// Kente Vibrant - Celebratory/achievement gradient
+
+  /// Kente Vibrant - Flat (primaryContainer)
   static const LinearGradient kenteVibrant = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [
-      Color(0xFFC4413A), // Red
-      Color(0xFFF7CB46), // Gold
-      Color(0xFF1B7340), // Green
-    ],
+    colors: [_primaryContainer, _primaryContainer],
   );
-  
-  /// Dark Mode Gradient
+
+  /// Dark Mode Gradient - Subtle dark surface
   static const LinearGradient darkSurface = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [Color(0xFF1A2E21), Color(0xFF0D1810)],
   );
-  
-  /// App Bar Gradient (Dark)
+
+  /// App Bar Gradient (Dark) - Subtle
   static const LinearGradient appBarDark = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [Color(0xFF1F3527), Color(0xFF0D1810)],
   );
-  
-  /// Achievement/Celebration
+
+  /// Achievement/Celebration - Subtle green
   static const LinearGradient celebration = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFFF7CB46), Color(0xFFEB8937)],
+    colors: [_primaryContainer, Color(0xFFE8F5E9)],
   );
-  
-  /// African Earth - Warm brown gradient for grounding elements
+
+  /// African Earth - Flat neutral
   static const LinearGradient earth = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [Color(0xFF8B5E3C), Color(0xFF5D3A1A)],
+    colors: [_neutralLightest, _surface],
   );
 }
 
@@ -340,7 +341,7 @@ class PanAfricanShadows {
     BoxShadow(
       color: PanAfricanColors.neutralDarkest.withOpacity(0.06),
       blurRadius: 8,
-      offset: const Offset(0, 4),
+      offset: const Offset(0, 2),
     ),
   ];
   
@@ -348,7 +349,7 @@ class PanAfricanShadows {
     BoxShadow(
       color: PanAfricanColors.neutralDarkest.withOpacity(0.08),
       blurRadius: 16,
-      offset: const Offset(0, 8),
+      offset: const Offset(0, 4),
     ),
   ];
   
@@ -360,31 +361,12 @@ class PanAfricanShadows {
     ),
   ];
   
-  /// Elevated glow effect for highlighted items
-  static List<BoxShadow> glowGold(double opacity) => [
-    BoxShadow(
-      color: PanAfricanColors.secondary.withOpacity(opacity),
-      blurRadius: 20,
-      spreadRadius: 2,
-    ),
-  ];
-  
-  static List<BoxShadow> glowGreen(double opacity) => [
-    BoxShadow(
-      color: PanAfricanColors.primary.withOpacity(opacity),
-      blurRadius: 20,
-      spreadRadius: 2,
-    ),
-  ];
-  
-  /// Generic glow method
-  static List<BoxShadow> glow(Color color) => [
-    BoxShadow(
-      color: color.withOpacity(0.3),
-      blurRadius: 20,
-      spreadRadius: 2,
-    ),
-  ];
+  /// Elevated glow effect (neutered - no glows)
+  static List<BoxShadow> glowGold(double opacity) => const [];
+  static List<BoxShadow> glowGreen(double opacity) => const [];
+
+  /// Generic glow method (neutered - no glows)
+  static List<BoxShadow> glow(Color color) => const [];
 }
 
 /// Pan-African Typography
@@ -409,56 +391,56 @@ class PanAfricanTypography {
   static TextStyle _withFallback(TextStyle style) =>
       style.copyWith(fontFamilyFallback: _fontFallback);
   
-  static String get displayFont => 'Josefin Sans';
+  static String get displayFont => 'Lato';
   static String get bodyFont => 'Lato';
-  
-  // Display Styles
+
+  // Display Styles (Lato, lighter weights)
   static TextStyle displayLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 57.sp,
-      fontWeight: FontWeight.w800,
+      fontWeight: FontWeight.w600,
       letterSpacing: -0.25,
       color: color ?? _textColor(context),
     ));
   }
-  
+
   static TextStyle displayMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 45.sp,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w600,
       color: color ?? _textColor(context),
     ));
   }
-  
+
   static TextStyle displaySmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 36.sp,
       fontWeight: FontWeight.w600,
       color: color ?? _textColor(context),
     ));
   }
-  
-  // Headline Styles
+
+  // Headline Styles (Lato, lighter weights)
   static TextStyle headlineLarge(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 32.sp,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.w600,
       color: color ?? _textColor(context),
     ));
   }
-  
+
   static TextStyle headlineMedium(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 28.sp,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: color ?? _textColor(context),
     ));
   }
-  
+
   static TextStyle headlineSmall(BuildContext context, {Color? color}) {
-    return _withFallback(GoogleFonts.josefinSans(
+    return _withFallback(GoogleFonts.lato(
       fontSize: 24.sp,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: color ?? _textColor(context),
     ));
   }
