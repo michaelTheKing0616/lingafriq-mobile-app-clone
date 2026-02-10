@@ -26,6 +26,7 @@ class TribeVsTribeScreen extends ConsumerStatefulWidget {
 
 class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
   bool _isLoading = false;
+  bool _hasError = false;
   Map<String, dynamic>? _currentCompetition;
   List<dynamic> _competitionResults = [];
 

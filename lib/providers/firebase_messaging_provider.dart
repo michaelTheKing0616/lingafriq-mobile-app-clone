@@ -146,7 +146,7 @@ class FirebaseMessagingProvider {
 
   void _navigateTo(String routeName, {Object? arguments}) {
     try {
-      final nav = read(navigationProvider);
+      final nav = read.read(navigationProvider);
       nav.navigateToNamed(routeName, arguments: arguments);
     } catch (e) {
       log('Error navigating to $routeName: $e', name: 'FirebaseMessagingProvider');

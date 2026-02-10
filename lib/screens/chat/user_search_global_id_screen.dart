@@ -38,22 +38,6 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
     final debounceTimer = useRef<Timer?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    void debouncedSearch(String query) {
-      debounceTimer.value?.cancel();
-      if (query.trim().isEmpty) {
-        searchResults.value = [];
-        searchError.value = null;
-        return;
-      }
-      debounceTimer.value = Timer(const Duration(milliseconds: 300), () {
-        searchUsers(query);
-      });
-    }
-
-    useEffect(() {
-      return () => debounceTimer.value?.cancel();
-    }, []);
-
     Future<void> searchUsers(String query) async {
       if (query.trim().isEmpty) {
         searchResults.value = [];
@@ -89,6 +73,22 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
         isSearching.value = false;
       }
     }
+
+    void debouncedSearch(String query) {
+      debounceTimer.value?.cancel();
+      if (query.trim().isEmpty) {
+        searchResults.value = [];
+        searchError.value = null;
+        return;
+      }
+      debounceTimer.value = Timer(const Duration(milliseconds: 300), () {
+        searchUsers(query);
+      });
+    }
+
+    useEffect(() {
+      return () => debounceTimer.value?.cancel();
+    }, []);
 
     return Scaffold(
       appBar: AppBar(

@@ -309,10 +309,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
 class _GlobalMessageBubble extends StatelessWidget {
   final Map<String, dynamic> message;
   final bool isDark;
+  final bool isFromCurrentUser;
 
   const _GlobalMessageBubble({
     required this.message,
     required this.isDark,
+    this.isFromCurrentUser = false,
   });
 
   @override

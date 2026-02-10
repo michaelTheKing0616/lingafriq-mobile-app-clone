@@ -577,7 +577,6 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
               ],
             ),
           ),
-          ),
           Expanded(
             child: Stack(
               children: [

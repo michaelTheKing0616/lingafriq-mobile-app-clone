@@ -55,7 +55,13 @@ class AchievementsScreen extends ConsumerWidget {
       if (context.mounted) {
         ErrorHandler.showError(context, e);
       }
-      return _buildErrorState(context, isDark);
+      return Scaffold(
+        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        body: AppErrorState(
+          message: 'Failed to load achievements. Please try again.',
+          onRetry: () => ref.invalidate(achievementsProvider),
+        ),
+      );
     }
   }
 

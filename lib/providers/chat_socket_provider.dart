@@ -23,7 +23,6 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
 
   void _dispose() {
     try {
-      _socket?.off();
       _socket?.disconnect();
       _socket?.dispose();
       _socket = null;
