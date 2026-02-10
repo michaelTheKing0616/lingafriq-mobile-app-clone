@@ -54,38 +54,33 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final soundEffects = ref.watch(soundEffectsProvider);
 
-    return LoadingOverlay(
-      isLoading: isLoading.value,
-      message: 'Loading...',
-      child: Scaffold(
-        backgroundColor: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
-        body: SafeArea(
-          child: Column(
+    final bodyContent = SafeArea(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(PolieSpacing.lg),
+            child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.all(PolieSpacing.lg),
-                  child: Column(
-                    children: [
-                      Text(
-                        'Choose Your Language',
-                        style: PolieTypography.h1(context).copyWith(
-                          color: PolieColors.textPrimary,
-                        ),
-                      ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
-                      SizedBox(height: PolieSpacing.sm),
-                      Text(
-                        'Tap a language to begin • Long-press for dialects',
-                        style: PolieTypography.bodySmall(context).copyWith(
-                          color: PolieColors.textSecondary,
-                        ),
-                      ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
-                    ],
+                Text(
+                  'Choose Your Language',
+                  style: PolieTypography.h1(context).copyWith(
+                    color: PolieColors.textPrimary,
                   ),
-                ),
-                Expanded(
-                  child: languages.isEmpty
-                      ? _buildEmptyState(context, isDark)
-                      : LayoutBuilder(
+                ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
+                SizedBox(height: PolieSpacing.sm),
+                Text(
+                  'Tap a language to begin • Long-press for dialects',
+                  style: PolieTypography.bodySmall(context).copyWith(
+                    color: PolieColors.textSecondary,
+                  ),
+                ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
+              ],
+            ),
+          ),
+          Expanded(
+            child: languages.isEmpty
+                ? _buildEmptyState(context, isDark)
+                : LayoutBuilder(
                     builder: (context, constraints) {
                       return _OrbGrid(
                         languages: languages,
@@ -112,11 +107,17 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
                       );
                     },
                   ),
-                ),
-              ],
-            ),
           ),
-        ),
+        ],
+      ),
+    );
+
+    return LoadingOverlay(
+      isLoading: isLoading.value,
+      message: 'Loading...',
+      child: Scaffold(
+        backgroundColor: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+        body: bodyContent,
       ),
     );
   }
