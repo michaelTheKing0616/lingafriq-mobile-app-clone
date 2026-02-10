@@ -56,19 +56,47 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
           groqProvider: groqProvider,
         );
 
-        if (response.model == 'fallback' || response.output.trim().isEmpty) {
-          throw Exception(
-            'Translation is temporarily unavailable. Please ensure you are online and the AI services are configured.',
-          );
+        if (response.model != 'fallback' && response.output.trim().isNotEmpty) {
+          translationResult.value = {
+            'translation': response.output,
+            'confidence': response.confidence,
+            'model': response.model,
+            'diacriticsCorrected': response.diacriticsCorrected,
+            'metadata': response.metadata,
+          };
+          return;
         }
 
-        translationResult.value = {
-          'translation': response.output,
-          'confidence': response.confidence,
-          'model': response.model,
-          'diacriticsCorrected': response.diacriticsCorrected,
-          'metadata': response.metadata,
-        };
+        // Hybrid orchestrator returned fallback — use Groq LLM as final fallback.
+        // This ensures translation works whenever the user has a valid Groq API key,
+        // even if backend translation, HuggingFace, and offline services all fail.
+        final srcName = sourceLanguage.value.name;
+        final tgtName = targetLanguage.value.name;
+        final groqTranslation = await groqProvider.sendMessage(
+          'Translate the following text from $srcName to $tgtName. '
+          'Output ONLY the translation with correct diacritics, nothing else:\n\n'
+          '${textController.text}',
+          systemPromptOverride:
+            'You are a precise translator. Translate from $srcName to $tgtName. '
+            'Output ONLY the translated text with correct orthography and diacritics. '
+            'Do not add explanations, notes, or formatting — just the translation.',
+        );
+
+        if (groqTranslation.trim().isNotEmpty) {
+          translationResult.value = {
+            'translation': groqTranslation.trim(),
+            'confidence': 0.80,
+            'model': 'groq-llm-fallback',
+            'diacriticsCorrected': false,
+            'metadata': <String, dynamic>{'fallback': true},
+          };
+          return;
+        }
+
+        // Both orchestrator and Groq failed
+        throw Exception(
+          'Translation is temporarily unavailable. Please ensure you are online and the AI services are configured.',
+        );
       } catch (e) {
         if (context.mounted) ErrorHandler.showError(context, e);
         translationResult.value = null;

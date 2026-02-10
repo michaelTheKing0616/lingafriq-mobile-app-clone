@@ -35,14 +35,19 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
     final analyticsService = ref.read(conversationAnalyticsServiceProvider);
     final scrollController = useScrollController();
 
+    final isInitialized = useState(false);
     useEffect(() {
       // Atomically set mode + language ONCE on screen entry.
       // This ensures the correct history key (conversation × language) is used.
-      chatProvider.setModeAndLanguage(
-        mode: PolieMode.conversation,
-        targetLanguage: languageName,
-        sourceLanguage: language,
-      );
+      Future<void> init() async {
+        await chatProvider.setModeAndLanguage(
+          mode: PolieMode.conversation,
+          targetLanguage: languageName,
+          sourceLanguage: language,
+        );
+        isInitialized.value = true;
+      }
+      init();
       _loadTopicSuggestions(analyticsService, topicSuggestions);
       return null;
     }, []);

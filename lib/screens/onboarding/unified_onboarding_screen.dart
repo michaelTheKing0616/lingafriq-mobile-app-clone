@@ -1666,17 +1666,6 @@ class _CharacterStepTemplate extends StatelessWidget {
                 ),
                 child: Icon(characterIcon, size: 50.sp, color: Colors.white),
               ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
-            SizedBox(height: 16.h),
-            // Character name
-            Text(
-              characterName,
-              style: TextStyle(
-                color: PanAfricanColors.secondary,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1,
-              ),
-            ).animate().fadeIn(delay: 200.ms),
             SizedBox(height: 12.h),
             // Dialogue + Question panel
             Padding(

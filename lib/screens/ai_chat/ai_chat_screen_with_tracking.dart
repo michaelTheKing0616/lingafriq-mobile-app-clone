@@ -65,7 +65,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final errors = useRef<int>(0);
     final corrections = useRef<List<String>>([]);
 
-    // Initialize session tracking
+    // Initialize session tracking and set mode+language atomically ONCE
     useEffect(() {
       sessionStartTime.value = DateTime.now();
       messageCount.value = 0;
@@ -74,6 +74,14 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
       vocabularyUsed.value = {};
       errors.value = 0;
       corrections.value = [];
+
+      // Atomically set mode+language for correct history scoping
+      final polieMode = _mapModeToPolieMode(mode);
+      chatProvider.setModeAndLanguage(
+        mode: polieMode,
+        targetLanguage: languageName,
+        sourceLanguage: language,
+      );
 
       // Start roleplay session if applicable
       if (mode == 'roleplay' && initialScenario != null) {
@@ -150,14 +158,9 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
       isLoading.value = true;
       try {
-        // Atomic mode+language switch for correct history scoping
-        final polieMode = _mapModeToPolieMode(mode);
-        await chatProvider.setModeAndLanguage(
-          mode: polieMode,
-          targetLanguage: languageName,
-          sourceLanguage: language,
-        );
-
+        // Mode+language already set atomically in useEffect init.
+        // Do NOT call setModeAndLanguage per-message — it triggers
+        // a full save/clear/load cycle which would wipe the visible messages.
         final response = await chatProvider.sendMessage(userMessageText);
 
         // Extract topics and vocabulary from response

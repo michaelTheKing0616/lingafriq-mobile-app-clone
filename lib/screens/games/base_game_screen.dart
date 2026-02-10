@@ -108,7 +108,15 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       }
 
       _startTime = DateTime.now();
-      await onGameInitialized();
+
+      // Game-specific init (e.g. AI content generation) is non-fatal.
+      // Cards are already loaded — the game can still function with fallback
+      // content if onGameInitialized() fails.
+      try {
+        await onGameInitialized();
+      } catch (initError) {
+        debugPrint('Game-specific init error (continuing with fallback): $initError');
+      }
       
       setState(() => _isLoading = false);
     } catch (e) {

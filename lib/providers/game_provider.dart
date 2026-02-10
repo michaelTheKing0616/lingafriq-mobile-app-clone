@@ -262,18 +262,22 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
         // If we got cards from API, apply diacritics enforcement and return
         if (cards.isNotEmpty) {
-          for (var i = 0; i < cards.length; i++) {
-            final card = cards[i];
-            final enforced = DiacriticsEnforcer.enforceWithMetadata(
-              card.text,
-              language,
-              enableFuzzy: true,
-              fuzzyThreshold: 0.75,
-            );
+          try {
+            for (var i = 0; i < cards.length; i++) {
+              final card = cards[i];
+              final enforced = DiacriticsEnforcer.enforceWithMetadata(
+                card.text,
+                language,
+                enableFuzzy: true,
+                fuzzyThreshold: 0.75,
+              );
 
-            if (enforced['changed'] == true) {
-              cards[i] = card.copyWith(text: enforced['text'] as String);
+              if (enforced['changed'] == true) {
+                cards[i] = card.copyWith(text: enforced['text'] as String);
+              }
             }
+          } catch (e) {
+            logger.error('Diacritics enforcement failed for API cards (cards still usable)', tag: 'game-provider', error: e);
           }
           return cards;
         }
@@ -287,19 +291,23 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final fallbackCards = _generateFallbackCards(language, level, count);
     cards.addAll(fallbackCards);
 
-    // Apply diacritics enforcement to all cards
-    for (var i = 0; i < cards.length; i++) {
-      final card = cards[i];
-      final enforced = DiacriticsEnforcer.enforceWithMetadata(
-        card.text,
-        language,
-        enableFuzzy: true,
-        fuzzyThreshold: 0.75,
-      );
+    // Apply diacritics enforcement to all cards (non-fatal — cards work without it)
+    try {
+      for (var i = 0; i < cards.length; i++) {
+        final card = cards[i];
+        final enforced = DiacriticsEnforcer.enforceWithMetadata(
+          card.text,
+          language,
+          enableFuzzy: true,
+          fuzzyThreshold: 0.75,
+        );
 
-      if (enforced['changed'] == true) {
-        cards[i] = card.copyWith(text: enforced['text'] as String);
+        if (enforced['changed'] == true) {
+          cards[i] = card.copyWith(text: enforced['text'] as String);
+        }
       }
+    } catch (e) {
+      logger.error('Diacritics enforcement failed (cards still usable)', tag: 'game-provider', error: e);
     }
 
     return cards;

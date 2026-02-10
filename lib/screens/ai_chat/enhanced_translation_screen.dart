@@ -38,6 +38,16 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     final historyService = ref.read(translationHistoryServiceProvider);
     final chatProvider = ref.read(groqChatProvider.notifier);
 
+    // Set mode+language atomically ONCE on screen entry
+    useEffect(() {
+      chatProvider.setModeAndLanguage(
+        mode: PolieMode.translation,
+        targetLanguage: targetLanguage,
+        sourceLanguage: sourceLanguage,
+      );
+      return null;
+    }, []);
+
     Future<void> translate() async {
       final text = textController.text.trim();
       if (text.isEmpty) return;
@@ -59,12 +69,8 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
 
       while (retryCount <= maxRetries) {
         try {
-          // Atomic mode+language switch for correct history scoping
-          await chatProvider.setModeAndLanguage(
-            mode: PolieMode.translation,
-            targetLanguage: targetLanguage,
-            sourceLanguage: sourceLanguage,
-          );
+          // Mode+language already set in useEffect init.
+          // Do NOT call setModeAndLanguage per-translation.
 
           // Build structured prompt for better parsing
           final prompt = '''Translate the following text from $sourceLanguage to $targetLanguage.
