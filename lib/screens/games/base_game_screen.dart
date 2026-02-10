@@ -226,16 +226,45 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           FilledButton.icon(
             onPressed: () async {
               HapticFeedback.lightImpact();
-              final success = await GamificationIntegrationHelper.of(ref).refillHearts();
-              if (success && mounted) {
-                Navigator.pop(ctx);
+              try {
+                final success = await GamificationIntegrationHelper.of(ref).refillHearts();
+                if (!mounted) return;
+                if (success) {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Hearts refilled! Continue playing.',
+                        style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                      ),
+                      backgroundColor: PanAfricanColors.primary,
+                    ),
+                  );
+                } else {
+                  // Refill failed — insufficient currency
+                  HapticFeedback.heavyImpact();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Not enough cowries to refill hearts. Come back later or earn more!',
+                        style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                      ),
+                      backgroundColor: PanAfricanColors.kenteRed,
+                      duration: const Duration(seconds: 4),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (!mounted) return;
+                HapticFeedback.heavyImpact();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Hearts refilled! Continue playing.',
+                      'Something went wrong. Please try again later.',
                       style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
                     ),
-                    backgroundColor: PanAfricanColors.primary,
+                    backgroundColor: PanAfricanColors.kenteRed,
+                    duration: const Duration(seconds: 3),
                   ),
                 );
               }

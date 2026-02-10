@@ -37,17 +37,25 @@ class GamificationProvider extends Notifier<BaseProviderState>
     return BaseProviderState();
   }
 
-  /// Award XP and handle level ups, currency rewards
-  /// Uses server-authoritative XP service to prevent cheating
+  /// Award XP and handle level ups, currency rewards.
+  /// Uses server-authoritative XP service to prevent cheating.
+  ///
+  /// Flow:
+  /// 1. Try backend award → on success, use backend-reported totals (authoritative).
+  /// 2. If backend fails → apply optimistic local XP but mark as *pending* so
+  ///    the next sync does NOT blindly overwrite backend state and cause a
+  ///    double-count.
   Future<int> awardXP(String source, {double multiplier = 1.0, String? sourceId}) async {
     final baseXP = XPSources.getXP(source);
     final xpGain = (baseXP * multiplier).round();
-    
+
     // Map source to backend XP source type
     final backendSource = _mapSourceToBackendType(source);
     final uniqueSourceId = sourceId ?? '${source}_${DateTime.now().millisecondsSinceEpoch}';
-    
-    // Award XP via backend service (server-authoritative)
+
+    bool backendAwarded = false;
+
+    // 1. Award XP via backend service (server-authoritative)
     try {
       final user = ref.read(userProvider);
       if (user != null) {
@@ -58,13 +66,10 @@ class GamificationProvider extends Notifier<BaseProviderState>
           amount: xpGain,
           difficultyMultiplier: multiplier,
         );
-        
-        if (!success) {
-          logger.warn('Failed to award XP via backend', tag: 'gamification', context: {'source': source});
-          // Fall back to local-only if backend fails (for offline support)
-          // But don't sync to backend to prevent double-counting
-        } else {
-          // Update local state from backend response
+
+        if (success) {
+          backendAwarded = true;
+          // Update local state from backend response (authoritative totals)
           try {
             final userXP = await ref.read(apiProvider.notifier).getUserXP(user.id.toString());
             if (userXP != null && userXP is Map<String, dynamic>) {
@@ -72,7 +77,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
               final backendLevel = (userXP['level'] as num?)?.toInt();
               final newLevel = backendLevel ?? LevelTitles.getLevelFromXP(totalXP);
               final newTitle = LevelTitles.getTitleForLevel(newLevel);
-              
+
               _gamification = _gamification.copyWith(
                 xp: totalXP,
                 level: newLevel,
@@ -81,16 +86,17 @@ class GamificationProvider extends Notifier<BaseProviderState>
             }
           } catch (e) {
             logger.error('Error updating local XP from backend', tag: 'gamification', error: e);
-            // Continue with local calculation
+            // Continue — local state was already partially updated
           }
+        } else {
+          logger.warn('Failed to award XP via backend', tag: 'gamification', context: {'source': source});
         }
       }
     } catch (e) {
       logger.error('Error awarding XP via backend', tag: 'gamification', error: e, context: {'source': source});
-      // Fall back to local-only for offline support
     }
-    
-    // Calculate currency rewards (5 ngwenya per XP)
+
+    // 2. Apply optimistic local XP (for immediate UI feedback)
     final ngwenyaGain = xpGain ~/ 5;
     final currentXP = _gamification.xp;
     final newXP = currentXP + xpGain;
@@ -111,14 +117,14 @@ class GamificationProvider extends Notifier<BaseProviderState>
         cowries: _gamification.cowries + levelUpBonus,
       );
       logger.info('Level up!', tag: 'gamification', context: {'newLevel': newLevel, 'newTitle': newTitle});
-      
+
       // React with Rive
       try {
         ref.read(riveGamificationServiceProvider).reactToLevelUp(newLevel: newLevel);
       } catch (e) {
         logger.warn('Rive service not available', tag: 'gamification', error: e);
       }
-      
+
       // Emit level up event
       await _emitEvent('level_up', {
         'old_level': _gamification.level,
@@ -137,10 +143,47 @@ class GamificationProvider extends Notifier<BaseProviderState>
 
     await _saveGamification();
     await _checkBadges();
-    await _syncToBackend();
+
+    // 3. CRITICAL: Only sync optimistic state to backend when the backend
+    //    award succeeded. If it failed, queue a *pending XP event* instead
+    //    so the next sync retries the award rather than overwriting backend
+    //    totals with a stale/inflated local value.
+    if (backendAwarded) {
+      await _syncToBackend();
+    } else {
+      // Queue the failed XP award as a retriable event — NOT a full state sync
+      await _queuePendingXPEvent(backendSource, uniqueSourceId, xpGain, multiplier);
+    }
 
     state = state.copyWith();
     return xpGain;
+  }
+
+  /// Queue a failed XP award as a retriable sync task so it can be
+  /// re-attempted on next connectivity window without double-counting.
+  Future<void> _queuePendingXPEvent(
+    String source, String sourceId, int amount, double multiplier,
+  ) async {
+    try {
+      final user = ref.read(userProvider);
+      if (user == null) return;
+
+      final syncProvider = ref.read(backendSyncProvider.notifier);
+      await syncProvider.queueSync(SyncTask(
+        type: SyncType.gamification,
+        data: {
+          'user_id': user.id.toString(),
+          'pending_xp_award': true,
+          'source': source,
+          'source_id': sourceId,
+          'amount': amount,
+          'multiplier': multiplier,
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ));
+    } catch (e) {
+      logger.error('Error queuing pending XP event', tag: 'gamification', error: e);
+    }
   }
   
   /// Map frontend XP source to backend source type

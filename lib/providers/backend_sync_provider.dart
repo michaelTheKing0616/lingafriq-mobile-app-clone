@@ -20,24 +20,35 @@ class BackendSyncState {
   final int pendingSyncs;
   final Map<String, SyncStatus> syncStatuses;
 
+  /// Tasks that permanently failed after exhausting retries.
+  /// Exposed so the UI can show a banner / retry action.
+  final List<SyncTask> permanentlyFailedTasks;
+
+  /// True when at least one task has permanently failed.
+  bool get hasPermanentFailures => permanentlyFailedTasks.isNotEmpty;
+
   BackendSyncState({
     this.isSyncing = false,
     this.lastSyncTime,
     this.pendingSyncs = 0,
     Map<String, SyncStatus>? syncStatuses,
-  }) : syncStatuses = syncStatuses ?? {};
+    List<SyncTask>? permanentlyFailedTasks,
+  })  : syncStatuses = syncStatuses ?? {},
+        permanentlyFailedTasks = permanentlyFailedTasks ?? [];
 
   BackendSyncState copyWith({
     bool? isSyncing,
     DateTime? lastSyncTime,
     int? pendingSyncs,
     Map<String, SyncStatus>? syncStatuses,
+    List<SyncTask>? permanentlyFailedTasks,
   }) {
     return BackendSyncState(
       isSyncing: isSyncing ?? this.isSyncing,
       lastSyncTime: lastSyncTime ?? this.lastSyncTime,
       pendingSyncs: pendingSyncs ?? this.pendingSyncs,
       syncStatuses: syncStatuses ?? this.syncStatuses,
+      permanentlyFailedTasks: permanentlyFailedTasks ?? this.permanentlyFailedTasks,
     );
   }
 }
@@ -188,36 +199,73 @@ class BackendSyncProvider extends Notifier<BackendSyncState> {
     state = state.copyWith(isSyncing: true);
 
     try {
-      final List<SyncTask> failedTasks = [];
+      final List<SyncTask> retryableTasks = [];
+      final List<SyncTask> newPermanentlyFailed = [];
 
       for (final task in List<SyncTask>.from(_syncQueue)) {
         try {
           await _executeSyncTask(task);
           _syncQueue.remove(task);
         } catch (e) {
-          logger.error('Sync task failed', tag: 'backend-sync', error: e, context: {'taskType': task.type});
+          logger.error('Sync task failed', tag: 'backend-sync', error: e, context: {'taskType': task.type.name});
           task.retries++;
           if (task.retries < 3) {
-            failedTasks.add(task);
+            retryableTasks.add(task);
           } else {
-            logger.warn('Task failed after 3 retries, removing', tag: 'backend-sync', context: {'taskType': task.type});
+            logger.warn('Task permanently failed after 3 retries',
+              tag: 'backend-sync',
+              context: {'taskType': task.type.name, 'retries': task.retries},
+            );
+            newPermanentlyFailed.add(task);
           }
         }
       }
 
       _syncQueue.clear();
-      _syncQueue.addAll(failedTasks);
+      _syncQueue.addAll(retryableTasks);
       await _saveSyncQueue();
+
+      // Merge newly failed tasks with any existing permanently failed tasks
+      final allFailed = [
+        ...state.permanentlyFailedTasks,
+        ...newPermanentlyFailed,
+      ];
 
       state = state.copyWith(
         isSyncing: false,
         lastSyncTime: DateTime.now(),
         pendingSyncs: _syncQueue.length,
+        permanentlyFailedTasks: allFailed,
       );
     } catch (e) {
       logger.error('Error during sync', tag: 'backend-sync', error: e);
       state = state.copyWith(isSyncing: false);
     }
+  }
+
+  /// Re-queue permanently failed tasks so users can retry from the UI.
+  /// Resets retry count and clears the permanent failure list.
+  Future<void> retryFailedTasks() async {
+    if (state.permanentlyFailedTasks.isEmpty) return;
+
+    for (final task in state.permanentlyFailedTasks) {
+      task.retries = 0; // Reset retries
+      _syncQueue.add(task);
+    }
+    await _saveSyncQueue();
+
+    state = state.copyWith(
+      permanentlyFailedTasks: [],
+      pendingSyncs: _syncQueue.length,
+    );
+
+    // Trigger a sync attempt immediately
+    syncAll();
+  }
+
+  /// Dismiss permanently failed tasks (user acknowledges the failures).
+  void dismissFailedTasks() {
+    state = state.copyWith(permanentlyFailedTasks: []);
   }
 
   Future<void> _executeSyncTask(SyncTask task) async {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -5,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
@@ -73,6 +75,10 @@ final client = Provider<Dio>(
 class _DioLogger extends Interceptor {
   final Ref ref;
   _DioLogger(this.ref);
+
+  /// Single-flight lock: only one token refresh at a time.
+  /// Concurrent 401 handlers wait on the same Future.
+  Completer<String?>? _refreshCompleter;
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     _log("Api call start ${options.path} \n ${options.data ?? ''} ");
@@ -157,34 +163,76 @@ class _DioLogger extends Interceptor {
       return handler.reject(userFriendlyError);
     }
     
-    // Handle 401 Unauthorized - attempt token refresh
-    if (err.response?.statusCode == 401 && err.requestOptions.path != Api.refreshToken) {
+    // Handle 401 Unauthorized - attempt token refresh with single-flight lock
+    if (err.response?.statusCode == 401 &&
+        !err.requestOptions.uri.path.contains('auth/jwt/refresh') &&
+        err.requestOptions.path != Api.refreshToken) {
       final requestOptions = err.requestOptions;
       
-      // Skip refresh if already retried
+      // Skip refresh if this request was already a retry
       if (!requestOptions.extra.containsKey('_retry')) {
         requestOptions.extra['_retry'] = true;
         
         try {
-          // Attempt to refresh token
-          final apiProviderNotifier = ref.read(apiProvider.notifier);
-          final newAccessToken = await apiProviderNotifier.refreshAccessToken();
-          
+          String? newAccessToken;
+
+          if (_refreshCompleter != null) {
+            // Another request is already refreshing — wait for it
+            _log('Waiting for in-flight token refresh...');
+            newAccessToken = await _refreshCompleter!.future;
+          } else {
+            // We are the first — start the refresh
+            _refreshCompleter = Completer<String?>();
+            try {
+              final apiProviderNotifier = ref.read(apiProvider.notifier);
+              newAccessToken = await apiProviderNotifier.refreshAccessToken();
+              _refreshCompleter!.complete(newAccessToken);
+            } catch (e) {
+              _refreshCompleter!.completeError(e);
+              rethrow;
+            } finally {
+              _refreshCompleter = null;
+            }
+          }
+
           if (newAccessToken != null) {
-            // Update token and retry request
+            // Update token and retry the original request
             requestOptions.headers['Authorization'] = 'Bearer $newAccessToken';
             final response = await ref.read(client).fetch(requestOptions);
             return handler.resolve(response);
           }
+
+          // Token refresh returned null — force full logout
+          _forceLogout('Token refresh returned null');
         } catch (refreshError) {
           _log('Token refresh failed: $refreshError');
-          // If refresh fails, clear token and let error propagate
-          ref.read(apiProvider.notifier).clearToken();
+          _forceLogout('Token refresh threw: $refreshError');
         }
       }
     }
     
     super.onError(err, handler);
+  }
+
+  /// Force full sign-out when token refresh fails irreversibly.
+  /// Clears tokens and triggers the auth state notifier so the UI
+  /// redirects to the login/session-expired screen.
+  void _forceLogout(String reason) {
+    _log('Forcing logout: $reason');
+    try {
+      // Clear the API token immediately
+      ref.read(apiProvider.notifier).clearToken();
+      // Trigger full sign-out via auth provider — this clears SharedPreferences,
+      // resets user state, and navigates to the login screen.
+      ref.read(authProvider.notifier).signOut();
+    } catch (e) {
+      _log('Error during forced logout: $e');
+      // Last resort: just clear the token
+      try {
+        ref.read(apiProvider.notifier).clearToken();
+      } catch (_) {}
+    }
+    logger.warn('Session expired — user forcefully logged out', tag: 'auth', context: {'reason': reason});
   }
 
   _log(String message) => log(message, name: "Dio_Logger");
