@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -33,7 +34,17 @@ import 'utils/polie_design_tokens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  FlutterError.onError = (details) {
+    logger.error(
+      'Flutter error',
+      error: details.exception,
+      stackTrace: details.stack,
+      context: {'library': details.library},
+    );
+  };
+
+  runZonedGuarded(() async {
   // Load .env file if it exists (for development/local configuration)
   // In production, use --dart-define or secure storage
   try {
@@ -129,12 +140,15 @@ void main() async {
     // Don't fail app startup if monitoring fails
   }
 
-  runApp(ProviderScope(
-    overrides: [
-      sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
-    ],
-    child: const MyApp(),
-  ));
+    runApp(ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
+      ],
+      child: const MyApp(),
+    ));
+  }, (error, stack) {
+    logger.error('Unhandled error', error: error, stackTrace: stack);
+  });
 }
 
 /// Detect AppLanguage from device locale

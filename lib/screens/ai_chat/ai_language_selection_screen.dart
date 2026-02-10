@@ -58,28 +58,9 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
       isLoading: isLoading.value,
       message: 'Loading...',
       child: Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: isDark
-                  ? [
-                      PolieColors.primary,
-                      PolieColors.primaryDark,
-                      PolieColors.obsidian,
-                    ]
-                  : [
-                      PolieColors.primary.withOpacity(0.95),
-                      PolieColors.primaryDark.withOpacity(0.9),
-                      PolieColors.obsidian.withOpacity(0.85),
-                    ],
-            ),
-          ),
-          child: SafeArea(
-            child: Column(
+        backgroundColor: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+        body: SafeArea(
+          child: Column(
               children: [
                 Padding(
                   padding: EdgeInsets.all(PolieSpacing.lg),
@@ -102,7 +83,9 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
                   ),
                 ),
                 Expanded(
-                  child: LayoutBuilder(
+                  child: languages.isEmpty
+                      ? _buildEmptyState(context, isDark)
+                      : LayoutBuilder(
                     builder: (context, constraints) {
                       return _OrbGrid(
                         languages: languages,
@@ -133,6 +116,38 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context, bool isDark) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(PolieSpacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.language_rounded,
+              size: 64,
+              color: PolieColors.primary.withOpacity(0.5),
+            ),
+            SizedBox(height: PolieSpacing.md),
+            Text(
+              'No languages available',
+              style: PolieTypography.h2(context),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PolieSpacing.xs),
+            Text(
+              'Language options will appear here when configured.',
+              style: PolieTypography.body(context).copyWith(
+                color: PolieColors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );
@@ -264,72 +279,52 @@ class _LanguageOrb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      onLongPress: onLongPress,
-      child: Container(
-        width: 100.w,
-        height: 110.h,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: accentColor.withOpacity(0.4),
-              blurRadius: 24,
-              spreadRadius: 0,
-            ),
-            BoxShadow(
-              color: accentColor.withOpacity(0.2),
-              blurRadius: 40,
-              spreadRadius: -4,
-            ),
-          ],
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            onLongPress: onLongPress,
-            customBorder: const CircleBorder(),
-            child: Container(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    accentColor.withOpacity(0.35),
-                    accentColor.withOpacity(0.15),
-                  ],
-                ),
-                border: Border.all(
-                  color: accentColor.withOpacity(0.6),
-                  width: 2,
-                ),
+    final surfaceColor = isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight;
+    final borderColor = isDark
+        ? PolieColors.royalAmethyst.withOpacity(0.2)
+        : accentColor.withOpacity(0.25);
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        onLongPress: onLongPress,
+        borderRadius: BorderRadius.circular(PolieRadius.lg),
+        child: Container(
+          width: 100.w,
+          height: 110.h,
+          decoration: BoxDecoration(
+            color: surfaceColor,
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            border: Border.all(color: borderColor, width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(isDark ? 0.2 : 0.06),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(flag, style: TextStyle(fontSize: 32.sp)),
-                  SizedBox(height: PolieSpacing.xs),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: PolieSpacing.xs),
-                    child: Text(
-                      name,
-                      textAlign: TextAlign.center,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: PolieTypography.label(context).copyWith(
-                        color: isDark
-                            ? PolieColors.textPrimary
-                            : PolieColors.textPrimaryLight,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(flag, style: TextStyle(fontSize: 32.sp)),
+              SizedBox(height: PolieSpacing.xs),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PolieSpacing.xs),
+                child: Text(
+                  name,
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: PolieTypography.label(context).copyWith(
+                    color: isDark
+                        ? PolieColors.textPrimary
+                        : PolieColors.textPrimaryLight,
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

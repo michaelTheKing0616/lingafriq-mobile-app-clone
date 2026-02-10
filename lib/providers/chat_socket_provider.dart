@@ -16,8 +16,21 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
 
   @override
   ChatSocketState build() {
+    ref.onDispose(_dispose);
     _initializeSocket();
     return ChatSocketState.initial();
+  }
+
+  void _dispose() {
+    try {
+      _socket?.off();
+      _socket?.disconnect();
+      _socket?.dispose();
+      _socket = null;
+      _isConnected = false;
+    } catch (e) {
+      logger.error('Error disposing chat socket', tag: 'chat-socket', error: e);
+    }
   }
 
   void _initializeSocket() {
@@ -266,16 +279,6 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   List<Map<String, dynamic>> get onlineUsers => _onlineUsers;
   bool get isConnected => _isConnected;
 
-  void dispose() {
-    try {
-      _socket?.disconnect();
-      _socket?.dispose();
-      _socket = null;
-      _isConnected = false;
-    } catch (e) {
-      logger.error('Error disposing chat socket', tag: 'chat-socket', error: e);
-    }
-  }
 }
 
 class ChatSocketState {
