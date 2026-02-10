@@ -7,6 +7,9 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -23,7 +26,7 @@ class GlobalPeopleSearchScreen extends ConsumerStatefulWidget {
 class _GlobalPeopleSearchScreenState
     extends ConsumerState<GlobalPeopleSearchScreen> {
   final TextEditingController _searchController = TextEditingController();
-  final Debouncer _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 400));
+  final Debouncer _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 300));
   bool _isLoading = false;
   String? _error;
   List<PrivateChatContact> _results = const [];
@@ -130,48 +133,29 @@ class _GlobalPeopleSearchScreenState
               ),
             ),
           ),
-          if (_isLoading)
-            LinearProgressIndicator(
-              minHeight: 2,
-              color: PanAfricanColors.primary,
-              backgroundColor: PanAfricanColors.primary.withOpacity(0.2),
-            ),
-          if (_error != null)
-            Padding(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: Text(
-                _error!,
-                style: PanAfricanTypography.bodyMedium(context).copyWith(
-                  color: PanAfricanColors.error,
-                ),
-              ),
-            ),
           Expanded(
-            child: _results.isEmpty && !_isLoading
-                ? Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.people_outline_rounded,
-                            size: 56.w,
-                            color: PanAfricanColors.textSecondary,
-                          ),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'Search for friends, classmates, or teachers by @handle.',
-                            textAlign: TextAlign.center,
-                            style: PanAfricanTypography.bodyMedium(context).copyWith(
-                              color: PanAfricanColors.textSecondary,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+            child: _error != null
+                ? AppErrorState(
+                    message: _error!,
+                    onRetry: () => _runSearch(_searchController.text.trim()),
                   )
-                : OptimizedListView.builder(
+                : _isLoading
+                    ? ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
+                        itemCount: 5,
+                        itemBuilder: (_, __) => SkeletonListCard(),
+                      )
+                    : _results.isEmpty
+                        ? AppEmptyState(
+                            icon: Icons.people_outline_rounded,
+                            title: 'No contacts found',
+                            subtitle:
+                                'Search for friends, classmates, or teachers by @handle.',
+                          )
+                        : OptimizedListView.builder(
                     padding: EdgeInsets.symmetric(
                       horizontal: PanAfricanSpacing.md,
                       vertical: PanAfricanSpacing.sm,

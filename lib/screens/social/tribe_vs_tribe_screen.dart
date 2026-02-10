@@ -9,7 +9,9 @@ import '../../services/gamification/competitions_service.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/error_boundary.dart';
-import '../../screens/loading/dynamic_loading_screen.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 import '../../providers/tribe_vs_tribe_provider.dart';
 import '../../providers/gamification_provider.dart';
 import 'package:lingafriq/avatars/avatars.dart';
@@ -46,7 +48,10 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
   }
 
   Future<void> _loadCompetitions() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
     try {
       final competitionsService = ref.read(competitionsServiceProvider);
       final competitions = await competitionsService.getCompetitions(
@@ -62,10 +67,13 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
       }
     } catch (e) {
       if (mounted) {
+        setState(() => _hasError = true);
         ErrorHandler.showError(context, e);
       }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -97,8 +105,48 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
-      return const Scaffold(
-        body: DynamicLoadingScreen(),
+      return Scaffold(
+        backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
+        appBar: AppBar(
+          title: const Text('Tribe vs Tribe'),
+          backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: ListView(
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
+          children: List.generate(5, (_) => const SkeletonListCard()),
+        ),
+      );
+    }
+
+    if (_hasError) {
+      return Scaffold(
+        backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
+        appBar: AppBar(
+          title: const Text('Tribe vs Tribe'),
+          backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+          elevation: 0,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        body: AppErrorState(
+          message: 'Failed to load competition',
+          onRetry: _loadCompetitions,
+        ),
       );
     }
 
@@ -126,21 +174,22 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                _loadCompetitions();
+              },
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.groups_outlined, size: 56.w, color: PanAfricanColors.textSecondary),
-              SizedBox(height: PanAfricanSpacing.md),
-              Text(
-                'No active event',
-                style: PanAfricanTypography.bodyMedium(context).copyWith(
-                  color: PanAfricanColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
+        body: AppEmptyState(
+          icon: Icons.groups_rounded,
+          title: 'No active event',
+          subtitle: 'Check back soon for tribe vs tribe competitions',
+          actionLabel: 'Retry',
+          onAction: _loadCompetitions,
         ),
       );
     }

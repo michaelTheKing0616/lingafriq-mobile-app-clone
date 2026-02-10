@@ -253,6 +253,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
               enabled: canSend,
               minLines: 1,
               maxLines: 4,
+              maxLength: 2000,
               decoration: InputDecoration(
                 hintText: canSend
                     ? 'Message ${widget.contact.username}...'
@@ -359,13 +360,33 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xxs),
-                  Text(
-                    _formatTime(timestamp),
-                    style: PanAfricanTypography.labelSmall(context).copyWith(
-                      color: isMe 
-                          ? Colors.white.withOpacity(0.7) 
-                          : PanAfricanColors.neutralMedium,
-                    ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        _formatTime(timestamp),
+                        style: PanAfricanTypography.labelSmall(context).copyWith(
+                          color: isMe
+                              ? Colors.white.withOpacity(0.7)
+                              : PanAfricanColors.neutralMedium,
+                        ),
+                      ),
+                      if (isMe) ...[
+                        SizedBox(width: PanAfricanSpacing.xxs),
+                        Icon(
+                          message['failed'] == true
+                              ? Icons.error_outline
+                              : (message['read'] == true
+                                  ? Icons.done_all
+                                  : Icons.done),
+                          size: 14,
+                          color: message['failed'] == true
+                              ? PanAfricanColors.error
+                              : Colors.white.withOpacity(0.7),
+                        ),
+                      ],
+                    ],
                   ),
                 ],
               ),

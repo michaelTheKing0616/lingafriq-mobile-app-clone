@@ -233,14 +233,14 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
                   SizedBox(height: PolieSpacing.lg),
                   Text(
-                    'Start Learning',
+                    'Start a conversation!',
                     style: PolieTypography.h1(context).copyWith(
                       color: PolieColors.textPrimary,
                     ),
                   ).animate().fadeIn(delay: 100.ms),
                   SizedBox(height: PolieSpacing.sm),
                   Text(
-                    'Chat with Polie to practice African languages, translate phrases, and explore grammar with guidance.',
+                    'I\'m here to help you learn. Chat with Polie to practice African languages, translate phrases, and explore grammar.',
                     textAlign: TextAlign.center,
                     style: PolieTypography.body(context).copyWith(
                       color: PolieColors.textSecondary,
@@ -572,6 +572,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                   enabled: !isLoading,
                   hintText: 'Type your message...',
                   maxLines: 4,
+                  maxLength: 2000,
                   onSubmitted: (_) => _sendMessage(),
                   prefixIcon: Icons.auto_awesome,
                 ),

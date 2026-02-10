@@ -9,7 +9,9 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -83,70 +85,23 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         ],
       ),
       body: isLoading
-          ? const DynamicLoadingScreen()
-          : curriculum == null
-              ? _buildEmptyState(context, isDark)
-              : _buildCurriculumContent(context, curriculum, selectedLanguage, isDark),
-    );
-  }
-
-  Widget _buildEmptyState(BuildContext context, bool isDark) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(24.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.menu_book_outlined,
-              size: 64.sp,
-              color: isDark ? Colors.grey[600] : Colors.grey[400],
-            ),
-            SizedBox(height: 16.sp),
-            Text(
-              'No curriculum loaded',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              'The curriculum bundle may not be available. Please try reloading or contact support if the issue persists.',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 24.sp),
-            FilledButton.icon(
-              onPressed: _loadCurriculum,
-              style: FilledButton.styleFrom(
-                backgroundColor: PanAfricanColors.primary,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),
-              ),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Load Curriculum'),
-            ),
-            SizedBox(height: 16.sp),
-            TextButton(
-              onPressed: () {
-                // Try expanded bundle
-                ref.read(curriculumProvider.notifier).loadCurriculumFromBundle(useExpanded: true);
-              },
-              child: Text(
-                'Try Expanded Bundle',
-                style: TextStyle(
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ? ListView(
+              children: List.generate(5, (_) => const SkeletonListCard()),
+            )
+          : ref.watch(curriculumProvider).hasError
+              ? AppErrorState(
+                  message: 'Failed to load curriculum',
+                  onRetry: () => ref.invalidate(curriculumProvider),
+                )
+              : curriculum == null
+                  ? AppEmptyState(
+                      icon: Icons.menu_book_rounded,
+                      title: 'No lessons available',
+                      subtitle: 'Check back soon for new content',
+                      actionLabel: 'Load Curriculum',
+                      onAction: _loadCurriculum,
+                    )
+                  : _buildCurriculumContent(context, curriculum, selectedLanguage, isDark),
     );
   }
 

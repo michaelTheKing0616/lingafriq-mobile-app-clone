@@ -340,6 +340,7 @@ class PolieInputField extends StatelessWidget {
   final VoidCallback? onSuffixTap;
   final bool enabled;
   final int maxLines;
+  final int? maxLength;
 
   const PolieInputField({
     Key? key,
@@ -353,6 +354,7 @@ class PolieInputField extends StatelessWidget {
     this.onSuffixTap,
     this.enabled = true,
     this.maxLines = 1,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -392,6 +394,7 @@ class PolieInputField extends StatelessWidget {
                   focusNode: focusNode,
                   enabled: enabled,
                   maxLines: maxLines,
+                  maxLength: maxLength,
                   onChanged: onChanged,
                   onSubmitted: onSubmitted,
                   style: PolieTypography.body(context).copyWith(

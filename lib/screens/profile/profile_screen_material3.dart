@@ -17,6 +17,8 @@ import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
 
 /// Beautiful Material 3 Profile Screen with Pan-African Design
 class ProfileScreenMaterial3 extends HookConsumerWidget {
@@ -26,8 +28,7 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(userProvider);
-    // Watch state so UI updates when gamification changes.
-    ref.watch(gamificationProvider);
+    final gamificationState = ref.watch(gamificationProvider);
     final gamification = ref.read(gamificationProvider.notifier).gamification;
 
     return Scaffold(
@@ -61,13 +62,31 @@ class ProfileScreenMaterial3 extends HookConsumerWidget {
                         SizedBox(height: PanAfricanSpacing.lg),
 
                         // Stats
-                        _buildStats(
+                        gamificationState.hasError
+                            ? AppErrorState(
+                                message: gamificationState.errorMessage ?? 'Failed to load profile stats.',
+                                onRetry: () {
+                                  ref.read(userProvider.notifier).refreshUser();
+                                  ref.invalidate(gamificationProvider);
+                                },
+                              )
+                            : gamificationState.isLoading
+                            ? Row(
+                                children: [
+                                  Expanded(child: SkeletonStatCard()),
+                                  SizedBox(width: PanAfricanSpacing.sm),
+                                  Expanded(child: SkeletonStatCard()),
+                                  SizedBox(width: PanAfricanSpacing.sm),
+                                  Expanded(child: SkeletonStatCard()),
+                                ],
+                              )
+                            : _buildStats(
                           context,
                           isDark,
-                          streak: gamification.dailyStreak,
-                          totalXp: gamification.xp,
-                          level: gamification.level,
-                        ),
+                              streak: gamification.dailyStreak,
+                              totalXp: gamification.xp,
+                              level: gamification.level,
+                            ),
                         SizedBox(height: PanAfricanSpacing.lg),
 
                         // Menu Items

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/api_provider.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 
 /// Ancestral Tree - Visualize everyone you've helped
 class AncestralTreeScreen extends ConsumerWidget {
@@ -19,8 +21,22 @@ class AncestralTreeScreen extends ConsumerWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
             backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
-            body: Center(
-              child: CircularProgressIndicator(color: PanAfricanColors.primary),
+            appBar: AppBar(
+              title: const Text('Ancestral Tree'),
+              backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+              foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            body: ListView(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              children: List.generate(5, (_) => const SkeletonListCard()),
             ),
           );
         }
@@ -32,39 +48,22 @@ class AncestralTreeScreen extends ConsumerWidget {
               backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
               elevation: 0,
-            ),
-            body: Center(
-              child: Padding(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.error_outline, size: 48.w, color: PanAfricanColors.textSecondary),
-                    SizedBox(height: PanAfricanSpacing.sm),
-                    Text(
-                      'Unable to load your ancestry graph right now.',
-                      textAlign: TextAlign.center,
-                      style: PanAfricanTypography.bodyMedium(context),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.md),
-                    FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: PanAfricanColors.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                        ),
-                      ),
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => const AncestralTreeScreen()),
-                        );
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.of(context).pop();
+                },
               ),
+            ),
+            body: AppErrorState(
+              message: 'Failed to load ancestry graph',
+              onRetry: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const AncestralTreeScreen()),
+                );
+              },
             ),
           );
         }
@@ -165,26 +164,10 @@ class AncestralTreeScreen extends ConsumerWidget {
             ),
             SizedBox(height: PanAfricanSpacing.md),
             if (data.mentors.isEmpty && data.mentees.isEmpty)
-              Container(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                decoration: BoxDecoration(
-                  color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                  borderRadius: PanAfricanRadius.lgBR,
-                  boxShadow: PanAfricanShadows.sm,
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.nature_people, size: 48.w, color: PanAfricanColors.textSecondary),
-                    SizedBox(height: PanAfricanSpacing.sm),
-                    Text(
-                      'No ancestry links yet. As you connect with mentors or help other learners, your tree will grow here.',
-                      textAlign: TextAlign.center,
-                      style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: PanAfricanColors.textSecondary,
-                      ),
-                    ),
-                  ],
-                ),
+              AppEmptyState(
+                icon: Icons.nature_people_rounded,
+                title: 'No ancestry links yet',
+                subtitle: 'As you connect with mentors or help other learners, your tree will grow here.',
               )
             else ...[
               if (data.mentors.isNotEmpty) ...[
@@ -343,6 +326,9 @@ class _TreeNodeCard extends StatelessWidget {
         boxShadow: PanAfricanShadows.sm,
       ),
       child: ListTile(
+        onTap: () {
+          HapticFeedback.selectionClick();
+        },
         contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
         leading: CircleAvatar(
           radius: 24.w,

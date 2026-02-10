@@ -17,6 +17,8 @@ import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../providers/dio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'base_game_screen.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 
@@ -574,6 +576,7 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
                 ),
               ],
             ),
+          ),
           ),
           Expanded(
             child: Stack(
@@ -1142,9 +1145,13 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 4.h),
-              FilledButton(
-                onPressed: _startGame,
-                child: const Text('Start Jam'),
+              Semantics(
+                label: 'Start game',
+                button: true,
+                child: FilledButton(
+                  onPressed: _startGame,
+                  child: const Text('Start Jam'),
+                ),
               ),
             ],
           ),
@@ -1163,20 +1170,23 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
       body: Column(
         children: [
           // Timer
-          Container(
-            padding: EdgeInsets.all(2.w),
-            color: _timeRemaining < 10 ? Colors.red.shade100 : PanAfricanColors.primary.withOpacity(0.1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.timer, size: 20.sp),
-                SizedBox(width: 2.w),
-                Text(
-                  '$_timeRemaining',
+          Semantics(
+            label: 'Time remaining: $_timeRemaining seconds',
+            child: Container(
+              padding: EdgeInsets.all(2.w),
+              color: _timeRemaining < 10 ? Colors.red.shade100 : PanAfricanColors.primary.withOpacity(0.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.timer, size: 20.sp),
+                  SizedBox(width: 2.w),
+                  Text(
+                    '$_timeRemaining',
                   style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
+          ),
           ),
           Expanded(
             child: Padding(

@@ -295,6 +295,9 @@ class EditProfileScreen extends HookConsumerWidget {
                       if (value == null || value.trim().isEmpty) {
                         return 'First name is required';
                       }
+                      if (value.trim().length < 2 || value.trim().length > 50) {
+                        return 'First name must be 2–50 characters';
+                      }
                       return null;
                     },
                     isDark: isDark,
@@ -309,6 +312,9 @@ class EditProfileScreen extends HookConsumerWidget {
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Last name is required';
+                      }
+                      if (value.trim().length < 2 || value.trim().length > 50) {
+                        return 'Last name must be 2–50 characters';
                       }
                       return null;
                     },
@@ -344,7 +350,7 @@ class EditProfileScreen extends HookConsumerWidget {
                       if (value == null || value.trim().isEmpty) {
                         return 'Username is required';
                       }
-                      if (value.length < 3) {
+                      if (value.trim().length < 3) {
                         return 'Username must be at least 3 characters';
                       }
                       return null;

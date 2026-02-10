@@ -10,6 +10,8 @@ import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
@@ -554,35 +556,10 @@ class AchievementsScreen extends ConsumerWidget {
 
   Widget _buildBadgesTab(BuildContext context, List achievements, bool isDark) {
     if (achievements.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.emoji_events_outlined,
-              size: 64.sp,
-              color: isDark ? Colors.grey[600] : Colors.grey[400],
-            ),
-            SizedBox(height: 16.sp),
-            Text(
-              'No achievements yet',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              'Complete goals to unlock achievements!',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      return AppEmptyState(
+        icon: Icons.emoji_events_rounded,
+        title: 'No achievements yet',
+        subtitle: 'Complete lessons and challenges to earn badges',
       );
     }
     
@@ -700,43 +677,6 @@ class AchievementsScreen extends ConsumerWidget {
             }),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(BuildContext context, bool isDark) {
-    return Scaffold(
-      backgroundColor: isDark
-          ? PanAfricanColors.surfaceDark
-          : PanAfricanColors.surfaceLight,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
-            SizedBox(height: 16.sp),
-            Text(
-              'Unable to load achievements',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              'Please try again later',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

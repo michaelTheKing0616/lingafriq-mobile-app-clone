@@ -13,7 +13,8 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
@@ -34,7 +35,7 @@ class _PrivateChatListScreenState
   @override
   void initState() {
     super.initState();
-    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
+    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 300));
     // Load contacts will be triggered in build method
   }
 
@@ -192,37 +193,25 @@ class _PrivateChatListScreenState
     bool isDark,
   ) {
     if (state.isLoading) {
-      return const DynamicLoadingScreen();
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
+        itemCount: 6,
+        itemBuilder: (_, __) => SkeletonListCard(),
+      );
     }
-    
+
     if (state.error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
-            SizedBox(height: 2.h),
-            Text(
-              state.error!,
-              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                color: PanAfricanColors.error,
-              ),
-            ),
-            SizedBox(height: 2.h),
-            PanAfricanButton(
-              label: 'Retry',
-              onPressed: () =>
-                  ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
-            ),
-          ],
-        ),
+      return AppErrorState(
+        message: state.error!,
+        onRetry: () =>
+            ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
       );
     }
     
     if (contacts.isEmpty) {
       return LingAfriqEmptyState(
         icon: Icons.chat_bubble_outline,
-        title: 'No contacts yet',
+        title: 'No contacts found',
         subtitle: 'Start a LingAfriq chat from the community or add friends to see conversations here.',
       );
     }

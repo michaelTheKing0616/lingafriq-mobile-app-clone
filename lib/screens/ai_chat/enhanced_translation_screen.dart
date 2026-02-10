@@ -214,6 +214,7 @@ Please provide your response in this format:
                     TextField(
                       controller: textController,
                       maxLines: 4,
+                      maxLength: 2000,
                       decoration: InputDecoration(
                         hintText: 'Enter text to translate...',
                         border: OutlineInputBorder(

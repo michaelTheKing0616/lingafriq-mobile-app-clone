@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/games/base_game_screen.dart';
+import '../../services/polie_game_client.dart';
 import '../../models/game/game_session_model.dart' show GameType, GameResult;
 import 'generic_game_template.dart';
 import 'game_session.dart';
@@ -184,6 +185,12 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
           _loadNewContent();
         }
       });
+    } on GameEvaluationException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.userMessage), backgroundColor: Colors.orange),
+        );
+      }
     } catch (e) {
       debugPrint('Error processing answer: $e');
       setError('Failed to process answer. Please try again.');

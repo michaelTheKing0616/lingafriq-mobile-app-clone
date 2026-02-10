@@ -8,6 +8,9 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
@@ -168,76 +171,29 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
             // Curriculum Content
             Expanded(
               child: isLoading.value
-                  ? Center(
-                      child: CircularProgressIndicator(
-                        color: PanAfricanColors.primary,
-                      ),
+                  ? ListView(
+                      children: List.generate(5, (_) => const SkeletonListCard()),
                     )
                   : error.value != null
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.error_outline,
-                                size: 64.sp,
-                                color: PanAfricanColors.error,
-                              ),
-                              SizedBox(height: PanAfricanSpacing.md),
-                              Text(
-                                error.value!,
-                                style: PanAfricanTypography.bodyLarge(context),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(height: PanAfricanSpacing.md),
-                              ElevatedButton(
-                                onPressed: () {
-                                  safeAsync(
-                                    context: context,
-                                    operation: () async {
-                                      isLoading.value = true;
-                                      error.value = null;
-                                      await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
-                                      isLoading.value = false;
-                                    },
-                                  );
-                                },
-                                child: Text('Retry'),
-                              ),
-                            ],
-                          ),
+                      ? AppErrorState(
+                          message: 'Failed to load curriculum',
+                          onRetry: () {
+                            safeAsync(
+                              context: context,
+                              operation: () async {
+                                isLoading.value = true;
+                                error.value = null;
+                                await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+                                isLoading.value = false;
+                              },
+                            );
+                          },
                         )
                       : weeks.value.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.menu_book_outlined,
-                                    size: 64.sp,
-                                    color: PanAfricanColors.neutralMedium,
-                                  ),
-                                  SizedBox(height: PanAfricanSpacing.md),
-                                  Text(
-                                    'No curriculum available',
-                                    style: PanAfricanTypography.bodyLarge(context),
-                                  ),
-                                  SizedBox(height: PanAfricanSpacing.md),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      safeAsync(
-                                        context: context,
-                                        operation: () async {
-                                          isLoading.value = true;
-                                          await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
-                                          isLoading.value = false;
-                                        },
-                                      );
-                                    },
-                                    child: Text('Load Curriculum'),
-                                  ),
-                                ],
-                              ),
+                          ? AppEmptyState(
+                              icon: Icons.menu_book_rounded,
+                              title: 'No lessons available',
+                              subtitle: 'Check back soon for new content',
                             )
                           : OptimizedListView.builder(
                               padding: EdgeInsets.all(PanAfricanSpacing.lg),

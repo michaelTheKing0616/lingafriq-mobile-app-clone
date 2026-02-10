@@ -12,7 +12,7 @@ import '../../providers/socket_provider.dart';
 import '../../models/badge_model.dart';
 import '../../services/gamification/badges_service.dart';
 import '../../widgets/error_boundary.dart';
-import '../../screens/loading/dynamic_loading_screen.dart';
+import '../../widgets/empty_state_widget.dart';
 
 /// Screen displaying all badges with unlock status
 class BadgeCollectionScreen extends ConsumerStatefulWidget {
@@ -130,7 +130,13 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           ),
           // Badge grid
           Expanded(
-            child: OptimizedListView.builder(
+            child: filteredBadges.isEmpty
+                ? AppEmptyState(
+                    icon: Icons.emoji_events_rounded,
+                    title: 'No badges yet',
+                    subtitle: 'Complete lessons and challenges to earn badges',
+                  )
+                : OptimizedListView.builder(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

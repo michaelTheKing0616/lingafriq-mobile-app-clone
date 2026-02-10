@@ -1,6 +1,18 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+
+/// Exception thrown when game turn evaluation fails - allows callers to show
+/// user-friendly message and let user retry the same turn.
+class GameEvaluationException implements Exception {
+  final String userMessage;
+
+  GameEvaluationException(this.userMessage);
+
+  @override
+  String toString() => userMessage;
+}
 
 /// Polie backend client for game content generation and evaluation
 /// This replaces random logic with real AI-driven evaluation
@@ -56,7 +68,9 @@ class PolieGameClient {
     }
   }
 
-  /// Evaluate a game turn - this is the critical method that replaces random logic
+  /// Evaluate a game turn - this is the critical method that replaces random logic.
+  /// Throws [GameEvaluationException] with user-friendly message on failure so
+  /// callers can show it and allow user to retry the same turn.
   Future<PolieEvaluationResult> evaluateTurn({
     required String gameId,
     required String contentId,
@@ -82,10 +96,30 @@ class PolieGameClient {
       );
 
       return PolieEvaluationResult.fromJson(response.data);
-    } catch (e) {
+    } on DioException catch (e) {
       debugPrint('Error evaluating game turn: $e');
-      // Return neutral evaluation on error instead of random
-      return PolieEvaluationResult.neutral();
+      final statusCode = e.response?.statusCode;
+      if (statusCode == 429) {
+        throw GameEvaluationException(
+          'You\'re playing too fast! Take a breath.',
+        );
+      }
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.sendTimeout ||
+          e.type == DioExceptionType.receiveTimeout) {
+        throw GameEvaluationException(
+          'Taking too long, please try again.',
+        );
+      }
+      throw GameEvaluationException(
+        ErrorHandler.getUserFriendlyError(e),
+      );
+    } catch (e) {
+      if (e is GameEvaluationException) rethrow;
+      debugPrint('Error evaluating game turn: $e');
+      throw GameEvaluationException(
+        ErrorHandler.getUserFriendlyError(e),
+      );
     }
   }
 }

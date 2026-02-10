@@ -1,11 +1,16 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
+import '../../utils/pan_african_design_system.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// WordMatch+Audio Game - Upgraded version with TTS, pronunciation, diacritics
@@ -34,6 +39,8 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   final List<_MatchResult> _results = [];
   GameSession? _session;
   DateTime? _startTime;
+  bool _isLoading = true;
+  String? _loadError;
 
   @override
   void initState() {
@@ -58,19 +65,18 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       );
 
       final cards = gameProv.availableCards;
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _loadError = null;
+        });
+      }
       if (cards.isEmpty) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('No content for this language yet. Try another language or check your connection.'),
-              backgroundColor: Colors.orange,
-            ),
-          );
-        }
         return;
       }
 
-      setState(() {
+      if (mounted) {
+        setState(() {
         _startTime = DateTime.now();
         _leftTiles = cards.map((c) => _GameTile(
               id: c.cardId,
@@ -86,16 +92,15 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         // Shuffle both lists
         _leftTiles.shuffle(Random());
         _rightTiles.shuffle(Random());
-      });
+        });
+      }
     } catch (e) {
       debugPrint('Error initializing WordMatchAudioGame: $e');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to start game: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
+        setState(() {
+          _isLoading = false;
+          _loadError = 'Failed to start game. Please check your connection and try again.';
+        });
       }
     }
   }
@@ -196,36 +201,123 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Word Match + Audio'),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: widget.onBack ?? () => Navigator.pop(context),
+            ),
+          ),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SkeletonLoader(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      height: 48,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.surfaceContainerLight,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 160,
+                      height: 120,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.surfaceContainerLight,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Loading game...',
+                style: PanAfricanTypography.bodyMedium(context),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (_loadError != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Word Match + Audio'),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: widget.onBack ?? () => Navigator.pop(context),
+            ),
+          ),
+        ),
+        body: AppErrorState(
+          message: _loadError!,
+          onRetry: () {
+            setState(() {
+              _isLoading = true;
+              _loadError = null;
+            });
+            _initializeGame();
+          },
+        ),
+      );
+    }
+
+    if (_leftTiles.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Word Match + Audio'),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: widget.onBack ?? () => Navigator.pop(context),
+            ),
+          ),
+        ),
+        body: AppEmptyState(
+          icon: Icons.sports_esports_outlined,
+          title: 'No content yet',
+          subtitle: 'No content available for this language. Try selecting another language or topic.',
+          actionLabel: 'Go back',
+          onAction: widget.onBack ?? () => Navigator.pop(context),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Word Match + Audio'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
+        leading: Semantics(
+          label: 'Go back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          ),
         ),
       ),
-      body: _leftTiles.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.sports_esports_outlined, size: 48, color: Colors.grey[400]),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No content for this language yet.',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  TextButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back),
-                    label: const Text('Back'),
-                  ),
-                ],
-              ),
-            )
-          : Padding(
+      body: Padding(
               padding: EdgeInsets.all(4.w),
               child: Column(
                 children: [
@@ -432,16 +524,20 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                   // Finish button
                   Padding(
                     padding: EdgeInsets.only(top: 2.h),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: _finishGame,
+                    child: Semantics(
+                      label: 'Finish game',
+                      button: true,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: _finishGame,
                         style: FilledButton.styleFrom(
                           padding: EdgeInsets.symmetric(vertical: 3.h),
                         ),
-                        child: Text(
-                          'Finish Game',
-                          style: TextStyle(fontSize: 18.sp),
+                          child: Text(
+                            'Finish Game',
+                            style: TextStyle(fontSize: 18.sp),
+                          ),
                         ),
                       ),
                     ),

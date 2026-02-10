@@ -17,6 +17,9 @@ import '../../utils/performance_utils.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
 import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 import '../../games/animation/rive_asset_loader.dart';
 
 /// Base class for all game screens - handles common functionality
@@ -430,12 +433,16 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             widget.getGameType().displayName,
             style: PanAfricanTypography.titleMedium(context, color: Colors.white),
           ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              (widget.onBack ?? () => Navigator.pop(context))();
-            },
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                (widget.onBack ?? () => Navigator.pop(context))();
+              },
+            ),
           ),
           flexibleSpace: Container(
             decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
@@ -453,9 +460,16 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator(
-                      color: PanAfricanColors.primary,
-                      strokeWidth: 3,
+                    SkeletonLoader(
+                      child: Column(
+                        children: [
+                          SkeletonStatCard(),
+                          SizedBox(height: PanAfricanSpacing.lg),
+                          SkeletonStatCard(),
+                          SizedBox(height: PanAfricanSpacing.lg),
+                          SkeletonListCard(),
+                        ],
+                      ),
                     ),
                     SizedBox(height: PanAfricanSpacing.md),
                     Text(
@@ -487,12 +501,16 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
             widget.getGameType().displayName,
             style: PanAfricanTypography.titleMedium(context, color: Colors.white),
           ),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              (widget.onBack ?? () => Navigator.pop(context))();
-            },
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                (widget.onBack ?? () => Navigator.pop(context))();
+              },
+            ),
           ),
           flexibleSpace: Container(
             decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
@@ -506,55 +524,12 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           ),
           child: Stack(
             children: [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      decoration: BoxDecoration(
-                        color: PanAfricanColors.error.withOpacity(0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.error_rounded,
-                        size: 48.sp,
-                        color: PanAfricanColors.error,
-                      ),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.md),
-                    Text(
-                      'Something went wrong',
-                      style: PanAfricanTypography.titleMedium(context),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.xs),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xl),
-                      child: Text(
-                        _error!,
-                        style: PanAfricanTypography.bodyMedium(context),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(height: PanAfricanSpacing.lg),
-                    FilledButton.icon(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        _initializeGame();
-                      },
-                      icon: Icon(Icons.refresh_rounded, size: 20.sp),
-                      label: Text('Try Again', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
-                      style: FilledButton.styleFrom(
-                        backgroundColor: PanAfricanColors.primary,
-                        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: PanAfricanSpacing.lg,
-                          vertical: PanAfricanSpacing.sm,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+              AppErrorState(
+                message: _error!,
+                onRetry: () {
+                  HapticFeedback.lightImpact();
+                  _initializeGame();
+                },
               ),
               Positioned(
                 top: PanAfricanSpacing.md,
@@ -619,39 +594,42 @@ class _GameHud extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PanAfricanCard(
-      padding: EdgeInsets.symmetric(
-        horizontal: PanAfricanSpacing.md,
-        vertical: PanAfricanSpacing.xs,
-      ),
-      backgroundColor: isDark
-          ? PanAfricanColors.surfaceContainerDark
-          : PanAfricanColors.surfaceContainerLight,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          PanAfricanBadge(
-            label: 'Lv $level',
-            color: PanAfricanColors.primary,
-            icon: Icons.trending_up_rounded,
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          PanAfricanBadge(
-            label: '${_formatCompactNumber(xp)} XP',
-            color: PanAfricanColors.secondary,
-            icon: Icons.star_rounded,
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          PanAfricanBadge(
-            label: '$streak',
-            color: PanAfricanColors.tertiary,
-            icon: Icons.local_fire_department_rounded,
-          ),
-          if (showHearts) ...[
+    return Semantics(
+      label: 'Game stats: level $level, ${_formatCompactNumber(xp)} experience points, $streak day streak${showHearts ? ", hearts remaining" : ""}',
+      child: PanAfricanCard(
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.xs,
+        ),
+        backgroundColor: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Semantics(label: 'Level $level', child: PanAfricanBadge(
+              label: 'Lv $level',
+              color: PanAfricanColors.primary,
+              icon: Icons.trending_up_rounded,
+            )),
             SizedBox(width: PanAfricanSpacing.sm),
-            const HeartsWidget(compact: true),
+            Semantics(label: '${_formatCompactNumber(xp)} experience points', child: PanAfricanBadge(
+              label: '${_formatCompactNumber(xp)} XP',
+              color: PanAfricanColors.secondary,
+              icon: Icons.star_rounded,
+            )),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Semantics(label: '$streak day streak', child: PanAfricanBadge(
+              label: '$streak',
+              color: PanAfricanColors.tertiary,
+              icon: Icons.local_fire_department_rounded,
+            )),
+            if (showHearts) ...[
+              SizedBox(width: PanAfricanSpacing.sm),
+              Semantics(label: 'Hearts remaining', child: const HeartsWidget(compact: true)),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

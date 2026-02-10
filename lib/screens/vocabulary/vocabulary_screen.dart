@@ -6,7 +6,9 @@ import 'package:just_audio/just_audio.dart';
 import '../../services/vocabulary/vocabulary_service.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/pan_african_design_system.dart';
-import '../../widgets/loading/loading_overlay.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 
 /// Vocabulary Screen - View and manage learned words
 class VocabularyScreen extends ConsumerStatefulWidget {
@@ -26,6 +28,7 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   final AudioPlayer _audioPlayer = AudioPlayer();
   List<VocabWord> _words = [];
   bool _isLoading = true;
+  bool _hasError = false;
   String _filter = 'all'; // all, mastered, learning, new
   String _searchQuery = '';
 
@@ -37,7 +40,10 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
   }
 
   Future<void> _loadWords() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
     try {
       // VocabularyService maintains a local word bank and syncs opportunistically.
       final words = widget.language == null
@@ -52,11 +58,11 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
     } catch (e) {
       debugPrint('Error loading vocabulary: $e');
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error loading vocabulary. Please try again.')),
-        );
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+        });
       }
-      setState(() => _isLoading = false);
     }
   }
 
@@ -128,9 +134,16 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
           ),
         ],
       ),
-      body: LoadingOverlay(
-        isLoading: _isLoading,
-        child: Column(
+      body: _isLoading
+          ? ListView(
+              children: List.generate(5, (_) => const SkeletonListCard()),
+            )
+          : _hasError
+              ? AppErrorState(
+                  message: 'Failed to load vocabulary',
+                  onRetry: _loadWords,
+                )
+              : Column(
           children: [
             // Search and filter
             Padding(
@@ -171,20 +184,12 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
             // Word list
             Expanded(
               child: _filteredWords.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(PanAfricanIcons.book, size: 64.sp, color: PanAfricanColors.neutralMedium),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            _words.isEmpty
-                                ? 'No words learned yet'
-                                : 'No words match your filter',
-                            style: PanAfricanTypography.bodyLarge(context),
-                          ),
-                        ],
-                      ),
+                  ? AppEmptyState(
+                      icon: Icons.menu_book_rounded,
+                      title: _words.isEmpty ? 'No words learned yet' : 'No words match your filter',
+                      subtitle: _words.isEmpty
+                          ? 'Complete lessons to add words to your vocabulary'
+                          : 'Try a different filter or search term',
                     )
                   : ListView.builder(
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -241,7 +246,6 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
             ),
           ],
         ),
-      ),
     );
   }
 

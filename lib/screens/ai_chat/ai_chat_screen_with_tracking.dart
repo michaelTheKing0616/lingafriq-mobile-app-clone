@@ -10,6 +10,9 @@ import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
 import 'package:lingafriq/utils/roleplay_session_helper.dart';
@@ -46,6 +49,8 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final messageController = useTextEditingController();
     final messages = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(false);
+    final isLoadingHistory = useState(true);
+    final loadHistoryError = useState<String?>(null);
     final scrollController = useScrollController();
     final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref as Ref));
     final integrationService = ref.read(aiChatIntegrationServiceProvider);
@@ -101,6 +106,8 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
     // Load chat history
     Future<void> _loadChatHistory() async {
+      isLoadingHistory.value = true;
+      loadHistoryError.value = null;
       try {
         final response = await ApiService.get(
           '/ai-chat/history',
@@ -114,7 +121,9 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
           messages.value = List<Map<String, dynamic>>.from(response.data['data']);
         }
       } catch (e) {
-        // History might not exist yet, that's okay
+        loadHistoryError.value = 'Failed to load chat history.';
+      } finally {
+        isLoadingHistory.value = false;
       }
     }
 
@@ -124,7 +133,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     }, []);
 
     Future<void> sendMessage() async {
-      if (messageController.text.isEmpty) return;
+      if (messageController.text.isEmpty || isLoading.value) return;
 
       final userMessageText = messageController.text.trim();
       final userMessage = {
@@ -304,23 +313,41 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    controller: scrollController,
-                    padding: EdgeInsets.all(PanAfricanSpacing.md),
-                    itemCount: messages.value.length,
-                    itemBuilder: (context, index) {
-                      final message = messages.value[index];
-                      final isUser = message['sender'] == 'user';
-                      return _MessageBubble(
-                        message: message,
-                        isUser: isUser,
-                        isDark: isDark,
-                      )
-                          .animate()
-                          .fadeIn(duration: 300.ms)
-                          .slideX(begin: isUser ? 0.1 : -0.1);
-                    },
-                  ),
+                  child: isLoadingHistory.value
+                      ? ListView.builder(
+                          padding: EdgeInsets.all(PanAfricanSpacing.md),
+                          itemCount: 4,
+                          itemBuilder: (_, __) => SkeletonListCard(),
+                        )
+                      : loadHistoryError.value != null
+                          ? AppErrorState(
+                              message: loadHistoryError.value!,
+                              onRetry: _loadChatHistory,
+                            )
+                          : messages.value.isEmpty
+                              ? AppEmptyState(
+                                  icon: Icons.chat_bubble_outline_rounded,
+                                  title: 'Start a conversation!',
+                                  subtitle:
+                                      'I\'m here to help you learn. Type your message below.',
+                                )
+                              : ListView.builder(
+                                  controller: scrollController,
+                                  padding: EdgeInsets.all(PanAfricanSpacing.md),
+                                  itemCount: messages.value.length,
+                                  itemBuilder: (context, index) {
+                                    final message = messages.value[index];
+                                    final isUser = message['sender'] == 'user';
+                                    return _MessageBubble(
+                                      message: message,
+                                      isUser: isUser,
+                                      isDark: isDark,
+                                    )
+                                        .animate()
+                                        .fadeIn(duration: 300.ms)
+                                        .slideX(begin: isUser ? 0.1 : -0.1);
+                                  },
+                                ),
                 ),
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -340,6 +367,8 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                         Expanded(
                           child: TextField(
                             controller: messageController,
+                            enabled: !isLoading.value,
+                            maxLength: 2000,
                             style: TextStyle(
                               color: isDark ? Colors.white : Colors.black87,
                               fontSize: 15,
@@ -363,7 +392,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                         SizedBox(width: PanAfricanSpacing.sm),
                         IconButton(
                           icon: Icon(Icons.send),
-                          onPressed: sendMessage,
+                          onPressed: isLoading.value ? null : sendMessage,
                           color: PanAfricanColors.primary,
                         ),
                       ],

@@ -284,14 +284,14 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
             ),
             SizedBox(height: PolieSpacing.lg),
             Text(
-              'Start a conversation',
+              'Start a conversation!',
               style: PolieTypography.h2(context).copyWith(
                 color: PolieColors.textPrimary,
               ),
             ),
             SizedBox(height: PolieSpacing.sm),
             Text(
-              'Pick a topic above or type your message',
+              'I\'m here to help you learn. Pick a topic above or type your message.',
               style: PolieTypography.body(context).copyWith(
                 color: PolieColors.textSecondary,
               ),
@@ -353,6 +353,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                   child: TextField(
                     controller: messageController,
                     enabled: !isLoading.value,
+                    maxLength: 2000,
                     maxLines: null,
                     textInputAction: TextInputAction.send,
                     onSubmitted: (_) => sendMessage(),
