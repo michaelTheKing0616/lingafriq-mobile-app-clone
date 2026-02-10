@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/services/env_config.dart';
 
 /// Polie backend client for game content generation and evaluation
 /// This replaces random logic with real AI-driven evaluation
@@ -9,7 +10,7 @@ class PolieGameClient {
 
   PolieGameClient({Dio? dio, String? baseUrl})
       : _dio = dio ?? Dio(),
-        baseUrl = baseUrl ?? 'https://api.lingafriq.com'; // Default backend URL
+        baseUrl = (baseUrl ?? EnvConfig.backendBaseUrl).replaceAll(RegExp(r'/$'), '');
 
   /// Generate game content from Polie backend (Game Master API)
   /// Polie acts as dungeon master, cultural referee, difficulty tuner, and feedback author
@@ -25,7 +26,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/v1/game-content',
+        '$baseUrl/api/games/game-content',
         data: {
           'game_id': gameId,
           'language': language,
@@ -66,7 +67,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/v1/polie/evaluate-game-turn',
+        '$baseUrl/api/v1/polie/evaluate-game-turn',
         data: {
           'game_id': gameId,
           'content_id': contentId,

@@ -223,7 +223,84 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     final cards = <PhraseCard>[];
 
-    // Try to load from backend API
+    // 1) Canonical route: POST /api/games/game-content
+    // Backend mounts Polie game content under /api/games/*.
+    try {
+      final response = await ref.read(client).post(
+        '${Api.baseurl}api/games/game-content',
+        data: {
+          'game_id': _currentSession?.gameType ?? 'phrase_cards',
+          'language': language,
+          'difficulty': level ?? 'A1',
+          'user_id': _currentSession?.userId ?? 'guest',
+          'session_id': _currentSession?.sessionId ?? 'local_session',
+        },
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        final payload = response.data;
+        if (payload is List) {
+          for (final item in payload) {
+            if (item is Map<String, dynamic>) {
+              _appendCardFromMap(
+                cards: cards,
+                item: item,
+                language: language,
+                level: level,
+              );
+            }
+          }
+        } else if (payload is Map<String, dynamic>) {
+          _appendCardFromMap(
+            cards: cards,
+            item: payload,
+            language: language,
+            level: level,
+          );
+        }
+
+        if (cards.isNotEmpty) {
+          // Pad to requested count with curated fallback cards.
+          if (cards.length < count) {
+            final needed = count - cards.length;
+            cards.addAll(_generateFallbackCards(language, level, needed));
+          } else if (cards.length > count) {
+            cards.removeRange(count, cards.length);
+          }
+
+          try {
+            for (var i = 0; i < cards.length; i++) {
+              final card = cards[i];
+              final enforced = DiacriticsEnforcer.enforceWithMetadata(
+                card.text,
+                language,
+                enableFuzzy: true,
+                fuzzyThreshold: 0.75,
+              );
+              if (enforced['changed'] == true) {
+                cards[i] = card.copyWith(text: enforced['text'] as String);
+              }
+            }
+          } catch (e) {
+            logger.error(
+              'Diacritics enforcement failed for canonical API cards (cards still usable)',
+              tag: 'game-provider',
+              error: e,
+            );
+          }
+
+          return cards;
+        }
+      }
+    } catch (e) {
+      logger.error(
+        'Error loading cards from canonical game-content API, trying legacy route',
+        tag: 'game-provider',
+        error: e,
+      );
+    }
+
+    // 2) Legacy route: GET /api/games/cards (for backward compatibility)
     try {
       final queryParams = <String, dynamic>{
         'language': language,
@@ -311,6 +388,32 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
 
     return cards;
+  }
+
+  void _appendCardFromMap({
+    required List<PhraseCard> cards,
+    required Map<String, dynamic> item,
+    required String language,
+    required String? level,
+  }) {
+    final cardId = (item['id'] ?? item['card_id'] ?? item['content_id'] ?? 'card_${cards.length}').toString();
+    final lang = (item['language'] ?? language).toString();
+    final text = (item['text'] ?? item['phrase'] ?? item['content'] ?? '').toString();
+    final gloss = (item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '').toString();
+    final parsedLevel = (item['level'] ?? level ?? 'A0').toString();
+
+    if (text.trim().isEmpty) return;
+
+    cards.add(PhraseCard(
+      cardId: cardId,
+      language: lang,
+      text: text,
+      ascii: (item['ascii'] ?? text).toString(),
+      gloss: gloss,
+      level: parsedLevel,
+      tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['ai-generated'],
+      srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
+    ));
   }
 
   /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)
@@ -443,7 +546,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     };
 
       final data = fallbackData[lang] ?? fallbackData['yoruba']!;
-    for (var i = 0; i < count && i < data.length; i++) {
+    for (var i = 0; i < count; i++) {
       final item = data[i % data.length];
       final cardId = '${lang}_card_$i';
       cards.add(PhraseCard(

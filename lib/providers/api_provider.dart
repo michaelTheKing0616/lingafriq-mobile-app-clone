@@ -1150,6 +1150,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         data: {
           'mode': chatData['mode'],
           'messages': chatData['messages'],
+          if (chatData['languageCode'] != null) 'languageCode': chatData['languageCode'],
+          if (chatData['language_code'] != null) 'language_code': chatData['language_code'],
           if (chatData['timestamp'] != null) 'timestamp': chatData['timestamp'],
         },
       );
@@ -1168,7 +1170,12 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       // Canonical backend route: GET /api/ai/chat/history/:mode
-      final res = await ref.read(client).get('${Api.baseurl}api/ai/chat/history/$mode');
+      final res = await ref.read(client).get(
+        '${Api.baseurl}api/ai/chat/history/$mode',
+        queryParameters: {
+          'languageCode': languageCode,
+        },
+      );
 
       if (res.statusCode != 200 || res.data == null) return null;
 
