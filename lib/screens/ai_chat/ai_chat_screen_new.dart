@@ -257,10 +257,10 @@ class AIChatScreen extends HookConsumerWidget {
                               padding: EdgeInsets.all(12.w),
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                               ),
                             )
-                          : Icon(Icons.send_rounded, color: Colors.white, size: 22.sp),
+                          : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp),
                     ),
                   ),
                 ],

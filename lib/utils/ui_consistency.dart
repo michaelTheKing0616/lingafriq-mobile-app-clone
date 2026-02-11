@@ -344,7 +344,7 @@ class LingAfriqGlassCard extends StatelessWidget {
     final cardWidget = Container(
       margin: margin,
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlass,
+        color: PolieColors.surfaceContainerLight,
         borderRadius: borderRadius ?? PanAfricanRadius.lgBR,
         boxShadow: hasGlow 
             ? PolieElevation.level2(context, glowColor: glowColor)

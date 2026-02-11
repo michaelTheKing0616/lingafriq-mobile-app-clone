@@ -791,7 +791,7 @@ class _VocabularyDrawer extends StatelessWidget {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlassDark,
+        color: PolieColors.surfaceContainer,
         borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.lg)),
         border: Border.all(color: PolieColors.textSecondary.withOpacity(0.2)),
       ),
@@ -930,7 +930,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
                     ? (isCorrect
                         ? PolieColors.success.withOpacity(0.2)
                         : PolieColors.error.withOpacity(0.2))
-                    : PolieColors.surfaceGlassDark,
+                    : PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.md),
               ),
               child: ListTile(

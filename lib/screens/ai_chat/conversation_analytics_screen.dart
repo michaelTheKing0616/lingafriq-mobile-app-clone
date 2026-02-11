@@ -567,7 +567,7 @@ class _PolieGlassCard extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(PolieSpacing.lg),
           decoration: BoxDecoration(
-            color: PolieColors.surfaceGlass,
+            color: PolieColors.surfaceContainerLight,
             borderRadius: BorderRadius.circular(PolieRadius.lg),
             border: Border.all(
               color: Colors.white.withOpacity(0.1),
@@ -605,7 +605,7 @@ class _GlassIconButton extends StatelessWidget {
         width: 44.w,
         height: 44.w,
         decoration: BoxDecoration(
-          color: PolieColors.surfaceGlass,
+          color: PolieColors.surfaceContainerLight,
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white.withOpacity(0.1),

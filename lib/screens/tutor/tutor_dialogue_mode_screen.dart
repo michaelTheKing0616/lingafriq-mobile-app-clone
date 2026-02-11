@@ -337,7 +337,7 @@ Rules:
                           },
                           selectedColor: PolieColors.royalAmethyst,
                           checkmarkColor: Colors.white,
-                          backgroundColor: PolieColors.surfaceGlassDark,
+                          backgroundColor: PolieColors.surfaceContainer,
                         ),
                       );
                     }).toList(),

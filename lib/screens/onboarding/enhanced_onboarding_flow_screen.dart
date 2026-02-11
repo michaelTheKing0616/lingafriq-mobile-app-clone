@@ -23,7 +23,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 import 'dart:io';
@@ -194,9 +194,9 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
                     HapticFeedback.lightImpact();
                     onBack();
                   },
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
                   style: IconButton.styleFrom(
-                    backgroundColor: Colors.white.withOpacity(0.15),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
                   ),
                 )
               else
@@ -204,14 +204,16 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
               const Spacer(),
               Text(
                 'Onboarding',
-                style: PanAfricanTypography.titleMedium(context).copyWith(color: Colors.white),
+                style: PanAfricanTypography.titleMedium(context)
+                    .copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
               const Spacer(),
               TextButton(
                 onPressed: () => _skipOnboarding(context, ref),
                 child: Text(
                   'Skip',
-                  style: PanAfricanTypography.labelLarge(context).copyWith(color: Colors.white70),
+                  style: PanAfricanTypography.labelLarge(context)
+                      .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
                 ),
               ),
             ],
@@ -223,20 +225,20 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
               Text(
                 'Step ${currentStep + 1} of $totalSteps',
                 style: PanAfricanTypography.labelMedium(context)
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
               Text(
                 '${((currentStep + 1) / totalSteps * 100).toInt()}%',
                 style: PanAfricanTypography.labelMedium(context)
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: Theme.of(context).colorScheme.onPrimary),
               ),
             ],
           ),
           SizedBox(height: PanAfricanSpacing.sm),
           LinearProgressIndicator(
             value: (currentStep + 1) / totalSteps,
-            backgroundColor: Colors.white.withOpacity(0.3),
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+            valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
             minHeight: 4.h,
           ),
         ],
@@ -368,10 +370,9 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           logger.warn('Placement test prompt already shown; skipping duplicate prompt');
         } else {
         // Check connectivity before showing placement test
-        final connectivity = Connectivity();
-        final hasConnection = await connectivity.checkConnectivity();
-        
-        if (hasConnection != ConnectivityResult.none) {
+        final hasConnection = await ConnectivityService.hasInternet();
+
+        if (hasConnection) {
           // Show placement test as optional - user can skip
           final shouldTakeTest = await showDialog<bool>(
             context: context,
@@ -661,7 +662,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                               Text(
                                 lang['name'] ?? '',
                                 style: PanAfricanTypography.titleMedium(context).copyWith(
-                                  color: isSelected ? Colors.white : null,
+                                  color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
@@ -727,11 +728,11 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                           title: Text(
                             lang['name'] ?? '',
                             style: PanAfricanTypography.bodyLarge(context).copyWith(
-                              color: isSelected ? Colors.white : null,
+                              color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                             ),
                           ),
                           trailing: isSelected
-                              ? Icon(Icons.check_circle, color: Colors.white)
+                              ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                               : null,
                           onTap: () {
                             selectedLanguage.value = lang['code'];
@@ -881,7 +882,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
                         Text(
                           lang['name'] ?? '',
                           style: PanAfricanTypography.titleMedium(context).copyWith(
-                            color: isSelected ? Colors.white : null,
+                            color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -1005,11 +1006,11 @@ class _Step3AgeCategory extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1251,11 +1252,11 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
                   title: Text(
                     option.replaceAll('_', ' ').toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1372,11 +1373,11 @@ class _Step6LearningStyle extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1493,11 +1494,11 @@ class _Step7PacePreference extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1614,11 +1615,11 @@ class _Step8AppTone extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1712,11 +1713,11 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                         title: Text(
                           time.toUpperCase(),
                           style: PanAfricanTypography.titleMedium(context).copyWith(
-                            color: isSelected ? Colors.white : null,
+                            color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                           ),
                         ),
                         trailing: isSelected
-                            ? Icon(Icons.check_circle, color: Colors.white)
+                            ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                             : null,
                         onTap: () {
                           timeOfDay.value = time;
@@ -1923,7 +1924,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                                 ? FileImage(File(path))
                                 : null,
                             child: path == null
-                                ? Icon(Icons.person, size: 60.sp, color: Colors.white)
+                                ? Icon(Icons.person, size: 60.sp, color: Theme.of(context).colorScheme.onPrimary)
                                 : null,
                           ),
                           if (path != null)

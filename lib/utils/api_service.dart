@@ -10,6 +10,7 @@ import 'package:lingafriq/utils/rate_limiter.dart';
 import 'package:lingafriq/utils/certificate_pinning.dart';
 import 'package:lingafriq/utils/security_headers_validator.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 
 class ApiService {
   static late Dio _dio;
@@ -260,27 +261,7 @@ class ApiService {
 
   /// Handle Dio errors and convert to user-friendly messages
   static Exception _handleError(DioException error) {
-    String message = 'An error occurred';
-    
-    if (error.response != null) {
-      final data = error.response!.data;
-      if (data is Map) {
-        final msg = data['message'] ?? data['error'] ?? data['detail'];
-        message = msg is String ? msg : (msg?.toString() ?? message);
-      } else if (data is String && data.trim().isNotEmpty) {
-        message = data.trim();
-      }
-    } else if (error.type == DioExceptionType.connectionTimeout) {
-      message = 'Connection timeout. Please check your internet connection.';
-    } else if (error.type == DioExceptionType.receiveTimeout) {
-      message = 'Request timeout. Please try again.';
-    } else if (error.type == DioExceptionType.connectionError) {
-      message = 'Connection error. Please check your internet connection.';
-    } else {
-      message = error.message ?? message;
-    }
-
-    return Exception(message);
+    return Exception(TransportErrorPolicy.toUserMessage(error));
   }
 
   /// Update auth token

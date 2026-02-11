@@ -12,7 +12,7 @@
 
 import 'dart:math';
 import 'package:dio/dio.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 class RetryConfig {
@@ -174,9 +174,7 @@ class ApiRetryService {
   /// Check internet connectivity
   Future<bool> _checkConnectivity() async {
     try {
-      final results = await Connectivity().checkConnectivity();
-      // connectivity_plus 6.x returns List<ConnectivityResult>
-      return results.any((r) => r != ConnectivityResult.none);
+      return ConnectivityService.hasInternet();
     } catch (e) {
       logger.error('Failed to check connectivity', error: e);
       return true; // Assume connected on error

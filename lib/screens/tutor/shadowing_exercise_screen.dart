@@ -348,7 +348,7 @@ class _ShadowingExerciseScreenState
     return Container(
       padding: EdgeInsets.all(PolieSpacing.md),
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlass,
+        color: PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.md),
         border: Border.all(color: color.withOpacity(0.3)),
       ),

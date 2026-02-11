@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -324,7 +323,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
           vertical: PolieSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+          color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
             color: accentColor.withOpacity(0.4),
@@ -359,7 +358,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
         vertical: PolieSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlass,
+        color: PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.pill),
         border: Border.all(
           color: PolieColors.royalAmethyst.withOpacity(0.3),
@@ -485,11 +484,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             ),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark
-                  ? PolieColors.surfaceGlassDark
-                  : PolieColors.surfaceGlass,
+                  ? PolieColors.surfaceContainer
+                  : PolieColors.surfaceContainerLight,
               borderRadius: BorderRadius.circular(PolieRadius.md),
               border: Border.all(
-                color: Colors.white.withOpacity(0.08),
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.12),
               ),
             ),
             child: Row(
@@ -536,7 +535,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
           ),
         ],
       ),
-      child: Icon(icon, color: Colors.white, size: 18.sp),
+      child: Icon(icon, color: Theme.of(context).colorScheme.onPrimary, size: 18.sp),
     );
   }
 
@@ -544,10 +543,7 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     final isLoading = chatProvider.isBusy;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return ClipRRect(
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-        child: Container(
+    return Container(
           padding: EdgeInsets.only(
             left: PolieSpacing.md,
             right: PolieSpacing.md,
@@ -555,10 +551,10 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             bottom: MediaQuery.of(context).padding.bottom + PolieSpacing.sm,
           ),
           decoration: BoxDecoration(
-            color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+            color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
             border: Border(
               top: BorderSide(
-                color: Colors.white.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.15),
                 width: 1,
               ),
             ),
@@ -581,8 +577,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
               _buildSendButton(isLoading),
             ],
           ),
-        ),
-      ),
     );
   }
 
@@ -604,10 +598,10 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
                 padding: EdgeInsets.all(12.w),
                 child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                 ),
               )
-            : Icon(Icons.send_rounded, color: Colors.white, size: 22.sp),
+            : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp),
       ),
     );
   }
@@ -653,16 +647,18 @@ class _GlassIconButton extends StatelessWidget {
           width: 40.w,
           height: 40.w,
           decoration: BoxDecoration(
-            color: PolieColors.surfaceGlass,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? PolieColors.surfaceContainer
+                : PolieColors.surfaceContainerLight,
             shape: BoxShape.circle,
             border: Border.all(
-              color: Colors.white.withOpacity(0.1),
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.15),
               width: 1,
             ),
           ),
           child: Icon(
             icon,
-            color: PolieColors.textPrimary,
+            color: Theme.of(context).colorScheme.onSurface,
             size: 20.sp,
           ),
         ),

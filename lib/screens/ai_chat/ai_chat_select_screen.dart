@@ -18,6 +18,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
 
   void _showLanguageSelector(BuildContext context, WidgetRef ref, PolieMode mode) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     
     // Supported African languages for AI chat
     final languages = [
@@ -50,9 +51,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
             Container(
               padding: EdgeInsets.all(PolieSpacing.lg),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [PolieColors.royalAmethyst, PolieColors.goldEmber],
-                ),
+                color: isDark ? PolieColors.primary : PolieColors.royalAmethyst,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
               ),
               child: SafeArea(
@@ -62,7 +61,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
                     Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
                           onPressed: () => Navigator.pop(context),
                         ),
                         Expanded(
@@ -71,7 +70,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
                                 ? 'Select Language to Translate'
                                 : 'Select Language to Learn',
                             style: PolieTypography.h2(context).copyWith(
-                              color: Colors.white,
+                              color: colorScheme.onPrimary,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -85,7 +84,7 @@ class AiChatSelectScreen extends HookConsumerWidget {
                           ? 'Choose the language you want to translate to/from'
                           : 'Choose the language you want to practice',
                       style: PolieTypography.bodySmall(context).copyWith(
-                        color: Colors.white.withOpacity(0.9),
+                        color: colorScheme.onPrimary.withOpacity(0.92),
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -103,12 +102,12 @@ class AiChatSelectScreen extends HookConsumerWidget {
                   return Container(
                     margin: EdgeInsets.only(bottom: PolieSpacing.sm),
                     decoration: BoxDecoration(
-                      color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+                      color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
                       borderRadius: BorderRadius.circular(PolieRadius.lg),
                       border: Border.all(
                         color: isDark
-                            ? Colors.white.withOpacity(0.08)
-                            : Colors.black.withOpacity(0.06),
+                            ? Theme.of(context).colorScheme.outline.withOpacity(0.26)
+                            : Theme.of(context).colorScheme.outline.withOpacity(0.18),
                       ),
                       boxShadow: PolieElevation.level1(context),
                     ),
@@ -222,9 +221,7 @@ class _ModeCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(PolieRadius.xl),
             boxShadow: PolieElevation.level2(context),
             border: Border.all(
-              color: isDark
-                  ? Colors.white.withOpacity(0.08)
-                  : Colors.black.withOpacity(0.06),
+              color: Theme.of(context).colorScheme.outline.withOpacity(0.12),
             ),
           ),
           child: Row(
@@ -236,7 +233,7 @@ class _ModeCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(PolieRadius.lg),
                   boxShadow: PolieElevation.level1(context),
                 ),
-                child: Icon(icon, color: Colors.white, size: 32),
+                child: Icon(icon, color: Theme.of(context).colorScheme.onPrimary, size: 32),
               ),
               SizedBox(width: PolieSpacing.md),
               Expanded(

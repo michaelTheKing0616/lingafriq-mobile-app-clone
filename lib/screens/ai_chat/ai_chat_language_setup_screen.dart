@@ -135,12 +135,11 @@ class _AiChatLanguageSetupScreenState
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? PolieColors.surfaceGlassDark
-                        : PolieColors.surfaceGlass,
+                        ? PolieColors.surfaceContainer
+                        : PolieColors.surfaceContainerLight,
                     borderRadius: BorderRadius.circular(PolieRadius.lg),
                     border: Border.all(
-                      color: (isDark ? Colors.white : Colors.black)
-                          .withOpacity(0.08),
+                      color: Theme.of(context).colorScheme.outline.withOpacity(0.12),
                     ),
                     boxShadow: PolieElevation.level1(context),
                   ),
@@ -195,8 +194,8 @@ class _AiChatLanguageSetupScreenState
                       child: Container(
                         decoration: BoxDecoration(
                           color: isDark
-                              ? PolieColors.surfaceGlassDark
-                              : PolieColors.surfaceGlass,
+                              ? PolieColors.surfaceContainer
+                              : PolieColors.surfaceContainerLight,
                           borderRadius:
                               BorderRadius.circular(PolieRadius.xl),
                           border: Border.all(

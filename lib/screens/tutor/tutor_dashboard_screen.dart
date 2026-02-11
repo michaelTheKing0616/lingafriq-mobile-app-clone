@@ -196,7 +196,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
   Widget _buildTabBar(BuildContext context, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlass,
+        color: PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(PolieRadius.lg),
         ),
@@ -256,7 +256,7 @@ class _ModeCard extends StatelessWidget {
         margin: EdgeInsets.only(right: PolieSpacing.sm),
         padding: EdgeInsets.all(PolieSpacing.md),
         decoration: BoxDecoration(
-          color: PolieColors.surfaceGlass,
+          color: PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.lg),
           boxShadow: PolieElevation.level1(context),
           border: Border.all(

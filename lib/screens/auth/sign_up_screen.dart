@@ -48,7 +48,7 @@ class SignupScreen extends HookConsumerWidget {
             },
             icon: Icon(
               PanAfricanIcons.back,
-              color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -126,7 +126,7 @@ class SignupScreen extends HookConsumerWidget {
                     'Country of Residence',
                     style: PanAfricanTypography.labelLarge(context).copyWith(
                       fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
@@ -200,7 +200,7 @@ class SignupScreen extends HookConsumerWidget {
                         child: Text(
                           'Sign Up',
                           style: PanAfricanTypography.titleLarge(context).copyWith(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -234,7 +234,7 @@ class SignupScreen extends HookConsumerWidget {
           label,
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -268,7 +268,7 @@ class SignupScreen extends HookConsumerWidget {
           'Password',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),

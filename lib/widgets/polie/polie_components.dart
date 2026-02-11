@@ -1,10 +1,9 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../utils/polie_design_tokens.dart';
 
-/// Glass card for translation canvas, grammar lessons, story panels.
-/// Frosted glass with soft gradient and optional glow.
+/// Core Polie card container.
+/// Previously glassmorphism; now a clearer elevated surface for readability.
 class PolieGlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
@@ -24,34 +23,22 @@ class PolieGlassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     final radius = borderRadius ?? PolieRadius.lg;
     return Container(
       padding: padding ?? EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
+        color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(radius),
         boxShadow: hasGlow
             ? PolieElevation.level2(context, glowColor: glowColor ?? PolieColors.royalAmethyst)
             : PolieElevation.level1(context),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(radius),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-          child: Container(
-            decoration: BoxDecoration(
-              color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
-              borderRadius: BorderRadius.circular(radius),
-              border: Border.all(
-                color: isDark
-                    ? Colors.white.withOpacity(0.08)
-                    : Colors.black.withOpacity(0.06),
-                width: 1,
-              ),
-            ),
-            child: child,
-          ),
+        border: Border.all(
+          color: isDark ? colorScheme.outline.withOpacity(0.24) : colorScheme.outline.withOpacity(0.18),
+          width: 1,
         ),
       ),
+      child: child,
     );
   }
 }
@@ -95,7 +82,7 @@ class PolieLanguagePill extends StatelessWidget {
           color: isSelected ? color.withOpacity(0.2) : Colors.transparent,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
-            color: isSelected ? color : Colors.white.withOpacity(0.2),
+            color: isSelected ? color : Theme.of(context).colorScheme.outline.withOpacity(0.2),
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected
@@ -177,7 +164,7 @@ class PolieChatBubble extends StatelessWidget {
       textColor = PolieColors.textPrimary;
       alignment = Alignment.centerRight;
     } else {
-      bubbleColor = isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass;
+      bubbleColor = isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight;
       textColor = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
       alignment = Alignment.centerLeft;
     }
@@ -204,7 +191,7 @@ class PolieChatBubble extends StatelessWidget {
           border: Border.all(
             color: isUser
                 ? PolieColors.royalAmethyst.withOpacity(0.4)
-                : Colors.white.withOpacity(0.06),
+                : Theme.of(context).colorScheme.outline.withOpacity(0.08),
             width: 1,
           ),
           boxShadow: [
@@ -301,7 +288,7 @@ class PoliePrimaryButton extends StatelessWidget {
                     height: 24,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                     ),
                   )
                 : Row(
@@ -309,13 +296,13 @@ class PoliePrimaryButton extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (icon != null) ...[
-                        Icon(icon!, color: Colors.white, size: 20),
+                        Icon(icon!, color: Theme.of(context).colorScheme.onPrimary, size: 20),
                         SizedBox(width: PolieSpacing.sm),
                       ],
                       Text(
                         label,
                         style: PolieTypography.label(context).copyWith(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -360,66 +347,58 @@ class PolieInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     final borderColor = isDark
-        ? Colors.white.withOpacity(0.12)
-        : Colors.black.withOpacity(0.08);
+        ? colorScheme.outline.withOpacity(0.32)
+        : colorScheme.outline.withOpacity(0.22);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(PolieRadius.lg),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(
-          sigmaX: PolieSpacing.md,
-          sigmaY: PolieSpacing.md,
-        ),
-        child: Container(
-          padding: EdgeInsets.symmetric(
-            horizontal: PolieSpacing.md,
-            vertical: PolieSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
-            borderRadius: BorderRadius.circular(PolieRadius.lg),
-            border: Border.all(color: borderColor),
-            boxShadow: PolieElevation.level1(context),
-          ),
-          child: Row(
-            children: [
-              if (prefixIcon != null) ...[
-                Icon(prefixIcon, color: PolieColors.textSecondary, size: PolieSpacing.md),
-                SizedBox(width: PolieSpacing.sm),
-              ],
-              Expanded(
-                child: TextField(
-                  controller: controller,
-                  focusNode: focusNode,
-                  enabled: enabled,
-                  maxLines: maxLines,
-                  maxLength: maxLength,
-                  onChanged: onChanged,
-                  onSubmitted: onSubmitted,
-                  style: PolieTypography.body(context).copyWith(
-                    color: PolieColors.textPrimary,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    hintStyle: PolieTypography.body(context).copyWith(
-                      color: PolieColors.textSecondary,
-                    ),
-                    border: InputBorder.none,
-                    isDense: true,
-                  ),
-                ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: PolieSpacing.md,
+        vertical: PolieSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+        borderRadius: BorderRadius.circular(PolieRadius.lg),
+        border: Border.all(color: borderColor),
+        boxShadow: PolieElevation.level1(context),
+      ),
+      child: Row(
+        children: [
+          if (prefixIcon != null) ...[
+            Icon(prefixIcon, color: colorScheme.onSurfaceVariant, size: PolieSpacing.md),
+            SizedBox(width: PolieSpacing.sm),
+          ],
+          Expanded(
+            child: TextField(
+              controller: controller,
+              focusNode: focusNode,
+              enabled: enabled,
+              maxLines: maxLines,
+              maxLength: maxLength,
+              onChanged: onChanged,
+              onSubmitted: onSubmitted,
+              style: PolieTypography.body(context).copyWith(
+                color: colorScheme.onSurface,
               ),
-              if (suffixIcon != null) ...[
-                SizedBox(width: PolieSpacing.sm),
-                GestureDetector(
-                  onTap: onSuffixTap,
-                  child: Icon(suffixIcon, color: PolieColors.textSecondary, size: PolieSpacing.md),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: PolieTypography.body(context).copyWith(
+                  color: colorScheme.onSurfaceVariant,
                 ),
-              ],
-            ],
+                border: InputBorder.none,
+                isDense: true,
+              ),
+            ),
           ),
-        ),
+          if (suffixIcon != null) ...[
+            SizedBox(width: PolieSpacing.sm),
+            GestureDetector(
+              onTap: onSuffixTap,
+              child: Icon(suffixIcon, color: colorScheme.onSurfaceVariant, size: PolieSpacing.md),
+            ),
+          ],
+        ],
       ),
     );
   }

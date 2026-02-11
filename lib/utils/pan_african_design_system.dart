@@ -153,11 +153,11 @@ class PanAfricanGradients {
     colors: [Color(0xFFFFF8F0), Color(0xFFFFFBF5)],
   );
 
-  /// African Forest - Very subtle (was bold green; now flat surface)
+  /// African Forest - Restored contrast so white text remains readable.
   static const LinearGradient forest = LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: [_surface, _surface],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF2A7A4C), Color(0xFF1B7340)],
   );
 
   /// Savanna Gold - Barely there warm tint

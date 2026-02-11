@@ -39,7 +39,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
             },
             icon: Icon(
               PanAfricanIcons.back,
-              color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ),
@@ -60,7 +60,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                     'Reset Password',
                     style: PanAfricanTypography.headlineMedium(context).copyWith(
                       fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -80,7 +80,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                     'Email',
                     style: PanAfricanTypography.labelLarge(context).copyWith(
                       fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
@@ -172,7 +172,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                         child: Text(
                           'Reset Password',
                           style: PanAfricanTypography.titleLarge(context).copyWith(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

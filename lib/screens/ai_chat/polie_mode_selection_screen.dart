@@ -81,20 +81,8 @@ class PolieModeSelectionScreen extends ConsumerWidget {
     ];
 
     return Scaffold(
+      backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceContainerLight,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? [PolieColors.primary, PolieColors.primaryDark, PolieColors.obsidian]
-                : [
-                    PolieColors.primary.withOpacity(0.9),
-                    PolieColors.primaryDark.withOpacity(0.7),
-                    PolieColors.surfaceContainerLight,
-                  ],
-          ),
-        ),
         child: SafeArea(
           child: Column(
             children: [
@@ -127,8 +115,6 @@ class PolieModeSelectionScreen extends ConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
                 child: PolieGlassCard(
-                  hasGlow: true,
-                  glowColor: PolieColors.royalAmethyst,
                   padding: EdgeInsets.all(PolieSpacing.lg),
                   child: Row(
                     children: [
@@ -136,13 +122,11 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                         width: 56,
                         height: 56,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
-                          ),
+                          color: isDark ? PolieColors.royalAmethyst : PolieColors.primary,
                           shape: BoxShape.circle,
-                          boxShadow: PolieElevation.level2(context, glowColor: PolieColors.royalAmethyst),
+                          boxShadow: PolieElevation.level1(context),
                         ),
-                        child: Icon(Icons.auto_awesome, color: Colors.white, size: 28),
+                        child: Icon(Icons.auto_awesome, color: Theme.of(context).colorScheme.onPrimary, size: 28),
                       ),
                       SizedBox(width: PolieSpacing.md),
                       Expanded(
@@ -179,8 +163,6 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                     return Padding(
                       padding: EdgeInsets.only(bottom: PolieSpacing.md),
                       child: PolieGlassCard(
-                        hasGlow: true,
-                        glowColor: data.accentColor,
                         padding: EdgeInsets.zero,
                         child: InkWell(
                           onTap: () {

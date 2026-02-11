@@ -11,7 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -48,7 +48,7 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
       searchError.value = null;
       try {
         final response = await ApiService.get(
-          '${AppConfig.backendBaseUrl}/api/v1/accounts/auth/users/search',
+          ApiContract.url(ApiContract.usersSearch),
           queryParameters: {
             'handle': query.trim(),
             'q': query.trim(),

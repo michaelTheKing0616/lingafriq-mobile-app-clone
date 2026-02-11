@@ -54,7 +54,7 @@ class LoginScreen extends HookConsumerWidget {
                     'Email',
                     style: PanAfricanTypography.labelLarge(context).copyWith(
                       fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
@@ -79,7 +79,7 @@ class LoginScreen extends HookConsumerWidget {
                     'Password',
                     style: PanAfricanTypography.labelLarge(context).copyWith(
                       fontWeight: FontWeight.w600,
-                      color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
@@ -155,7 +155,7 @@ class LoginScreen extends HookConsumerWidget {
                         child: Text(
                           'Login',
                           style: PanAfricanTypography.titleLarge(context).copyWith(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

@@ -604,7 +604,7 @@ class _TapToHighlightPhraseBreakdownState extends State<_TapToHighlightPhraseBre
               decoration: BoxDecoration(
                 color: _selectedIndex == i
                     ? PolieColors.royalAmethyst.withOpacity(0.25)
-                    : PolieColors.surfaceGlassDark,
+                    : PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.sm),
                 border: _selectedIndex == i
                     ? Border.all(color: PolieColors.royalAmethyst, width: 1)

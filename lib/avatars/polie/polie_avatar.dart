@@ -215,11 +215,11 @@ class _PolieAvatarState extends State<PolieAvatar>
         child: Icon(
           Icons.auto_awesome,
           size: widget.size * 0.4,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     ).animate(onPlay: (c) => c.repeat(reverse: true))
-      .shimmer(duration: 2.seconds, color: Colors.white24);
+      .shimmer(duration: 2.seconds, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.24));
   }
   
   Widget _buildGlowRing() {

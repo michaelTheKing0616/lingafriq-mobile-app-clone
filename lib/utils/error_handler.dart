@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 
 /// Error category for analytics and handling
 enum ErrorCategory {
@@ -114,8 +115,8 @@ class ErrorHandler {
   /// Categorize an error
   static ErrorCategory categorizeError(dynamic error) {
     if (error is DioException) {
-      if (_isNetworkError(error)) return ErrorCategory.network;
       if (_isBackendError(error)) return ErrorCategory.backend;
+      if (_isNetworkError(error)) return ErrorCategory.network;
       
       final statusCode = error.response?.statusCode;
       if (statusCode == 401) return ErrorCategory.auth;
@@ -216,129 +217,18 @@ class ErrorHandler {
   /// Check if error is due to network connectivity (no internet)
   /// This should only return true for actual network-level failures
   static bool _isNetworkError(DioException error) {
-    // ConnectionError typically means DNS failure, no route to host, etc.
-    // This is a true network-level issue
-    if (error.type == DioExceptionType.connectionError) {
-      // Check the error message for specific network failure indicators
-      final message = error.message?.toLowerCase() ?? '';
-      final errorStr = error.toString().toLowerCase();
-      
-      // True network errors: DNS failures, no route to host, network unreachable
-      if (message.contains('failed host lookup') ||
-          message.contains('name resolution') ||
-          message.contains('network is unreachable') ||
-          message.contains('no route to host') ||
-          errorStr.contains('socketexception') ||
-          errorStr.contains('os error')) {
-        return true;
-      }
-      
-      // If connectionError but we can't determine, be conservative
-      // Assume it might be backend connectivity issue, not network
-      return false;
-    }
-    
-    return false;
+    return TransportErrorPolicy.isNetworkIssue(error);
   }
 
   /// Check if error is due to backend being unavailable (internet works, backend doesn't)
   /// This includes timeouts, connection refused, and server errors
   static bool _isBackendError(DioException error) {
-    final statusCode = error.response?.statusCode;
-    
-    // Timeouts usually mean backend is slow or unreachable (but internet works)
-    if (error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.receiveTimeout) {
-      return true;
-    }
-    
-    // Server errors (5xx) mean backend is reachable but having issues
-    if (statusCode != null && statusCode >= 500) {
-      return true;
-    }
-    
-    // ConnectionError that's not a true network issue (e.g., connection refused)
-    if (error.type == DioExceptionType.connectionError) {
-      final message = error.message?.toLowerCase() ?? '';
-      // Connection refused means backend is not running or not accessible
-      if (message.contains('connection refused') ||
-          message.contains('connection reset') ||
-          message.contains('connection closed')) {
-        return true;
-      }
-    }
-    
-    return false;
+    return TransportErrorPolicy.isBackendIssue(error);
   }
 
   /// Handle Dio-specific errors with better distinction between network and backend issues
   static String _handleDioError(DioException error) {
-    // First check if it's a network connectivity issue (no internet)
-    if (_isNetworkError(error)) {
-      return 'No internet connection. Please check your network settings and try again.';
-    }
-    
-    // Then check if it's a backend issue (internet works, backend unavailable)
-    if (_isBackendError(error)) {
-      final statusCode = error.response?.statusCode;
-      if (statusCode != null && statusCode >= 500) {
-        return 'Server is temporarily unavailable. Your data is saved locally and will sync when the server is back online.';
-      }
-      
-      // Check for connection refused (backend not running or wrong URL)
-      final message = error.message?.toLowerCase() ?? '';
-      if (message.contains('connection refused') || 
-          message.contains('connection reset')) {
-        return 'Cannot connect to server. Please check your connection or try again later.';
-      }
-      
-      // Timeout or other backend issues
-      return 'Server is taking too long to respond. Your data is saved locally and will sync automatically.';
-    }
-    
-    switch (error.type) {
-      case DioExceptionType.badResponse:
-        final statusCode = error.response?.statusCode;
-        if (statusCode == 401) {
-          return 'Authentication failed. Please log in again.';
-        } else if (statusCode == 403) {
-          return 'You don\'t have permission to perform this action.';
-        } else if (statusCode == 404) {
-          return 'The requested resource was not found.';
-        } else if (statusCode == 429) {
-          // CRITICAL: Never show raw 429 to users - use friendly message
-          final retryAfter = error.response?.headers.value('retry-after');
-          if (retryAfter != null) {
-            final seconds = int.tryParse(retryAfter) ?? 60;
-            final minutes = (seconds / 60).ceil();
-            return 'Please slow down. Try again in ${minutes} minute${minutes > 1 ? 's' : ''}.';
-          }
-          return 'You\'re making requests too quickly. Please wait a moment and try again.';
-        } else if (statusCode == 500) {
-          return 'Server error. Your data is saved locally and will sync when the server is back online.';
-        } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {
-          final message = error.response?.data?['message'] as String?;
-          return message ?? 'Request failed. Please try again.';
-        } else {
-          return 'Server error. Your data is saved locally and will sync when the server is back online.';
-        }
-      
-      case DioExceptionType.cancel:
-        return 'Request was cancelled.';
-      
-      case DioExceptionType.badCertificate:
-        return 'Security certificate error. Please try again.';
-      
-      case DioExceptionType.unknown:
-      default:
-        // Try to determine if it's network or backend
-        final message = error.message?.toLowerCase() ?? '';
-        if (message.contains('network') || message.contains('internet') || message.contains('connection')) {
-          return 'Network error. Please check your internet connection and try again.';
-        }
-        return 'Unable to reach server. Your data is saved locally and will sync automatically when connection is restored.';
-    }
+    return TransportErrorPolicy.toUserMessage(error);
   }
 
   /// Show error snackbar
@@ -540,61 +430,11 @@ class ErrorConverter {
     final responseData = error.response?.data is Map
         ? Map<String, dynamic>.from(error.response!.data)
         : null;
-    
-    String message;
-    
-    switch (error.type) {
-      case DioExceptionType.connectionTimeout:
-      case DioExceptionType.sendTimeout:
-      case DioExceptionType.receiveTimeout:
-        message = 'Connection timed out. Please check your internet connection.';
-        break;
-        
-      case DioExceptionType.badResponse:
-        if (statusCode == 401) {
-          message = 'Authentication failed. Please log in again.';
-        } else if (statusCode == 403) {
-          message = 'You don\'t have permission to perform this action.';
-        } else if (statusCode == 404) {
-          message = 'The requested resource was not found.';
-        } else if (statusCode == 429) {
-          // CRITICAL: Never show raw 429 to users - use friendly message
-          final retryAfter = error.response?.headers.value('retry-after');
-          if (retryAfter != null) {
-            final seconds = int.tryParse(retryAfter) ?? 60;
-            final minutes = (seconds / 60).ceil();
-            message = 'Please slow down. Try again in ${minutes} minute${minutes > 1 ? 's' : ''}.';
-          } else {
-            message = 'You\'re making requests too quickly. Please wait a moment and try again.';
-          }
-        } else if (statusCode == 500) {
-          message = 'Server error. Please try again later.';
-        } else if (statusCode != null && statusCode >= 400 && statusCode < 500) {
-          message = responseData?['message'] as String? ??
-                    responseData?['error'] as String? ??
-                    responseData?['detail'] as String? ??
-                    'Request failed. Please try again.';
-        } else {
-          message = 'Server error. Please try again later.';
-        }
-        break;
-        
-      case DioExceptionType.cancel:
-        message = 'Request was cancelled.';
-        break;
-        
-      case DioExceptionType.connectionError:
-        message = 'No internet connection. Please check your network settings.';
-        break;
-        
-      case DioExceptionType.badCertificate:
-        message = 'Security certificate error. Please try again.';
-        break;
-        
-      case DioExceptionType.unknown:
-      default:
-        message = 'Network error. Please check your connection and try again.';
-    }
+
+    // Delegate to the single transport error policy so all DioException mapping
+    // lives in one place. This eliminates the duplicated switch/case that
+    // previously drifted out of sync with ErrorHandler._handleDioError.
+    final message = TransportErrorPolicy.toUserMessage(error);
     
     return ApiError(message, statusCode: statusCode, responseData: responseData, originalError: error);
   }

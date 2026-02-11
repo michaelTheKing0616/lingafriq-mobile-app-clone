@@ -238,7 +238,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                     SnackBar(
                       content: Text(
                         'Hearts refilled! Continue playing.',
-                        style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                        style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       backgroundColor: PanAfricanColors.primary,
                     ),
@@ -250,7 +250,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                     SnackBar(
                       content: Text(
                         'Not enough cowries to refill hearts. Come back later or earn more!',
-                        style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                        style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       backgroundColor: PanAfricanColors.kenteRed,
                       duration: const Duration(seconds: 4),
@@ -263,8 +263,8 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Something went wrong. Please try again later.',
-                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white),
+                        'Something went wrong. Please try again later.',
+                        style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                     backgroundColor: PanAfricanColors.kenteRed,
                     duration: const Duration(seconds: 3),
@@ -273,7 +273,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
               }
             },
             icon: Icon(Icons.favorite_rounded, size: 20.sp),
-            label: Text('Refill Hearts', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
+            label: Text('Refill Hearts', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
             style: FilledButton.styleFrom(
               backgroundColor: PanAfricanColors.kenteRed,
               shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
@@ -377,7 +377,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
               Navigator.pop(context);
             },
             icon: Icon(Icons.check_rounded, size: 20.sp),
-            label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Colors.white)),
+            label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
             style: FilledButton.styleFrom(
               backgroundColor: PanAfricanColors.primary,
               shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
@@ -431,7 +431,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
         appBar: AppBar(
           title: Text(
             widget.getGameType().displayName,
-            style: PanAfricanTypography.titleMedium(context, color: Colors.white),
+            style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
           ),
           leading: Semantics(
             label: 'Go back',
@@ -499,7 +499,7 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
         appBar: AppBar(
           title: Text(
             widget.getGameType().displayName,
-            style: PanAfricanTypography.titleMedium(context, color: Colors.white),
+            style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
           ),
           leading: Semantics(
             label: 'Go back',

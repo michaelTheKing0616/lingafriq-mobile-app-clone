@@ -338,7 +338,7 @@ Quality requirements:
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm),
                           decoration: BoxDecoration(
-                            color: PolieColors.surfaceGlass,
+                            color: PolieColors.surfaceContainerLight,
                             borderRadius: BorderRadius.circular(PolieRadius.md),
                             border: Border.all(color: Colors.white.withOpacity(0.1)),
                           ),
@@ -541,7 +541,7 @@ Quality requirements:
                 child: Container(
                   padding: EdgeInsets.all(PolieSpacing.sm),
                   decoration: BoxDecoration(
-                    color: PolieColors.surfaceGlass,
+                    color: PolieColors.surfaceContainerLight,
                     borderRadius: BorderRadius.circular(PolieRadius.sm),
                   ),
                   child: Column(
@@ -677,7 +677,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
     return Container(
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+        color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
         border: Border.all(color: PolieColors.royalAmethyst.withOpacity(0.3)),
       ),

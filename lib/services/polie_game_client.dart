@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 
@@ -18,11 +19,14 @@ class GameEvaluationException implements Exception {
 /// This replaces random logic with real AI-driven evaluation
 class PolieGameClient {
   final Dio _dio;
-  final String baseUrl;
+  final String _resolvedBaseUrl;
 
   PolieGameClient({Dio? dio, String? baseUrl})
       : _dio = dio ?? Dio(),
-        baseUrl = (baseUrl ?? EnvConfig.backendBaseUrl).replaceAll(RegExp(r'/$'), '');
+        _resolvedBaseUrl =
+            (baseUrl ?? EnvConfig.backendBaseUrl).replaceAll(RegExp(r'/$'), '');
+
+  String _url(String path) => '$_resolvedBaseUrl$path';
 
   /// Generate game content from Polie backend (Game Master API)
   /// Polie acts as dungeon master, cultural referee, difficulty tuner, and feedback author
@@ -38,7 +42,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/api/games/game-content',
+        _url(ApiContract.polieGameContent),
         data: {
           'game_id': gameId,
           'language': language,
@@ -81,7 +85,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/api/v1/polie/evaluate-game-turn',
+        _url(ApiContract.polieEvaluateGameTurn),
         data: {
           'game_id': gameId,
           'content_id': contentId,

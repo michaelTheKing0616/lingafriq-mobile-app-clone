@@ -211,7 +211,7 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
                     decoration: BoxDecoration(
-                      color: isSelected ? PolieColors.royalAmethyst.withOpacity(0.25) : PolieColors.surfaceGlassDark,
+                      color: isSelected ? PolieColors.royalAmethyst.withOpacity(0.25) : PolieColors.surfaceContainer,
                       borderRadius: BorderRadius.circular(PolieRadius.md),
                       border: Border.all(
                         color: isSelected ? PolieColors.royalAmethyst : Colors.white.withOpacity(0.1),
@@ -274,7 +274,7 @@ class _ListeningQuizScreenState extends ConsumerState<ListeningQuizScreen> {
                       borderSide: BorderSide(color: PolieColors.royalAmethyst),
                     ),
                     filled: true,
-                    fillColor: PolieColors.surfaceGlassDark,
+                    fillColor: PolieColors.surfaceContainer,
                   ),
                   style: PolieTypography.body(context),
                   onChanged: (value) {

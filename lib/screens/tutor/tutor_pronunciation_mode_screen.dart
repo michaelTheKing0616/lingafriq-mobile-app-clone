@@ -164,8 +164,8 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                         ),
                         filled: true,
                         fillColor: isDark
-                            ? PolieColors.surfaceGlassDark
-                            : PolieColors.surfaceGlass,
+                            ? PolieColors.surfaceContainer
+                            : PolieColors.surfaceContainerLight,
                       ),
                       style: PolieTypography.body(context),
                     ),
@@ -440,7 +440,7 @@ class _MouthShapePlaceholder extends StatelessWidget {
       width: 80.w,
       height: 48.w,
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlass,
+        color: PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(40),
         border: Border.all(color: PolieColors.electricTeal.withOpacity(0.5), width: 2),
       ),
@@ -610,8 +610,8 @@ class _ScoreCard extends StatelessWidget {
       padding: EdgeInsets.all(PolieSpacing.md),
       decoration: BoxDecoration(
         color: isDark
-            ? PolieColors.surfaceGlassDark
-            : PolieColors.surfaceGlass,
+            ? PolieColors.surfaceContainer
+            : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.circular(PolieRadius.md),
         border: Border.all(color: color.withOpacity(0.3), width: 1),
       ),

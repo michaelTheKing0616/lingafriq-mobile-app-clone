@@ -370,19 +370,19 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                             enabled: !isLoading.value,
                             maxLength: 2000,
                             style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black87,
+                              color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 15,
                             ),
                             decoration: InputDecoration(
                               hintText: 'Type your message...',
                               hintStyle: TextStyle(
-                                color: isDark ? Colors.white54 : Colors.black38,
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                               ),
                               filled: true,
-                              fillColor: isDark ? PanAfricanColors.surfaceDark : Colors.white,
+                              fillColor: Theme.of(context).colorScheme.surfaceContainerLowest,
                             ),
                             maxLines: null,
                             textInputAction: TextInputAction.send,
@@ -569,7 +569,7 @@ class _MessageBubble extends StatelessWidget {
             CircleAvatar(
               radius: 16.r,
               backgroundColor: PanAfricanColors.primary,
-              child: Icon(Icons.smart_toy, size: 16.sp, color: Colors.white),
+              child: Icon(Icons.smart_toy, size: 16.sp, color: Theme.of(context).colorScheme.onPrimary),
             ),
             SizedBox(width: PanAfricanSpacing.sm),
           ],
@@ -591,14 +591,14 @@ class _MessageBubble extends StatelessWidget {
                   Text(
                     message['text'] as String? ?? '',
                     style: PanAfricanTypography.bodyMedium(context)?.copyWith(
-                      color: isUser ? Colors.white : null,
+                      color: isUser ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xxs),
                   Text(
                     _formatTime(message['timestamp'] as String?),
                     style: PanAfricanTypography.bodySmall(context)?.copyWith(
-                      color: isUser ? Colors.white70 : PanAfricanColors.neutralMedium,
+                      color: isUser ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.7) : PanAfricanColors.neutralMedium,
                     ),
                   ),
                 ],
@@ -610,7 +610,7 @@ class _MessageBubble extends StatelessWidget {
             CircleAvatar(
               radius: 16.r,
               backgroundColor: PanAfricanColors.secondary,
-              child: Icon(Icons.person, size: 16.sp, color: Colors.white),
+              child: Icon(Icons.person, size: 16.sp, color: Theme.of(context).colorScheme.onSecondary),
             ),
           ],
         ],

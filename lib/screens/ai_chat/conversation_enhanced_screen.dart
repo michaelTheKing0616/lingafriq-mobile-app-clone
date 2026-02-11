@@ -228,12 +228,12 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PolieColors.royalAmethyst.withOpacity(0.3)
-                      : PolieColors.surfaceGlass,
+                      : PolieColors.surfaceContainer,
                   borderRadius: BorderRadius.circular(PolieRadius.pill),
                   border: Border.all(
                     color: isSelected
                         ? PolieColors.royalAmethyst
-                        : Colors.white.withOpacity(0.1),
+                        : Theme.of(context).colorScheme.outline.withOpacity(0.1),
                     width: 1,
                   ),
                 ),
@@ -330,10 +330,10 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
         child: Container(
           padding: EdgeInsets.all(PolieSpacing.md),
           decoration: BoxDecoration(
-            color: PolieColors.surfaceGlass,
+            color: PolieColors.surfaceContainer,
             border: Border(
               top: BorderSide(
-                color: Colors.white.withOpacity(0.1),
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
                 width: 1,
               ),
             ),
@@ -343,10 +343,10 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: PolieColors.surfaceGlassDark,
+                    color: PolieColors.surfaceContainer,
                     borderRadius: BorderRadius.circular(PolieRadius.pill),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.1),
+                      color: Theme.of(context).colorScheme.outline.withOpacity(0.1),
                       width: 1,
                     ),
                   ),
@@ -392,10 +392,10 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                           padding: EdgeInsets.all(12.w),
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                           ),
                         )
-                      : Icon(Icons.send_rounded, color: Colors.white, size: 22.sp),
+                      : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp),
                 ),
               ),
             ],
@@ -547,7 +547,7 @@ class _MessageBubble extends StatelessWidget {
                 ),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.smart_toy_rounded, size: 18.sp, color: Colors.white),
+              child: Icon(Icons.smart_toy_rounded, size: 18.sp, color: Theme.of(context).colorScheme.onPrimary),
             ),
             SizedBox(width: PolieSpacing.sm),
           ],
@@ -566,10 +566,10 @@ class _MessageBubble extends StatelessWidget {
                     horizontal: PolieSpacing.md,
                     vertical: PolieSpacing.sm,
                   ),
-                  decoration: BoxDecoration(
+                    decoration: BoxDecoration(
                     color: message.isUser
                         ? PolieColors.goldEmber.withOpacity(0.2)
-                        : PolieColors.surfaceGlass,
+                        : PolieColors.surfaceContainer,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(PolieRadius.lg),
                       topRight: Radius.circular(PolieRadius.lg),
@@ -639,7 +639,7 @@ class _MessageBubble extends StatelessWidget {
                 ),
                 shape: BoxShape.circle,
               ),
-              child: Icon(Icons.person_rounded, size: 18.sp, color: Colors.white),
+              child: Icon(Icons.person_rounded, size: 18.sp, color: Theme.of(context).colorScheme.onPrimary),
             ),
           ],
         ],
@@ -669,12 +669,12 @@ class _GlassIconButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: isActive
               ? PolieColors.electricTeal.withOpacity(0.3)
-              : PolieColors.surfaceGlass,
+              : PolieColors.surfaceContainer,
           shape: BoxShape.circle,
           border: Border.all(
             color: isActive
                 ? PolieColors.electricTeal
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.outline.withOpacity(0.1),
             width: 1,
           ),
         ),

@@ -169,8 +169,8 @@ class AILanguageSelectionScreen extends HookConsumerWidget {
         padding: EdgeInsets.all(PolieSpacing.lg),
         decoration: BoxDecoration(
           color: isDark
-              ? PolieColors.surfaceGlassDark
-              : PolieColors.surfaceGlass,
+              ? PolieColors.surfaceContainer
+              : PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
           border: Border.all(
             color: PolieColors.royalAmethyst.withOpacity(0.3),

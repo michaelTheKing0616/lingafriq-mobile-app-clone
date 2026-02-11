@@ -265,7 +265,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
         child: Icon(
           Icons.person_add,
           size: 50.sp,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     );
@@ -285,7 +285,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           titles[step],
           style: PanAfricanTypography.headlineLarge(context).copyWith(
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -377,7 +377,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           'Password',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -475,7 +475,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           'Country of Residence',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -595,7 +595,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           label,
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -679,12 +679,12 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(PanAfricanIcons.back, color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight, size: 20.sp),
+                    Icon(PanAfricanIcons.back, color: Theme.of(context).colorScheme.onSurface, size: 20.sp),
                     SizedBox(width: PanAfricanSpacing.xs),
                     Text(
                       'Back',
                       style: PanAfricanTypography.titleMedium(context).copyWith(
-                        color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                        color: Theme.of(context).colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -768,7 +768,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                 child: Text(
                   currentStep.value < totalSteps - 1 ? 'Continue' : 'Create Account',
                   style: PanAfricanTypography.titleLarge(context).copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

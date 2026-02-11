@@ -12,6 +12,7 @@ import '../providers/dio_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
 import '../utils/api.dart';
+import '../config/api_contract.dart';
 import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 import '../utils/structured_logger.dart';
@@ -237,7 +238,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // Backend mounts Polie game content under /api/games/*.
     try {
       final response = await ref.read(client).post(
-        '${Api.baseurl}api/games/game-content',
+        '${Api.baseurl}${ApiContract.polieGameContent.substring(1)}',
         data: {
           'game_id': _currentSession?.gameType ?? 'phrase_cards',
           'language': language,

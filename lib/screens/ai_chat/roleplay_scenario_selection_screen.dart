@@ -220,7 +220,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: PolieColors.surfaceGlass,
+          color: PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
             color: Colors.white.withOpacity(0.1),
@@ -302,7 +302,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
             padding: EdgeInsets.all(PolieSpacing.xl),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: PolieColors.surfaceGlass,
+              color: PolieColors.surfaceContainerLight,
             ),
             child: Icon(
               Icons.inbox_rounded,
@@ -407,7 +407,7 @@ class _CategoryChip extends StatelessWidget {
           vertical: PolieSpacing.sm,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? color.withOpacity(0.3) : PolieColors.surfaceGlass,
+          color: isSelected ? color.withOpacity(0.3) : PolieColors.surfaceContainerLight,
           borderRadius: BorderRadius.circular(PolieRadius.pill),
           border: Border.all(
             color: isSelected ? color : Colors.white.withOpacity(0.1),
@@ -469,7 +469,7 @@ class _ScenarioCard extends StatelessWidget {
           filter: ui.ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Container(
             decoration: BoxDecoration(
-              color: PolieColors.surfaceGlass,
+              color: PolieColors.surfaceContainerLight,
               borderRadius: BorderRadius.circular(PolieRadius.lg),
               border: Border.all(
                 color: categoryColor.withOpacity(0.3),
@@ -560,7 +560,7 @@ class _ScenarioCard extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(PolieSpacing.md),
                         decoration: BoxDecoration(
-                          color: PolieColors.surfaceGlassDark,
+                          color: PolieColors.surfaceContainer,
                           borderRadius: BorderRadius.circular(PolieRadius.md),
                         ),
                         child: Column(
@@ -708,7 +708,7 @@ class _GlassIconButton extends StatelessWidget {
         width: 44.w,
         height: 44.w,
         decoration: BoxDecoration(
-          color: PolieColors.surfaceGlass,
+          color: PolieColors.surfaceContainerLight,
           shape: BoxShape.circle,
           border: Border.all(
             color: Colors.white.withOpacity(0.1),

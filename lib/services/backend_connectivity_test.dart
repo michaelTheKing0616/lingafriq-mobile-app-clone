@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../config/url_constants.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import '../utils/api.dart';
 
 /// Test result structure for backend connectivity tests
@@ -42,21 +42,7 @@ class BackendConnectivityTest {
 
   /// Test internet connectivity (not backend-specific)
   Future<bool> testInternetConnectivity() async {
-    try {
-      final response = await _dio.head(
-        UrlConstants.connectivityProbe,
-        options: Options(
-          receiveTimeout: const Duration(seconds: 5),
-          sendTimeout: const Duration(seconds: 5),
-          followRedirects: false,
-          validateStatus: (status) => status != null && status < 500,
-        ),
-      );
-      return response.statusCode != null;
-    } catch (e) {
-      debugPrint('Internet connectivity test failed: $e');
-      return false;
-    }
+    return ConnectivityService.hasInternet(dio: _dio);
   }
 
   /// Test backend health endpoint
