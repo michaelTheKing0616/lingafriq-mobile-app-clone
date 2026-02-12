@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/animated/animated_button.dart';
 import 'package:lingafriq/widgets/animated/animated_card.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 /// Subscription screen with tier selection
 class SubscriptionScreen extends ConsumerWidget {
@@ -17,37 +17,42 @@ class SubscriptionScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final subscription = ref.watch(subscriptionProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     return Scaffold(
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: AppBar(
-        title: const Text('Subscription'),
+        title: Text('Subscription', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.w),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Choose Your Plan',
-              style: TextStyle(
-                fontSize: 28.sp,
-                fontWeight: FontWeight.bold,
-              ),
+              style: PanAfricanTypography.headlineMedium(context),
             )
                 .animate()
                 .fadeIn(duration: 300.ms)
                 .slideX(begin: -0.1),
-            SizedBox(height: 8.h),
+            SizedBox(height: PanAfricanSpacing.xs),
             Text(
               'Unlock all features and accelerate your learning',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: Colors.grey[600],
-              ),
+              style: PanAfricanTypography.bodyMedium(context, color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
             )
                 .animate()
                 .fadeIn(delay: 100.ms),
-            SizedBox(height: 24.h),
+            SizedBox(height: PanAfricanSpacing.lg),
             _buildTierCard(
               context: context,
               tier: SubscriptionTier.free,
@@ -62,10 +67,11 @@ class SubscriptionScreen extends ConsumerWidget {
               ],
               isCurrent: subscription.tier == SubscriptionTier.free,
               onTap: () {
+                HapticFeedback.mediumImpact();
                 ref.read(subscriptionProvider.notifier).subscribe(SubscriptionTier.free);
               },
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: PanAfricanSpacing.md),
             _buildTierCard(
               context: context,
               tier: SubscriptionTier.premium,
@@ -83,10 +89,11 @@ class SubscriptionScreen extends ConsumerWidget {
               isCurrent: subscription.tier == SubscriptionTier.premium,
               isRecommended: true,
               onTap: () {
+                HapticFeedback.mediumImpact();
                 ref.read(subscriptionProvider.notifier).subscribe(SubscriptionTier.premium);
               },
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: PanAfricanSpacing.md),
             _buildTierCard(
               context: context,
               tier: SubscriptionTier.family,
@@ -102,10 +109,11 @@ class SubscriptionScreen extends ConsumerWidget {
               ],
               isCurrent: subscription.tier == SubscriptionTier.family,
               onTap: () {
+                HapticFeedback.mediumImpact();
                 ref.read(subscriptionProvider.notifier).subscribe(SubscriptionTier.family);
               },
             ),
-            SizedBox(height: 16.h),
+            SizedBox(height: PanAfricanSpacing.md),
             _buildTierCard(
               context: context,
               tier: SubscriptionTier.lifetime,
@@ -121,8 +129,30 @@ class SubscriptionScreen extends ConsumerWidget {
               ],
               isCurrent: subscription.tier == SubscriptionTier.lifetime,
               onTap: () {
+                HapticFeedback.mediumImpact();
                 ref.read(subscriptionProvider.notifier).subscribe(SubscriptionTier.lifetime);
               },
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
+            Center(
+              child: TextButton(
+                onPressed: () async {
+                  HapticFeedback.lightImpact();
+                  final ok = await ref.read(subscriptionProvider.notifier).restorePurchases();
+                  if (!context.mounted) return;
+                  if (ok) {
+                    ErrorHandler.showSuccess(context, 'Purchases restored');
+                  } else {
+                    ErrorHandler.showError(context, 'No purchases found to restore');
+                  }
+                },
+                child: Text(
+                  'Restore purchases',
+                  style: PanAfricanTypography.labelLarge(context).copyWith(
+                    color: PanAfricanColors.primary,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -141,104 +171,94 @@ class SubscriptionScreen extends ConsumerWidget {
     required VoidCallback onTap,
     bool isRecommended = false,
   }) {
-    return AnimatedCard(
-      elevation: isRecommended ? 6 : 2,
-      color: isRecommended
-          ? AfricanTheme.primaryGreen.withOpacity(0.05)
-          : null,
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (isRecommended)
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        AfricanTheme.primaryGreen,
-                        AfricanTheme.accentGold,
-                      ],
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Container(
+      decoration: BoxDecoration(
+        color: isRecommended
+            ? PanAfricanColors.primary.withOpacity(0.05)
+            : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: isRecommended ? PanAfricanShadows.md : PanAfricanShadows.sm,
+        border: isRecommended ? Border.all(color: PanAfricanColors.primary.withOpacity(0.3), width: 2) : null,
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isRecommended)
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: PanAfricanSpacing.xxs),
+                decoration: BoxDecoration(
+                  gradient: PanAfricanGradients.forest,
+                  borderRadius: PanAfricanRadius.roundBR,
+                ),
+                child: Text(
+                  'RECOMMENDED',
+                  style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary),
+                ),
+              )
+                  .animate()
+                  .scale(delay: 200.ms, duration: 300.ms),
+            SizedBox(height: isRecommended ? PanAfricanSpacing.sm : 0),
+            Row(
+              children: [
+                Text(
+                  title,
+                  style: PanAfricanTypography.headlineSmall(context),
+                ),
+                const Spacer(),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      price,
+                      style: PanAfricanTypography.headlineMedium(context, color: PanAfricanColors.primary),
                     ),
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
-                  ),
-                  child: Text(
-                    'RECOMMENDED',
-                    style: TextStyle(
-                      fontSize: 10.sp,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
+                    Text(
+                      period,
+                      style: PanAfricanTypography.labelSmall(context),
                     ),
-                  ),
-                )
-                    .animate()
-                    .scale(delay: 200.ms, duration: 300.ms),
-              SizedBox(height: isRecommended ? 12.h : 0),
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Spacer(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
+            ...features.map((feature) => Padding(
+                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+                  child: Row(
                     children: [
-                      Text(
-                        price,
-                        style: TextStyle(
-                          fontSize: 28.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AfricanTheme.primaryGreen,
-                        ),
+                      Icon(
+                        Icons.check_circle_rounded,
+                        color: PanAfricanColors.success,
+                        size: 20.sp,
                       ),
-                      Text(
-                        period,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.grey[600],
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      Expanded(
+                        child: Text(
+                          feature,
+                          style: PanAfricanTypography.bodyMedium(context),
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
-              SizedBox(height: 20.h),
-              ...features.map((feature) => Padding(
-                    padding: EdgeInsets.only(bottom: 12.h),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.check_circle_rounded,
-                          color: AfricanTheme.primaryGreen,
-                          size: 20.sp,
-                        ),
-                        SizedBox(width: 12.w),
-                        Expanded(
-                          child: Text(
-                            feature,
-                            style: TextStyle(fontSize: 14.sp),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
-              SizedBox(height: 20.h),
-              AnimatedButton(
-                text: isCurrent ? 'Current Plan' : 'Subscribe',
+                )),
+            SizedBox(height: PanAfricanSpacing.lg),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
                 onPressed: isCurrent ? null : onTap,
-                backgroundColor: isRecommended
-                    ? AfricanTheme.primaryGreen
-                    : AfricanTheme.accentGold,
+                style: FilledButton.styleFrom(
+                  backgroundColor: isRecommended ? PanAfricanColors.primary : PanAfricanColors.secondary,
+                  foregroundColor: isRecommended ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight,
+                  padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+                  shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+                ),
+                child: Text(isCurrent ? 'Current Plan' : 'Subscribe', style: PanAfricanTypography.labelLarge(context, color: isRecommended ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight)),
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     )
         .animate()

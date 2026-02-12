@@ -17,6 +17,8 @@ import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../providers/dio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'base_game_screen.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 
@@ -542,6 +544,8 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.getGameType().displayName} (Round $_currentRound/$_maxRounds)'),
@@ -587,7 +591,13 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
                     border: Border.all(color: PanAfricanColors.primary, width: 2),
                   ),
                   child: CustomPaint(
-                    painter: _MapPainter(_wordPositions, _selectedWord, _targetLocation, _showResult),
+                    painter: _MapPainter(
+                      wordPositions: _wordPositions,
+                      selectedWord: _selectedWord,
+                      targetLocation: _targetLocation,
+                      showResult: _showResult,
+                      labelColor: colorScheme.onPrimary,
+                    ),
                   ),
                 ),
                 // Word buttons at bottom
@@ -638,8 +648,15 @@ class _MapPainter extends CustomPainter {
   final String? selectedWord;
   final String? targetLocation;
   final bool showResult;
+  final Color labelColor;
 
-  _MapPainter(this.wordPositions, this.selectedWord, this.targetLocation, this.showResult);
+  _MapPainter({
+    required this.wordPositions,
+    required this.selectedWord,
+    required this.targetLocation,
+    required this.showResult,
+    required this.labelColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -671,7 +688,7 @@ class _MapPainter extends CustomPainter {
       final textPainter = TextPainter(
         text: TextSpan(
           text: word.length > 8 ? '${word.substring(0, 8)}...' : word,
-          style: TextStyle(color: Colors.white, fontSize: 10),
+          style: TextStyle(color: labelColor, fontSize: 10),
         ),
         textDirection: TextDirection.ltr,
       );
@@ -734,8 +751,15 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
       });
     } catch (e) {
       debugPrint('Error starting conversation: $e');
+      // Use fallback content so game is still playable
+      final fallbackPrompt = 'Start a conversation in ${widget.language}';
       setState(() {
-        _currentPrompt = 'Start a conversation in ${widget.language}';
+        _currentPrompt = fallbackPrompt;
+        _conversationHistory.add({
+          'type': 'system',
+          'text': fallbackPrompt,
+          'timestamp': DateTime.now(),
+        });
       });
     }
   }
@@ -865,7 +889,7 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
                     child: Text(
                       message['text'] as String,
                       style: TextStyle(
-                        color: isUser ? Colors.white : null,
+                        color: isUser ? colorScheme.onPrimary : null,
                         fontSize: 14.sp,
                       ),
                     ),
@@ -1135,9 +1159,13 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 4.h),
-              FilledButton(
-                onPressed: _startGame,
-                child: const Text('Start Jam'),
+              Semantics(
+                label: 'Start game',
+                button: true,
+                child: FilledButton(
+                  onPressed: _startGame,
+                  child: const Text('Start Jam'),
+                ),
               ),
             ],
           ),
@@ -1156,20 +1184,23 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
       body: Column(
         children: [
           // Timer
-          Container(
-            padding: EdgeInsets.all(2.w),
-            color: _timeRemaining < 10 ? Colors.red.shade100 : PanAfricanColors.primary.withOpacity(0.1),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.timer, size: 20.sp),
-                SizedBox(width: 2.w),
-                Text(
-                  '$_timeRemaining',
+          Semantics(
+            label: 'Time remaining: $_timeRemaining seconds',
+            child: Container(
+              padding: EdgeInsets.all(2.w),
+              color: _timeRemaining < 10 ? Colors.red.shade100 : PanAfricanColors.primary.withOpacity(0.1),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.timer, size: 20.sp),
+                  SizedBox(width: 2.w),
+                  Text(
+                    '$_timeRemaining',
                   style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
+          ),
           ),
           Expanded(
             child: Padding(
@@ -1508,7 +1539,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
                     ),
                     child: Icon(
                       _isRecording ? Icons.mic : Icons.mic_none,
-                      color: Colors.white,
+                      color: colorScheme.onPrimary,
                       size: 40.sp,
                     ),
                   ),

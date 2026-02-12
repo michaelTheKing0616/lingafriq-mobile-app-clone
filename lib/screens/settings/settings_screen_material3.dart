@@ -25,10 +25,12 @@ import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/notification_provider.dart';
 import 'package:lingafriq/screens/goals/daily_goals_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/config/url_constants.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
@@ -74,18 +76,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark.value
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
+        color: isDark.value
+            ? PanAfricanColors.surfaceDark
+            : PanAfricanColors.surfaceLight,
         child: ResponsiveSafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -248,9 +241,19 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                                       context, 'Biometric authentication failed. Please try again or check your device settings.');
                                 }
                               } catch (e) {
+                                logger.error(
+                                  'Biometric auth failed',
+                                  tag: 'biometric',
+                                  error: e,
+                                );
                                 if (context.mounted) {
+                                  final errorMsg = e.toString().replaceAll('Exception: ', '');
                                   showLingAfriqError(
-                                      context, 'Biometric not available: ${e.toString().replaceAll('Exception: ', '')}');
+                                      context, errorMsg.contains('NotEnrolled')
+                                          ? 'Please set up Face ID or fingerprint in your device settings first.'
+                                          : errorMsg.contains('LockedOut')
+                                              ? 'Too many failed attempts. Please wait and try again.'
+                                              : 'Biometric not available: $errorMsg');
                                 }
                               }
                             } else {
@@ -483,7 +486,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       ),
                       onTap: () async {
                         HapticFeedback.lightImpact();
-                        await kLaunchUrl('https://lingafriq.com/privacy');
+                        await kLaunchUrl('${EnvConfig.appWebUrl}/privacy');
                       },
                       isDark: isDark.value,
                     ),
@@ -536,7 +539,9 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
           child: Text(
             title,
             style: PanAfricanTypography.titleMedium(context).copyWith(
-              color: PanAfricanColors.primary,
+              color: isDark
+                  ? PanAfricanColors.textPrimaryDark
+                  : PanAfricanColors.textPrimaryLight,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -1065,17 +1070,10 @@ class _SettingsTile extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.sm),
-              decoration: BoxDecoration(
-                color: PanAfricanColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-              ),
-              child: Icon(
-                icon,
-                color: PanAfricanColors.primary,
-                size: 24.sp,
-              ),
+            Icon(
+              icon,
+              color: PanAfricanColors.primary,
+              size: 24.sp,
             ),
             SizedBox(width: PanAfricanSpacing.md),
             Expanded(

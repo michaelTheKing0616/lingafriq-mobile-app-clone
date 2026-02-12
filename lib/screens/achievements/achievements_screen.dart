@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:lingafriq/services/deep_link_service.dart';
 
 class AchievementsScreen extends ConsumerWidget {
   const AchievementsScreen({super.key});
@@ -54,7 +58,13 @@ class AchievementsScreen extends ConsumerWidget {
       if (context.mounted) {
         ErrorHandler.showError(context, e);
       }
-      return _buildErrorState(context, isDark);
+      return Scaffold(
+        backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+        body: AppErrorState(
+          message: 'Failed to load achievements. Please try again.',
+          onRetry: () => ref.invalidate(achievementsProvider),
+        ),
+      );
     }
   }
 
@@ -104,28 +114,43 @@ class AchievementsScreen extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
                           onPressed: () => Navigator.of(context).pop(),
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withValues(alpha: 0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
-                          onPressed: () {
-                            Scaffold.of(context).openDrawer();
-                          },
-                          style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withValues(alpha: 0.2),
-                            shape: const CircleBorder(),
-                          ),
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.share, color: Theme.of(context).colorScheme.onPrimary),
+                              onPressed: () {
+                                final link = DeepLinkService.achievementLink('all');
+                                Share.share('Check out my achievements on LingAfriq! $link');
+                              },
+                              style: IconButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                                shape: const CircleBorder(),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.menu, color: Theme.of(context).colorScheme.onPrimary),
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              style: IconButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
+                                shape: const CircleBorder(),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    const Icon(
+                    Icon(
                       Icons.emoji_events_rounded,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 64,
                     ),
                     SizedBox(height: 1.h),
@@ -134,7 +159,7 @@ class AchievementsScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 28.sp,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     SizedBox(height: 0.5.h),
@@ -142,7 +167,7 @@ class AchievementsScreen extends ConsumerWidget {
                       'Your rewards & badges',
                       style: TextStyle(
                         fontSize: 16.sp,
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -168,21 +193,24 @@ class AchievementsScreen extends ConsumerWidget {
                     length: 3,
                     child: Column(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF1F3527) : Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: TabBar(
-                            tabs: const [
-                              Tab(text: 'Badges'),
-                              Tab(text: 'Streaks'),
-                              Tab(text: 'XP'),
-                            ],
-                            labelColor: isDark ? Colors.white : Colors.black87,
+                        Semantics(
+                          label: 'Achievement tabs: Badges, Streaks, XP',
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: TabBar(
+                              tabs: const [
+                                Tab(text: 'Badges'),
+                                Tab(text: 'Streaks'),
+                                Tab(text: 'XP'),
+                              ],
+                            labelColor: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
                             unselectedLabelColor: isDark ? Colors.grey[400] : Colors.grey[600],
                             indicatorColor: const Color(0xFFFCD116),
                             indicatorSize: TabBarIndicatorSize.tab,
+                          ),
                           ),
                         ),
                         SizedBox(height: 2.h),
@@ -230,8 +258,8 @@ class AchievementsScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen,
-            AppColors.primaryOrange,
+            PanAfricanColors.primary,
+            PanAfricanColors.tertiary,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -239,7 +267,7 @@ class AchievementsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primaryGreen.withValues(alpha: 0.3),
+            color: PanAfricanColors.primary.withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -261,7 +289,7 @@ class AchievementsScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 32.sp,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                     SizedBox(height: 4.sp),
@@ -269,7 +297,7 @@ class AchievementsScreen extends ConsumerWidget {
                       '$totalXP XP',
                       style: TextStyle(
                         fontSize: 18.sp,
-                        color: Colors.white.withValues(alpha: 0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.9),
                       ),
                     ),
                   ],
@@ -277,7 +305,7 @@ class AchievementsScreen extends ConsumerWidget {
                 Container(
                   padding: EdgeInsets.all(16.sp),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Text(
@@ -289,30 +317,37 @@ class AchievementsScreen extends ConsumerWidget {
             ),
             SizedBox(height: 20.sp),
             // Progress Bar
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: LinearProgressIndicator(
-                value: progressNeeded > 0 ? progressToNext / progressNeeded : 1.0,
-                minHeight: 12,
-                backgroundColor: Colors.white.withValues(alpha: 0.3),
-                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+            Semantics(
+              label: 'Progress to level ${level + 1}: $progressToNext out of $progressNeeded XP',
+              value: '${((progressToNext / progressNeeded) * 100).toInt()}%',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: LinearProgressIndicator(
+                  value: progressNeeded > 0 ? progressToNext / progressNeeded : 1.0,
+                  minHeight: 12,
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary.withValues(alpha: 0.3),
+                  valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+                ),
               ),
             ),
             SizedBox(height: 8.sp),
-            Text(
-              '$progressToNext / $progressNeeded XP to Level ${level + 1}',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.white.withOpacity(0.9),
+            Semantics(
+              label: '$progressToNext out of $progressNeeded XP needed to reach level ${level + 1}',
+              child: Text(
+                '$progressToNext / $progressNeeded XP to Level ${level + 1}',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                ),
               ),
             ),
             SizedBox(height: 16.sp),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildStatItem('$unlockedCount', 'Unlocked', Colors.white),
-                _buildStatItem('$totalCount', 'Total', Colors.white),
-                _buildStatItem('${((unlockedCount / totalCount) * 100).toInt()}%', 'Complete', Colors.white),
+                _buildStatItem('$unlockedCount', 'Unlocked', Theme.of(context).colorScheme.onPrimary),
+                _buildStatItem('$totalCount', 'Total', Theme.of(context).colorScheme.onPrimary),
+                _buildStatItem('${((unlockedCount / totalCount) * 100).toInt()}%', 'Complete', Theme.of(context).colorScheme.onPrimary),
               ],
             ),
           ],
@@ -348,15 +383,19 @@ class AchievementsScreen extends ConsumerWidget {
     final rarityColor = _getRarityColor(achievement.rarity, isDark);
     final isUnlocked = achievement.isUnlocked;
 
-    return InkWell(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        _showAchievementDetail(context, achievement, isDark);
-      },
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
+    return Semantics(
+      label: 'Badge: ${achievement.name}. ${achievement.description}. ${isUnlocked ? "Unlocked" : "Locked"}. ${achievement.xpReward} XP reward',
+      button: true,
+      enabled: true,
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          _showAchievementDetail(context, achievement, isDark);
+        },
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isUnlocked ? rarityColor : (isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5)),
@@ -402,7 +441,7 @@ class AchievementsScreen extends ConsumerWidget {
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
                 color: isUnlocked
-                    ? (isDark ? Colors.white : Colors.black87)
+                    ? (isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface)
                     : (isDark ? Colors.grey[600] : Colors.grey[400]),
               ),
               textAlign: TextAlign.center,
@@ -502,9 +541,9 @@ class AchievementsScreen extends ConsumerWidget {
             onPressed: () => Navigator.pop(ctx),
             child: const Text('Close'),
           ),
-          PrimaryButton(
-            text: 'Practice with Polie',
-            onTap: () {
+          PanAfricanButton(
+            label: 'Practice with Polie',
+            onPressed: () {
               Navigator.pop(ctx);
               if (context.mounted) {
                 Navigator.push(
@@ -530,9 +569,9 @@ class AchievementsScreen extends ConsumerWidget {
       case AchievementRarity.epic:
         return Colors.purple;
       case AchievementRarity.legendary:
-        return AppColors.primaryOrange;
+        return PanAfricanColors.tertiary;
       default:
-        return AppColors.primaryGreen;
+        return PanAfricanColors.primary;
     }
   }
 
@@ -555,35 +594,10 @@ class AchievementsScreen extends ConsumerWidget {
 
   Widget _buildBadgesTab(BuildContext context, List achievements, bool isDark) {
     if (achievements.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.emoji_events_outlined,
-              size: 64.sp,
-              color: isDark ? Colors.grey[600] : Colors.grey[400],
-            ),
-            SizedBox(height: 16.sp),
-            Text(
-              'No achievements yet',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              'Complete goals to unlock achievements!',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      return AppEmptyState(
+        icon: Icons.emoji_events_rounded,
+        title: 'No achievements yet',
+        subtitle: 'Complete lessons and challenges to earn badges',
       );
     }
     
@@ -597,54 +611,64 @@ class AchievementsScreen extends ConsumerWidget {
       itemCount: achievements.length,
       itemBuilder: (context, index) {
         final achievement = achievements[index];
-        return Container(
-          padding: EdgeInsets.all(4.w),
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: achievement.isUnlocked ? DesignSystem.shadowMedium : [],
-            border: achievement.isUnlocked
-                ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withValues(alpha: 0.2), width: 2)
-                : Border.all(
-                    color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
-                    width: 1,
+        return Semantics(
+          label: 'Badge: ${achievement.name}. ${achievement.description}. ${achievement.isUnlocked ? "Unlocked" : "Locked"}. ${achievement.xpReward} XP reward',
+          button: true,
+          child: Container(
+            padding: EdgeInsets.all(4.w),
+            decoration: BoxDecoration(
+              color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+              borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+              boxShadow: achievement.isUnlocked ? PanAfricanShadows.md : [],
+              border: achievement.isUnlocked
+                  ? Border.all(color: _getRarityColor(achievement.rarity, isDark).withValues(alpha: 0.2), width: 2)
+                  : Border.all(
+                      color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                      width: 1,
+                    ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Opacity(
+                  opacity: achievement.isUnlocked ? 1.0 : 0.4,
+                  child: Semantics(
+                    excludeSemantics: true,
+                    child: Text(
+                      achievement.icon,
+                      style: TextStyle(fontSize: 32.sp),
+                    ),
                   ),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Opacity(
-                opacity: achievement.isUnlocked ? 1.0 : 0.4,
-                child: Text(
-                  achievement.icon,
-                  style: TextStyle(fontSize: 32.sp),
                 ),
-              ),
-              SizedBox(height: 1.h),
-              Text(
-                achievement.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.bold,
-                  color: achievement.isUnlocked
-                      ? (isDark ? Colors.white : Colors.black87)
-                      : (isDark ? Colors.grey[600] : Colors.grey[500]),
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (achievement.isUnlocked && achievement.unlockedAt != null)
+                SizedBox(height: 1.h),
                 Text(
-                  '${achievement.unlockedAt!.month}/${achievement.unlockedAt!.day}',
+                  achievement.name,
+                  textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 9.sp,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    fontSize: 11.sp,
+                    fontWeight: FontWeight.bold,
+                    color: achievement.isUnlocked
+                        ? (isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface)
+                        : (isDark ? Colors.grey[600] : Colors.grey[500]),
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-            ],
+                if (achievement.isUnlocked && achievement.unlockedAt != null)
+                  Text(
+                    '${achievement.unlockedAt!.month}/${achievement.unlockedAt!.day}',
+                    style: TextStyle(
+                      fontSize: 9.sp,
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    ),
+                  ),
+              ],
+            ),
           ),
-        );
+        )
+            .animate(delay: Duration(milliseconds: index * 50))
+            .fadeIn(duration: 300.ms)
+            .slideY(begin: 0.1, end: 0);
       },
     );
   }
@@ -653,9 +677,9 @@ class AchievementsScreen extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.all(5.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -671,7 +695,7 @@ class AchievementsScreen extends ConsumerWidget {
             style: TextStyle(
               fontSize: 36.sp,
               fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
+              color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 1.h),
@@ -679,7 +703,7 @@ class AchievementsScreen extends ConsumerWidget {
             'Current Streak',
             style: TextStyle(
               fontSize: 16.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
+              color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
             ),
           ),
           SizedBox(height: 3.h),
@@ -695,47 +719,12 @@ class AchievementsScreen extends ConsumerWidget {
                   color: index < 5
                       ? const Color(0xFFFF6B35)
                       : (isDark ? Colors.grey[800] : Colors.grey[200]),
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusM),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 ),
               );
             }),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(BuildContext context, bool isDark) {
-    return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
-            ),
-            SizedBox(height: 16.sp),
-            Text(
-              'Unable to load achievements',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              'Please try again later',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -747,9 +736,9 @@ class AchievementsScreen extends ConsumerWidget {
     return Container(
       padding: EdgeInsets.all(5.w),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -757,7 +746,7 @@ class AchievementsScreen extends ConsumerWidget {
           Icon(
             Icons.bolt_rounded,
             size: 64,
-            color: AppColors.primaryGreen,
+            color: PanAfricanColors.primary,
           ),
           SizedBox(height: 2.h),
           Text(
@@ -765,7 +754,7 @@ class AchievementsScreen extends ConsumerWidget {
             style: TextStyle(
               fontSize: 36.sp,
               fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
+              color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 1.h),
@@ -773,25 +762,32 @@ class AchievementsScreen extends ConsumerWidget {
             'Total XP',
             style: TextStyle(
               fontSize: 16.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
+              color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
             ),
           ),
           SizedBox(height: 3.h),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: progress,
-              backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
-              minHeight: 12,
+          Semantics(
+            label: 'XP progress: $xpToNext XP needed to reach level ${level + 1}',
+            value: '${(progress * 100).toInt()}%',
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: progress,
+                backgroundColor: isDark ? Colors.grey[800] : Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                minHeight: 12,
+              ),
             ),
           ),
           SizedBox(height: 1.h),
-          Text(
-            '$xpToNext XP to Level ${level + 1}',
-            style: TextStyle(
-              fontSize: 14.sp,
-              color: isDark ? Colors.white70 : Colors.black54,
+          Semantics(
+            label: '$xpToNext XP needed to reach level ${level + 1}',
+            child: Text(
+              '$xpToNext XP to Level ${level + 1}',
+              style: TextStyle(
+                fontSize: 14.sp,
+                color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
+              ),
             ),
           ),
         ],

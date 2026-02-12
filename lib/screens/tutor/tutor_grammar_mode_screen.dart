@@ -13,6 +13,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
@@ -155,7 +156,7 @@ Quality requirements:
       );
 
       final resp = await dio.post(
-        'https://api.groq.com/openai/v1/chat/completions',
+        UrlConstants.groqChatCompletions,
         data: {
           'model': 'llama-3.3-70b-versatile',
           'temperature': 0.2,
@@ -337,9 +338,9 @@ Quality requirements:
                         child: Container(
                           padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm),
                           decoration: BoxDecoration(
-                            color: PolieColors.surfaceGlass,
+                            color: PolieColors.surfaceContainerLight,
                             borderRadius: BorderRadius.circular(PolieRadius.md),
-                            border: Border.all(color: Colors.white.withOpacity(0.1)),
+                            border: Border.all(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1)),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<String>(
@@ -391,7 +392,7 @@ Quality requirements:
       backgroundColor: Colors.transparent,
       builder: (ctx) => Container(
         decoration: BoxDecoration(
-          color: Theme.of(ctx).brightness == Brightness.dark ? PolieColors.surfaceContainer : Colors.white,
+          color: Theme.of(ctx).brightness == Brightness.dark ? PolieColors.surfaceContainer : Theme.of(ctx).colorScheme.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
         ),
         padding: EdgeInsets.symmetric(vertical: PolieSpacing.lg),
@@ -540,7 +541,7 @@ Quality requirements:
                 child: Container(
                   padding: EdgeInsets.all(PolieSpacing.sm),
                   decoration: BoxDecoration(
-                    color: PolieColors.surfaceGlass,
+                    color: PolieColors.surfaceContainerLight,
                     borderRadius: BorderRadius.circular(PolieRadius.sm),
                   ),
                   child: Column(
@@ -676,7 +677,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
     return Container(
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? PolieColors.surfaceGlassDark : PolieColors.surfaceGlass,
+        color: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.xl)),
         border: Border.all(color: PolieColors.royalAmethyst.withOpacity(0.3)),
       ),
@@ -719,7 +720,7 @@ class _TryItDrawerContentState extends State<_TryItDrawerContent> {
                 hintStyle: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(PolieRadius.md)),
                 filled: true,
-                fillColor: isDark ? PolieColors.obsidian.withOpacity(0.5) : Colors.white.withOpacity(0.9),
+                fillColor: isDark ? PolieColors.obsidian.withOpacity(0.5) : Theme.of(context).colorScheme.surface.withOpacity(0.9),
               ),
               style: PolieTypography.body(context),
               maxLines: 2,

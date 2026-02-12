@@ -205,7 +205,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                         label: Text('Continue'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PanAfricanColors.primary,
-                          foregroundColor: Colors.white,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(PanAfricanRadius.md),

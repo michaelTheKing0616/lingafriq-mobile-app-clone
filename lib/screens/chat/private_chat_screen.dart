@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -6,10 +7,13 @@ import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/services/polie_mention_handler.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 class PrivateChatScreen extends ConsumerStatefulWidget {
   final PrivateChatContact contact;
@@ -85,49 +89,55 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
       (user) => user['userId']?.toString() == widget.contact.id.toString(),
     );
 
+    final isDark = context.isDarkMode;
+    
     return Scaffold(
+      backgroundColor: isDark 
+          ? PanAfricanColors.surfaceDark 
+          : PanAfricanColors.surfaceLight,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
         titleSpacing: 0,
         title: Row(
           children: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: AppColors.primaryGreen,
-              child: Text(
-                widget.contact.username.isNotEmpty
-                    ? widget.contact.username[0].toUpperCase()
-                    : '?',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+            LingAfriqAvatar.fromInitials(
+              username: widget.contact.username.isNotEmpty 
+                  ? widget.contact.username 
+                  : '?',
+              size: 40.w,
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: PanAfricanSpacing.sm),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   widget.contact.username,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: PanAfricanTypography.titleSmall(context),
                 ),
                 Row(
                   children: [
                     Icon(
                       Icons.circle,
                       size: 10,
-                      color: isPartnerOnline ? Colors.green : Colors.grey,
+                      color: isPartnerOnline 
+                          ? PanAfricanColors.success 
+                          : PanAfricanColors.neutralMedium,
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: PanAfricanSpacing.xxs),
                     Text(
                       isPartnerOnline ? 'Online' : 'Offline',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: isPartnerOnline ? Colors.green : Colors.grey,
+                      style: PanAfricanTypography.labelSmall(context).copyWith(
+                        color: isPartnerOnline 
+                            ? PanAfricanColors.success 
+                            : PanAfricanColors.neutralMedium,
                       ),
                     ),
                   ],
@@ -140,82 +150,101 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           IconButton(
             icon: const Icon(Icons.menu),
             onPressed: () {
+              HapticFeedback.selectionClick();
               Scaffold.of(context).openDrawer();
             },
           ),
-          const Padding(
-            padding: EdgeInsets.only(right: 12),
-            child: Icon(Icons.lock_outline, size: 20),
+          Padding(
+            padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
+            child: Icon(Icons.lock_outline, size: 20, color: PanAfricanColors.neutralMedium),
           ),
         ],
       ),
       body: Column(
         children: [
+          // Encryption notice
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.md,
+              vertical: PanAfricanSpacing.sm,
+            ),
             decoration: BoxDecoration(
-              color: AppColors.primaryGreen.withOpacity(0.08),
+              color: PanAfricanColors.primary.withOpacity(0.08),
               border: Border(
                 bottom: BorderSide(
-                  color: AppColors.primaryGreen.withOpacity(0.3),
+                  color: PanAfricanColors.primary.withOpacity(0.3),
                 ),
               ),
             ),
             child: Row(
               children: [
-                const Icon(Icons.shield, color: AppColors.primaryGreen, size: 20),
-                const SizedBox(width: 8),
+                Icon(Icons.shield, color: PanAfricanColors.primary, size: 20),
+                SizedBox(width: PanAfricanSpacing.sm),
                 Expanded(
                   child: Text(
                     'Messages are end-to-end encrypted. Only you and ${widget.contact.username} can read them.',
-                    style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColors.primaryGreen.withOpacity(0.9),
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
+                      color: PanAfricanColors.primary.withOpacity(0.9),
                     ),
                   ),
                 ),
               ],
             ),
           ),
+          // Messages
           Expanded(
             child: messages.isEmpty
                 ? Center(
-                    child: Text(
-                      'No messages yet. Say hello to ${widget.contact.username} 👋',
-                      style: TextStyle(color: context.adaptive54),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.chat_bubble_outline,
+                          size: 64.w,
+                          color: PanAfricanColors.neutralMedium,
+                        ),
+                        SizedBox(height: PanAfricanSpacing.md),
+                        Text(
+                          'No messages yet',
+                          style: PanAfricanTypography.bodyLarge(context),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.xs),
+                        Text(
+                          'Say hello to ${widget.contact.username} 👋',
+                          style: PanAfricanTypography.bodySmall(context)
+                              .copyWith(color: PanAfricanColors.neutralMedium),
+                        ),
+                      ],
                     ),
                   )
                 : OptimizedListView.builder(
                     controller: _scrollController,
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
                       final isMe =
                           message['userId'] == currentUser.id.toString();
-                      return _buildMessageBubble(message, isMe);
+                      return _buildMessageBubble(message, isMe, isDark);
                     },
                   ),
           ),
-          _buildInput(isConnected && _roomId.isNotEmpty, currentUser),
+          _buildInput(isConnected && _roomId.isNotEmpty, currentUser, isDark),
         ],
       ),
     );
   }
 
-  Widget _buildInput(bool canSend, ProfileModel currentUser) {
+  Widget _buildInput(bool canSend, ProfileModel currentUser, bool isDark) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: context.isDarkMode ? const Color(0xFF1F3527) : Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: context.isDarkMode
-                ? const Color(0xFF2A4A35)
-                : Colors.grey.shade200,
-          ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        boxShadow: PanAfricanShadows.md,
       ),
       child: Row(
         children: [
@@ -225,29 +254,61 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
               enabled: canSend,
               minLines: 1,
               maxLines: 4,
+              maxLength: 2000,
               decoration: InputDecoration(
                 hintText: canSend
                     ? 'Message ${widget.contact.username}...'
                     : 'Connecting...',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20),
-                  borderSide: BorderSide.none,
+                  borderRadius: PanAfricanRadius.lgBR,
+                  borderSide: BorderSide(
+                    color: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: PanAfricanRadius.lgBR,
+                  borderSide: BorderSide(
+                    color: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: PanAfricanRadius.lgBR,
+                  borderSide: BorderSide(
+                    color: PanAfricanColors.primary,
+                    width: 2,
+                  ),
                 ),
                 filled: true,
-                fillColor: context.isDarkMode
-                    ? const Color(0xFF102216)
-                    : Colors.grey.shade100,
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                fillColor: isDark
+                    ? PanAfricanColors.surfaceDark
+                    : PanAfricanColors.surfaceLight,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: PanAfricanSpacing.md,
+                  vertical: PanAfricanSpacing.sm,
+                ),
               ),
+              style: PanAfricanTypography.bodyMedium(context),
+              onSubmitted: canSend ? (_) {
+                HapticFeedback.lightImpact();
+                _sendMessage(currentUser);
+              } : null,
             ),
           ),
-          const SizedBox(width: 8),
+          SizedBox(width: PanAfricanSpacing.sm),
           IconButton.filled(
-            onPressed: canSend ? () => _sendMessage(currentUser) : null,
+            onPressed: canSend
+                ? () {
+                    HapticFeedback.lightImpact();
+                    _sendMessage(currentUser);
+                  }
+                : null,
             style: IconButton.styleFrom(
-              backgroundColor: AppColors.primaryGreen,
-              foregroundColor: Colors.white,
+              backgroundColor: PanAfricanColors.primary,
+              foregroundColor: colorScheme.onPrimary,
             ),
             icon: const Icon(Icons.send_rounded),
           ),
@@ -257,62 +318,100 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
   }
 
   Widget _buildMessageBubble(
-      Map<String, dynamic> message, bool isMe) {
+      Map<String, dynamic> message, bool isMe, bool isDark) {
     final timestamp = message['timestamp']?.toString();
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.75,
-        ),
-        decoration: BoxDecoration(
-          color: isMe
-              ? AppColors.primaryGreen
-              : (context.isDarkMode ? const Color(0xFF2A4A35) : Colors.white),
-          borderRadius: BorderRadius.circular(18).copyWith(
-            bottomRight: isMe ? const Radius.circular(4) : null,
-            bottomLeft: !isMe ? const Radius.circular(4) : null,
-          ),
-          border: isMe
-              ? null
-              : Border.all(
-                  color: context.isDarkMode
-                      ? const Color(0xFF365640)
-                      : Colors.grey.shade200,
-                ),
-        ),
-        child: Column(
-          crossAxisAlignment:
-              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Text(
-              message['message'] ?? '',
-              style: TextStyle(
-                color: isMe ? Colors.white : context.adaptive,
-                fontSize: 15.sp,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              _formatTime(timestamp),
-              style: TextStyle(
-                color: (isMe ? Colors.white70 : context.adaptive54),
-                fontSize: 10.sp,
-              ),
-            ),
+    final username = message['username'] as String? ?? widget.contact.username;
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Padding(
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      child: Row(
+        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (!isMe) ...[
+            LingAfriqAvatar.fromInitials(username: username, size: 26),
+            SizedBox(width: PanAfricanSpacing.xs),
           ],
-        ),
+          Flexible(
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.md,
+                vertical: PanAfricanSpacing.sm,
+              ),
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.75,
+              ),
+              decoration: BoxDecoration(
+                color: isMe
+                    ? PanAfricanColors.primary
+                    : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+                borderRadius: PanAfricanRadius.lgBR.copyWith(
+                  bottomRight: isMe ? const Radius.circular(4) : null,
+                  bottomLeft: !isMe ? const Radius.circular(4) : null,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment:
+                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    message['message'] ?? '',
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      color: isMe ? colorScheme.onPrimary : null,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        _formatTime(timestamp),
+                        style: PanAfricanTypography.labelSmall(context).copyWith(
+                          color: isMe
+                              ? colorScheme.onPrimary.withOpacity(0.7)
+                              : PanAfricanColors.neutralMedium,
+                        ),
+                      ),
+                      if (isMe) ...[
+                        SizedBox(width: PanAfricanSpacing.xxs),
+                        Icon(
+                          message['failed'] == true
+                              ? Icons.error_outline
+                              : (message['read'] == true
+                                  ? Icons.done_all
+                                  : Icons.done),
+                          size: 14,
+                          color: message['failed'] == true
+                              ? PanAfricanColors.error
+                              : colorScheme.onPrimary.withOpacity(0.7),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (isMe) ...[
+            SizedBox(width: PanAfricanSpacing.xs),
+            const LingAfriqAvatar(size: 26, showBorder: false),
+          ],
+        ],
       ),
     );
   }
 
-  void _sendMessage(ProfileModel currentUser) {
+  void _sendMessage(ProfileModel currentUser) async {
     final text = _messageController.text.trim();
     if (text.isEmpty || _roomId.isEmpty) return;
+    
+    final socket = ref.read(socketProvider.notifier);
+    final polieHandler = ref.read(polieMentionHandlerProvider);
+    
     try {
-      final socket = ref.read(socketProvider.notifier);
+      // Send the user's message first
       socket.sendMessage(
         _roomId,
         text,
@@ -321,6 +420,39 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
       );
       _messageController.clear();
       _scrollToBottom();
+      
+      // Check for @Polie mention and process
+      if (polieHandler.hasMention(text)) {
+        // Get user's learning language
+        final onboarding = ref.read(onboardingProvider);
+        final userLanguage = onboarding.selectedLanguage ?? 'english';
+        
+        // Show typing indicator
+        socket.sendMessage(
+          _roomId,
+          '🤖 Polie is thinking...',
+          'polie_bot',
+          'Polie',
+        );
+        
+        // Process the mention
+        final result = await polieHandler.processMessage(
+          message: text,
+          userLanguage: userLanguage,
+        );
+        
+        // Send Polie's response
+        final formattedResponse = polieHandler.formatResponseForChat(result);
+        if (formattedResponse.isNotEmpty) {
+          socket.sendMessage(
+            _roomId,
+            formattedResponse,
+            'polie_bot',
+            'Polie',
+          );
+        }
+        _scrollToBottom();
+      }
     } catch (e) {
       if (mounted) {
         ErrorHandler.showError(context, e);

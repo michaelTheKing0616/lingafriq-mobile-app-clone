@@ -1,7 +1,7 @@
 import '../gamekit/game_scoring.dart';
 import '../gamekit/game_turn_context.dart';
 import 'drum_rhythm_models.dart';
-import '../../services/polie_game_client.dart';
+import '../../services/polie_game_client.dart' show PolieGameClient, PolieEvaluationResult, GameEvaluationException;
 
 /// Drum Rhythm scoring engine - uses Polie backend evaluation
 class DrumRhythmScoringEngine extends GameScoringEngine {
@@ -41,8 +41,10 @@ class DrumRhythmScoringEngine extends GameScoringEngine {
           'correct_word': content.correctWord,
         },
       );
+    } on GameEvaluationException {
+      rethrow;
     } catch (e) {
-      // Fallback to simple string comparison if Polie fails
+      // Fallback to simple string comparison for unexpected errors
       final isCorrect = input.selectedWord == content.correctWord;
       return GameScore(
         accuracy: isCorrect ? 1.0 : 0.0,

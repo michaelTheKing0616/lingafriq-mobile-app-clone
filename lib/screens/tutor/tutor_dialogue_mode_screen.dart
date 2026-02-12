@@ -12,6 +12,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:uuid/uuid.dart';
+import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:flutter/services.dart';
@@ -130,7 +131,7 @@ Rules:
       );
 
       final resp = await dio.post(
-        'https://api.groq.com/openai/v1/chat/completions',
+        UrlConstants.groqChatCompletions,
         data: {
           'model': 'llama-3.3-70b-versatile',
           'temperature': 0.3,
@@ -324,7 +325,7 @@ Rules:
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(r['icon'] as IconData, size: 16.sp, color: isSelected ? Colors.white : PolieColors.textSecondary),
+                              Icon(r['icon'] as IconData, size: 16.sp, color: isSelected ? Theme.of(context).colorScheme.onPrimary : PolieColors.textSecondary),
                               SizedBox(width: PolieSpacing.xs),
                               Text(r['label'] as String, style: PolieTypography.label(context)),
                             ],
@@ -335,8 +336,8 @@ Rules:
                             selectedRole.value = id;
                           },
                           selectedColor: PolieColors.royalAmethyst,
-                          checkmarkColor: Colors.white,
-                          backgroundColor: PolieColors.surfaceGlassDark,
+                          checkmarkColor: Theme.of(context).colorScheme.onPrimary,
+                          backgroundColor: PolieColors.surfaceContainer,
                         ),
                       );
                     }).toList(),
@@ -733,8 +734,8 @@ class _PolieFaceExpression extends StatelessWidget {
       child: Container(
         width: 5.w,
         height: 5.w,
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.onPrimary,
           shape: BoxShape.circle,
         ),
       ),
@@ -747,7 +748,7 @@ class _PolieFaceExpression extends StatelessWidget {
         width: 10.w,
         height: 4.w,
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
           borderRadius: BorderRadius.circular(2),
         ),
       );
@@ -756,7 +757,7 @@ class _PolieFaceExpression extends StatelessWidget {
       width: 8.w,
       height: 2.w,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(smile ? 0.95 : 0.8),
+        color: Theme.of(context).colorScheme.onPrimary.withOpacity(smile ? 0.95 : 0.8),
         borderRadius: BorderRadius.circular(1),
       ),
       transform: Matrix4.translationValues(0, smile ? -1 : 0, 0),

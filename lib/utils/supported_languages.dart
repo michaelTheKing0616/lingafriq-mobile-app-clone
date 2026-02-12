@@ -136,12 +136,59 @@ class SupportedLanguages {
     return info['requiresDiacritics'] ?? false;
   }
   
-  /// Get language code
+  /// Get language code (ISO 639-1 or ISO 639-3 for Pidgin). Used by AI prompts so models receive unambiguous codes.
   static String getLanguageCode(String language) {
     final info = getLanguageInfo(language);
     return info['code'] ?? language.toLowerCase();
   }
-  
+
+  /// Canonical key from display name (e.g. "Yoruba" -> "yoruba"). Used to look up code/name consistently.
+  static String? getKeyFromDisplayName(String displayName) {
+    if (displayName.isEmpty) return null;
+    final lower = displayName.toLowerCase();
+    for (final entry in _languages.entries) {
+      final name = (entry.value['name'] as String?)?.toLowerCase();
+      if (name == lower || entry.key == lower) return entry.key;
+    }
+    return null;
+  }
+
+  /// Returns a string for AI system prompts: "Target: Yorùbá (ISO 639-1: yo)". Ensures AI models receive language codes.
+  static String targetLanguagePromptLine(String targetLanguage) {
+    final key = getKeyFromDisplayName(targetLanguage) ?? targetLanguage.toLowerCase();
+    final info = getLanguageInfo(key);
+    final name = info['name'] as String? ?? targetLanguage;
+    final code = info['code'] as String? ?? key;
+    return 'Target language: $name (ISO 639-1: $code)';
+  }
+
+  /// Returns a string for AI system prompts: "Source: English" or "Source: Yorùbá (ISO 639-1: yo)".
+  static String sourceLanguagePromptLine(String sourceLanguage) {
+    final key = getKeyFromDisplayName(sourceLanguage) ?? sourceLanguage.toLowerCase();
+    final info = getLanguageInfo(key);
+    if (info.isEmpty) return 'Source language: $sourceLanguage';
+    final name = info['name'] as String? ?? sourceLanguage;
+    final code = info['code'] as String? ?? key;
+    return 'Source language: $name (ISO 639-1: $code)';
+  }
+
+  /// Get language key from ISO 639-1 code (e.g. "yo" -> "yoruba"). Returns null if not found.
+  static String? getKeyFromCode(String code) {
+    if (code.isEmpty) return null;
+    final lower = code.toLowerCase();
+    for (final entry in _languages.entries) {
+      if ((entry.value['code'] as String?)?.toLowerCase() == lower) return entry.key;
+    }
+    return null;
+  }
+
+  /// Get country/region for UI (e.g. "Nigeria"). Returns null if not in map.
+  static String? getCountry(String languageKeyOrCode) {
+    final key = getKeyFromCode(languageKeyOrCode) ?? languageKeyOrCode.toLowerCase();
+    final info = getLanguageInfo(key);
+    return info['country'] as String?;
+  }
+
   /// Get all language options for UI
   static List<Map<String, String>> getLanguageOptions() {
     return _languages.entries.map((entry) {

@@ -50,8 +50,8 @@ class _HistoryQuizSectionsListScreenState extends State<HistoryQuizSectionsListS
             borderRadius: 0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                BackButton(color: Colors.white),
+              children: [
+                BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
 
                 // 0.05.sh.heightBox,
@@ -288,7 +288,7 @@ class _HistoryQuizItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black26,
       child: InkWell(

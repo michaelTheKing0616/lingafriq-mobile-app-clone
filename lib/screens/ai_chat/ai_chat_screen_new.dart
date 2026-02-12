@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -132,11 +134,30 @@ class AIChatScreen extends HookConsumerWidget {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(right: PolieSpacing.sm, top: PolieSpacing.xs, bottom: PolieSpacing.xs),
+              child: Center(
+                child: PolieFloatingLanguagePill(
+                  languageName: languageName,
+                  accentColor: PolieColors.electricTeal,
+                ),
+              ),
+            ),
+          ],
         ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
-              ? PanAfricanGradients.darkSurface
+              ? LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    PolieColors.primary,
+                    PolieColors.primaryDark,
+                    PolieColors.obsidian,
+                  ],
+                )
               : LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -158,28 +179,34 @@ class AIChatScreen extends HookConsumerWidget {
                           Icon(
                             Icons.chat_bubble_outline,
                             size: 64.sp,
-                            color: PanAfricanColors.neutralMedium,
+                            color: isDark
+                                ? PolieColors.electricTeal.withOpacity(0.7)
+                                : PanAfricanColors.neutralMedium,
                           ),
-                          SizedBox(height: PanAfricanSpacing.md),
+                          SizedBox(height: PolieSpacing.lg),
                           Text(
                             'Start chatting with Polie',
-                            style: PanAfricanTypography.bodyLarge(context),
+                            style: isDark
+                                ? PolieTypography.body(context)
+                                : PanAfricanTypography.bodyLarge(context),
                           ),
-                          SizedBox(height: PanAfricanSpacing.xs),
+                          SizedBox(height: PolieSpacing.xs),
                           Text(
                             'Mode: $modeName • Language: $languageName',
-                            style: PanAfricanTypography.bodySmall(context),
+                            style: isDark
+                                ? PolieTypography.bodySmall(context)
+                                : PanAfricanTypography.bodySmall(context),
                           ),
                         ],
                       ),
                     )
                   : ListView.builder(
                       controller: scrollController,
-                      padding: EdgeInsets.all(PanAfricanSpacing.md),
+                      padding: EdgeInsets.all(PolieSpacing.md),
                       itemCount: messages.value.length,
                       itemBuilder: (context, index) {
                         final message = messages.value[index];
-                        return _MessageBubble(
+                        return _PolieMessageItem(
                           message: message,
                           mode: mode,
                           isDark: isDark,
@@ -193,45 +220,48 @@ class AIChatScreen extends HookConsumerWidget {
                     ),
             ),
 
-            // Input Area
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              decoration: BoxDecoration(
-                color: isDark
-                    ? PanAfricanColors.surfaceContainerDark
-                    : PanAfricanColors.surfaceContainerLight,
-                boxShadow: PanAfricanShadows.md,
+            // Input Area — Polie glass styling
+            PolieGlassCard(
+              padding: EdgeInsets.symmetric(
+                horizontal: PolieSpacing.md,
+                vertical: PolieSpacing.sm,
               ),
+              borderRadius: 0,
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
+                    child: PolieInputField(
                       controller: messageController,
-                      decoration: InputDecoration(
-                        hintText: 'Type your message...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                        ),
-                        filled: true,
-                        fillColor: isDark
-                            ? PanAfricanColors.surfaceDark
-                            : PanAfricanColors.surfaceLight,
-                      ),
+                      enabled: !isLoading.value,
+                      hintText: 'Type your message...',
+                      maxLines: 4,
                       onSubmitted: (_) => sendMessage(),
-                      maxLines: null,
+                      prefixIcon: Icons.auto_awesome,
                     ),
                   ),
-                  SizedBox(width: PanAfricanSpacing.sm),
-                  IconButton(
-                    icon: isLoading.value
-                        ? SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Icon(Icons.send),
-                    onPressed: isLoading.value ? null : sendMessage,
-                    color: PanAfricanColors.primary,
+                  SizedBox(width: PolieSpacing.sm),
+                  GestureDetector(
+                    onTap: isLoading.value ? null : sendMessage,
+                    child: Container(
+                      width: 48.w,
+                      height: 48.w,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
+                        ),
+                        shape: BoxShape.circle,
+                        boxShadow: PolieElevation.level2(context, glowColor: PolieColors.royalAmethyst),
+                      ),
+                      child: isLoading.value
+                          ? Padding(
+                              padding: EdgeInsets.all(12.w),
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+                              ),
+                            )
+                          : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp),
+                    ),
                   ),
                 ],
               ),
@@ -346,12 +376,13 @@ class AIChatScreen extends HookConsumerWidget {
   }
 }
 
-class _MessageBubble extends StatelessWidget {
+/// Message row using PolieChatBubble and optional correction / mode-specific content.
+class _PolieMessageItem extends StatelessWidget {
   final Map<String, dynamic> message;
   final String mode;
   final bool isDark;
 
-  const _MessageBubble({
+  const _PolieMessageItem({
     required this.message,
     required this.mode,
     required this.isDark,
@@ -360,73 +391,59 @@ class _MessageBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isUser = message['sender'] == 'user';
+    final text = message['text'] as String? ?? '';
+    final correctionText = message['correctionText'] as String?;
 
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-        constraints: BoxConstraints(maxWidth: 0.7.sw),
-        padding: EdgeInsets.all(PanAfricanSpacing.md),
-        decoration: BoxDecoration(
-          color: isUser
-              ? PanAfricanColors.primary
-              : (isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(PanAfricanRadius.md),
-            topRight: Radius.circular(PanAfricanRadius.md),
-            bottomLeft: isUser
-                ? Radius.circular(PanAfricanRadius.md)
-                : Radius.circular(0),
-            bottomRight: isUser
-                ? Radius.circular(0)
-                : Radius.circular(PanAfricanRadius.md),
+    if (isUser) {
+      return PolieChatBubble(
+        text: text,
+        role: PolieChatBubbleRole.user,
+      );
+    }
+
+    final modeContent = message['data'] != null
+        ? _buildModeSpecificContent(context, mode, message['data'] as Map<String, dynamic>, isDark)
+        : null;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: PolieSpacing.sm),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.smart_toy,
+                size: 16.sp,
+                color: PolieColors.electricTeal,
+              ),
+              SizedBox(width: PolieSpacing.xs),
+              Text(
+                'Polie',
+                style: PolieTypography.label(context).copyWith(
+                  color: PolieColors.electricTeal,
+                ),
+              ),
+            ],
           ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (!isUser)
-              Row(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      color: PanAfricanColors.primary.withOpacity(0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.smart_toy,
-                      size: 16.sp,
-                      color: PanAfricanColors.primary,
-                    ),
-                  ),
-                  SizedBox(width: PanAfricanSpacing.xs),
-                  Text(
-                    'Polie',
-                    style: PanAfricanTypography.labelSmall(context)
-                        .copyWith(color: PanAfricanColors.primary),
-                  ),
-                ],
-              ),
-            SizedBox(height: isUser ? 0 : PanAfricanSpacing.xs),
-            Text(
-              message['text'],
-              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                color: isUser ? Colors.white : null,
-              ),
+          SizedBox(height: PolieSpacing.xs),
+          PolieChatBubble(
+            text: text,
+            role: PolieChatBubbleRole.assistant,
+            isCorrectionOverlay: correctionText != null && correctionText.isNotEmpty,
+            correctionText: correctionText,
+          ),
+          if (modeContent != null) ...[
+            SizedBox(height: PolieSpacing.sm),
+            PolieGlassCard(
+              padding: EdgeInsets.all(PolieSpacing.sm),
+              borderRadius: PolieRadius.sm,
+              child: modeContent,
             ),
-            // Show additional data based on mode
-            if (!isUser && message['data'] != null)
-              Builder(
-                builder: (_) {
-                  final content = _buildModeSpecificContent(context, mode, message['data'], isDark);
-                  return content ?? const SizedBox.shrink();
-                },
-              ),
           ],
-        ),
+        ],
       ),
     );
   }

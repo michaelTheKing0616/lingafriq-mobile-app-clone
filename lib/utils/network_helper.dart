@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:lingafriq/services/error/error_recovery_service.dart';
 import 'package:lingafriq/services/monitoring/performance_analytics.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:async';
 
@@ -36,15 +37,8 @@ class NetworkHelper {
         maxRetries: maxRetries,
         operationName: opName,
         shouldRetry: shouldRetry ?? (error) {
-          // Default retry logic
           if (error is DioException) {
-            // Retry on network errors, timeouts, and 5xx errors
-            return error.type == DioExceptionType.connectionTimeout ||
-                   error.type == DioExceptionType.receiveTimeout ||
-                   error.type == DioExceptionType.sendTimeout ||
-                   error.type == DioExceptionType.connectionError ||
-                   (error.response?.statusCode != null && 
-                    error.response!.statusCode! >= 500);
+            return TransportErrorPolicy.isRetryable(error);
           }
           return error is TimeoutException;
         },

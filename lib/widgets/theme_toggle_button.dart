@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/theme_mode_provider.dart';
 
@@ -28,12 +27,11 @@ class ThemeToggleButton extends ConsumerWidget {
       return FloatingActionButton(
         mini: true,
         onPressed: () => _toggleTheme(context, ref),
-        backgroundColor: isDark 
-            ? AfricanTheme.primaryGreen 
-            : AfricanTheme.accentGold,
+        backgroundColor:
+            isDark ? PanAfricanColors.primary : PanAfricanColors.secondary,
         child: Icon(
           isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       )
           .animate()
@@ -43,18 +41,22 @@ class ThemeToggleButton extends ConsumerWidget {
 
     return InkWell(
       onTap: () => _toggleTheme(context, ref),
-      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       child: Container(
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+        padding: padding ??
+            EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.sm,
+              vertical: PanAfricanSpacing.xs,
+            ),
         decoration: BoxDecoration(
-          color: isDark 
-              ? AfricanTheme.primaryGreen.withOpacity(0.1)
-              : AfricanTheme.accentGold.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+          color: isDark
+              ? PanAfricanColors.primary.withOpacity(0.1)
+              : PanAfricanColors.secondary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
           border: Border.all(
-            color: isDark 
-                ? AfricanTheme.primaryGreen.withOpacity(0.3)
-                : AfricanTheme.accentGold.withOpacity(0.3),
+            color: isDark
+                ? PanAfricanColors.primary.withOpacity(0.3)
+                : PanAfricanColors.secondary.withOpacity(0.3),
             width: 1,
           ),
         ),
@@ -64,16 +66,18 @@ class ThemeToggleButton extends ConsumerWidget {
             Icon(
               isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded,
               size: 20.sp,
-              color: isDark ? AfricanTheme.primaryGreen : AfricanTheme.accentGold,
+              color:
+                  isDark ? PanAfricanColors.primary : PanAfricanColors.secondary,
             ),
             if (showLabel) ...[
-              SizedBox(width: 8.w),
+              SizedBox(width: PanAfricanSpacing.xs),
               Text(
                 isDark ? 'Light Mode' : 'Dark Mode',
-                style: TextStyle(
-                  fontSize: 14.sp,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isDark ? AfricanTheme.primaryGreen : AfricanTheme.accentGold,
+                  color: isDark
+                      ? PanAfricanColors.primary
+                      : PanAfricanColors.secondary,
                 ),
               ),
             ],

@@ -16,7 +16,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 /// Exercise Type
 enum ExerciseType {
@@ -247,7 +247,7 @@ class InteractiveExercisesService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/exercises',
+        ApiContract.url(ApiContract.interactive.exercises),
         queryParameters: queryParams,
       );
 
@@ -272,7 +272,7 @@ class InteractiveExercisesService {
   Future<Exercise?> getExercise(String exerciseId) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/exercises/$exerciseId',
+        ApiContract.url(ApiContract.interactive.exercise(exerciseId)),
       );
 
       if (response.statusCode == 200) {
@@ -295,7 +295,7 @@ class InteractiveExercisesService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/exercises/$exerciseId/submit',
+        ApiContract.url(ApiContract.interactive.exerciseSubmit(exerciseId)),
         data: {
           'answer': answer,
           if (userId != null) 'user_id': userId,
@@ -330,7 +330,7 @@ class InteractiveExercisesService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/stories',
+        ApiContract.url(ApiContract.interactive.stories),
         queryParameters: queryParams,
       );
 
@@ -355,7 +355,7 @@ class InteractiveExercisesService {
   Future<Story?> getStory(String storyId) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/stories/$storyId',
+        ApiContract.url(ApiContract.interactive.story(storyId)),
       );
 
       if (response.statusCode == 200) {
@@ -377,7 +377,9 @@ class InteractiveExercisesService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/stories/$storyId/chapters/$chapterId',
+        ApiContract.url(
+          ApiContract.interactive.storyChapter(storyId, chapterId),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -401,7 +403,9 @@ class InteractiveExercisesService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/stories/$storyId/chapters/$chapterId/choice',
+        ApiContract.url(
+          ApiContract.interactive.storyChapterChoice(storyId, chapterId),
+        ),
         data: {
           'choice_id': choiceId,
           if (userId != null) 'user_id': userId,
@@ -427,7 +431,9 @@ class InteractiveExercisesService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/stories/$storyId/progress/$userId',
+        ApiContract.url(
+          ApiContract.interactive.storyProgress(storyId, userId),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -448,7 +454,7 @@ class InteractiveExercisesService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/exercises/adaptive',
+        ApiContract.url(ApiContract.interactive.exercisesAdaptive),
         queryParameters: {
           'user_id': userId,
           'language': language,

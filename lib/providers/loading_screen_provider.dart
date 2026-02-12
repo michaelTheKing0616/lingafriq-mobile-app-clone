@@ -5,7 +5,7 @@ import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
@@ -157,7 +157,7 @@ class LoadingScreenNotifier extends Notifier<LoadingScreenContent> {
 
       // Call backend image generation endpoint via API client
       final response = await ref.read(client).get(
-        '${Api.baseurl}api/v1/loading-screen/image/${Uri.encodeComponent(prompt)}',
+        ApiContract.url(ApiContract.ai.loadingScreenImage(prompt)),
         queryParameters: {
           'country': country,
           'language': language,

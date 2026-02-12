@@ -248,13 +248,13 @@ class PanAfricanDrawer extends ConsumerWidget {
             children: [
               // Close button
               IconButton(
-                icon: const Icon(Icons.close_rounded, color: Colors.white),
+                icon: Icon(Icons.close_rounded, color: Theme.of(context).colorScheme.onPrimary),
                 onPressed: () => Navigator.of(context).pop(),
               ),
               const Spacer(),
               // Settings quick access
               IconButton(
-                icon: const Icon(Icons.settings_outlined, color: Colors.white70),
+                icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
                 onPressed: () => _navigateTo(context, ref, 'settings'),
               ),
             ],
@@ -286,7 +286,7 @@ class PanAfricanDrawer extends ConsumerWidget {
           // User Name
           Text(
             user?.fullName ?? 'Guest User',
-            style: PanAfricanTypography.titleLarge(context, color: Colors.white),
+            style: PanAfricanTypography.titleLarge(context, color: Theme.of(context).colorScheme.onPrimary),
           ),
           SizedBox(height: PanAfricanSpacing.xxs),
           
@@ -345,7 +345,7 @@ class PanAfricanDrawer extends ConsumerWidget {
         child: Text(
           initials,
           style: TextStyle(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
             fontSize: 28.sp,
             fontWeight: FontWeight.bold,
           ),
@@ -369,11 +369,11 @@ class PanAfricanDrawer extends ConsumerWidget {
           children: [
             Text(
               '${(progress * 100).toInt()}% to Level ${currentLevel + 1}',
-              style: PanAfricanTypography.labelSmall(context, color: Colors.white70),
+              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
             ),
             Text(
               '$xpInCurrentLevel / $xpNeeded XP',
-              style: PanAfricanTypography.labelSmall(context, color: Colors.white70),
+              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
             ),
           ],
         ),
@@ -383,7 +383,7 @@ class PanAfricanDrawer extends ConsumerWidget {
           child: LinearProgressIndicator(
             value: progress,
             minHeight: 6.h,
-            backgroundColor: Colors.white.withOpacity(0.2),
+            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
             valueColor: AlwaysStoppedAnimation(PanAfricanColors.secondary),
           ),
         ),
@@ -401,13 +401,13 @@ class PanAfricanDrawer extends ConsumerWidget {
             SizedBox(width: 4.w),
             Text(
               value,
-              style: PanAfricanTypography.titleMedium(context, color: Colors.white),
+              style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
             ),
           ],
         ),
         Text(
           label,
-          style: PanAfricanTypography.labelSmall(context, color: Colors.white60),
+          style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6)),
         ),
       ],
     );

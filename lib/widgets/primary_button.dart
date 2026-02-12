@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
@@ -9,11 +12,14 @@ class PrimaryButton extends StatelessWidget {
     this.text,
     required this.onTap,
     this.elevation = 0,
-    this.verticalPadding = 16,
+    this.verticalPadding,
     this.width,
     this.child,
     this.color,
     this.textColor,
+    this.icon,
+    this.loading = false,
+    this.height,
   }) : super(key: key);
 
   final bool enabled;
@@ -22,44 +28,79 @@ class PrimaryButton extends StatelessWidget {
   final GestureTapCallback onTap;
   final double elevation;
   final double? width;
-  final double verticalPadding;
+  final double? verticalPadding;
   final Widget? child;
   final Color? color;
   final Color? textColor;
+  final IconData? icon;
+  final bool loading;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      splashColor: isOutline ? context.primaryColor.withOpacity(0.26) : null,
-      highlightColor: context.primaryColor.withOpacity(0.12),
-      elevation: elevation,
-      highlightElevation: elevation,
-      disabledColor: context.cardColor,
-      minWidth: width ?? double.infinity,
-      height: 48,
-      color: color ?? (isOutline ? Colors.transparent : context.primaryColor),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(100),
-        side: isOutline ? BorderSide(color: context.primaryColor, width: 2) : BorderSide.none,
+    final effectiveColor = color ?? PanAfricanColors.primary;
+    final effectiveTextColor = textColor ?? (isOutline ? effectiveColor : Theme.of(context).colorScheme.onPrimary);
+    final disabledColor = effectiveColor.withOpacity(0.4);
+    
+    return SizedBox(
+      width: width ?? double.infinity,
+      height: height ?? 52.h,
+      child: MaterialButton(
+        splashColor: isOutline ? effectiveColor.withOpacity(0.12) : Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
+        highlightColor: effectiveColor.withOpacity(0.08),
+        elevation: elevation,
+        highlightElevation: elevation,
+        disabledColor: isOutline ? Colors.transparent : disabledColor,
+        color: isOutline ? Colors.transparent : (enabled ? effectiveColor : disabledColor),
+        shape: RoundedRectangleBorder(
+          borderRadius: PanAfricanRadius.mdBR,
+          side: isOutline 
+              ? BorderSide(
+                  color: enabled ? effectiveColor : disabledColor, 
+                  width: 1.5,
+                ) 
+              : BorderSide.none,
+        ),
+        onPressed: enabled && !loading
+            ? () {
+                HapticFeedback.mediumImpact();
+                onTap();
+              }
+            : null,
+        child: loading
+            ? SizedBox(
+                width: 24.w,
+                height: 24.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2.5,
+                  valueColor: AlwaysStoppedAnimation(effectiveTextColor),
+                ),
+              )
+            : child ??
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: verticalPadding ?? PanAfricanSpacing.sm,
+                    horizontal: PanAfricanSpacing.md,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (icon != null) ...[
+                        Icon(icon, size: 20.sp, color: effectiveTextColor),
+                        SizedBox(width: PanAfricanSpacing.sm),
+                      ],
+                      Text(
+                        text ?? '',
+                        style: PanAfricanTypography.labelLarge(
+                          context, 
+                          color: enabled ? effectiveTextColor : effectiveTextColor.withOpacity(0.6),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
       ),
-      onPressed: enabled ? onTap : null,
-      child: child ??
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: verticalPadding),
-            child: Text(
-              text ?? '',
-              style: TextStyle(
-                color: textColor ??
-                    (!enabled
-                        ? context.adaptive38
-                        : isOutline
-                            ? context.adaptive
-                            : Colors.white),
-                fontSize: 18.sp,
-                letterSpacing: 0.8,
-              ),
-            ),
-          ),
     );
   }
 }

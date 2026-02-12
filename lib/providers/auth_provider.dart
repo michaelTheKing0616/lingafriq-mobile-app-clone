@@ -2,16 +2,17 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/models/profile_model.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
-import 'package:lingafriq/utils/api.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../screens/auth/world_class_login_screen.dart';
+import '../screens/auth/email_verification_screen.dart';
 import '../screens/onboarding/onboarding_screen_material3.dart';
 import 'api_provider.dart';
 import 'base_provider.dart';
@@ -24,7 +25,7 @@ final authProvider = NotifierProvider<AuthProvider, BaseProviderState>(() {
 });
 
 class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
-  bool _isLoggingIn = false; // Prevent duplicate login requests
+  Completer<ProfileModel?>? _loginLock;
   
   @override
   BaseProviderState build() {
@@ -65,7 +66,7 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
     // Log backend URL configuration for debugging
     logger.info('App startup navigation', context: {
-      'backendUrl': Api.baseurl,
+      'backendUrl': ApiContract.baseUrl,
     });
 
     // CRITICAL FIX: Check if onboarding was actually COMPLETED, not just seen
@@ -97,7 +98,23 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     // If user is already logged in and has a token, skip login API call
     // This prevents unnecessary API calls on every splash screen load
     if (currentUser != null && (apiNotifier.token?.isNotEmpty ?? false)) {
-      // Already logged in, navigate to tabs view
+      // Check email verification status
+      if (!currentUser.emailVerified) {
+        // Get email from stored credentials or user model
+        final credentialStorage = CredentialStorageService();
+        final storedCredentials = await credentialStorage.getStoredCredentials();
+        final userEmail = storedCredentials?['email'] ?? currentUser.email;
+        
+        ref.read(navigationProvider).navigateOffAll(
+          EmailVerificationScreen(
+            email: userEmail,
+            firstName: currentUser.first_name,
+          ),
+        );
+        return;
+      }
+      
+      // Already logged in and verified, navigate to tabs view
       ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
       return;
     }
@@ -126,6 +143,18 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         logger.info('Auto-login successful');
         ref.read(userProvider.notifier).overrideUser(user);
         unawaited(ref.read(apiProvider.notifier).registerDevice()); // Non-blocking
+        
+        // Check email verification status
+        if (!user.emailVerified) {
+          ref.read(navigationProvider).navigateOffAll(
+            EmailVerificationScreen(
+              email: email,
+              firstName: user.first_name,
+            ),
+          );
+          return;
+        }
+        
         ref.read(navigationProvider).navigateOffAll(const TabsViewMaterial3());
         return;
       }
@@ -154,14 +183,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     bool splashlogin = false,
     bool updateProfile = false,
   }) async {
-    // CRITICAL: Prevent duplicate login requests
-    if (_isLoggingIn) {
-      return null; // Login already in progress
+    if (_loginLock != null) {
+      return _loginLock!.future;
     }
-    
+    final completer = Completer<ProfileModel?>();
+    _loginLock = completer;
     final shouldShowLoading = storeCredentials || splashlogin;
     try {
-      _isLoggingIn = true;
       if (shouldShowLoading) {
         state = state.copyWith(isLoading: true);
       }
@@ -194,12 +222,23 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       // World-class UX: always navigate to the correct next screen after explicit login/register.
       if (storeCredentials && !updateProfile) {
-        final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
-        ref.read(navigationProvider).navigateOffAll(
-          isOnboardingSeen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
-        );
+        // Check email verification status first
+        if (!user.emailVerified) {
+          ref.read(navigationProvider).navigateOffAll(
+            EmailVerificationScreen(
+              email: email,
+              firstName: user.first_name,
+            ),
+          );
+        } else {
+          final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
+          ref.read(navigationProvider).navigateOffAll(
+            isOnboardingSeen ? const TabsViewMaterial3() : const OnboardingScreenMaterial3(),
+          );
+        }
       }
 
+      if (!completer.isCompleted) completer.complete(user);
       return user;
     } catch (e) {
       state = state.copyWith(isLoading: false);
@@ -208,33 +247,30 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (!splashlogin) {
         await ref.read(dialogProvider(e)).showExceptionDialog();
       }
+      if (!completer.isCompleted) completer.complete(null);
       return null;
     } finally {
       if (shouldShowLoading) {
         state = state.copyWith(isLoading: false);
       }
-      _isLoggingIn = false; // Always reset flag
+      _loginLock = null;
     }
   }
 
-  Future<void> register(Map<String, dynamic> registerData) async {
+  Future<void> register(Map<String, dynamic> registerData, {VoidCallback? onSuccess}) async {
     try {
       state = state.copyWith(isLoading: true);
       await ref.read(apiProvider.notifier).register(FormData.fromMap(registerData));
       // await ref.read(apiProvider.notifier).accountUpdate();
       "Account Updated".log('register');
-      final email = registerData['email'] as String;
-      final password = registerData['password'] as String;
-
-      await login(email: email, password: password, storeCredentials: true);
-      // await ref.read(dialogProvider("")).showPlatformDialogue(
-      //       title: "Account Created",
-      //       content:
-      //           const Text("Please check your inbox to activate your account"),
-      //     );
-
-      // ref.read(navigationProvider).navigateOffAll(const LoginScreen());
+      
+      // Don't auto-login - user needs to verify email first
+      // Navigation to verification screen is handled by the calling screen
       state = state.copyWith(isLoading: false);
+      
+      if (onSuccess != null) {
+        onSuccess();
+      }
     } catch (e) {
       state = state.copyWith(isLoading: false);
       ref.read(dialogProvider(e)).showExceptionDialog();

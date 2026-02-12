@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/utils/api.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:lingafriq/utils/structured_logger.dart';
 
@@ -16,15 +16,27 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
 
   @override
   ChatSocketState build() {
+    ref.onDispose(_dispose);
     _initializeSocket();
     return ChatSocketState.initial();
+  }
+
+  void _dispose() {
+    try {
+      _socket?.disconnect();
+      _socket?.dispose();
+      _socket = null;
+      _isConnected = false;
+    } catch (e) {
+      logger.error('Error disposing chat socket', tag: 'chat-socket', error: e);
+    }
   }
 
   void _initializeSocket() {
     try {
       final token = ref.read(apiProvider.notifier).token;
       // Use the base URL directly - socket.io client handles protocol conversion
-      final baseUrl = Api.baseurl.replaceAll(RegExp(r'/$'), ''); // Remove trailing slashes
+      final baseUrl = ApiContract.baseUrl;
       
       _socket = IO.io(
         baseUrl,
@@ -76,6 +88,42 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
       _roomMessages[room]!.add(messageData);
       _messages.add(messageData);
       state = state.copyWith(messages: List.from(_messages));
+    });
+
+    _socket!.on('new_message', (data) {
+      final messageData = Map<String, dynamic>.from(data);
+      final room = messageData['room'] ?? messageData['channel'] ?? _activeRoom;
+      if (!_roomMessages.containsKey(room)) {
+        _roomMessages[room] = [];
+      }
+      // Avoid duplicates
+      final messageId = messageData['_id']?.toString() ?? messageData['id']?.toString() ?? '';
+      if (messageId.isNotEmpty && _roomMessages[room]!.any((m) => (m['_id']?.toString() ?? m['id']?.toString()) == messageId)) {
+        return;
+      }
+      _roomMessages[room]!.add(messageData);
+      _messages.add(messageData);
+      state = state.copyWith(messages: List.from(_messages));
+    });
+
+    _socket!.on('message_deleted', (data) {
+      final deleteData = Map<String, dynamic>.from(data);
+      final messageId = deleteData['messageId']?.toString() ?? deleteData['id']?.toString() ?? '';
+      final room = deleteData['room'] ?? deleteData['channel'] ?? _activeRoom;
+      
+      if (messageId.isNotEmpty) {
+        // Remove from room messages
+        if (_roomMessages.containsKey(room)) {
+          _roomMessages[room]!.removeWhere((m) => 
+            (m['_id']?.toString() ?? m['id']?.toString()) == messageId
+          );
+        }
+        // Remove from all messages
+        _messages.removeWhere((m) => 
+          (m['_id']?.toString() ?? m['id']?.toString()) == messageId
+        );
+        state = state.copyWith(messages: List.from(_messages));
+      }
     });
 
     _socket!.on('user_joined', (data) {
@@ -266,16 +314,6 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   List<Map<String, dynamic>> get onlineUsers => _onlineUsers;
   bool get isConnected => _isConnected;
 
-  void dispose() {
-    try {
-      _socket?.disconnect();
-      _socket?.dispose();
-      _socket = null;
-      _isConnected = false;
-    } catch (e) {
-      logger.error('Error disposing chat socket', tag: 'chat-socket', error: e);
-    }
-  }
 }
 
 class ChatSocketState {

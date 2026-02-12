@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -39,20 +40,30 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
+    const int maxFileSizeBytes = 100 * 1024 * 1024; // 100 MB
+
     Future<void> pickFile() async {
       try {
         final result = await FilePicker.platform.pickFiles(
           type: FileType.media,
           allowMultiple: false,
+          withData: false,
         );
 
         if (result != null && result.files.single.path != null) {
-          selectedFile.value = result.files.single;
+          final file = result.files.single;
+          final size = file.size;
+          if (size > maxFileSizeBytes && context.mounted) {
+            showLingAfriqError(context, 'File is too large. Please choose a file under 100 MB.');
+            return;
+          }
+          selectedFile.value = file;
         }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick file: ${e.toString()}')),
-        );
+      } catch (e, stack) {
+        if (context.mounted) {
+          showLingAfriqError(context, 'Could not pick file. Try a smaller file or different format.');
+        }
+        debugPrint('Import media pick error: $e $stack');
       }
     }
 
@@ -123,11 +134,13 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
             await _pollTranscription(mediaId);
           }
         }
-      } catch (e) {
+      } catch (e, stack) {
+        debugPrint('Import media upload error: $e $stack');
         final msg = e.toString().toLowerCase();
         String friendly = 'Upload or transcription failed. Please check your connection and try again.';
         if (msg.contains('unsupported language')) friendly = 'Please select a supported language.';
         else if (msg.contains('timeout') || msg.contains('socket')) friendly = 'Connection timed out. Please try again.';
+        else if (msg.contains('too large') || msg.contains('size')) friendly = 'File is too large. Try a file under 100 MB.';
         if (context.mounted) {
           showLingAfriqError(context, friendly);
         }
@@ -189,12 +202,20 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Import Media'),
-              Text('LingAfriq', style: TextStyle(fontSize: 12, color: PanAfricanColors.textSecondary)),
+              Text('Import Media', style: PanAfricanTypography.titleLarge(context)),
+              Text('LingAfriq', style: PanAfricanTypography.labelSmall(context)),
             ],
           ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
           elevation: 0,
+          leading: IconButton(
+            icon: Icon(PanAfricanIcons.back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -220,7 +241,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   'Import audio or video to get a transcription and an optional lesson. '
                   'Pick a file, choose the language, then upload.',
                   style: PanAfricanTypography.bodyMedium(context).copyWith(
-                    color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+                    color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -260,6 +281,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   }).toList(),
                   onChanged: (value) {
                     if (value == null) return;
+                    HapticFeedback.selectionClick();
                     selectedLanguage.value = value;
                   },
                 ),
@@ -281,7 +303,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                             child: SizedBox(
                               width: 24,
                               height: 24,
-                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
                             ),
                           ),
                         )
@@ -317,7 +339,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     text: isGeneratingLesson.value ? 'Generating Lesson...' : 'Generate Lesson',
                     enabled: !isGeneratingLesson.value,
                     color: PanAfricanColors.secondary,
-                    textColor: Colors.black,
+                    textColor: Theme.of(context).colorScheme.onSecondary,
                     onTap: generateLesson,
                     child: isGeneratingLesson.value
                         ? SizedBox(
@@ -362,7 +384,10 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     bool isDark,
   ) {
     return GestureDetector(
-      onTap: onPick,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onPick();
+      },
       child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.xl),
         decoration: BoxDecoration(
@@ -453,6 +478,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   children: [
                     TextButton.icon(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         showDialog(
                           context: context,
                           builder: (context) => EditTranscriptionDialog(
@@ -472,6 +498,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     SizedBox(width: PanAfricanSpacing.sm),
                     TextButton.icon(
                       onPressed: () {
+                        HapticFeedback.lightImpact();
                         showDialog(
                           context: context,
                           builder: (context) => CustomizeTranscriptionDialog(

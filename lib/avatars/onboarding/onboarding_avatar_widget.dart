@@ -1,5 +1,5 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:rive/rive.dart' hide LinearGradient, RadialGradient;
 import '../avatar_engine.dart';
@@ -7,6 +7,10 @@ import '../emotion_system.dart';
 import '../personality_system.dart';
 
 /// Onboarding Avatar Widget - Animated guide for onboarding steps
+///
+/// Loads a Rive avatar if .riv assets exist; otherwise renders a polished
+/// character portrait fallback with layered gradients, glow, and themed icons.
+/// The entrance animation fires unconditionally so the widget is never invisible.
 class OnboardingAvatarWidget extends StatefulWidget {
   final OnboardingStep step;
   final double size;
@@ -14,7 +18,7 @@ class OnboardingAvatarWidget extends StatefulWidget {
   final String? dialogue;
   final bool animate;
   final VoidCallback? onDialogueComplete;
-  
+
   const OnboardingAvatarWidget({
     super.key,
     required this.step,
@@ -24,7 +28,7 @@ class OnboardingAvatarWidget extends StatefulWidget {
     this.animate = true,
     this.onDialogueComplete,
   });
-  
+
   @override
   State<OnboardingAvatarWidget> createState() => _OnboardingAvatarWidgetState();
 }
@@ -34,71 +38,78 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
   AvatarController? _controller;
   late AnimationController _entranceController;
   late AnimationController _floatController;
-  bool _isLoaded = false;
-  
+  late AnimationController _pulseController;
+  bool _hasRiveArtboard = false;
+
   @override
   void initState() {
     super.initState();
-    
+
     _entranceController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
     );
-    
+
     _floatController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2000),
+      duration: const Duration(milliseconds: 2500),
     )..repeat(reverse: true);
-    
+
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1800),
+    )..repeat(reverse: true);
+
     _loadAvatar();
   }
-  
+
   Future<void> _loadAvatar() async {
-    _controller = await AvatarEngine().getOnboardingAvatar(widget.step);
-    
-    if (mounted) {
-      setState(() => _isLoaded = true);
-      
-      // Play entrance animation
-      if (widget.animate) {
-        _entranceController.forward();
+    try {
+      _controller = await AvatarEngine().getOnboardingAvatar(widget.step);
+      if (mounted) {
+        final hasArtboard = _controller?.artboard != null;
+        setState(() => _hasRiveArtboard = hasArtboard);
         _controller?.wave();
+        if (widget.showDialogue && widget.dialogue != null) {
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) _controller?.startSpeaking(text: widget.dialogue);
+          });
+        }
       }
-      
-      // If dialogue is provided, start speaking
-      if (widget.showDialogue && widget.dialogue != null) {
-        Future.delayed(const Duration(milliseconds: 500), () {
-          _controller?.startSpeaking(text: widget.dialogue);
-        });
-      }
+    } catch (_) {
+      // Rive load failed — fallback renders automatically
+    }
+
+    // CRITICAL: Always fire entrance animation so widget is never invisible
+    if (mounted && widget.animate) {
+      _entranceController.forward();
     }
   }
-  
+
   @override
   void didUpdateWidget(OnboardingAvatarWidget oldWidget) {
     super.didUpdateWidget(oldWidget);
-    
     if (oldWidget.step != widget.step) {
       _entranceController.reset();
       _loadAvatar();
     }
-    
     if (oldWidget.dialogue != widget.dialogue && widget.dialogue != null) {
       _controller?.startSpeaking(text: widget.dialogue);
     }
   }
-  
+
   @override
   void dispose() {
     _entranceController.dispose();
     _floatController.dispose();
+    _pulseController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    final avatarInfo = _getAvatarInfo();
-    
+    final info = OnboardingAvatarInfo.getForStep(widget.step);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -106,48 +117,48 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
         AnimatedBuilder(
           animation: _floatController,
           builder: (context, child) {
-            final offset = 5 * _floatController.value;
+            final offset = 5.0 * _floatController.value;
             return Transform.translate(
               offset: Offset(0, -offset),
               child: child,
             );
           },
-          child: _buildAvatar(),
+          child: _buildAvatar(info),
         ),
-        
+
         const SizedBox(height: 16),
-        
-        // Character name and title
+
+        // Character name
         Text(
-          avatarInfo.name,
+          info.name,
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: avatarInfo.primaryColor,
+            color: info.primaryColor,
           ),
         ).animate().fadeIn(delay: 300.ms),
-        
+
+        // Title
         Text(
-          avatarInfo.title,
+          info.title,
           style: TextStyle(
             fontSize: 14,
             color: Colors.grey[600],
             fontStyle: FontStyle.italic,
           ),
         ).animate().fadeIn(delay: 400.ms),
-        
+
         // Dialogue box
         if (widget.showDialogue && widget.dialogue != null) ...[
           const SizedBox(height: 20),
-          _buildDialogueBox(),
+          _buildDialogueBox(info),
         ],
       ],
     );
   }
-  
-  Widget _buildAvatar() {
-    final avatarInfo = _getAvatarInfo();
-    
+
+  // ─── Avatar (Rive or Fallback) ────────────────────────────────────────
+  Widget _buildAvatar(OnboardingAvatarInfo info) {
     return SlideTransition(
       position: Tween<Offset>(
         begin: const Offset(0, 0.5),
@@ -158,81 +169,187 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       )),
       child: FadeTransition(
         opacity: _entranceController,
-        child: Container(
+        child: SizedBox(
           width: widget.size,
           height: widget.size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: RadialGradient(
-              colors: [
-                avatarInfo.primaryColor.withOpacity(0.2),
-                Colors.transparent,
-              ],
-            ),
-          ),
-          child: Center(
-            child: Container(
-              width: widget.size * 0.85,
-              height: widget.size * 0.85,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: avatarInfo.primaryColor.withOpacity(0.3),
-                    blurRadius: 20,
-                    spreadRadius: 5,
-                  ),
-                ],
-              ),
-              child: _isLoaded && _controller?.artboard != null
-                  ? ClipOval(
-                      child: Rive(
-                        artboard: _controller!.artboard!,
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                  : _buildFallbackAvatar(avatarInfo),
-            ),
-          ),
+          child: _hasRiveArtboard
+              ? _buildRiveAvatar(info)
+              : _buildCharacterPortrait(info),
         ),
       ),
     );
   }
-  
-  Widget _buildFallbackAvatar(OnboardingAvatarInfo info) {
+
+  Widget _buildRiveAvatar(OnboardingAvatarInfo info) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            info.primaryColor,
-            info.secondaryColor,
-          ],
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: info.primaryColor.withOpacity(0.3),
+            blurRadius: 20,
+            spreadRadius: 5,
+          ),
+        ],
       ),
-      child: Center(
-        child: Icon(
-          info.icon,
-          size: widget.size * 0.4,
-          color: Colors.white,
+      child: ClipOval(
+        child: Rive(
+          artboard: _controller!.artboard!,
+          fit: BoxFit.cover,
         ),
       ),
     );
   }
-  
-  Widget _buildDialogueBox() {
-    final avatarInfo = _getAvatarInfo();
-    
+
+  /// Rich character portrait — multi-layer design:
+  ///   1. Outer pulsing glow ring
+  ///   2. Decorative dashed orbit
+  ///   3. Gradient-filled circle
+  ///   4. Character emoji at centre
+  ///   5. Themed icon badge in bottom-right
+  Widget _buildCharacterPortrait(OnboardingAvatarInfo info) {
+    final innerSize = widget.size * 0.78;
+    final badgeSize = widget.size * 0.28;
+
+    return AnimatedBuilder(
+      animation: _pulseController,
+      builder: (context, child) {
+        final pulse = 0.92 + 0.08 * _pulseController.value;
+        return Transform.scale(scale: pulse, child: child);
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Outer glow ring
+          Container(
+            width: widget.size,
+            height: widget.size,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  info.primaryColor.withOpacity(0.25),
+                  info.primaryColor.withOpacity(0.08),
+                  Colors.transparent,
+                ],
+                stops: const [0.6, 0.85, 1.0],
+              ),
+            ),
+          ),
+
+          // Decorative ring
+          CustomPaint(
+            size: Size(widget.size * 0.92, widget.size * 0.92),
+            painter: _OrbitRingPainter(
+              color: info.primaryColor.withOpacity(0.3),
+              dotCount: 12,
+            ),
+          ),
+
+          // Main circle with gradient
+          Container(
+            width: innerSize,
+            height: innerSize,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  info.primaryColor,
+                  info.secondaryColor,
+                  info.secondaryColor.withOpacity(0.85),
+                ],
+                stops: const [0.0, 0.6, 1.0],
+              ),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.35),
+                width: 2.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: info.primaryColor.withOpacity(0.45),
+                  blurRadius: 24,
+                  spreadRadius: 2,
+                ),
+                BoxShadow(
+                  color: info.secondaryColor.withOpacity(0.2),
+                  blurRadius: 40,
+                  spreadRadius: 8,
+                ),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                info.characterEmoji,
+                style: TextStyle(fontSize: innerSize * 0.42),
+              ),
+            ),
+          ),
+
+          // Inner highlight (top-left shine)
+          Positioned(
+            top: widget.size * 0.14,
+            left: widget.size * 0.18,
+            child: Container(
+              width: innerSize * 0.22,
+              height: innerSize * 0.15,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                gradient: LinearGradient(
+                  colors: [
+                    Theme.of(context).colorScheme.onPrimary.withOpacity(0.45),
+                    Theme.of(context).colorScheme.onPrimary.withOpacity(0.0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          // Icon badge (bottom-right)
+          Positioned(
+            bottom: widget.size * 0.02,
+            right: widget.size * 0.06,
+            child: Container(
+              width: badgeSize,
+              height: badgeSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.surface,
+                border: Border.all(
+                  color: info.primaryColor.withOpacity(0.5),
+                  width: 2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                info.icon,
+                size: badgeSize * 0.55,
+                color: info.primaryColor,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ─── Dialogue Box ─────────────────────────────────────────────────────
+  Widget _buildDialogueBox(OnboardingAvatarInfo info) {
     return Container(
       constraints: const BoxConstraints(maxWidth: 300),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: avatarInfo.primaryColor.withOpacity(0.3),
+          color: info.primaryColor.withOpacity(0.3),
           width: 2,
         ),
         boxShadow: [
@@ -245,7 +362,6 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       ),
       child: Column(
         children: [
-          // Dialogue text with typing animation
           _TypewriterText(
             text: widget.dialogue!,
             style: TextStyle(
@@ -259,24 +375,57 @@ class _OnboardingAvatarWidgetState extends State<OnboardingAvatarWidget>
       ),
     ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.2, end: 0);
   }
-  
-  OnboardingAvatarInfo _getAvatarInfo() {
-    return OnboardingAvatarInfo.getForStep(widget.step);
-  }
 }
 
-/// Typewriter text animation
+// ═══════════════════════════════════════════════════════════════════════════
+// Decorative orbit-ring painter
+// ═══════════════════════════════════════════════════════════════════════════
+class _OrbitRingPainter extends CustomPainter {
+  final Color color;
+  final int dotCount;
+
+  _OrbitRingPainter({required this.color, this.dotCount = 12});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centre = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2;
+
+    // Dashed ring
+    final ringPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+    canvas.drawCircle(centre, radius, ringPaint);
+
+    // Small dots around the ring
+    final dotPaint = Paint()..color = color;
+    for (var i = 0; i < dotCount; i++) {
+      final angle = (2 * pi * i) / dotCount;
+      final dx = centre.dx + radius * cos(angle);
+      final dy = centre.dy + radius * sin(angle);
+      canvas.drawCircle(Offset(dx, dy), 2.5, dotPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Typewriter text animation
+// ═══════════════════════════════════════════════════════════════════════════
 class _TypewriterText extends StatefulWidget {
   final String text;
   final TextStyle? style;
   final VoidCallback? onComplete;
-  
+
   const _TypewriterText({
     required this.text,
     this.style,
     this.onComplete,
   });
-  
+
   @override
   State<_TypewriterText> createState() => _TypewriterTextState();
 }
@@ -284,13 +433,13 @@ class _TypewriterText extends StatefulWidget {
 class _TypewriterTextState extends State<_TypewriterText> {
   String _displayedText = '';
   int _currentIndex = 0;
-  
+
   @override
   void initState() {
     super.initState();
     _startTyping();
   }
-  
+
   @override
   void didUpdateWidget(_TypewriterText oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -300,27 +449,24 @@ class _TypewriterTextState extends State<_TypewriterText> {
       _startTyping();
     }
   }
-  
+
   void _startTyping() {
     Future.doWhile(() async {
       if (_currentIndex >= widget.text.length) {
         widget.onComplete?.call();
         return false;
       }
-      
       await Future.delayed(const Duration(milliseconds: 30));
-      
       if (mounted) {
         setState(() {
           _displayedText = widget.text.substring(0, _currentIndex + 1);
           _currentIndex++;
         });
       }
-      
       return mounted && _currentIndex < widget.text.length;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -331,7 +477,9 @@ class _TypewriterTextState extends State<_TypewriterText> {
   }
 }
 
-/// Onboarding avatar info
+// ═══════════════════════════════════════════════════════════════════════════
+// Onboarding avatar info — per-step character data
+// ═══════════════════════════════════════════════════════════════════════════
 class OnboardingAvatarInfo {
   final OnboardingStep step;
   final String name;
@@ -339,8 +487,10 @@ class OnboardingAvatarInfo {
   final Color primaryColor;
   final Color secondaryColor;
   final IconData icon;
+  /// Rich emoji representing the character visually
+  final String characterEmoji;
   final List<String> defaultDialogues;
-  
+
   const OnboardingAvatarInfo({
     required this.step,
     required this.name,
@@ -348,9 +498,10 @@ class OnboardingAvatarInfo {
     required this.primaryColor,
     required this.secondaryColor,
     required this.icon,
+    required this.characterEmoji,
     this.defaultDialogues = const [],
   });
-  
+
   static const Map<OnboardingStep, OnboardingAvatarInfo> _info = {
     OnboardingStep.welcome: OnboardingAvatarInfo(
       step: OnboardingStep.welcome,
@@ -359,6 +510,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFFD4AF37),
       secondaryColor: Color(0xFFA67C00),
       icon: Icons.elderly,
+      characterEmoji: '👴🏿',
       defaultDialogues: [
         'Welcome, young one, to our village of languages.',
         'I am Pa LingAfriq, guardian of our ancestral tongues.',
@@ -372,6 +524,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFF00D4AA),
       secondaryColor: Color(0xFF00A88A),
       icon: Icons.language,
+      characterEmoji: '🧑🏿‍🎨',
       defaultDialogues: [
         'I am Adisa, weaver of words and keeper of tongues.',
         'Each language is a thread in the tapestry of Africa.',
@@ -385,6 +538,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFF9B59B6),
       secondaryColor: Color(0xFF7D3C98),
       icon: Icons.explore,
+      characterEmoji: '🧭',
       defaultDialogues: [
         'Greetings, traveler! I am Zuri, your pathfinder.',
         'Every great journey needs a destination.',
@@ -398,6 +552,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFF3498DB),
       secondaryColor: Color(0xFF2980B9),
       icon: Icons.schedule,
+      characterEmoji: '⏳',
       defaultDialogues: [
         'I am Kofi, keeper of time and rhythm.',
         'Consistency is the heartbeat of learning.',
@@ -411,6 +566,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFFE74C3C),
       secondaryColor: Color(0xFFC0392B),
       icon: Icons.auto_stories,
+      characterEmoji: '📖',
       defaultDialogues: [
         'Ah, a new student! I am Amara, the griot.',
         'Let me tell you the story of our languages...',
@@ -424,6 +580,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFFFF6B35),
       secondaryColor: Color(0xFFE85D26),
       icon: Icons.music_note_rounded,
+      characterEmoji: '🥁',
       defaultDialogues: [
         'Language is music, traveler!',
         'Each soul dances differently to the rhythm of words.',
@@ -437,6 +594,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFFD4AF37),
       secondaryColor: Color(0xFFA67C00),
       icon: Icons.person_add_rounded,
+      characterEmoji: '🪪',
       defaultDialogues: [
         'Now it is time for your naming ceremony.',
         'Every villager must have a name.',
@@ -450,6 +608,7 @@ class OnboardingAvatarInfo {
       primaryColor: Color(0xFFD4AF37),
       secondaryColor: Color(0xFFA67C00),
       icon: Icons.celebration,
+      characterEmoji: '🎉',
       defaultDialogues: [
         'You are now part of our village!',
         'May your journey be filled with discovery.',
@@ -457,11 +616,11 @@ class OnboardingAvatarInfo {
       ],
     ),
   };
-  
+
   static OnboardingAvatarInfo getForStep(OnboardingStep step) {
     return _info[step]!;
   }
-  
+
   String getRandomDialogue() {
     if (defaultDialogues.isEmpty) return '';
     final index = DateTime.now().millisecondsSinceEpoch % defaultDialogues.length;
@@ -469,11 +628,13 @@ class OnboardingAvatarInfo {
   }
 }
 
-/// Onboarding avatar sequence controller
+// ═══════════════════════════════════════════════════════════════════════════
+// Onboarding avatar sequence controller
+// ═══════════════════════════════════════════════════════════════════════════
 class OnboardingAvatarSequence {
   final List<OnboardingStep> steps;
   int _currentIndex = 0;
-  
+
   OnboardingAvatarSequence({
     this.steps = const [
       OnboardingStep.welcome,
@@ -484,32 +645,24 @@ class OnboardingAvatarSequence {
       OnboardingStep.complete,
     ],
   });
-  
+
   OnboardingStep get currentStep => steps[_currentIndex];
   bool get isFirst => _currentIndex == 0;
   bool get isLast => _currentIndex == steps.length - 1;
   int get currentIndex => _currentIndex;
   int get totalSteps => steps.length;
-  
+
   void next() {
-    if (!isLast) {
-      _currentIndex++;
-    }
+    if (!isLast) _currentIndex++;
   }
-  
+
   void previous() {
-    if (!isFirst) {
-      _currentIndex--;
-    }
+    if (!isFirst) _currentIndex--;
   }
-  
+
   void goTo(int index) {
-    if (index >= 0 && index < steps.length) {
-      _currentIndex = index;
-    }
+    if (index >= 0 && index < steps.length) _currentIndex = index;
   }
-  
-  void reset() {
-    _currentIndex = 0;
-  }
+
+  void reset() => _currentIndex = 0;
 }

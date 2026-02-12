@@ -34,6 +34,17 @@ import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
 import 'package:lingafriq/screens/gamification/leaderboard_screen.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/screens/grammar/grammar_hub_screen.dart';
+import 'package:lingafriq/screens/learning/learning_path_screen.dart';
+import 'package:lingafriq/screens/content/vocabulary_builder_screen.dart';
+import 'package:lingafriq/screens/content/conversation_scenarios_screen.dart';
+import 'package:lingafriq/screens/content/listening_practice_screen.dart';
+import 'package:lingafriq/screens/content/writing_practice_screen.dart';
+import 'package:lingafriq/screens/vocabulary/flashcard_review_screen.dart';
+import 'package:lingafriq/screens/content/cultural_hub_screen.dart';
+import 'package:lingafriq/screens/social/social_hub_screen.dart';
+import 'package:lingafriq/screens/social/friend_quests_screen.dart';
+import 'package:lingafriq/models/offline/local_vocabulary.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawer extends HookConsumerWidget {
@@ -74,14 +85,14 @@ class AppDrawer extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
-                        icon: Icon(Icons.close, color: Colors.white),
+                        icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onPrimary),
                         onPressed: () => Navigator.pop(context),
                       ),
                       // Dark Mode Toggle in Header
                       IconButton(
                         icon: Icon(
                           isDark.value ? Icons.light_mode : Icons.dark_mode,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                         onPressed: toggleDarkMode,
                         tooltip: 'Toggle Dark Mode',
@@ -115,13 +126,13 @@ class AppDrawer extends HookConsumerWidget {
                             Text(
                               currentUser?.username ?? 'User',
                               style: PanAfricanTypography.titleLarge(context)
-                                  .copyWith(color: Colors.white),
+                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
                             Text(
                               currentUser?.email ?? '',
                               style: PanAfricanTypography.bodySmall(context)
-                                  .copyWith(color: Colors.white70),
+                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -197,7 +208,133 @@ class AppDrawer extends HookConsumerWidget {
                     ],
                   ),
 
-                  // Learning & Content
+                  // Learn Section
+                  _DrawerSection(
+                    title: 'Learn',
+                    children: [
+                      _DrawerItem(
+                        icon: Icons.school,
+                        label: 'Grammar Hub',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const GrammarHubScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.route,
+                        label: 'Learning Path',
+                        onTap: () {
+                          Navigator.pop(context);
+                          final user = ref.read(userProvider);
+                          if (user?.selectedLanguage != null) {
+                            Navigator.push(
+                              context,
+                              SmoothPageRoute(
+                                child: LearningPathScreen(language: user!.selectedLanguage!),
+                              ),
+                            );
+                          } else {
+                            showLingAfriqInfo(context, 'Please select a language first');
+                          }
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.book,
+                        label: 'Vocabulary Builder',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const VocabularyBuilderScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                    ],
+                  ),
+
+                  // Practice Section
+                  _DrawerSection(
+                    title: 'Practice',
+                    children: [
+                      _DrawerItem(
+                        icon: Icons.chat_bubble_outline,
+                        label: 'Conversation Scenarios',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const ConversationScenariosScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.headphones,
+                        label: 'Listening Practice',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const ListeningPracticeScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.edit,
+                        label: 'Writing Practice',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const WritingPracticeScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.style,
+                        label: 'Flashcard Review',
+                        onTap: () {
+                          Navigator.pop(context);
+                          final user = ref.read(userProvider);
+                          if (user?.selectedLanguage != null) {
+                            Navigator.pushNamed(
+                              context,
+                              '/flashcard-review',
+                              arguments: {
+                                'words': <LocalVocabulary>[],
+                                'language': user!.selectedLanguage!.code,
+                              },
+                            );
+                          } else {
+                            showLingAfriqInfo(context, 'Please select a language first');
+                          }
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: PanAfricanIcons.magazine,
+                        label: 'Cultural Hub',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const CulturalHubScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                    ],
+                  ),
+
+                  // Learning & Content (existing)
                   _DrawerSection(
                     title: 'Learning',
                     children: [
@@ -300,6 +437,37 @@ class AppDrawer extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const TribeSelectionScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                    ],
+                  ),
+
+                  // Social Section
+                  _DrawerSection(
+                    title: 'Social',
+                    children: [
+                      _DrawerItem(
+                        icon: Icons.people,
+                        label: 'Social Hub',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const SocialHubScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.emoji_events,
+                        label: 'Friend Quests',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const FriendQuestsScreen()),
                           );
                         },
                         isDark: isDark.value,
@@ -417,7 +585,7 @@ class AppDrawer extends HookConsumerWidget {
                           onPressed: () => Navigator.pop(context, true),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: PanAfricanColors.error,
-                            foregroundColor: Colors.white,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           ),
                           child: Text('Logout'),
                         ),

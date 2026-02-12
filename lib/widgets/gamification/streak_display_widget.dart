@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
 
 /// Displays user's streak with fire animation
-class StreakDisplayWidget extends ConsumerWidget {
+class StreakDisplayWidget extends ConsumerStatefulWidget {
   final bool showFreeze;
   final bool compact;
 
@@ -14,10 +14,42 @@ class StreakDisplayWidget extends ConsumerWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<StreakDisplayWidget> createState() => _StreakDisplayWidgetState();
+}
+
+class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
+    
+    _pulseAnimation = Tween<double>(
+      begin: 0.8,
+      end: 1.2,
+    ).animate(CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.easeInOut,
+    ));
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
 
-    if (compact) {
+    if (widget.compact) {
       return _buildCompact(context, gamification);
     }
 
@@ -25,6 +57,9 @@ class StreakDisplayWidget extends ConsumerWidget {
   }
 
   Widget _buildCompact(BuildContext context, gamification) {
+    final streakCount = gamification.dailyStreak;
+    final opacity = (0.7 + (streakCount.clamp(0, 30) / 30) * 0.3).clamp(0.7, 1.0);
+    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
@@ -39,15 +74,38 @@ class StreakDisplayWidget extends ConsumerWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-            '🔥',
-            style: TextStyle(fontSize: 16),
+          AnimatedBuilder(
+            animation: _pulseAnimation,
+            builder: (context, child) {
+              return Transform.scale(
+                scale: _pulseAnimation.value,
+                child: Opacity(
+                  opacity: opacity,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.orange.withOpacity(0.5 * opacity),
+                          blurRadius: 8 * _pulseAnimation.value,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: const Text(
+                      '🔥',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              );
+            },
           ),
           const SizedBox(width: 4),
           Text(
-            '${gamification.dailyStreak}',
-            style: const TextStyle(
-              color: Colors.white,
+            '$streakCount',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 14,
             ),
@@ -58,6 +116,9 @@ class StreakDisplayWidget extends ConsumerWidget {
   }
 
   Widget _buildFull(BuildContext context, gamification) {
+    final streakCount = gamification.dailyStreak;
+    final opacity = (0.7 + (streakCount.clamp(0, 30) / 30) * 0.3).clamp(0.7, 1.0);
+    
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -80,9 +141,32 @@ class StreakDisplayWidget extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  '🔥',
-                  style: TextStyle(fontSize: 32),
+                AnimatedBuilder(
+                  animation: _pulseAnimation,
+                  builder: (context, child) {
+                    return Transform.scale(
+                      scale: _pulseAnimation.value,
+                      child: Opacity(
+                        opacity: opacity,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.orange.withOpacity(0.5 * opacity),
+                                blurRadius: 12 * _pulseAnimation.value,
+                                spreadRadius: 3,
+                              ),
+                            ],
+                          ),
+                          child: const Text(
+                            '🔥',
+                            style: TextStyle(fontSize: 32),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 8),
                 Column(

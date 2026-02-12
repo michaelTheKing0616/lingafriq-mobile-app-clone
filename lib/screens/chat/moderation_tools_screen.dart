@@ -157,6 +157,7 @@ class _FlaggedMessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final reason = message['flag_reason'] ?? 'Toxic content';
     final severity = message['severity'] ?? 'medium';
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
@@ -208,7 +209,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       label: Text('Approve'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.success,
-                        foregroundColor: Colors.white,
+                    foregroundColor: colorScheme.onPrimary,
                       ),
                     ),
                     ElevatedButton.icon(
@@ -217,7 +218,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       label: Text('Warn'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.warning,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     ElevatedButton.icon(
@@ -226,7 +227,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       label: Text('Delete'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.error,
-                        foregroundColor: Colors.white,
+                    foregroundColor: colorScheme.onPrimary,
                       ),
                     ),
                   ],

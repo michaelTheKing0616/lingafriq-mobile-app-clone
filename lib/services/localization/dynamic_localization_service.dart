@@ -10,6 +10,9 @@ import 'package:flutter/foundation.dart';
 enum AppLanguage {
   english('en', 'English'),
   french('fr', 'Français'),
+  portuguese('pt', 'Português'),
+  spanish('es', 'Español'),
+  arabic('ar', 'العربية'),
   yoruba('yo', 'Yorùbá'),
   hausa('ha', 'Hausa'),
   igbo('ig', 'Igbo'),
@@ -21,7 +24,14 @@ enum AppLanguage {
   afrikaans('af', 'Afrikaans'),
   pidgin('pcm', 'Nigerian Pidgin'),
   wolof('wo', 'Wolof'),
-  somali('so', 'Soomaali');
+  somali('so', 'Soomaali'),
+  tigrinya('ti', 'ትግርኛ'),
+  shona('sn', 'ChiShona'),
+  lingala('ln', 'Lingála'),
+  kinyarwanda('rw', 'Ikinyarwanda'),
+  malagasy('mg', 'Malagasy'),
+  sesotho('st', 'Sesotho'),
+  setswana('tn', 'Setswana');
 
   final String code;
   final String name;
@@ -81,9 +91,10 @@ class DynamicLocalizationService {
 
   /// Check if language is RTL
   static bool isRTL(String? languageCode) {
-    // Arabic, Hebrew, etc. are RTL
-    // For now, none of our supported languages are RTL
-    return false;
+    // Arabic and Hebrew are RTL languages
+    if (languageCode == null) return false;
+    final rtlLanguages = ['ar', 'he', 'fa', 'ur'];
+    return rtlLanguages.contains(languageCode.toLowerCase());
   }
 
   /// Get text direction for current language  

@@ -7,8 +7,10 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Enhanced Features for Cultural Magazine
@@ -103,7 +105,7 @@ class MagazineEnhancedFeatures {
 
   /// Share article
   static Future<void> shareArticle(String articleId, String title) async {
-    final url = 'https://lingafriq.com/magazine/$articleId';
+    final url = '${EnvConfig.appWebUrl}/magazine/$articleId';
     // Use share_plus package in production
     // await Share.share('Check out this article: $title\n$url');
   }
@@ -151,15 +153,23 @@ class MagazineEnhancedFeatures {
 /// Widget for Article Detail with Enhanced Features
 class ArticleDetailEnhanced extends HookConsumerWidget {
   final Map<String, dynamic> article;
+  final String? translatedTitle;
+  final String? translatedExcerpt;
+  final bool showTranslation;
+  final String userLanguage;
 
   const ArticleDetailEnhanced({
     Key? key,
     required this.article,
+    this.translatedTitle,
+    this.translatedExcerpt,
+    this.showTranslation = false,
+    this.userLanguage = 'english',
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final showTranslation = useState(false);
+    final showTranslationState = useState(showTranslation);
     final showVocabulary = useState(false);
     final showCulturalContext = useState(false);
     final isFavorite = useState(article['isFavorite'] ?? false);
@@ -168,6 +178,9 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
     final vocabulary = useState<List<Map<String, dynamic>>>([]);
     final culturalContext = useState<Map<String, dynamic>?>(null);
     final translation = useState<Map<String, dynamic>?>(null);
+    final isTranslating = useState(false);
+    final translationService = useMemoized(() => TranslationService());
+    final contentTranslation = useState<String?>(null);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -244,9 +257,9 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
             children: [
               // Article Content
               Text(
-                showTranslation.value && translation.value != null
-                    ? translation.value!['translation'] ?? ''
-                    : article['content'] ?? '',
+                showTranslationState.value && contentTranslation.value != null
+                    ? contentTranslation.value!
+                    : article['content'] ?? article['excerpt'] ?? '',
                 style: PanAfricanTypography.bodyLarge(context),
               ),
               SizedBox(height: PanAfricanSpacing.lg),
@@ -256,21 +269,50 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton.icon(
-                      onPressed: () async {
-                        if (translation.value == null) {
-                          final trans = await MagazineEnhancedFeatures.getPolieTranslation(
-                            article['_id'] ?? '',
-                            'yoruba',
-                          );
-                          translation.value = trans;
+                      onPressed: isTranslating.value ? null : () async {
+                        if (!showTranslationState.value && contentTranslation.value == null) {
+                          isTranslating.value = true;
+                          try {
+                            final content = article['content'] ?? article['excerpt'] ?? '';
+                            final result = await translationService.translate(
+                              text: content,
+                              sourceLang: 'english',
+                              targetLang: userLanguage,
+                            );
+                            contentTranslation.value = result.translation;
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Translation failed. Check your connection.'),
+                                  action: SnackBarAction(
+                                    label: 'Retry',
+                                    onPressed: () {
+                                      // Re-trigger translation on next tap
+                                      contentTranslation.value = null;
+                                      showTranslationState.value = false;
+                                    },
+                                  ),
+                                ),
+                              );
+                            }
+                          } finally {
+                            isTranslating.value = false;
+                          }
                         }
-                        showTranslation.value = !showTranslation.value;
+                        showTranslationState.value = !showTranslationState.value;
                       },
-                      icon: Icon(Icons.translate),
-                      label: Text(showTranslation.value ? 'Show Original' : 'Translate'),
+                      icon: isTranslating.value 
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
+                            )
+                          : Icon(Icons.translate),
+                      label: Text(showTranslationState.value ? 'Show Original' : 'Translate to $userLanguage'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -282,7 +324,7 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
                       label: Text('Vocabulary'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.secondary,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                   ),

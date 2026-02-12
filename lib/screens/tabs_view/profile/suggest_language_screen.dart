@@ -7,8 +7,8 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/titled_drop_down.dart';
 
 class SuggestLanguageScreen extends HookConsumerWidget {
@@ -63,9 +63,9 @@ class SuggestLanguageScreen extends HookConsumerWidget {
             onChanged: (value) => selectedCountry.value = value,
           ),
           48.heightBox,
-          PrimaryButton(
+          PanAfricanButton(
             width: 0.6.sw,
-            onTap: () {
+            onPressed: () {
               final suggestion = suggestLanguageController.text.trim();
               final reason = reasonController.text.trim();
               final country = selectedCountry.value;
@@ -105,7 +105,7 @@ class SuggestLanguageScreen extends HookConsumerWidget {
               kLaunchUrl(emailLaunchUri.toString());
               // Navigator.of(context).pop();
             },
-            text: "Submit",
+            label: "Submit",
           )
         ],
       ).px16().scrollVertical(),

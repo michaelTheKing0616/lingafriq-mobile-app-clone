@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import '../../services/error/error_recovery_service.dart';
+import '../../utils/transport_error_policy.dart';
 
 /// Dio Interceptor for automatic error recovery
 /// Applies retry logic, offline handling, and graceful degradation to all API calls
@@ -69,37 +70,8 @@ class ErrorRecoveryInterceptor extends Interceptor {
   }
 
   bool _shouldRetry(dynamic error) {
-    if (error is! DioException) {
-      return false;
-    }
-
-    // Retry on network errors
-    if (error.type == DioExceptionType.connectionTimeout ||
-        error.type == DioExceptionType.receiveTimeout ||
-        error.type == DioExceptionType.sendTimeout ||
-        error.type == DioExceptionType.connectionError) {
-      return true;
-    }
-
-    // Retry on 5xx server errors
-    if (error.response != null) {
-      final statusCode = error.response!.statusCode;
-      if (statusCode != null && statusCode >= 500 && statusCode < 600) {
-        return true;
-      }
-
-      // Retry on 429 (rate limit) with longer delay
-      if (statusCode == 429) {
-        return true;
-      }
-
-      // Don't retry on 4xx client errors (except 429)
-      if (statusCode != null && statusCode >= 400 && statusCode < 500) {
-        return false;
-      }
-    }
-
-    return false;
+    if (error is! DioException) return false;
+    return TransportErrorPolicy.isRetryable(error);
   }
 }
 

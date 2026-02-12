@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/providers/offline_download_provider.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -60,21 +63,73 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
       appBar: AppBar(
         title: const Text('Comprehensive Curriculum'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+        foregroundColor: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDark ? Colors.white : Colors.black87),
+          icon: Icon(Icons.arrow_back, color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface),
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
+          Consumer(
+            builder: (context, ref, _) {
+              final offlineState = ref.watch(offlineDownloadProvider);
+              final offlineNotifier = ref.read(offlineDownloadProvider.notifier);
+              final selectedLanguage = ref.watch(curriculumProvider.notifier).selectedLanguage;
+              
+              return IconButton(
+                icon: offlineState.isDownloading
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      )
+                    : Icon(
+                        Icons.cloud_download,
+                        color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
+                      ),
+                onPressed: selectedLanguage != null && !offlineState.isDownloading
+                    ? () async {
+                        try {
+                          await offlineNotifier.downloadAllLessonsForLanguage(selectedLanguage);
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('All lessons for $selectedLanguage downloaded successfully'),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Failed to download lessons: ${e.toString()}'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      }
+                    : null,
+                tooltip: selectedLanguage != null
+                    ? 'Download All for Offline'
+                    : 'Select a language first',
+              );
+            },
+          ),
           IconButton(
-            icon: Icon(Icons.refresh, color: isDark ? Colors.white : Colors.black87),
+            icon: Icon(Icons.refresh, color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface),
             onPressed: _loadCurriculum,
             tooltip: 'Reload Curriculum',
           ),
           IconButton(
-            icon: Icon(Icons.menu, color: isDark ? Colors.white : Colors.black87),
+            icon: Icon(Icons.menu, color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface),
             onPressed: () {
               Scaffold.of(context).openDrawer();
             },
@@ -83,70 +138,25 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         ],
       ),
       body: isLoading
-          ? const DynamicLoadingScreen()
-          : curriculum == null
-              ? _buildEmptyState(context, isDark)
-              : _buildCurriculumContent(context, curriculum, selectedLanguage, isDark),
-    );
-  }
-
-  Widget _buildEmptyState(BuildContext context, bool isDark) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(24.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.menu_book_outlined,
-              size: 64.sp,
-              color: isDark ? Colors.grey[600] : Colors.grey[400],
-            ),
-            SizedBox(height: 16.sp),
-            Text(
-              'No curriculum loaded',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
-            ),
-            SizedBox(height: 8.sp),
-            Text(
-              'The curriculum bundle may not be available. Please try reloading or contact support if the issue persists.',
-              style: TextStyle(
-                fontSize: 14.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 24.sp),
-            FilledButton.icon(
-              onPressed: _loadCurriculum,
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 24.sp, vertical: 12.sp),
-              ),
-              icon: const Icon(Icons.refresh),
-              label: const Text('Load Curriculum'),
-            ),
-            SizedBox(height: 16.sp),
-            TextButton(
-              onPressed: () {
-                // Try expanded bundle
-                ref.read(curriculumProvider.notifier).loadCurriculumFromBundle(useExpanded: true);
-              },
-              child: Text(
-                'Try Expanded Bundle',
-                style: TextStyle(
-                  color: isDark ? Colors.grey[400] : Colors.grey[600],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+          ? ListView.builder(
+              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+              itemCount: 5,
+              itemBuilder: (context, index) => const SkeletonListCard(),
+            )
+          : ref.watch(curriculumProvider).hasError
+              ? AppErrorState(
+                  message: 'Failed to load curriculum',
+                  onRetry: () => ref.invalidate(curriculumProvider),
+                )
+              : curriculum == null
+                  ? AppEmptyState(
+                      icon: Icons.menu_book_rounded,
+                      title: 'No lessons available',
+                      subtitle: 'Check back soon for new content',
+                      actionLabel: 'Load Curriculum',
+                      onAction: _loadCurriculum,
+                    )
+                  : _buildCurriculumContent(context, curriculum, selectedLanguage, isDark),
     );
   }
 
@@ -161,7 +171,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         // Language Selection
         Container(
           padding: EdgeInsets.all(16.sp),
-          color: isDark ? const Color(0xFF1F3527) : Colors.white,
+          color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -170,7 +180,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
+                  color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               SizedBox(height: 12.sp),
@@ -179,19 +189,24 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                 runSpacing: 8.sp,
                 children: curriculum.meta.languages.map((lang) {
                   final isSelected = selectedLanguage == lang;
-                  return FilterChip(
-                    label: Text(lang.toUpperCase()),
+                  return Semantics(
+                    label: 'Language filter: ${lang.toUpperCase()}',
                     selected: isSelected,
-                    onSelected: (selected) {
-                      ref.read(curriculumProvider.notifier).setSelectedLanguage(lang);
-                    },
-                    selectedColor: AppColors.primaryGreen,
-                    checkmarkColor: Colors.white,
-                    labelStyle: TextStyle(
-                      color: isSelected ? Colors.white : (isDark ? Colors.white : Colors.black87),
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    button: true,
+                    child: FilterChip(
+                      label: Text(lang.toUpperCase()),
+                      selected: isSelected,
+                      onSelected: (selected) {
+                        ref.read(curriculumProvider.notifier).setSelectedLanguage(lang);
+                      },
+                      selectedColor: PanAfricanColors.primary,
+                      checkmarkColor: Theme.of(context).colorScheme.onPrimary,
+                      labelStyle: TextStyle(
+                        color: isSelected ? Theme.of(context).colorScheme.onPrimary : (isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface),
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                      ),
+                      backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
                     ),
-                    backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
                   );
                 }).toList(),
               ),
@@ -242,7 +257,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
     return Container(
       margin: EdgeInsets.only(bottom: 16.sp),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
@@ -254,7 +269,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         leading: Container(
           padding: EdgeInsets.all(12.sp),
           decoration: BoxDecoration(
-            color: AppColors.primaryGreen.withOpacity(0.2),
+            color: PanAfricanColors.primary.withOpacity(0.2),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
@@ -262,7 +277,7 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryGreen,
+              color: PanAfricanColors.primary,
             ),
           ),
         ),
@@ -271,28 +286,35 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
           ),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 8.sp),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: LinearProgressIndicator(
-                value: level.calculatedProgress,
-                minHeight: 8,
-                backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
-                valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+            Semantics(
+              label: 'Progress: ${(level.calculatedProgress * 100).toInt()}% complete',
+              value: '${(level.calculatedProgress * 100).toInt()}%',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: LinearProgressIndicator(
+                  value: level.calculatedProgress,
+                  minHeight: 8,
+                  backgroundColor: isDark ? const Color(0xFF2A4A35) : Colors.grey[200],
+                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                ),
               ),
             ),
             SizedBox(height: 4.sp),
-            Text(
-              '${(level.calculatedProgress * 100).toInt()}% complete • ${level.units.length} units',
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
+            Semantics(
+              label: 'Level ${level.level}: ${(level.calculatedProgress * 100).toInt()}% complete, ${level.units.length} units',
+              child: Text(
+                '${(level.calculatedProgress * 100).toInt()}% complete • ${level.units.length} units',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  color: isDark ? Colors.grey[400] : Colors.grey[600],
+                ),
               ),
             ),
           ],
@@ -331,12 +353,12 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
+                  color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
                 ),
               ),
               SizedBox(width: 8.sp),
               if (unit.isCompleted)
-                Icon(Icons.check_circle, color: AppColors.primaryGreen, size: 20.sp),
+                Icon(Icons.check_circle, color: PanAfricanColors.primary, size: 20.sp),
             ],
           ),
           SizedBox(height: 4.sp),
@@ -348,13 +370,17 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
             ),
           ),
           SizedBox(height: 12.sp),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: unit.calculatedProgress,
-              minHeight: 6,
-              backgroundColor: isDark ? const Color(0xFF3A5A45) : Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.primaryGreen),
+          Semantics(
+            label: 'Unit ${unit.unit} progress: ${(unit.calculatedProgress * 100).toInt()}%',
+            value: '${(unit.calculatedProgress * 100).toInt()}%',
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: LinearProgressIndicator(
+                value: unit.calculatedProgress,
+                minHeight: 6,
+                backgroundColor: isDark ? const Color(0xFF3A5A45) : Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+              ),
             ),
           ),
           SizedBox(height: 12.sp),
@@ -373,37 +399,79 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
     String level,
     bool isDark,
   ) {
+    final heroTag = 'lesson_icon_${lesson.id}';
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
-      leading: Container(
-        width: 40.sp,
-        height: 40.sp,
-        decoration: BoxDecoration(
-          color: lesson.isCompleted
-              ? AppColors.primaryGreen.withOpacity(0.2)
-              : (isDark ? const Color(0xFF3A5A45) : Colors.grey[200]),
-          shape: BoxShape.circle,
-        ),
-        child: Center(
-          child: lesson.isCompleted
-              ? Icon(Icons.check, color: AppColors.primaryGreen, size: 20.sp)
-              : Text(
-                  '${lesson.vocab.length}',
-                  style: TextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.grey[400] : Colors.grey[600],
+      leading: Hero(
+        tag: heroTag,
+        child: Container(
+          width: 40.sp,
+          height: 40.sp,
+          decoration: BoxDecoration(
+            color: lesson.isCompleted
+                ? PanAfricanColors.primary.withOpacity(0.2)
+                : (isDark ? const Color(0xFF3A5A45) : Colors.grey[200]),
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: lesson.isCompleted
+                ? Icon(Icons.check, color: PanAfricanColors.primary, size: 20.sp)
+                : Text(
+                    '${lesson.vocab.length}',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.grey[400] : Colors.grey[600],
+                    ),
                   ),
-                ),
+          ),
         ),
       ),
-      title: Text(
-        lesson.title,
-        style: TextStyle(
-          fontSize: 14.sp,
-          fontWeight: FontWeight.w500,
-          color: isDark ? Colors.white : Colors.black87,
-        ),
+      title: Row(
+        children: [
+          Expanded(
+            child: Text(
+              lesson.title,
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ),
+          if (lesson.grammar != null && lesson.grammar!.isNotEmpty)
+            Container(
+              margin: EdgeInsets.only(left: 8.sp),
+              padding: EdgeInsets.symmetric(horizontal: 6.sp, vertical: 2.sp),
+              decoration: BoxDecoration(
+                color: PanAfricanColors.secondary.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: PanAfricanColors.secondary.withOpacity(0.5),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.lightbulb_outline,
+                    size: 12.sp,
+                    color: PanAfricanColors.secondary,
+                  ),
+                  SizedBox(width: 4.sp),
+                  Text(
+                    'Tips',
+                    style: TextStyle(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.bold,
+                      color: PanAfricanColors.secondary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
       subtitle: Text(
         '${lesson.vocab.length} words • ${lesson.exercises.length} exercises',
@@ -412,35 +480,39 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
           color: isDark ? Colors.grey[400] : Colors.grey[600],
         ),
       ),
-      trailing: IconButton(
-        icon: Icon(
-          lesson.isCompleted ? Icons.undo : Icons.play_circle_outline,
-          color: lesson.isCompleted
-              ? AppColors.primaryGreen
-              : (isDark ? Colors.grey[400] : Colors.grey[600]),
-        ),
-        onPressed: () {
-          // Navigate to lesson detail screen
-          Navigator.push(
-            context,
-            SmoothPageRoute(
-              child: LessonDetailScreen(
-                lesson: lesson,
-                language: language,
-                level: level,
+      trailing: Semantics(
+        label: lesson.isCompleted ? 'Replay lesson: ${lesson.title}' : 'Start lesson: ${lesson.title}',
+        button: true,
+        child: IconButton(
+          icon: Icon(
+            lesson.isCompleted ? Icons.undo : Icons.play_circle_outline,
+            color: lesson.isCompleted
+                ? PanAfricanColors.primary
+                : (isDark ? Colors.grey[400] : Colors.grey[600]),
+          ),
+          onPressed: () {
+            // Navigate to lesson detail screen
+            Navigator.push(
+              context,
+              SmoothPageRoute(
+                child: LessonDetailScreen(
+                  lesson: lesson,
+                  language: language,
+                  level: level,
+                ),
               ),
-            ),
-          ).then((completed) {
-            // Mark lesson as complete if user completed it
-            if (completed == true && !lesson.isCompleted) {
-              ref.read(curriculumProvider.notifier).markLessonComplete(
-                    language,
-                    level,
-                    lesson.id,
-                  );
-            }
-          });
-        },
+            ).then((completed) {
+              // Mark lesson as complete if user completed it
+              if (completed == true && !lesson.isCompleted) {
+                ref.read(curriculumProvider.notifier).markLessonComplete(
+                      language,
+                      level,
+                      lesson.id,
+                    );
+              }
+            });
+          },
+        ),
       ),
     );
   }

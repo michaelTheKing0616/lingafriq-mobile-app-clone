@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField({
@@ -97,7 +98,7 @@ class PrimaryTextField extends StatelessWidget {
                 helperText: helperText,
                 suffixIcon: suffixIcon,
                 prefixIcon: prefixIcon,
-                prefixIconColor: AppColors.grey,
+                prefixIconColor: PanAfricanColors.neutralLight,
               ),
             ),
           ),

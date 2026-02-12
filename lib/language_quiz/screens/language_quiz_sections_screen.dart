@@ -50,8 +50,8 @@ class _LanguageQuizSectionsListScreenState extends State<LanguageQuizSectionsLis
             borderRadius: 0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                BackButton(color: Colors.white),
+              children: [
+                BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                 GreetingsBuilder(
                   greetingTitle: '',
@@ -280,7 +280,7 @@ class _LanguageQuizItem extends ConsumerWidget {
     languageQuiz.completed.toString().log('completed');
     languageQuiz.count.toString().log('count');
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black26,
       child: InkWell(

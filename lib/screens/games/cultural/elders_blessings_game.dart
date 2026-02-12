@@ -83,12 +83,15 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
       });
     } catch (e) {
       debugPrint('Error loading blessing: $e');
+      // Use fallback content so game is still playable
+      final options = ['May you have long life and prosperity', 'Good luck', 'Stay safe', 'Be happy']..shuffle(Random());
       setState(() {
-        setLoading(false);
+        _currentBlessing = {'content': _getFallbackBlessing()};
+        _round++;
         _blessingText = _getFallbackBlessing();
         _correctMeaning = 'May you have long life and prosperity';
-        _meaningOptions = ['May you have long life and prosperity', 'Good luck', 'Stay safe', 'Be happy'];
-        _meaningOptions.shuffle(Random());
+        _meaningOptions = options;
+        setLoading(false);
       });
     }
   }

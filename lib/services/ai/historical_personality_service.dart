@@ -16,7 +16,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 /// Historical Personality
 class HistoricalPersonality {
@@ -210,7 +210,7 @@ class HistoricalPersonalityService {
       if (era != null) queryParams['era'] = era;
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/personalities',
+        ApiContract.url(ApiContract.personalities.list),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
@@ -235,7 +235,9 @@ class HistoricalPersonalityService {
   Future<HistoricalPersonality?> getPersonality(String personalityId) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/personalities/$personalityId',
+        ApiContract.url(
+          ApiContract.personalities.details(personalityId),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -258,7 +260,9 @@ class HistoricalPersonalityService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/personalities/$personalityId/chat/start',
+        ApiContract.url(
+          ApiContract.personalities.chatStart(personalityId),
+        ),
         data: {
           'user_id': userId,
           'initial_context': initialContext ?? {},
@@ -285,7 +289,9 @@ class HistoricalPersonalityService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/personalities/chat/$sessionId/message',
+        ApiContract.url(
+          ApiContract.personalities.chatMessage(sessionId),
+        ),
         data: {
           'message': message,
           'context': context ?? {},
@@ -308,7 +314,9 @@ class HistoricalPersonalityService {
   Future<PersonalityChatSession?> getChatSession(String sessionId) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/personalities/chat/$sessionId',
+        ApiContract.url(
+          ApiContract.personalities.chatSession(sessionId),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -333,7 +341,9 @@ class HistoricalPersonalityService {
       if (personalityId != null) queryParams['personality_id'] = personalityId;
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/personalities/chat/user/$userId',
+        ApiContract.url(
+          ApiContract.personalities.userChatSessions(userId),
+        ),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
@@ -361,7 +371,9 @@ class HistoricalPersonalityService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/personalities/$personalityId/knowledge',
+        ApiContract.url(
+          ApiContract.personalities.knowledge(personalityId),
+        ),
         queryParameters: {'topic': topic},
       );
 
@@ -386,7 +398,9 @@ class HistoricalPersonalityService {
       if (currentTopic != null) queryParams['current_topic'] = currentTopic;
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/personalities/$personalityId/suggestions',
+        ApiContract.url(
+          ApiContract.personalities.suggestions(personalityId),
+        ),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 

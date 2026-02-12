@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/game/phrase_card_model.dart';
 import '../models/game/game_session_model.dart';
@@ -22,6 +24,7 @@ final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
 /// Game Provider - Manages all game sessions, SRS integration, and telemetry
 class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   GameSession? _currentSession;
+  Completer<GameSession>? _startGameLock;
   final List<PhraseCard> _availableCards = [];
   final Map<String, SRSState> _userSRS = {}; // user_id + card_id -> SRSState
 
@@ -42,11 +45,19 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? level,
     int? cardCount,
   }) async {
+    if (_startGameLock != null) {
+      return _startGameLock!.future;
+    }
+    final completer = Completer<GameSession>();
+    _startGameLock = completer;
     state = state.copyWith(isLoading: true);
-
     try {
       // Load cards for the game
       final cards = await _loadCardsForGame(language: language, level: level, count: cardCount ?? 10);
+
+      // Expose loaded cards to game screens (they read gameProv.availableCards)
+      _availableCards.clear();
+      _availableCards.addAll(cards);
 
       // Create session
       final sessionId = 'sess_${DateTime.now().millisecondsSinceEpoch}';
@@ -63,36 +74,42 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         },
       );
 
-      // Send telemetry (legacy method for backward compatibility)
-      await _sendTelemetry('game_start', {
-        'session_id': sessionId,
-        'game': gameType.name,
-        'language': language,
-        'level': level,
-      });
-      
-      // Enhanced telemetry tracking
-      final telemetry = ref.read(telemetryServiceProvider);
-      await telemetry.trackFeatureUsage(
-        featureName: 'games',
-        metadata: {
-          'action': 'game_start',
-          'game_type': gameType.name,
+      // Non-critical: telemetry + gamification should never block gameplay
+      try {
+        await _sendTelemetry('game_start', {
+          'session_id': sessionId,
+          'game': gameType.name,
           'language': language,
           'level': level,
-        },
-      );
+        });
+        
+        final telemetry = ref.read(telemetryServiceProvider);
+        await telemetry.trackFeatureUsage(
+          featureName: 'games',
+          metadata: {
+            'action': 'game_start',
+            'game_type': gameType.name,
+            'language': language,
+            'level': level,
+          },
+        );
 
-      // Award XP for starting game
-      final gamification = ref.read(gamificationProvider.notifier);
-      await gamification.awardXP('game_start');
+        final gamification = ref.read(gamificationProvider.notifier);
+        await gamification.awardXP('game_start');
+      } catch (e) {
+        logger.error('Non-critical telemetry/gamification error (game continues)', tag: 'game-provider', error: e);
+      }
 
       state = state.copyWith(isLoading: false);
+      if (!completer.isCompleted) completer.complete(_currentSession!);
       return _currentSession!;
     } catch (e) {
       logger.error('Error starting game', tag: 'game-provider', error: e, context: {'gameType': gameType});
       state = state.copyWith(isLoading: false);
+      if (!completer.isCompleted) completer.completeError(e);
       rethrow;
+    } finally {
+      _startGameLock = null;
     }
   }
 
@@ -123,8 +140,8 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Map result to SRS quality (0-5)
       final quality = _mapResultToQuality(result, confidence);
       
-      // Update SRS
-      await _updateSRS(_currentSession!.userId, cardId, quality);
+      // Update SRS (include language for backend sync key)
+      await _updateSRS(_currentSession!.userId, cardId, _currentSession!.language, quality);
 
       // Send telemetry
       await _sendTelemetry('game_turn', {
@@ -217,7 +234,84 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     final cards = <PhraseCard>[];
 
-    // Try to load from backend API
+    // 1) Canonical route: POST /api/games/game-content
+    // Backend mounts Polie game content under /api/games/*.
+    try {
+      final response = await ref.read(client).post(
+        ApiContract.url(ApiContract.ai.polieGameContent),
+        data: {
+          'game_id': _currentSession?.gameType ?? 'phrase_cards',
+          'language': language,
+          'difficulty': level ?? 'A1',
+          'user_id': _currentSession?.userId ?? 'guest',
+          'session_id': _currentSession?.sessionId ?? 'local_session',
+        },
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        final payload = response.data;
+        if (payload is List) {
+          for (final item in payload) {
+            if (item is Map<String, dynamic>) {
+              _appendCardFromMap(
+                cards: cards,
+                item: item,
+                language: language,
+                level: level,
+              );
+            }
+          }
+        } else if (payload is Map<String, dynamic>) {
+          _appendCardFromMap(
+            cards: cards,
+            item: payload,
+            language: language,
+            level: level,
+          );
+        }
+
+        if (cards.isNotEmpty) {
+          // Pad to requested count with curated fallback cards.
+          if (cards.length < count) {
+            final needed = count - cards.length;
+            cards.addAll(_generateFallbackCards(language, level, needed));
+          } else if (cards.length > count) {
+            cards.removeRange(count, cards.length);
+          }
+
+          try {
+            for (var i = 0; i < cards.length; i++) {
+              final card = cards[i];
+              final enforced = DiacriticsEnforcer.enforceWithMetadata(
+                card.text,
+                language,
+                enableFuzzy: true,
+                fuzzyThreshold: 0.75,
+              );
+              if (enforced['changed'] == true) {
+                cards[i] = card.copyWith(text: enforced['text'] as String);
+              }
+            }
+          } catch (e) {
+            logger.error(
+              'Diacritics enforcement failed for canonical API cards (cards still usable)',
+              tag: 'game-provider',
+              error: e,
+            );
+          }
+
+          return cards;
+        }
+      }
+    } catch (e) {
+      logger.error(
+        'Error loading cards from canonical game-content API, trying legacy route',
+        tag: 'game-provider',
+        error: e,
+      );
+    }
+
+    // 2) Legacy route: GET /api/games/cards (for backward compatibility)
     try {
       final queryParams = <String, dynamic>{
         'language': language,
@@ -226,7 +320,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (level != null) queryParams['level'] = level;
 
       final response = await ref.read(client).get(
-        '${Api.baseurl}api/games/cards',
+        ApiContract.url(ApiContract.games.cards),
         queryParameters: queryParams,
       );
 
@@ -235,15 +329,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         for (var item in dataList) {
           if (item is Map<String, dynamic>) {
             try {
+              final cId = item['id'] ?? item['card_id'] ?? 'card_${cards.length}';
+              final lang = item['language'] ?? language;
               cards.add(PhraseCard(
-                cardId: item['id'] ?? item['card_id'] ?? 'card_${cards.length}',
-                language: item['language'] ?? language,
+                cardId: cId.toString(),
+                language: lang.toString(),
                 text: item['text'] ?? item['phrase'] ?? '',
                 ascii: item['ascii'] ?? item['text'] ?? '',
                 gloss: item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '',
                 level: item['level'] ?? level ?? 'A0',
                 tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${item['id'] ?? cards.length}'] ?? SRSState(),
+                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cId}_$lang'] ?? SRSState(),
               ));
             } catch (e) {
               logger.error('Error parsing card from API', tag: 'game-provider', error: e);
@@ -254,18 +350,22 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
         // If we got cards from API, apply diacritics enforcement and return
         if (cards.isNotEmpty) {
-          for (var i = 0; i < cards.length; i++) {
-            final card = cards[i];
-            final enforced = DiacriticsEnforcer.enforceWithMetadata(
-              card.text,
-              language,
-              enableFuzzy: true,
-              fuzzyThreshold: 0.75,
-            );
+          try {
+            for (var i = 0; i < cards.length; i++) {
+              final card = cards[i];
+              final enforced = DiacriticsEnforcer.enforceWithMetadata(
+                card.text,
+                language,
+                enableFuzzy: true,
+                fuzzyThreshold: 0.75,
+              );
 
-            if (enforced['changed'] == true) {
-              cards[i] = card.copyWith(text: enforced['text'] as String);
+              if (enforced['changed'] == true) {
+                cards[i] = card.copyWith(text: enforced['text'] as String);
+              }
             }
+          } catch (e) {
+            logger.error('Diacritics enforcement failed for API cards (cards still usable)', tag: 'game-provider', error: e);
           }
           return cards;
         }
@@ -279,22 +379,52 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final fallbackCards = _generateFallbackCards(language, level, count);
     cards.addAll(fallbackCards);
 
-    // Apply diacritics enforcement to all cards
-    for (var i = 0; i < cards.length; i++) {
-      final card = cards[i];
-      final enforced = DiacriticsEnforcer.enforceWithMetadata(
-        card.text,
-        language,
-        enableFuzzy: true,
-        fuzzyThreshold: 0.75,
-      );
+    // Apply diacritics enforcement to all cards (non-fatal — cards work without it)
+    try {
+      for (var i = 0; i < cards.length; i++) {
+        final card = cards[i];
+        final enforced = DiacriticsEnforcer.enforceWithMetadata(
+          card.text,
+          language,
+          enableFuzzy: true,
+          fuzzyThreshold: 0.75,
+        );
 
-      if (enforced['changed'] == true) {
-        cards[i] = card.copyWith(text: enforced['text'] as String);
+        if (enforced['changed'] == true) {
+          cards[i] = card.copyWith(text: enforced['text'] as String);
+        }
       }
+    } catch (e) {
+      logger.error('Diacritics enforcement failed (cards still usable)', tag: 'game-provider', error: e);
     }
 
     return cards;
+  }
+
+  void _appendCardFromMap({
+    required List<PhraseCard> cards,
+    required Map<String, dynamic> item,
+    required String language,
+    required String? level,
+  }) {
+    final cardId = (item['id'] ?? item['card_id'] ?? item['content_id'] ?? 'card_${cards.length}').toString();
+    final lang = (item['language'] ?? language).toString();
+    final text = (item['text'] ?? item['phrase'] ?? item['content'] ?? '').toString();
+    final gloss = (item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '').toString();
+    final parsedLevel = (item['level'] ?? level ?? 'A0').toString();
+
+    if (text.trim().isEmpty) return;
+
+    cards.add(PhraseCard(
+      cardId: cardId,
+      language: lang,
+      text: text,
+      ascii: (item['ascii'] ?? text).toString(),
+      gloss: gloss,
+      level: parsedLevel,
+      tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['ai-generated'],
+      srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
+    ));
   }
 
   /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)
@@ -426,18 +556,19 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       ],
     };
 
-    final data = fallbackData[lang] ?? fallbackData['yoruba']!;
-    for (var i = 0; i < count && i < data.length; i++) {
+      final data = fallbackData[lang] ?? fallbackData['yoruba']!;
+    for (var i = 0; i < count; i++) {
       final item = data[i % data.length];
+      final cardId = '${lang}_card_$i';
       cards.add(PhraseCard(
-        cardId: '${lang}_card_${i}',
+        cardId: cardId,
         language: language,
         text: item['text'] as String,
         ascii: item['text'] as String, // Simplified
         gloss: item['gloss'] as String,
         level: level ?? 'A0',
         tags: (item['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
-        srs: _userSRS['${_currentSession?.userId ?? 'user'}_${lang}_card_$i'] ?? SRSState(),
+        srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
       ));
     }
 
@@ -465,9 +596,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Update SRS state for a card
-  Future<void> _updateSRS(String userId, String cardId, int quality) async {
-    final key = '${userId}_$cardId';
+  /// Update SRS state for a card. Key includes language for backend sync (cardId_language).
+  Future<void> _updateSRS(String userId, String cardId, String language, int quality) async {
+    final key = '${userId}_${cardId}_$language';
     final current = _userSRS[key] ?? SRSState();
 
     // SM-2 algorithm variant
@@ -514,12 +645,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final user = ref.read(userProvider);
       if (user == null) return;
 
+      final sessionJson = session.toJson();
+      sessionJson['duration_ms'] = session.durationMs;
+      sessionJson['accuracy'] = session.accuracy;
+      sessionJson['correct_count'] = session.correctCount;
+      sessionJson['total_turns'] = session.totalTurns;
       final syncProvider = ref.read(backendSyncProvider.notifier);
       await syncProvider.queueSync(SyncTask(
         type: SyncType.gameSession,
         data: {
           'user_id': user.id.toString(),
-          'session': session.toJson(),
+          'session': sessionJson,
           'timestamp': DateTime.now().toIso8601String(),
         },
       ));
@@ -528,7 +664,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
-  /// Sync SRS to backend
+  /// Sync SRS to backend. Sends keys as "cardId|language" so backend can parse card_id and language.
   Future<void> _syncSRSToBackend() async {
     try {
       final user = ref.read(userProvider);
@@ -536,9 +672,19 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       final syncProvider = ref.read(backendSyncProvider.notifier);
       final srsData = <String, dynamic>{};
+      final userIdPrefix = '${user.id}_';
       _userSRS.forEach((key, value) {
-        srsData[key] = value.toJson();
+        if (!key.startsWith(userIdPrefix)) return;
+        final rest = key.substring(userIdPrefix.length);
+        final lastUnderscore = rest.lastIndexOf('_');
+        if (lastUnderscore <= 0) return;
+        final language = rest.substring(lastUnderscore + 1);
+        if (language.isEmpty) return;
+        final cardId = rest.substring(0, lastUnderscore);
+        srsData['$cardId|$language'] = value.toJson();
       });
+
+      if (srsData.isEmpty) return;
 
       await syncProvider.queueSync(SyncTask(
         type: SyncType.gameSRS,

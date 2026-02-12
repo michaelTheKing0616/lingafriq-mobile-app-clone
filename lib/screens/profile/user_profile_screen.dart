@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
-import 'package:lingafriq/services/advanced/smart_recommendations.dart';
 import 'package:intl/intl.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/screens/settings/settings_screen.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -16,21 +15,22 @@ import 'package:lingafriq/widgets/gamification/level_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/streak_display_widget.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-/// User Profile Screen - Based on Figma Make Design
+/// User Profile Screen - Pan-African Design System
 class UserProfileScreen extends ConsumerWidget {
   final VoidCallback? onBack;
   final VoidCallback? onLogout;
-  
-  const UserProfileScreen({Key? key, this.onBack, this.onLogout}) : super(key: key);
+
+  const UserProfileScreen({Key? key, this.onBack, this.onLogout})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
-      errorMessage: 'Unable to load profile. Please check your connection and try again.',
+      errorMessage:
+          'Unable to load profile. Please check your connection and try again.',
       child: _buildProfile(context, ref),
     );
   }
@@ -40,155 +40,130 @@ class UserProfileScreen extends ConsumerWidget {
     final gamificationNotifier = ref.read(gamificationProvider.notifier);
     final gamification = gamificationNotifier.gamification;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    // Get preferred language from user profile or smart recommendations
+    final colorScheme = Theme.of(context).colorScheme;
+
+    // Get preferred language from user profile
     final preferredLanguage = user?.nationality ?? 'yoruba';
-    
-    // Format member since date from gamification lastLogin or use current date as fallback
+
+    // Format member since date from gamification lastLogin
     final memberSinceDate = gamification.lastLogin ?? DateTime.now();
     final memberSinceFormatted = DateFormat('MMMM yyyy').format(memberSinceDate);
-    
+
     return Scaffold(
-      backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
-      body: Stack(
+      backgroundColor:
+          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+      body: Column(
         children: [
           // Gradient Header
           Container(
-            height: 40.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFCE1126), // Red
-                  Color(0xFFFF6B35), // Orange
-                ],
+              gradient: PanAfricanGradients.sunset,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(PanAfricanRadius.xl),
+                bottomRight: Radius.circular(PanAfricanRadius.xl),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: Stack(
               children: [
                 // Pattern overlay
                 Positioned.fill(
-                  child: CustomPaint(
-                    painter: _PatternPainter(
-                      color: Colors.white.withOpacity(0.1),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(PanAfricanRadius.xl),
+                      bottomRight: Radius.circular(PanAfricanRadius.xl),
+                    ),
+                    child: CustomPaint(
+                      painter: _PatternPainter(
+                        color: colorScheme.onPrimary.withOpacity(0.1),
+                      ),
                     ),
                   ),
                 ),
                 SafeArea(
+                  bottom: false,
                   child: Padding(
-                    padding: EdgeInsets.all(4.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     child: Column(
                       children: [
-                        // Always show back button
+                        // Back button
                         Align(
                           alignment: Alignment.topLeft,
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: onBack ?? () => Navigator.pop(context),
-                            style: IconButton.styleFrom(
-                              backgroundColor: Colors.white.withOpacity(0.2),
-                              shape: const CircleBorder(),
-                            ),
+                          child: _HeaderIconButton(
+                            icon: Icons.arrow_back_rounded,
+                            onTap: () {
+                              HapticFeedback.lightImpact();
+                              (onBack ?? () => Navigator.pop(context))();
+                            },
                           ),
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: PanAfricanSpacing.md),
+
                         // Avatar
                         Container(
-                          width: 24.w,
-                          height: 24.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: Colors.white, width: 4),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 20,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
+                            border: Border.all(
+                              color: colorScheme.onPrimary,
+                              width: 4,
+                            ),
+                            boxShadow: PanAfricanShadows.lg,
                           ),
-                          child: user?.avater != null
+                          child: user?.avatar != null
                               ? ClipOval(
                                   child: LazyImage(
                                     imageUrl: user!.avatarUrl,
-                                    width: 24.w,
-                                    height: 24.w,
-                                    placeholder: CircleAvatar(
-                                      radius: 12.w,
-                                      backgroundColor: Colors.white,
-                                      child: Text(
-                                        (user.username ?? 'U')[0].toUpperCase(),
-                                        style: TextStyle(
-                                          color: const Color(0xFFCE1126),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                    width: 100.w,
+                                    height: 100.w,
+                                    placeholder: _AvatarPlaceholder(
+                                      initial: (user.username ?? 'U')[0]
+                                          .toUpperCase(),
                                     ),
                                   ),
                                 )
-                              : CircleAvatar(
-                                  radius: 12.w,
-                                  backgroundColor: Colors.white,
-                            child: user?.avater == null
-                                ? Text(
-                                    (user?.username ?? 'U')[0].toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 32.sp,
-                                      color: const Color(0xFFCE1126),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : null,
-                          ),
+                              : _AvatarPlaceholder(
+                                  initial: (user?.username ?? 'U')[0]
+                                      .toUpperCase(),
+                                ),
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: PanAfricanSpacing.md),
+
+                        // Username
                         Text(
                           user?.username ?? 'User',
-                          style: TextStyle(
-                            fontSize: 24.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                          style: PanAfricanTypography.headlineSmall(context)
+                              .copyWith(color: colorScheme.onPrimary),
                         ),
-                        SizedBox(height: 0.5.h),
+                        SizedBox(height: PanAfricanSpacing.xxs),
+
+                        // Email
                         Text(
                           user?.email ?? '',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.white.withOpacity(0.9),
-                          ),
+                          style: PanAfricanTypography.bodyMedium(context)
+                              .copyWith(
+                                  color: colorScheme.onPrimary.withOpacity(0.9)),
                         ),
-                        SizedBox(height: 3.h),
-                        // Gamification Stats
+                        SizedBox(height: PanAfricanSpacing.lg),
+
+                        // Stats Row
                         Consumer(
                           builder: (context, ref, _) {
-                            final gamification = ref.watch(gamificationProvider.notifier).gamification;
+                            final gamification =
+                                ref.watch(gamificationProvider.notifier).gamification;
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                _StatItem(
+                                _HeaderStatItem(
                                   value: 'Lv. ${gamification.level}',
                                   label: gamification.levelTitle,
                                 ),
-                                SizedBox(width: 4.w),
-                                _StatItem(
+                                SizedBox(width: PanAfricanSpacing.lg),
+                                _HeaderStatItem(
                                   value: '${gamification.xp}',
                                   label: 'XP',
                                 ),
-                                SizedBox(width: 4.w),
-                                _StatItem(
+                                SizedBox(width: PanAfricanSpacing.lg),
+                                _HeaderStatItem(
                                   value: '${gamification.dailyStreak}',
                                   label: 'Day Streak',
                                 ),
@@ -196,6 +171,7 @@ class UserProfileScreen extends ConsumerWidget {
                             );
                           },
                         ),
+                        SizedBox(height: PanAfricanSpacing.md),
                       ],
                     ),
                   ),
@@ -203,115 +179,85 @@ class UserProfileScreen extends ConsumerWidget {
               ],
             ),
           ),
+
           // Content
-          Positioned(
-            top: 38.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
+          Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
                 children: [
+                  SizedBox(height: PanAfricanSpacing.sm),
+
                   // Info Card
                   Container(
-                    padding: EdgeInsets.all(5.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     decoration: BoxDecoration(
-                      color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      boxShadow: DesignSystem.shadowLarge,
+                      color: isDark
+                          ? PanAfricanColors.cardDark
+                          : PanAfricanColors.cardLight,
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                      boxShadow: PanAfricanShadows.sm,
                     ),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.language_rounded,
-                              color: AfricanTheme.primaryGreen,
-                              size: 20,
-                            ),
-                            SizedBox(width: 3.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Learning',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark ? Colors.white70 : Colors.black54,
-                                    ),
-                                  ),
-                                  Text(
-                                    preferredLanguage.toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        _InfoRow(
+                          icon: Icons.language_rounded,
+                          iconColor: PanAfricanColors.primary,
+                          label: 'Learning',
+                          value: preferredLanguage.toUpperCase(),
+                          isDark: isDark,
                         ),
-                        Divider(height: 4.h, color: isDark ? Colors.grey[800] : Colors.grey[200]),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.calendar_today_rounded,
-                              color: AfricanTheme.accentGold,
-                              size: 20,
-                            ),
-                            SizedBox(width: 3.w),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Member since',
-                                    style: TextStyle(
-                                      fontSize: 12.sp,
-                                      color: isDark ? Colors.white70 : Colors.black54,
-                                    ),
-                                  ),
-                                  Text(
-                                    memberSinceFormatted,
-                                    style: TextStyle(
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            vertical: PanAfricanSpacing.md,
+                          ),
+                          child: Divider(
+                            height: 1,
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        _InfoRow(
+                          icon: Icons.calendar_today_rounded,
+                          iconColor: PanAfricanColors.secondary,
+                          label: 'Member since',
+                          value: memberSinceFormatted,
+                          isDark: isDark,
                         ),
                       ],
                     ),
-                  ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
+                  )
+                      .animate()
+                      .fadeIn(delay: 100.ms)
+                      .slideY(begin: 0.1, end: 0),
+                  SizedBox(height: PanAfricanSpacing.lg),
+
                   // Gamification Widgets
                   Consumer(
                     builder: (context, ref, _) {
                       return Column(
                         children: [
                           LevelDisplayWidget(showXP: true),
-                          SizedBox(height: 2.h),
+                          SizedBox(height: PanAfricanSpacing.md),
                           CurrencyDisplayWidget(compact: false, showLabels: true),
-                          SizedBox(height: 2.h),
+                          SizedBox(height: PanAfricanSpacing.md),
                           StreakDisplayWidget(showFreeze: true),
                         ],
                       );
                     },
-                  ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 3.h),
+                  )
+                      .animate()
+                      .fadeIn(delay: 200.ms)
+                      .slideY(begin: 0.1, end: 0),
+                  SizedBox(height: PanAfricanSpacing.lg),
+
                   // Action Buttons
                   _ActionButton(
                     icon: Icons.settings_rounded,
                     label: 'Settings',
                     onTap: () {
+                      HapticFeedback.lightImpact();
                       Navigator.push(
                         context,
                         SmoothPageRoute(child: const SettingsScreen()),
@@ -319,26 +265,32 @@ class UserProfileScreen extends ConsumerWidget {
                     },
                     isDark: isDark,
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: PanAfricanSpacing.md),
                   _ActionButton(
                     icon: Icons.logout_rounded,
                     label: 'Logout',
-                    onTap: onLogout ?? () async {
-                      final result = await ref.read(dialogProvider('')).showPlatformDialogue(
-                        title: "Logout",
-                        content: const Text("Are you sure you want to logout?"),
-                        action1OnTap: true,
-                        action2OnTap: false,
-                        action1Text: "Logout",
-                        action2Text: "Cancel",
-                      );
-                      if (result == true) {
-                        await ref.read(authProvider.notifier).signOut();
-                      }
-                    },
+                    onTap: onLogout ??
+                        () async {
+                          HapticFeedback.mediumImpact();
+                          final result = await ref
+                              .read(dialogProvider(''))
+                              .showPlatformDialogue(
+                                title: "Logout",
+                                content: const Text(
+                                    "Are you sure you want to logout?"),
+                                action1OnTap: true,
+                                action2OnTap: false,
+                                action1Text: "Logout",
+                                action2Text: "Cancel",
+                              );
+                          if (result == true) {
+                            await ref.read(authProvider.notifier).signOut();
+                          }
+                        },
                     isDark: isDark,
                     isDestructive: true,
                   ),
+                  SizedBox(height: PanAfricanSpacing.xl),
                 ],
               ),
             ),
@@ -349,29 +301,124 @@ class UserProfileScreen extends ConsumerWidget {
   }
 }
 
-class _StatItem extends StatelessWidget {
-  final String value;
-  final String label;
-  
-  const _StatItem({required this.value, required this.label});
-  
+class _HeaderIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onTap;
+
+  const _HeaderIconButton({required this.icon, required this.onTap});
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: colorScheme.onPrimary.withOpacity(0.2),
+      shape: const CircleBorder(),
+      child: InkWell(
+        onTap: onTap,
+        customBorder: const CircleBorder(),
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
+          child: Icon(icon, color: colorScheme.onPrimary, size: 24.sp),
+        ),
+      ),
+    );
+  }
+}
+
+class _AvatarPlaceholder extends StatelessWidget {
+  final String initial;
+
+  const _AvatarPlaceholder({required this.initial});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return CircleAvatar(
+      radius: 50.w,
+      backgroundColor: colorScheme.surface,
+      child: Text(
+        initial,
+        style: PanAfricanTypography.headlineLarge(context).copyWith(
+          color: PanAfricanColors.tertiary,
+        ),
+      ),
+    );
+  }
+}
+
+class _HeaderStatItem extends StatelessWidget {
+  final String value;
+  final String label;
+
+  const _HeaderStatItem({required this.value, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
         Text(
           value,
-          style: TextStyle(
-            fontSize: 22.sp,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          style: PanAfricanTypography.titleLarge(context)
+              .copyWith(color: colorScheme.onPrimary),
         ),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: Colors.white.withOpacity(0.8),
+          style: PanAfricanTypography.bodySmall(context)
+              .copyWith(color: colorScheme.onPrimary.withOpacity(0.8)),
+        ),
+      ],
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+  final bool isDark;
+
+  const _InfoRow({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
+          decoration: BoxDecoration(
+            color: iconColor.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          ),
+          child: Icon(
+            icon,
+            color: iconColor,
+            size: 24.sp,
+          ),
+        ),
+        SizedBox(width: PanAfricanSpacing.md),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: PanAfricanTypography.bodySmall(context),
+              ),
+              Text(
+                value,
+                style: PanAfricanTypography.bodyLarge(context).copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
           ),
         ),
       ],
@@ -385,7 +432,7 @@ class _ActionButton extends StatelessWidget {
   final VoidCallback onTap;
   final bool isDark;
   final bool isDestructive;
-  
+
   const _ActionButton({
     required this.icon,
     required this.label,
@@ -393,47 +440,66 @@ class _ActionButton extends StatelessWidget {
     required this.isDark,
     this.isDestructive = false,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.transparent,
+      color: isDestructive
+          ? PanAfricanColors.error.withOpacity(0.1)
+          : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.md,
+            vertical: PanAfricanSpacing.md,
+          ),
           decoration: BoxDecoration(
-            color: isDestructive
-                ? Colors.red.withOpacity(0.1)
-                : (isDark ? AfricanTheme.stitchCardDark : Colors.white),
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             border: Border.all(
               color: isDestructive
-                  ? Colors.red.withOpacity(0.3)
-                  : (isDark ? AfricanTheme.stitchBorderDark : Colors.transparent),
+                  ? PanAfricanColors.error.withOpacity(0.3)
+                  : (isDark
+                      ? PanAfricanColors.borderDark
+                      : PanAfricanColors.borderLight),
             ),
           ),
           child: Row(
             children: [
-              Icon(
-                icon,
-                color: isDestructive
-                    ? Colors.red
-                    : (isDark ? Colors.white : Colors.black87),
-                size: 20,
+              Container(
+                padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                decoration: BoxDecoration(
+                  color: isDestructive
+                      ? PanAfricanColors.error.withOpacity(0.1)
+                      : PanAfricanColors.primary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                ),
+                child: Icon(
+                  icon,
+                  color: isDestructive
+                      ? PanAfricanColors.error
+                      : PanAfricanColors.primary,
+                  size: 24.sp,
+                ),
               ),
-              SizedBox(width: 3.w),
+              SizedBox(width: PanAfricanSpacing.md),
               Text(
                 label,
-                style: TextStyle(
-                  fontSize: 16.sp,
+                style: PanAfricanTypography.bodyLarge(context).copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isDestructive
-                      ? Colors.red
-                      : (isDark ? Colors.white : Colors.black87),
+                  color: isDestructive ? PanAfricanColors.error : null,
                 ),
+              ),
+              const Spacer(),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: isDestructive
+                    ? PanAfricanColors.error
+                    : PanAfricanColors.neutralMedium,
+                size: 24.sp,
               ),
             ],
           ),
@@ -445,16 +511,16 @@ class _ActionButton extends StatelessWidget {
 
 class _PatternPainter extends CustomPainter {
   final Color color;
-  
+
   _PatternPainter({required this.color});
-  
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
-    
+
     const spacing = 35.0;
     for (double i = 0; i < size.width + size.height; i += spacing) {
       canvas.drawLine(
@@ -464,8 +530,7 @@ class _PatternPainter extends CustomPainter {
       );
     }
   }
-  
+
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-

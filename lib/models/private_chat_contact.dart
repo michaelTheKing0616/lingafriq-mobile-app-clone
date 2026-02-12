@@ -20,7 +20,7 @@ class PrivateChatContact {
       id: profile.id,
       username: profile.username,
       email: profile.email,
-      avatarUrl: profile.avater,
+      avatarUrl: profile.avatar,
       language: profile.nationality,
     );
   }

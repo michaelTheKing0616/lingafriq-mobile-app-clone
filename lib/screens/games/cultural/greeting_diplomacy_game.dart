@@ -86,10 +86,14 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
       });
     } catch (e) {
       debugPrint('Error loading greeting scenario: $e');
+      // Use fallback content so game is still playable
+      final fallbackGreetings = _getFallbackGreetings();
       setState(() {
-        _isLoadingScenario = false;
-        _greetingOptions = _getFallbackGreetings();
+        _currentScenario = {'content': 'You meet an elder in the village'};
+        _round++;
         _scenarioDescription = 'You meet an elder in the village';
+        _greetingOptions = fallbackGreetings;
+        _isLoadingScenario = false;
       });
     }
   }

@@ -1,5 +1,7 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -14,6 +16,11 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
 class GlobalChatScreenMaterial3 extends HookConsumerWidget {
@@ -26,6 +33,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     final channels = useState<List<String>>(['general', 'yoruba', 'hausa', 'igbo', 'pidgin', 'swahili', 'zulu']);
     final selectedChannel = useState('general');
     final isLoading = useState(false);
+    final isLoadingMessages = useState(true);
     final loadError = useState<String?>(null);
     final scrollController = useScrollController();
     final showChannels = useState(false);
@@ -41,6 +49,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     }
 
     Future<void> loadMessages() async {
+      isLoadingMessages.value = true;
       loadError.value = null;
       try {
         final response = await ApiService.get(
@@ -63,8 +72,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           messages.value = list;
         }
       } catch (e) {
-        loadError.value = 'Connection failed. Tap Retry to load messages.';
+        loadError.value = e is DioException
+            ? TransportErrorPolicy.toUserMessage(e)
+            : 'Connection failed. Tap Retry to load messages.';
         if (context.mounted) ErrorHandler.showError(context, e);
+      } finally {
+        isLoadingMessages.value = false;
       }
     }
 
@@ -120,12 +133,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           IconButton(
             icon: Icon(Icons.person_search),
             onPressed: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 SmoothPageRoute(
                   child: UserSearchGlobalIdScreen(
                     onUserSelected: (user) {
-                      // Mention user in chat or open private chat
                       messageController.text = '@${user['global_id'] ?? user['username']} ';
                     },
                     currentChatType: 'global',
@@ -137,12 +150,16 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ),
           IconButton(
             icon: Icon(Icons.tag),
-            onPressed: () => showChannels.value = !showChannels.value,
+            onPressed: () {
+              HapticFeedback.selectionClick();
+              showChannels.value = !showChannels.value;
+            },
             tooltip: 'Channels',
           ),
           IconButton(
             icon: Icon(Icons.more_vert),
             onPressed: () {
+              HapticFeedback.selectionClick();
               // Moderation tools
             },
             tooltip: 'More',
@@ -150,18 +167,9 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceDark
+            : PanAfricanColors.surfaceLight,
         child: Row(
           children: [
             // Channels Sidebar
@@ -197,23 +205,17 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                           final channel = channels.value[index];
                           final isSelected = selectedChannel.value == channel;
 
-                          return ListTile(
-                            selected: isSelected,
+                          return PanAfricanListTile(
+                            title: '#$channel',
                             leading: Icon(
                               Icons.tag,
                               color: isSelected
                                   ? PanAfricanColors.primary
                                   : PanAfricanColors.neutralMedium,
                             ),
-                            title: Text(
-                              '#$channel',
-                              style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                fontWeight: isSelected ? FontWeight.w700 : FontWeight.normal,
-                                color: isSelected
-                                    ? PanAfricanColors.primary
-                                    : null,
-                              ),
-                            ),
+                            trailing: isSelected
+                                ? Icon(Icons.check_circle, color: PanAfricanColors.primary)
+                                : null,
                             onTap: () {
                               selectedChannel.value = channel;
                               HapticFeedback.mediumImpact();
@@ -232,38 +234,47 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                 children: [
                   // Messages List
                   Expanded(
-                    child: messages.value.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.chat_bubble_outline,
-                                  size: 64.sp,
-                                  color: PanAfricanColors.neutralMedium,
-                                ),
-                                SizedBox(height: PanAfricanSpacing.md),
-                                Text(
-                                  'No messages yet',
-                                  style: PanAfricanTypography.bodyLarge(context),
-                                ),
-                                SizedBox(height: PanAfricanSpacing.xs),
-                                Text(
-                                  'Be the first to start the conversation!',
-                                  style: PanAfricanTypography.bodySmall(context),
-                                ),
-                              ],
-                            ),
+                    child: isLoadingMessages.value
+                        ? ListView.builder(
+                            padding: EdgeInsets.all(PanAfricanSpacing.md),
+                            itemCount: 5,
+                            itemBuilder: (context, index) => const SkeletonListCard(),
                           )
-                        : OptimizedListView.builder(
+                        : loadError.value != null
+                            ? AppErrorState(
+                                message: loadError.value!,
+                                onRetry: loadMessages,
+                                icon: Icons.wifi_off_rounded,
+                              )
+                            : messages.value.isEmpty
+                                ? AppEmptyState(
+                                    icon: Icons.chat_bubble_outline,
+                                    title: 'No messages yet',
+                                    subtitle: 'Be the first to start the conversation!',
+                                    actionLabel: 'Say hello',
+                                    onAction: () {
+                                      messageController.text =
+                                          'Hello everyone! Excited to learn together.';
+                                      sendMessage();
+                                    },
+                                  )
+                                : OptimizedListView.builder(
                             controller: scrollController,
                             padding: EdgeInsets.all(PanAfricanSpacing.md),
                             itemCount: messages.value.length,
                             itemBuilder: (context, index) {
                               final message = messages.value[index];
+                              final currentUser = ref.read(userProvider);
+                              final senderId = message['sender_id'] is Map
+                                  ? (message['sender_id'] as Map)['id']
+                                  : message['sender_id'];
+                              final isFromCurrentUser = currentUser != null &&
+                                  senderId != null &&
+                                  senderId.toString() == currentUser.id.toString();
                               return _GlobalMessageBubble(
                                 message: message,
                                 isDark: isDark,
+                                isFromCurrentUser: isFromCurrentUser,
                               )
                                   .animate(delay: (index * 30).ms)
                                   .fadeIn(duration: 200.ms);
@@ -283,36 +294,26 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextField(
+                          child: PanAfricanTextField(
                             controller: messageController,
-                            decoration: InputDecoration(
-                              hintText: 'Type a message...',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                              ),
-                              filled: true,
-                              fillColor: isDark
-                                  ? PanAfricanColors.surfaceDark
-                                  : PanAfricanColors.surfaceLight,
-                            ),
-                            onSubmitted: (_) => sendMessage(),
+                            hint: 'Type a message...',
+                            maxLines: 3,
+                            onChanged: (_) {},
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        IconButton(
-                          icon: isLoading.value
-                              ? SizedBox(
-                                  width: 20.w,
-                                  height: 20.h,
-                                  child: SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(strokeWidth: 2),
-                                  ),
-                                )
-                              : Icon(Icons.send),
-                          onPressed: isLoading.value ? null : sendMessage,
-                          color: PanAfricanColors.primary,
+                        PanAfricanButton(
+                          label: 'Send',
+                          icon: Icons.send_rounded,
+                          isLoading: isLoading.value,
+                          onPressed: isLoading.value
+                              ? null
+                              : () {
+                                  HapticFeedback.lightImpact();
+                                  sendMessage();
+                                },
+                          backgroundColor: PanAfricanColors.primary,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ],
                     ),
@@ -331,10 +332,12 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
 class _GlobalMessageBubble extends StatelessWidget {
   final Map<String, dynamic> message;
   final bool isDark;
+  final bool isFromCurrentUser;
 
   const _GlobalMessageBubble({
     required this.message,
     required this.isDark,
+    this.isFromCurrentUser = false,
   });
 
   @override
@@ -348,22 +351,27 @@ class _GlobalMessageBubble extends StatelessWidget {
         message['sender'];
     final senderName = rawName is String ? rawName : (rawName?.toString() ?? 'Unknown');
     final isToxic = message['flagged_toxic'] ?? false;
+    final timestamp = message['createdAt'] ?? message['timestamp'];
+    final avatarUrl = sender?['avatar_url'] ?? sender?['avatar'] ?? message['avatar'];
+    final globalId = sender?['global_id'] ?? message['global_id'];
+    final messageText = message['message'] ?? message['body'] ?? message['text'] ?? '';
+    final bubbleColor = isToxic
+        ? PanAfricanColors.error.withOpacity(0.08)
+        : (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight);
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleAvatar(
-            radius: 20.r,
-            backgroundColor: isToxic
-                ? PanAfricanColors.error
-                : PanAfricanColors.primary,
-            child: Text(
-              senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
-              style: PanAfricanTypography.labelMedium(context)
-                  .copyWith(color: Colors.white),
-            ),
+          PanAfricanAvatar(
+            imageUrl: avatarUrl is String ? avatarUrl : null,
+            initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
+            size: 40.w,
+            backgroundColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+            borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
+            showBadge: isToxic,
+            badgeColor: PanAfricanColors.error,
           ),
           SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
@@ -372,44 +380,51 @@ class _GlobalMessageBubble extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text(
-                      senderName,
-                      style: PanAfricanTypography.labelSmall(context)
-                          .copyWith(color: PanAfricanColors.primary),
-                    ),
-                    SizedBox(width: PanAfricanSpacing.xs),
-                    if (isToxic)
-                      Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: PanAfricanSpacing.xs,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: PanAfricanColors.error.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Text(
-                          'FLAGGED',
-                          style: PanAfricanTypography.labelSmall(context)
-                              .copyWith(
-                            color: PanAfricanColors.error,
-                            fontSize: 10.sp,
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text(
+                            senderName,
+                            style: PanAfricanTypography.labelMedium(context)
+                                .copyWith(color: PanAfricanColors.primary),
                           ),
-                        ),
+                          if (globalId != null) ...[
+                            SizedBox(width: PanAfricanSpacing.xxs),
+                            Text(
+                              '@${globalId.toString()}',
+                              style: PanAfricanTypography.labelSmall(context).copyWith(
+                                color: PanAfricanColors.neutralMedium,
+                              ),
+                            ),
+                          ],
+                          if (isToxic) ...[
+                            SizedBox(width: PanAfricanSpacing.xs),
+                            PanAfricanBadge(
+                              label: 'Flagged',
+                              color: PanAfricanColors.error,
+                              icon: Icons.report_problem_rounded,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    if (timestamp != null)
+                      Text(
+                        _formatTimestamp(timestamp.toString()),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
                   ],
                 ),
                 SizedBox(height: PanAfricanSpacing.xxs),
-                Container(
-                  padding: EdgeInsets.all(PanAfricanSpacing.md),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? PanAfricanColors.surfaceContainerDark
-                        : PanAfricanColors.surfaceContainerLight,
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                PanAfricanCard(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.md,
+                    vertical: PanAfricanSpacing.sm,
                   ),
+                  backgroundColor: bubbleColor,
                   child: Text(
-                    message['message'] ?? message['body'] ?? message['text'] ?? '',
+                    messageText,
                     style: PanAfricanTypography.bodyMedium(context),
                   ),
                 ),
@@ -419,6 +434,20 @@ class _GlobalMessageBubble extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _formatTimestamp(String timestamp) {
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m';
+      if (diff.inDays < 1) return '${diff.inHours}h';
+      return '${date.day}/${date.month}';
+    } catch (_) {
+      return '';
+    }
   }
 }
 

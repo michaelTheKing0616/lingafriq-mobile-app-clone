@@ -62,9 +62,9 @@ class _GameAnswerTileState extends State<GameAnswerTile> {
       borderColor = Colors.blue;
       textColor = Colors.blue.shade900;
     } else {
-      backgroundColor = Colors.white;
+      backgroundColor = Theme.of(context).colorScheme.surface;
       borderColor = Colors.grey.shade300;
-      textColor = Colors.black87;
+      textColor = Theme.of(context).colorScheme.onSurface;
     }
 
     return GestureDetector(

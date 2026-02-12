@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
@@ -35,6 +37,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
     final scrollController = useScrollController();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     Future<void> loadMessages() async {
       loadError.value = null;
@@ -45,13 +48,23 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
 
         if (response.statusCode == 200 && response.data != null) {
           final data = response.data as Map<String, dynamic>?;
-          final raw = data?['data'] ?? data?['messages'];
-          messages.value = raw is List
-              ? raw.map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()}).toList()
-              : [];
+          final raw = data?['data'];
+          List<dynamic> list = const [];
+          if (raw is List) {
+            list = raw;
+          } else if (raw is Map && raw['docs'] is List) {
+            list = raw['docs'] as List;
+          } else if (data?['messages'] is List) {
+            list = data!['messages'] as List;
+          }
+          messages.value = list
+              .map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()})
+              .toList();
         }
       } catch (e) {
-        loadError.value = 'Unable to load messages. Tap Retry to try again.';
+        loadError.value = e is DioException
+            ? TransportErrorPolicy.toUserMessage(e)
+            : 'Unable to load messages. Tap Retry to try again.';
         if (context.mounted) ErrorHandler.showError(context, e);
       }
     }
@@ -64,7 +77,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
         final response = await ApiService.post(
           '/chat/private',
           data: {
-            'recipient_id': otherUserId,
+            'recipientId': otherUserId,
             'message': messageController.text,
           },
         );
@@ -100,7 +113,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                 child: Text(
                   otherUserName[0].toUpperCase(),
                   style: PanAfricanTypography.labelSmall(context)
-                      .copyWith(color: Colors.white),
+                      .copyWith(color: colorScheme.onPrimary),
                 ),
               ),
               SizedBox(width: PanAfricanSpacing.sm),
@@ -193,14 +206,41 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                       decoration: InputDecoration(
                         hintText: 'Type a message...',
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: isDark
+                                ? PanAfricanColors.borderDark
+                                : PanAfricanColors.borderLight,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: PanAfricanColors.primary,
+                            width: 2,
+                          ),
                         ),
                         filled: true,
                         fillColor: isDark
                             ? PanAfricanColors.surfaceDark
                             : PanAfricanColors.surfaceLight,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
                       ),
-                      onSubmitted: (_) => sendMessage(),
+                      onSubmitted: (_) {
+                        HapticFeedback.lightImpact();
+                        sendMessage();
+                      },
                     ),
                   ),
                   SizedBox(width: PanAfricanSpacing.sm),
@@ -212,7 +252,12 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : Icon(Icons.send),
-                    onPressed: isLoading.value ? null : sendMessage,
+                    onPressed: isLoading.value
+                        ? null
+                        : () {
+                            HapticFeedback.lightImpact();
+                            sendMessage();
+                          },
                     color: PanAfricanColors.primary,
                   ),
                 ],
@@ -239,37 +284,68 @@ class _PrivateMessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final timestamp = message['createdAt'] ?? message['timestamp'];
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
         constraints: BoxConstraints(maxWidth: 0.7.sw),
-        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.sm,
+        ),
         decoration: BoxDecoration(
           color: isMe
               ? PanAfricanColors.primary
               : (isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(PanAfricanRadius.md),
-            topRight: Radius.circular(PanAfricanRadius.md),
-            bottomLeft: isMe
-                ? Radius.circular(PanAfricanRadius.md)
-                : Radius.circular(0),
-            bottomRight: isMe
-                ? Radius.circular(0)
-                : Radius.circular(PanAfricanRadius.md),
+                  ? PanAfricanColors.cardDark
+                  : PanAfricanColors.cardLight),
+          borderRadius: PanAfricanRadius.lgBR.copyWith(
+            bottomLeft: isMe ? null : const Radius.circular(4),
+            bottomRight: isMe ? const Radius.circular(4) : null,
           ),
         ),
-        child: Text(
-          message['message'] ?? '',
-          style: PanAfricanTypography.bodyMedium(context).copyWith(
-            color: isMe ? Colors.white : null,
-          ),
+        child: Column(
+          crossAxisAlignment:
+              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Text(
+              message['message'] ?? '',
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: isMe ? colorScheme.onPrimary : null,
+              ),
+            ),
+            if (timestamp != null) ...[
+              SizedBox(height: PanAfricanSpacing.xxs),
+              Text(
+                _formatTimestamp(timestamp.toString()),
+                style: PanAfricanTypography.labelSmall(context).copyWith(
+                  color: isMe
+                      ? colorScheme.onPrimary.withOpacity(0.7)
+                      : PanAfricanColors.neutralMedium,
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );
+  }
+
+  String _formatTimestamp(String timestamp) {
+    try {
+      final date = DateTime.parse(timestamp);
+      final now = DateTime.now();
+      final diff = now.difference(date);
+      if (diff.inMinutes < 1) return 'now';
+      if (diff.inHours < 1) return '${diff.inMinutes}m';
+      if (diff.inDays < 1) return '${diff.inHours}h';
+      return '${date.day}/${date.month}';
+    } catch (_) {
+      return '';
+    }
   }
 }
 

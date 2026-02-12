@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 /// Pronunciation Score from voice analysis
 class PronunciationScore {
@@ -174,8 +174,8 @@ class VoiceApiService {
         'task': task,
       });
 
-      final response = await _dio.post(
-        '${Api.baseurl}api/voice/stt/transcribe',
+    final response = await _dio.post(
+      ApiContract.url(ApiContract.voice.sttTranscribe),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -209,7 +209,7 @@ class VoiceApiService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/stt/transcribe',
+        ApiContract.url(ApiContract.voice.sttTranscribe),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -229,7 +229,8 @@ class VoiceApiService {
   /// Get supported STT languages
   Future<List<String>> getSupportedSTTLanguages() async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/voice/stt/languages');
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.voice.sttLanguages));
       if (response.statusCode == 200) {
         return List<String>.from(response.data['languages'] ?? []);
       }
@@ -252,7 +253,7 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/tts/synthesize',
+        ApiContract.url(ApiContract.voice.ttsSynthesize),
         data: {
           'text': text,
           'language': language,
@@ -277,7 +278,8 @@ class VoiceApiService {
   /// Get supported TTS languages
   Future<List<String>> getSupportedTTSLanguages() async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/voice/tts/languages');
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.voice.ttsLanguages));
       if (response.statusCode == 200) {
         return List<String>.from(response.data['languages'] ?? []);
       }
@@ -328,7 +330,7 @@ class VoiceApiService {
       }
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/pronunciation/analyze',
+        ApiContract.url(ApiContract.pronunciation.analyze),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -365,7 +367,7 @@ class VoiceApiService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/pronunciation/quick',
+        ApiContract.url(ApiContract.pronunciation.quick),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -402,7 +404,7 @@ class VoiceApiService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/pronunciation/tone',
+        ApiContract.url(ApiContract.pronunciation.tone),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -426,7 +428,9 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/pronunciation/difficulty/$userId/$language',
+        ApiContract.url(
+          ApiContract.pronunciation.difficulty(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -445,7 +449,9 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/pronunciation/profile/$userId/$language',
+        ApiContract.url(
+          ApiContract.pronunciation.profile(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -473,7 +479,7 @@ class VoiceApiService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/lessons',
+        ApiContract.url(ApiContract.voice.lessons),
         queryParameters: queryParams,
       );
 
@@ -498,7 +504,7 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/lessons/$lessonId',
+        ApiContract.url(ApiContract.voice.lesson(lessonId)),
         queryParameters: {'language': language},
       );
 
@@ -518,7 +524,9 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/lessons/progress/$userId/$language',
+        ApiContract.url(
+          ApiContract.voice.lessonsProgress(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -540,7 +548,7 @@ class VoiceApiService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/lessons/progress',
+        ApiContract.url(ApiContract.voice.lessonsProgressUpdate),
         data: {
           'user_id': userId,
           'lesson_id': lessonId,
@@ -565,7 +573,7 @@ class VoiceApiService {
   Future<bool> checkVoiceServiceHealth() async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/health',
+        ApiContract.url(ApiContract.voice.health),
         options: Options(receiveTimeout: const Duration(seconds: 5)),
       );
       return response.statusCode == 200 && 

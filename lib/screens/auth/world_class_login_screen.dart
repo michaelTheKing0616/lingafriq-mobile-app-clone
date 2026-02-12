@@ -216,7 +216,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         child: Icon(
           Icons.language,
           size: 60.sp,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
         ),
       ),
     );
@@ -230,7 +230,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           'Welcome Back!',
           style: PanAfricanTypography.headlineLarge(context).copyWith(
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -257,7 +257,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           'Email',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
@@ -322,13 +322,15 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           'Password',
           style: PanAfricanTypography.labelLarge(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
         TextFormField(
           controller: controller,
           obscureText: !showPassword.value,
+          keyboardType: TextInputType.visiblePassword,
+          enableSuggestions: false,
           textInputAction: TextInputAction.done,
           validator: Validators.passwordValidator,
           autofillHints: const [AutofillHints.password],
@@ -448,7 +450,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           child: Text(
             'Sign In',
             style: PanAfricanTypography.titleLarge(context).copyWith(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -525,7 +527,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                 Text(
                   'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
                   style: PanAfricanTypography.bodyLarge(context).copyWith(
-                    color: isDark ? Colors.white : PanAfricanColors.textPrimaryLight,
+                    color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

@@ -3,18 +3,52 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../screens/games/game_router.dart';
 import '../models/game/game_session_model.dart';
 
+/// Result class for game loading operations
+class GameLoadResult {
+  final bool success;
+  final String? errorMessage;
+  final GameType gameType;
+
+  const GameLoadResult({
+    required this.success,
+    required this.gameType,
+    this.errorMessage,
+  });
+
+  factory GameLoadResult.success(GameType gameType) => GameLoadResult(
+    success: true,
+    gameType: gameType,
+  );
+
+  factory GameLoadResult.failure(GameType gameType, String message) => GameLoadResult(
+    success: false,
+    gameType: gameType,
+    errorMessage: message,
+  );
+}
+
 /// Lazy Game Loader Service
 /// Optimizes game loading by preloading common games and lazy-loading others
 class LazyGameLoader {
   final Ref _ref;
   final Map<GameType, bool> _loadedGames = {};
   final Map<GameType, DateTime> _loadTimes = {};
+  final Map<GameType, String> _loadErrors = {};
   static const Duration _preloadWindow = Duration(minutes: 5);
 
   LazyGameLoader(this._ref);
 
+  /// Get the last error for a game type (if any)
+  String? getLastError(GameType gameType) => _loadErrors[gameType];
+
+  /// Check if a game had a loading error
+  bool hasError(GameType gameType) => _loadErrors.containsKey(gameType);
+
+  /// Clear error for a game (before retry)
+  void clearError(GameType gameType) => _loadErrors.remove(gameType);
+
   /// Preload commonly used games
-  Future<void> preloadCommonGames() async {
+  Future<List<GameLoadResult>> preloadCommonGames() async {
     final commonGames = [
       GameType.wordMatchAudio,
       GameType.pronunciationDuel,
@@ -22,17 +56,28 @@ class LazyGameLoader {
       GameType.drumRhythmShadowing,
     ];
 
+    final results = <GameLoadResult>[];
+
     for (final gameType in commonGames) {
       if (_loadedGames[gameType] != true) {
         try {
           await _preloadGame(gameType);
           _loadedGames[gameType] = true;
           _loadTimes[gameType] = DateTime.now();
+          _loadErrors.remove(gameType); // Clear any previous error
+          results.add(GameLoadResult.success(gameType));
         } catch (e) {
-          debugPrint('Error preloading game $gameType: $e');
+          final errorMsg = 'Failed to preload ${gameType.displayName}: $e';
+          debugPrint('⚠️ LazyGameLoader: $errorMsg');
+          _loadErrors[gameType] = e.toString();
+          results.add(GameLoadResult.failure(gameType, errorMsg));
         }
+      } else {
+        results.add(GameLoadResult.success(gameType));
       }
     }
+    
+    return results;
   }
 
   /// Preload a specific game
@@ -80,13 +125,13 @@ class LazyGameLoader {
     return _loadedGames[gameType] ?? false;
   }
 
-  /// Load game on demand
-  Future<void> loadGameOnDemand(GameType gameType) async {
+  /// Load game on demand - returns result with success/failure status
+  Future<GameLoadResult> loadGameOnDemand(GameType gameType) async {
     if (_loadedGames[gameType] ?? false) {
       // Check if still fresh
       final loadTime = _loadTimes[gameType];
       if (loadTime != null && DateTime.now().difference(loadTime) < _preloadWindow) {
-        return; // Already loaded and fresh
+        return GameLoadResult.success(gameType); // Already loaded and fresh
       }
     }
 
@@ -94,9 +139,21 @@ class LazyGameLoader {
       await _preloadGame(gameType);
       _loadedGames[gameType] = true;
       _loadTimes[gameType] = DateTime.now();
+      _loadErrors.remove(gameType); // Clear any previous error
+      return GameLoadResult.success(gameType);
     } catch (e) {
-      debugPrint('Error loading game on demand: $e');
+      final errorMsg = 'Failed to load ${gameType.displayName}: $e';
+      debugPrint('⚠️ LazyGameLoader: $errorMsg');
+      _loadErrors[gameType] = e.toString();
+      return GameLoadResult.failure(gameType, errorMsg);
     }
+  }
+
+  /// Retry loading a game that previously failed
+  Future<GameLoadResult> retryGameLoad(GameType gameType) async {
+    clearError(gameType);
+    _loadedGames.remove(gameType);
+    return loadGameOnDemand(gameType);
   }
 
   /// Clear loaded games (memory management)

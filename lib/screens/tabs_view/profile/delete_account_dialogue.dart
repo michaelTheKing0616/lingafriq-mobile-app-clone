@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
   const DeleteAccountDialog({Key? key}) : super(key: key);
@@ -20,9 +21,9 @@ class DeleteAccountDialog extends StatelessWidget {
             height: 0.3.sw,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.surface,
             ),
-            child: Icon(Icons.close, color: AppColors.red, size: 0.2.sw),
+            child: Icon(Icons.close, color: PanAfricanColors.error, size: 0.2.sw),
           ),
           "Are you sure you want to DELETE account?"
               .text
@@ -31,21 +32,23 @@ class DeleteAccountDialog extends StatelessWidget {
               .white
               .make()
               .pSymmetric(h: 0.15.sw, v: 24),
-          PrimaryButton(
+          PanAfricanButton(
             width: 0.5.sw,
-            text: "No",
-            color: AppColors.red,
-            onTap: () {
+            label: "No",
+            isOutlined: true,
+            backgroundColor: PanAfricanColors.primary,
+            foregroundColor: PanAfricanColors.primary,
+            onPressed: () {
               Navigator.of(context).pop(false);
             },
           ),
           16.heightBox,
-          PrimaryButton(
+          PanAfricanButton(
             width: 0.5.sw,
-            text: "Yes",
-            isOutline: true,
-            textColor: Colors.white,
-            onTap: () {
+            label: "Yes",
+            backgroundColor: PanAfricanColors.error,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            onPressed: () {
               Navigator.of(context).pop(true);
             },
           ),
@@ -57,7 +60,7 @@ class DeleteAccountDialog extends StatelessWidget {
   static Future showDeleteAccountDialog(BuildContext context) async {
     return await showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.85),
+      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.85),
       builder: (context) => const DeleteAccountDialog(),
     );
   }
@@ -95,7 +98,7 @@ class EnterPasswordDialog extends HookConsumerWidget {
   static Future show(BuildContext context) async {
     return await showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.85),
+      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.85),
       builder: (context) => const EnterPasswordDialog(),
     );
   }

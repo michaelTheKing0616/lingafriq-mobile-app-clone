@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,6 +14,7 @@ import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/screens/games/game_router.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Beautiful Material 3 Games Screen
@@ -86,23 +87,19 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       message: 'Opening game...',
       child: Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: 'Back',
+        ),
         title: Text('Language Games (${allGames.length}+)'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
+        color: isDark
+            ? PanAfricanColors.surfaceDark
+            : PanAfricanColors.surfaceLight,
         child: Column(
           children: [
             // Language Selector
@@ -162,7 +159,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                           HapticFeedback.lightImpact();
                         }
                       },
-                      selectedColor: PanAfricanColors.secondaryContainer,
+                      selectedColor: PanAfricanColors.primaryContainer,
                       labelStyle: PanAfricanTypography.labelMedium(context),
                     ),
                   ),
@@ -249,17 +246,27 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                                 }
                                 if (!context.mounted) return;
                                 try {
-                                  Navigator.push(
+                                  final gameWidget = buildGameScreen(
+                                    gameType: gameType,
+                                    language: selectedLanguage.value,
+                                    onBack: () => Navigator.of(context).pop(),
+                                    ref: ref,
+                                  );
+                                  if (!context.mounted) return;
+                                  await Navigator.push(
                                     context,
                                     SmoothPageRoute(
-                                      child: buildGameScreen(
-                                        gameType: gameType,
-                                        language: selectedLanguage.value,
-                                        onBack: () => Navigator.of(context).pop(),
-                                        ref: ref,
+                                      child: ErrorBoundary(
+                                        errorMessage: 'This game could not load.',
+                                        onRetry: () => Navigator.of(context).pop(),
+                                        child: gameWidget,
                                       ),
                                     ),
                                   );
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    ErrorHandler.showError(context, e);
+                                  }
                                 } finally {
                                   isLoading.value = false;
                                 }
@@ -297,95 +304,76 @@ class _GameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final category = game['category'] ?? 'game';
-    final color = _getCategoryColor(category);
-    final icon = game['icon'] as IconData? ?? Icons.sports_esports;
+    final icon = game['icon'] as IconData? ?? Icons.sports_esports_rounded;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
       onTap: () {
-        HapticFeedback.mediumImpact();
+        HapticFeedback.lightImpact();
         onTap();
       },
       child: PanAfricanCard(
         hasHoverEffect: true,
-        hasGlow: true,
-        glowColor: color,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    color,
-                    color.withOpacity(0.7),
-                  ],
-                ),
+                color: PanAfricanColors.primary,
                 shape: BoxShape.circle,
+                boxShadow: PanAfricanShadows.sm,
               ),
               child: Icon(
                 icon,
-                size: 32.sp,
-                color: Colors.white,
+                size: 24.sp,
+                color: colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              game['name'] ?? 'Game',
-              style: PanAfricanTypography.titleSmall(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['name'] ?? 'Game',
+                style: PanAfricanTypography.titleSmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['description'] ?? '',
+                style: PanAfricanTypography.bodySmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.xs),
-            Text(
-              game['description'] ?? '',
-              style: PanAfricanTypography.bodySmall(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: PanAfricanSpacing.xs),
-            PanAfricanBadge(
-              label: category,
-              color: color,
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.sm,
+                vertical: PanAfricanSpacing.xxs,
+              ),
+              decoration: BoxDecoration(
+                color: PanAfricanColors.primaryContainer.withOpacity(0.5),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Text(
+                category,
+                style: PanAfricanTypography.labelSmall(
+                  context,
+                  color: PanAfricanColors.primary,
+                ),
+              ),
             ),
           ],
         ),
       ),
     );
-  }
-
-  Color _getCategoryColor(String category) {
-    switch (category.toLowerCase()) {
-      case 'vocabulary':
-        return PanAfricanColors.primary;
-      case 'grammar':
-        return PanAfricanColors.kenteBlue;
-      case 'pronunciation':
-        return PanAfricanColors.tertiary;
-      case 'cultural':
-        return PanAfricanColors.kenteRed;
-      default:
-        return PanAfricanColors.secondary;
-    }
-  }
-
-  IconData _getCategoryIcon(String category) {
-    switch (category.toLowerCase()) {
-      case 'vocabulary':
-        return Icons.book;
-      case 'grammar':
-        return Icons.menu_book;
-      case 'pronunciation':
-        return Icons.record_voice_over;
-      case 'cultural':
-        return Icons.public;
-      default:
-        return Icons.sports_esports;
-    }
   }
 }
 

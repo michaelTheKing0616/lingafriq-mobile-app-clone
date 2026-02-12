@@ -59,3 +59,9 @@ logs_*/
 # Cursor / IDE artifacts
 Curosr_Chat_History/
 .cursor/
+# Secrets / sensitive config
+lib/config/secrets_manager.dart
+*.env
+.env.*
+google-services.json
+GoogleService-Info.plist

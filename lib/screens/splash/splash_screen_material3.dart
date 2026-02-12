@@ -106,7 +106,7 @@ class _SplashScreenMaterial3State extends ConsumerState<SplashScreenMaterial3> {
                   style: PanAfricanTypography.bodyMedium(context).copyWith(
                     color: isDark
                         ? PanAfricanColors.textPrimaryDark
-                        : Colors.white,
+                        : Theme.of(context).colorScheme.onSurface,
                   ),
                   textAlign: TextAlign.center,
                 )

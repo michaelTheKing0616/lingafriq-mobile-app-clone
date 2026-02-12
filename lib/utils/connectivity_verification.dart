@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../services/backend_connectivity_test.dart';
-import '../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../services/env_config.dart';
 
 /// Connectivity Verification Utility
@@ -34,7 +34,7 @@ class ConnectivityVerification {
   /// Print connectivity status to console (for debugging)
   static Future<void> printStatus() async {
     debugPrint('=== Backend Connectivity Status ===');
-    debugPrint('Backend URL: ${Api.baseurl}');
+    debugPrint('Backend URL: ${ApiContract.baseUrl}');
     debugPrint('URL Source: EnvConfig.backendBaseUrl');
     debugPrint('Configured URL: ${EnvConfig.backendBaseUrl}');
     

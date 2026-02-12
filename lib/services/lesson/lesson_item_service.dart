@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '../../models/lesson_item_model.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../utils/simple_cache.dart';
 import '../../core/network/api_client_with_recovery.dart';
 import '../../services/offline/offline_handler.dart';
@@ -56,7 +56,7 @@ class LessonItemService {
     try {
       final client = ApiClientWithRecovery(_dio);
       final response = await client.get<Map<String, dynamic>>(
-        '${Api.baseurl}v1/lesson-items',
+        ApiContract.url(ApiContract.lessonItems.list),
         queryParameters: {
           if (languageCode != null) 'language_code': languageCode,
           if (level != null) 'level': level,
@@ -106,7 +106,7 @@ class LessonItemService {
     try {
       final client = ApiClientWithRecovery(_dio);
       final response = await client.get<Map<String, dynamic>>(
-        '${Api.baseurl}v1/lesson-items/$itemId',
+        ApiContract.url(ApiContract.lessonItems.item(itemId)),
       );
 
       if (response.statusCode == 200 && response.data != null) {
@@ -169,7 +169,7 @@ class LessonItemService {
     try {
       final client = ApiClientWithRecovery(_dio);
       final response = await client.get<Map<String, dynamic>>(
-        '${Api.baseurl}v1/lesson-items/stats',
+        ApiContract.url(ApiContract.lessonItems.stats),
         queryParameters: {
           if (languageCode != null) 'language_code': languageCode,
           if (level != null) 'level': level,

@@ -47,8 +47,8 @@ class TutorialDetailScreen extends ConsumerWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const BackButton(color: Colors.white),
-                      title.text.xl2.semiBold.maxLines(2).ellipsis.color(Colors.white).make().p16(),
+                      BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                      title.text.xl2.semiBold.maxLines(2).ellipsis.color(Theme.of(context).colorScheme.onPrimary).make().p16(),
                     ],
                   ).expand(),
                   PointsAndProfileImageBuilder(
@@ -65,14 +65,14 @@ class TutorialDetailScreen extends ConsumerWidget {
                   AudioPlayerWidget(audioUrl: audio!).pOnly(top: 8),
                 if ((video != null && video!.isNotEmpty))
                   Card(
-                    color: context.isDarkMode ? context.cardColor : Colors.white,
+                    color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: PortraitPlayerPage(videoUrl: video!),
                   ).px16().py8(),
                 if ((image != null && image!.isNotEmpty))
                   Card(
-                    color: context.isDarkMode ? context.cardColor : Colors.white,
+                    color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: CachedNetworkImage(
@@ -83,7 +83,7 @@ class TutorialDetailScreen extends ConsumerWidget {
                   ).px16(),
                 if ((text != null && text!.isNotEmpty))
                   Card(
-                    color: context.isDarkMode ? context.cardColor : Colors.white,
+                    color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                     elevation: 12,
                     shadowColor: Colors.black38,
                     child: Column(

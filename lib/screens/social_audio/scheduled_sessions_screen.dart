@@ -109,7 +109,7 @@ class _ScheduledSessionsScreenState extends ConsumerState<ScheduledSessionsScree
                     child: Text(
                       'SCHEDULED',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 10.sp,
                         fontWeight: FontWeight.bold,
                       ),

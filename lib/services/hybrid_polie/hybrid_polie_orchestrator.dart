@@ -10,6 +10,7 @@ import '../../utils/api.dart';
 import 'model_router.dart';
 import 'translation_service.dart';
 import 'canonical_phrase_service.dart';
+import '../../config/url_constants.dart';
 import '../../utils/diacritics_enforcer.dart';
 import '../../utils/supported_languages.dart';
 import '../env_config.dart';
@@ -237,7 +238,7 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
       messages.add({'role': 'user', 'content': prompt});
       
       final response = await _dio.post(
-        'https://api.groq.com/openai/v1/chat/completions',
+        UrlConstants.groqChatCompletions,
         data: {
           'model': 'llama-3.3-70b-versatile',
           'messages': messages,

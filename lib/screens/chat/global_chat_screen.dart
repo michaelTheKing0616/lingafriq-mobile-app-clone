@@ -89,6 +89,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
     final isConnected = socketNotifier.isConnected;
     final user = ref.watch(userProvider);
     final isDark = context.isDarkMode;
+    final colorScheme = Theme.of(context).colorScheme;
 
     // Ensure socket is initialized if user is available
     if (user != null && !isConnected) {
@@ -116,26 +117,26 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
                       onPressed: () {
                         HapticFeedback.lightImpact();
                         Navigator.of(context).pop();
                       },
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
                         shape: const CircleBorder(),
                       ),
                     ),
                     SizedBox(width: PanAfricanSpacing.xs),
                     IconButton(
-                      icon: const Icon(Icons.menu, color: Colors.white),
+                      icon: Icon(Icons.menu, color: colorScheme.onPrimary),
                       onPressed: () {
                         HapticFeedback.selectionClick();
                         final scaffoldState = Scaffold.of(context);
                         scaffoldState.openDrawer();
                       },
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
                         shape: const CircleBorder(),
                       ),
                     ),
@@ -147,13 +148,13 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                           Text(
                             'Community Chat',
                             style: PanAfricanTypography.titleMedium(context)
-                                .copyWith(color: Colors.white),
+                                .copyWith(color: colorScheme.onPrimary),
                           ),
                           if (isConnected)
                             Text(
                               '${onlineUsers.length} learners online',
                               style: PanAfricanTypography.labelSmall(context)
-                                  .copyWith(color: Colors.white.withOpacity(0.8)),
+                                  .copyWith(color: colorScheme.onPrimary.withOpacity(0.8)),
                             ),
                         ],
                       ),
@@ -176,14 +177,14 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                               height: 12,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                color: Colors.white70,
+                                color: colorScheme.onPrimary.withOpacity(0.7),
                               ),
                             ),
                             SizedBox(width: PanAfricanSpacing.xxs),
                             Text(
                               'Connecting...',
                               style: PanAfricanTypography.labelSmall(context)
-                                  .copyWith(color: Colors.white70),
+                                  .copyWith(color: colorScheme.onPrimary.withOpacity(0.7)),
                             ),
                           ],
                         ),
@@ -195,17 +196,17 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                         vertical: PanAfricanSpacing.xs,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: colorScheme.onPrimary.withOpacity(0.2),
                         borderRadius: PanAfricanRadius.roundBR,
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.people_rounded, color: Colors.white, size: 16),
+                          Icon(Icons.people_rounded, color: colorScheme.onPrimary, size: 16),
                           SizedBox(width: PanAfricanSpacing.xxs),
                           Text(
                             '${onlineUsers.length}',
                             style: PanAfricanTypography.labelSmall(context)
-                                .copyWith(color: Colors.white),
+                                .copyWith(color: colorScheme.onPrimary),
                           ),
                         ],
                       ),
@@ -237,7 +238,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                         PopupMenuButton<String>(
                           icon: Icon(
                             Icons.language,
-                            color: isDark ? Colors.white : PanAfricanColors.textPrimary,
+                            color: isDark ? colorScheme.onSurface : PanAfricanColors.textPrimary,
                           ),
                           onSelected: (room) {
                             if (_selectedRoom == room) return;
@@ -475,9 +476,9 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                                     }
                                   }
                                 : null,
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.send_rounded,
-                              color: Colors.white,
+                              color: colorScheme.onPrimary,
                               size: 20,
                             ),
                             padding: EdgeInsets.zero,
@@ -502,6 +503,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
     bool isDark,
   ) {
     final username = message['username'] as String? ?? 'Anonymous';
+    final colorScheme = Theme.of(context).colorScheme;
     
     return Padding(
       padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -545,7 +547,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                   Text(
                     message['message'] ?? '',
                     style: PanAfricanTypography.bodyMedium(context).copyWith(
-                      color: isMe ? Colors.white : null,
+                      color: isMe ? colorScheme.onPrimary : null,
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xxs),
@@ -553,7 +555,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                     _formatTime(message['timestamp']),
                     style: PanAfricanTypography.labelSmall(context).copyWith(
                       color: isMe
-                          ? Colors.white.withOpacity(0.7)
+                          ? colorScheme.onPrimary.withOpacity(0.7)
                           : PanAfricanColors.neutralMedium,
                     ),
                   ),

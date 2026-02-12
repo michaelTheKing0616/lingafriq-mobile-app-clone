@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 class ItemsService {
   final Dio _dio;
@@ -9,7 +9,8 @@ class ItemsService {
   /// Get all magic items
   Future<List<dynamic>> getAllItems() async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/items');
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.items.list));
       return response.data;
     } catch (e) {
       rethrow;
@@ -19,7 +20,8 @@ class ItemsService {
   /// Get user inventory
   Future<List<dynamic>> getUserInventory(String userId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/items/users/$userId/inventory');
+      final response = await _dio
+          .get(ApiContract.url(ApiContract.items.userInventory(userId)));
       return response.data;
     } catch (e) {
       rethrow;
@@ -30,7 +32,7 @@ class ItemsService {
   Future<void> claimItem(String userId, String itemCode, {int qty = 1}) async {
     try {
       await _dio.post(
-        '${Api.baseurl}api/items/users/$userId/items/claim',
+        ApiContract.url(ApiContract.items.userClaim(userId)),
         data: {'item_code': itemCode, 'qty': qty},
       );
     } catch (e) {
@@ -42,7 +44,7 @@ class ItemsService {
   Future<Map<String, dynamic>> useItem(String userId, String itemId) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/items/users/$userId/items/use',
+        ApiContract.url(ApiContract.items.userUse(userId)),
         data: {'item_id': itemId},
       );
       return response.data;

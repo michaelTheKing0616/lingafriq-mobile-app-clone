@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 
 /// Result wrapper for safe API calls
 class SafeApiResult<T> {
@@ -74,24 +75,9 @@ class SafeApiCall {
     );
   }
 
-  /// Default retry condition - retry on network errors and 5xx status codes
+  /// Default retry condition using unified TransportErrorPolicy
   static bool _defaultRetryCondition(DioException e) {
-    // Retry on network errors
-    if (e.type == DioExceptionType.connectionTimeout ||
-        e.type == DioExceptionType.sendTimeout ||
-        e.type == DioExceptionType.receiveTimeout ||
-        e.type == DioExceptionType.connectionError) {
-      return true;
-    }
-
-    // Retry on 5xx server errors
-    final statusCode = e.response?.statusCode;
-    if (statusCode != null && statusCode >= 500 && statusCode < 600) {
-      return true;
-    }
-
-    // Don't retry on client errors (4xx) or other errors
-    return false;
+    return TransportErrorPolicy.isRetryable(e);
   }
 
   /// Get user-friendly error message from exception
@@ -100,51 +86,7 @@ class SafeApiCall {
       return 'An unknown error occurred';
     }
 
-    // Network errors
-    if (e.type == DioExceptionType.connectionTimeout) {
-      return 'Connection timeout. Please check your internet connection.';
-    }
-    if (e.type == DioExceptionType.sendTimeout) {
-      return 'Request timeout. Please try again.';
-    }
-    if (e.type == DioExceptionType.receiveTimeout) {
-      return 'Response timeout. Please try again.';
-    }
-    if (e.type == DioExceptionType.connectionError) {
-      return 'Connection error. Please check your internet connection.';
-    }
-
-    // HTTP errors
-    final statusCode = e.response?.statusCode;
-    if (statusCode != null) {
-      switch (statusCode) {
-        case 400:
-          return 'Invalid request. Please check your input.';
-        case 401:
-          return 'Authentication failed. Please log in again.';
-        case 403:
-          return 'Access denied. You don\'t have permission.';
-        case 404:
-          return 'Resource not found.';
-        case 429:
-          return 'Too many requests. Please wait a moment.';
-        case 500:
-          return 'Server error. Please try again later.';
-        case 502:
-          return 'Bad gateway. Please try again later.';
-        case 503:
-          return 'Service unavailable. Please try again later.';
-        default:
-          return 'Error ${statusCode}: ${e.response?.statusMessage ?? 'Unknown error'}';
-      }
-    }
-
-    // Try to get error message from response
-    final errorMessage = e.response?.data?['message'] ?? 
-                        e.response?.data?['error'] ??
-                        e.message;
-    
-    return errorMessage?.toString() ?? 'An error occurred. Please try again.';
+    return TransportErrorPolicy.toUserMessage(e);
   }
 
   /// Execute an API call with null safety checks

@@ -3,13 +3,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/tabs_view/standings/leader_board_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
@@ -44,6 +45,10 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
 
   Widget _buildContent(BuildContext context) {
     final isDark = context.isDarkMode;
+    final textPrimary =
+        isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
     final leaderboardState = ref.watch(leaderboardProvider);
     final profiles = leaderboardState.profiles.value ?? [];
     
@@ -76,8 +81,8 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
     }
 
     const palette = <Color>[
-      AppColors.primaryGreen,
-      AppColors.primaryOrange,
+      PanAfricanColors.primary,
+      PanAfricanColors.tertiary,
       Colors.blue,
       Colors.purple,
       Colors.pink,
@@ -97,85 +102,67 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark
+          ? PanAfricanColors.surfaceDark
+          : PanAfricanColors.surfaceLight,
       body: Stack(
         children: [
           // Gradient Header - Figma Make Style
           Container(
             height: 200,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFFCD116), // Gold
-                  Color(0xFFFF6B35), // Orange
-                ],
+              gradient: PanAfricanGradients.sunset,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(PanAfricanRadius.xxl),
+                bottomRight: Radius.circular(PanAfricanRadius.xxl),
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(16.sp),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
                           onPressed: () => Navigator.of(context).pop(),
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
+                          icon: Icon(Icons.menu, color: Theme.of(context).colorScheme.onPrimary),
                           onPressed: () {
-                            // CRITICAL FIX: Add null check for scaffold state
-                            final scaffoldState = Scaffold.of(context);
-                            if (scaffoldState != null) {
-                              scaffoldState.openDrawer();
-                            }
+                            Scaffold.maybeOf(context)?.openDrawer();
                           },
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
                       ],
                     ),
-                    const Icon(
+                    Icon(
                       Icons.workspace_premium_rounded,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 64,
                     ),
-                    SizedBox(height: 8.sp),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Text(
                       'Global Ranking',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                      style: PanAfricanTypography.headlineLarge(context).copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
-                    SizedBox(height: 4.sp),
+                    SizedBox(height: PanAfricanSpacing.xxxs),
                     Text(
                       'Top learners worldwide',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.white.withOpacity(0.9),
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                       ),
                     ),
                   ],
@@ -190,28 +177,26 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
             right: 0,
             bottom: 0,
             child: SingleChildScrollView(
-              padding: EdgeInsets.all(16.sp),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Global Stats Cards
                   _buildGlobalStats(context, globalStats, isDark),
-                  SizedBox(height: 24.sp),
+                  SizedBox(height: PanAfricanSpacing.lg),
                   
                   // Top Languages Chart
                   _buildTopLanguagesChart(context, topLanguageRows, isDark),
-                  SizedBox(height: 24.sp),
+                  SizedBox(height: PanAfricanSpacing.lg),
                   
                   // Leaderboard Section
                   Text(
                     'Top Learners',
-                    style: TextStyle(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
+                    style: PanAfricanTypography.headlineMedium(context).copyWith(
+                      color: textPrimary,
                     ),
                   ),
-                  SizedBox(height: 16.sp),
+                  SizedBox(height: PanAfricanSpacing.md),
                   leaderboardState.profiles.isLoading
                       ? const DynamicLoadingScreen()
                       : leaderboardState.profiles.hasError
@@ -232,13 +217,13 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
       children: [
         Text(
           'Global Statistics',
-          style: TextStyle(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+          style: PanAfricanTypography.headlineSmall(context).copyWith(
+            color: isDark
+                ? PanAfricanColors.textPrimaryDark
+                : PanAfricanColors.textPrimaryLight,
           ),
         ),
-        SizedBox(height: 16.sp),
+        SizedBox(height: PanAfricanSpacing.md),
         Row(
           children: [
             Expanded(
@@ -250,7 +235,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                 isDark,
               ),
             ),
-            SizedBox(width: 12.sp),
+            SizedBox(width: PanAfricanSpacing.sm),
             Expanded(
               child: _buildStatCard(
                 context,
@@ -262,7 +247,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
             ),
           ],
         ),
-        SizedBox(height: 12.sp),
+        SizedBox(height: PanAfricanSpacing.sm),
         Row(
           children: [
             Expanded(
@@ -274,7 +259,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                 isDark,
               ),
             ),
-            SizedBox(width: 12.sp),
+            SizedBox(width: PanAfricanSpacing.sm),
             Expanded(
               child: _buildStatCard(
                 context,
@@ -298,47 +283,40 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
     bool isDark,
   ) {
     return Container(
-      padding: EdgeInsets.all(20.sp),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.primaryGreen.withOpacity(0.8),
-            AppColors.primaryOrange.withOpacity(0.6),
+            PanAfricanColors.primary.withOpacity(0.8),
+            PanAfricanColors.tertiary.withOpacity(0.6),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryGreen.withOpacity(0.2),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             icon,
-            style: TextStyle(fontSize: 32.sp),
-          ),
-          SizedBox(height: 8.sp),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 24.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+            style: PanAfricanTypography.displaySmall(context).copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
-          SizedBox(height: 4.sp),
+          SizedBox(height: PanAfricanSpacing.xs),
+          Text(
+            value,
+            style: PanAfricanTypography.headlineMedium(context).copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.xxxs),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: Colors.white.withOpacity(0.9),
+            style: PanAfricanTypography.labelSmall(context).copyWith(
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
             ),
           ),
         ],
@@ -348,12 +326,12 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
 
   Widget _buildTopLanguagesChart(BuildContext context, List<Map<String, dynamic>> languages, bool isDark) {
     return Container(
-      padding: EdgeInsets.all(20.sp),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
         ),
       ),
       child: Column(
@@ -361,13 +339,11 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
         children: [
           Text(
             'Most Popular Languages',
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
+            style: PanAfricanTypography.titleLarge(context).copyWith(
+              color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
             ),
           ),
-          SizedBox(height: 20.sp),
+          SizedBox(height: PanAfricanSpacing.lg),
           SizedBox(
             height: 200.sp,
             child: BarChart(
@@ -384,11 +360,10 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                         final index = value.toInt();
                         if (index >= 0 && index < languages.length) {
                           return Padding(
-                            padding: EdgeInsets.only(top: 8.sp),
+                            padding: EdgeInsets.only(top: PanAfricanSpacing.xs),
                             child: Text(
                               languages[index]['name'],
-                              style: TextStyle(
-                                fontSize: 10.sp,
+                              style: PanAfricanTypography.labelSmall(context).copyWith(
                                 color: isDark ? Colors.grey[400] : Colors.grey[600],
                               ),
                             ),
@@ -437,10 +412,10 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
 
   Widget _buildErrorState(BuildContext context, bool isDark) {
     return Container(
-      padding: EdgeInsets.all(24.sp),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       ),
       child: Center(
         child: Column(
@@ -450,20 +425,20 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
               size: 48.sp,
               color: Colors.red,
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             Text(
               'Failed to load leaderboard',
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: isDark ? Colors.white : Colors.black87,
+              style: PanAfricanTypography.bodyLarge(context).copyWith(
+                color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
               ),
             ),
-            SizedBox(height: 8.sp),
-            FilledButton(
+            SizedBox(height: PanAfricanSpacing.xs),
+            PanAfricanButton(
+              label: 'Retry',
               onPressed: () {
                 ref.read(leaderboardProvider.notifier).getProfiles();
               },
-              child: const Text('Retry'),
+              backgroundColor: PanAfricanColors.primary,
             ),
           ],
         ),
@@ -487,17 +462,18 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
     
     if (leaders.isEmpty) {
       return Container(
-        padding: EdgeInsets.all(24.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1F3527) : Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         ),
         child: Center(
           child: Text(
             'No leaderboard data available',
-            style: TextStyle(
-              fontSize: 16.sp,
-              color: isDark ? Colors.grey[400] : Colors.grey[600],
+            style: PanAfricanTypography.bodyMedium(context).copyWith(
+              color: isDark
+                  ? PanAfricanColors.textSecondaryDark
+                  : PanAfricanColors.textSecondaryLight,
             ),
           ),
         ),
@@ -506,21 +482,23 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         border: Border.all(
-          color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+          color: isDark
+              ? PanAfricanColors.borderDark
+              : PanAfricanColors.borderLight,
         ),
       ),
       child: Column(
         children: leaders.map((leader) {
           final isTopThree = leader['rank'] as int <= 3;
           return Container(
-            padding: EdgeInsets.all(16.sp),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                  color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
+                  color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
                   width: 0.5,
                 ),
               ),
@@ -533,48 +511,44 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
                   height: 40.sp,
                   decoration: BoxDecoration(
                     color: isTopThree
-                        ? AppColors.primaryGreen.withOpacity(0.2)
+                        ? PanAfricanColors.primary.withOpacity(0.2)
                         : Colors.transparent,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Text(
                       isTopThree ? '🏆' : '#${leader['rank']}',
-                      style: TextStyle(
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
                         fontSize: isTopThree ? 20.sp : 16.sp,
-                        fontWeight: FontWeight.bold,
                         color: isTopThree
-                            ? AppColors.primaryGreen
+                            ? PanAfricanColors.primary
                             : (isDark ? Colors.grey[400] : Colors.grey[600]),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 16.sp),
+                SizedBox(width: PanAfricanSpacing.md),
                 // Country flag
                 Text(
                   leader['country'] as String,
-                  style: TextStyle(fontSize: 24.sp),
+                  style: PanAfricanTypography.headlineSmall(context),
                 ),
-                SizedBox(width: 12.sp),
+                SizedBox(width: PanAfricanSpacing.sm),
                 // Name
                 Expanded(
                   child: Text(
                     leader['name'] as String,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
                     ),
                   ),
                 ),
                 // Points
                 Text(
                   '${leader['points']} pts',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryGreen,
+                  style: PanAfricanTypography.labelLarge(context).copyWith(
+                    color: PanAfricanColors.primary,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],

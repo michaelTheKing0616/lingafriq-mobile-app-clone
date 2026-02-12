@@ -73,7 +73,7 @@ class _ConnectionBanner extends StatelessWidget {
         (status.isOffline 
             ? Colors.red.withOpacity(0.9)
             : Colors.orange.withOpacity(0.9));
-    final txtColor = textColor ?? Colors.white;
+    final txtColor = textColor ?? Theme.of(context).colorScheme.onPrimary;
 
     return Container(
       padding: padding ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),

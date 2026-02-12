@@ -4,8 +4,7 @@ import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Informative pre-loader screen that explains new features and terminologies
 /// Shown when users first encounter new features
@@ -69,7 +68,9 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
             LinearProgressIndicator(
               value: _controller.value,
               backgroundColor: Colors.grey[300],
-              valueColor: AlwaysStoppedAnimation<Color>(AfricanTheme.primaryGreen),
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                PanAfricanColors.primary,
+              ),
             ),
             Expanded(
               child: PageView(
@@ -93,7 +94,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                   height: 8.h,
                   decoration: BoxDecoration(
                     color: _currentPage == index
-                        ? AfricanTheme.primaryGreen
+                        ? PanAfricanColors.primary
                         : Colors.grey[300],
                     borderRadius: BorderRadius.circular(4.r),
                   ),
@@ -125,11 +126,11 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                       }
                     },
                     style: FilledButton.styleFrom(
-                      backgroundColor: AfricanTheme.primaryGreen,
-                      foregroundColor: Colors.white,
+                      backgroundColor: PanAfricanColors.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                       ),
                     ),
                     child: Text(_currentPage < totalPages - 1 ? 'Next' : 'Got it!'),
@@ -154,13 +155,13 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
             height: 120.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: AfricanTheme.africanSunset,
-              boxShadow: AfricanTheme.africanShadow,
+              gradient: PanAfricanGradients.sunset,
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: Icon(
               widget.icon,
               size: 60.sp,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           )
               .animate()
@@ -169,11 +170,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
           SizedBox(height: 32.h),
           Text(
             widget.featureName,
-            style: TextStyle(
-              fontSize: 32.sp,
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
+            style: PanAfricanTypography.headlineLarge(context),
             textAlign: TextAlign.center,
           )
               .animate()
@@ -182,8 +179,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
           SizedBox(height: 16.h),
           Text(
             widget.featureDescription,
-            style: TextStyle(
-              fontSize: 18.sp,
+            style: PanAfricanTypography.bodyMedium(context).copyWith(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             ),
             textAlign: TextAlign.center,
@@ -204,10 +200,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
         children: [
           Text(
             'New Terms',
-            style: TextStyle(
-              fontSize: 28.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: PanAfricanTypography.headlineSmall(context),
           )
               .animate()
               .fadeIn(duration: 300.ms)
@@ -224,7 +217,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
       margin: EdgeInsets.only(bottom: 16.h),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       ),
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -236,12 +229,12 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                 Container(
                   padding: EdgeInsets.all(8.w),
                   decoration: BoxDecoration(
-                    color: AfricanTheme.primaryGreen.withOpacity(0.1),
+                    color: PanAfricanColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Icon(
                     Icons.info_outline_rounded,
-                    color: AfricanTheme.primaryGreen,
+                    color: PanAfricanColors.primary,
                     size: 24.sp,
                   ),
                 ),
@@ -252,7 +245,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      color: AfricanTheme.primaryGreen,
+                      color: PanAfricanColors.primary,
                     ),
                   ),
                 ),
@@ -268,10 +261,10 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
               Container(
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
-                  color: AfricanTheme.primaryGreen.withOpacity(0.05),
+                  color: PanAfricanColors.primary.withOpacity(0.05),
                   borderRadius: BorderRadius.circular(8.r),
                   border: Border.all(
-                    color: AfricanTheme.primaryGreen.withOpacity(0.2),
+                    color: PanAfricanColors.primary.withOpacity(0.2),
                   ),
                 ),
                 child: Row(
@@ -279,7 +272,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
                   children: [
                     Icon(
                       Icons.lightbulb_outline_rounded,
-                      color: AfricanTheme.accentGold,
+                      color: PanAfricanColors.secondary,
                       size: 20.sp,
                     ),
                     SizedBox(width: 8.w),
@@ -310,10 +303,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
         children: [
           Text(
             'Pro Tips',
-            style: TextStyle(
-              fontSize: 28.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: PanAfricanTypography.headlineSmall(context),
           )
               .animate()
               .fadeIn(duration: 300.ms)
@@ -330,7 +320,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
       margin: EdgeInsets.only(bottom: 16.h),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       ),
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -340,12 +330,12 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
             Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: AfricanTheme.accentGold.withOpacity(0.1),
+                color: PanAfricanColors.secondary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8.r),
               ),
               child: Icon(
                 tip.icon ?? Icons.tips_and_updates_rounded,
-                color: AfricanTheme.accentGold,
+                color: PanAfricanColors.secondary,
                 size: 24.sp,
               ),
             ),

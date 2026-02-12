@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/utils.dart';
 
@@ -35,8 +35,8 @@ class _FamilyDashboardScreenState
   }
 
   Future<void> _load() async {
-    final sub = ref.read(subscriptionProvider);
-    if (sub.tier != SubscriptionTier.family) {
+    final subNotifier = ref.read(subscriptionProvider.notifier);
+    if (!subNotifier.canAccessFamilyDashboard()) {
       setState(() {
         _isLoading = false;
       });
@@ -64,30 +64,41 @@ class _FamilyDashboardScreenState
   @override
   Widget build(BuildContext context) {
     final sub = ref.watch(subscriptionProvider);
+    final canAccessFamily =
+        ref.read(subscriptionProvider.notifier).canAccessFamilyDashboard();
     final isDark = context.isDarkMode;
 
-    if (sub.tier != SubscriptionTier.family) {
+    if (!canAccessFamily) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Family Dashboard')),
+        backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+        appBar: AppBar(
+          title: Text('Family Dashboard', style: PanAfricanTypography.titleLarge(context)),
+          backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+          leading: IconButton(
+            icon: Icon(PanAfricanIcons.back),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.all(16.w),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(Icons.family_restroom_rounded,
                     size: 64.sp,
                     color: isDark
-                        ? Colors.white70
-                        : AfricanTheme.primaryGreen),
-                SizedBox(height: 2.h),
+                        ? PanAfricanColors.textSecondaryDark
+                        : PanAfricanColors.primary),
+                SizedBox(height: PanAfricanSpacing.md),
                 Text(
                   'Family Dashboard is available on the Family plan.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    color: isDark ? Colors.white70 : Colors.black87,
-                  ),
+                  style: PanAfricanTypography.bodyLarge(context),
                 ),
               ],
             ),
@@ -97,16 +108,26 @@ class _FamilyDashboardScreenState
     }
 
     return Scaffold(
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: AppBar(
-        title: const Text('Family Dashboard'),
+        title: Text('Family Dashboard', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
           : _error != null
               ? Center(
                   child: Text(
                     _error!,
-                    style: TextStyle(color: Colors.red.shade300),
+                    style: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.error),
                   ),
                 )
               : _buildContent(context, isDark),
@@ -118,7 +139,7 @@ class _FamilyDashboardScreenState
     final aggregate = Map<String, dynamic>.from(_data?['aggregate'] ?? {});
 
     return SingleChildScrollView(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -126,20 +147,17 @@ class _FamilyDashboardScreenState
               .animate()
               .fadeIn(duration: 300.ms)
               .slideY(begin: 0.1),
-          SizedBox(height: 2.h),
+          SizedBox(height: PanAfricanSpacing.md),
           _buildPolieInsightsCard(aggregate, isDark)
               .animate()
               .fadeIn(duration: 300.ms)
               .slideY(begin: 0.05),
-          SizedBox(height: 2.h),
+          SizedBox(height: PanAfricanSpacing.md),
           Text(
             'Family Members',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-            ),
+            style: PanAfricanTypography.titleLarge(context),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           ...family.map((m) => _buildMemberCard(m, isDark)
               .animate()
               .fadeIn(duration: 300.ms)
@@ -160,29 +178,20 @@ class _FamilyDashboardScreenState
         List<String>.from(aggregate['languagesStudied'] ?? const []);
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AfricanTheme.primaryGreen,
-            AfricanTheme.accentGold,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        gradient: PanAfricanGradients.forest,
+        borderRadius: PanAfricanRadius.xlBR,
+        boxShadow: PanAfricanShadows.md,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Family Overview',
-            style: TextStyle(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+            style: PanAfricanTypography.titleLarge(context, color: Theme.of(context).colorScheme.onPrimary),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Row(
             children: [
               _buildAggregateStat(
@@ -199,7 +208,7 @@ class _FamilyDashboardScreenState
               ),
             ],
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Row(
             children: [
               _buildAggregateStat(
@@ -228,24 +237,17 @@ class _FamilyDashboardScreenState
   Widget _buildAggregateStat(String label, String value) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 1.h),
+        padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xs),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               value,
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
+              style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
             ),
             Text(
               label,
-              style: TextStyle(
-                fontSize: 12.sp,
-                color: Colors.white70,
-              ),
+              style: PanAfricanTypography.labelSmall(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
             ),
           ],
         ),
@@ -261,12 +263,12 @@ class _FamilyDashboardScreenState
         List<Map<String, dynamic>>.from(member['languages'] ?? const []);
 
     return Container(
-      margin: EdgeInsets.only(top: 1.h, bottom: 1.h),
-      padding: EdgeInsets.all(4.w),
+      margin: EdgeInsets.only(top: PanAfricanSpacing.xs, bottom: PanAfricanSpacing.xs),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.xlBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,39 +277,30 @@ class _FamilyDashboardScreenState
             children: [
               CircleAvatar(
                 radius: 22,
-                backgroundColor: AfricanTheme.primaryGreen,
+                backgroundColor: PanAfricanColors.primary,
                 child: Text(
                   username.isNotEmpty ? username[0].toUpperCase() : '?',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
                 ),
               ),
-              SizedBox(width: 3.w),
+              SizedBox(width: PanAfricanSpacing.sm),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     username,
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: PanAfricanTypography.titleMedium(context),
                   ),
                   if (globalId != null)
                     Text(
                       '@$globalId',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        color: isDark ? Colors.white70 : Colors.grey[600],
-                      ),
+                      style: PanAfricanTypography.bodySmall(context),
                     ),
                 ],
               ),
             ],
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Row(
             children: [
               _buildMemberStat(
@@ -327,7 +320,7 @@ class _FamilyDashboardScreenState
               ),
             ],
           ),
-          SizedBox(height: 0.5.h),
+          SizedBox(height: PanAfricanSpacing.xxs),
           Row(
             children: [
               _buildMemberStat(
@@ -352,27 +345,23 @@ class _FamilyDashboardScreenState
               ),
             ],
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Text(
             'Languages',
-            style: TextStyle(
-              fontSize: 13.sp,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white70 : Colors.black87,
-            ),
+            style: PanAfricanTypography.labelLarge(context),
           ),
-          SizedBox(height: 0.5.h),
+          SizedBox(height: PanAfricanSpacing.xxs),
           Wrap(
-            spacing: 4.w,
-            runSpacing: 2.h,
+            spacing: PanAfricanSpacing.sm,
+            runSpacing: PanAfricanSpacing.xs,
             children: languages.map((lang) {
               return Chip(
                 backgroundColor: isDark
-                    ? const Color(0xFF2A4A35)
-                    : Colors.grey.shade100,
+                    ? PanAfricanColors.surfaceContainerDark
+                    : PanAfricanColors.surfaceContainerLight,
                 label: Text(
                   '${lang['language']} • ${lang['level']} (${lang['score']})',
-                  style: TextStyle(fontSize: 11.sp),
+                  style: PanAfricanTypography.labelSmall(context),
                 ),
               );
             }).toList(),
@@ -393,18 +382,11 @@ class _FamilyDashboardScreenState
         children: [
           Text(
             value,
-            style: TextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : AfricanTheme.primaryGreen,
-            ),
+            style: PanAfricanTypography.titleSmall(context, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.primary),
           ),
           Text(
             label,
-            style: TextStyle(
-              fontSize: 12.sp,
-              color: isDark ? Colors.white70 : Colors.grey[600],
-            ),
+            style: PanAfricanTypography.labelSmall(context),
           ),
         ],
       ),
@@ -423,59 +405,54 @@ class _FamilyDashboardScreenState
         List<String>.from(aggregate['languagesStudied'] ?? const []);
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF102216) : Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.xlBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              const Icon(Icons.smart_toy_rounded),
-              SizedBox(width: 2.w),
+              Icon(Icons.smart_toy_rounded, color: PanAfricanColors.primary),
+              SizedBox(width: PanAfricanSpacing.sm),
               Text(
                 'Polie: Family Insights',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: PanAfricanTypography.titleMedium(context),
               ),
             ],
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Text(
             'A quick, AI‑generated summary of how your family is progressing. '
             'Polie looks at minutes, sessions, languages, and skills to suggest what to focus on next.',
-            style: TextStyle(
-              fontSize: 13.sp,
-              color: isDark ? Colors.white70 : Colors.black87,
-            ),
+            style: PanAfricanTypography.bodySmall(context),
           ),
           if (_polieSummary != null) ...[
-            SizedBox(height: 1.h),
+            SizedBox(height: PanAfricanSpacing.sm),
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(3.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF163424) : Colors.green.shade50,
-                borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                color: isDark ? PanAfricanColors.primaryDark.withOpacity(0.3) : PanAfricanColors.primaryContainer,
+                borderRadius: PanAfricanRadius.lgBR,
               ),
               child: Text(
                 _polieSummary!,
-                style: TextStyle(fontSize: 13.sp),
+                style: PanAfricanTypography.bodySmall(context),
               ),
             ),
           ],
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Align(
             alignment: Alignment.centerRight,
-            child: ElevatedButton.icon(
+            child: FilledButton.icon(
               onPressed: _isAskingPolie
                   ? null
                   : () async {
+                      HapticFeedback.mediumImpact();
                       setState(() {
                         _isAskingPolie = true;
                       });
@@ -499,6 +476,7 @@ class _FamilyDashboardScreenState
                         );
 
                         if (mounted) {
+                          HapticFeedback.heavyImpact();
                           setState(() {
                             _polieSummary = response;
                           });
@@ -515,15 +493,20 @@ class _FamilyDashboardScreenState
                         }
                       }
                     },
+              style: FilledButton.styleFrom(
+                backgroundColor: PanAfricanColors.primary,
+                shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+              ),
               icon: _isAskingPolie
                   ? SizedBox(
                       width: 16.sp,
                       height: 16.sp,
-                      child: const CircularProgressIndicator(strokeWidth: 2),
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary),
                     )
-                  : const Icon(Icons.auto_awesome_rounded),
+                  : Icon(Icons.auto_awesome_rounded, color: Theme.of(context).colorScheme.onPrimary),
               label: Text(
                 _isAskingPolie ? 'Asking Polie…' : 'Ask Polie for insights',
+                style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary),
               ),
             ),
           ),

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/utils/utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final String audioUrl;
@@ -83,7 +84,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
           },
           icon: Icon(
             Icons.volume_up_rounded,
-            color: AppColors.red,
+            color: PanAfricanColors.error,
             size: 32.sp,
           ),
         ).px16(),

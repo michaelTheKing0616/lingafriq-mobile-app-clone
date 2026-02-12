@@ -28,7 +28,7 @@ class PolieColors {
   static const Color error = Color(0xFFB91C1C);
   static const Color errorMuted = Color(0xFF991B1B);
 
-  // Surfaces (glass-friendly — increased opacity for better text contrast)
+  // @deprecated — Glass-era tokens. Use surfaceContainer / surfaceContainerLight instead.
   static const Color surfaceGlass = Color(0x1FFFFFFF);
   static const Color surfaceGlassDark = Color(0x2BFFFFFF);
   static const Color surfaceContainer = Color(0xFF1E293B);

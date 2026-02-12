@@ -101,11 +101,11 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const BackButton(color: Colors.white),
+                        BackButton(color: Theme.of(context).colorScheme.onPrimary),
                         widget.title.text.xl2.semiBold
                             .maxLines(2)
                             .ellipsis
-                            .color(Colors.white)
+                            .color(Theme.of(context).colorScheme.onPrimary)
                             .make()
                             .p16(),
                       ],
@@ -122,7 +122,7 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
                 child: Column(
                   children: [
                     Card(
-                      color: context.isDarkMode ? context.cardColor : Colors.white,
+                      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                       elevation: 12,
                       shadowColor: Colors.black38,
                       child: Column(
@@ -250,7 +250,7 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
       children: [
         Container(
           padding: const EdgeInsets.all(16),
-          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          decoration: BoxDecoration(color: Theme.of(context).colorScheme.surface, shape: BoxShape.circle),
           child: Icon(
             isCorrect ? Icons.done : Icons.close,
             size: 46.sp,

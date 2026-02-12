@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 class BadgesService {
   final Dio _dio;
@@ -9,7 +9,8 @@ class BadgesService {
   /// Get all available badges
   Future<List<dynamic>> getAllBadges() async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/badges');
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.badges.list));
       return response.data;
     } catch (e) {
       rethrow;
@@ -19,7 +20,8 @@ class BadgesService {
   /// Get user badges
   Future<List<dynamic>> getUserBadges(String userId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/badges/users/$userId');
+      final response = await _dio
+          .get(ApiContract.url(ApiContract.badges.userBadges(userId)));
       return response.data;
     } catch (e) {
       rethrow;

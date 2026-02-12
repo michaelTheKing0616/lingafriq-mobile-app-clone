@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import 'api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 Widget kImagePlaceHolder(_, __) {
   return const Padding(
@@ -328,14 +327,24 @@ Map<String, String> kCountries = {
 };
 
 final kAvatarsList = {
-  "${Api.baseurl}media/avatars/avatar_1.png": "assets/images/avatar_1.png",
-  "${Api.baseurl}media/avatars/avatar_2.png": "assets/images/avatar_2.png",
-  "${Api.baseurl}media/avatars/avatar_3.png": "assets/images/avatar_3.png",
-  "${Api.baseurl}media/avatars/avatar_4.png": "assets/images/avatar_4.png",
-  "${Api.baseurl}media/avatars/avatar_5.png": "assets/images/avatar_5.png",
-  "${Api.baseurl}media/avatars/avatar_6.png": "assets/images/avatar_6.png",
-  "${Api.baseurl}media/avatars/avatar_7.png": "assets/images/avatar_7.png",
-  "${Api.baseurl}media/avatars/avatar_8.png": "assets/images/avatar_8.png",
-  "${Api.baseurl}media/avatars/avatar_9.png": "assets/images/avatar_9.png",
-  "${Api.baseurl}media/avatars/avatar_10.png": "assets/images/avatar_10.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_1.png'):
+      "assets/images/avatar_1.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_2.png'):
+      "assets/images/avatar_2.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_3.png'):
+      "assets/images/avatar_3.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_4.png'):
+      "assets/images/avatar_4.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_5.png'):
+      "assets/images/avatar_5.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_6.png'):
+      "assets/images/avatar_6.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_7.png'):
+      "assets/images/avatar_7.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_8.png'):
+      "assets/images/avatar_8.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_9.png'):
+      "assets/images/avatar_9.png",
+  ApiContract.url('${ApiContract.media.base}avatars/avatar_10.png'):
+      "assets/images/avatar_10.png",
 };

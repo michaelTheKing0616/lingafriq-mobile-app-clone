@@ -265,7 +265,7 @@ class _TonePattern extends StatelessWidget {
                 _getToneLabel(tone),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ),

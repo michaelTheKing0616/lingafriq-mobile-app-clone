@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lingafriq/models/culture_content_model.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/services/culture_magazine_service.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
@@ -130,7 +130,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
               Text(
                 _errorMessage!,
                 style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 16.sp,
                 ),
                 textAlign: TextAlign.center,
@@ -151,83 +151,67 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     final allContent = _allArticles;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: Stack(
         children: [
           // Gradient Header
           Container(
             height: 25.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFFFF6B35), // Orange
-                  Color(0xFF7B2CBF), // Purple
-                ],
-              ),
+              gradient: PanAfricanGradients.sunset,
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(40),
                 bottomRight: Radius.circular(40),
               ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
+              boxShadow: PanAfricanShadows.lg,
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
-                          onPressed: () => Navigator.of(context).pop(),
+                          icon: Icon(PanAfricanIcons.back, color: Theme.of(context).colorScheme.onPrimary),
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.of(context).pop();
+                          },
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.menu, color: Colors.white),
+                          icon: Icon(PanAfricanIcons.menu, color: Theme.of(context).colorScheme.onPrimary),
                           onPressed: () {
+                            HapticFeedback.lightImpact();
                             Scaffold.of(context).openDrawer();
                           },
                           style: IconButton.styleFrom(
-                            backgroundColor: Colors.white.withOpacity(0.2),
+                            backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                             shape: const CircleBorder(),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 2.h),
-                    const Icon(
-                      Icons.newspaper_rounded,
-                      color: Colors.white,
-                      size: 64,
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Icon(
+                      PanAfricanIcons.magazine,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      size: 64.sp,
                     ),
-                    SizedBox(height: 1.h),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Text(
                       'Cultural Magazines',
-                      style: TextStyle(
-                        fontSize: 28.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
+                      style: PanAfricanTypography.headlineMedium(context, color: Theme.of(context).colorScheme.onPrimary),
                     ),
-                    SizedBox(height: 0.5.h),
+                    SizedBox(height: PanAfricanSpacing.xxs),
                     Text(
                       'Explore African culture & heritage',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.white.withOpacity(0.9),
-                      ),
+                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
                     ),
                   ],
                 ),
@@ -380,7 +364,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : Colors.black87,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
@@ -401,12 +385,12 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
           Padding(
             padding: EdgeInsets.all(16.sp),
             child: Text(
-              'Explore',
-              style: TextStyle(
-                fontSize: 24.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+                'Explore',
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
             ),
           ),
           ...all.map((content) => _buildContentCard(context, content, isDark)),
@@ -467,7 +451,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
               )
             else
               Container(
-                color: AppColors.primaryGreen,
+                color: PanAfricanColors.primary,
                 child: Center(
                   child: Text(
                     _getTypeIcon(content.type),
@@ -485,7 +469,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                     end: Alignment.bottomCenter,
                     colors: [
                       Colors.transparent,
-                      Colors.black.withOpacity(0.8),
+                      Theme.of(context).colorScheme.scrim.withOpacity(0.8),
                     ],
                   ),
                 ),
@@ -505,7 +489,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8.sp, vertical: 4.sp),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryGreen,
+                        color: PanAfricanColors.primary,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -513,7 +497,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                         style: TextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ),
@@ -523,7 +507,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -533,7 +517,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                       content.description,
                       style: TextStyle(
                         fontSize: 12.sp,
-                        color: Colors.white.withOpacity(0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -552,7 +536,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     return Container(
       margin: EdgeInsets.only(bottom: 16.sp),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1F3527) : Colors.white,
+        color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isDark ? const Color(0xFF2A4A35) : const Color(0xFFE5E5E5),
@@ -573,7 +557,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
               child: Container(
                 width: 100.sp,
                 height: 100.sp,
-                color: AppColors.primaryGreen.withOpacity(0.2),
+                color: PanAfricanColors.primary.withOpacity(0.2),
                 child: content.imageUrl != null
                     ? CachedNetworkImage(
                         imageUrl: content.imageUrl!,
@@ -602,8 +586,8 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                       children: [
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 6.sp, vertical: 2.sp),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryGreen.withOpacity(0.2),
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.primary.withOpacity(0.2),
                             borderRadius: BorderRadius.circular(4),
                           ),
                           child: Text(
@@ -611,7 +595,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                             style: TextStyle(
                               fontSize: 9.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primaryGreen,
+                              color: PanAfricanColors.primary,
                             ),
                           ),
                         ),
@@ -633,7 +617,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -666,7 +650,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.9,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF1F3527) : Colors.white,
+          color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: Column(
@@ -704,7 +688,7 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
                       style: TextStyle(
                         fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
+                        color: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 8.sp),
@@ -886,16 +870,19 @@ class _CategoryCard extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        borderRadius: PanAfricanRadius.xlBR,
         child: Container(
-          padding: EdgeInsets.all(5.w),
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowLarge,
+            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            borderRadius: PanAfricanRadius.xlBR,
+            boxShadow: PanAfricanShadows.sm,
             border: Border.all(
-              color: isDark ? const Color(0xFF2A4A35) : Colors.transparent,
+              color: isDark ? PanAfricanColors.borderDark : Colors.transparent,
             ),
           ),
           child: Stack(
@@ -906,7 +893,7 @@ class _CategoryCard extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: gradient,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+                      borderRadius: PanAfricanRadius.xlBR,
                     ),
                   ),
                 ),
@@ -914,34 +901,27 @@ class _CategoryCard extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(4.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     decoration: BoxDecoration(
                       gradient: gradient,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-                      boxShadow: DesignSystem.shadowMedium,
+                      borderRadius: PanAfricanRadius.lgBR,
+                      boxShadow: PanAfricanShadows.sm,
                     ),
-                    child: Icon(icon, color: Colors.white, size: 32),
+                    child: Icon(icon, color: Theme.of(context).colorScheme.onPrimary, size: 32.sp),
                   ),
-                  SizedBox(width: 4.w),
+                  SizedBox(width: PanAfricanSpacing.md),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name,
-                          style: TextStyle(
-                            fontSize: 18.sp,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
+                          style: PanAfricanTypography.titleMedium(context),
                         ),
-                        SizedBox(height: 0.5.h),
+                        SizedBox(height: PanAfricanSpacing.xxs),
                         Text(
                           '$articles articles',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white70 : Colors.black54,
-                          ),
+                          style: PanAfricanTypography.bodySmall(context),
                         ),
                       ],
                     ),

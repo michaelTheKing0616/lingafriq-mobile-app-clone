@@ -5,10 +5,12 @@ import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/standard_app_bar.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer_material3.dart';
 import 'tutor_translation_mode_screen.dart';
 import 'tutor_grammar_mode_screen.dart';
 import 'tutor_pronunciation_mode_screen.dart';
@@ -34,7 +36,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       title: 'Translation',
       description: 'Translate text with grammar notes',
       icon: Icons.translate,
-      color: PanAfricanColors.kenteBlue,
+      color: PolieColors.electricTeal,
       screen: const TutorTranslationModeScreen(),
     ),
     TutorMode(
@@ -42,7 +44,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       title: 'Grammar',
       description: 'Learn grammar rules and examples',
       icon: Icons.menu_book,
-      color: PanAfricanColors.primary,
+      color: PolieColors.royalAmethyst,
       screen: const TutorGrammarModeScreen(),
     ),
     TutorMode(
@@ -50,7 +52,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       title: 'Pronunciation',
       description: 'Perfect your pronunciation',
       icon: Icons.record_voice_over,
-      color: PanAfricanColors.tertiary,
+      color: PolieColors.goldEmber,
       screen: const TutorPronunciationModeScreen(),
     ),
     TutorMode(
@@ -58,7 +60,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       title: 'Stories',
       description: 'Cultural stories with vocabulary',
       icon: Icons.auto_stories,
-      color: PanAfricanColors.kenteRed,
+      color: PolieColors.electricTealLight,
       screen: const TutorStoryModeScreen(),
     ),
     TutorMode(
@@ -66,7 +68,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       title: 'Dialogue',
       description: 'Practice conversations',
       icon: Icons.chat_bubble_outline,
-      color: PanAfricanColors.kitengeTeal,
+      color: PolieColors.royalAmethystLight,
       screen: const TutorDialogueModeScreen(),
     ),
     TutorMode(
@@ -74,7 +76,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       title: 'Assessment',
       description: 'Test your proficiency',
       icon: Icons.assessment,
-      color: PanAfricanColors.secondary,
+      color: PolieColors.goldEmberLight,
       screen: const TutorAssessModeScreen(),
     ),
   ];
@@ -99,19 +101,20 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
       appBar: StandardAppBar(
         title: 'Polie Tutor',
         showBackButton: true,
+        showDrawerButton: true,
       ),
+      drawer: const AppDrawerMaterial3(),
       body: Container(
         decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              PolieColors.primary,
+              PolieColors.primaryDark,
+              PolieColors.obsidian,
+            ],
+          ),
         ),
         child: SafeArea(
           child: Column(
@@ -125,11 +128,17 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
               // Tab Bar
               _buildTabBar(context, isDark),
               
-              // Tab Views
+              // Tab Views (with consistent padding)
               Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: _modes.map((mode) => mode.screen).toList(),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PolieSpacing.md,
+                    vertical: PolieSpacing.sm,
+                  ),
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: _modes.map((mode) => mode.screen).toList(),
+                  ),
                 ),
               ),
             ],
@@ -141,18 +150,18 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
 
   Widget _buildHeader(BuildContext context, bool isDark) {
     return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      padding: EdgeInsets.all(PolieSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Polie Tutor',
-            style: PanAfricanTypography.displayMedium(context),
+            style: PolieTypography.h1(context).copyWith(color: PolieColors.textPrimary),
           ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
-          SizedBox(height: PanAfricanSpacing.xs),
+          SizedBox(height: PolieSpacing.xs),
           Text(
             'Your AI language learning companion',
-            style: PanAfricanTypography.bodyMedium(context),
+            style: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
           ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
         ],
       ),
@@ -187,21 +196,17 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
   Widget _buildTabBar(BuildContext context, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark
-            ? PanAfricanColors.surfaceContainerDark
-            : PanAfricanColors.surfaceContainerLight,
+        color: PolieColors.surfaceContainerLight,
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(PanAfricanRadius.lg),
+          top: Radius.circular(PolieRadius.lg),
         ),
       ),
       child: TabBar(
         controller: _tabController,
         isScrollable: true,
-        indicatorColor: PanAfricanColors.primary,
-        labelColor: PanAfricanColors.primary,
-        unselectedLabelColor: isDark
-            ? PanAfricanColors.textSecondaryDark
-            : PanAfricanColors.textSecondaryLight,
+        indicatorColor: PolieColors.royalAmethyst,
+        labelColor: PolieColors.textPrimary,
+        unselectedLabelColor: PolieColors.textSecondary,
         tabs: _modes.map((mode) {
           return Tab(
             icon: Icon(mode.icon),
@@ -248,41 +253,42 @@ class _ModeCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 120.w,
-        margin: EdgeInsets.only(right: PanAfricanSpacing.sm),
+        margin: EdgeInsets.only(right: PolieSpacing.sm),
+        padding: EdgeInsets.all(PolieSpacing.md),
         decoration: BoxDecoration(
-          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          boxShadow: PanAfricanShadows.md,
+          color: PolieColors.surfaceContainerLight,
+          borderRadius: BorderRadius.circular(PolieRadius.lg),
+          boxShadow: PolieElevation.level1(context),
           border: Border.all(
-            color: mode.color.withOpacity(0.3),
-            width: 2,
+            color: mode.color.withOpacity(0.4),
+            width: 1.5,
           ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              padding: EdgeInsets.all(PolieSpacing.sm),
               decoration: BoxDecoration(
-                color: mode.color.withOpacity(0.1),
+                color: mode.color.withOpacity(0.2),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 mode.icon,
                 color: mode.color,
-                size: 32.sp,
+                size: 28.sp,
               ),
             ),
-            SizedBox(height: PanAfricanSpacing.sm),
+            SizedBox(height: PolieSpacing.sm),
             Text(
               mode.title,
-              style: PanAfricanTypography.titleSmall(context),
+              style: PolieTypography.label(context).copyWith(color: PolieColors.textPrimary),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: PanAfricanSpacing.xxs),
+            SizedBox(height: PolieSpacing.xs),
             Text(
               mode.description,
-              style: PanAfricanTypography.bodySmall(context),
+              style: PolieTypography.bodySmall(context),
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

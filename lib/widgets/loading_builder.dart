@@ -21,7 +21,7 @@ class LoadingBuilder extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const BackButton(color: Colors.white),
+              BackButton(color: Theme.of(context).colorScheme.onPrimary),
               LangguageTypeHeaderBuilder(
                 title: title,
                 level: "",
@@ -34,13 +34,13 @@ class LoadingBuilder extends StatelessWidget {
           ),
         ),
         12.heightBox,
-        ...List.generate(4, (_) => _).map((e) {
+        ...List.generate(4, (index) {
           return Container(
             width: double.infinity,
             margin: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.black26,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.26),
               borderRadius: BorderRadius.circular(kBorderRadius / 2),
             ),
             child: Column(
@@ -50,7 +50,7 @@ class LoadingBuilder extends StatelessWidget {
                   height: 20,
                   width: 0.5.sw,
                   decoration: BoxDecoration(
-                    color: Colors.black38,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ).shimmer(),
@@ -59,14 +59,14 @@ class LoadingBuilder extends StatelessWidget {
                   height: 20,
                   width: 0.75.sw,
                   decoration: BoxDecoration(
-                    color: Colors.black38,
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.38),
                     borderRadius: BorderRadius.circular(4),
                   ),
                 ).shimmer(),
               ],
             ),
           ).shimmer();
-        }).toList()
+        }).toList(),
         // LessonsList(language: language).expand(),
       ],
     );

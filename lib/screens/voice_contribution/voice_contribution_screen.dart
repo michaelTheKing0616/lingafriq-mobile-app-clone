@@ -444,7 +444,7 @@ class VoiceContributionScreen extends HookConsumerWidget {
                                   label: Text('Preview'),
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: PanAfricanColors.primary,
-                                    foregroundColor: Colors.white,
+                                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),
                               ),

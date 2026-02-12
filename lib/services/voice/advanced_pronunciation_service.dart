@@ -17,8 +17,8 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
 
 /// Advanced Pronunciation Analysis Result
 class AdvancedPronunciationResult {
@@ -289,7 +289,6 @@ class AdvancedPronunciationService {
   final Dio _dio;
 
   AdvancedPronunciationService(this._ref) : _dio = _ref.read(client);
-  static const String _advancedAnalyzePath = 'api/pronunciation/advanced/analyze';
 
   /// Analyze pronunciation with advanced ML models
   /// 
@@ -331,7 +330,7 @@ class AdvancedPronunciationService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}$_advancedAnalyzePath',
+        ApiContract.url(ApiContract.pronunciation.advancedAnalyze),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -390,7 +389,7 @@ class AdvancedPronunciationService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}$_advancedAnalyzePath',
+        ApiContract.url(ApiContract.pronunciation.advancedAnalyze),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -488,7 +487,7 @@ class AdvancedPronunciationService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/pronunciation/stats/$userId/$language',
+        ApiContract.url(ApiContract.pronunciation.stats(userId, language)),
       );
 
       if (response.statusCode == 200) {
@@ -506,7 +505,7 @@ class AdvancedPronunciationService {
   Future<List<String>> getSupportedLanguages() async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/pronunciation/languages',
+        ApiContract.url(ApiContract.pronunciation.languages),
       );
 
       if (response.statusCode == 200) {

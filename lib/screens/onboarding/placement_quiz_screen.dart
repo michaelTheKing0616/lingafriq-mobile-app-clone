@@ -6,6 +6,7 @@ import 'package:lingafriq/models/placement_question.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/services/placement_test_service.dart';
 import 'package:lingafriq/services/localization_service.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -29,19 +30,69 @@ class PlacementQuizScreen extends HookConsumerWidget {
     return FutureBuilder<List<PlacementQuestion>>(
       future: PlacementTestService.loadQuestionsForLanguage(ref as Ref, languageCode),
       builder: (context, snapshot) {
+        final isDark = Theme.of(context).brightness == Brightness.dark;
         if (!snapshot.hasData) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  Text(
+                    'Loading placement test...',
+                    style: PanAfricanTypography.bodyLarge(context),
+                  ),
+                ],
+              ),
+            ),
           );
         }
         final questions = snapshot.data ?? const <PlacementQuestion>[];
         if (questions.isEmpty) {
           return Scaffold(
+            backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
             body: Center(
-              child: Text(
-                'Placement questions are not available right now. Please try again later.',
-                style: TextStyle(fontSize: 14.sp),
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.quiz_outlined,
+                      size: 64.sp,
+                      color: PanAfricanColors.warning,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.lg),
+                    Text(
+                      'Placement questions are not available right now.',
+                      style: PanAfricanTypography.titleMedium(context),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Text(
+                      'Please try again later.',
+                      style: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondary),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xl),
+                    ElevatedButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: PanAfricanColors.primary,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        minimumSize: Size(200.w, 50.h),
+                      ),
+                      child: Text('Go Back'),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
@@ -128,14 +179,23 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
+          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: Container(
-        decoration: AfricanTheme.kentePattern(
-          isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
+        decoration: BoxDecoration(
+          gradient: isDark
+              ? PanAfricanGradients.darkSurface
+              : LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    PanAfricanColors.surfaceLight,
+                    PanAfricanColors.surfaceContainerLight,
+                  ],
+                ),
         ),
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.all(4.w),
+            padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -152,113 +212,107 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                       children: [
                         Text(
                           title,
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: isDark
-                                ? AfricanTheme.textLight
-                                : AfricanTheme.textDark,
-                          ),
+                          style: PanAfricanTypography.titleLarge(context),
                         ),
                         Text(
                           '${_currentIndex + 1} / ${widget.questions.length}',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white70 : Colors.black54,
+                          style: PanAfricanTypography.labelMedium(
+                            context,
+                            color: isDark
+                                ? PanAfricanColors.textSecondaryDark
+                                : PanAfricanColors.textSecondaryLight,
                           ),
                         ),
                       ],
                     );
                   },
                 ),
-                SizedBox(height: 1.5.h),
+                SizedBox(height: PanAfricanSpacing.md),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                  borderRadius: PanAfricanRadius.roundBR,
                   child: LinearProgressIndicator(
                     value: progress.clamp(0.0, 1.0),
                     minHeight: 8,
-                    backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
-                    valueColor: AlwaysStoppedAnimation<Color>(AfricanTheme.primaryGreen),
+                    backgroundColor: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                   ),
                 ),
-                SizedBox(height: 3.h),
+                SizedBox(height: PanAfricanSpacing.lg),
 
                 // Question card
                 Expanded(
                   child: Container(
                     width: double.infinity,
-                    padding: EdgeInsets.all(5.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.lg),
                     decoration: BoxDecoration(
-                      color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      boxShadow: DesignSystem.shadowLarge,
+                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      borderRadius: PanAfricanRadius.xlBR,
+                      boxShadow: PanAfricanShadows.lg,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           q.prompt,
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
+                          style: PanAfricanTypography.titleMedium(context),
                         ),
-                        SizedBox(height: 2.h),
+                        SizedBox(height: PanAfricanSpacing.lg),
                         Expanded(
                           child: ListView.separated(
                             itemCount: q.options.length,
-                            separatorBuilder: (_, __) => SizedBox(height: 1.h),
+                            separatorBuilder: (_, __) => SizedBox(height: PanAfricanSpacing.sm),
                             itemBuilder: (context, index) {
                               final option = q.options[index];
                               final isSelected = selected == index;
                               return InkWell(
                                 onTap: () => _selectOption(index),
-                                borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                                borderRadius: PanAfricanRadius.lgBR,
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.5.h),
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: PanAfricanSpacing.md,
+                                    vertical: PanAfricanSpacing.sm,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? AfricanTheme.primaryGreen.withOpacity(0.15)
-                                        : (isDark ? AfricanTheme.stitchBorderDark : Colors.grey[100]),
-                                    borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+                                        ? PanAfricanColors.primary.withOpacity(0.15)
+                                        : (isDark
+                                            ? PanAfricanColors.surfaceContainerDark
+                                            : PanAfricanColors.surfaceContainerLight),
+                                    borderRadius: PanAfricanRadius.lgBR,
                                     border: Border.all(
                                       color: isSelected
-                                          ? AfricanTheme.primaryGreen
+                                          ? PanAfricanColors.primary
                                           : (isDark
-                                              ? AfricanTheme.stitchBorderDark
-                                              : Colors.grey[300]!),
+                                              ? PanAfricanColors.borderDark
+                                              : PanAfricanColors.borderLight),
                                       width: isSelected ? 2 : 1,
                                     ),
                                   ),
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 22,
-                                        height: 22,
+                                        width: 22.w,
+                                        height: 22.w,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           border: Border.all(
                                             color: isSelected
-                                                ? AfricanTheme.primaryGreen
-                                                : Colors.grey[500]!,
+                                                ? PanAfricanColors.primary
+                                                : PanAfricanColors.neutralMedium,
                                           ),
                                           color: isSelected
-                                              ? AfricanTheme.primaryGreen
+                                              ? PanAfricanColors.primary
                                               : Colors.transparent,
                                         ),
                                         child: isSelected
-                                            ? const Icon(Icons.check, size: 16, color: Colors.white)
+                                            ? Icon(Icons.check, size: 16.sp, color: Theme.of(context).colorScheme.onPrimary)
                                             : null,
                                       ),
-                                      SizedBox(width: 2.w),
+                                      SizedBox(width: PanAfricanSpacing.sm),
                                       Expanded(
                                         child: Text(
                                           option,
-                                          style: TextStyle(
-                                            fontSize: 14.sp,
-                                            color: isDark ? Colors.white : Colors.black87,
-                                          ),
+                                          style: PanAfricanTypography.bodyMedium(context),
                                         ),
                                       ),
                                     ],
@@ -272,27 +326,29 @@ class _PlacementQuizScaffoldState extends State<_PlacementQuizScaffold> {
                     ),
                   ),
                 ),
-                SizedBox(height: 2.h),
+                SizedBox(height: PanAfricanSpacing.lg),
 
                 // Next button
                 SizedBox(
                   width: double.infinity,
                   child: FilledButton(
-                    onPressed: selected == null ? null : _next,
+                    onPressed: selected == null
+                        ? null
+                        : () {
+                            HapticFeedback.mediumImpact();
+                            _next();
+                          },
                     style: FilledButton.styleFrom(
-                      backgroundColor: AfricanTheme.primaryGreen,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 1.8.h),
+                      backgroundColor: PanAfricanColors.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                        borderRadius: PanAfricanRadius.roundBR,
                       ),
                     ),
                     child: Text(
                       _currentIndex == widget.questions.length - 1 ? 'Finish' : 'Next',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),
                 ),

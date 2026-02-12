@@ -12,8 +12,9 @@
 
 import 'dart:math';
 import 'package:dio/dio.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 
 class RetryConfig {
   final int maxRetries;
@@ -125,25 +126,16 @@ class ApiRetryService {
     throw lastError;
   }
 
-  /// Check if error is retryable
+  /// Check if error is retryable using unified TransportErrorPolicy
   bool _shouldRetryError(dynamic error, RetryConfig config) {
     if (error is DioException) {
-      // Network errors are retryable
-      if (error.type == DioExceptionType.connectionTimeout ||
-          error.type == DioExceptionType.sendTimeout ||
-          error.type == DioExceptionType.receiveTimeout ||
-          error.type == DioExceptionType.connectionError) {
-        return true;
-      }
+      // Use unified policy for network/timeout/unknown classification
+      if (TransportErrorPolicy.isRetryable(error)) return true;
 
-      // Check status code
-      if (error.response?.statusCode != null) {
-        return config.retryableStatusCodes.contains(error.response!.statusCode);
-      }
-
-      // Unknown network errors are retryable
-      if (error.type == DioExceptionType.unknown) {
-        return true;
+      // Also check custom retryable status codes from config
+      final statusCode = error.response?.statusCode;
+      if (statusCode != null) {
+        return config.retryableStatusCodes.contains(statusCode);
       }
     }
 
@@ -174,9 +166,7 @@ class ApiRetryService {
   /// Check internet connectivity
   Future<bool> _checkConnectivity() async {
     try {
-      final results = await Connectivity().checkConnectivity();
-      // connectivity_plus 6.x returns List<ConnectivityResult>
-      return results.any((r) => r != ConnectivityResult.none);
+      return ConnectivityService.hasInternet();
     } catch (e) {
       logger.error('Failed to check connectivity', error: e);
       return true; // Assume connected on error

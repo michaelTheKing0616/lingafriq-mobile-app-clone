@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/api_provider.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 
 /// Ancestral Tree - Visualize everyone you've helped
 class AncestralTreeScreen extends ConsumerWidget {
@@ -8,42 +14,57 @@ class AncestralTreeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return FutureBuilder<_AncestrySnapshot>(
       future: _loadTreeData(ref),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
+            appBar: AppBar(
+              title: const Text('Ancestral Tree'),
+              backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+              foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+            body: ListView(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              children: List.generate(5, (_) => const SkeletonListCard()),
+            ),
           );
         }
         if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(title: const Text('Ancestral Tree')),
-            body: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.error_outline, size: 48),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Unable to load your ancestry graph right now.',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    FilledButton(
-                      onPressed: () {
-                        // Rebuild FutureBuilder by pushing a new route instance.
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (_) => const AncestralTreeScreen()),
-                        );
-                      },
-                      child: const Text('Retry'),
-                    ),
-                  ],
-                ),
+            backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
+            appBar: AppBar(
+              title: const Text('Ancestral Tree'),
+              backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+              foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  HapticFeedback.lightImpact();
+                  Navigator.of(context).pop();
+                },
               ),
+            ),
+            body: AppErrorState(
+              message: 'Failed to load ancestry graph',
+              onRetry: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => const AncestralTreeScreen()),
+                );
+              },
             ),
           );
         }
@@ -51,25 +72,47 @@ class AncestralTreeScreen extends ConsumerWidget {
         final data = snapshot.data ?? _AncestrySnapshot.empty();
 
     return Scaffold(
+      backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
       appBar: AppBar(
         title: const Text('Ancestral Tree'),
+        backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
             onPressed: () {
+              HapticFeedback.lightImpact();
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Ancestral Tree'),
-                  content: const Text(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: PanAfricanRadius.lgBR,
+                  ),
+                  title: Text(
+                    'Ancestral Tree',
+                    style: PanAfricanTypography.titleLarge(context),
+                  ),
+                  content: Text(
                     'This tree shows everyone you\'ve helped learn African languages. '
                     'Each person you gift lessons to or help appears here. '
                     'Watch your tree grow as you share knowledge!',
+                    style: PanAfricanTypography.bodyMedium(context),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Got it'),
+                      child: Text(
+                        'Got it',
+                        style: TextStyle(color: PanAfricanColors.primary),
+                      ),
                     ),
                   ],
                 ),
@@ -79,62 +122,86 @@ class AncestralTreeScreen extends ConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Stats
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _StatItem(
-                      label: 'Mentees',
-                      value: '${data.mentees.length}',
-                      icon: Icons.people,
-                    ),
-                    _StatItem(
-                      label: 'Mentors',
-                      value: '${data.mentors.length}',
-                      icon: Icons.school,
-                    ),
-                    _StatItem(
-                      label: 'Connections',
-                      value: '${data.mentors.length + data.mentees.length}',
-                      icon: Icons.hub,
-                    ),
-                  ],
-                ),
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              decoration: BoxDecoration(
+                gradient: PanAfricanGradients.forest,
+                borderRadius: PanAfricanRadius.lgBR,
+                boxShadow: PanAfricanShadows.sm,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _StatItem(
+                    label: 'Mentees',
+                    value: '${data.mentees.length}',
+                    icon: Icons.people,
+                  ),
+                  _StatItem(
+                    label: 'Mentors',
+                    value: '${data.mentors.length}',
+                    icon: Icons.school,
+                  ),
+                  _StatItem(
+                    label: 'Connections',
+                    value: '${data.mentors.length + data.mentees.length}',
+                    icon: Icons.hub,
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: PanAfricanSpacing.lg),
             // Tree visualization
             Text(
               'Your Ancestral Tree',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: PanAfricanTypography.titleLarge(context).copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: PanAfricanSpacing.md),
             if (data.mentors.isEmpty && data.mentees.isEmpty)
-              const Padding(
-                padding: EdgeInsets.only(top: 12),
-                child: Text(
-                  'No ancestry links yet. As you connect with mentors or help other learners, your tree will grow here.',
-                ),
+              AppEmptyState(
+                icon: Icons.nature_people_rounded,
+                title: 'No ancestry links yet',
+                subtitle: 'As you connect with mentors or help other learners, your tree will grow here.',
               )
             else ...[
               if (data.mentors.isNotEmpty) ...[
-                Text('Mentors', style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.school, size: 18.sp, color: PanAfricanColors.primary),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Text(
+                      'Mentors',
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
                 ...data.mentors.map((person) => _TreeNodeCard(person: person)),
-                const SizedBox(height: 16),
+                SizedBox(height: PanAfricanSpacing.md),
               ],
               if (data.mentees.isNotEmpty) ...[
-                Text('Mentees', style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.people, size: 18.sp, color: PanAfricanColors.primary),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Text(
+                      'Mentees',
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
                 ...data.mentees.map((person) => _TreeNodeCard(person: person)),
               ],
             ],
@@ -164,7 +231,7 @@ class AncestralTreeScreen extends ConsumerWidget {
             kind: kind,
             username: (person['username'] ?? person['global_id'] ?? 'Unknown').toString(),
             globalId: person['global_id']?.toString(),
-            avatar: person['avater']?.toString(),
+            avatar: (person['avatar'] ?? person['avater'])?.toString(),
           ),
         );
       }
@@ -214,19 +281,30 @@ class _StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       children: [
-        Icon(icon, color: Theme.of(context).colorScheme.primary),
-        const SizedBox(height: 4),
+        Container(
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
+          decoration: BoxDecoration(
+            color: colorScheme.onPrimary.withOpacity(0.2),
+            borderRadius: PanAfricanRadius.mdBR,
+          ),
+          child: Icon(icon, color: colorScheme.onPrimary, size: 20.sp),
+        ),
+        SizedBox(height: PanAfricanSpacing.xs),
         Text(
           value,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: PanAfricanTypography.titleLarge(context).copyWith(
+            fontWeight: FontWeight.bold,
+            color: colorScheme.onPrimary,
+          ),
         ),
         Text(
           label,
-          style: Theme.of(context).textTheme.bodySmall,
+          style: PanAfricanTypography.labelLarge(context).copyWith(
+            color: colorScheme.onPrimary.withOpacity(0.8),
+          ),
         ),
       ],
     );
@@ -240,33 +318,79 @@ class _TreeNodeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return Container(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
+      ),
       child: ListTile(
+        onTap: () {
+          HapticFeedback.selectionClick();
+        },
+        contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
         leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          radius: 24.w,
+          backgroundColor: PanAfricanColors.primary,
           child: Text(
             person.username[0].toUpperCase(),
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: colorScheme.onPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 18.sp,
+            ),
           ),
         ),
-        title: Text(person.username),
+        title: Text(
+          person.username,
+          style: PanAfricanTypography.titleMedium(context).copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 4),
+            SizedBox(height: PanAfricanSpacing.xs),
             Wrap(
-              spacing: 8,
-              runSpacing: 6,
+              spacing: PanAfricanSpacing.sm,
+              runSpacing: PanAfricanSpacing.xs,
               children: [
-                Chip(
-                  label: Text(person.kind),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.sm,
+                    vertical: PanAfricanSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: PanAfricanColors.primary.withOpacity(0.1),
+                    borderRadius: PanAfricanRadius.roundBR,
+                  ),
+                  child: Text(
+                    person.kind,
+                    style: PanAfricanTypography.labelLarge(context).copyWith(
+                      color: PanAfricanColors.primary,
+                    ),
+                  ),
                 ),
                 if (person.globalId != null && person.globalId!.trim().isNotEmpty)
-                  Chip(
-                    label: Text('@${person.globalId}'),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.sm,
+                      vertical: PanAfricanSpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: PanAfricanColors.textSecondary.withOpacity(0.1),
+                      borderRadius: PanAfricanRadius.roundBR,
+                    ),
+                    child: Text(
+                      '@${person.globalId}',
+                      style: PanAfricanTypography.labelLarge(context).copyWith(
+                        color: PanAfricanColors.textSecondary,
+                      ),
+                    ),
                   ),
               ],
             ),

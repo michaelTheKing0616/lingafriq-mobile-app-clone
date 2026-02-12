@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Stunning card for leaderboard entries
 class LeaderboardCard extends StatelessWidget {
@@ -29,10 +28,10 @@ class LeaderboardCard extends StatelessWidget {
 
   Color get _rankColor {
     if (rankColor != null) return rankColor!;
-    if (rank == 1) return AfricanTheme.accentGold;
+    if (rank == 1) return PanAfricanColors.secondary;
     if (rank == 2) return Colors.grey[400]!;
     if (rank == 3) return const Color(0xFFCD7F32); // Bronze
-    return AfricanTheme.primaryGreen;
+    return PanAfricanColors.primary;
   }
 
   IconData get _rankIcon {
@@ -53,7 +52,7 @@ class LeaderboardCard extends StatelessWidget {
         color: isCurrentUser
             ? _rankColor.withOpacity(0.1)
             : Colors.transparent,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         border: Border.all(
           color: isCurrentUser
               ? _rankColor
@@ -103,7 +102,7 @@ class LeaderboardCard extends StatelessWidget {
               child: isTopThree
                   ? Icon(
                       _rankIcon,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 24.sp,
                     )
                   : Text(
@@ -163,13 +162,13 @@ class LeaderboardCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                         decoration: BoxDecoration(
                           color: _rankColor,
-                          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                         ),
                         child: Text(
                           'YOU',
                           style: TextStyle(
                             fontSize: 10.sp,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -199,7 +198,7 @@ class LeaderboardCard extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                         decoration: BoxDecoration(
                           color: _rankColor.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                         ),
                         child: Text(
                           tribe!,

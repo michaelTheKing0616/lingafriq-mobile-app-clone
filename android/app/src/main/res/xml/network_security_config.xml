@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true">
+    <!-- SECURITY: Cleartext traffic is disabled for production security -->
+    <base-config cleartextTrafficPermitted="false">
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
     </base-config>
+    
+    <!-- Allow localhost for development/debugging only -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
+    
+    <!-- Certificate pinning for production API endpoints -->
+    <!-- Uncomment and update with actual certificate hashes for production -->
+    <!--
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">api.lingafriq.com</domain>
+        <pin-set expiration="2027-01-01">
+            <pin digest="SHA-256">YOUR_CERTIFICATE_PIN_HERE</pin>
+            <pin digest="SHA-256">YOUR_BACKUP_PIN_HERE</pin>
+        </pin-set>
+    </domain-config>
+    -->
 </network-security-config>

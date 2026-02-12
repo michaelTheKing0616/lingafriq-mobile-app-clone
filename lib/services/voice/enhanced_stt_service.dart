@@ -13,7 +13,7 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:dio/dio.dart';
 
 /// STT Recognition Result
@@ -114,7 +114,7 @@ class EnhancedSTTService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/stt/transcribe-enhanced',
+        ApiContract.url(ApiContract.voice.sttTranscribeEnhanced),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -151,7 +151,7 @@ class EnhancedSTTService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/stt/transcribe',
+        ApiContract.url(ApiContract.voice.sttTranscribe),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -210,7 +210,7 @@ class EnhancedSTTService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/stt/detect-language',
+        ApiContract.url(ApiContract.voice.detectLanguage),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -233,7 +233,7 @@ class EnhancedSTTService {
   Future<List<String>> getSupportedDialects(String languageCode) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/voice/stt/dialects/$languageCode',
+        ApiContract.url(ApiContract.voice.dialects(languageCode)),
       );
 
       if (response.statusCode == 200) {

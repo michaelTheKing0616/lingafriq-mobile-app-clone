@@ -87,10 +87,14 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
       });
     } catch (e) {
       debugPrint('Error loading food quest: $e');
+      // Use fallback content so game is still playable
+      final fallbackFoods = _getFallbackFoods();
       setState(() {
-        _isLoadingFood = false;
-        _foodOptions = _getFallbackFoods();
+        _currentFood = {'content': 'Traditional African food'};
+        _round++;
         _foodDescription = 'Traditional African food';
+        _foodOptions = fallbackFoods;
+        _isLoadingFood = false;
       });
     }
   }

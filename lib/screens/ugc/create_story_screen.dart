@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Screen for creating user-generated stories
 class CreateStoryScreen extends HookConsumerWidget {
@@ -24,14 +25,21 @@ class CreateStoryScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: AppBar(
-        title: const Text('Create Story'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        title: Text('Create Story', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -40,82 +48,106 @@ class CreateStoryScreen extends HookConsumerWidget {
               value: selectedLanguage.value,
               decoration: InputDecoration(
                 labelText: 'Language',
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
               items: languages.map((lang) {
                 return DropdownMenuItem(
                   value: lang,
-                  child: Text(lang.toUpperCase()),
+                  child: Text(lang.toUpperCase(), style: PanAfricanTypography.bodyMedium(context)),
                 );
               }).toList(),
               onChanged: (value) {
+                HapticFeedback.selectionClick();
                 if (value != null) selectedLanguage.value = value;
               },
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Title
             TextField(
               controller: titleController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Story Title',
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Theme
             TextField(
               controller: themeController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Theme (Optional)',
                 hintText: 'e.g., friendship, adventure, wisdom',
+                hintStyle: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondaryLight),
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Story Content
             TextField(
               controller: storyController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Story Content',
                 hintText: 'Write your story here...',
+                hintStyle: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondaryLight),
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
               maxLines: 15,
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Vocabulary
             TextField(
               controller: vocabController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Key Vocabulary (comma-separated)',
                 hintText: 'e.g., word1, word2, word3',
+                hintStyle: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondaryLight),
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
             ),
-            SizedBox(height: 24.sp),
+            SizedBox(height: PanAfricanSpacing.lg),
             
             // Submit Button
             FilledButton(
               onPressed: isSubmitting.value ? null : () async {
+                HapticFeedback.mediumImpact();
                 if (titleController.text.isEmpty || storyController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Please fill in title and story content'),
-                      backgroundColor: Colors.red,
+                    SnackBar(
+                      content: Text('Please fill in title and story content', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
+                      backgroundColor: PanAfricanColors.error,
                     ),
                   );
                   return;
@@ -142,10 +174,11 @@ class CreateStoryScreen extends HookConsumerWidget {
                     );
                     
                     if (context.mounted) {
+                      HapticFeedback.heavyImpact();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Story created successfully!'),
-                          backgroundColor: AppColors.primaryGreen,
+                        SnackBar(
+                          content: Text('Story created successfully!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
+                          backgroundColor: PanAfricanColors.success,
                         ),
                       );
                       Navigator.of(context).pop(true);
@@ -160,19 +193,20 @@ class CreateStoryScreen extends HookConsumerWidget {
                 }
               },
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-                padding: EdgeInsets.symmetric(vertical: 16.sp),
+                backgroundColor: PanAfricanColors.primary,
+                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+                shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
               ),
               child: isSubmitting.value
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
+                  ? SizedBox(
+                      width: 20.sp,
+                      height: 20.sp,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
-                  : const Text('Create Story'),
+                  : Text('Create Story', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
             ),
           ],
         ),

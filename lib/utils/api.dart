@@ -1,9 +1,8 @@
 import 'package:lingafriq/services/env_config.dart';
 
 class Api {
-  // Use environment configuration for backend URL
-  // Defaults to http://api.lingafriq.com/ if BACKEND_URL is not set
-  // For production, set BACKEND_URL via --dart-define during build
+  // Use EnvConfig.backendBaseUrl; defaults to https://api.lingafriq.com if BACKEND_URL not set.
+  // Override via --dart-define=BACKEND_URL=... during build.
   static String get baseurl {
     final envUrl = EnvConfig.backendBaseUrl;
     // Ensure URL ends with slash
@@ -38,6 +37,9 @@ class Api {
   static String deleteUser(int id) => "/account/user_delete/$id";
   static const String resetPassword = "accounts/auth/users/reset_password/";
   static const String changePassword = "accounts/auth/users/set_password/";
+  static const String sendVerification = "auth/send-verification";
+  static const String verifyEmail = "auth/verify-email";
+  static const String resendVerification = "auth/resend-verification";
   // static const String profiles = "account/my_user_profile/";
   static const String profiles = "account/all_users/";
   static const String language = "language";
@@ -111,11 +113,17 @@ class Api {
   
   // Tribes API endpoints
   static const String tribes = 'api/tribes';
+  static const String tribesClassrooms = 'api/tribes/classrooms';
   static String tribeDetails(String id) => 'api/tribes/$id';
   static String tribeJoin(String id) => 'api/tribes/$id/join';
   static String tribeLeave(String id) => 'api/tribes/$id/leave';
   static String tribeActivity(String id) => 'api/tribes/$id/activity';
   static String tribeDepositXP(String id) => 'api/tribes/$id/deposit-xp';
+  
+  // Avatar API endpoints
+  static const String avatarBase = 'api/avatar/';
+  static const String avatarConfig = '${avatarBase}config';
+  static const String avatarUnlock = '${avatarBase}unlock';
   
   // Currency API endpoints
   static const String currencyBalance = '${gamificationBase}currency/balance';

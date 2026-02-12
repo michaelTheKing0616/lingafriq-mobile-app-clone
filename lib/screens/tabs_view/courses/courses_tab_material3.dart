@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -50,6 +51,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.menu_rounded),
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                     },
                     tooltip: 'Menu',
@@ -73,14 +75,14 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                     children: [
                       Padding(
                         padding: EdgeInsets.fromLTRB(
-                          AdaptiveLayout.sideMargin(context),
                           PanAfricanSpacing.md,
-                          AdaptiveLayout.sideMargin(context),
-                          PanAfricanSpacing.xs,
+                          PanAfricanSpacing.lg,
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.sm,
                         ),
                         child: Text(
                           'Your Progress',
-                          style: PanAfricanTypography.headlineSmall(context),
+                          style: PanAfricanTypography.headlineMedium(context),
                         ),
                       ),
                       Expanded(
@@ -117,12 +119,13 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
 
                             return RefreshIndicator(
                               onRefresh: () async {
+                                HapticFeedback.mediumImpact();
                                 ref.invalidate(languagesProvider);
                               },
                               color: PanAfricanColors.primary,
                               child: OptimizedListView.builder(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: AdaptiveLayout.sideMargin(context),
+                                  horizontal: PanAfricanSpacing.md,
                                 ),
                                 itemCount: displayLanguages.length,
                                 itemBuilder: (context, index) {
@@ -131,6 +134,7 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                                     language: language,
                                     isDark: isDark,
                                     onTap: () {
+                                      HapticFeedback.lightImpact();
                                       ref.read(navigationProvider).navigateTo(
                                         LanguageDetailScreen(language: language),
                                       );
@@ -187,18 +191,20 @@ class _ProgressCard extends StatelessWidget {
         ? 0.0
         : (language.completed / language.total_count).clamp(0.0, 1.0);
 
-    return Card(
-      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+    return Container(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: PanAfricanRadius.lgBR,
+          child: Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -260,7 +266,7 @@ class _ProgressCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: PanAfricanSpacing.md),
+              SizedBox(height: PanAfricanSpacing.sm),
               // Progress Bar
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -270,13 +276,13 @@ class _ProgressCard extends StatelessWidget {
                     children: [
                       Text(
                         'Progress',
-                        style: PanAfricanTypography.labelSmall(context).copyWith(
+                        style: PanAfricanTypography.labelMedium(context).copyWith(
                           color: PanAfricanColors.neutralMedium,
                         ),
                       ),
                       Text(
                         '${(progress * 100).toInt()}%',
-                        style: PanAfricanTypography.labelSmall(context).copyWith(
+                        style: PanAfricanTypography.labelMedium(context).copyWith(
                           color: PanAfricanColors.primary,
                           fontWeight: FontWeight.w600,
                         ),
@@ -285,7 +291,7 @@ class _ProgressCard extends StatelessWidget {
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(3),
+                    borderRadius: PanAfricanRadius.roundBR,
                     child: LinearProgressIndicator(
                       value: progress,
                       backgroundColor: PanAfricanColors.neutralLight,
@@ -299,6 +305,7 @@ class _ProgressCard extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

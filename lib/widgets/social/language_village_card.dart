@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Stunning card for Language Villages
 class LanguageVillageCard extends StatelessWidget {
@@ -27,21 +26,21 @@ class LanguageVillageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = accentColor ?? AfricanTheme.primaryGreen;
+    final color = accentColor ?? PanAfricanColors.primary;
     final isFull = activeUsers >= maxUsers;
     final percentage = (activeUsers / maxUsers).clamp(0.0, 1.0);
 
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
       ),
       child: InkWell(
         onTap: isFull ? null : onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -55,7 +54,7 @@ class LanguageVillageCard extends StatelessWidget {
               width: 2,
             ),
           ),
-          padding: EdgeInsets.all(20.w),
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -81,7 +80,7 @@ class LanguageVillageCard extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.location_city_rounded,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 30.sp,
                     ),
                   )
@@ -123,7 +122,7 @@ class LanguageVillageCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                       decoration: BoxDecoration(
                         color: Colors.red.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                         border: Border.all(color: Colors.red, width: 1),
                       ),
                       child: Text(
@@ -172,20 +171,14 @@ class LanguageVillageCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                       decoration: BoxDecoration(
                         color: color,
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
-                        boxShadow: [
-                          BoxShadow(
-                            color: color.withOpacity(0.3),
-                            blurRadius: 8,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                        boxShadow: PanAfricanShadows.md,
                       ),
                       child: Text(
                         'Join',
                         style: TextStyle(
                           fontSize: 14.sp,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -196,7 +189,7 @@ class LanguageVillageCard extends StatelessWidget {
               ),
               SizedBox(height: 12.h),
               ClipRRect(
-                borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                 child: LinearProgressIndicator(
                   value: percentage,
                   backgroundColor: Colors.grey[200],

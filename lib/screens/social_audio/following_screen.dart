@@ -190,7 +190,7 @@ class _FollowingScreenState extends ConsumerState<FollowingScreen>
                 child: userAvatar == null
                     ? Text(
                         userName[0].toUpperCase(),
-                        style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                        style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16.sp),
                       )
                     : null,
               ),

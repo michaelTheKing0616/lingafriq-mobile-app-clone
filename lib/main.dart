@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 
 import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,13 +28,33 @@ import 'services/auth/credential_storage_service.dart';
 import 'services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'services/advanced/smart_recommendations.dart';
 import 'services/monitoring/sentry_service.dart';
+import 'services/deep_link_service.dart';
 import 'config/secrets_manager.dart';
 import 'utils/performance_utils.dart';
 import 'utils/structured_logger.dart';
+import 'utils/polie_design_tokens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
+  FlutterError.onError = (details) {
+    logger.error(
+      'Flutter error',
+      error: details.exception,
+      stackTrace: details.stack,
+      context: {'library': details.library},
+    );
+  };
+
+  runZonedGuarded(() async {
+  // Initialize local database for offline mode
+  try {
+    await LocalDatabaseService().init();
+    logger.info('Local database initialized');
+  } catch (e) {
+    logger.warning('Failed to initialize local database: $e');
+  }
+
   // Load .env file if it exists (for development/local configuration)
   // In production, use --dart-define or secure storage
   try {
@@ -46,6 +68,10 @@ void main() async {
   // Configure image cache for optimal performance
   ImageCacheManager.configureCache();
   final prefs = await SharedPreferences.getInstance();
+
+  // Polie: apply serif language text preference from settings
+  final polieSerif = prefs.getBool('polie_serif_language_text') ?? false;
+  PolieTypography.setUseSerifForLanguageText(polieSerif);
   
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -124,12 +150,23 @@ void main() async {
     // Don't fail app startup if monitoring fails
   }
 
-  runApp(ProviderScope(
-    overrides: [
-      sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
-    ],
-    child: const MyApp(),
-  ));
+  // Initialize Deep Link Service
+  try {
+    DeepLinkService().initialize();
+    logger.info('Deep link service initialized successfully');
+  } catch (e) {
+    logger.error('Error initializing deep link service', error: e);
+  }
+
+    runApp(ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
+      ],
+      child: const MyApp(),
+    ));
+  }, (error, stack) {
+    logger.error('Unhandled error', error: error, stackTrace: stack);
+  });
 }
 
 /// Detect AppLanguage from device locale

@@ -212,7 +212,7 @@ class _CustomizeTranscriptionDialogState extends State<CustomizeTranscriptionDia
           label: Text('Apply'),
           style: ElevatedButton.styleFrom(
             backgroundColor: PanAfricanColors.primary,
-            foregroundColor: Colors.white,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
           ),
         ),
       ],
@@ -280,19 +280,19 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
               ),
               child: Row(
                 children: [
-                  Icon(Icons.edit_note, color: Colors.white),
+                  Icon(Icons.edit_note, color: Theme.of(context).colorScheme.onPrimary),
                   SizedBox(width: PanAfricanSpacing.sm),
                   Expanded(
                     child: Text(
                       'Edit Lesson',
                       style: PanAfricanTypography.titleLarge(context)?.copyWith(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.close, color: Colors.white),
+                    icon: Icon(Icons.close, color: Theme.of(context).colorScheme.onPrimary),
                     onPressed: () => Navigator.pop(context),
                   ),
                 ],
@@ -354,7 +354,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                           label: Text('Add Section'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: PanAfricanColors.primary,
-                            foregroundColor: Colors.white,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                             padding: EdgeInsets.symmetric(
                               horizontal: PanAfricanSpacing.md,
                               vertical: PanAfricanSpacing.sm,

@@ -158,7 +158,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                   style: TextStyle(
                     fontSize: 28.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ).animate().fadeIn().scale(),
                 SizedBox(height: 8.h),
@@ -166,7 +166,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                   'Your journey with LingAfriq has been remarkable!',
                   style: TextStyle(
                     fontSize: 16.sp,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -178,7 +178,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
                 SizedBox(height: 16.h),
@@ -215,8 +215,8 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                     'What do you love most?',
                     style: TextStyle(
                       fontSize: 16.sp,
-                      color: Colors.white.withOpacity(0.9),
-                    ),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                  ),
                   ),
                   SizedBox(height: 12.h),
                   Wrap(
@@ -235,11 +235,11 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.white.withOpacity(0.3)
-                                : Colors.white.withOpacity(0.1),
+                                ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)
+                                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(20.r),
                             border: Border.all(
-                              color: isSelected ? Colors.white : Colors.transparent,
+                              color: isSelected ? Theme.of(context).colorScheme.onPrimary : Colors.transparent,
                               width: 2,
                             ),
                           ),
@@ -255,7 +255,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                                 reason['text'] as String,
                                 style: TextStyle(
                                   fontSize: 14.sp,
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.onPrimary,
                                   fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                                 ),
                               ),
@@ -273,7 +273,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                   Container(
                     padding: EdgeInsets.all(16.w),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(12.r),
                     ),
                     child: Row(
@@ -291,7 +291,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                               'Reward for your feedback!',
                               style: TextStyle(
                                 fontSize: 14.sp,
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -299,7 +299,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                               '50 Cowries + 5 Ancestral Beads',
                               style: TextStyle(
                                 fontSize: 12.sp,
-                                color: Colors.white.withOpacity(0.9),
+                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                               ),
                             ),
                           ],
@@ -320,13 +320,13 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                           ? null
                           : () => _handleDecline(reason: 'not_now'),
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.white.withOpacity(0.8),
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
                         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                       ),
                       child: Text(
                         'Maybe Later',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
                           fontSize: 16.sp,
                         ),
                       ),
@@ -339,7 +339,7 @@ class _GamifiedReviewScreenState extends ConsumerState<GamifiedReviewScreen> {
                             ? null
                             : () => _submitRating(_selectedRating!),
                         style: FilledButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Theme.of(context).colorScheme.surface,
                           foregroundColor: Colors.deepOrange.shade900,
                           padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 12.h),
                         ),

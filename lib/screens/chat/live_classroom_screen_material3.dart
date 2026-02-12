@@ -9,6 +9,7 @@ import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
@@ -49,8 +50,19 @@ class _RoomSelectionScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String?>(null);
     final isCreating = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => Navigator.of(context).pop(),
+          tooltip: 'Back',
+        ),
+        title: const Text('Live Classroom'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
@@ -69,7 +81,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                 Icon(
                   Icons.school_outlined,
                   size: 80.sp,
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                 )
                     .animate()
                     .fadeIn(duration: 400.ms)
@@ -78,7 +90,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                 Text(
                   'Live Classroom',
                   style: PanAfricanTypography.headlineLarge(context).copyWith(
-                    color: Colors.white,
+                    color: colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -88,7 +100,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                 Text(
                   'Create or join a virtual classroom with video, audio, and whiteboard',
                   style: PanAfricanTypography.bodyLarge(context).copyWith(
-                    color: Colors.white70,
+                    color: colorScheme.onPrimary.withOpacity(0.7),
                   ),
                   textAlign: TextAlign.center,
                 )
@@ -103,7 +115,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     hintText: 'Enter classroom name',
                     prefixIcon: Icon(Icons.school, color: PanAfricanColors.primary),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: colorScheme.surface,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                     ),
@@ -120,7 +132,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     labelText: 'Language (optional)',
                     prefixIcon: Icon(Icons.language, color: PanAfricanColors.primary),
                     filled: true,
-                    fillColor: Colors.white,
+                    fillColor: colorScheme.surface,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                     ),
@@ -157,28 +169,48 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                           }
 
                           isCreating.value = true;
-                          await safeAsync(
-                            context: context,
-                            operation: () async {
-                              // Create room and navigate (language is optional metadata for future use)
-                              final roomId = DateTime.now().millisecondsSinceEpoch.toString();
-                              if (context.mounted) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => _ClassroomView(
-                                      roomId: roomId,
-                                      roomName: roomNameController.text.trim(),
-                                    ),
-                                  ),
+                          try {
+                            await safeAsync(
+                              context: context,
+                              operation: () async {
+                                await ApiService.initialize();
+                                final name = roomNameController.text.trim();
+                                final lang = selectedLanguage.value ?? 'general';
+                                final resp = await ApiService.post(
+                                  Api.tribesClassrooms,
+                                  data: {
+                                    'name': name,
+                                    'language_tag': lang,
+                                  },
                                 );
-                              }
-                            },
-                            onError: (e) {
-                              ErrorHandler.showError(context, e);
-                            },
-                          );
-                          isCreating.value = false;
+                                String roomId;
+                                if (resp.statusCode == 201 && resp.data != null && resp.data is Map) {
+                                  final data = resp.data as Map<String, dynamic>;
+                                  final tribe = data['tribe'] ?? data;
+                                  final tribeMap = tribe is Map ? tribe as Map<String, dynamic> : data;
+                                  roomId = (tribeMap['_id'] ?? tribeMap['id'] ?? data['_id'] ?? data['id'])?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString();
+                                } else {
+                                  roomId = DateTime.now().millisecondsSinceEpoch.toString();
+                                }
+                                if (context.mounted) {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => _ClassroomView(
+                                        roomId: roomId,
+                                        roomName: name,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              onError: (e) {
+                                ErrorHandler.showError(context, e);
+                              },
+                            );
+                          } finally {
+                            if (context.mounted) isCreating.value = false;
+                          }
                         },
                 )
                     .animate()
@@ -429,7 +461,9 @@ class _ClassroomView extends HookConsumerWidget {
   ) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
+      builder: (context) {
+        final dialogColorScheme = Theme.of(context).colorScheme;
+        return AlertDialog(
         backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
         title: Text(
           'Participants (${participants.length})',
@@ -447,7 +481,7 @@ class _ClassroomView extends HookConsumerWidget {
                   backgroundColor: PanAfricanColors.primary,
                   child: Text(
                     (participant['name'] ?? 'U')[0].toUpperCase(),
-                    style: const TextStyle(color: Colors.white),
+                    style: TextStyle(color: dialogColorScheme.onPrimary),
                   ),
                 ),
                 title: Text(
@@ -458,7 +492,7 @@ class _ClassroomView extends HookConsumerWidget {
                     ? Chip(
                         label: Text('You'),
                         backgroundColor: PanAfricanColors.primary,
-                        labelStyle: const TextStyle(color: Colors.white),
+                        labelStyle: TextStyle(color: dialogColorScheme.onPrimary),
                       )
                     : null,
               );
@@ -471,7 +505,8 @@ class _ClassroomView extends HookConsumerWidget {
             child: Text('Close'),
           ),
         ],
-      ),
+      );
+      },
     );
   }
 }
@@ -494,6 +529,7 @@ class _VideoGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     if (participants.isEmpty) {
       return Center(
         child: Column(
@@ -502,13 +538,13 @@ class _VideoGrid extends StatelessWidget {
             Icon(
               Icons.videocam_off,
               size: 64.sp,
-              color: Colors.white70,
+              color: colorScheme.onPrimary.withOpacity(0.7),
             ),
             SizedBox(height: PanAfricanSpacing.md),
             Text(
               'Waiting for participants...',
               style: PanAfricanTypography.bodyLarge(context).copyWith(
-                color: Colors.white70,
+                color: colorScheme.onPrimary.withOpacity(0.7),
               ),
             ),
           ],
@@ -559,7 +595,8 @@ class _InteractiveWhiteboard extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentColor = useState<Color>(Colors.black);
+    final colorScheme = Theme.of(context).colorScheme;
+    final currentColor = useState<Color>(colorScheme.onSurface);
     final strokeWidth = useState<double>(3.0);
     final points = useState<List<Offset>>([]);
     final paths = useState<List<Map<String, dynamic>>>([]);
@@ -567,7 +604,7 @@ class _InteractiveWhiteboard extends HookConsumerWidget {
     return Container(
       margin: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         boxShadow: PanAfricanShadows.lg,
       ),
@@ -589,7 +626,7 @@ class _InteractiveWhiteboard extends HookConsumerWidget {
               children: [
                 // Color Picker
                 ...[
-                  Colors.black,
+                  colorScheme.onSurface,
                   Colors.red,
                   Colors.blue,
                   Colors.green,
@@ -768,6 +805,7 @@ class _ClassroomControls extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
@@ -803,14 +841,14 @@ class _ClassroomControls extends StatelessWidget {
           PrimaryButton(
             text: 'Leave',
             color: PanAfricanColors.error,
-            textColor: Colors.white,
+            textColor: colorScheme.onPrimary,
             onTap: onLeave,
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.call_end, size: 20.sp, color: Colors.white),
+                Icon(Icons.call_end, size: 20.sp, color: colorScheme.onPrimary),
                 SizedBox(width: 8.w),
-                Text('Leave', style: TextStyle(color: Colors.white, fontSize: 18.sp)),
+                Text('Leave', style: TextStyle(color: colorScheme.onPrimary, fontSize: 18.sp)),
               ],
             ),
           ),
@@ -869,6 +907,7 @@ class _VideoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -892,13 +931,13 @@ class _VideoTile extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.6),
+                color: Theme.of(context).colorScheme.scrim.withValues(alpha: 0.6),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
               ),
               child: Text(
                 participant['name'] ?? 'Participant',
                 style: PanAfricanTypography.labelSmall(context)
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: colorScheme.onSurface),
               ),
             ),
           ),
@@ -912,7 +951,7 @@ class _VideoTile extends StatelessWidget {
     VideoTrack? videoTrack;
     if (liveParticipant != null) {
       // Get video track publications from participant
-      // LiveKit 1.5.6 API: trackPublications is a Map<String, TrackPublication>
+      // LiveKit 1.5.6+ API: trackPublications is a Map<String, TrackPublication>
       final trackPublications = liveParticipant!.trackPublications.values;
       // Filter for video tracks - check if track is VideoTrack type
       final videoPublications = trackPublications
@@ -926,24 +965,10 @@ class _VideoTile extends StatelessWidget {
     }
 
     if (videoTrack != null) {
-      // Render actual LiveKit video track
-      // Use platform-specific rendering (will be handled by LiveKit internally)
-      // For now, show a placeholder that indicates video is active
-      return Container(
-        color: Colors.black,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.videocam, size: 48.sp, color: Colors.white),
-              SizedBox(height: 2.h),
-              Text(
-                'Video Active',
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
-              ),
-            ],
-          ),
-        ),
+      // Render actual LiveKit video track using VideoView widget
+      return VideoView(
+        videoTrack!,
+        fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
       );
     }
 
@@ -958,7 +983,7 @@ class _VideoTile extends StatelessWidget {
             child: Text(
               (participant['name'] ?? 'U')[0].toUpperCase(),
               style: PanAfricanTypography.headlineSmall(context)
-                  .copyWith(color: Colors.white),
+                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.sm),

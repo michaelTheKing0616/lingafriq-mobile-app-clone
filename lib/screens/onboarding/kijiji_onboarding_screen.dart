@@ -9,7 +9,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
 import 'package:lingafriq/screens/auth/login_screen.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
@@ -17,6 +17,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 
 /// Comprehensive 10-Step Story-Driven Onboarding
 /// "Kijiji cha Lugha" - The Language Village
@@ -124,10 +125,15 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                       animationController: animationController,
                       onboardingNotifier: onboardingNotifier,
                       onComplete: () async {
+                        // Save all onboarding data to local storage and queue for backend sync
                         await onboardingNotifier.saveOnboardingData();
+                        
+                        // Mark onboarding as truly complete (not just "seen")
+                        final prefs = ref.read(sharedPreferencesProvider).prefs;
+                        await prefs.setString('onboarding_complete', 'true');
                         await ref.read(sharedPreferencesProvider).setOnboardingSeen();
-                        // Navigate to login screen (not TabsView) so user can log in
-                        // Login screen will pre-fill credentials if available
+                        
+                        // Navigate to login screen for authentication
                         ref.read(navigationProvider).navigateOffAll(const LoginScreen());
                       },
                     );
@@ -155,8 +161,8 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                         height: 8,
                         decoration: BoxDecoration(
                           color: isActive
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.3),
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
                           borderRadius: BorderRadius.circular(4),
                         ),
                       );
@@ -181,7 +187,7 @@ class KijijiOnboardingScreen extends HookConsumerWidget {
                   child: Text(
                     'Skip',
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -242,10 +248,10 @@ class _WelcomeScreen extends StatelessWidget {
                           Icon(
                             Icons.park_rounded,
                             size: 120,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           )
                               .animate(onPlay: (controller) => controller.repeat())
-                              .shimmer(duration: 2000.ms, color: Colors.white.withOpacity(0.3)),
+                              .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
                         ],
                       ),
                     )
@@ -261,7 +267,7 @@ class _WelcomeScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.w800,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           height: 1.2,
                           letterSpacing: -0.5,
                           shadows: [
@@ -282,7 +288,7 @@ class _WelcomeScreen extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
-                          color: Colors.white.withOpacity(0.9),
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -299,11 +305,11 @@ class _WelcomeScreen extends StatelessWidget {
                   onPressed: onNext,
                   key: const Key('begin_journey_button'),
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: const Text(
@@ -358,12 +364,12 @@ class _ElderScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                 ),
                 child: Icon(
                   Icons.face_rounded,
                   size: 100,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               )
                   .animate()
@@ -378,7 +384,7 @@ class _ElderScreen extends HookConsumerWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     height: 1.3,
                   ),
                 ),
@@ -391,7 +397,7 @@ class _ElderScreen extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                   ),
                 ),
               ),
@@ -412,11 +418,11 @@ class _ElderScreen extends HookConsumerWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                         decoration: BoxDecoration(
                           color: isSelected
-                              ? Colors.white
-                              : Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                              ? Theme.of(context).colorScheme.surface
+                              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                           border: Border.all(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             width: 2,
                           ),
                         ),
@@ -425,7 +431,7 @@ class _ElderScreen extends HookConsumerWidget {
                           style: TextStyle(
                             color: isSelected
                                 ? AfricanTheme.primaryGreen
-                                : Colors.white,
+                                : Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
@@ -443,7 +449,7 @@ class _ElderScreen extends HookConsumerWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -465,7 +471,7 @@ class _ElderScreen extends HookConsumerWidget {
                         style: TextStyle(
                           color: isSelected
                               ? AfricanTheme.primaryGreen
-                              : Colors.white,
+                              : Theme.of(context).colorScheme.onPrimary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -479,8 +485,8 @@ class _ElderScreen extends HookConsumerWidget {
                         }
                         onboardingNotifier.updateLearningReasons(selectedReasons.value);
                       },
-                      backgroundColor: Colors.white.withOpacity(0.2),
-                      selectedColor: Colors.white,
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                      selectedColor: Theme.of(context).colorScheme.surface,
                       checkmarkColor: AfricanTheme.primaryGreen,
                     ),
                   );
@@ -494,13 +500,13 @@ class _ElderScreen extends HookConsumerWidget {
                       ? onNext
                       : null,
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
-                    disabledBackgroundColor: Colors.white.withOpacity(0.3),
+                    disabledBackgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.3),
                   ),
                   child: const Text(
                     'Next',
@@ -532,6 +538,25 @@ class _WeaverScreen extends HookConsumerWidget {
     required this.onNext,
   });
   
+  /// Convert language display name to language code for DynamicLocalizationService
+  String _getLanguageCode(String languageName) {
+    const languageCodeMap = {
+      'Swahili': 'sw',
+      'Yoruba': 'yo',
+      'Amharic': 'am',
+      'Zulu': 'zu',
+      'Hausa': 'ha',
+      'Igbo': 'ig',
+      'Nigerian Pidgin English': 'pcm',
+      'Xhosa': 'xh',
+      'Twi': 'tw',
+      'Afrikaans': 'af',
+      'Wolof': 'wo',
+      'Somali': 'so',
+    };
+    return languageCodeMap[languageName] ?? 'en';
+  }
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedLanguage = useState<String?>(null);
@@ -555,12 +580,12 @@ class _WeaverScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                 ),
                 child: Icon(
                   Icons.art_track_rounded,
                   size: 100,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
               const SizedBox(height: 32),
@@ -572,7 +597,7 @@ class _WeaverScreen extends HookConsumerWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     height: 1.3,
                   ),
                 ),
@@ -584,7 +609,7 @@ class _WeaverScreen extends HookConsumerWidget {
                   'Select Language',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -599,14 +624,17 @@ class _WeaverScreen extends HookConsumerWidget {
                   return FilterChip(
                     selected: isSelected,
                     label: Text(lang),
-                    onSelected: (selected) {
+                    onSelected: (selected) async {
                       selectedLanguage.value = selected ? lang : null;
                       if (selected) {
                         onboardingNotifier.updateLanguage(lang);
+                        // Also set app locale for unified language storage
+                        final languageCode = _getLanguageCode(lang);
+                        await DynamicLocalizationService.setLanguage(languageCode);
                       }
                     },
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    selectedColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    selectedColor: Theme.of(context).colorScheme.surface,
                     checkmarkColor: AfricanTheme.primaryGreen,
                   );
                 }).toList(),
@@ -618,7 +646,7 @@ class _WeaverScreen extends HookConsumerWidget {
                   'What\'s your level?',
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -637,16 +665,16 @@ class _WeaverScreen extends HookConsumerWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       decoration: BoxDecoration(
                         color: isSelected
-                            ? Colors.white
-                            : Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                            ? Theme.of(context).colorScheme.surface
+                            : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                       ),
                       child: Text(
                         level.toUpperCase(),
                         style: TextStyle(
                           color: isSelected
                               ? AfricanTheme.primaryGreen
-                              : Colors.white,
+                              : Theme.of(context).colorScheme.onPrimary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -662,11 +690,11 @@ class _WeaverScreen extends HookConsumerWidget {
                       ? onNext
                       : null,
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: const Text('Next'),
@@ -734,9 +762,9 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                 ),
-                child: Icon(icon, size: 100, color: Colors.white),
+                child: Icon(icon, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
               FadeTransition(
@@ -747,7 +775,7 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     height: 1.3,
                   ),
                 ),
@@ -766,8 +794,8 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                       selected.value = sel ? option : null;
                       if (sel) onSelect(option);
                     },
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    selectedColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    selectedColor: Theme.of(context).colorScheme.surface,
                     checkmarkColor: AfricanTheme.primaryGreen,
                   );
                 }).toList(),
@@ -778,11 +806,11 @@ class _RhythmMasterScreen extends HookConsumerWidget {
                 child: FilledButton(
                   onPressed: selected.value != null ? onNext : null,
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: AfricanTheme.primaryGreen,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
                     ),
                   ),
                   child: const Text('Next'),
@@ -821,15 +849,15 @@ class _TimekeeperScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.access_time_rounded, size: 100, color: Colors.white),
+              Icon(Icons.access_time_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               const SizedBox(height: 32),
               Text(
                 'I am Zawadi, keeper of time.\nWhen shall we train your tongue?',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
-              Text('${duration.value} minutes per day', style: TextStyle(color: Colors.white, fontSize: 18)),
+              Text('${duration.value} minutes per day', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18)),
               Slider(
                 value: duration.value.toDouble(),
                 min: 5,
@@ -852,8 +880,8 @@ class _TimekeeperScreen extends HookConsumerWidget {
                       timeOfDay.value = sel ? time : null;
                       if (sel) onboardingNotifier.updateSchedule(duration.value, time);
                     },
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    selectedColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
               ),
@@ -861,7 +889,7 @@ class _TimekeeperScreen extends HookConsumerWidget {
               FilledButton(
                 onPressed: timeOfDay.value != null ? onNext : null,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                 ),
@@ -909,7 +937,7 @@ class _PathChooserScreen extends HookConsumerWidget {
               Text(
                 'Choose your path.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
               GridView.builder(
@@ -932,7 +960,7 @@ class _PathChooserScreen extends HookConsumerWidget {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.white : Colors.white.withOpacity(0.2),
+                        color: isSelected ? Theme.of(context).colorScheme.surface : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -941,13 +969,13 @@ class _PathChooserScreen extends HookConsumerWidget {
                           Icon(
                             goal['icon'] as IconData,
                             size: 48,
-                            color: isSelected ? AfricanTheme.primaryGreen : Colors.white,
+                            color: isSelected ? AfricanTheme.primaryGreen : Theme.of(context).colorScheme.onPrimary,
                           ),
                           const SizedBox(height: 8),
                           Text(
                             goal['title'] as String,
                             style: TextStyle(
-                              color: isSelected ? AfricanTheme.primaryGreen : Colors.white,
+                              color: isSelected ? AfricanTheme.primaryGreen : Theme.of(context).colorScheme.onPrimary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -961,7 +989,7 @@ class _PathChooserScreen extends HookConsumerWidget {
               FilledButton(
                 onPressed: selectedGoal.value != null ? onNext : null,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                 ),
@@ -999,15 +1027,15 @@ class _GriotScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.campaign_rounded, size: 100, color: Colors.white),
+              Icon(Icons.campaign_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               const SizedBox(height: 32),
               Text(
                 'I am Amina the Griot.\nHow shall I speak to you?',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
-              Text('Tone Preference', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
+              Text('Tone Preference', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18, fontWeight: FontWeight.w600)),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,
@@ -1022,13 +1050,13 @@ class _GriotScreen extends HookConsumerWidget {
                         onboardingNotifier.updatePersonality(tone, selectedGamification.value!);
                       }
                     },
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    selectedColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
               ),
               const SizedBox(height: 32),
-              Text('Gamification', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
+              Text('Gamification', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18, fontWeight: FontWeight.w600)),
               const SizedBox(height: 16),
               Wrap(
                 spacing: 12,
@@ -1043,8 +1071,8 @@ class _GriotScreen extends HookConsumerWidget {
                         onboardingNotifier.updatePersonality(selectedTone.value!, level);
                       }
                     },
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    selectedColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
               ),
@@ -1052,7 +1080,7 @@ class _GriotScreen extends HookConsumerWidget {
               FilledButton(
                 onPressed: selectedTone.value != null && selectedGamification.value != null ? onNext : null,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                 ),
@@ -1095,12 +1123,12 @@ class _HealerScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.healing_rounded, size: 100, color: Colors.white),
+              Icon(Icons.healing_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               const SizedBox(height: 32),
               Text(
                 'I am the Healer.\nLet me make your journey smooth.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
               ...['largeText', 'highContrast', 'dyslexia', 'soundOff', 'motionReduction'].map((key) {
@@ -1117,14 +1145,14 @@ class _HealerScreen extends HookConsumerWidget {
                       motionReduction: accessibility.value['motionReduction'],
                     );
                   },
-                  activeColor: Colors.white,
+                  activeColor: Theme.of(context).colorScheme.onPrimary,
                 );
               }).toList(),
               const SizedBox(height: 48),
               FilledButton(
                 onPressed: onNext,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                 ),
@@ -1161,12 +1189,12 @@ class _SocialScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.people_rounded, size: 100, color: Colors.white),
+              Icon(Icons.people_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               const SizedBox(height: 32),
               Text(
                 'Build your clan.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
               Wrap(
@@ -1180,8 +1208,8 @@ class _SocialScreen extends HookConsumerWidget {
                       selectedPreference.value = sel ? pref : null;
                       if (sel) onboardingNotifier.updateSocial(pref);
                     },
-                    backgroundColor: Colors.white.withOpacity(0.2),
-                    selectedColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                    selectedColor: Theme.of(context).colorScheme.surface,
                   );
                 }).toList(),
               ),
@@ -1189,7 +1217,7 @@ class _SocialScreen extends HookConsumerWidget {
               FilledButton(
                 onPressed: selectedPreference.value != null ? onNext : null,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                 ),
@@ -1226,33 +1254,33 @@ class _NamingScreen extends HookConsumerWidget {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              Icon(Icons.celebration_rounded, size: 100, color: Colors.white),
+              Icon(Icons.celebration_rounded, size: 100, color: Theme.of(context).colorScheme.onPrimary),
               const SizedBox(height: 32),
               Text(
                 'A learner without a name is a drum without a rhythm!\nTell us what you wish to be called.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
               ),
               const SizedBox(height: 32),
               TextField(
                 controller: usernameController,
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18),
                 decoration: InputDecoration(
                   hintText: 'Enter your username',
-                  hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6)),
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.2),
+                  fillColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Colors.white, width: 2),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Colors.white, width: 2),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(16),
-                    borderSide: BorderSide(color: Colors.white, width: 2),
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary, width: 2),
                   ),
                 ),
                 onChanged: (value) {
@@ -1263,7 +1291,7 @@ class _NamingScreen extends HookConsumerWidget {
               FilledButton(
                 onPressed: usernameController.text.isNotEmpty ? onNext : null,
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   foregroundColor: AfricanTheme.primaryGreen,
                   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
                 ),
@@ -1287,61 +1315,319 @@ class _PlacementTestScreen extends HookConsumerWidget {
     required this.onboardingNotifier,
     required this.onComplete,
   });
+
+  // Simple placement questions for quick level assessment
+  static const _placementQuestions = [
+    {
+      'question': 'How would you describe your familiarity with African languages?',
+      'options': [
+        {'text': 'Complete beginner - never learned one', 'level': 'A0'},
+        {'text': 'Some exposure - know a few words', 'level': 'A1'},
+        {'text': 'Basic - can introduce myself', 'level': 'A2'},
+        {'text': 'Intermediate - can hold conversations', 'level': 'B1'},
+        {'text': 'Advanced - speak fluently', 'level': 'B2'},
+      ],
+    },
+    {
+      'question': 'Can you read or write in the African language you want to learn?',
+      'options': [
+        {'text': 'Not at all', 'level': 'A0'},
+        {'text': 'I can recognize some letters/characters', 'level': 'A1'},
+        {'text': 'I can read simple words', 'level': 'A2'},
+        {'text': 'I can read sentences', 'level': 'B1'},
+        {'text': 'I can read fluently', 'level': 'B2'},
+      ],
+    },
+    {
+      'question': 'How confident are you in understanding spoken African languages?',
+      'options': [
+        {'text': 'Cannot understand anything', 'level': 'A0'},
+        {'text': 'Understand greetings and simple words', 'level': 'A1'},
+        {'text': 'Understand short, simple conversations', 'level': 'A2'},
+        {'text': 'Understand most everyday conversations', 'level': 'B1'},
+        {'text': 'Understand complex discussions', 'level': 'B2'},
+      ],
+    },
+  ];
   
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentQuestion = useState(0);
+    final answers = useState<List<String>>([]);
+    final showIntro = useState(true);
+    final isSubmitting = useState(false);
+    
+    // Calculate final level based on answers
+    String calculateLevel(List<String> answerLevels) {
+      if (answerLevels.isEmpty) return 'A0';
+      
+      final levelScores = {'A0': 0, 'A1': 1, 'A2': 2, 'B1': 3, 'B2': 4};
+      final totalScore = answerLevels.fold<int>(0, (sum, level) => sum + (levelScores[level] ?? 0));
+      final avgScore = totalScore / answerLevels.length;
+      
+      if (avgScore < 0.5) return 'A0';
+      if (avgScore < 1.5) return 'A1';
+      if (avgScore < 2.5) return 'A2';
+      if (avgScore < 3.5) return 'B1';
+      return 'B2';
+    }
+    
+    void submitTest() async {
+      isSubmitting.value = true;
+      final level = calculateLevel(answers.value);
+      onboardingNotifier.updatePlacementTest({
+        'completed': true,
+        'level': level,
+        'answers': answers.value,
+        'timestamp': DateTime.now().toIso8601String(),
+      });
+      
+      // Also update proficiency level
+      onboardingNotifier.updateProficiencyLevel(level.toLowerCase());
+      
+      // Brief delay for UX
+      await Future.delayed(const Duration(milliseconds: 300));
+      isSubmitting.value = false;
+      onComplete();
+    }
+    
+    void selectAnswer(String level) {
+      HapticFeedback.selectionClick();
+      answers.value = [...answers.value, level];
+      
+      if (currentQuestion.value < _placementQuestions.length - 1) {
+        currentQuestion.value++;
+      } else {
+        submitTest();
+      }
+    }
+    
+    void skipTest() {
+      HapticFeedback.lightImpact();
+      onboardingNotifier.updatePlacementTest({'skipped': true});
+      onComplete();
+    }
+    
     return Container(
       decoration: BoxDecoration(gradient: AfricanTheme.africanSavanna),
       child: ResponsiveSafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.quiz_rounded, size: 120, color: Colors.white),
-                    const SizedBox(height: 32),
-                    Text(
-                      'Let us see where you stand, traveler.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.white),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'A short placement test will help us personalize your journey.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.white.withOpacity(0.9)),
-                    ),
-                  ],
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 400),
+          child: showIntro.value
+              ? _buildIntroView(context, () {
+                  HapticFeedback.mediumImpact();
+                  showIntro.value = false;
+                }, skipTest)
+              : _buildQuestionView(
+                  context,
+                  _placementQuestions[currentQuestion.value],
+                  currentQuestion.value,
+                  _placementQuestions.length,
+                  selectAnswer,
+                  skipTest,
+                  isSubmitting.value,
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: FilledButton(
-                onPressed: () {
-                  // For now, skip placement test and complete onboarding
-                  onboardingNotifier.updatePlacementTest({'skipped': true});
-                  onComplete();
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: AfricanTheme.primaryGreen,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
-                  ),
-                ),
-                child: const Text(
-                  'Begin Test',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-          ],
         ),
       ),
+    );
+  }
+  
+  Widget _buildIntroView(BuildContext context, VoidCallback onStart, VoidCallback onSkip) {
+    return Column(
+      key: const ValueKey('intro'),
+      children: [
+        Expanded(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.quiz_rounded, size: 80.sp, color: Theme.of(context).colorScheme.onPrimary),
+                ).animate().scale(duration: 600.ms, curve: Curves.elasticOut),
+                SizedBox(height: 32.h),
+                Text(
+                  'Let us see where you stand, traveler.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onPrimary),
+                ).animate().fadeIn(delay: 200.ms),
+                SizedBox(height: 16.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 32.w),
+                  child: Text(
+                    'Answer 3 quick questions to help us personalize your learning journey.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 16.sp, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
+                  ),
+                ).animate().fadeIn(delay: 400.ms),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(24.w),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: onStart,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.surface,
+                    foregroundColor: AfricanTheme.primaryGreen,
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.round),
+                    ),
+                  ),
+                  child: Text(
+                    'Start Assessment',
+                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.2, end: 0),
+              SizedBox(height: 12.h),
+              TextButton(
+                onPressed: onSkip,
+                child: Text(
+                  'Skip for now (start as beginner)',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ).animate().fadeIn(delay: 800.ms),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget _buildQuestionView(
+    BuildContext context,
+    Map<String, dynamic> question,
+    int questionIndex,
+    int totalQuestions,
+    Function(String) onSelect,
+    VoidCallback onSkip,
+    bool isSubmitting,
+  ) {
+    final options = question['options'] as List<Map<String, String>>;
+    
+    return Column(
+      key: ValueKey('question_$questionIndex'),
+      children: [
+        // Progress indicator
+        Padding(
+          padding: EdgeInsets.only(top: 60.h, left: 24.w, right: 24.w),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Question ${questionIndex + 1} of $totalQuestions',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: onSkip,
+                    child: Text(
+                      'Skip test',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                      fontSize: 14.sp,
+                    ),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              LinearProgressIndicator(
+                value: (questionIndex + 1) / totalQuestions,
+                backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ],
+          ),
+        ),
+        
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(24.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 32.h),
+                Text(
+                  question['question'] as String,
+                    style: TextStyle(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      height: 1.3,
+                    ),
+                ).animate().fadeIn().slideX(begin: 0.1, end: 0),
+                SizedBox(height: 32.h),
+                
+                // Options
+                Expanded(
+                  child: ListView.separated(
+                    itemCount: options.length,
+                    separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                    itemBuilder: (context, index) {
+                      final option = options[index];
+                      return Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: isSubmitting ? null : () => onSelect(option['level']!),
+                          borderRadius: BorderRadius.circular(12.r),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.w),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(12.r),
+                              border: Border.all(
+                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                                width: 1,
+                              ),
+                            ),
+                            child: Text(
+                              option['text']!,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ).animate(delay: Duration(milliseconds: 100 * index))
+                          .fadeIn()
+                          .slideX(begin: 0.05, end: 0);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        
+        if (isSubmitting)
+          Padding(
+            padding: EdgeInsets.all(24.w),
+            child: CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+      ],
     );
   }
 }

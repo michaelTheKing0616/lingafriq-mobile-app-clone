@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../models/game/game_session_model.dart';
-import '../../utils/african_theme.dart';
-import '../../utils/design_system.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/integration_helpers.dart';
 import '../../utils/performance_utils.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../widgets/pan_african_components.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Language Selector Widget
@@ -32,13 +32,16 @@ class LanguageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
-      padding: EdgeInsets.all(3.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.sm),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
+        color: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
         ),
       ),
       child: Column(
@@ -46,21 +49,23 @@ class LanguageSelector extends StatelessWidget {
         children: [
           Text(
             'Select Language',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: PanAfricanTypography.titleSmall(context),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.xs),
           Wrap(
-            spacing: 1.w,
-            runSpacing: 1.h,
+            spacing: PanAfricanSpacing.xs,
+            runSpacing: PanAfricanSpacing.xs,
             children: _languages.map((lang) {
               final isSelected = selectedLanguage == lang;
-              return FilterChip(
-                label: Text(lang.toUpperCase()),
+              return PanAfricanChip(
+                label: lang.toUpperCase(),
                 selected: isSelected,
-                onSelected: (_) => onLanguageChanged(lang),
-                selectedColor: Theme.of(context).colorScheme.primaryContainer,
+                onSelected: () => onLanguageChanged(lang),
+                backgroundColor: isSelected
+                    ? PanAfricanColors.primaryContainer
+                    : (isDark
+                        ? PanAfricanColors.surfaceContainerHighDark
+                        : PanAfricanColors.surfaceContainerHighLight),
               );
             }).toList(),
           ),
@@ -88,16 +93,14 @@ class GameSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(bottom: 1.h),
+          padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
           child: Text(
             title,
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: PanAfricanTypography.titleLarge(context),
           ),
         ),
         ...games.map((game) => Padding(
-              padding: EdgeInsets.only(bottom: 1.5.h),
+              padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
               child: _GameCard(
                 title: game.displayName,
                 description: _getGameDescription(game),
@@ -302,90 +305,75 @@ class _GameCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final borderColor =
+        isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight;
+    final colorScheme = Theme.of(context).colorScheme;
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
+    return Opacity(
+      opacity: isAvailable ? 1.0 : 0.6,
+      child: PanAfricanCard(
         onTap: isAvailable ? onTap : null,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        child: Opacity(
-          opacity: isAvailable ? 1.0 : 0.6,
-          child: Container(
-            padding: EdgeInsets.all(5.w),
-            decoration: BoxDecoration(
-              color: isDark ? AfricanTheme.backgroundDark : Colors.white,
-              borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-              boxShadow: DesignSystem.shadowLarge,
-              border: Border.all(
-                color: isAvailable
-                    ? (isDark ? AfricanTheme.stitchBorderDark : Colors.transparent)
-                    : Colors.grey.withOpacity(0.3),
-                width: 1,
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        backgroundColor:
+            isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        hasHoverEffect: true,
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              decoration: BoxDecoration(
+                gradient: gradient,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                boxShadow: PanAfricanShadows.sm,
+                border: Border.all(color: borderColor.withOpacity(0.2)),
               ),
+              child: Icon(icon, color: colorScheme.onPrimary, size: 28.sp),
             ),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(4.w),
-                  decoration: BoxDecoration(
-                    gradient: gradient,
-                    borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-                    boxShadow: DesignSystem.shadowMedium,
-                  ),
-                  child: Icon(icon, color: Colors.white, size: 32),
-                ),
-                SizedBox(width: 4.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(width: PanAfricanSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              title,
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.bold,
-                                color: isDark ? Colors.white : Colors.black87,
-                              ),
-                            ),
-                          ),
-                          if (isAvailable)
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 2.w,
-                                vertical: 0.5.h,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'READY',
-                                style: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                      SizedBox(height: 0.5.h),
-                      Text(
-                        description,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          color: isDark ? Colors.white70 : Colors.black54,
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: PanAfricanTypography.titleMedium(context),
                         ),
+                      ),
+                      PanAfricanBadge(
+                        label: isAvailable ? 'READY' : 'SOON',
+                        color: isAvailable
+                            ? PanAfricanColors.success
+                            : PanAfricanColors.warning,
+                        icon: isAvailable
+                            ? Icons.bolt_rounded
+                            : Icons.hourglass_bottom_rounded,
                       ),
                     ],
                   ),
-                ),
-              ],
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  Text(
+                    description,
+                    style: PanAfricanTypography.bodySmall(context).copyWith(
+                      color: isDark
+                          ? PanAfricanColors.textSecondaryDark
+                          : PanAfricanColors.textSecondaryLight,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16.sp,
+              color: isDark
+                  ? PanAfricanColors.textSecondaryDark
+                  : PanAfricanColors.textSecondaryLight,
+            ),
+          ],
         ),
       ),
     );

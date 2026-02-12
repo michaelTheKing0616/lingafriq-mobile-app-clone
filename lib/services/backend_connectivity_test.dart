@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../utils/api.dart';
-import '../services/env_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 
 /// Test result structure for backend connectivity tests
 class ConnectivityResult {
@@ -42,26 +43,12 @@ class BackendConnectivityTest {
 
   /// Test internet connectivity (not backend-specific)
   Future<bool> testInternetConnectivity() async {
-    try {
-      final response = await _dio.head(
-        'https://www.google.com',
-        options: Options(
-          receiveTimeout: const Duration(seconds: 5),
-          sendTimeout: const Duration(seconds: 5),
-          followRedirects: false,
-          validateStatus: (status) => status != null && status < 500,
-        ),
-      );
-      return response.statusCode != null;
-    } catch (e) {
-      debugPrint('Internet connectivity test failed: $e');
-      return false;
-    }
+    return ConnectivityService.hasInternet(dio: _dio);
   }
 
   /// Test backend health endpoint
   Future<ConnectivityResult> testBackendHealth() async {
-    final backendUrl = Api.baseurl;
+    final backendUrl = ApiContract.baseUrl;
     final startTime = DateTime.now();
     
     // First check internet connectivity
@@ -79,7 +66,7 @@ class BackendConnectivityTest {
     try {
       // Test health endpoint first (lightweight)
       final response = await _dio.get(
-        '${backendUrl}healthcheck',
+        ApiContract.url(ApiContract.misc.healthcheck),
         options: Options(
           receiveTimeout: const Duration(seconds: 10),
           sendTimeout: const Duration(seconds: 10),
@@ -113,7 +100,7 @@ class BackendConnectivityTest {
       // Try fallback endpoint (login endpoint - lightweight HEAD request)
       try {
         final fallbackResponse = await _dio.head(
-          '${backendUrl}${Api.login}',
+          ApiContract.url(ApiContract.auth.login),
           options: Options(
             receiveTimeout: const Duration(seconds: 5),
             sendTimeout: const Duration(seconds: 5),
@@ -138,23 +125,10 @@ class BackendConnectivityTest {
       }
 
       // Determine error type
+      debugPrint('Backend connectivity test error: $e');
       String errorMessage;
       if (e is DioException) {
-        switch (e.type) {
-          case DioExceptionType.connectionTimeout:
-          case DioExceptionType.sendTimeout:
-          case DioExceptionType.receiveTimeout:
-            errorMessage = 'Backend connection timeout. Server may be slow or unreachable.';
-            break;
-          case DioExceptionType.connectionError:
-            errorMessage = 'Cannot connect to backend. Check if backend is running and URL is correct.';
-            break;
-          case DioExceptionType.badCertificate:
-            errorMessage = 'SSL certificate error. Backend URL may be incorrect.';
-            break;
-          default:
-            errorMessage = 'Backend connectivity error: ${e.message ?? e.toString()}';
-        }
+        errorMessage = TransportErrorPolicy.toUserMessage(e);
       } else {
         errorMessage = 'Unexpected error: ${e.toString()}';
       }
@@ -171,7 +145,7 @@ class BackendConnectivityTest {
 
   /// Test specific endpoint
   Future<ConnectivityResult> testEndpoint(String endpoint) async {
-    final backendUrl = Api.baseurl;
+    final backendUrl = ApiContract.baseUrl;
     final hasInternet = await testInternetConnectivity();
     
     if (!hasInternet) {
@@ -184,7 +158,9 @@ class BackendConnectivityTest {
     }
 
     final startTime = DateTime.now();
-    final fullUrl = endpoint.startsWith('http') ? endpoint : '${backendUrl}$endpoint';
+    final fullUrl = endpoint.startsWith('http')
+        ? endpoint
+        : ApiContract.url(endpoint.startsWith('/') ? endpoint : '/$endpoint');
 
     try {
       final response = await _dio.head(
@@ -208,9 +184,10 @@ class BackendConnectivityTest {
     } catch (e) {
       final responseTime = DateTime.now().difference(startTime);
       
+      debugPrint('Endpoint connectivity test error: $e');
       String errorMessage;
       if (e is DioException) {
-        errorMessage = 'Endpoint test failed: ${e.message ?? e.toString()}';
+        errorMessage = TransportErrorPolicy.toUserMessage(e);
       } else {
         errorMessage = 'Unexpected error: ${e.toString()}';
       }
@@ -236,7 +213,7 @@ class BackendConnectivityTest {
     results['loading_screen'] = await testEndpoint('api/loading-screen');
 
     // Test login endpoint (critical for authentication)
-    results['login'] = await testEndpoint(Api.login);
+    results['login'] = await testEndpoint(ApiContract.auth.login);
 
     // Test onboarding endpoint
     results['onboarding'] = await testEndpoint('onboarding/check-username?username=test');
@@ -246,7 +223,7 @@ class BackendConnectivityTest {
 
   /// Get detailed connectivity report
   Future<Map<String, dynamic>> getConnectivityReport() async {
-    final backendUrl = Api.baseurl;
+    final backendUrl = ApiContract.baseUrl;
     final hasInternet = await testInternetConnectivity();
     final backendHealth = await testBackendHealth();
     final criticalEndpoints = await testCriticalEndpoints();

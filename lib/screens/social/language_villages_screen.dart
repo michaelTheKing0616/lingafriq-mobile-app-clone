@@ -9,8 +9,9 @@ import '../../utils/performance_utils.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../utils/supported_languages.dart';
 import '../../widgets/lingafriq_ui_helpers.dart';
-import '../../widgets/primary_button.dart';
+import '../../widgets/pan_african_components.dart';
 import '../../screens/chat/live_classroom_screen_material3.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 import 'package:flutter/services.dart';
 
 /// Language Villages Screen - Voice rooms for target-language-only practice
@@ -59,44 +60,98 @@ class LanguageVillagesScreen extends ConsumerWidget {
     WidgetRef ref,
     List<LanguageVillage> villages,
   ) {
+  final colorScheme = Theme.of(context).colorScheme;
     if (villages.isEmpty) {
-      return LingAfriqEmptyState(
+      return PanAfricanEmptyState(
         icon: Icons.location_city_outlined,
         title: 'No villages available',
-        subtitle: 'Create a village to practice your target language with others.',
+        description: 'Create a village to practice your target language with others.',
         actionLabel: 'Create Village',
         onAction: () => _showCreateVillageDialog(context, ref),
       );
     }
 
-    return OptimizedListView.builder(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-      itemCount: villages.length,
-      itemBuilder: (context, index) {
-        final village = villages[index];
-        return _VillageCard(
-          village: village,
-          onJoin: () async {
-            await safeAsync(
-              context: context,
-              operation: () async {
-                final success = await ref
-                    .read(languageVillageProvider.notifier)
-                    .joinVillage(village.id);
-                if (context.mounted) {
-                  if (success) {
-                    showLingAfriqSuccess(context, 'Joined ${village.name}!');
-                  } else {
-                    throw Exception('Failed to join village');
-                  }
-                }
-              },
-              errorContext: 'joinVillage',
-              showError: true,
-            );
-          },
-        );
-      },
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
+          child: PanAfricanCard(
+            hasGlow: true,
+            glowColor: PanAfricanColors.primary,
+            child: Row(
+              children: [
+                Container(
+                  width: 56,
+                  height: 56,
+                  decoration: BoxDecoration(
+                    gradient: PanAfricanGradients.savannaGold,
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                  ),
+                  child: Icon(Icons.language_rounded, color: colorScheme.onPrimary, size: 28),
+                ),
+                SizedBox(width: PanAfricanSpacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Language Villages',
+                        style: PanAfricanTypography.titleLarge(context),
+                      ),
+                      SizedBox(height: PanAfricanSpacing.xxs),
+                      Text(
+                        'Join a village to practice live and meet other learners.',
+                        style: PanAfricanTypography.bodySmall(context).copyWith(
+                          color: PanAfricanColors.textSecondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                PanAfricanButton(
+                  label: 'Create',
+                  icon: Icons.add_rounded,
+                  onPressed: () => _showCreateVillageDialog(context, ref),
+                  backgroundColor: PanAfricanColors.primary,
+                  foregroundColor: colorScheme.onPrimary,
+                ),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: OptimizedListView.builder(
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+            itemCount: villages.length,
+            itemBuilder: (context, index) {
+              final village = villages[index];
+              return _VillageCard(
+                village: village,
+                onJoin: () async {
+                  HapticFeedback.lightImpact();
+                  await safeAsync(
+                    context: context,
+                    operation: () async {
+                      final success = await ref
+                          .read(languageVillageProvider.notifier)
+                          .joinVillage(village.id);
+                      if (context.mounted) {
+                        if (success) {
+                          showLingAfriqSuccess(context, 'Joined ${village.name}!');
+                        } else {
+                          throw Exception('Failed to join village');
+                        }
+                      }
+                    },
+                    errorContext: 'joinVillage',
+                    showError: true,
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -106,13 +161,18 @@ class LanguageVillagesScreen extends ConsumerWidget {
     LanguageVillage village,
   ) {
     final villageProvider = ref.read(languageVillageProvider.notifier);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Column(
       children: [
         // Village header
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: isDark 
+                ? PanAfricanColors.surfaceContainerDark 
+                : PanAfricanColors.surfaceContainerLight,
+            boxShadow: PanAfricanShadows.sm,
           ),
           child: Column(
             children: [
@@ -125,13 +185,14 @@ class LanguageVillagesScreen extends ConsumerWidget {
                       children: [
                         Text(
                           village.name,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          style: PanAfricanTypography.titleLarge(context).copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                         ),
+                        SizedBox(height: PanAfricanSpacing.xs),
                         Text(
                           village.description,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: PanAfricanTypography.bodyMedium(context),
                         ),
                       ],
                     ),
@@ -139,6 +200,7 @@ class LanguageVillagesScreen extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.exit_to_app),
                     onPressed: () async {
+                      HapticFeedback.lightImpact();
                       await safeAsync(
                         context: context,
                         operation: () async {
@@ -151,18 +213,22 @@ class LanguageVillagesScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: PanAfricanSpacing.sm),
               Row(
                 children: [
-                  const Icon(Icons.people, size: 16),
-                  const SizedBox(width: 4),
+                  Icon(Icons.people, size: 16.sp, color: PanAfricanColors.primary),
+                  SizedBox(width: PanAfricanSpacing.xs),
                   Text(
                     '${village.currentParticipants}/${village.maxParticipants}',
+                    style: PanAfricanTypography.labelLarge(context),
                   ),
-                  const SizedBox(width: 16),
-                  const Icon(Icons.language, size: 16),
-                  const SizedBox(width: 4),
-                  Text('${village.language} only'),
+                  SizedBox(width: PanAfricanSpacing.md),
+                  Icon(Icons.language, size: 16.sp, color: PanAfricanColors.primary),
+                  SizedBox(width: PanAfricanSpacing.xs),
+                  Text(
+                    '${village.language} only',
+                    style: PanAfricanTypography.labelLarge(context),
+                  ),
                 ],
               ),
             ],
@@ -171,24 +237,29 @@ class LanguageVillagesScreen extends ConsumerWidget {
         // Rules
         if (village.rules.isNotEmpty)
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Village Rules',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: PanAfricanSpacing.sm),
                 ...village.rules.map((rule) => Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
+                      padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
                       child: Row(
                         children: [
-                          const Icon(Icons.check_circle, size: 16, color: Colors.green),
-                          const SizedBox(width: 8),
-                          Expanded(child: Text(rule)),
+                          Icon(Icons.check_circle, size: 16.sp, color: PanAfricanColors.success),
+                          SizedBox(width: PanAfricanSpacing.sm),
+                          Expanded(
+                            child: Text(
+                              rule,
+                              style: PanAfricanTypography.bodyMedium(context),
+                            ),
+                          ),
                         ],
                       ),
                     )),
@@ -279,9 +350,9 @@ class LanguageVillagesScreen extends ConsumerWidget {
                 onPressed: () => Navigator.pop(dialogContext),
                 child: const Text('Cancel'),
               ),
-              PrimaryButton(
-                text: 'Create',
-                onTap: () async {
+              PanAfricanButton(
+                label: 'Create',
+                onPressed: () async {
                   if (formKey.currentState == null || !formKey.currentState!.validate()) return;
                   final name = nameController.text.trim();
                   final description = descriptionController.text.trim();
@@ -307,6 +378,11 @@ class LanguageVillagesScreen extends ConsumerWidget {
                     showError: true,
                   );
                 },
+                hasGradient: true,
+                gradientColors: [
+                  PanAfricanColors.primary,
+                  PanAfricanColors.secondary,
+                ],
               ),
             ],
           );
@@ -327,39 +403,89 @@ class _VillageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          child: const Icon(Icons.location_city, color: Colors.white),
-        ),
-        title: Text(village.name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(village.description),
-            const SizedBox(height: 4),
-            Row(
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
+    final occupancy = village.maxParticipants > 0
+        ? (village.currentParticipants / village.maxParticipants).clamp(0.0, 1.0)
+        : 0.0;
+    final colorScheme = Theme.of(context).colorScheme;
+    
+    return PanAfricanCard(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          PanAfricanAvatar(
+            initials: village.name.isNotEmpty ? village.name[0].toUpperCase() : 'V',
+            size: 48.w,
+            backgroundColor: PanAfricanColors.primary,
+            borderColor: Colors.transparent,
+            showBadge: village.currentParticipants >= village.maxParticipants,
+            badgeColor: PanAfricanColors.secondary,
+          ),
+          SizedBox(width: PanAfricanSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(Icons.people, size: 16),
-                const SizedBox(width: 4),
                 Text(
-                  '${village.currentParticipants}/${village.maxParticipants}',
+                  village.name,
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                const SizedBox(width: 16),
-                const Icon(Icons.language, size: 16),
-                const SizedBox(width: 4),
-                Text('${village.language} only'),
+                SizedBox(height: PanAfricanSpacing.xs),
+                Text(
+                  village.description,
+                  style: PanAfricanTypography.bodyMedium(context),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
+                Row(
+                  children: [
+                    PanAfricanBadge(
+                      label: '${village.currentParticipants}/${village.maxParticipants} members',
+                      color: PanAfricanColors.primary,
+                      icon: Icons.people,
+                    ),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    PanAfricanBadge(
+                      label: village.language,
+                      color: PanAfricanColors.secondary,
+                      icon: Icons.language,
+                    ),
+                  ],
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
+                PanAfricanProgressBar(
+                  progress: occupancy,
+                  color: occupancy >= 0.85
+                      ? PanAfricanColors.tertiary
+                      : PanAfricanColors.primary,
+                  height: 6.h,
+                ),
               ],
             ),
-          ],
-        ),
-        trailing: PrimaryButton(
-          text: 'Join',
-          enabled: village.currentParticipants < village.maxParticipants,
-          onTap: onJoin,
-        ),
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          PanAfricanButton(
+            label: 'Join',
+            onPressed: village.currentParticipants < village.maxParticipants
+                ? () {
+                    HapticFeedback.lightImpact();
+                    onJoin();
+                  }
+                : null,
+            isOutlined: village.currentParticipants >= village.maxParticipants,
+            backgroundColor: PanAfricanColors.primary,
+            foregroundColor:
+                village.currentParticipants >= village.maxParticipants
+                  ? PanAfricanColors.primary
+                  : colorScheme.onPrimary,
+          ),
+        ],
       ),
     );
   }
@@ -396,42 +522,53 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
       child: Column(
         children: [
           // Header
-          Container(
-            padding: EdgeInsets.all(4.w),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? PanAfricanColors.surfaceContainerDark
-                  : PanAfricanColors.surfaceContainerLight,
-              boxShadow: PanAfricanShadows.sm,
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.village.name,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '${widget.village.currentParticipants}/${widget.village.maxParticipants} participants',
-                        style: TextStyle(fontSize: 12.sp),
-                      ),
-                    ],
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: widget.onLeave,
-                  tooltip: 'Leave Room',
-                ),
-              ],
-            ),
+        Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.md,
+            vertical: PanAfricanSpacing.sm,
           ),
+          decoration: BoxDecoration(
+            color: isDark
+                ? PanAfricanColors.surfaceContainerDark
+                : PanAfricanColors.surfaceContainerLight,
+            boxShadow: PanAfricanShadows.sm,
+          ),
+          child: Row(
+            children: [
+              LingAfriqAvatar.fromInitials(
+                username: widget.village.name.isNotEmpty
+                    ? widget.village.name
+                    : 'Village',
+                size: 40.w,
+              ),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.village.name,
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    Text(
+                      '${widget.village.currentParticipants}/${widget.village.maxParticipants} participants',
+                      style: PanAfricanTypography.bodySmall(context).copyWith(
+                        color: PanAfricanColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: widget.onLeave,
+                tooltip: 'Leave Room',
+              ),
+            ],
+          ),
+        ),
           // Participants grid
           Expanded(
             child: GridView.builder(
@@ -452,20 +589,13 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: 30.r,
-                        backgroundColor: PanAfricanColors.primary,
-                        child: Text(
-                          'P${index + 1}',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.sp,
-                          ),
-                        ),
+                      LingAfriqAvatar.fromInitials(
+                        username: 'Participant ${index + 1}',
+                        size: 60.r,
                       ),
                       SizedBox(height: 2.h),
                       Text(
-                        'Participant ${index + 1}',
+                        'P${index + 1}',
                         style: TextStyle(fontSize: 12.sp),
                       ),
                     ],
@@ -489,7 +619,7 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
                 IconButton(
                   icon: Icon(_isMuted ? Icons.mic_off : Icons.mic),
                   iconSize: 32.sp,
-                  color: _isMuted ? Colors.red : PanAfricanColors.primary,
+                  color: _isMuted ? PanAfricanColors.error : PanAfricanColors.primary,
                   onPressed: () {
                     setState(() => _isMuted = !_isMuted);
                     HapticFeedback.lightImpact();
@@ -499,16 +629,17 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
                 IconButton(
                   icon: Icon(_isVideoEnabled ? Icons.videocam : Icons.videocam_off),
                   iconSize: 32.sp,
-                  color: _isVideoEnabled ? PanAfricanColors.primary : Colors.grey,
+                  color: _isVideoEnabled ? PanAfricanColors.primary : PanAfricanColors.neutralMedium,
                   onPressed: () {
                     setState(() => _isVideoEnabled = !_isVideoEnabled);
                     HapticFeedback.lightImpact();
                   },
                   tooltip: _isVideoEnabled ? 'Turn off video' : 'Turn on video',
                 ),
-                PrimaryButton(
-                  text: 'Full View',
-                  onTap: () {
+                PanAfricanButton(
+                  label: 'Full View',
+                  icon: Icons.fullscreen,
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -519,18 +650,8 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
                       ),
                     );
                   },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.fullscreen, size: 20.sp, color: Colors.white),
-                        SizedBox(width: 8.w),
-                        Text('Full View', style: TextStyle(color: Colors.white, fontSize: 16.sp)),
-                      ],
-                    ),
-                  ),
+                  backgroundColor: PanAfricanColors.primary,
+                foregroundColor: colorScheme.onPrimary,
                 ),
               ],
             ),

@@ -37,7 +37,7 @@ class MannerismsListScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BackButton(color: Colors.white),
+                    BackButton(color: Theme.of(context).colorScheme.onPrimary),
                     0.025.sh.heightBox,
                     LangguageTypeHeaderBuilder(
                       title: "Sections",
@@ -124,7 +124,7 @@ class _MannerismItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black26,
       child: InkWell(

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/tabs_view/profile/change_password_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/profile_edit_screen.dart';
 import 'package:lingafriq/screens/tabs_view/profile/suggest_language_screen.dart';
+import 'package:lingafriq/screens/tabs_view/standings/standings_tab_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
@@ -20,6 +23,7 @@ import 'package:lingafriq/utils/constants.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 import 'delete_account_dialogue.dart';
 
 /// Beautiful Material 3 Profile Tab with Pan-African Design
@@ -31,6 +35,12 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    ref.watch(gamificationProvider);
+    final gamificationNotifier = ref.read(gamificationProvider.notifier);
+    final gamification = gamificationNotifier.gamification;
+    final unlockedBadges = gamificationNotifier.unlockedBadges.length;
+    final totalBadges = gamificationNotifier.allBadges.length;
+    final badgeProgress = totalBadges > 0 ? unlockedBadges / totalBadges : 0.0;
 
     return LoadingOverlayPro(
       isLoading: isLoading,
@@ -60,48 +70,76 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                 ),
 
                 // Profile Header
-                Container(
+                Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: AdaptiveLayout.sideMargin(context),
                     vertical: PanAfricanSpacing.md,
                   ),
-                  child: Row(
-                    children: [
-                      // Profile Image
-                      _ProfileImageBuilder(
-                        showEditIcon: user != null,
-                        onTap: () {
-                          ref.read(navigationProvider).navigateTo(
-                            const ProfileEditScreen(),
-                          );
-                        },
-                      ),
-                      SizedBox(width: PanAfricanSpacing.md),
-                      // Profile Details
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (user != null)
-                              Text(
-                                user.username ?? 'User',
-                                style: PanAfricanTypography.headlineSmall(
-                                  context,
-                                ),
-                              ),
-                            SizedBox(height: PanAfricanSpacing.xs),
-                            if (user != null)
-                              Text(
-                                user.email ?? '',
-                                style: PanAfricanTypography.bodyMedium(context)
-                                    .copyWith(
-                                  color: PanAfricanColors.neutralMedium,
-                                ),
-                              ),
-                          ],
+                  child: PanAfricanCard(
+                    hasGradientBorder: true,
+                    gradientStart: PanAfricanColors.secondary,
+                    gradientEnd: PanAfricanColors.tertiary,
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
+                    child: Row(
+                      children: [
+                        // Profile Avatar (from Avatar Intelligence System)
+                        Semantics(
+                          label: 'Profile avatar. Tap to edit profile',
+                          button: true,
+                          child: LingAfriqAvatar(
+                            size: 0.25.sw,
+                            showBorder: true,
+                            onTap: () {
+                              ref.read(navigationProvider).navigateTo(
+                                const ProfileEditScreen(),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    ],
+                        SizedBox(width: PanAfricanSpacing.md),
+                        // Profile Details
+                        Expanded(
+                          child: Semantics(
+                            label: 'Profile: ${user?.username ?? 'User'}, ${user?.email ?? ''}, Level ${user?.level ?? 1}, Streak ${user?.streak ?? 0}',
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (user != null)
+                                  Text(
+                                    user.username ?? 'User',
+                                    style: PanAfricanTypography.headlineSmall(context),
+                                  ),
+                                SizedBox(height: PanAfricanSpacing.xs),
+                                if (user != null)
+                                  Text(
+                                    user.email ?? '',
+                                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                      color: PanAfricanColors.neutralMedium,
+                                    ),
+                                  ),
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Wrap(
+                                  spacing: PanAfricanSpacing.xs,
+                                  runSpacing: PanAfricanSpacing.xxs,
+                                  children: [
+                                    PanAfricanBadge(
+                                      label: 'Level ${user?.level ?? 1}',
+                                      color: PanAfricanColors.primary,
+                                      icon: Icons.trending_up_rounded,
+                                    ),
+                                    PanAfricanBadge(
+                                      label: 'Streak ${user?.streak ?? 0}',
+                                      color: PanAfricanColors.tertiary,
+                                      icon: Icons.local_fire_department_rounded,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -127,12 +165,81 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                           CurrencyDisplayWidget(compact: false),
                           SizedBox(height: PanAfricanSpacing.md),
 
+                          // Achievements Summary
+                          PanAfricanCard(
+                            hasGradientBorder: true,
+                            gradientStart: PanAfricanColors.primary,
+                            gradientEnd: PanAfricanColors.secondary,
+                            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.workspace_premium_rounded,
+                                        color: PanAfricanColors.secondary),
+                                    SizedBox(width: PanAfricanSpacing.sm),
+                                    Text(
+                                      'Achievements',
+                                      style: PanAfricanTypography.titleLarge(context),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      '$unlockedBadges/$totalBadges',
+                                      style: PanAfricanTypography.labelLarge(context).copyWith(
+                                        color: PanAfricanColors.textSecondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Semantics(
+                                  label: 'Achievement progress: $unlockedBadges out of $totalBadges badges unlocked',
+                                  value: '${(badgeProgress * 100).toInt()}%',
+                                  child: PanAfricanProgressBar(
+                                    progress: badgeProgress,
+                                    color: PanAfricanColors.secondary,
+                                    height: 8.h,
+                                  ),
+                                ),
+                                SizedBox(height: PanAfricanSpacing.md),
+                                Wrap(
+                                  spacing: PanAfricanSpacing.sm,
+                                  runSpacing: PanAfricanSpacing.xxs,
+                                  children: [
+                                    PanAfricanBadge(
+                                      label: '${gamification.xp} XP',
+                                      color: PanAfricanColors.primary,
+                                      icon: Icons.stars_rounded,
+                                    ),
+                                    PanAfricanBadge(
+                                      label: gamification.levelTitle,
+                                      color: PanAfricanColors.tertiary,
+                                      icon: Icons.emoji_events_rounded,
+                                    ),
+                                    PanAfricanBadge(
+                                      label: 'Streak ${gamification.dailyStreak}',
+                                      color: PanAfricanColors.kenteRed,
+                                      icon: Icons.local_fire_department_rounded,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md),
+
                           // Global Ranking
                           if (user?.rank != null)
                             _ProfileCard(
                               isDark: isDark,
                               child: Row(
                                 children: [
+                                  Icon(
+                                    Icons.emoji_events_rounded,
+                                    color: PanAfricanColors.secondary,
+                                  ),
+                                  SizedBox(width: PanAfricanSpacing.sm),
                                   Text(
                                     'Global Ranking',
                                     style: PanAfricanTypography.titleMedium(
@@ -140,22 +247,20 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                                     ),
                                   ),
                                   const Spacer(),
-                                  Chip(
-                                    label: Text(
-                                      (user?.rank ?? 0).toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    backgroundColor: PanAfricanColors.primary,
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: PanAfricanSpacing.md,
+                                  Semantics(
+                                    label: 'Global rank: ${user?.rank ?? 0}',
+                                    child: PanAfricanBadge(
+                                      label: '#${user?.rank ?? 0}',
+                                      color: PanAfricanColors.primary,
+                                      icon: Icons.trending_up_rounded,
                                     ),
                                   ),
                                 ],
                               ),
                               onTap: () {
-                                ref.read(tabIndexProvider.notifier).setIndex(2);
+                                ref.read(navigationProvider).navigateTo(
+                                      const StandingsTabMaterial3(),
+                                    );
                               },
                             ),
 
@@ -164,14 +269,12 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                           // Menu Items
                           _ProfileCard(
                             isDark: isDark,
-                            child: ListTile(
+                            child: PanAfricanListTile(
+                              title: 'Change Password',
+                              subtitle: 'Update your credentials securely',
                               leading: Icon(
                                 Icons.lock_outline,
                                 color: PanAfricanColors.primary,
-                              ),
-                              title: Text(
-                                'Change Password',
-                                style: PanAfricanTypography.bodyLarge(context),
                               ),
                               trailing: Icon(
                                 Icons.chevron_right,
@@ -187,14 +290,12 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: ListTile(
+                            child: PanAfricanListTile(
+                              title: 'Give us Feedback',
+                              subtitle: 'Help us improve LingAfriq',
                               leading: Icon(
                                 Icons.feedback_outlined,
                                 color: PanAfricanColors.primary,
-                              ),
-                              title: Text(
-                                'Give us Feedback',
-                                style: PanAfricanTypography.bodyLarge(context),
                               ),
                               trailing: Icon(
                                 Icons.chevron_right,
@@ -210,59 +311,50 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: ListTile(
+                            child: PanAfricanListTile(
+                              title: 'Who are we?',
+                              subtitle: 'Learn about the LingAfriq mission',
                               leading: Icon(
                                 Icons.info_outline,
                                 color: PanAfricanColors.primary,
                               ),
-                              title: Text(
-                                'Who are we?',
-                                style: PanAfricanTypography.bodyLarge(context),
-                              ),
                               trailing: Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
                             ),
                             onTap: () {
-                              kLaunchUrl('https://lingafriq.com/#about-us');
+                              kLaunchUrl('${EnvConfig.appWebUrl}/#about-us');
                             },
                           ),
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: ListTile(
+                            child: PanAfricanListTile(
+                              title: 'Privacy & User Policy',
+                              subtitle: 'Read how your data is protected',
                               leading: Icon(
                                 Icons.privacy_tip_outlined,
                                 color: PanAfricanColors.primary,
                               ),
-                              title: Text(
-                                'App Privacy and User Policy',
-                                style: PanAfricanTypography.bodyLarge(context),
-                              ),
                               trailing: Icon(
                                 Icons.chevron_right,
                                 color: PanAfricanColors.neutralMedium,
                               ),
                             ),
                             onTap: () {
-                              kLaunchUrl('https://lingafriq.com/app-policy.html');
+                              kLaunchUrl('${EnvConfig.appWebUrl}/app-policy.html');
                             },
                           ),
 
                           _ProfileCard(
                             isDark: isDark,
-                            child: ListTile(
+                            child: PanAfricanListTile(
+                              title: 'Delete your account',
+                              subtitle: 'This action is permanent',
                               leading: Icon(
                                 Icons.delete_outline,
-                                color: Colors.red,
-                              ),
-                              title: Text(
-                                'Delete your Account',
-                                style: PanAfricanTypography.bodyLarge(context)
-                                    .copyWith(
-                                  color: Colors.red,
-                                ),
+                                color: PanAfricanColors.error,
                               ),
                               trailing: Icon(
                                 Icons.chevron_right,
@@ -333,8 +425,8 @@ class _ProfileImageBuilder extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final current = kAvatarsList.containsKey(user?.avater)
-        ? kAvatarsList[user?.avater]!
+    final current = kAvatarsList.containsKey(user?.avatar)
+        ? kAvatarsList[user?.avatar]!
         : kAvatarsList.values.first;
 
     return Stack(
@@ -344,7 +436,8 @@ class _ProfileImageBuilder extends ConsumerWidget {
           height: 0.25.sw,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: PanAfricanColors.neutralLight,
+            gradient: PanAfricanGradients.savannaGold,
+            boxShadow: PanAfricanShadows.glowGold(0.6),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(1000),
@@ -362,9 +455,10 @@ class _ProfileImageBuilder extends ConsumerWidget {
               onTap: onTap,
               child: Container(
                 padding: EdgeInsets.all(4.w),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
+                decoration: BoxDecoration(
+                  color: PanAfricanColors.cardLight,
                   shape: BoxShape.circle,
+                  boxShadow: PanAfricanShadows.sm,
                 ),
                 child: Icon(
                   Icons.edit_outlined,
@@ -392,18 +486,12 @@ class _ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return PanAfricanCard(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        child: child,
-      ),
+      backgroundColor:
+          isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+      onTap: onTap,
+      child: child,
     );
   }
 }

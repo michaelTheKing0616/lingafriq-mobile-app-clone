@@ -40,7 +40,7 @@ class StreakIndicator extends StatelessWidget {
         children: [
           Icon(
             Icons.local_fire_department,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
             size: 20.sp,
           )
               .animate(onPlay: (controller) => controller.repeat())
@@ -52,7 +52,7 @@ class StreakIndicator extends StatelessWidget {
           Text(
             '$streak',
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 16.sp,
             ),

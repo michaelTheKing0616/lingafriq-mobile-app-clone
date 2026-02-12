@@ -7,9 +7,9 @@
 /// - Conflict resolution
 /// - Background sync
 
-import 'package:flutter/foundation.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 
 /// Sync operation
 class SyncOperation {
@@ -44,41 +44,38 @@ class OfflineHandler {
   OfflineHandler._internal();
 
   final List<SyncOperation> _syncQueue = [];
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   bool _isOnline = true;
   bool _isSyncing = false;
   final Duration _syncInterval = const Duration(minutes: 5);
   Timer? _syncTimer;
+  Timer? _connectivityTimer;
+  static const Duration _connectivityCheckInterval = Duration(seconds: 5);
 
   /// Initialize offline handler
   Future<void> initialize() async {
-    // Check initial connectivity
-    final results = await _connectivity.checkConnectivity();
-    _isOnline = _isConnected(results);
-
-    // Listen to connectivity changes
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen((result) {
-      final wasOffline = !_isOnline;
-      _isOnline = _isConnected(result);
-
-      if (wasOffline && _isOnline) {
-        // Connection restored, start syncing
-        _startPeriodicSync();
-      } else if (!_isOnline) {
-        // Connection lost, stop syncing
-        _stopPeriodicSync();
-      }
-    });
-
-    // Start periodic sync if online
+    await _refreshConnectivityStatus();
     if (_isOnline) {
       _startPeriodicSync();
     }
+    _connectivityTimer = Timer.periodic(
+      _connectivityCheckInterval,
+      (_) => unawaited(_refreshConnectivityStatus()),
+    );
   }
 
-  bool _isConnected(List<ConnectivityResult> results) {
-    return results.any((r) => r != ConnectivityResult.none);
+  Future<void> _refreshConnectivityStatus() async {
+    final wasOnline = _isOnline;
+    try {
+      _isOnline = await ConnectivityService.hasInternet();
+    } catch (_) {
+      return;
+    }
+
+    if (!wasOnline && _isOnline) {
+      _startPeriodicSync();
+    } else if (_isOnline == false) {
+      _stopPeriodicSync();
+    }
   }
 
   /// Check if device is online
@@ -193,8 +190,8 @@ class OfflineHandler {
 
   /// Dispose resources
   void dispose() {
-    _connectivitySubscription?.cancel();
     _stopPeriodicSync();
+    _connectivityTimer?.cancel();
   }
 }
 

@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history_quiz/screens/history_quiz_sections_screen.dart';
@@ -13,7 +15,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
-import 'package:loading_overlay_pro/loading_overlay_pro.dart';
+import 'package:lingafriq/widgets/african_loading_overlay.dart';
 
 import '../../../detail_types/correction_screen.dart';
 import '../../../detail_types/quiz_screen.dart';
@@ -37,118 +39,173 @@ class TakeQuizScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    return LoadingOverlayPro(
-      isLoading: isLoading,
-      child: Scaffold(
-        body: Column(
-          children: [
-            TopGradientBox(
-              borderRadius: 0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  BackButton(color: Colors.white),
-                  // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
-                  GreetingsBuilder(
-                    greetingTitle: '',
-                    pageTitle: "Take Quiz",
-                  )
-                ],
-              ),
-            ),
-            Stack(
-              children: [
-                IgnorePointer(
-                  ignoring: true,
-                  child: Image.asset(
-                    Images.languaeDetailBackground,
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                ResponsiveSafeArea(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            return Padding(
-                              padding: EdgeInsets.all(16.0.sp),
-                              child: Stack(
-                                children: [
-                                  IgnorePointer(
-                                    ignoring: true,
-                                    child:
-                                        Image.asset(Images.map).offset(offset: Offset(0, -12.sp)),
-                                  ),
-                                  Positioned(
-                                    left: constraints.maxWidth * 0.12,
-                                    top: constraints.maxHeight * 0.075,
-                                    child: _RandomTextBuilder(
-                                      onTap: () async {
-                                        final randomQuizes = await ref
-                                            .read(apiProvider.notifier)
-                                            .getRandomQuizLessons(language.id);
-                                        // randomQuizes.shuffle();
-                                        if (randomQuizes.isEmpty) {
-                                          ref
-                                              .read(dialogProvider(
-                                                  "We're working to add random quiz!"))
-                                              .showSuccessSnackBar();
-                                          return;
-                                        }
-                                        final random = Random();
-                                        do {
-                                          final indexToOpen =
-                                              random.randomUpto(randomQuizes.length);
-                                          final quiz = randomQuizes[indexToOpen];
-                                          final result = await openQuizDetail(quiz, ref);
-                                          if (result == null) break;
-                                          if (result == true) {
-                                            randomQuizes.removeAt(indexToOpen);
-                                          }
-                                        } while (randomQuizes.isNotEmpty);
-                                      },
-                                    ).animate(effects: kGradientTextEffects),
-                                  ),
-                                  Positioned(
-                                    left: constraints.maxWidth * 0.365,
-                                    top: constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
-                                    child: _LanguageTextBuilder(
-                                      onTap: () {
-                                        ref.read(navigationProvider).navigateTo(
-                                              LanguageQuizSectionsListScreen(language: language),
-                                            );
-                                      },
-                                    ).animate(effects: kGradientTextEffects),
-                                  ),
-                                  Positioned(
-                                    left: constraints.maxWidth * (context.isSmall ? 0.45 : 0.425),
-                                    top: constraints.maxHeight * (context.isSmall ? 0.6 : 0.475),
-                                    child: _HistoryTextBuilder(
-                                      size: Size(18.sp, 18.sp),
-                                      onTap: () {
-                                        ref.read(navigationProvider).navigateTo(
-                                              HistoryQuizSectionsListScreen(language: language),
-                                            );
-                                      },
-                                    ).animate(effects: kGradientTextEffects),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ).px16(),
-                      ),
-                      20.heightBox,
-                    ],
-                  ),
+    // Removed LoadingOverlayPro - using AfricanLoadingOverlay instead
+    return Scaffold(
+      body: Column(
+        children: [
+          TopGradientBox(
+            borderRadius: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
+                GreetingsBuilder(
+                  greetingTitle: '',
+                  pageTitle: "Take Quiz",
                 )
               ],
-            ).expand()
+            ),
+          ),
+          Stack(
+            children: [
+              IgnorePointer(
+                ignoring: true,
+                child: Image.asset(
+                  Images.languaeDetailBackground,
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              ResponsiveSafeArea(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Padding(
+                            padding: EdgeInsets.all(16.0.sp),
+                            child: Stack(
+                              children: [
+                                IgnorePointer(
+                                  ignoring: true,
+                                  child: Image.asset(Images.map)
+                                      .offset(offset: Offset(0, -12.sp)),
+                                ),
+                                Positioned(
+                                  left: constraints.maxWidth * 0.12,
+                                  top: constraints.maxHeight * 0.075,
+                                  child: _RandomTextBuilder(
+                                    onTap: () => _loadRandomQuiz(context, ref),
+                                  ).animate(effects: kGradientTextEffects),
+                                ),
+                                Positioned(
+                                  left: constraints.maxWidth * 0.365,
+                                  top:
+                                      constraints.maxHeight * (context.isSmall ? 0.315 : 0.265),
+                                  child: _LanguageTextBuilder(
+                                    onTap: () {
+                                      ref.read(navigationProvider).navigateTo(
+                                            LanguageQuizSectionsListScreen(language: language),
+                                          );
+                                    },
+                                  ).animate(effects: kGradientTextEffects),
+                                ),
+                                Positioned(
+                                  left: constraints.maxWidth * (context.isSmall ? 0.45 : 0.425),
+                                  top:
+                                      constraints.maxHeight * (context.isSmall ? 0.6 : 0.475),
+                                  child: _HistoryTextBuilder(
+                                    size: Size(18.sp, 18.sp),
+                                    onTap: () {
+                                      ref.read(navigationProvider).navigateTo(
+                                            HistoryQuizSectionsListScreen(language: language),
+                                          );
+                                    },
+                                  ).animate(effects: kGradientTextEffects),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ).px16(),
+                    ),
+                    20.heightBox,
+                  ],
+                ),
+              ),
+            ],
+          ).expand(),
+        ],
+      ),
+    );
+  }
+
+  /// Load random quizzes with beautiful African loading overlay
+  Future<void> _loadRandomQuiz(BuildContext context, WidgetRef ref) async {
+    HapticFeedback.lightImpact();
+    
+    try {
+      // Use African loading overlay for a beautiful, cultural experience
+      final randomQuizes = await showAfricanLoading<List<RandomQuizLessonModel>>(
+        context: context,
+        ref: ref,
+        message: 'Loading quizzes for ${language.name}...',
+        operation: () async {
+          // Add timeout to prevent endless loading
+          return await ref
+              .read(apiProvider.notifier)
+              .getRandomQuizLessons(language.id)
+              .timeout(
+                const Duration(seconds: 30),
+                onTimeout: () {
+                  throw TimeoutException(
+                    'Quiz loading timed out. Please check your connection.',
+                  );
+                },
+              );
+        },
+      );
+
+      if (!context.mounted) return;
+
+      if (randomQuizes == null || randomQuizes.isEmpty) {
+        ref.read(dialogProvider("We're working to add random quizzes for ${language.name}!"))
+            .showSuccessSnackBar();
+        return;
+      }
+
+      // Shuffle and present quizzes
+      final random = Random();
+      final quizList = List<RandomQuizLessonModel>.from(randomQuizes);
+      
+      do {
+        final indexToOpen = random.nextInt(quizList.length);
+        final quiz = quizList[indexToOpen];
+        final result = await openQuizDetail(quiz, ref);
+        if (result == null) break;
+        if (result == true) {
+          quizList.removeAt(indexToOpen);
+        }
+      } while (quizList.isNotEmpty);
+      
+    } on TimeoutException catch (e) {
+      if (!context.mounted) return;
+      _showErrorSnackbar(context, ref, e.message ?? 'Connection timed out');
+    } catch (e) {
+      if (!context.mounted) return;
+      _showErrorSnackbar(context, ref, 'Failed to load quizzes. Please try again.');
+      if (kDebugMode) debugPrint('Quiz loading error: $e');
+    }
+  }
+
+  void _showErrorSnackbar(BuildContext context, WidgetRef ref, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(Icons.error_outline, color: Theme.of(context).colorScheme.onError),
+            const SizedBox(width: 12),
+            Expanded(child: Text(message)),
           ],
+        ),
+        backgroundColor: Colors.red.shade700,
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'Retry',
+          textColor: Theme.of(context).colorScheme.onError,
+          onPressed: () => _loadRandomQuiz(context, ref),
         ),
       ),
     );

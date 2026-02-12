@@ -11,7 +11,7 @@ import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '../../models/lesson_item_model.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../core/network/api_client_with_recovery.dart';
 import 'conversation_context_manager.dart';
 import 'dialogue_flow_generator.dart';
@@ -126,7 +126,7 @@ class ConversationPracticeService {
       );
 
       final response = await client.post<Map<String, dynamic>>(
-        '${Api.baseurl}api/ai-chat',
+        ApiContract.url(ApiContract.ai.aiChat),
         data: {
           'message': prompt,
           'language': session.languageCode,

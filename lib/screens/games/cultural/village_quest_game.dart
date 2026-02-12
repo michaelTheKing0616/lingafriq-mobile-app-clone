@@ -83,11 +83,16 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
       });
     } catch (e) {
       debugPrint('Error loading scenario: $e');
+      // Use fallback content so game is still playable
+      final fallbackResponses = _getFallbackResponses();
       setState(() {
-        setLoading(false);
+        _currentScenario = {'npcName': 'Village Elder', 'message': 'Welcome to our village! How can I help you?'};
+        _round++;
         _npcName = 'Village Elder';
         _npcMessage = 'Welcome to our village! How can I help you?';
-        _responseOptions = _getFallbackResponses();
+        _scenarioDescription = 'A village elder greets you.';
+        _responseOptions = fallbackResponses;
+        setLoading(false);
       });
     }
   }

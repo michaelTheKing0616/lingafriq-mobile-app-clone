@@ -83,6 +83,8 @@
 	<string>Need microphone access for uploading videos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Need photo library access for uploading images</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Use Face ID to securely sign in to your LingAfriq account</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

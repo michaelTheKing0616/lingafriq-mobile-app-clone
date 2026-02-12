@@ -227,7 +227,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                               ? 'LIVE'
                               : (_room!.isScheduled ? 'SCHEDULED' : 'ENDED'),
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
                           ),
@@ -270,7 +270,7 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                           child: _room!.hostAvatar == null
                               ? Text(
                                   _room!.hostName![0].toUpperCase(),
-                                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp),
                                 )
                               : null,
                         ),

@@ -6,12 +6,12 @@ import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/services/sound_effects_service.dart';
 import 'package:lingafriq/utils/progress_integration.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/modern_card.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 
 class SpeedChallengeGame extends ConsumerStatefulWidget {
   final Language language;
@@ -26,6 +26,7 @@ class SpeedChallengeGame extends ConsumerStatefulWidget {
 }
 
 class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
+  static const Color _accentColor = PanAfricanColors.kenteBlue;
   List<SpeedQuestion> _questions = [];
   int _currentIndex = 0;
   String? _selectedAnswer;
@@ -103,6 +104,11 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
       _gameComplete = true;
       _score = finalScore;
     });
+    if (_questions.isNotEmpty && _correctAnswers == _questions.length) {
+      ref.read(soundEffectsProvider).playCelebration();
+    } else {
+      ref.read(soundEffectsProvider).playCorrect();
+    }
     _updateUserPoints(_score);
   }
 
@@ -114,11 +120,14 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
     });
     
     final isCorrect = answer == _questions[_currentIndex].correctAnswer;
-    
+    final soundEffects = ref.read(soundEffectsProvider);
     if (isCorrect) {
+      soundEffects.playCorrect();
       setState(() {
         _correctAnswers++;
       });
+    } else {
+      soundEffects.playIncorrect();
     }
     
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -187,6 +196,8 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     if (!_gameStarted) {
       return PopScope(
         canPop: false,
@@ -208,7 +219,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [AppColors.oceanBlue, AppColors.primaryGreen],
+                colors: [_accentColor, PanAfricanColors.primary],
               ),
             ),
           ),
@@ -219,7 +230,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.flash_on, size: 80.sp, color: AppColors.oceanBlue),
+                Icon(Icons.flash_on, size: 80.sp, color: _accentColor),
                 SizedBox(height: 24.sp),
                 Text(
                   'Speed Challenge',
@@ -246,10 +257,11 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                     padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewPadding.bottom,
                     ),
-                    child: PrimaryButton(
-                      onTap: _startGame,
-                      text: 'Start Game',
-                      color: AppColors.oceanBlue,
+                    child: PanAfricanButton(
+                      onPressed: _startGame,
+                      label: 'Start Game',
+                      backgroundColor: _accentColor,
+                      foregroundColor: colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -277,7 +289,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppColors.oceanBlue, AppColors.primaryGreen],
+              colors: [_accentColor, PanAfricanColors.primary],
             ),
           ),
         ),
@@ -299,13 +311,13 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       decoration: BoxDecoration(
                         color: _timeRemaining <= 10
-                            ? AppColors.red.withOpacity(0.2)
-                            : AppColors.oceanBlue.withOpacity(0.2),
+                            ? PanAfricanColors.error.withOpacity(0.2)
+                          : _accentColor.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: _timeRemaining <= 10
-                              ? AppColors.red
-                              : AppColors.oceanBlue,
+                              ? PanAfricanColors.error
+                            : _accentColor,
                           width: 2,
                         ),
                       ),
@@ -315,8 +327,8 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                           Icon(
                             Icons.timer,
                             color: _timeRemaining <= 10
-                                ? AppColors.red
-                                : AppColors.oceanBlue,
+                                ? PanAfricanColors.error
+                                : _accentColor,
                             size: 20.sp,
                           ),
                           SizedBox(width: 8),
@@ -326,8 +338,8 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                               fontSize: 20.sp,
                               fontWeight: FontWeight.bold,
                               color: _timeRemaining <= 10
-                                  ? AppColors.red
-                                  : AppColors.oceanBlue,
+                                  ? PanAfricanColors.error
+                                  : _accentColor,
                             ),
                           ),
                         ],
@@ -338,20 +350,20 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: AppColors.primaryGreen.withOpacity(0.2),
+                      color: PanAfricanColors.primary.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.primaryGreen, width: 2),
+                      border: Border.all(color: PanAfricanColors.primary, width: 2),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.star, color: AppColors.accentGold, size: 20.sp),
+                        Icon(Icons.star, color: PanAfricanColors.secondary, size: 20.sp),
                         SizedBox(width: 8),
                         Text(
                           '$_correctAnswers',
                           style: TextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryGreen,
+                            color: PanAfricanColors.primary,
                           ),
                         ),
                       ],
@@ -383,18 +395,18 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                       
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.sp),
-                        child: ModernCard(
+                        child: PanAfricanCard(
                           onTap: () => _selectAnswer(option),
                           child: Container(
                             padding: EdgeInsets.all(16.sp),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? AppColors.oceanBlue.withOpacity(0.2)
+                                  ? _accentColor.withOpacity(0.2)
                                   : null,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: isSelected
-                                    ? AppColors.oceanBlue
+                                    ? _accentColor
                                     : Colors.transparent,
                                 width: 2,
                               ),
@@ -423,13 +435,15 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
   }
 
   Widget _buildGameComplete() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Game Complete'),
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [AppColors.oceanBlue, AppColors.primaryGreen],
+              colors: [_accentColor, PanAfricanColors.primary],
             ),
           ),
         ),
@@ -444,11 +458,11 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                 padding: EdgeInsets.all(32.sp),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [AppColors.oceanBlue, AppColors.primaryGreen],
+                    colors: [_accentColor, PanAfricanColors.primary],
                   ),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.celebration, color: Colors.white, size: 64.sp),
+                child: Icon(Icons.celebration, color: colorScheme.onPrimary, size: 64.sp),
               ),
               SizedBox(height: 24.sp),
               Text(
@@ -472,21 +486,21 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 decoration: BoxDecoration(
-                  color: AppColors.oceanBlue.withOpacity(0.1),
+                  color: _accentColor.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.oceanBlue, width: 2),
+                  border: Border.all(color: _accentColor, width: 2),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.star, color: AppColors.accentGold, size: 24.sp),
+                    Icon(Icons.star, color: PanAfricanColors.secondary, size: 24.sp),
                     SizedBox(width: 8),
                     Text(
                       '+$_score Points Earned!',
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.oceanBlue,
+                        color: _accentColor,
                       ),
                     ),
                   ],
@@ -496,8 +510,8 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PrimaryButton(
-                    onTap: () {
+                  PanAfricanButton(
+                    onPressed: () {
                       // Restart the game
                       setState(() {
                         _gameComplete = false;
@@ -510,16 +524,18 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                       });
                       _initializeGame();
                     },
-                    text: 'Play Again',
-                    color: AppColors.oceanBlue,
+                    label: 'Play Again',
+                    backgroundColor: _accentColor,
+                    foregroundColor: colorScheme.onPrimary,
                   ),
                   const SizedBox(height: 12),
-                  PrimaryButton(
-                    onTap: () {
+                  PanAfricanButton(
+                    onPressed: () {
                       Navigator.pop(context);
                     },
-                    text: 'Return to Games',
-                    color: AppColors.oceanBlue.withOpacity(0.7),
+                    label: 'Return to Games',
+                    backgroundColor: _accentColor.withOpacity(0.7),
+                    foregroundColor: colorScheme.onPrimary,
                   ),
                 ],
               ),

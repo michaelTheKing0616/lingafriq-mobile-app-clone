@@ -1,5 +1,5 @@
 import 'package:socket_io_client/socket_io_client.dart' as IO;
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -8,7 +8,9 @@ class GamificationSocketService {
   final String _baseUrl;
 
   GamificationSocketService({String? baseUrl})
-      : _baseUrl = baseUrl ?? Api.baseurl.replaceFirst('http://', '').replaceFirst('https://', '');
+      : _baseUrl = baseUrl ??
+            ApiContract.baseUrl
+                .replaceFirst(RegExp(r'^https?://'), '');
 
   /// Initialize socket connection
   void initialize(String? token) {

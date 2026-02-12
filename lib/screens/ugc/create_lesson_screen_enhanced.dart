@@ -271,7 +271,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                   label: Text('Validate Content'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.secondary,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Theme.of(context).colorScheme.onSecondary,
                     padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                   ),
                 ),
@@ -321,7 +321,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                   onPressed: isSubmitting.value ? null : submitLesson,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(PanAfricanRadius.md),
@@ -336,7 +336,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
                       : Text(
                           'Create Lesson',
                           style: PanAfricanTypography.labelLarge(context)
-                              .copyWith(color: Colors.white),
+                              .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                         ),
                 ),
               ],

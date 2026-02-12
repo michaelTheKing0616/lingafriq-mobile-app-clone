@@ -28,112 +28,134 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Badge Collection'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: Text(
+          'Badge Collection',
+          style: PanAfricanTypography.headlineMedium(context),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
+        ),
         actions: [
-          Padding(
-            padding: EdgeInsets.only(right: PanAfricanSpacing.md),
+          Container(
+            margin: EdgeInsets.only(right: PanAfricanSpacing.md),
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.sm,
+              vertical: PanAfricanSpacing.xs,
+            ),
+            decoration: BoxDecoration(
+              color: PanAfricanColors.secondary.withOpacity(0.2),
+              borderRadius: PanAfricanRadius.roundBR,
+            ),
             child: Center(
               child: Text(
                 '${unlockedBadges.value.length}/${allBadges.value.length}',
-                style: PanAfricanTypography.titleMedium(context),
+                style: PanAfricanTypography.titleMedium(context, color: PanAfricanColors.secondary),
               ),
             ),
           ),
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
-        child: Column(
-          children: [
-            // Filters
-            Container(
-              padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
-                child: Row(
-                  children: [
-                    ...categories.map((category) {
-                      final isSelected = selectedCategory.value == category ||
-                          (category == 'All' && selectedCategory.value == null);
-                      return Padding(
-                        padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
-                        child: FilterChip(
-                          label: Text(category),
-                          selected: isSelected,
-                          onSelected: (selected) {
-                            selectedCategory.value = selected && category != 'All' ? category : null;
-                            HapticFeedback.lightImpact();
-                          },
-                          selectedColor: PanAfricanColors.primaryContainer,
-                          checkmarkColor: PanAfricanColors.primary,
+      body: Column(
+        children: [
+          // Filters
+          Container(
+            padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+              child: Row(
+                children: [
+                  ...categories.map((category) {
+                    final isSelected = selectedCategory.value == category ||
+                        (category == 'All' && selectedCategory.value == null);
+                    return Padding(
+                      padding: EdgeInsets.only(right: PanAfricanSpacing.xs),
+                      child: FilterChip(
+                        label: Text(
+                          category,
+                          style: PanAfricanTypography.labelMedium(context),
                         ),
-                      );
-                    }),
-                  ],
-                ),
+                        selected: isSelected,
+                        onSelected: (selected) {
+                          HapticFeedback.lightImpact();
+                          selectedCategory.value = selected && category != 'All' ? category : null;
+                        },
+                        selectedColor: PanAfricanColors.primaryContainer,
+                        checkmarkColor: PanAfricanColors.primary,
+                      ),
+                    );
+                  }),
+                ],
               ),
             ),
+          ),
 
-            // Badge Grid
-            Expanded(
-              child: allBadges.value.isEmpty
-                  ? Center(
+          // Badge Grid
+          Expanded(
+            child: allBadges.value.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.workspace_premium_outlined,
-                            size: 64.sp,
-                            color: PanAfricanColors.neutralMedium,
+                          Container(
+                            width: 80.w,
+                            height: 80.w,
+                            decoration: BoxDecoration(
+                              color: PanAfricanColors.secondary.withOpacity(0.1),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.workspace_premium_outlined,
+                              size: 48.sp,
+                              color: PanAfricanColors.secondary,
+                            ),
                           ),
                           SizedBox(height: PanAfricanSpacing.md),
                           Text(
                             'No badges yet',
-                            style: PanAfricanTypography.bodyLarge(context),
+                            style: PanAfricanTypography.titleMedium(context),
+                          ),
+                          SizedBox(height: PanAfricanSpacing.xs),
+                          Text(
+                            'Complete lessons and challenges to earn badges!',
+                            style: PanAfricanTypography.bodySmall(context),
+                            textAlign: TextAlign.center,
                           ),
                         ],
                       ),
-                    )
-                  : OptimizedListView.builder(
-                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: PanAfricanSpacing.md,
-                        mainAxisSpacing: PanAfricanSpacing.md,
-                        childAspectRatio: 0.85,
-                      ),
-                      itemCount: allBadges.value.length,
-                      itemBuilder: (context, index) {
-                        final badge = allBadges.value[index];
-                        final isUnlocked = unlockedBadges.value.contains(badge['id']);
-
-                        return _BadgeCard(
-                          badge: badge,
-                          isUnlocked: isUnlocked,
-                          isDark: isDark,
-                        )
-                            .animate(delay: (index * 50).ms)
-                            .fadeIn(duration: 300.ms)
-                            .scale(begin: Offset(0.9, 0.9), end: Offset(1, 1));
-                      },
                     ),
-            ),
-          ],
-        ),
+                  )
+                : OptimizedListView.builder(
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: PanAfricanSpacing.md,
+                      mainAxisSpacing: PanAfricanSpacing.md,
+                      childAspectRatio: 0.85,
+                    ),
+                    itemCount: allBadges.value.length,
+                    itemBuilder: (context, index) {
+                      final badge = allBadges.value[index];
+                      final isUnlocked = unlockedBadges.value.contains(badge['id']);
+
+                      return _BadgeCard(
+                        badge: badge,
+                        isUnlocked: isUnlocked,
+                        isDark: isDark,
+                      )
+                          .animate(delay: (index * 50).ms)
+                          .fadeIn(duration: 300.ms)
+                          .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1));
+                    },
+                  ),
+          ),
+        ],
       ),
     );
   }
@@ -154,74 +176,120 @@ class _BadgeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final rarity = badge['rarity'] ?? 'common';
     final color = _getRarityColor(rarity);
+    final icon = badge['icon'] ?? '🏆';
+    final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: isUnlocked ? 4 : 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        side: isUnlocked
-            ? BorderSide(color: color, width: 2)
-            : BorderSide.none,
-      ),
-      child: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                decoration: BoxDecoration(
-                  color: isUnlocked
-                      ? color.withOpacity(0.1)
-                      : PanAfricanColors.neutralLight.withOpacity(0.3),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  isUnlocked ? Icons.workspace_premium : Icons.lock,
-                  size: 48.sp,
-                  color: isUnlocked ? color : PanAfricanColors.neutralMedium,
-                ),
-              ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Text(
-                badge['name'] ?? 'Badge',
-                style: PanAfricanTypography.titleSmall(context),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-              if (isUnlocked) ...[
-                SizedBox(height: PanAfricanSpacing.xs),
-                Chip(
-                  label: Text(
-                    rarity.toUpperCase(),
-                    style: PanAfricanTypography.labelSmall(context),
-                  ),
-                  backgroundColor: color.withOpacity(0.2),
-                  padding: EdgeInsets.zero,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-              ],
-            ],
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        // Show badge details
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.lgBR,
+          border: Border.all(
+            color: isUnlocked
+                ? color
+                : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            width: isUnlocked ? 2 : 1,
           ),
-          if (!isUnlocked)
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                ),
-                child: Center(
-                  child: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                    size: 32.sp,
+          boxShadow: isUnlocked ? PanAfricanShadows.md : PanAfricanShadows.sm,
+        ),
+        child: Stack(
+          children: [
+            // Glow effect for legendary badges
+            if (isUnlocked && rarity.toLowerCase() == 'legendary')
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: PanAfricanRadius.lgBR,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        PanAfricanColors.secondary.withOpacity(0.15),
+                        Colors.transparent,
+                      ],
+                    ),
                   ),
                 ),
+              ),
+            Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Badge icon
+                  Container(
+                    width: 64.w,
+                    height: 64.w,
+                    decoration: BoxDecoration(
+                      color: isUnlocked
+                          ? color.withOpacity(0.15)
+                          : (isDark
+                              ? PanAfricanColors.surfaceContainerHighDark
+                              : PanAfricanColors.surfaceContainerHighLight),
+                      shape: BoxShape.circle,
+                      boxShadow: isUnlocked ? PanAfricanShadows.glow(color) : null,
+                    ),
+                    child: Center(
+                      child: Text(
+                        icon,
+                        style: TextStyle(fontSize: 32.sp),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  // Badge name
+                  Text(
+                    badge['name'] ?? 'Badge',
+                    style: PanAfricanTypography.titleSmall(
+                      context,
+                      color: isUnlocked ? null : PanAfricanColors.neutralMedium,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xs),
+                  // Rarity chip
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.xs,
+                      vertical: PanAfricanSpacing.xxxs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: color.withOpacity(0.2),
+                      borderRadius: PanAfricanRadius.roundBR,
+                    ),
+                    child: Text(
+                      rarity.toUpperCase(),
+                      style: PanAfricanTypography.labelSmall(context, color: color),
+                    ),
+                  ),
+                ],
               ),
             ),
-        ],
+            // Lock overlay
+            if (!isUnlocked)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withOpacity(0.6),
+                    borderRadius: PanAfricanRadius.lgBR,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.lock_rounded,
+                      color: PanAfricanColors.neutralMedium,
+                      size: 28.sp,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -231,7 +299,7 @@ class _BadgeCard extends StatelessWidget {
       case 'legendary':
         return PanAfricanColors.secondary;
       case 'epic':
-        return PanAfricanColors.kenteRed;
+        return PanAfricanColors.ankaraPurple;
       case 'rare':
         return PanAfricanColors.kenteBlue;
       case 'uncommon':

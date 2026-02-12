@@ -199,7 +199,7 @@ class _CefrProgressCard extends StatelessWidget {
                           level,
                           style: PanAfricanTypography.labelMedium(context)?.copyWith(
                             color: isCurrent || isCompleted || isNext
-                                ? Colors.white
+                                ? Theme.of(context).colorScheme.onPrimary
                                 : PanAfricanColors.neutralMedium,
                             fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
                           ),

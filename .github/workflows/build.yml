@@ -30,6 +30,21 @@ jobs:
           cmake --version
           echo "✅ CMake installed successfully"
       
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Flutter analyze
+        run: |
+          echo "🔍 Running Flutter analyze..."
+          flutter analyze
+          echo "✅ Flutter analyze passed"
+
+      - name: Flutter test
+        run: |
+          echo "🧪 Running Flutter tests..."
+          flutter test
+          echo "✅ Flutter tests passed"
+
       - name: 🧹 Comprehensive Cache Clearing (Before Build)
         run: |
           echo "🧹 Starting comprehensive cache clearing..."

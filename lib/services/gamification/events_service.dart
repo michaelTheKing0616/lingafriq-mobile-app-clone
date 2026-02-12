@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 class EventsService {
   final Dio _dio;
@@ -34,7 +34,7 @@ class EventsService {
       final signature = _generateSignature(eventType, payload, userId);
       
       final response = await _dio.post(
-        '${Api.baseurl}api/events',
+        ApiContract.url(ApiContract.events.list),
         data: {
           'event_type': eventType,
           'payload': payload,
