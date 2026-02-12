@@ -271,7 +271,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
               ),
               child: Text(
                 OutfitOption.options[_config.outfit].name,
-                style: const TextStyle(
+                style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
@@ -447,7 +447,7 @@ class _UserAvatarCustomizerState extends State<UserAvatarCustomizer>
                     children: [
                       Text(
                         option.name,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -684,26 +684,28 @@ class LingAfriqAvatar extends ConsumerWidget {
     ];
     final color = backgroundColor ?? colors[hash % colors.length];
     
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 6,
-          ),
-        ],
-      ),
-      child: Center(
-        child: Text(
-          initial,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontSize: size * 0.4,
-            fontWeight: FontWeight.w700,
+    return Builder(
+      builder: (context) => Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.3),
+              blurRadius: 6,
+            ),
+          ],
+        ),
+        child: Center(
+          child: Text(
+            initial,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onPrimary,
+              fontSize: size * 0.4,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
       ),

@@ -23,8 +23,8 @@ final lightTheme = ThemeData(
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.light,
   colorScheme: PanAfricanColorScheme.light,
-  canvasColor: Colors.white,
-  scaffoldBackgroundColor: Colors.white,
+  canvasColor: PanAfricanColorScheme.light.surface,
+  scaffoldBackgroundColor: PanAfricanColorScheme.light.surface,
   cardColor: PanAfricanColors.cardLight,
   dividerColor: Colors.black.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
@@ -164,13 +164,13 @@ final darkTheme = ThemeData(
   canvasColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
   cardColor: PanAfricanColors.cardDark,
-  dividerColor: Colors.white.withValues(alpha: 0.12),
+  dividerColor: PanAfricanColorScheme.dark.onSurface.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    iconTheme: const IconThemeData(color: Colors.white),
+    iconTheme: IconThemeData(color: PanAfricanColorScheme.dark.onSurface),
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: PanAfricanColorScheme.dark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
       fontFamily: 'Lato',

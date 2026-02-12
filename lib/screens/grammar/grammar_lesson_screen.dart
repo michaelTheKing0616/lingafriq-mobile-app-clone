@@ -310,7 +310,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
               child: Text(
                 '$number',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontWeight: FontWeight.bold,
                   fontSize: 14.sp,
                 ),

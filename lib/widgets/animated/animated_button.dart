@@ -87,7 +87,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
                     valueColor: AlwaysStoppedAnimation<Color>(
-                      widget.foregroundColor ?? Colors.white,
+                      widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 )
@@ -95,7 +95,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
                 if (widget.icon != null) ...[
                   Icon(
                     widget.icon,
-                    color: widget.foregroundColor ?? Colors.white,
+                    color: widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
                     size: 20,
                   ),
                   const SizedBox(width: 8),
@@ -103,7 +103,7 @@ class _AnimatedButtonState extends State<AnimatedButton>
                 Text(
                   widget.text,
                   style: TextStyle(
-                    color: widget.foregroundColor ?? Colors.white,
+                    color: widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimary,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.5,

@@ -155,7 +155,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
                 onPressed: isCreating.value ? null : _createQuest,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: PanAfricanColors.primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                   shape: RoundedRectangleBorder(
                     borderRadius: PanAfricanRadius.lgBR,
@@ -167,7 +167,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
                         width: 20.w,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                         ),
                       )
                     : Text(

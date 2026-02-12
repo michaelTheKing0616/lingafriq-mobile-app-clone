@@ -54,11 +54,15 @@ class QuizScreen extends HookConsumerWidget {
     "QUIZ SCORE: ${quiz.first.score}".log('QuizScreen');
 
     final pageController = usePageController();
+    final soundEffects = ref.read(soundEffectsProvider);
+    final comboTracker = useMemoized(() => ComboTracker());
     final selectedAnswer = quiz.map((e) {
       return useState<Map<String, String?>>({e.question: null});
     }).toList();
     final showIndicator = useState({"isLoading": false, "isCorrect": true});
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
+    final soundEffects = ref.watch(soundEffectsProvider);
+    final comboTracker = useMemoized(() => ComboTracker());
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: LoadingOverlayPro(

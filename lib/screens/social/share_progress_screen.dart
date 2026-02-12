@@ -201,7 +201,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Text(
             '🔥 30 Day Streak! 🔥',
             style: PolieTypography.h1(context).copyWith(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 32.sp,
             ),
@@ -211,7 +211,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Text(
             'I\'ve been learning every day!',
             style: PolieTypography.body(context).copyWith(
-              color: Colors.white.withOpacity(0.9),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
               fontSize: 18.sp,
             ),
             textAlign: TextAlign.center,
@@ -279,13 +279,13 @@ class ShareProgressScreen extends HookConsumerWidget {
           Container(
             padding: EdgeInsets.all(PolieSpacing.md),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(PolieRadius.md),
             ),
             child: Text(
               'LingAfriq',
               style: PolieTypography.body(context).copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -299,7 +299,7 @@ class ShareProgressScreen extends HookConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: Colors.white, size: 32),
+        Icon(icon, color: Theme.of(context).colorScheme.onPrimary, size: 32),
         SizedBox(width: PolieSpacing.md),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -307,13 +307,13 @@ class ShareProgressScreen extends HookConsumerWidget {
             Text(
               label,
               style: PolieTypography.body(context).copyWith(
-                color: Colors.white.withOpacity(0.8),
+                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
               ),
             ),
             Text(
               value,
               style: PolieTypography.h2(context).copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -352,13 +352,13 @@ class ShareProgressScreen extends HookConsumerWidget {
           Icon(
             Icons.workspace_premium_rounded,
             size: 120.sp,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
           SizedBox(height: PolieSpacing.xl),
           Text(
             'Achievement Unlocked!',
             style: PolieTypography.h1(context).copyWith(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontWeight: FontWeight.bold,
               fontSize: 28.sp,
             ),
@@ -368,7 +368,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Text(
             'Polyglot Master',
             style: PolieTypography.h2(context).copyWith(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               fontSize: 24.sp,
             ),
             textAlign: TextAlign.center,
@@ -377,7 +377,7 @@ class ShareProgressScreen extends HookConsumerWidget {
           Text(
             'Learned 5 languages!',
             style: PolieTypography.body(context).copyWith(
-              color: Colors.white.withOpacity(0.9),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
               fontSize: 18.sp,
             ),
             textAlign: TextAlign.center,
@@ -386,13 +386,13 @@ class ShareProgressScreen extends HookConsumerWidget {
           Container(
             padding: EdgeInsets.all(PolieSpacing.md),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(PolieRadius.md),
             ),
             child: Text(
               'LingAfriq',
               style: PolieTypography.body(context).copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),

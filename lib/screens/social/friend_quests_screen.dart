@@ -304,7 +304,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                         child: Text(
                           'Completed',
                           style: PanAfricanTypography.labelSmall(context).copyWith(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

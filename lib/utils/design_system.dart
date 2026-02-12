@@ -274,7 +274,7 @@ class ModernLanguageCard extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.check,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 18,
                     ),
                   ),

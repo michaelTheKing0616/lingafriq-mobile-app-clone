@@ -458,7 +458,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                     label: Text('Save Lesson'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ],

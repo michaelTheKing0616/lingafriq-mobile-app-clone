@@ -604,16 +604,16 @@ Provide:
               padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
             ),
             child: _isEvaluating
-                ? CircularProgressIndicator(color: Colors.white)
+                ? CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary)
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.check_circle, color: Colors.white),
+                      Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary),
                       SizedBox(width: PolieSpacing.sm),
                       Text(
                         'Evaluate',
                         style: PolieTypography.labelLarge(context).copyWith(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                       ),
                     ],

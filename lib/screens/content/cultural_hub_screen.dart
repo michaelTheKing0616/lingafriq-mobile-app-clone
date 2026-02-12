@@ -827,12 +827,12 @@ class _ContentDetailSheet extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.check_circle, color: Colors.white),
+                            Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary),
                             SizedBox(width: PolieSpacing.sm),
                             Text(
                               'Mark as Completed (+${content.xpReward} XP)',
                               style: PolieTypography.labelLarge(context).copyWith(
-                                color: Colors.white,
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
                           ],

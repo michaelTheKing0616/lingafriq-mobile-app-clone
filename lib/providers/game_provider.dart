@@ -13,7 +13,6 @@ import '../providers/dio_provider.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../utils/progress_integration.dart';
 import '../utils/api.dart';
-import '../config/api_contract.dart';
 import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 import '../utils/structured_logger.dart';

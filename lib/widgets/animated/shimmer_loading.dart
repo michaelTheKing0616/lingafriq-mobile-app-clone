@@ -23,7 +23,7 @@ class ShimmerLoading extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: borderRadius ?? BorderRadius.circular(8),
         ),
       ),

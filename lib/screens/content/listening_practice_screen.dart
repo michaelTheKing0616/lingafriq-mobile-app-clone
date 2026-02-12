@@ -386,7 +386,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
                     child: Text(
                       'Submit Answers',
                       style: PolieTypography.labelLarge(context).copyWith(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ),

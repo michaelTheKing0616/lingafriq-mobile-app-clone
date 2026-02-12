@@ -289,7 +289,6 @@ class AdvancedPronunciationService {
   final Dio _dio;
 
   AdvancedPronunciationService(this._ref) : _dio = _ref.read(client);
-  static const String _advancedAnalyzePath = 'api/pronunciation/advanced/analyze';
 
   /// Analyze pronunciation with advanced ML models
   /// 

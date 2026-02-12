@@ -195,14 +195,14 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
             Text(
               '${widget.index + 1}',
               style: PanAfricanTypography.titleMedium(context).copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 2.h),
             Icon(
               Icons.play_circle_filled_rounded,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: size * 0.3,
             ),
           ],
@@ -210,7 +210,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
       case PathNodeState.completed:
         return Icon(
           Icons.check_circle_rounded,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
           size: size * 0.6,
         );
       case PathNodeState.crowned:
@@ -219,7 +219,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
           children: [
             Icon(
               Icons.check_circle_rounded,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: size * 0.6,
             ),
             Positioned(
