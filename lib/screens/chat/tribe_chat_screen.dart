@@ -65,6 +65,23 @@ class TribeChatScreen extends HookConsumerWidget {
       return 'Unable to load messages.';
     }
 
+    List<Map<String, dynamic>> _parseList(dynamic raw) {
+      if (raw == null) return [];
+      if (raw is List) {
+        return raw.map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()}).toList();
+      }
+      return [];
+    }
+
+    String _connectionMessage(dynamic e) {
+      final msg = e.toString().toLowerCase();
+      if (msg.contains('socket') || msg.contains('connection') || msg.contains('unavailable') || msg.contains('failed host')) {
+        return 'Server unavailable. Check your connection and try again.';
+      }
+      if (msg.contains('timeout')) return 'Request timed out.';
+      return 'Unable to load messages.';
+    }
+
     Future<void> loadMessages() async {
       loadError.value = null;
       try {

@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -702,8 +703,21 @@ class _WordCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+                if (word.isDueForReview)
+                  Container(
+                    padding: EdgeInsets.all(PolieSpacing.xs),
+                    decoration: BoxDecoration(
+                      color: PolieColors.error.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.schedule_rounded,
+                      color: PolieColors.error,
+                      size: 18.sp,
+                    ),
+                  ),
+              ],
             ),
             if (word.isDueForReview)
               Container(

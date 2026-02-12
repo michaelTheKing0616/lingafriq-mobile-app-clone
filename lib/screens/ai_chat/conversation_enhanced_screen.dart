@@ -1,3 +1,4 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -603,11 +604,29 @@ class _MessageBubble extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ],
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.auto_fix_high_rounded,
+                                size: 14.sp,
+                                color: PolieColors.electricTeal,
+                              ),
+                              SizedBox(width: PolieSpacing.xs),
+                              Expanded(
+                                child: Text(
+                                  'Suggested: $correction',
+                                  style: PolieTypography.bodySmall(context).copyWith(
+                                    color: PolieColors.electricTeal,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
