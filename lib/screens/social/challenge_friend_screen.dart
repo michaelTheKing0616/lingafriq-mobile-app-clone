@@ -45,14 +45,6 @@ class ChallengeFriendScreen extends HookConsumerWidget {
     final showSuccess = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    useEffect(() {
-      _loadFriends();
-      if (friendId != null) {
-        _selectFriendById(friendId!, friends.value);
-      }
-      return null;
-    }, []);
-
     Future<void> _loadFriends() async {
       isLoading.value = true;
       try {
@@ -86,6 +78,40 @@ class ChallengeFriendScreen extends HookConsumerWidget {
         selectedFriend.value = friend;
       }
     }
+
+    String _challengeTypeToString(ChallengeType type) {
+      switch (type) {
+        case ChallengeType.xpRace:
+          return 'xp_race';
+        case ChallengeType.lessonSprint:
+          return 'lesson_sprint';
+        case ChallengeType.perfectScore:
+          return 'perfect_score';
+        case ChallengeType.vocabularyMaster:
+          return 'vocabulary_master';
+      }
+    }
+
+    int _durationToDays(ChallengeDuration duration) {
+      switch (duration) {
+        case ChallengeDuration.oneDay:
+          return 1;
+        case ChallengeDuration.threeDays:
+          return 3;
+        case ChallengeDuration.oneWeek:
+          return 7;
+        case ChallengeDuration.twoWeeks:
+          return 14;
+      }
+    }
+
+    useEffect(() {
+      _loadFriends();
+      if (friendId != null) {
+        _selectFriendById(friendId!, friends.value);
+      }
+      return null;
+    }, []);
 
     Future<void> _sendChallenge() async {
       if (selectedFriend.value == null ||
@@ -136,32 +162,6 @@ class ChallengeFriendScreen extends HookConsumerWidget {
         }
       } finally {
         isSending.value = false;
-      }
-    }
-
-    String _challengeTypeToString(ChallengeType type) {
-      switch (type) {
-        case ChallengeType.xpRace:
-          return 'xp_race';
-        case ChallengeType.lessonSprint:
-          return 'lesson_sprint';
-        case ChallengeType.perfectScore:
-          return 'perfect_score';
-        case ChallengeType.vocabularyMaster:
-          return 'vocabulary_master';
-      }
-    }
-
-    int _durationToDays(ChallengeDuration duration) {
-      switch (duration) {
-        case ChallengeDuration.oneDay:
-          return 1;
-        case ChallengeDuration.threeDays:
-          return 3;
-        case ChallengeDuration.oneWeek:
-          return 7;
-        case ChallengeDuration.twoWeeks:
-          return 14;
       }
     }
 
@@ -562,16 +562,18 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                 HapticFeedback.selectionClick();
                 selectedType.value = type;
               },
-              child: PolieGlassCard(
-                padding: EdgeInsets.all(PolieSpacing.md),
+              child: Container(
                 decoration: BoxDecoration(
                   color: isSelected ? PolieColors.royalAmethyst.withOpacity(0.2) : null,
                   border: Border.all(
                     color: isSelected ? PolieColors.royalAmethyst : Colors.transparent,
                     width: 2,
                   ),
+                  borderRadius: BorderRadius.circular(PolieRadius.lg),
                 ),
-                child: Row(
+                child: PolieGlassCard(
+                  padding: EdgeInsets.all(PolieSpacing.md),
+                  child: Row(
                   children: [
                     Expanded(
                       child: Column(
@@ -597,6 +599,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                     if (isSelected)
                       Icon(Icons.check_circle, color: PolieColors.royalAmethyst),
                   ],
+                ),
                 ),
               ),
             ),

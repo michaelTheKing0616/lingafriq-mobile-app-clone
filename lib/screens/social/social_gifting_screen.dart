@@ -301,7 +301,7 @@ class SocialGiftingScreen extends HookConsumerWidget {
 
                 if (response.statusCode == 200 || response.statusCode == 201) {
                   // Refresh gamification to update cowries
-                  await gamification.syncGamification();
+                  await gamification.refreshGamification();
                   
                   if (context.mounted) {
                     Navigator.pop(context);

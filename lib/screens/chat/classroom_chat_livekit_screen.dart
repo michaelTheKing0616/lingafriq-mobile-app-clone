@@ -469,105 +469,107 @@ class _VideoTile extends StatelessWidget {
     );
   }
 
-  void _showParticipantsList(
-    BuildContext context,
-    List<Map<String, dynamic>> participants,
-    LocalParticipant? localParticipant,
-    Map<String, RemoteParticipant> remoteParticipants,
-  ) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: EdgeInsets.all(16.sp),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Participants (${participants.length})',
-              style: PanAfricanTypography.titleLarge(context),
-            ),
-            SizedBox(height: 16.h),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: participants.length,
-                itemBuilder: (context, index) {
-                  final participant = participants[index];
-                  final isLocal = participant['isLocal'] == true;
-                  final participantId = participant['id'] as String;
-                  final remoteParticipant = remoteParticipants[participantId];
-                  
-                  return ListTile(
-                    leading: LingAfriqAvatar.fromInitials(
-                      username: participant['name'] ?? 'U',
-                      size: 40,
-                    ),
-                    title: Text(
-                      participant['name'] ?? 'Unknown',
-                      style: PanAfricanTypography.bodyLarge(context),
-                    ),
-                    subtitle: Text(
-                      isLocal ? 'You' : 'Participant',
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (remoteParticipant != null) ...[
-                          Icon(
-                            remoteParticipant.isMicrophoneEnabled() 
-                                ? Icons.mic 
-                                : Icons.mic_off,
-                            color: remoteParticipant.isMicrophoneEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(
-                            remoteParticipant.isCameraEnabled() 
-                                ? Icons.videocam 
-                                : Icons.videocam_off,
-                            color: remoteParticipant.isCameraEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                        ] else if (isLocal && localParticipant != null) ...[
-                          Icon(
-                            localParticipant.isMicrophoneEnabled() 
-                                ? Icons.mic 
-                                : Icons.mic_off,
-                            color: localParticipant.isMicrophoneEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(
-                            localParticipant.isCameraEnabled() 
-                                ? Icons.videocam 
-                                : Icons.videocam_off,
-                            color: localParticipant.isCameraEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                        ],
+}
+
+/// Top-level function so both [ClassroomChatLiveKitScreen] and [_VideoTile] can call it.
+void _showParticipantsList(
+  BuildContext context,
+  List<Map<String, dynamic>> participants,
+  LocalParticipant? localParticipant,
+  Map<String, RemoteParticipant> remoteParticipants,
+) {
+  showModalBottomSheet(
+    context: context,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) => Container(
+      padding: EdgeInsets.all(16.sp),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Participants (${participants.length})',
+            style: PanAfricanTypography.titleLarge(context),
+          ),
+          SizedBox(height: 16.h),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: participants.length,
+              itemBuilder: (context, index) {
+                final participant = participants[index];
+                final isLocal = participant['isLocal'] == true;
+                final participantId = participant['id'] as String;
+                final remoteParticipant = remoteParticipants[participantId];
+                
+                return ListTile(
+                  leading: LingAfriqAvatar.fromInitials(
+                    username: participant['name'] ?? 'U',
+                    size: 40,
+                  ),
+                  title: Text(
+                    participant['name'] ?? 'Unknown',
+                    style: PanAfricanTypography.bodyLarge(context),
+                  ),
+                  subtitle: Text(
+                    isLocal ? 'You' : 'Participant',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (remoteParticipant != null) ...[
+                        Icon(
+                          remoteParticipant.isMicrophoneEnabled() 
+                              ? Icons.mic 
+                              : Icons.mic_off,
+                          color: remoteParticipant.isMicrophoneEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Icon(
+                          remoteParticipant.isCameraEnabled() 
+                              ? Icons.videocam 
+                              : Icons.videocam_off,
+                          color: remoteParticipant.isCameraEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
+                      ] else if (isLocal && localParticipant != null) ...[
+                        Icon(
+                          localParticipant.isMicrophoneEnabled() 
+                              ? Icons.mic 
+                              : Icons.mic_off,
+                          color: localParticipant.isMicrophoneEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Icon(
+                          localParticipant.isCameraEnabled() 
+                              ? Icons.videocam 
+                              : Icons.videocam_off,
+                          color: localParticipant.isCameraEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
                       ],
-                    ),
-                  );
-                },
-              ),
+                    ],
+                  ),
+                );
+              },
             ),
-            SizedBox(height: 16.h),
-          ],
-        ),
+          ),
+          SizedBox(height: 16.h),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
 

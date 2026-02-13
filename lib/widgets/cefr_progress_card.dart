@@ -75,12 +75,12 @@ class CEFRProgressCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildLevelIndicator('A1', cefr.level == 'A1', 0),
-                _buildLevelIndicator('A2', cefr.level == 'A2', 20),
-                _buildLevelIndicator('B1', cefr.level == 'B1', 40),
-                _buildLevelIndicator('B2', cefr.level == 'B2', 55),
-                _buildLevelIndicator('C1', cefr.level == 'C1', 70),
-                _buildLevelIndicator('C2', cefr.level == 'C2', 85),
+                _buildLevelIndicator(context, 'A1', cefr.level == 'A1', 0),
+                _buildLevelIndicator(context, 'A2', cefr.level == 'A2', 20),
+                _buildLevelIndicator(context, 'B1', cefr.level == 'B1', 40),
+                _buildLevelIndicator(context, 'B2', cefr.level == 'B2', 55),
+                _buildLevelIndicator(context, 'C1', cefr.level == 'C1', 70),
+                _buildLevelIndicator(context, 'C2', cefr.level == 'C2', 85),
               ],
             ),
           ],
@@ -89,8 +89,9 @@ class CEFRProgressCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLevelIndicator(String level, bool isCurrent, double threshold) {
+  Widget _buildLevelIndicator(BuildContext context, String level, bool isCurrent, double threshold) {
     final isReached = cefr.score >= threshold;
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return Column(
       children: [
         Container(
@@ -111,9 +112,9 @@ class CEFRProgressCard extends StatelessWidget {
             ),
           ),
           child: isCurrent
-              ? Icon(Icons.check, size: 16, color: Theme.of(context).colorScheme.onPrimary)
+              ? Icon(Icons.check, size: 16, color: onPrimary)
               : (isReached
-                  ? Icon(Icons.check, size: 16, color: Theme.of(context).colorScheme.onPrimary)
+                  ? Icon(Icons.check, size: 16, color: onPrimary)
                   : null),
         ),
         const SizedBox(height: 4),
@@ -130,7 +131,4 @@ class CEFRProgressCard extends StatelessWidget {
       ],
     );
   }
-}
-
-}
 }

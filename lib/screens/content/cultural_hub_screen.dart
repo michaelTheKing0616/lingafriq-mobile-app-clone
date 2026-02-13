@@ -9,6 +9,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 /// Cultural Content Hub Screen
 /// Tabs: Stories, Proverbs, Music, Traditions, Food, History

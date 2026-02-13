@@ -305,11 +305,6 @@ class _FriendsTab extends HookConsumerWidget {
     final isLoading = useState(true);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    useEffect(() {
-      _loadFriends();
-      return null;
-    }, []);
-
     Future<void> _loadFriends() async {
       isLoading.value = true;
       try {
@@ -333,6 +328,11 @@ class _FriendsTab extends HookConsumerWidget {
         isLoading.value = false;
       }
     }
+
+    useEffect(() {
+      _loadFriends();
+      return null;
+    }, []);
 
     final filteredFriends = friends.value.where((friend) {
       final name = friend['username']?.toString().toLowerCase() ?? '';
@@ -536,11 +536,6 @@ class _ChallengesTab extends HookConsumerWidget {
     final isLoading = useState(true);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    useEffect(() {
-      _loadChallenges();
-      return null;
-    }, []);
-
     Future<void> _loadChallenges() async {
       isLoading.value = true;
       try {
@@ -560,6 +555,11 @@ class _ChallengesTab extends HookConsumerWidget {
         isLoading.value = false;
       }
     }
+
+    useEffect(() {
+      _loadChallenges();
+      return null;
+    }, []);
 
     return isLoading.value
         ? Center(
@@ -735,11 +735,6 @@ class _TribesTab extends HookConsumerWidget {
     final isLoading = useState(true);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    useEffect(() {
-      _loadTribeData();
-      return null;
-    }, []);
-
     Future<void> _loadTribeData() async {
       isLoading.value = true;
       try {
@@ -756,6 +751,11 @@ class _TribesTab extends HookConsumerWidget {
         isLoading.value = false;
       }
     }
+
+    useEffect(() {
+      _loadTribeData();
+      return null;
+    }, []);
 
     return isLoading.value
         ? Center(

@@ -386,7 +386,8 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
     final entitlementId = _entitlementIdForTier(tier);
     if (entitlementId == null) return null;
     final entitlement = info.entitlements.all[entitlementId];
-    return entitlement?.expirationDate;
+    final exp = entitlement?.expirationDate;
+    return exp != null ? DateTime.tryParse(exp) : null;
   }
 
   String? _entitlementIdForTier(RevenueCatTier tier) {

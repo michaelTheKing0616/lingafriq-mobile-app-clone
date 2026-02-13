@@ -6,6 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../providers/api_provider.dart';
+import '../../providers/dio_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/pan_african_design_system.dart';
@@ -21,20 +22,15 @@ class FriendQuestsScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
     final user = ref.watch(userProvider);
-    final apiProvider = ref.read(apiProviderProvider.notifier);
+    final dio = ref.read(client);
     final quests = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState<bool>(true);
     final selectedTab = useState<int>(0); // 0: active, 1: completed
 
-    useEffect(() {
-      _loadQuests();
-      return null;
-    }, []);
-
     Future<void> _loadQuests() async {
       try {
         isLoading.value = true;
-        final response = await apiProvider.client.get(
+        final response = await dio.get(
           ApiContract.url(ApiContract.social.friendQuests),
           queryParameters: {
             'status': selectedTab.value == 0 ? 'active' : 'completed',
@@ -52,6 +48,11 @@ class FriendQuestsScreen extends HookConsumerWidget {
         isLoading.value = false;
       }
     }
+
+    useEffect(() {
+      _loadQuests();
+      return null;
+    }, []);
 
     return Scaffold(
       backgroundColor: isDark ? PanAfricanColors.backgroundDark : PanAfricanColors.backgroundLight,
@@ -322,7 +323,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.md),
                 LinearProgressIndicator(
                   value: progressPercent,
-                  backgroundColor: PanAfricanColors.surfaceContainer,
+                  backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
                   valueColor: AlwaysStoppedAnimation<Color>(
                     isCompleted ? PanAfricanColors.success : PanAfricanColors.primary,
                   ),

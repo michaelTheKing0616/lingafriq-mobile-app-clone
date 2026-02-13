@@ -160,6 +160,7 @@ class LoginScreen extends HookConsumerWidget {
                             style: PanAfricanTypography.titleLarge(context).copyWith(
                               color: Theme.of(context).colorScheme.onPrimary,
                               fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

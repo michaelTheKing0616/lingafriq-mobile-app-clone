@@ -965,11 +965,8 @@ class _VideoTile extends StatelessWidget {
     }
 
     if (videoTrack != null) {
-      // Render actual LiveKit video track using VideoView widget
-      return VideoView(
-        videoTrack!,
-        fit: RTCVideoViewObjectFit.RTCVideoViewObjectFitCover,
-      );
+      // Render actual LiveKit video track using VideoTrackRenderer
+      return VideoTrackRenderer(videoTrack!);
     }
 
     // Fallback to avatar when no video track available

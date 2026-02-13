@@ -151,6 +151,11 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
       placementTestResults: state.placementTestResults,
     );
   }
+
+  /// Alias for [updateProficiency] — some callers use this name.
+  void updateProficiencyLevel(String level, {bool? literacyPreference}) {
+    updateProficiency(level, literacyPreference: literacyPreference);
+  }
   
   void updateLearningStyle(String style, {String? pace}) {
     state = OnboardingData(

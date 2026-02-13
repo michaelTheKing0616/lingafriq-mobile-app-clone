@@ -158,16 +158,19 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
               tooltip: 'Regenerate content',
             ),
         ],
-        bottom: Semantics(
-          label: 'Lesson tabs: Vocabulary, Grammar, Dialogue, Exercises',
-          child: PanAfricanTabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(text: 'Vocabulary', icon: Icon(Icons.book)),
-              Tab(text: 'Grammar', icon: Icon(Icons.description)),
-              Tab(text: 'Dialogue', icon: Icon(Icons.chat)),
-              Tab(text: 'Exercises', icon: Icon(Icons.quiz)),
-            ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Semantics(
+            label: 'Lesson tabs: Vocabulary, Grammar, Dialogue, Exercises',
+            child: PanAfricanTabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(text: 'Vocabulary', icon: Icon(Icons.book)),
+                Tab(text: 'Grammar', icon: Icon(Icons.description)),
+                Tab(text: 'Dialogue', icon: Icon(Icons.chat)),
+                Tab(text: 'Exercises', icon: Icon(Icons.quiz)),
+              ],
+            ),
           ),
         ),
       ),
@@ -530,7 +533,8 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
               ],
             ),
           ),
-        );
+        ),
+      );
       },
     );
   }

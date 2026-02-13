@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import '../../widgets/primary_button.dart';
@@ -111,18 +112,21 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
             Navigator.pop(context);
           },
         ),
-        bottom: Semantics(
-          label: 'Leaderboard tabs: Global, Tribe, Country',
-          child: TabBar(
-            controller: _tabController,
-            onTap: (_) => HapticFeedback.lightImpact(),
-            labelStyle: PanAfricanTypography.titleSmall(context),
-            indicatorColor: PanAfricanColors.secondary,
-            tabs: const [
-              Tab(text: 'Global'),
-              Tab(text: 'Tribe'),
-              Tab(text: 'Country'),
-            ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: Semantics(
+            label: 'Leaderboard tabs: Global, Tribe, Country',
+            child: TabBar(
+              controller: _tabController,
+              onTap: (_) => HapticFeedback.lightImpact(),
+              labelStyle: PanAfricanTypography.titleSmall(context),
+              indicatorColor: PanAfricanColors.secondary,
+              tabs: const [
+                Tab(text: 'Global'),
+                Tab(text: 'Tribe'),
+                Tab(text: 'Country'),
+              ],
+            ),
           ),
         ),
       ),
@@ -137,21 +141,21 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
               leaderboard.getGlobalLeaderboard(),
               isDark,
               isLoading: leaderboardState.isLoading,
-              error: leaderboardState.error,
+              error: leaderboardState.errorMessage,
             ),
             _buildLeaderboardList(
               LeaderboardType.tribe,
               leaderboard.getTribeLeaderboard(gamification.tribe ?? ''),
               isDark,
               isLoading: leaderboardState.isLoading,
-              error: leaderboardState.error,
+              error: leaderboardState.errorMessage,
             ),
             _buildLeaderboardList(
               LeaderboardType.country,
               leaderboard.getCountryLeaderboard(user?.nationality ?? ''),
               isDark,
               isLoading: leaderboardState.isLoading,
-              error: leaderboardState.error,
+              error: leaderboardState.errorMessage,
             ),
           ],
         ),

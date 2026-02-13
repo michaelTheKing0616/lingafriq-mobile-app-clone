@@ -192,7 +192,7 @@ class GrammarHubScreen extends HookConsumerWidget {
     bool isDark,
   ) {
     return Semantics(
-      label: 'Grammar topic: ${topic.title}. ${mastery.masteryPercentage.toInt()} percent mastered. Tap to open.',
+      label: 'Grammar topic: ${topic.name}. ${mastery.masteryPercentage.toInt()} percent mastered. Tap to open.',
       button: true,
       child: GestureDetector(
         onTap: () {

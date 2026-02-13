@@ -130,22 +130,22 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                 onRetry: () => loadMessages(),
               )
             : Container(
-        decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
-        ),
-        child: Column(
-          children: [
-            // Messages List
-            Expanded(
+              decoration: BoxDecoration(
+                gradient: isDark
+                    ? PanAfricanGradients.darkSurface
+                    : LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          PanAfricanColors.surfaceLight,
+                          PanAfricanColors.surfaceContainerLight,
+                        ],
+                      ),
+              ),
+              child: Column(
+                children: [
+                  // Messages List
+                  Expanded(
               child: messages.value.isEmpty
                   ? Center(
                       child: Column(
@@ -265,6 +265,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
             ),
           ],
         ),
+      ),
       ),
       ),
     );

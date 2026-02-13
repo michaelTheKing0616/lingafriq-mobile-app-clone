@@ -230,11 +230,12 @@ class AppDrawer extends HookConsumerWidget {
                         onTap: () {
                           Navigator.pop(context);
                           final user = ref.read(userProvider);
-                          if (user?.selectedLanguage != null) {
+                          if (user?.learningLanguage != null) {
+                            // Navigate to curriculum which provides full Language objects for learning path
                             Navigator.push(
                               context,
                               SmoothPageRoute(
-                                child: LearningPathScreen(language: user!.selectedLanguage!),
+                                child: const CurriculumScreenMaterial3(),
                               ),
                             );
                           } else {
@@ -304,13 +305,13 @@ class AppDrawer extends HookConsumerWidget {
                         onTap: () {
                           Navigator.pop(context);
                           final user = ref.read(userProvider);
-                          if (user?.selectedLanguage != null) {
+                          if (user?.learningLanguage != null) {
                             Navigator.pushNamed(
                               context,
                               '/flashcard-review',
                               arguments: {
                                 'words': <LocalVocabulary>[],
-                                'language': user!.selectedLanguage!.code,
+                                'language': user!.learningLanguage!,
                               },
                             );
                           } else {

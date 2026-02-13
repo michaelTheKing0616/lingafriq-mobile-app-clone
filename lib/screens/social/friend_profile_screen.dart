@@ -25,11 +25,6 @@ class FriendProfileScreen extends HookConsumerWidget {
     final friendData = useState<Map<String, dynamic>?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    useEffect(() {
-      _loadFriendProfile();
-      return null;
-    }, []);
-
     Future<void> _loadFriendProfile() async {
       isLoading.value = true;
       await safeAsync(
@@ -48,6 +43,11 @@ class FriendProfileScreen extends HookConsumerWidget {
       );
       isLoading.value = false;
     }
+
+    useEffect(() {
+      _loadFriendProfile();
+      return null;
+    }, []);
 
     return Scaffold(
       body: Container(

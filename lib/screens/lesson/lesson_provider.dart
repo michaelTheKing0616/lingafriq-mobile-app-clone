@@ -1,5 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod/legacy.dart';
+import 'package:state_notifier/state_notifier.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
@@ -39,6 +42,12 @@ class LessonFlowState {
     this.correctAnswers = 0,
     this.totalQuestions = 0,
   });
+
+  /// Computed accuracy percentage (0-100)
+  double get accuracy => totalQuestions > 0 ? (correctAnswers / totalQuestions * 100) : 0;
+
+  /// Computed time taken since lesson start
+  Duration get timeTaken => startTime != null ? DateTime.now().difference(startTime!) : Duration.zero;
 
   LessonFlowState copyWith({
     List<LessonContent>? sections,
@@ -199,9 +208,9 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
     final isCorrect = correctOption.text == selectedAnswer;
 
     // Update total questions count
-    final section = state.sections.firstWhere((s) => s.sectionId == sectionId);
+    final sectionForCount = state.sections.firstWhere((s) => s.sectionId == sectionId);
     final newTotalQuestions = state.totalQuestions + 
-        (section.questions?.length ?? section.wordQuestions?.length ?? 0);
+        (sectionForCount.questions?.length ?? sectionForCount.wordQuestions?.length ?? 0);
 
     if (isCorrect) {
       await soundEffects.playCorrect();

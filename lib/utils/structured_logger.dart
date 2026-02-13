@@ -80,6 +80,17 @@ class StructuredLogger {
     _log(LogLevel.warn, message, tag: tag, context: context, error: error, stackTrace: stackTrace);
   }
 
+  /// Alias for [warn] — some callers use `warning` by convention.
+  void warning(
+    String message, {
+    String? tag,
+    Map<String, dynamic>? context,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    warn(message, tag: tag, context: context, error: error, stackTrace: stackTrace);
+  }
+
   /// Log error message
   void error(
     String message, {

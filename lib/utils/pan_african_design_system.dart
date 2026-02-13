@@ -128,7 +128,10 @@ class PanAfricanColors {
   
   static const Color textPrimaryDark = Color(0xFFF4F6F5);
   static const Color textSecondaryDark = Color(0xFFB8C4BD);
+  static const Color textTertiaryDark = Color(0xFF8A9B91);
   static const Color textDisabledDark = Color(0xFF6B7D72);
+  
+  static const Color textTertiaryLight = Color(0xFF7A8C82);
   
   // ═══════════════════════════════════════════════════════════════════════════
   // BACKWARD-COMPATIBLE ALIASES
@@ -178,6 +181,13 @@ class PanAfricanGradients {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [_primary, _primary],
+  );
+
+  /// Kente - Subtle warm Kente-inspired gradient
+  static const LinearGradient kente = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFFF7CB46), Color(0xFFEB8937)],
   );
 
   /// Kente Vibrant - Flat (primaryContainer)

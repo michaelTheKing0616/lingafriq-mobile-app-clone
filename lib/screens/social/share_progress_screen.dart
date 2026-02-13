@@ -10,7 +10,8 @@ import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+// TODO: add image_gallery_saver to pubspec.yaml to enable save to gallery
+// import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class ShareProgressScreen extends HookConsumerWidget {
   final String cardType; // 'daily_streak', 'weekly_stats', 'achievement'
@@ -49,24 +50,28 @@ class ShareProgressScreen extends HookConsumerWidget {
     }
 
     Future<void> _saveToGallery() async {
-      try {
-        final RenderRepaintBoundary boundary =
-            globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-        final image = await boundary.toImage(pixelRatio: 3.0);
-        final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-        final pngBytes = byteData!.buffer.asUint8List();
-
-        final result = await ImageGallerySaver.saveImage(pngBytes);
-        if (result['isSuccess'] == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Saved to gallery!')),
-          );
-        }
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving: $e')),
-        );
-      }
+      // TODO: add image_gallery_saver package and uncomment to enable save to gallery
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Save to gallery not available — add image_gallery_saver package')),
+      );
+      return;
+      // try {
+      //   final RenderRepaintBoundary boundary =
+      //       globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      //   final image = await boundary.toImage(pixelRatio: 3.0);
+      //   final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+      //   final pngBytes = byteData!.buffer.asUint8List();
+      //   final result = await ImageGallerySaver.saveImage(pngBytes);
+      //   if (result['isSuccess'] == true) {
+      //     ScaffoldMessenger.of(context).showSnackBar(
+      //       SnackBar(content: Text('Saved to gallery!')),
+      //     );
+      //   }
+      // } catch (e) {
+      //   ScaffoldMessenger.of(context).showSnackBar(
+      //     SnackBar(content: Text('Error saving: $e')),
+      //   );
+      // }
     }
 
     return Scaffold(

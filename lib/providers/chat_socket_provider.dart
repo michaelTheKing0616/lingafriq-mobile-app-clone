@@ -347,7 +347,10 @@ class ChatSocketState {
 }
 
 /// Chat Socket Provider
-final socketProvider = NotifierProvider<ChatSocketNotifier, ChatSocketState>(() {
+final chatSocketProvider = NotifierProvider<ChatSocketNotifier, ChatSocketState>(() {
   return ChatSocketNotifier();
 });
+
+/// Backward-compatible alias
+final socketProvider = chatSocketProvider;
 

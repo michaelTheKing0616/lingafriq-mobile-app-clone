@@ -275,10 +275,10 @@ class PanAfricanDrawer extends ConsumerWidget {
                   ? CachedNetworkImage(
                       imageUrl: user.profilePicUrl,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) => _buildAvatarPlaceholder(user),
-                      errorWidget: (_, __, ___) => _buildAvatarPlaceholder(user),
+                      placeholder: (ctx, __) => _buildAvatarPlaceholder(ctx, user),
+                      errorWidget: (ctx, __, ___) => _buildAvatarPlaceholder(ctx, user),
                     )
-                  : _buildAvatarPlaceholder(user),
+                  : _buildAvatarPlaceholder(context, user),
             ),
           ),
           SizedBox(height: PanAfricanSpacing.sm),
@@ -334,7 +334,7 @@ class PanAfricanDrawer extends ConsumerWidget {
     );
   }
 
-  Widget _buildAvatarPlaceholder(dynamic user) {
+  Widget _buildAvatarPlaceholder(BuildContext context, dynamic user) {
     final initials = user?.fullName?.isNotEmpty == true
         ? user.fullName.split(' ').map((n) => n.isNotEmpty ? n[0] : '').take(2).join().toUpperCase()
         : 'GU';

@@ -19,7 +19,7 @@ class DeleteAccountDialog extends StatelessWidget {
           Container(
             width: 0.3.sw,
             height: 0.3.sw,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Theme.of(context).colorScheme.surface,
             ),

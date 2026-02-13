@@ -23,7 +23,7 @@ class RiveStateService {
   }) async {
     try {
       final response = await _dio.post(
-        _url(ApiContract.polieRiveState),
+        _url(ApiContract.ai.polieRiveState),
         data: {
           'user_id': userId,
           'emotion': emotion,
@@ -46,7 +46,7 @@ class RiveStateService {
   Future<Map<String, dynamic>?> getState({required String userId}) async {
     try {
       final response = await _dio.get(
-        _url(ApiContract.polieRiveState),
+        _url(ApiContract.ai.polieRiveState),
         queryParameters: {'user_id': userId},
         options: Options(
           headers: {'Content-Type': 'application/json'},

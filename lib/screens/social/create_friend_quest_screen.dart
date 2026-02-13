@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../providers/api_provider.dart';
+import '../../providers/dio_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/pan_african_design_system.dart';
@@ -17,7 +18,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
     final user = ref.watch(userProvider);
-    final apiProvider = ref.read(apiProviderProvider.notifier);
+    final dio = ref.read(client);
 
     final selectedQuestType = useState<String?>('complete_lessons');
     final targetController = useTextEditingController(text: '10');
@@ -27,15 +28,10 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
     final isLoadingFriends = useState<bool>(true);
     final isCreating = useState<bool>(false);
 
-    useEffect(() {
-      _loadFriends();
-      return null;
-    }, []);
-
     Future<void> _loadFriends() async {
       try {
         isLoadingFriends.value = true;
-        final response = await apiProvider.client.get(
+        final response = await dio.get(
           ApiContract.url(ApiContract.social.connections),
           queryParameters: {'status': 'accepted'},
         );
@@ -59,6 +55,11 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
       }
     }
 
+    useEffect(() {
+      _loadFriends();
+      return null;
+    }, []);
+
     Future<void> _createQuest() async {
       if (selectedQuestType.value == null) {
         ErrorHandler.showError(context, 'Please select a quest type');
@@ -78,7 +79,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
 
       try {
         isCreating.value = true;
-        final response = await apiProvider.client.post(
+        final response = await dio.post(
           ApiContract.url(ApiContract.social.friendQuests),
           data: {
             'questType': selectedQuestType.value,

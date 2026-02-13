@@ -175,10 +175,8 @@ class ModernDashboardScreen extends HookConsumerWidget {
                     ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          // Main Content
+              ),
+          // Main Content (second Stack child)
           Positioned(
             top: 32.h,
             left: 0,

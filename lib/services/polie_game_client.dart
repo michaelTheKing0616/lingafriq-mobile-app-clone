@@ -43,7 +43,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        _url(ApiContract.polieGameContent),
+        _url(ApiContract.ai.polieGameContent),
         data: {
           'game_id': gameId,
           'language': language,
@@ -86,7 +86,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        _url(ApiContract.polieEvaluateGameTurn),
+        _url(ApiContract.ai.polieEvaluateGameTurn),
         data: {
           'game_id': gameId,
           'content_id': contentId,

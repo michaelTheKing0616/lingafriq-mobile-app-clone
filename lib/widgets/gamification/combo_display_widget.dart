@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod/legacy.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/pan_african_components.dart';
 import 'combo_tracker.dart';
@@ -245,6 +247,8 @@ class _ComboDisplayWidgetState extends State<ComboDisplayWidget> {
 }
 
 /// Riverpod provider for combo tracker
-final comboTrackerProvider = ChangeNotifierProvider.autoDispose<ComboTracker>((ref) {
-  return ComboTracker();
+final comboTrackerProvider = Provider.autoDispose<ComboTracker>((ref) {
+  final tracker = ComboTracker();
+  ref.onDispose(() => tracker.dispose());
+  return tracker;
 });

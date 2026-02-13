@@ -505,6 +505,9 @@ class GamificationProvider extends Notifier<BaseProviderState>
     }
   }
 
+  /// Public refresh: reload gamification from backend (e.g. after gifting cowries).
+  Future<void> refreshGamification() async => _syncWithBackend();
+
   /// Backend sync
   Future<void> _syncWithBackend() async {
     try {

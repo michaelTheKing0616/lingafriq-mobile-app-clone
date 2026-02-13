@@ -60,7 +60,7 @@ class VocabularyStore {
 
   /// Review a word with quality rating (0-5)
   /// Updates the word's SRS metadata based on SM-2 algorithm
-  Future<void> reviewWord(String id, int quality) {
+  Future<void> reviewWord(String id, int quality) async {
     if (quality < 0 || quality > 5) {
       throw ArgumentError('Quality must be between 0 and 5');
     }

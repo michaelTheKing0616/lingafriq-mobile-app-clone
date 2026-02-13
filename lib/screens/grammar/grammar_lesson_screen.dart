@@ -25,12 +25,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
     final grammarData = useState<Map<String, dynamic>?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    useEffect(() {
-      _loadGrammarLesson();
-      return null;
-    }, []);
-
-    Future<void> _loadGrammarLesson() async {
+    Future<void> loadGrammarLesson() async {
       isLoading.value = true;
       await safeAsync(
         context: context,
@@ -52,6 +47,11 @@ class GrammarLessonScreen extends HookConsumerWidget {
       );
       isLoading.value = false;
     }
+
+    useEffect(() {
+      loadGrammarLesson();
+      return null;
+    }, []);
 
     return Scaffold(
       body: Container(
@@ -383,7 +383,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (ctx) => GrammarExerciseScreen(topic: topic),
+            builder: (ctx) => GrammarExerciseScreen(topicId: topic.id, topicName: topic.name),
           ),
         );
       },

@@ -846,6 +846,7 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
     }
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -875,6 +876,7 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
               itemBuilder: (context, index) {
                 final message = _conversationHistory[index];
                 final isUser = message['type'] == 'user';
+                final colorScheme = Theme.of(context).colorScheme;
                 return Align(
                   alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
@@ -1456,6 +1458,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
     }
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(

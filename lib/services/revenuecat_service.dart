@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:lingafriq/config/secrets_manager.dart';
 import 'package:lingafriq/models/revenuecat_mapping.dart';
-import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/utils/structured_logger.dart' hide LogLevel;
 
 class RevenueCatService {
   bool _configured = false;
@@ -106,8 +106,8 @@ class RevenueCatService {
         return null;
       }
 
-      final customerInfo = await Purchases.purchasePackage(package);
-      return customerInfo;
+      final result = await Purchases.purchasePackage(package);
+      return result.customerInfo;
     } catch (e) {
       logger.error('RevenueCat purchase failed', tag: 'revenuecat', error: e);
       return null;

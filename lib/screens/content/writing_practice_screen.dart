@@ -8,6 +8,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 /// Writing Practice Screen
 /// Translation exercises, sentence building, free writing with AI evaluation

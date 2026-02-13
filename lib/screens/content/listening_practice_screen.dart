@@ -8,6 +8,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 /// Listening Comprehension Practice Screen
 /// Audio clips with comprehension questions, difficulty levels, fill-in-the-blank

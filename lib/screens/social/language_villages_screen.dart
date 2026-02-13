@@ -408,8 +408,7 @@ class _VillageCard extends StatelessWidget {
     final occupancy = village.maxParticipants > 0
         ? (village.currentParticipants / village.maxParticipants).clamp(0.0, 1.0)
         : 0.0;
-    final colorScheme = Theme.of(context).colorScheme;
-    
+
     return PanAfricanCard(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -512,6 +511,7 @@ class _VoiceRoomViewState extends ConsumerState<_VoiceRoomView> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Container(
       decoration: BoxDecoration(

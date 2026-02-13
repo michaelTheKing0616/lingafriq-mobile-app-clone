@@ -48,7 +48,7 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
       searchError.value = null;
       try {
         final response = await ApiService.get(
-          ApiContract.url(ApiContract.usersSearch),
+          ApiContract.url(ApiContract.accounts.usersSearch),
           queryParameters: {
             'handle': query.trim(),
             'q': query.trim(),

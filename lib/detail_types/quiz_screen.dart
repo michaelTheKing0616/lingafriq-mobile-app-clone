@@ -61,8 +61,6 @@ class QuizScreen extends HookConsumerWidget {
     }).toList();
     final showIndicator = useState({"isLoading": false, "isCorrect": true});
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    final soundEffects = ref.watch(soundEffectsProvider);
-    final comboTracker = useMemoized(() => ComboTracker());
     return LoadingOverlayPro(
       isLoading: isLoading,
       child: LoadingOverlayPro(

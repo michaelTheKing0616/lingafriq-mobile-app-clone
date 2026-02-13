@@ -47,7 +47,7 @@ class TakeQuizScreen extends ConsumerWidget {
             borderRadius: 0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                 GreetingsBuilder(

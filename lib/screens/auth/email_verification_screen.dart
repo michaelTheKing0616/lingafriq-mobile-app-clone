@@ -90,8 +90,8 @@ class EmailVerificationScreen extends HookConsumerWidget {
       resendCooldown.value = 60;
       timerRef.value = Stream.periodic(const Duration(seconds: 1), (i) => i)
           .take(60)
-          .listen((_) {
-        resendCooldown.value = 60 - _ - 1;
+          .listen((tick) {
+        resendCooldown.value = 60 - tick - 1;
         if (resendCooldown.value == 0) {
           timerRef.value?.cancel();
           timerRef.value = null;
@@ -376,7 +376,7 @@ class EmailVerificationScreen extends HookConsumerWidget {
                                 isLoading.value = false;
                               }
                             },
-                      child: Row(
+                        child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
@@ -405,9 +405,10 @@ class EmailVerificationScreen extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                  )
-                      .animate()
-                      .fadeIn(delay: 600.ms, duration: 400.ms),
+                  ),
+                )
+                    .animate()
+                    .fadeIn(delay: 600.ms, duration: 400.ms),
                   
                   SizedBox(height: PanAfricanSpacing.xl),
                 ],

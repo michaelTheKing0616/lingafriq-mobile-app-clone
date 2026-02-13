@@ -710,6 +710,7 @@ class _PolieFaceExpression extends StatelessWidget {
   Widget build(BuildContext context) {
     final isThinking = expression == _PolieExpression.thinking;
     final isEncouraging = expression == _PolieExpression.encouraging;
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -717,38 +718,38 @@ class _PolieFaceExpression extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _eye(offset: isThinking ? -0.5 : 0),
+            _eye(onPrimary: onPrimary, offset: isThinking ? -0.5 : 0),
             SizedBox(width: 6.w),
-            _eye(offset: isThinking ? -0.5 : 0),
+            _eye(onPrimary: onPrimary, offset: isThinking ? -0.5 : 0),
           ],
         ),
         SizedBox(height: 4.w),
-        _mouth(smile: isEncouraging, open: expression == _PolieExpression.speaking),
+        _mouth(onPrimary: onPrimary, smile: isEncouraging, open: expression == _PolieExpression.speaking),
       ],
     );
   }
 
-  Widget _eye({double offset = 0}) {
+  Widget _eye({required Color onPrimary, double offset = 0}) {
     return Transform.translate(
       offset: Offset(0, offset),
       child: Container(
         width: 5.w,
         height: 5.w,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: onPrimary,
           shape: BoxShape.circle,
         ),
       ),
     );
   }
 
-  Widget _mouth({bool smile = false, bool open = false}) {
+  Widget _mouth({required Color onPrimary, bool smile = false, bool open = false}) {
     if (open) {
       return Container(
         width: 10.w,
         height: 4.w,
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+          color: onPrimary.withOpacity(0.9),
           borderRadius: BorderRadius.circular(2),
         ),
       );
@@ -757,7 +758,7 @@ class _PolieFaceExpression extends StatelessWidget {
       width: 8.w,
       height: 2.w,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.onPrimary.withOpacity(smile ? 0.95 : 0.8),
+        color: onPrimary.withOpacity(smile ? 0.95 : 0.8),
         borderRadius: BorderRadius.circular(1),
       ),
       transform: Matrix4.translationValues(0, smile ? -1 : 0, 0),

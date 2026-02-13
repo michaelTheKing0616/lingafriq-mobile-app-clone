@@ -69,10 +69,10 @@ class ProfileCard extends StatelessWidget {
                             avatarPath!,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
-                              return _buildDefaultAvatar();
+                              return _buildDefaultAvatar(context);
                             },
                           )
-                        : _buildDefaultAvatar(),
+                        : _buildDefaultAvatar(context),
                   ),
                 ),
                 if (showEditIcon && onEditTap != null)
@@ -166,7 +166,7 @@ class ProfileCard extends StatelessWidget {
         .slideX(begin: -0.2, end: 0, duration: 400.ms, curve: Curves.easeOut);
   }
 
-  Widget _buildDefaultAvatar() {
+  Widget _buildDefaultAvatar(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(

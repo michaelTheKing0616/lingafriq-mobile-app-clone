@@ -205,7 +205,7 @@ class _StreakDisplayWidgetState extends ConsumerState<StreakDisplayWidget>
                 ],
               ),
             ],
-            if (showFreeze && gamification.freezeLeft > 0) ...[
+            if (widget.showFreeze && gamification.freezeLeft > 0) ...[
               const SizedBox(height: 12),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

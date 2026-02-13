@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -73,11 +75,11 @@ class LessonFlowScreen extends HookConsumerWidget {
           totalXP: lessonState.totalXPEarned,
           comboBonus: lessonState.comboBonus,
           accuracy: lessonState.accuracy,
-          timeTaken: lessonState.timeTaken,
+          timeTaken: lessonState.timeTaken.inSeconds,
           bestCombo: comboTracker.maxCombo,
           onContinue: () {
             comboTracker.reset();
-            ref.read(navigationProvider).pop(true);
+            ref.read(navigationProvider).pop();
           },
           onShare: () {
             Share.share(
@@ -122,7 +124,7 @@ class LessonFlowScreen extends HookConsumerWidget {
                                   color: Theme.of(context).colorScheme.onPrimary,
                                   onPressed: () {
                                     comboTracker.reset();
-                                    ref.read(navigationProvider).pop(false);
+                                    ref.read(navigationProvider).pop();
                                   },
                                 ),
                               ),
@@ -238,7 +240,7 @@ class LessonFlowScreen extends HookConsumerWidget {
               if (lessonState.hasMoreSections) {
                 // Auto-advance after short delay
                 await Future.delayed(const Duration(milliseconds: 1500));
-                if (mounted) {
+                if (context.mounted) {
                   final nextIndex = lessonState.currentSectionIndex + 1;
                   lessonFlow.nextSection();
                   if (pageController.hasClients) {
@@ -280,7 +282,7 @@ class LessonFlowScreen extends HookConsumerWidget {
               
               if (lessonState.hasMoreSections) {
                 await Future.delayed(const Duration(milliseconds: 1500));
-                if (mounted) {
+                if (context.mounted) {
                   final nextIndex = lessonState.currentSectionIndex + 1;
                   lessonFlow.nextSection();
                   if (pageController.hasClients) {

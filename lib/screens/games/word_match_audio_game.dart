@@ -567,9 +567,9 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                         width: double.infinity,
                         child: FilledButton(
                           onPressed: _finishGame,
-                        style: FilledButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 3.h),
-                        ),
+                          style: FilledButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 3.h),
+                          ),
                           child: Text(
                             'Finish Game',
                             style: TextStyle(fontSize: 18.sp),
@@ -581,7 +581,6 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                 ],
               ),
             ),
-          ),
           // Combo display widget
           ComboDisplayWidget(comboTracker: _comboTracker),
         ],

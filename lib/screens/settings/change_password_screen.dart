@@ -331,6 +331,7 @@ class _ChangePasswordButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
       color: PanAfricanColors.primary,
       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),

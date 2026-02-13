@@ -493,6 +493,7 @@ class AchievementsScreen extends ConsumerWidget {
         ),
       ),
       ),
+      ),
     );
   }
 

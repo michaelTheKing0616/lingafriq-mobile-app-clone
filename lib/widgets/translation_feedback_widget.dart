@@ -283,7 +283,7 @@ class _TranslationFeedbackSheetState extends State<TranslationFeedbackSheet> {
                     ? SizedBox(
                         height: 20.h,
                         width: 20.w,
-                        child: const CircularProgressIndicator(
+                        child: CircularProgressIndicator(
                           strokeWidth: 2,
                           valueColor: AlwaysStoppedAnimation(Theme.of(context).colorScheme.onPrimary),
                         ),

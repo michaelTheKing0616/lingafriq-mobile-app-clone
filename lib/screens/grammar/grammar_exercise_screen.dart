@@ -92,9 +92,9 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
   late PageController _pageController;
   late ComboTracker _comboTracker;
   final List<GrammarExercise> _exercises = [];
-  final List<String?> _selectedAnswers = [];
-  final List<bool> _isAnswered = [];
-  final List<bool> _isCorrect = [];
+  List<String?> _selectedAnswers = [];
+  List<bool> _isAnswered = [];
+  List<bool> _isCorrect = [];
   int _currentIndex = 0;
   bool _isLoading = true;
   bool _showSummary = false;
@@ -522,10 +522,11 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                   HapticFeedback.selectionClick();
                   _selectAnswer(option);
                 },
-                child: PolieGlassCard(
+                child: Container(
                   padding: EdgeInsets.all(PolieSpacing.lg),
                   decoration: BoxDecoration(
                     color: backgroundColor,
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: borderColor ?? Colors.transparent,
                       width: 2,
@@ -852,10 +853,11 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                   HapticFeedback.selectionClick();
                   _selectAnswer(option);
                 },
-                child: PolieGlassCard(
+                child: Container(
                   padding: EdgeInsets.all(PolieSpacing.lg),
                   decoration: BoxDecoration(
                     color: backgroundColor,
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: borderColor ?? Colors.transparent,
                       width: 2,

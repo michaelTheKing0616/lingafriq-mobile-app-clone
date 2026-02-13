@@ -12,7 +12,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../config/url_constants.dart';
+import '../config/api_contract.dart';
 import 'env_config.dart';
 
 /// Phoneme error detail
@@ -187,7 +187,7 @@ class PronunciationScoringService {
   String? get _mfaServiceUrl => EnvConfig.mfaServiceUrl;
   
   // Backend hybrid-polie endpoint
-  String get _backendPronounceUrl => '${UrlConstants.apiBaseUrl}hybrid-polie/pronounce';
+  String get _backendPronounceUrl => '${ApiContract.baseUrl}/hybrid-polie/pronounce';
 
   /// Score pronunciation
   /// 

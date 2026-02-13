@@ -144,12 +144,12 @@ class LessonContent {
               imageUrl: questionMap['image']?.toString(),
               audioUrl: questionMap['audio']?.toString(),
               videoUrl: questionMap['video']?.toString(),
-              options: choices.map((choiceText, index) {
+              options: choices.asMap().entries.map((e) {
                 return QuizOption(
-                  id: index,
-                  text: choiceText,
+                  id: e.key,
+                  text: e.value,
                   imageUrl: null,
-                  isCorrect: correctAnswers.contains(choiceText),
+                  isCorrect: correctAnswers.contains(e.value),
                 );
               }).toList(),
             );

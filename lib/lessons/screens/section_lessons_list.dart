@@ -159,7 +159,7 @@ class _SectionLessonsList extends ConsumerWidget {
                 LessonFlowScreen(
                   lessonId: lesson.id,
                   sectionLessons: sectionLessons,
-                  lessonTitle: lesson.title,
+                  lessonTitle: lesson.name,
                 ),
               );
               

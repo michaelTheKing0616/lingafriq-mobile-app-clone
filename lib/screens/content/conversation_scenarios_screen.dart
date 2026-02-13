@@ -11,6 +11,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 /// Conversation Practice Scenarios Screen
 /// Curated real-world conversation scenarios with AI roleplay

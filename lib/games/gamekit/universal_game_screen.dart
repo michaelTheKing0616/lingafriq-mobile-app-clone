@@ -50,7 +50,7 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
   // Game avatar controller
   GameAvatarController? _avatarController;
   GameCategory _gameCategory = GameCategory.vocabulary;
-  final GlobalKey<GameAvatarWidgetState> _avatarKey = GlobalKey();
+  final GlobalKey<State<GameAvatarWidget>> _avatarKey = GlobalKey();
 
   @override
   void initState() {
@@ -158,11 +158,11 @@ class _UniversalGameScreenState extends BaseGameScreenState<UniversalGameScreen>
           _score++;
           // Avatar celebrates correct answer
           _avatarController?.reactToCorrectAnswer(isPerfect: result.score.accuracy >= 1.0);
-          _avatarKey.currentState?.celebrate();
+          (_avatarKey.currentState as dynamic)?.celebrate();
         } else {
           // Avatar shows encouragement for incorrect answer
           _avatarController?.reactToIncorrectAnswer();
-          _avatarKey.currentState?.showDisappointment();
+          (_avatarKey.currentState as dynamic)?.showDisappointment();
         }
       });
 

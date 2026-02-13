@@ -87,24 +87,24 @@ class SeasonalEventsScreen extends HookConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (activeEvents.isNotEmpty) ...[
+            if (activeEvents.value.isNotEmpty) ...[
               Text(
                 'Active Events',
                 style: PanAfricanTypography.titleMedium(context),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
-              ...activeEvents.map((event) => _EventCard(event: event, isActive: true, isDark: isDark)),
+              ...activeEvents.value.map((event) => _EventCard(event: event, isActive: true, isDark: isDark)),
               SizedBox(height: PanAfricanSpacing.lg),
             ],
-            if (upcomingEvents.isNotEmpty) ...[
+            if (upcomingEvents.value.isNotEmpty) ...[
               Text(
                 'Upcoming Events',
                 style: PanAfricanTypography.titleMedium(context),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
-              ...upcomingEvents.map((event) => _EventCard(event: event, isActive: false, isDark: isDark)),
+              ...upcomingEvents.value.map((event) => _EventCard(event: event, isActive: false, isDark: isDark)),
             ],
-            if (activeEvents.isEmpty && upcomingEvents.isEmpty)
+            if (activeEvents.value.isEmpty && upcomingEvents.value.isEmpty)
               Center(
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xxl),
