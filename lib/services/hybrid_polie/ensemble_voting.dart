@@ -25,7 +25,7 @@ class EnsembleVoting {
         sourceLang: sourceLang,
         targetLang: targetLang,
         hfToken: hfToken,
-      ).then((r) => r.translation).catchError((e) => null),
+      ).then((r) => r.translation).catchError((e) => ''),
 
       // LLaMA-70B (via Groq)
       _getLlamaTranslation(
@@ -33,14 +33,14 @@ class EnsembleVoting {
         sourceLang: sourceLang,
         targetLang: targetLang,
         groqProvider: groqProvider,
-      ).catchError((e) => null),
+      ).catchError((e) => ''),
 
       // AfriTeVa (if available)
       CanonicalPhraseService().generateCanonical(
         phrase: text,
         language: targetLang,
         hfToken: hfToken,
-      ).then((r) => r.canonicalText).catchError((e) => null),
+      ).then((r) => r.canonicalText).catchError((e) => ''),
     ]);
 
     // Filter out nulls
@@ -92,14 +92,14 @@ class EnsembleVoting {
         phrase: phrase,
         language: language,
         hfToken: hfToken,
-      ).then((r) => r.canonicalText).catchError((e) => null),
+      ).then((r) => r.canonicalText).catchError((e) => ''),
 
       // LLaMA-70B (with canonical constraint)
       _getLlamaCanonical(
         phrase: phrase,
         language: language,
         groqProvider: groqProvider,
-      ).catchError((e) => null),
+      ).catchError((e) => ''),
     ]);
 
     // Filter out nulls

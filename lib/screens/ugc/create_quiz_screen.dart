@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Screen for creating user-generated quizzes
 class CreateQuizScreen extends HookConsumerWidget {
@@ -24,15 +25,23 @@ class CreateQuizScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       appBar: AppBar(
-        title: const Text('Create Quiz'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        title: Text('Create Quiz', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
+              HapticFeedback.lightImpact();
               currentQuestion.value = {
                 'question': '',
                 'options': ['', '', '', ''],
@@ -44,7 +53,7 @@ class CreateQuizScreen extends HookConsumerWidget {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -53,69 +62,83 @@ class CreateQuizScreen extends HookConsumerWidget {
               value: selectedLanguage.value,
               decoration: InputDecoration(
                 labelText: 'Language',
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
               items: languages.map((lang) {
                 return DropdownMenuItem(
                   value: lang,
-                  child: Text(lang.toUpperCase()),
+                  child: Text(lang.toUpperCase(), style: PanAfricanTypography.bodyMedium(context)),
                 );
               }).toList(),
               onChanged: (value) {
+                HapticFeedback.selectionClick();
                 if (value != null) selectedLanguage.value = value;
               },
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Title
             TextField(
               controller: titleController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Quiz Title',
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             
             // Description
             TextField(
               controller: descriptionController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Description (Optional)',
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
               maxLines: 2,
             ),
-            SizedBox(height: 24.sp),
+            SizedBox(height: PanAfricanSpacing.lg),
             
             // Questions List
             Text(
               'Questions (${questions.value.length})',
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+              style: PanAfricanTypography.titleMedium(context),
             ),
-            SizedBox(height: 8.sp),
+            SizedBox(height: PanAfricanSpacing.xs),
             
             ...questions.value.asMap().entries.map((entry) {
               final index = entry.key;
               final question = entry.value;
-              return Card(
-                margin: EdgeInsets.only(bottom: 8.sp),
+              return Container(
+                margin: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
+                decoration: BoxDecoration(
+                  color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                  borderRadius: PanAfricanRadius.lgBR,
+                  boxShadow: PanAfricanShadows.sm,
+                ),
                 child: ListTile(
-                  title: Text(question['question'] ?? 'Question ${index + 1}'),
-                  subtitle: Text('${question['options']?.length ?? 0} options'),
+                  title: Text(question['question'] ?? 'Question ${index + 1}', style: PanAfricanTypography.titleSmall(context)),
+                  subtitle: Text('${question['options']?.length ?? 0} options', style: PanAfricanTypography.bodySmall(context)),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete),
+                    icon: Icon(Icons.delete, color: PanAfricanColors.error),
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       questions.value = List.from(questions.value)..removeAt(index);
                     },
                   ),
@@ -124,31 +147,34 @@ class CreateQuizScreen extends HookConsumerWidget {
             }),
             
             if (currentQuestion.value != null) ...[
-              SizedBox(height: 16.sp),
+              SizedBox(height: PanAfricanSpacing.md),
               _QuestionEditor(
                 question: currentQuestion.value!,
                 onSave: (q) {
+                  HapticFeedback.mediumImpact();
                   questions.value = [...questions.value, q];
                   currentQuestion.value = null;
                 },
                 onCancel: () {
+                  HapticFeedback.lightImpact();
                   currentQuestion.value = null;
                 },
               ),
             ],
             
-            SizedBox(height: 24.sp),
+            SizedBox(height: PanAfricanSpacing.lg),
             
             // Submit Button
             FilledButton(
               onPressed: isSubmitting.value || questions.value.isEmpty
                   ? null
                   : () async {
+                      HapticFeedback.mediumImpact();
                       if (titleController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please fill in quiz title'),
-                            backgroundColor: Colors.red,
+                          SnackBar(
+                            content: Text('Please fill in quiz title', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
+                            backgroundColor: PanAfricanColors.error,
                           ),
                         );
                         return;
@@ -170,10 +196,11 @@ class CreateQuizScreen extends HookConsumerWidget {
                           );
                           
                           if (context.mounted) {
+                            HapticFeedback.heavyImpact();
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Quiz created successfully!'),
-                                backgroundColor: AppColors.primaryGreen,
+                              SnackBar(
+                                content: Text('Quiz created successfully!', style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)),
+                                backgroundColor: PanAfricanColors.success,
                               ),
                             );
                             Navigator.of(context).pop(true);
@@ -188,19 +215,20 @@ class CreateQuizScreen extends HookConsumerWidget {
                       }
                     },
               style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primaryGreen,
-                padding: EdgeInsets.symmetric(vertical: 16.sp),
+                backgroundColor: PanAfricanColors.primary,
+                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+                shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
               ),
               child: isSubmitting.value
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
+                  ? SizedBox(
+                      width: 20.sp,
+                      height: 20.sp,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
-                  : const Text('Create Quiz'),
+                  : Text('Create Quiz', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
             ),
           ],
         ),
@@ -232,43 +260,59 @@ class _QuestionEditor extends HookConsumerWidget {
     final correctAnswer = useState(question['correctAnswer'] ?? 0);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Card(
-      color: isDark ? const Color(0xFF1F3527) : Colors.white,
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
+      ),
       child: Padding(
-        padding: EdgeInsets.all(16.sp),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: questionController,
+              style: PanAfricanTypography.bodyLarge(context),
               decoration: InputDecoration(
                 labelText: 'Question',
+                labelStyle: PanAfricanTypography.bodyMedium(context),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: PanAfricanRadius.mdBR,
                 ),
+                filled: true,
+                fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               ),
             ),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             ...optionControllers.asMap().entries.map((entry) {
               final index = entry.key;
               final controller = entry.value;
               return Padding(
-                padding: EdgeInsets.only(bottom: 8.sp),
+                padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
                 child: Row(
                   children: [
                     Radio<int>(
                       value: index,
                       groupValue: correctAnswer.value,
-                      onChanged: (value) => correctAnswer.value = value!,
+                      activeColor: PanAfricanColors.primary,
+                      onChanged: (value) {
+                        HapticFeedback.selectionClick();
+                        correctAnswer.value = value!;
+                      },
                     ),
                     Expanded(
                       child: TextField(
                         controller: controller,
+                        style: PanAfricanTypography.bodyMedium(context),
                         decoration: InputDecoration(
                           labelText: 'Option ${index + 1}',
+                          labelStyle: PanAfricanTypography.bodySmall(context),
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: PanAfricanRadius.mdBR,
                           ),
+                          filled: true,
+                          fillColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
                         ),
                       ),
                     ),
@@ -276,26 +320,37 @@ class _QuestionEditor extends HookConsumerWidget {
                 ),
               );
             }),
-            SizedBox(height: 16.sp),
+            SizedBox(height: PanAfricanSpacing.md),
             Row(
               children: [
                 Expanded(
                   child: OutlinedButton(
                     onPressed: onCancel,
-                    child: const Text('Cancel'),
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+                      shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                      side: BorderSide(color: PanAfricanColors.primary),
+                    ),
+                    child: Text('Cancel', style: PanAfricanTypography.labelLarge(context, color: PanAfricanColors.primary)),
                   ),
                 ),
-                SizedBox(width: 8.sp),
+                SizedBox(width: PanAfricanSpacing.xs),
                 Expanded(
                   child: FilledButton(
                     onPressed: () {
+                      HapticFeedback.mediumImpact();
                       onSave({
                         'question': questionController.text,
                         'options': optionControllers.map((c) => c.text).toList(),
                         'correctAnswer': correctAnswer.value,
                       });
                     },
-                    child: const Text('Add Question'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: PanAfricanColors.primary,
+                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+                      shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                    ),
+                    child: Text('Add Question', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
                   ),
                 ),
               ],

@@ -1,11 +1,21 @@
 import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../widgets/gamification/combo_tracker.dart';
+import '../../widgets/gamification/combo_display_widget.dart';
+import '../../services/sound_effects_service.dart';
+import '../../providers/gamification_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// WordMatch+Audio Game - Upgraded version with TTS, pronunciation, diacritics
@@ -34,50 +44,81 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   final List<_MatchResult> _results = [];
   GameSession? _session;
   DateTime? _startTime;
+  bool _isLoading = true;
+  String? _loadError;
+  late final ComboTracker _comboTracker;
 
   @override
   void initState() {
     super.initState();
+    _comboTracker = ComboTracker();
     _initializeGame();
+  }
+  
+  @override
+  void dispose() {
+    _comboTracker.dispose();
+    _audioPlayer.dispose();
+    super.dispose();
   }
 
   Future<void> _initializeGame() async {
-    final user = ref.read(userProvider);
-    if (user == null) return;
+    try {
+      // Use logged-in user if available; fall back to guest ID so games
+      // always work even if userProvider hasn't been populated yet.
+      final user = ref.read(userProvider);
+      final userId = user?.id.toString() ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
 
-    final gameProv = ref.read(gameProvider.notifier);
-    _session = await gameProv.startGame(
-      userId: user.id.toString(),
-      gameType: GameType.wordMatchAudio,
-      language: widget.language,
-      level: widget.level,
-      cardCount: 10,
-    );
+      final gameProv = ref.read(gameProvider.notifier);
+      _session = await gameProv.startGame(
+        userId: userId,
+        gameType: GameType.wordMatchAudio,
+        language: widget.language,
+        level: widget.level,
+        cardCount: 10,
+      );
 
-    final cards = gameProv.availableCards;
-    if (cards.isEmpty) {
-      // Load cards for session
-      // Cards should be loaded by game provider
-      return;
+      final cards = gameProv.availableCards;
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _loadError = null;
+        });
+      }
+      if (cards.isEmpty) {
+        return;
+      }
+
+      if (mounted) {
+        setState(() {
+        _startTime = DateTime.now();
+        _leftTiles = cards.map((c) => _GameTile(
+              id: c.cardId,
+              label: c.text,
+              audioUrl: c.audioNativeUrl,
+              ascii: c.ascii,
+            )).toList();
+        _rightTiles = cards.map((c) => _GameTile(
+              id: c.cardId,
+              label: c.gloss,
+            )).toList();
+
+        // Shuffle both lists
+        _leftTiles.shuffle(Random());
+        _rightTiles.shuffle(Random());
+        });
+      }
+    } catch (e) {
+      debugPrint('Error initializing WordMatchAudioGame: $e');
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _loadError = e is DioException
+              ? TransportErrorPolicy.toUserMessage(e)
+              : 'Failed to start game. Please check your connection and try again.';
+        });
+      }
     }
-
-    setState(() {
-      _startTime = DateTime.now();
-      _leftTiles = cards.map((c) => _GameTile(
-            id: c.cardId,
-            label: c.text,
-            audioUrl: c.audioNativeUrl,
-            ascii: c.ascii,
-          )).toList();
-      _rightTiles = cards.map((c) => _GameTile(
-            id: c.cardId,
-            label: c.gloss,
-          )).toList();
-
-      // Shuffle both lists
-      _leftTiles.shuffle(Random());
-      _rightTiles.shuffle(Random());
-    });
   }
 
   Future<void> _playAudio(String? url) async {
@@ -116,6 +157,16 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     final duration = _startTime != null
         ? DateTime.now().difference(_startTime!).inMilliseconds
         : 0;
+    final soundEffects = ref.read(soundEffectsProvider);
+
+    // Sound effects and combo tracking
+    if (correct) {
+      soundEffects.playCorrect();
+      _comboTracker.recordCorrect();
+    } else {
+      soundEffects.playIncorrect();
+      _comboTracker.recordIncorrect();
+    }
 
     setState(() {
       _results.add(_MatchResult(
@@ -152,6 +203,18 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     try {
       final gameProv = ref.read(gameProvider.notifier);
       final session = await gameProv.endGame();
+      
+      // Award XP with combo multiplier
+      final multiplier = _comboTracker.currentMultiplier;
+      await ref.read(gamificationProvider.notifier).awardXP(
+        'game_complete',
+        multiplier: multiplier,
+        sourceId: 'word_match_audio_${widget.language}_${DateTime.now().millisecondsSinceEpoch}',
+      );
+      
+      final soundEffects = ref.read(soundEffectsProvider);
+      soundEffects.playCelebration();
+      _comboTracker.reset();
 
       if (mounted) {
         Navigator.pop(context);
@@ -168,28 +231,131 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
   }
 
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Word Match + Audio'),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: widget.onBack ?? () => Navigator.pop(context),
+            ),
+          ),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SkeletonLoader(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      height: 48,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.surfaceContainerLight,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: 160,
+                      height: 120,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.surfaceContainerLight,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Loading game...',
+                style: PanAfricanTypography.bodyMedium(context),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (_loadError != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Word Match + Audio'),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: widget.onBack ?? () => Navigator.pop(context),
+            ),
+          ),
+        ),
+        body: AppErrorState(
+          message: _loadError!,
+          onRetry: () {
+            setState(() {
+              _isLoading = true;
+              _loadError = null;
+            });
+            _initializeGame();
+          },
+        ),
+      );
+    }
+
+    if (_leftTiles.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Word Match + Audio'),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: widget.onBack ?? () => Navigator.pop(context),
+            ),
+          ),
+        ),
+        body: AppEmptyState(
+          icon: Icons.sports_esports_outlined,
+          title: 'No content yet',
+          subtitle: 'No content available for this language. Try selecting another language or topic.',
+          actionLabel: 'Go back',
+          onAction: widget.onBack ?? () => Navigator.pop(context),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Word Match + Audio'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
+        leading: Semantics(
+          label: 'Go back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          ),
         ),
       ),
-      body: _leftTiles.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: EdgeInsets.all(4.w),
-              child: Column(
-                children: [
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(4.w),
+            child: Column(
+              children: [
                   // Progress indicator
                   if (_results.isNotEmpty)
                     Padding(
@@ -393,16 +559,20 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                   // Finish button
                   Padding(
                     padding: EdgeInsets.only(top: 2.h),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: FilledButton(
-                        onPressed: _finishGame,
-                        style: FilledButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 3.h),
-                        ),
-                        child: Text(
-                          'Finish Game',
-                          style: TextStyle(fontSize: 18.sp),
+                    child: Semantics(
+                      label: 'Finish game',
+                      button: true,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: FilledButton(
+                          onPressed: _finishGame,
+                          style: FilledButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 3.h),
+                          ),
+                          child: Text(
+                            'Finish Game',
+                            style: TextStyle(fontSize: 18.sp),
+                          ),
                         ),
                       ),
                     ),
@@ -410,6 +580,10 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
                 ],
               ),
             ),
+          // Combo display widget
+          ComboDisplayWidget(comboTracker: _comboTracker),
+        ],
+      ),
     );
   }
 }

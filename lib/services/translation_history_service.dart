@@ -1,6 +1,5 @@
 /// Translation History Service
 /// Manages translation history with alternatives, grammar breakdown, and cultural context
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

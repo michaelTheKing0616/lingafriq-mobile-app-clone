@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../services/adaptive_learning_service.dart';
 import '../../models/adaptive_learning_summary.dart';
 import '../../services/localization_service.dart';
-import '../../utils/african_theme.dart';
-import '../../utils/design_system.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../providers/navigation_provider.dart';
 import '../../providers/adaptive_learning_provider.dart';
 import '../../screens/ai_chat/ai_chat_language_setup_screen.dart';
@@ -31,17 +29,17 @@ class AdaptiveLearningPanel extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(5.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: isDark
-              ? const [Color(0xFF0D1B1A), Color(0xFF123C3A)]
-              : const [Color(0xFF007A3D), Color(0xFF00A8E8)],
+              ? [PanAfricanColors.surfaceDark, PanAfricanColors.surfaceContainerDark]
+              : [PanAfricanColors.primary, PanAfricanColors.kenteBlue],
         ),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowLarge,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,28 +61,28 @@ class AdaptiveLearningPanel extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                   Container(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
+                        EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.sm,
+                          vertical: PanAfricanSpacing.xxxs,
+                        ),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.25),
+                      color: Theme.of(context).colorScheme.scrim.withOpacity(0.25),
                       borderRadius:
-                          BorderRadius.circular(DesignSystem.radiusRound),
+                          BorderRadius.circular(PanAfricanRadius.round),
                     ),
                     child: Text(
                       isDashboardVariantV2
                           ? 'Level ${summary.cefrLevel} · ${summary.cefrScore.toStringAsFixed(0)}% ready'
                           : 'CEFR ${summary.cefrLevel} · ${summary.cefrScore.toStringAsFixed(0)}%',
-                      style: TextStyle(
-                        fontSize: 12.sp,
+                      style: PanAfricanTypography.labelSmall(context).copyWith(
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
                   ),
@@ -92,7 +90,7 @@ class AdaptiveLearningPanel extends ConsumerWidget {
               );
             },
           ),
-          SizedBox(height: 1.5.h),
+          SizedBox(height: PanAfricanSpacing.sm),
           Row(
             children: [
               Expanded(
@@ -101,14 +99,14 @@ class AdaptiveLearningPanel extends ConsumerWidget {
                   value: '${summary.dueSrsItems}',
                 ),
               ),
-              SizedBox(width: 2.w),
+              SizedBox(width: PanAfricanSpacing.xs),
               Expanded(
                 child: _AdaptiveStatChip(
                   label: 'Streak',
                   value: '${summary.dailyStreak} days',
                 ),
               ),
-              SizedBox(width: 2.w),
+              SizedBox(width: PanAfricanSpacing.xs),
               Expanded(
                 child: _AdaptiveStatChip(
                   label: 'Total XP',
@@ -117,7 +115,7 @@ class AdaptiveLearningPanel extends ConsumerWidget {
               ),
             ],
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: PanAfricanSpacing.md),
           Column(
             children: summary.recommendations
                 .map((rec) => _AdaptiveRecommendationTile(
@@ -172,28 +170,29 @@ class _AdaptiveStatChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.sm,
+        vertical: PanAfricanSpacing.xs,
+      ),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.25),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+        color: Theme.of(context).colorScheme.scrim.withOpacity(0.25),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 11.sp,
-              color: Colors.white.withOpacity(0.8),
+            style: PanAfricanTypography.labelSmall(context).copyWith(
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
             ),
           ),
-          SizedBox(height: 0.3.h),
+          SizedBox(height: PanAfricanSpacing.xxxs),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 14.sp,
+            style: PanAfricanTypography.labelLarge(context).copyWith(
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ],
@@ -219,32 +218,45 @@ class _AdaptiveRecommendationTile extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 1.h),
       decoration: BoxDecoration(
-        color: isDark ? AfricanTheme.stitchCardDark : Colors.white.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-        boxShadow: DesignSystem.shadowSmall,
+        color:
+            isDark ? PanAfricanColors.cardDark : Theme.of(context).colorScheme.surface.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        boxShadow: PanAfricanShadows.sm,
+        border: Border.all(
+          color: isDark
+              ? PanAfricanColors.borderDark
+              : PanAfricanColors.borderLight,
+        ),
       ),
       child: ListTile(
         onTap: onTap,
-        contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 1.h),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.sm,
+        ),
         title: Text(
           recommendation.title,
-          style: TextStyle(
-            fontSize: 14.sp,
+          style: PanAfricanTypography.bodyMedium(context).copyWith(
             fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark
+                ? PanAfricanColors.textPrimaryDark
+                : PanAfricanColors.textPrimaryLight,
           ),
         ),
         subtitle: Text(
           recommendation.description,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: isDark ? Colors.grey[300] : Colors.grey[700],
+          style: PanAfricanTypography.bodySmall(context).copyWith(
+            color: isDark
+                ? PanAfricanColors.textSecondaryDark
+                : PanAfricanColors.textSecondaryLight,
           ),
         ),
         trailing: Icon(
           Icons.arrow_forward_ios_rounded,
           size: 16.sp,
-          color: isDark ? Colors.grey[300] : Colors.grey[600],
+          color: isDark
+              ? PanAfricanColors.textSecondaryDark
+              : PanAfricanColors.textSecondaryLight,
         ),
       ),
     );

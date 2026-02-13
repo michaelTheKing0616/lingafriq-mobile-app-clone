@@ -17,7 +17,7 @@ class AboutUsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const BackButton(color: Colors.white),
+                  BackButton(color: Theme.of(context).colorScheme.onPrimary),
                   const Spacer(),
                   "About".text.xl4.medium.white.make().p16(),
                 ],

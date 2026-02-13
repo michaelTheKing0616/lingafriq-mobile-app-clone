@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
-import '../../providers/user_provider.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -185,7 +184,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: _timeLeft < 10 ? Colors.red : Colors.white,
+                    color: _timeLeft < 10 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
                 Text(
@@ -214,7 +213,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),

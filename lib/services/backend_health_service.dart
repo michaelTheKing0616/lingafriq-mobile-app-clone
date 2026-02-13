@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import '../utils/api.dart';
-import '../providers/api_provider.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Backend Health Check Service
@@ -15,39 +15,7 @@ class BackendHealthService {
   /// Check if device has internet connectivity (not just backend)
   /// Uses a lightweight check to a reliable external service
   Future<bool> hasInternetConnectivity() async {
-    try {
-      // Try to reach a reliable external service with a quick HEAD request
-      final response = await _dio.head(
-        'https://www.google.com',
-        options: Options(
-          receiveTimeout: const Duration(seconds: 3),
-          sendTimeout: const Duration(seconds: 3),
-          followRedirects: false,
-          validateStatus: (status) => status != null && status < 500,
-        ),
-      );
-      // If we get any response (even redirect), we have internet
-      return response.statusCode != null;
-    } catch (e) {
-      // If Google is unreachable, try a backup check to the backend base URL
-      try {
-        final response = await _dio.head(
-          Api.baseurl,
-          options: Options(
-            receiveTimeout: const Duration(seconds: 2),
-            sendTimeout: const Duration(seconds: 2),
-            validateStatus: (status) => status != null && status < 500,
-          ),
-        );
-        // If backend base URL responds, we have connectivity
-        return response.statusCode != null;
-      } catch (backupError) {
-        debugPrint('Internet connectivity check failed: $e, backup also failed: $backupError');
-        // If both fail, be optimistic - might be temporary network issue
-        // Don't show offline banner unless we're really sure
-        return false;
-      }
-    }
+    return ConnectivityService.hasInternet(dio: _dio);
   }
 
   /// Check if backend is reachable
@@ -60,36 +28,27 @@ class BackendHealthService {
     }
 
     // Then check backend health endpoint (if it exists)
-    // If health endpoint doesn't exist, try a lightweight endpoint
+    if (await ConnectivityService.hasBackend(
+        dio: _dio, healthPath: ApiContract.misc.healthcheck)) {
+      return true;
+    }
+
+    // If health endpoint fails, try a lightweight auth endpoint as fallback.
     try {
-      final response = await _dio.get(
-        '${Api.baseurl}healthcheck',
+      final response = await _dio.head(
+        ApiContract.url(ApiContract.auth.login),
         options: Options(
-          receiveTimeout: const Duration(seconds: 5),
-          sendTimeout: const Duration(seconds: 5),
+          receiveTimeout: const Duration(seconds: 3),
+          sendTimeout: const Duration(seconds: 3),
           validateStatus: (status) => status != null && status < 500,
         ),
       );
-      return response.statusCode == 200;
+      return response.statusCode != null;
     } catch (e) {
-      // If health endpoint fails, try a lightweight endpoint as fallback
-      try {
-        final response = await _dio.head(
-          '${Api.baseurl}${Api.login}',
-          options: Options(
-            receiveTimeout: const Duration(seconds: 3),
-            sendTimeout: const Duration(seconds: 3),
-            validateStatus: (status) => status != null && status < 500,
-          ),
-        );
-        // If we get any response (even 401/404), backend is reachable
-        return response.statusCode != null;
-      } catch (fallbackError) {
-        debugPrint('Backend health check failed: $e, fallback also failed: $fallbackError');
-        // If both fail, but we have internet, assume backend might be temporarily down
-        // but user is still online (don't show offline banner)
-        return hasInternet;
-      }
+      debugPrint('Backend health check failed: $e');
+      // If backend is unavailable but internet exists, return false so UI can
+      // distinguish backend outage from full offline mode.
+      return false;
     }
   }
 
@@ -113,7 +72,7 @@ class BackendHealthService {
     // Check authentication endpoint
     try {
       final response = await _dio.head(
-        '${Api.baseurl}${Api.login}',
+        ApiContract.url(ApiContract.auth.login),
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),
@@ -131,7 +90,7 @@ class BackendHealthService {
     // Check game sessions endpoint
     try {
       final response = await _dio.head(
-        '${Api.baseurl}${Api.gameSessionStart}',
+        ApiContract.url(ApiContract.games.sessionStart),
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),
@@ -147,7 +106,7 @@ class BackendHealthService {
     try {
       final response = await _dio.head(
         // Use a safe, side-effect-free endpoint. Telemetry is POST-only.
-        '${Api.baseurl}healthcheck',
+        ApiContract.url(ApiContract.misc.healthcheck),
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),
@@ -162,7 +121,7 @@ class BackendHealthService {
     // Check UGC endpoints
     try {
       final response = await _dio.head(
-        '${Api.baseurl}${Api.userContent}',
+        ApiContract.url(ApiContract.userContent.base),
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),
@@ -177,7 +136,7 @@ class BackendHealthService {
     // Check curriculum endpoints
     try {
       final response = await _dio.head(
-        '${Api.baseurl}${Api.lessons}',
+        ApiContract.url(ApiContract.content.lessons),
         options: Options(
           receiveTimeout: const Duration(seconds: 3),
           sendTimeout: const Duration(seconds: 3),

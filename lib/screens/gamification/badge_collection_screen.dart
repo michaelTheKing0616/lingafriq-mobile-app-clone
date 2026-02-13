@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart' hide Badge;
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import '../../utils/performance_utils.dart';
 import '../../providers/gamification_provider.dart';
-import '../../providers/gamification_services_provider.dart';
-import '../../providers/socket_provider.dart';
 import '../../models/badge_model.dart';
-import '../../services/gamification/badges_service.dart';
-import '../../widgets/error_boundary.dart';
-import '../../screens/loading/dynamic_loading_screen.dart';
+import '../../widgets/empty_state_widget.dart';
 
 /// Screen displaying all badges with unlock status
 class BadgeCollectionScreen extends ConsumerStatefulWidget {
@@ -28,6 +25,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
     final gamification = ref.watch(gamificationProvider.notifier);
     final allBadges = gamification.allBadges;
     final unlockedBadges = gamification.unlockedBadges;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Filter badges
     var filteredBadges = allBadges;
@@ -40,25 +38,33 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Badge Collection'),
+        title: Text(
+          'Badge Collection',
+          style: PanAfricanTypography.headlineMedium(context),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
         actions: [
-          Text(
-            '${unlockedBadges.length}/${allBadges.length}',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.sm,
+              vertical: PanAfricanSpacing.xs,
+            ),
+            decoration: BoxDecoration(
+              color: PanAfricanColors.secondary.withOpacity(0.2),
+              borderRadius: PanAfricanRadius.roundBR,
+            ),
+            child: Text(
+              '${unlockedBadges.length}/${allBadges.length}',
+              style: PanAfricanTypography.titleMedium(context, color: PanAfricanColors.secondary),
+            ),
           ),
-          const SizedBox(width: 16),
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
+          SizedBox(width: PanAfricanSpacing.md),
         ],
       ),
       body: Column(
@@ -66,7 +72,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           // Filter chips
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Row(
               children: [
                 _buildFilterChip(
@@ -74,20 +80,22 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                   label: 'All',
                   selected: _selectedCategory == null && _selectedRarity == null,
                   onSelected: () {
+                    HapticFeedback.lightImpact();
                     setState(() {
                       _selectedCategory = null;
                       _selectedRarity = null;
                     });
                   },
                 ),
-                const SizedBox(width: 8),
+                SizedBox(width: PanAfricanSpacing.xs),
                 ...BadgeCategory.values.map((category) => Padding(
-                      padding: const EdgeInsets.only(right: 8),
+                      padding: EdgeInsets.only(right: PanAfricanSpacing.xs),
                       child: _buildFilterChip(
                         context,
                         label: category.name.toUpperCase(),
                         selected: _selectedCategory == category,
                         onSelected: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             _selectedCategory = category;
                             _selectedRarity = null;
@@ -95,14 +103,15 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                         },
                       ),
                     )),
-                const SizedBox(width: 8),
+                SizedBox(width: PanAfricanSpacing.xs),
                 ...BadgeRarity.values.map((rarity) => Padding(
-                      padding: const EdgeInsets.only(right: 8),
+                      padding: EdgeInsets.only(right: PanAfricanSpacing.xs),
                       child: _buildFilterChip(
                         context,
                         label: rarity.name.toUpperCase(),
                         selected: _selectedRarity == rarity,
                         onSelected: () {
+                          HapticFeedback.lightImpact();
                           setState(() {
                             _selectedRarity = rarity;
                             _selectedCategory = null;
@@ -115,12 +124,18 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
           ),
           // Badge grid
           Expanded(
-            child: OptimizedListView.builder(
-              padding: const EdgeInsets.all(16),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            child: filteredBadges.isEmpty
+                ? AppEmptyState(
+                    icon: Icons.emoji_events_rounded,
+                    title: 'No badges yet',
+                    subtitle: 'Complete lessons and challenges to earn badges',
+                  )
+                : OptimizedListView.builder(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+                crossAxisSpacing: PanAfricanSpacing.md,
+                mainAxisSpacing: PanAfricanSpacing.md,
                 childAspectRatio: 0.85,
               ),
               itemCount: filteredBadges.length,
@@ -130,6 +145,7 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
                 return _BadgeCard(
                   badge: badge,
                   isUnlocked: isUnlocked,
+                  isDark: isDark,
                 );
               },
             ),
@@ -146,10 +162,14 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
     required VoidCallback onSelected,
   }) {
     return FilterChip(
-      label: Text(label),
+      label: Text(
+        label,
+        style: PanAfricanTypography.labelMedium(context),
+      ),
       selected: selected,
       onSelected: (_) => onSelected(),
-      selectedColor: Theme.of(context).colorScheme.primaryContainer,
+      selectedColor: PanAfricanColors.primaryContainer,
+      checkmarkColor: PanAfricanColors.primary,
     );
   }
 }
@@ -157,100 +177,137 @@ class _BadgeCollectionScreenState extends ConsumerState<BadgeCollectionScreen> {
 class _BadgeCard extends StatelessWidget {
   final Badge badge;
   final bool isUnlocked;
+  final bool isDark;
 
   const _BadgeCard({
     required this.badge,
     required this.isUnlocked,
+    required this.isDark,
   });
 
   Color _getRarityColor(BadgeRarity rarity) {
     switch (rarity) {
       case BadgeRarity.common:
-        return Colors.grey;
+        return PanAfricanColors.neutralMedium;
       case BadgeRarity.uncommon:
-        return Colors.green;
+        return PanAfricanColors.primary;
       case BadgeRarity.rare:
-        return Colors.blue;
+        return PanAfricanColors.kenteBlue;
       case BadgeRarity.epic:
-        return Colors.purple;
+        return PanAfricanColors.ankaraPurple;
       case BadgeRarity.legendary:
-        return Colors.orange;
+        return PanAfricanColors.secondary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final rarityColor = _getRarityColor(badge.rarity);
+    final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      elevation: isUnlocked ? 4 : 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: isUnlocked ? rarityColor : Colors.grey.shade300,
-          width: isUnlocked ? 2 : 1,
-        ),
-      ),
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        // Show badge details
+      },
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: isUnlocked ? null : Colors.grey.shade100,
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.lgBR,
+          border: Border.all(
+            color: isUnlocked ? rarityColor : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            width: isUnlocked ? 2 : 1,
+          ),
+          boxShadow: isUnlocked ? PanAfricanShadows.md : PanAfricanShadows.sm,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            // Badge icon
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: isUnlocked ? rarityColor.withOpacity(0.1) : Colors.grey.shade200,
-                shape: BoxShape.circle,
-              ),
-              child: Text(
-                badge.icon,
-                style: TextStyle(
-                  fontSize: 40,
-                  color: isUnlocked ? rarityColor : Colors.grey,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
-            // Badge name
-            Text(
-              badge.name,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: isUnlocked ? null : Colors.grey,
+            if (isUnlocked && badge.rarity == BadgeRarity.legendary)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: PanAfricanRadius.lgBR,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        PanAfricanColors.secondary.withOpacity(0.1),
+                        Colors.transparent,
+                      ],
+                    ),
                   ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            // Rarity indicator
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: rarityColor.withOpacity(0.2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                badge.rarity.name.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: rarityColor,
                 ),
               ),
-            ),
-            if (!isUnlocked) ...[
-              const SizedBox(height: 4),
-              Icon(
-                Icons.lock,
-                size: 16,
-                color: Colors.grey.shade400,
+            Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Badge icon
+                  Container(
+                    width: 64.w,
+                    height: 64.w,
+                    decoration: BoxDecoration(
+                      color: isUnlocked
+                          ? rarityColor.withOpacity(0.15)
+                          : (isDark ? PanAfricanColors.surfaceContainerHighDark : PanAfricanColors.surfaceContainerHighLight),
+                      shape: BoxShape.circle,
+                      boxShadow: isUnlocked ? PanAfricanShadows.glow(rarityColor) : null,
+                    ),
+                    child: Center(
+                      child: Text(
+                        badge.icon,
+                        style: TextStyle(fontSize: 32.sp),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  // Badge name
+                  Text(
+                    badge.name,
+                    style: PanAfricanTypography.titleSmall(
+                      context,
+                      color: isUnlocked ? null : PanAfricanColors.neutralMedium,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xs),
+                  // Rarity indicator
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.xs,
+                      vertical: PanAfricanSpacing.xxxs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: rarityColor.withOpacity(0.2),
+                      borderRadius: PanAfricanRadius.roundBR,
+                    ),
+                    child: Text(
+                      badge.rarity.name.toUpperCase(),
+                      style: PanAfricanTypography.labelSmall(context, color: rarityColor),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
+            if (!isUnlocked)
+              Positioned.fill(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: (isDark ? Theme.of(context).colorScheme.scrim : colorScheme.surface).withOpacity(0.6),
+                    borderRadius: PanAfricanRadius.lgBR,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.lock_rounded,
+                      color: PanAfricanColors.neutralMedium,
+                      size: 28.sp,
+                    ),
+                  ),
+                ),
+              ),
           ],
         ),
       ),

@@ -1,15 +1,33 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
+
+/// Exception thrown when game turn evaluation fails - allows callers to show
+/// user-friendly message and let user retry the same turn.
+class GameEvaluationException implements Exception {
+  final String userMessage;
+
+  GameEvaluationException(this.userMessage);
+
+  @override
+  String toString() => userMessage;
+}
 
 /// Polie backend client for game content generation and evaluation
 /// This replaces random logic with real AI-driven evaluation
 class PolieGameClient {
   final Dio _dio;
-  final String baseUrl;
+  final String _resolvedBaseUrl;
 
   PolieGameClient({Dio? dio, String? baseUrl})
       : _dio = dio ?? Dio(),
-        baseUrl = baseUrl ?? 'https://api.lingafriq.com'; // Default backend URL
+        _resolvedBaseUrl =
+            (baseUrl ?? EnvConfig.backendBaseUrl).replaceAll(RegExp(r'/$'), '');
+
+  String _url(String path) => '$_resolvedBaseUrl$path';
 
   /// Generate game content from Polie backend (Game Master API)
   /// Polie acts as dungeon master, cultural referee, difficulty tuner, and feedback author
@@ -25,7 +43,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/v1/game-content',
+        _url(ApiContract.ai.polieGameContent),
         data: {
           'game_id': gameId,
           'language': language,
@@ -55,7 +73,9 @@ class PolieGameClient {
     }
   }
 
-  /// Evaluate a game turn - this is the critical method that replaces random logic
+  /// Evaluate a game turn - this is the critical method that replaces random logic.
+  /// Throws [GameEvaluationException] with user-friendly message on failure so
+  /// callers can show it and allow user to retry the same turn.
   Future<PolieEvaluationResult> evaluateTurn({
     required String gameId,
     required String contentId,
@@ -66,7 +86,7 @@ class PolieGameClient {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/v1/polie/evaluate-game-turn',
+        _url(ApiContract.ai.polieEvaluateGameTurn),
         data: {
           'game_id': gameId,
           'content_id': contentId,
@@ -81,10 +101,17 @@ class PolieGameClient {
       );
 
       return PolieEvaluationResult.fromJson(response.data);
-    } catch (e) {
+    } on DioException catch (e) {
       debugPrint('Error evaluating game turn: $e');
-      // Return neutral evaluation on error instead of random
-      return PolieEvaluationResult.neutral();
+      throw GameEvaluationException(
+        TransportErrorPolicy.toUserMessage(e),
+      );
+    } catch (e) {
+      if (e is GameEvaluationException) rethrow;
+      debugPrint('Error evaluating game turn: $e');
+      throw GameEvaluationException(
+        ErrorHandler.getUserFriendlyError(e),
+      );
     }
   }
 }

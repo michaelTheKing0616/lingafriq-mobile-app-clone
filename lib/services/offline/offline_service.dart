@@ -2,44 +2,46 @@
 /// Provides offline-first architecture with automatic sync when online
 
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
+import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:lingafriq/utils/structured_logger.dart';
 
 class OfflineService {
   static final OfflineService _instance = OfflineService._internal();
   factory OfflineService() => _instance;
   OfflineService._internal();
 
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
   bool _isOnline = true;
   final List<FutureOr<void> Function()> _syncQueue = [];
   bool _isSyncing = false;
+  Timer? _connectivityTimer;
+  static const Duration _connectivityPollInterval = Duration(seconds: 5);
 
   /// Initialize offline service
   Future<void> initialize() async {
-    // Check initial connectivity
-    final results = await _connectivity.checkConnectivity();
-    _isOnline = results.any((r) => r != ConnectivityResult.none);
-
-    // Listen to connectivity changes
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
-      (List<ConnectivityResult> results) {
-        final wasOnline = _isOnline;
-        _isOnline = results.any((r) => r != ConnectivityResult.none);
-        
-        if (!wasOnline && _isOnline) {
-          // Just came online - trigger sync
-          _syncPendingChanges();
-        }
-      },
+    await _refreshConnectivityStatus();
+    _connectivityTimer = Timer.periodic(
+      _connectivityPollInterval,
+      (_) => unawaited(_refreshConnectivityStatus()),
     );
 
     // Initialize background sync
     await Workmanager().initialize(callbackDispatcher, isInDebugMode: kDebugMode);
+  }
+
+  Future<void> _refreshConnectivityStatus() async {
+    final wasOnline = _isOnline;
+    try {
+      _isOnline = await ConnectivityService.hasInternet();
+    } catch (_) {
+      return;
+    }
+
+    if (!wasOnline && _isOnline) {
+      _syncPendingChanges();
+    }
   }
 
   /// Check if device is online
@@ -157,7 +159,7 @@ class OfflineService {
 
   /// Dispose resources
   void dispose() {
-    _connectivitySubscription?.cancel();
+    _connectivityTimer?.cancel();
   }
 }
 

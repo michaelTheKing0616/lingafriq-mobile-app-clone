@@ -300,7 +300,7 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
                   label: Text('Add Question'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.secondary,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Theme.of(context).colorScheme.onSecondary,
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
@@ -310,7 +310,7 @@ class CreateQuizScreenEnhanced extends HookConsumerWidget {
                   onPressed: isSubmitting.value ? null : submitQuiz,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.primary,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                   ),
                   child: isSubmitting.value

@@ -8,8 +8,6 @@ import '../../screens/review/gamified_review_screen.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/progress_tracking_provider.dart';
-import '../../providers/daily_challenges_provider.dart';
-
 class ReviewPromptWidget extends ConsumerStatefulWidget {
   final Widget child;
 

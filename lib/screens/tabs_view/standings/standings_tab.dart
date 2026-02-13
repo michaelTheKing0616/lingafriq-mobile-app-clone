@@ -40,7 +40,7 @@ class StandingsTab extends HookConsumerWidget {
                       scaffoldState.openDrawer();
                     }
                   },
-                  icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                  icon: Icon(Icons.menu_rounded, color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 GreetingsBuilder(
                   pageTitle: "Leaderboard",

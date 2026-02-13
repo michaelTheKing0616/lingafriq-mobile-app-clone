@@ -8,8 +8,6 @@
 
 import 'package:flutter/material.dart';
 import '../../services/performance/performance_monitor_integrated.dart';
-import 'dart:async';
-
 /// Widget that automatically tracks its performance
 class PerformanceTrackedWidget extends StatefulWidget {
   final Widget child;

@@ -1,8 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-
 /// World-class Visual Pitch Feedback Widget
 /// Displays native vs user pitch comparison with error highlighting
 /// Key differentiator for tonal language learning

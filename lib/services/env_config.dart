@@ -1,11 +1,41 @@
 /// Environment Configuration
 /// Centralized access to environment variables and API keys
 /// Keys are injected via GitHub Actions secrets during build
+/// Production defaults avoid localhost; override via --dart-define during build.
 
 class EnvConfig {
   // Private constructor to prevent instantiation
   EnvConfig._();
-  
+
+  /// Backend API base URL (alias for backendBaseUrl)
+  static String get baseUrl => backendBaseUrl;
+
+  /// CDN/base URL for static assets (e.g. media)
+  static String get cdnUrl {
+    const url = String.fromEnvironment('CDN_URL', defaultValue: 'https://cdn.lingafriq.com');
+    return url;
+  }
+
+  /// WebSocket base URL for real-time connections
+  static String get wsUrl {
+    const url = String.fromEnvironment('WS_URL', defaultValue: 'wss://api.lingafriq.com');
+    return url;
+  }
+
+  /// App/website base URL for legal, support, and magazine links
+  static String get appWebUrl {
+    const url = String.fromEnvironment('APP_WEB_URL', defaultValue: 'https://lingafriq.com');
+    return url;
+  }
+
+  /// Legacy backend URL prefixes to migrate in avatar/profile URLs.
+  /// Historical server URLs that may appear in stored profile data.
+  static const List<String> legacyBackendUrlPrefixes = [
+    'http://34.121.156.251:8000/',
+    'http://34.67.162.25:8000/',
+    'http://64.227.113.179:8000/',
+  ];
+
   /// Groq API Key for LLaMA access
   /// Set via: --dart-define=GROQ_API_KEY=xxx during build
   static String get groqApiKey {
@@ -36,12 +66,22 @@ class EnvConfig {
   /// Check if Stability AI is configured
   static bool get isStabilityAiConfigured => stabilityAiKey.isNotEmpty;
   
+  /// MFA (Montreal Forced Aligner) Service URL for pronunciation scoring
+  /// Set via: --dart-define=MFA_SERVICE_URL=xxx during build
+  /// Optional - falls back to basic scoring if not configured
+  static String? get mfaServiceUrl {
+    const url = String.fromEnvironment('MFA_SERVICE_URL', defaultValue: '');
+    return url.isNotEmpty ? url : null;
+  }
+  
+  /// Check if MFA service is configured
+  static bool get isMFAConfigured => mfaServiceUrl != null && mfaServiceUrl!.isNotEmpty;
+  
   /// Backend base URL
-  /// For production: set via --dart-define=BACKEND_URL=https://your-api.com during build.
-  /// Ensure the backend has CORS configured to allow your app origin (e.g. in backend env: CORS_ORIGIN).
-  /// Default matches production at admin.lingafriq.com; override for staging/local.
+  /// Set via --dart-define=BACKEND_URL=https://your-api.com during build.
+  /// Production default: https://api.lingafriq.com (no localhost fallback).
   static String get backendBaseUrl {
-    const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://admin.lingafriq.com');
+    const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://api.lingafriq.com');
     return url;
   }
   
@@ -50,6 +90,7 @@ class EnvConfig {
     'groq': isGroqConfigured,
     'huggingface': isHuggingFaceConfigured,
     'stability': isStabilityAiConfigured,
+    'mfa': isMFAConfigured,
   };
 }
 

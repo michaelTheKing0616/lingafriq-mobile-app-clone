@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/tribe_vs_tribe_model.dart';
 import 'base_provider.dart';
 import 'dio_provider.dart';
-import '../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../utils/structured_logger.dart';
 
 final tribeVsTribeProvider =
@@ -33,7 +32,7 @@ class TribeVsTribeProvider extends Notifier<BaseProviderState>
     try {
       // Fetch from backend API
       final response = await ref.read(client).get(
-        '${Api.baseurl}api/tribes/events/current',
+        ApiContract.url(ApiContract.tribes.eventsCurrent),
       );
 
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
@@ -123,7 +122,7 @@ class TribeVsTribeProvider extends Notifier<BaseProviderState>
       // Sync to backend
       try {
         final response = await ref.read(client).post(
-          Api.tribeDepositXP(tribeId),
+          ApiContract.url(ApiContract.tribes.depositXp(tribeId)),
           data: {
             'xp': xp,
             'event_id': _currentEvent?.id,

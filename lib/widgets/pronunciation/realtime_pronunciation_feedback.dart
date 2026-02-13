@@ -483,7 +483,7 @@ class _RecordingControls extends StatelessWidget {
             label: Text('Stop Recording'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              foregroundColor: Theme.of(context).colorScheme.onPrimary,
               padding: EdgeInsets.symmetric(
                 horizontal: PanAfricanSpacing.lg,
                 vertical: PanAfricanSpacing.md,

@@ -7,10 +7,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -152,7 +152,7 @@ Quality requirements:
       );
 
       final resp = await dio.post(
-        'https://api.groq.com/openai/v1/chat/completions',
+        UrlConstants.groqChatCompletions,
         data: {
           'model': 'llama-3.3-70b-versatile',
           'temperature': 0.35,
@@ -790,7 +790,7 @@ class _VocabularyDrawer extends StatelessWidget {
     return Container(
       height: 200.h,
       decoration: BoxDecoration(
-        color: PolieColors.surfaceGlassDark,
+        color: PolieColors.surfaceContainer,
         borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.lg)),
         border: Border.all(color: PolieColors.textSecondary.withOpacity(0.2)),
       ),
@@ -929,7 +929,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
                     ? (isCorrect
                         ? PolieColors.success.withOpacity(0.2)
                         : PolieColors.error.withOpacity(0.2))
-                    : PolieColors.surfaceGlassDark,
+                    : PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.md),
               ),
               child: ListTile(

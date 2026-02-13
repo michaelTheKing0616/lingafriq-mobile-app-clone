@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Pan-African Design System Components
@@ -72,7 +73,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = widget.backgroundColor ?? PanAfricanColors.primary;
-    final fgColor = widget.foregroundColor ?? Colors.white;
+    final fgColor = widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimary;
     final gradientColors = widget.gradientColors ??
         [PanAfricanColors.primary, PanAfricanColors.secondary];
 
@@ -110,17 +111,21 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
         ),
       );
     } else if (widget.hasGradient) {
+      final subtleGradient = [
+        bgColor,
+        Color.lerp(bgColor, Theme.of(context).colorScheme.onPrimary, 0.08) ?? bgColor,
+      ];
       button = Container(
         width: widget.width,
         height: widget.height ?? 48.h,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: gradientColors,
+            colors: subtleGradient,
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-          boxShadow: PanAfricanShadows.md,
+          boxShadow: PanAfricanShadows.sm,
         ),
         child: Material(
           color: Colors.transparent,
@@ -329,7 +334,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
             ? PanAfricanShadows.glowGreen(_glowAnimation.value)
             : (widget.elevation != null
                 ? PanAfricanShadows.md
-                : PanAfricanShadows.md),
+                : PanAfricanShadows.sm),
         border: widget.hasGradientBorder
             ? Border.all(
                 width: 2,
@@ -402,6 +407,602 @@ class _PanAfricanCardState extends State<PanAfricanCard>
         .animate()
         .fadeIn(duration: 300.ms)
         .scale(begin: Offset(0.95, 0.95), end: Offset(1, 1));
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Pan-African Bottom Sheet with consistent styling
+class PanAfricanBottomSheet extends StatelessWidget {
+  final String? title;
+  final String? subtitle;
+  final Widget child;
+  final List<Widget>? actions;
+  final EdgeInsets? padding;
+
+  const PanAfricanBottomSheet({
+    Key? key,
+    this.title,
+    this.subtitle,
+    required this.child,
+    this.actions,
+    this.padding,
+  }) : super(key: key);
+
+  static Future<T?> show<T>({
+    required BuildContext context,
+    String? title,
+    String? subtitle,
+    required Widget child,
+    List<Widget>? actions,
+    EdgeInsets? padding,
+    bool isScrollControlled = true,
+  }) {
+    return showModalBottomSheet<T>(
+      context: context,
+      isScrollControlled: isScrollControlled,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return SafeArea(
+          child: PanAfricanBottomSheet(
+            title: title,
+            subtitle: subtitle,
+            child: child,
+            actions: actions,
+            padding: padding,
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surfaceColor =
+        isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
+    final textPrimary =
+        isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: surfaceColor,
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(PanAfricanRadius.xl),
+        ),
+        boxShadow: PanAfricanShadows.lg,
+      ),
+      child: Padding(
+        padding: padding ?? EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: PanAfricanSpacing.xl * 2,
+              height: PanAfricanSpacing.xxs,
+              decoration: BoxDecoration(
+                color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+              ),
+            ),
+            if (title != null) ...[
+              SizedBox(height: PanAfricanSpacing.md),
+              Text(
+                title!,
+                style: PanAfricanTypography.titleLarge(context).copyWith(
+                  color: textPrimary,
+                ),
+              ),
+            ],
+            if (subtitle != null) ...[
+              SizedBox(height: PanAfricanSpacing.xs),
+              Text(
+                subtitle!,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+            SizedBox(height: PanAfricanSpacing.lg),
+            child,
+            if (actions != null && actions!.isNotEmpty) ...[
+              SizedBox(height: PanAfricanSpacing.lg),
+              Row(
+                children: actions!,
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Pan-African Dialog with consistent styling
+class PanAfricanDialog extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final Widget child;
+  final List<Widget> actions;
+
+  const PanAfricanDialog({
+    Key? key,
+    required this.title,
+    this.subtitle,
+    required this.child,
+    required this.actions,
+  }) : super(key: key);
+
+  static Future<T?> show<T>({
+    required BuildContext context,
+    required String title,
+    String? subtitle,
+    required Widget child,
+    required List<Widget> actions,
+    bool barrierDismissible = true,
+  }) {
+    return showDialog<T>(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      builder: (context) {
+        return PanAfricanDialog(
+          title: title,
+          subtitle: subtitle,
+          child: child,
+          actions: actions,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final surfaceColor =
+        isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
+    final textPrimary =
+        isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
+
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+      ),
+      backgroundColor: surfaceColor,
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: PanAfricanTypography.titleLarge(context).copyWith(
+                color: textPrimary,
+              ),
+            ),
+            if (subtitle != null) ...[
+              SizedBox(height: PanAfricanSpacing.xs),
+              Text(
+                subtitle!,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: textSecondary,
+                ),
+              ),
+            ],
+            SizedBox(height: PanAfricanSpacing.md),
+            child,
+            SizedBox(height: PanAfricanSpacing.lg),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: actions,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Pan-African Tab Bar with pill indicator styling
+class PanAfricanTabBar extends StatelessWidget implements PreferredSizeWidget {
+  final TabController? controller;
+  final List<Tab> tabs;
+  final bool isScrollable;
+
+  const PanAfricanTabBar({
+    Key? key,
+    this.controller,
+    required this.tabs,
+    this.isScrollable = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final backgroundColor =
+        isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight;
+    final textColor =
+        isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
+
+    return Container(
+      padding: EdgeInsets.all(PanAfricanSpacing.xs),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+      ),
+      child: TabBar(
+        controller: controller,
+        isScrollable: isScrollable,
+        labelColor: textColor,
+        unselectedLabelColor: textColor.withOpacity(0.6),
+        indicator: BoxDecoration(
+          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
+          boxShadow: PanAfricanShadows.sm,
+        ),
+        labelStyle: PanAfricanTypography.labelLarge(context),
+        tabs: tabs,
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(PanAfricanSpacing.xl * 2);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LISTS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Pan-African List Tile with consistent spacing and typography
+class PanAfricanListTile extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final Widget? leading;
+  final Widget? trailing;
+  final VoidCallback? onTap;
+  final EdgeInsets? padding;
+
+  const PanAfricanListTile({
+    Key? key,
+    required this.title,
+    this.subtitle,
+    this.leading,
+    this.trailing,
+    this.onTap,
+    this.padding,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textPrimary =
+        isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+      child: Padding(
+        padding: padding ??
+            EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.md,
+              vertical: PanAfricanSpacing.sm,
+            ),
+        child: Row(
+          crossAxisAlignment:
+              subtitle != null ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+          children: [
+            if (leading != null) ...[
+              leading!,
+              SizedBox(width: PanAfricanSpacing.md),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: textPrimary,
+                    ),
+                  ),
+                  if (subtitle != null) ...[
+                    SizedBox(height: PanAfricanSpacing.xxs),
+                    Text(
+                      subtitle!,
+                      style: PanAfricanTypography.bodySmall(context).copyWith(
+                        color: textSecondary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            if (trailing != null) ...[
+              SizedBox(width: PanAfricanSpacing.md),
+              trailing!,
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// AVATARS
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Pan-African Avatar with badge support
+class PanAfricanAvatar extends StatelessWidget {
+  final String? imageUrl;
+  final String? initials;
+  final double? size;
+  final Color? backgroundColor;
+  final Color? borderColor;
+  final bool showBadge;
+  final Color? badgeColor;
+  final Widget? badge;
+
+  const PanAfricanAvatar({
+    Key? key,
+    this.imageUrl,
+    this.initials,
+    this.size,
+    this.backgroundColor,
+    this.borderColor,
+    this.showBadge = false,
+    this.badgeColor,
+    this.badge,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final resolvedSize = size ?? PanAfricanSpacing.xl * 2;
+    final avatarBg = backgroundColor ??
+        (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight);
+    final avatarBorder =
+        borderColor ?? (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight);
+    final badgeSize = PanAfricanSpacing.sm + PanAfricanSpacing.xxs;
+
+    return Stack(
+      children: [
+        Container(
+          width: resolvedSize,
+          height: resolvedSize,
+          decoration: BoxDecoration(
+            color: avatarBg,
+            shape: BoxShape.circle,
+            border: Border.all(color: avatarBorder, width: 1),
+            image: imageUrl != null
+                ? DecorationImage(
+                    image: NetworkImage(imageUrl!),
+                    fit: BoxFit.cover,
+                  )
+                : null,
+          ),
+          child: imageUrl == null && initials != null
+              ? Center(
+                  child: Text(
+                    initials!,
+                    style: PanAfricanTypography.labelLarge(context).copyWith(
+                      color: isDark
+                          ? PanAfricanColors.textPrimaryDark
+                          : PanAfricanColors.textPrimaryLight,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              : null,
+        ),
+        if (showBadge || badge != null)
+          Positioned(
+            right: PanAfricanSpacing.xxs,
+            bottom: PanAfricanSpacing.xxs,
+            child: badge ??
+                Container(
+                  width: badgeSize,
+                  height: badgeSize,
+                  decoration: BoxDecoration(
+                    color: badgeColor ?? PanAfricanColors.secondary,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      width: 2,
+                    ),
+                  ),
+                ),
+          ),
+      ],
+    );
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LOADING STATES
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Pan-African Skeleton with shimmer animation
+class PanAfricanSkeleton extends StatelessWidget {
+  final double width;
+  final double height;
+  final bool isCircle;
+  final BorderRadius? borderRadius;
+
+  const PanAfricanSkeleton({
+    Key? key,
+    required this.width,
+    required this.height,
+    this.isCircle = false,
+    this.borderRadius,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final baseColor = isDark
+        ? PanAfricanColors.surfaceContainerHighDark
+        : PanAfricanColors.surfaceContainerHighLight;
+    final highlightColor = isDark
+        ? PanAfricanColors.surfaceContainerDark
+        : PanAfricanColors.surfaceContainerLight;
+
+    return Shimmer.fromColors(
+      baseColor: baseColor,
+      highlightColor: highlightColor,
+      child: Container(
+        width: width,
+        height: height,
+        decoration: BoxDecoration(
+          color: baseColor,
+          shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
+          borderRadius: isCircle
+              ? null
+              : borderRadius ?? BorderRadius.circular(PanAfricanRadius.sm),
+        ),
+      ),
+    );
+  }
+}
+
+/// Pan-African Empty State
+class PanAfricanEmptyState extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+  final bool hasGlow;
+
+  const PanAfricanEmptyState({
+    Key? key,
+    required this.icon,
+    required this.title,
+    required this.description,
+    this.actionLabel,
+    this.onAction,
+    this.hasGlow = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = isDark ? PanAfricanColors.primaryLight : PanAfricanColors.primary;
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: PanAfricanCard(
+          hasGlow: hasGlow,
+          glowColor: iconColor,
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 56.sp, color: iconColor),
+              SizedBox(height: PanAfricanSpacing.md),
+              Text(
+                title,
+                style: PanAfricanTypography.titleLarge(context),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: PanAfricanSpacing.xs),
+              Text(
+                description,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: isDark
+                      ? PanAfricanColors.textSecondaryDark
+                      : PanAfricanColors.textSecondaryLight,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              if (actionLabel != null && onAction != null) ...[
+                SizedBox(height: PanAfricanSpacing.md),
+                PanAfricanButton(
+                  label: actionLabel!,
+                  onPressed: onAction,
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Pan-African Error State
+class PanAfricanErrorState extends StatelessWidget {
+  final String title;
+  final String description;
+  final VoidCallback? onRetry;
+
+  const PanAfricanErrorState({
+    Key? key,
+    required this.title,
+    required this.description,
+    this.onRetry,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return PanAfricanEmptyState(
+      icon: PanAfricanIcons.error,
+      title: title,
+      description: description,
+      actionLabel: onRetry != null ? 'Retry' : null,
+      onAction: onRetry,
+    );
+  }
+}
+
+/// Pan-African Loading State
+class PanAfricanLoadingState extends StatelessWidget {
+  final String message;
+
+  const PanAfricanLoadingState({
+    Key? key,
+    this.message = 'Loading...',
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            width: 40.w,
+            height: 40.w,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                isDark ? PanAfricanColors.secondary : PanAfricanColors.primary,
+              ),
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+          Text(
+            message,
+            style: PanAfricanTypography.bodyMedium(context),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -776,4 +1377,5 @@ class PanAfricanIcons {
   static const IconData add = Icons.add;
   static const IconData edit = Icons.edit;
   static const IconData delete = Icons.delete;
+  static const IconData error = Icons.error_outline;
 }

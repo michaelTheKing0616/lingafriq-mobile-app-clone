@@ -15,7 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 /// Learning Difficulty Level
 enum DifficultyLevel {
@@ -188,7 +188,9 @@ class AdaptiveLearningService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/adaptive-learning/performance/$userId/$language',
+        ApiContract.url(
+          ApiContract.adaptiveLearning.performance(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -215,7 +217,9 @@ class AdaptiveLearningService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/adaptive-learning/difficulty/$userId/$language',
+        ApiContract.url(
+          ApiContract.adaptiveLearning.difficulty(userId, language),
+        ),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
@@ -247,7 +251,9 @@ class AdaptiveLearningService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/adaptive-learning/recommendations/$userId/$language',
+        ApiContract.url(
+          ApiContract.adaptiveLearning.recommendations(userId, language),
+        ),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
@@ -275,7 +281,9 @@ class AdaptiveLearningService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/adaptive-learning/prediction/$userId/$language',
+        ApiContract.url(
+          ApiContract.adaptiveLearning.prediction(userId, language),
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -299,7 +307,7 @@ class AdaptiveLearningService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/v1/adaptive-learning/adjust-difficulty',
+        ApiContract.url(ApiContract.adaptiveLearning.adjustDifficulty),
         data: {
           'user_id': userId,
           'language': language,
@@ -336,7 +344,7 @@ class AdaptiveLearningService {
   }) async {
     try {
       await _dio.post(
-        '${Api.baseurl}api/v1/adaptive-learning/performance',
+        ApiContract.url(ApiContract.adaptiveLearning.performanceSummary),
         data: {
           'user_id': userId,
           'language': language,
@@ -361,7 +369,9 @@ class AdaptiveLearningService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/v1/adaptive-learning/skills/$skill/recommendations',
+        ApiContract.url(
+          ApiContract.adaptiveLearning.skillRecommendations(skill),
+        ),
         queryParameters: {
           'user_id': userId,
           'language': language,

@@ -1,15 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import '../config/app_config.dart' as config;
+import 'package:lingafriq/config/api_contract.dart';
+import '../services/env_config.dart';
 
 /// Service to persist Rive character state across sessions
 class RiveStateService {
   final Dio _dio;
-  final String baseUrl;
+  final String _resolvedBaseUrl;
 
   RiveStateService({Dio? dio, String? baseUrl})
       : _dio = dio ?? Dio(),
-        baseUrl = baseUrl ?? 'https://api.lingafriq.com';
+        _resolvedBaseUrl =
+            (baseUrl ?? EnvConfig.backendBaseUrl).replaceAll(RegExp(r'/$'), '');
+
+  String _url(String path) => '$_resolvedBaseUrl$path';
 
   /// Save Rive state to backend
   Future<bool> saveState({
@@ -19,7 +23,7 @@ class RiveStateService {
   }) async {
     try {
       final response = await _dio.post(
-        '$baseUrl/v1/polie/rive-state',
+        _url(ApiContract.ai.polieRiveState),
         data: {
           'user_id': userId,
           'emotion': emotion,
@@ -42,7 +46,7 @@ class RiveStateService {
   Future<Map<String, dynamic>?> getState({required String userId}) async {
     try {
       final response = await _dio.get(
-        '$baseUrl/v1/polie/rive-state',
+        _url(ApiContract.ai.polieRiveState),
         queryParameters: {'user_id': userId},
         options: Options(
           headers: {'Content-Type': 'application/json'},

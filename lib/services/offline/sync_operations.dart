@@ -11,14 +11,7 @@
 /// Production-ready implementation (December 2025)
 
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:lingafriq/utils/api_service.dart';
-import 'package:lingafriq/services/roleplay_progress_service.dart';
-import 'package:lingafriq/services/tutor_progress_service.dart';
-import 'package:lingafriq/services/vocabulary_progress_service.dart';
-import 'package:lingafriq/services/review_progress_service.dart';
-import 'package:lingafriq/services/gamification/leaderboards_service.dart';
-import 'package:lingafriq/services/gamification/competitions_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

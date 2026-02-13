@@ -336,7 +336,7 @@ class _CategoryFilter extends StatelessWidget {
               selected: isSelected,
               onSelected: (_) => onCategorySelected(cat == 'All' ? null : cat),
               selectedColor: PanAfricanColors.primary,
-              checkmarkColor: Colors.white,
+              checkmarkColor: Theme.of(context).colorScheme.onPrimary,
             ),
           );
         }).toList(),

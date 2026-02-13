@@ -45,7 +45,7 @@ class HistorySectionsListScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BackButton(color: Colors.white),
+                    BackButton(color: Theme.of(context).colorScheme.onPrimary),
                     // PointsAndProfileImageBuilder(size: Size(0.1.sh, 0.1.sh)),
                     LangguageTypeHeaderBuilder(
                       title: "History",
@@ -257,7 +257,7 @@ class _SectionHistoryItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black26,
       child: InkWell(

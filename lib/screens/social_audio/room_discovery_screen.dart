@@ -352,7 +352,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
                           backgroundColor: PanAfricanColors.primary,
                           child: Text(
                             room.hostName![0].toUpperCase(),
-                            style: TextStyle(fontSize: 10.sp, color: Colors.white),
+                            style: TextStyle(fontSize: 10.sp, color: Theme.of(context).colorScheme.onPrimary),
                           ),
                         ),
                         SizedBox(width: 1.w),

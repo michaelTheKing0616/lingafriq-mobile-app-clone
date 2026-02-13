@@ -14,10 +14,10 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/dio_provider.dart' show client;
-import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/models/placement_question.dart';
 import 'package:lingafriq/utils/text_sanitizer.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 /// Polie-Powered Placement Test Screen
 class PlacementTestScreen extends HookConsumerWidget {
@@ -68,7 +68,7 @@ class PlacementTestScreen extends HookConsumerWidget {
         try {
           final dio = ref.read(client);
           final response = await dio.get(
-            '${Api.baseurl}onboarding/placement-test/generate',
+            ApiContract.url(ApiContract.onboarding.placementTestGenerate),
             queryParameters: {'language': language},
           );
           
@@ -323,7 +323,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                       onPressed: () => Navigator.pop(context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         minimumSize: Size(double.infinity, 50.h),
                       ),
                       child: Text('Continue Without Test'),
@@ -424,11 +424,11 @@ class PlacementTestScreen extends HookConsumerWidget {
                               title: Text(
                                 option,
                                 style: PanAfricanTypography.bodyMedium(context).copyWith(
-                                  color: isSelected ? Colors.white : null,
+                                  color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                                 ),
                               ),
                               trailing: isSelected
-                                  ? Icon(Icons.check_circle, color: Colors.white)
+                                  ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                                   : null,
                               onTap: () {
                                 answers.value = {
@@ -493,7 +493,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                             : (isLoading.value ? null : submitTest),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PanAfricanColors.primary,
-                          foregroundColor: Colors.white,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                         ),
                         child: isLoading.value
@@ -538,13 +538,13 @@ class PlacementTestScreen extends HookConsumerWidget {
                 Text(
                   'Placement Test Complete!',
                   style: PanAfricanTypography.displayMedium(context)
-                      .copyWith(color: Colors.white),
+                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
                 Container(
                   padding: EdgeInsets.all(PanAfricanSpacing.xl),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.surface,
                     shape: BoxShape.circle,
                   ),
                   child: Text(
@@ -557,7 +557,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                 Text(
                   'Your Proficiency Level',
                   style: PanAfricanTypography.titleLarge(context)
-                      .copyWith(color: Colors.white),
+                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 SizedBox(height: PanAfricanSpacing.xl),
 
@@ -595,7 +595,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                 ElevatedButton(
                   onPressed: () => Navigator.pop(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     foregroundColor: PanAfricanColors.primary,
                     minimumSize: Size(double.infinity, 50.h),
                   ),

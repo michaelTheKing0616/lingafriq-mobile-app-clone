@@ -6,7 +6,7 @@
     <application
         android:networkSecurityConfig="@xml/network_security_config"
         android:label="LingAfriq"
-        android:usesCleartextTraffic="true"
+        android:usesCleartextTraffic="false"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

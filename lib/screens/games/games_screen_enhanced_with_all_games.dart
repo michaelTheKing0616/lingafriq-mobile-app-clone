@@ -4,13 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
@@ -519,11 +515,12 @@ class _GameCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final category = game['category'] ?? 'game';
     final color = game['color'] as Color? ?? PanAfricanColors.primary;
-    final icon = game['icon'] as IconData? ?? Icons.sports_esports;
+    final icon = game['icon'] as IconData? ?? Icons.sports_esports_rounded;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
       onTap: () {
-        HapticFeedback.mediumImpact();
+        HapticFeedback.lightImpact();
         onTap();
       },
       child: PanAfricanCard(
@@ -534,7 +531,7 @@ class _GameCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -545,33 +542,50 @@ class _GameCard extends StatelessWidget {
                   ],
                 ),
                 shape: BoxShape.circle,
+                boxShadow: PanAfricanShadows.glow(color),
               ),
               child: Icon(
                 icon,
-                size: 32.sp,
-                color: Colors.white,
+                size: 24.sp,
+                color: colorScheme.onPrimary,
               ),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              game['name'] ?? 'Game',
-              style: PanAfricanTypography.titleSmall(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['name'] ?? 'Game',
+                style: PanAfricanTypography.titleSmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['description'] ?? '',
+                style: PanAfricanTypography.bodySmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.xs),
-            Text(
-              game['description'] ?? '',
-              style: PanAfricanTypography.bodySmall(context),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: PanAfricanSpacing.xs),
-            PanAfricanBadge(
-              label: category,
-              color: color,
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.sm,
+                vertical: PanAfricanSpacing.xxs,
+              ),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.15),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Text(
+                category,
+                style: PanAfricanTypography.labelSmall(context, color: color),
+              ),
             ),
           ],
         ),

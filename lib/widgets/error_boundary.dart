@@ -51,7 +51,7 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
 
   Widget _buildErrorWidget() {
     return Scaffold(
-      backgroundColor: context.isDarkMode ? Colors.grey[900] : Colors.white,
+      backgroundColor: context.isDarkMode ? Colors.grey[900] : Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Text('Error'),
         leading: IconButton(
@@ -77,7 +77,7 @@ class _ErrorBoundaryState extends State<ErrorBoundary> {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    color: context.isDarkMode ? Colors.white : Colors.black,
+                    color: context.isDarkMode ? Theme.of(context).colorScheme.onSurface : Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),

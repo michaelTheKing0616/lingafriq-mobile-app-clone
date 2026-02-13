@@ -3,6 +3,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import '../providers/dio_provider.dart';
 
 class LessonItemVerificationService {
@@ -39,7 +40,7 @@ class LessonItemVerificationService {
 
       return response.data;
     } on DioException catch (e) {
-      throw Exception('Failed to submit verification: ${e.message}');
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     }
   }
 
@@ -52,7 +53,7 @@ class LessonItemVerificationService {
 
       return response.data;
     } on DioException catch (e) {
-      throw Exception('Failed to fetch verifications: ${e.message}');
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     }
   }
 
@@ -79,7 +80,7 @@ class LessonItemVerificationService {
       }
       return [];
     } on DioException catch (e) {
-      throw Exception('Failed to fetch pending verifications: ${e.message}');
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     }
   }
 
@@ -92,7 +93,7 @@ class LessonItemVerificationService {
 
       return response.data;
     } on DioException catch (e) {
-      throw Exception('Failed to apply corrections: ${e.message}');
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     }
   }
 }

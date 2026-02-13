@@ -1,10 +1,9 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/providers/dio_provider.dart' show client;
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
@@ -48,7 +47,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
       // Get download manifest from backend
       final dioClient = ref.read(client);
       final manifestResponse = await dioClient.get<Map<String, dynamic>>(
-        '${Api.baseurl}api/v1/offline/content/$language/manifest',
+        ApiContract.url(ApiContract.offline.contentManifest(language)),
       );
 
       if (manifestResponse.statusCode != 200) {
@@ -139,7 +138,7 @@ class OfflineContentNotifier extends Notifier<OfflineContentState> {
       // Get game download manifest from backend
       final dioClient = ref.read(client);
       final manifestResponse = await dioClient.get<Map<String, dynamic>>(
-        '${Api.baseurl}api/v1/offline/games/$gameId/manifest',
+        ApiContract.url(ApiContract.offline.gameManifest(gameId)),
       );
 
       if (manifestResponse.statusCode != 200) {

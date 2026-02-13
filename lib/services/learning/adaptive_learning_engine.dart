@@ -7,7 +7,6 @@
 /// - Personalized recommendations
 /// - Learning curve analysis
 
-import 'package:flutter/foundation.dart';
 import '../../models/lesson_item_model.dart';
 import '../../utils/simple_cache.dart';
 import 'dart:math' as math;

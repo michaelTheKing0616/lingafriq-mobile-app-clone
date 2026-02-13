@@ -1,13 +1,16 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -30,6 +33,8 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
     final searchResults = useState<List<Map<String, dynamic>>>([]);
     final isSearching = useState(false);
     final searchHistory = useState<List<String>>([]);
+    final searchError = useState<String?>(null);
+    final debounceTimer = useRef<Timer?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> searchUsers(String query) async {
@@ -39,9 +44,10 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
       }
 
       isSearching.value = true;
+      searchError.value = null;
       try {
         final response = await ApiService.get(
-          '${AppConfig.backendBaseUrl}/api/v1/accounts/auth/users/search',
+          ApiContract.url(ApiContract.accounts.usersSearch),
           queryParameters: {
             'handle': query.trim(),
             'q': query.trim(),
@@ -61,13 +67,27 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
         }
       } catch (e) {
         searchResults.value = [];
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
-        }
+        searchError.value = 'Failed to search users. Please try again.';
       } finally {
         isSearching.value = false;
       }
     }
+
+    void debouncedSearch(String query) {
+      debounceTimer.value?.cancel();
+      if (query.trim().isEmpty) {
+        searchResults.value = [];
+        searchError.value = null;
+        return;
+      }
+      debounceTimer.value = Timer(const Duration(milliseconds: 300), () {
+        searchUsers(query);
+      });
+    }
+
+    useEffect(() {
+      return () => debounceTimer.value?.cancel();
+    }, []);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,9 +125,10 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
                   prefixIcon: Icons.search,
                   onChanged: (value) {
                     if (value.length >= 2) {
-                      searchUsers(value);
+                      debouncedSearch(value);
                     } else {
                       searchResults.value = [];
+                      searchError.value = null;
                     }
                   },
                 ),
@@ -145,33 +166,33 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
 
               // Results
               Expanded(
-                child: isSearching.value
-                    ? Center(child: CircularProgressIndicator())
-                    : searchResults.value.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.search_off,
-                                  size: 64.sp,
-                                  color: PanAfricanColors.neutralMedium,
-                                ),
-                                SizedBox(height: PanAfricanSpacing.md),
-                                Text(
-                                  searchQuery.text.isEmpty
-                                      ? 'Search for users by @handle'
-                                      : 'No users found',
-                                  style: PanAfricanTypography.bodyLarge(context),
-                                ),
-                                SizedBox(height: PanAfricanSpacing.xs),
-                                Text(
-                                  'Try searching by their global_id handle',
-                                  style: PanAfricanTypography.bodySmall(context),
-                                ),
-                              ],
-                            ),
+                child: searchError.value != null
+                    ? AppErrorState(
+                        message: searchError.value!,
+                        onRetry: () => searchUsers(searchQuery.text.trim()),
+                      )
+                    : isSearching.value
+                        ? ListView.builder(
+                            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                            itemCount: 4,
+                            itemBuilder: (_, __) => SkeletonListCard(),
                           )
+                        : searchResults.value.isEmpty
+                            ? AppEmptyState(
+                                icon: Icons.person_search_rounded,
+                                title: searchQuery.text.trim().isEmpty
+                                    ? 'Search for users'
+                                    : 'No contacts found',
+                                subtitle: searchQuery.text.trim().isEmpty
+                                    ? 'Enter an @handle to find users'
+                                    : 'Try a different @handle or username',
+                                actionLabel: searchQuery.text.trim().length >= 2
+                                    ? 'Retry'
+                                    : null,
+                                onAction: searchQuery.text.trim().length >= 2
+                                    ? () => searchUsers(searchQuery.text.trim())
+                                    : null,
+                              )
                         : OptimizedListView.builder(
                             padding: EdgeInsets.all(PanAfricanSpacing.lg),
                             itemCount: searchResults.value.length,
@@ -216,7 +237,7 @@ class _UserResultCard extends StatelessWidget {
     final globalId = user['global_id'] ?? '';
     final username = user['username'] ?? 'Unknown';
     final name = '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}'.trim();
-    final avatar = user['avater'] ?? '';
+    final avatar = user['avatar'] ?? user['avater'] ?? '';
     final nationality = user['nationality'] ?? '';
 
     return PanAfricanCard(

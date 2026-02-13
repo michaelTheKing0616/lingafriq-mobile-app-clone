@@ -68,7 +68,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
         gradient: LinearGradient(
           colors: isDark
               ? [PanAfricanColors.surfaceDark, PanAfricanColors.surfaceDark.withOpacity(0.8)]
-              : [Colors.white, PanAfricanColors.surface],
+              : [Theme.of(context).colorScheme.surface, PanAfricanColors.surface],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -100,7 +100,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
+        color: isDark ? PanAfricanColors.surfaceDark : Theme.of(context).colorScheme.surface,
         borderRadius: PanAfricanRadius.lgBR,
       ),
       child: Center(
@@ -115,7 +115,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
+        color: isDark ? PanAfricanColors.surfaceDark : Theme.of(context).colorScheme.surface,
         borderRadius: PanAfricanRadius.lgBR,
       ),
       child: Column(
@@ -129,14 +129,14 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
           Text(
             'All challenges completed!',
             style: PanAfricanTypography.titleMedium(context).copyWith(
-              color: isDark ? Colors.white : PanAfricanColors.textPrimary,
+              color: isDark ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.textPrimary,
             ),
           ),
           SizedBox(height: PanAfricanSpacing.xxs),
           Text(
             'Come back tomorrow for new challenges',
             style: PanAfricanTypography.bodySmall(context).copyWith(
-              color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+              color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
             ),
           ),
         ],
@@ -163,12 +163,12 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
           Container(
             padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Icon(
               Icons.bolt_rounded,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               size: 24.sp,
             ),
           ),
@@ -180,14 +180,14 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
                 Text(
                   'Daily Challenges',
                   style: PanAfricanTypography.titleMedium(context).copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   'Resets in $timeRemaining',
                   style: PanAfricanTypography.bodySmall(context).copyWith(
-                    color: Colors.white.withOpacity(0.8),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
                   ),
                 ),
               ],
@@ -199,13 +199,13 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
               vertical: PanAfricanSpacing.xxs,
             ),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               borderRadius: PanAfricanRadius.roundBR,
             ),
             child: Text(
               '${state.claimableChallenges.length} ready',
               style: PanAfricanTypography.labelSmall(context).copyWith(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -235,14 +235,14 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
               children: [
                 Icon(
                   Icons.celebration_rounded,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   size: 20.sp,
                 ),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Claim All (+${state.totalClaimableXP} XP)',
                   style: PanAfricanTypography.labelLarge(context).copyWith(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -267,12 +267,12 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
       decoration: BoxDecoration(
         color: isDark 
             ? PanAfricanColors.cardDark 
-            : (isCompleted ? PanAfricanColors.primaryLight.withOpacity(0.1) : Colors.white),
+            : (isCompleted ? PanAfricanColors.primaryLight.withOpacity(0.1) : Theme.of(context).colorScheme.surface),
         borderRadius: PanAfricanRadius.mdBR,
         border: Border.all(
           color: isCompleted 
               ? PanAfricanColors.primary.withOpacity(0.5)
-              : (isDark ? Colors.white12 : PanAfricanColors.outline.withOpacity(0.2)),
+              : (isDark ? Theme.of(context).colorScheme.surface.withOpacity(0.12) : PanAfricanColors.outline.withOpacity(0.2)),
           width: isCompleted ? 2 : 1,
         ),
       ),
@@ -307,7 +307,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
                           child: Text(
                             challenge.title,
                             style: PanAfricanTypography.titleSmall(context).copyWith(
-                              color: isDark ? Colors.white : PanAfricanColors.textPrimary,
+                              color: isDark ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.textPrimary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -319,7 +319,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
                     Text(
                       challenge.description,
                       style: PanAfricanTypography.bodySmall(context).copyWith(
-                        color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+                        color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
                       ),
                     ),
                   ],
@@ -337,7 +337,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
                   child: LinearProgressIndicator(
                     value: challenge.progressPercent,
                     backgroundColor: isDark 
-                        ? Colors.white12 
+                        ? Theme.of(context).colorScheme.surface.withOpacity(0.12)
                         : PanAfricanColors.primary.withOpacity(0.1),
                     valueColor: AlwaysStoppedAnimation<Color>(
                       isCompleted 
@@ -352,7 +352,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
               Text(
                 '${challenge.progress}/${challenge.target}',
                 style: PanAfricanTypography.labelSmall(context).copyWith(
-                  color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+                  color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -462,7 +462,7 @@ class _DailyChallengesWidgetState extends ConsumerState<DailyChallengesWidget> {
             style: TextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
               letterSpacing: 1,
             ),
           ),

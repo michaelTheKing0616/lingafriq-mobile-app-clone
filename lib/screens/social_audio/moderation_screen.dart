@@ -213,7 +213,7 @@ class _ModerationScreenState extends ConsumerState<ModerationScreen> {
                               backgroundColor: _getRoleColor(participant.role),
                               child: Text(
                                 participant.userName[0].toUpperCase(),
-                                style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 16.sp),
                               ),
                             ),
                             title: Text(

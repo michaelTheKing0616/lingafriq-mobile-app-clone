@@ -57,7 +57,7 @@ class PanAfricanAppBar extends ConsumerWidget implements PreferredSizeWidget {
     final scaffoldKey = ref.watch(scaffoldKeyProvider);
     
     // Determine text/icon color based on background
-    final foregroundColor = useGradient || isDark ? Colors.white : PanAfricanColors.textPrimaryLight;
+    final foregroundColor = useGradient || isDark ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight;
     
     Widget? leadingWidget = leading;
     if (leadingWidget == null && automaticallyImplyLeading) {
@@ -189,7 +189,7 @@ class PanAfricanHeader extends StatelessWidget {
             Positioned.fill(
               child: CustomPaint(
                 painter: _AfricanPatternPainter(
-                  color: Colors.white.withOpacity(0.05),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.05),
                 ),
               ),
             ),
@@ -210,7 +210,7 @@ class PanAfricanHeader extends StatelessWidget {
                           title,
                           style: PanAfricanTypography.headlineLarge(
                             context,
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                         if (subtitle != null) ...[
@@ -219,7 +219,7 @@ class PanAfricanHeader extends StatelessWidget {
                             subtitle!,
                             style: PanAfricanTypography.bodyMedium(
                               context,
-                              color: Colors.white.withOpacity(0.8),
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.8),
                             ),
                           ),
                         ],

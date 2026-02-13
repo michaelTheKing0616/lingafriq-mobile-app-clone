@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -8,13 +9,11 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/widgets/animated/animated_button.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'dart:convert';
 
-/// Edit Profile Screen - Full production implementation
+/// Edit Profile Screen - Pan-African Design System
 class EditProfileScreen extends HookConsumerWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
 
@@ -22,18 +21,23 @@ class EditProfileScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    final firstNameController = useTextEditingController(text: user?.first_name ?? '');
-    final lastNameController = useTextEditingController(text: user?.last_name ?? '');
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final firstNameController =
+        useTextEditingController(text: user?.first_name ?? '');
+    final lastNameController =
+        useTextEditingController(text: user?.last_name ?? '');
     final emailController = useTextEditingController(text: user?.email ?? '');
-    final usernameController = useTextEditingController(text: user?.username ?? '');
-    
+    final usernameController =
+        useTextEditingController(text: user?.username ?? '');
+
     final selectedImage = useState<XFile?>(null);
     final isLoading = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
     Future<void> _pickImage() async {
       try {
+        HapticFeedback.selectionClick();
         final ImagePicker picker = ImagePicker();
         final XFile? image = await picker.pickImage(
           source: ImageSource.gallery,
@@ -46,18 +50,14 @@ class EditProfileScreen extends HookConsumerWidget {
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error picking image: ${e.toString()}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showLingAfriqError(context, 'Error picking image: ${e.toString()}');
         }
       }
     }
 
     Future<void> _takePhoto() async {
       try {
+        HapticFeedback.selectionClick();
         final ImagePicker picker = ImagePicker();
         final XFile? image = await picker.pickImage(
           source: ImageSource.camera,
@@ -70,19 +70,16 @@ class EditProfileScreen extends HookConsumerWidget {
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error taking photo: ${e.toString()}'),
-              backgroundColor: Colors.red,
-            ),
-          );
+          showLingAfriqError(context, 'Error taking photo: ${e.toString()}');
         }
       }
     }
 
     Future<void> _saveProfile() async {
-      if (formKey.currentState == null || !formKey.currentState!.validate()) return;
+      if (formKey.currentState == null || !formKey.currentState!.validate())
+        return;
 
+      HapticFeedback.mediumImpact();
       isLoading.value = true;
 
       try {
@@ -94,33 +91,25 @@ class EditProfileScreen extends HookConsumerWidget {
           'username': usernameController.text.trim(),
         };
 
-        // Handle avatar upload if image was selected (backend may expect avatar or avater)
+        // Handle avatar upload if image was selected
         if (selectedImage.value != null) {
           final imageBytes = await selectedImage.value!.readAsBytes();
           final base64Image = base64Encode(imageBytes);
           updateData['avatar'] = 'data:image/jpeg;base64,$base64Image';
-          updateData['avater'] = 'data:image/jpeg;base64,$base64Image';
         }
 
         final success = await apiNotifier.updateProfile(updateData);
 
         if (success && context.mounted) {
           await ref.read(userProvider.notifier).refreshUser();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Profile updated successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
+          showLingAfriqSuccess(context, 'Profile updated successfully!');
           Navigator.pop(context);
         }
       } catch (e) {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error updating profile: ${ErrorHandler.getUserFriendlyError(e)}'),
-              backgroundColor: Colors.red,
-            ),
+          showLingAfriqError(
+            context,
+            'Error updating profile: ${ErrorHandler.getUserFriendlyError(e)}',
           );
         }
       } finally {
@@ -129,145 +118,217 @@ class EditProfileScreen extends HookConsumerWidget {
     }
 
     void _showImagePicker() {
+      HapticFeedback.lightImpact();
       showModalBottomSheet(
         context: context,
-        builder: (context) => SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Choose from Gallery'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickImage();
-                },
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return Container(
+            decoration: BoxDecoration(
+              color: isDark
+                  ? PanAfricanColors.cardDark
+                  : PanAfricanColors.cardLight,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(PanAfricanRadius.xl),
               ),
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Take Photo'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _takePhoto();
-                },
+            ),
+            child: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(height: PanAfricanSpacing.sm),
+                  Container(
+                    width: 40.w,
+                    height: 4.h,
+                    decoration: BoxDecoration(
+                      color: PanAfricanColors.neutralLight,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                  Text(
+                    'Change Profile Photo',
+                    style: PanAfricanTypography.titleMedium(context),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.md),
+                  _ImagePickerOption(
+                    icon: Icons.photo_library_rounded,
+                    title: 'Choose from Gallery',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _pickImage();
+                    },
+                    isDark: isDark,
+                  ),
+                  _ImagePickerOption(
+                    icon: Icons.camera_alt_rounded,
+                    title: 'Take Photo',
+                    onTap: () {
+                      Navigator.pop(context);
+                      _takePhoto();
+                    },
+                    isDark: isDark,
+                  ),
+                  _ImagePickerOption(
+                    icon: Icons.close_rounded,
+                    title: 'Cancel',
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.pop(context);
+                    },
+                    isDark: isDark,
+                    isDestructive: true,
+                  ),
+                  SizedBox(height: PanAfricanSpacing.lg),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.cancel),
-                title: const Text('Cancel'),
-                onTap: () => Navigator.pop(context),
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_rounded, color: colorScheme.onPrimary),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          'Edit Profile',
+          style: PanAfricanTypography.titleLarge(context)
+              .copyWith(color: colorScheme.onPrimary),
+        ),
         backgroundColor: PanAfricanColors.primary,
+        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : PanAfricanGradients.forest,
+              : LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.surfaceLight,
+                  ],
+                ),
         ),
-        child: SafeArea(
+        child: ResponsiveSafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(16.sp),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Form(
               key: formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  SizedBox(height: PanAfricanSpacing.lg),
+
                   // Avatar Section
                   Center(
                     child: Stack(
                       children: [
-                        CircleAvatar(
-                          radius: 60.sp,
-                          backgroundColor: PanAfricanColors.primary,
-                          backgroundImage: selectedImage.value != null
-                              ? FileImage(File(selectedImage.value!.path))
-                              : (user?.avater != null
-                                  ? NetworkImage(user!.avater!)
-                                  : null) as ImageProvider?,
-                          child: (selectedImage.value == null && user?.avater == null)
-                              ? Icon(
-                                  Icons.person,
-                                  size: 60.sp,
-                                  color: Colors.white,
-                                )
-                              : null,
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: PanAfricanShadows.md,
+                          ),
+                          child: CircleAvatar(
+                            radius: 50.w,
+                            backgroundColor: PanAfricanColors.primary,
+                            backgroundImage: selectedImage.value != null
+                                ? FileImage(File(selectedImage.value!.path))
+                                : (user?.avatar != null
+                                        ? NetworkImage(user!.avatar!)
+                                        : null)
+                                    as ImageProvider?,
+                            child: (selectedImage.value == null &&
+                                    user?.avatar == null)
+                                ? Icon(
+                                    Icons.person_rounded,
+                                    size: 50.sp,
+                                    color: colorScheme.onPrimary,
+                                  )
+                                : null,
+                          ),
                         ),
                         Positioned(
                           bottom: 0,
                           right: 0,
-                          child: CircleAvatar(
-                            radius: 20.sp,
-                            backgroundColor: PanAfricanColors.primary,
-                            child: IconButton(
-                              icon: const Icon(Icons.camera_alt, color: Colors.white),
-                              onPressed: _showImagePicker,
-                              iconSize: 20.sp,
+                          child: GestureDetector(
+                            onTap: _showImagePicker,
+                            child: Container(
+                              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                              decoration: BoxDecoration(
+                                color: PanAfricanColors.secondary,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: isDark
+                                      ? PanAfricanColors.surfaceDark
+                                      : PanAfricanColors.surfaceLight,
+                                  width: 3,
+                                ),
+                                boxShadow: PanAfricanShadows.sm,
+                              ),
+                              child: Icon(
+                                Icons.camera_alt_rounded,
+                                color: Theme.of(context).colorScheme.onSurface,
+                                size: 20.sp,
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 32.h),
-                  
+                  SizedBox(height: PanAfricanSpacing.xl),
+
                   // First Name
-                  TextFormField(
+                  _ProfileTextField(
                     controller: firstNameController,
-                    decoration: InputDecoration(
-                      labelText: 'First Name',
-                      prefixIcon: const Icon(Icons.person),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                    label: 'First Name',
+                    icon: Icons.person_rounded,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'First name is required';
                       }
+                      if (value.trim().length < 2 || value.trim().length > 50) {
+                        return 'First name must be 2–50 characters';
+                      }
                       return null;
                     },
+                    isDark: isDark,
                   ),
-                  SizedBox(height: 16.h),
-                  
+                  SizedBox(height: PanAfricanSpacing.md),
+
                   // Last Name
-                  TextFormField(
+                  _ProfileTextField(
                     controller: lastNameController,
-                    decoration: InputDecoration(
-                      labelText: 'Last Name',
-                      prefixIcon: const Icon(Icons.person_outline),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                    label: 'Last Name',
+                    icon: Icons.person_outline_rounded,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Last name is required';
                       }
+                      if (value.trim().length < 2 || value.trim().length > 50) {
+                        return 'Last name must be 2–50 characters';
+                      }
                       return null;
                     },
+                    isDark: isDark,
                   ),
-                  SizedBox(height: 16.h),
-                  
+                  SizedBox(height: PanAfricanSpacing.md),
+
                   // Email
-                  TextFormField(
+                  _ProfileTextField(
                     controller: emailController,
+                    label: 'Email',
+                    icon: Icons.email_rounded,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: const Icon(Icons.email),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Email is required';
@@ -277,39 +338,212 @@ class EditProfileScreen extends HookConsumerWidget {
                       }
                       return null;
                     },
+                    isDark: isDark,
                   ),
-                  SizedBox(height: 16.h),
-                  
+                  SizedBox(height: PanAfricanSpacing.md),
+
                   // Username
-                  TextFormField(
+                  _ProfileTextField(
                     controller: usernameController,
-                    decoration: InputDecoration(
-                      labelText: 'Username',
-                      prefixIcon: const Icon(Icons.alternate_email),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                    label: 'Username',
+                    icon: Icons.alternate_email_rounded,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return 'Username is required';
                       }
-                      if (value.length < 3) {
+                      if (value.trim().length < 3) {
                         return 'Username must be at least 3 characters';
                       }
                       return null;
                     },
+                    isDark: isDark,
                   ),
-                  SizedBox(height: 32.h),
-                  
+                  SizedBox(height: PanAfricanSpacing.xl),
+
                   // Save Button
-                  AnimatedButton(
-                    text: isLoading.value ? 'Saving...' : 'Save Changes',
-                    onPressed: isLoading.value ? null : _saveProfile,
+                  _SaveButton(
+                    isLoading: isLoading.value,
+                    onPressed: _saveProfile,
                   ),
+                  SizedBox(height: PanAfricanSpacing.lg),
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final IconData icon;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final bool isDark;
+
+  const _ProfileTextField({
+    required this.controller,
+    required this.label,
+    required this.icon,
+    this.keyboardType,
+    this.validator,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      validator: validator,
+      style: PanAfricanTypography.bodyLarge(context),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: PanAfricanTypography.bodyMedium(context).copyWith(
+          color: PanAfricanColors.textSecondary,
+        ),
+        prefixIcon: Container(
+          margin: EdgeInsets.all(PanAfricanSpacing.sm),
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
+          decoration: BoxDecoration(
+            color: PanAfricanColors.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
+          ),
+          child: Icon(
+            icon,
+            color: PanAfricanColors.primary,
+            size: 20.sp,
+          ),
+        ),
+        filled: true,
+        fillColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          borderSide: BorderSide(
+            color: isDark
+                ? PanAfricanColors.borderDark
+                : PanAfricanColors.borderLight,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          borderSide: BorderSide(
+            color: isDark
+                ? PanAfricanColors.borderDark
+                : PanAfricanColors.borderLight,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          borderSide: BorderSide(
+            color: PanAfricanColors.primary,
+            width: 2,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          borderSide: BorderSide(
+            color: PanAfricanColors.error,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          borderSide: BorderSide(
+            color: PanAfricanColors.error,
+            width: 2,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ImagePickerOption extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final VoidCallback onTap;
+  final bool isDark;
+  final bool isDestructive;
+
+  const _ImagePickerOption({
+    required this.icon,
+    required this.title,
+    required this.onTap,
+    required this.isDark,
+    this.isDestructive = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: Container(
+        padding: EdgeInsets.all(PanAfricanSpacing.sm),
+        decoration: BoxDecoration(
+          color: isDestructive
+              ? PanAfricanColors.error.withOpacity(0.1)
+              : PanAfricanColors.primary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+        ),
+        child: Icon(
+          icon,
+          color: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
+          size: 24.sp,
+        ),
+      ),
+      title: Text(
+        title,
+        style: PanAfricanTypography.bodyLarge(context).copyWith(
+          color: isDestructive ? PanAfricanColors.error : null,
+        ),
+      ),
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
+    );
+  }
+}
+
+class _SaveButton extends StatelessWidget {
+  final bool isLoading;
+  final VoidCallback onPressed;
+
+  const _SaveButton({
+    required this.isLoading,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: PanAfricanColors.primary,
+      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+      child: InkWell(
+        onTap: isLoading ? null : onPressed,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+          child: Center(
+            child: isLoading
+                ? SizedBox(
+                    width: 24.sp,
+                    height: 24.sp,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation(colorScheme.onPrimary),
+                    ),
+                  )
+                : Text(
+                    'Save Changes',
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: colorScheme.onPrimary,
+                    ),
+                  ),
           ),
         ),
       ),

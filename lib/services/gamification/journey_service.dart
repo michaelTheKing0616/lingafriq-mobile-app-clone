@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:lingafriq/utils/api.dart';
-
+import 'package:lingafriq/config/api_contract.dart';
 class JourneyService {
   final Dio _dio;
 
@@ -9,7 +8,8 @@ class JourneyService {
   /// Get all nodes for a campaign
   Future<List<dynamic>> getCampaignNodes(String campaign) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/journey/$campaign/nodes');
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.journey.nodes(campaign)));
       return response.data;
     } catch (e) {
       rethrow;
@@ -19,7 +19,9 @@ class JourneyService {
   /// Get node detail
   Future<Map<String, dynamic>> getNode(String campaign, String nodeId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/journey/$campaign/node/$nodeId');
+      final response = await _dio.get(
+        ApiContract.url(ApiContract.journey.node(campaign, nodeId)),
+      );
       return response.data;
     } catch (e) {
       rethrow;
@@ -29,7 +31,9 @@ class JourneyService {
   /// Start a journey node
   Future<Map<String, dynamic>> startNode(String campaign, String nodeId) async {
     try {
-      final response = await _dio.post('${Api.baseurl}api/journey/$campaign/node/$nodeId/start');
+      final response = await _dio.post(
+        ApiContract.url(ApiContract.journey.nodeStart(campaign, nodeId)),
+      );
       return response.data;
     } catch (e) {
       rethrow;
@@ -44,7 +48,7 @@ class JourneyService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/journey/$campaign/node/$nodeId/complete',
+        ApiContract.url(ApiContract.journey.nodeComplete(campaign, nodeId)),
         data: evidence,
       );
       return response.data;
@@ -57,7 +61,7 @@ class JourneyService {
   Future<List<dynamic>> getUserProgress(String userId, {String? campaign}) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/journey/$userId/progress',
+        ApiContract.url(ApiContract.journey.userProgress(userId)),
         queryParameters: campaign != null ? {'campaign': campaign} : null,
       );
       return response.data;

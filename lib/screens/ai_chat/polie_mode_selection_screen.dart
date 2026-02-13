@@ -1,245 +1,242 @@
 import 'package:flutter/material.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
 import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
-/// Polie Mode Selection Screen
-/// Shows all 6 Polie modes: Translation, Tutor, Roleplay, Conversation, Vocab, Review
-class PolieModeSelectionScreen extends HookConsumerWidget {
+/// Polie Tutor — vertical mode carousel. Afro-futurist, cinematic.
+/// Each mode opens into a full-bleed immersive workspace.
+class PolieModeSelectionScreen extends ConsumerWidget {
   final VoidCallback? onBack;
-  
+
   const PolieModeSelectionScreen({Key? key, this.onBack}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ErrorBoundary(
       errorMessage: 'Unable to load mode selection. Please try again.',
-      onRetry: () {
-        // Retry by rebuilding
-      },
+      onRetry: () {},
       child: _buildContent(context, ref),
     );
   }
 
   Widget _buildContent(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+    final textPrimary =
+        isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    final textSecondary =
+        isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
+
+    final modes = [
+      _ModeData(
+        title: 'Translation',
+        description: 'Meaning-first, culturally fluent. Or literal word-by-word.',
+        icon: Icons.translate_rounded,
+        accentColor: PolieColors.electricTeal,
+        mode: PolieMode.translation,
+      ),
+      _ModeData(
+        title: 'Tutor',
+        description: 'Adaptive lessons, grammar, and exercises with feedback.',
+        icon: Icons.school_rounded,
+        accentColor: PolieColors.goldEmber,
+        mode: PolieMode.tutor,
+      ),
+      _ModeData(
+        title: 'Roleplay',
+        description: 'Real scenarios: market, taxi, elder. Practice with character.',
+        icon: Icons.theater_comedy_rounded,
+        accentColor: PolieColors.royalAmethyst,
+        mode: PolieMode.roleplay,
+      ),
+      _ModeData(
+        title: 'Conversation',
+        description: 'Free-flowing dialogue. Natural practice with gentle correction.',
+        icon: Icons.chat_bubble_outline_rounded,
+        accentColor: PolieColors.electricTealLight,
+        mode: PolieMode.conversation,
+      ),
+      _ModeData(
+        title: 'Vocabulary',
+        description: 'New words, usage, and spaced repetition.',
+        icon: Icons.book_rounded,
+        accentColor: PolieColors.goldEmberLight,
+        mode: PolieMode.vocab,
+      ),
+      _ModeData(
+        title: 'Review',
+        description: 'Strengthen memory. Review learned words and phrases.',
+        icon: Icons.refresh_rounded,
+        accentColor: PolieColors.success,
+        mode: PolieMode.review,
+      ),
+    ];
+
     return Scaffold(
-      backgroundColor: isDark ? AfricanTheme.backgroundDark : AfricanTheme.backgroundLight,
-      body: Stack(
-        children: [
-          // Gradient Header (enough height for back button, icon, title, subtitle)
-          Container(
-            height: 220.h,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF7B2CBF), // Purple
-                  Color(0xFFCE1126), // Red
-                ],
-              ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(40),
-                bottomRight: Radius.circular(40),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 20,
-                  offset: const Offset(0, 10),
-                ),
-              ],
-            ),
-            child: Stack(
-              children: [
-                // Pattern overlay
-                Positioned.fill(
-                  child: CustomPaint(
-                    painter: _PatternPainter(
-                      color: Colors.white.withOpacity(0.1),
+      backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceContainerLight,
+      body: Container(
+        child: SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back_rounded, color: textPrimary),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        if (onBack != null) {
+                          onBack!();
+                        } else {
+                          Navigator.of(context).pop();
+                        }
+                      },
                     ),
+                    Expanded(
+                      child: Text(
+                        'Polie Tutor',
+                        style: PolieTypography.h2(context).copyWith(color: textPrimary),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(width: 48),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
+                child: PolieGlassCard(
+                  padding: EdgeInsets.all(PolieSpacing.lg),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          color: isDark ? PolieColors.royalAmethyst : PolieColors.primary,
+                          shape: BoxShape.circle,
+                          boxShadow: PolieElevation.level1(context),
+                        ),
+                        child: Icon(Icons.auto_awesome, color: Theme.of(context).colorScheme.onPrimary, size: 28),
+                      ),
+                      SizedBox(width: PolieSpacing.md),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Choose your learning mode',
+                              style: PolieTypography.h2(context).copyWith(
+                                color: textPrimary,
+                              ),
+                            ),
+                            SizedBox(height: PolieSpacing.xs),
+                            Text(
+                              'Translate, practice, roleplay, or review with Polie.',
+                              style: PolieTypography.bodySmall(context).copyWith(
+                                color: textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.all(4.w),
-                    child: Column(
-                      children: [
-                        // Back button
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_back, color: Colors.white),
-                            onPressed: onBack ?? () => Navigator.pop(context),
-                            style: IconButton.styleFrom(
-                              backgroundColor: Colors.white.withOpacity(0.2),
-                              shape: const CircleBorder(),
+              ),
+              SizedBox(height: PolieSpacing.lg),
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
+                  itemCount: modes.length,
+                  itemBuilder: (context, index) {
+                    final data = modes[index];
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: PolieSpacing.md),
+                      child: PolieGlassCard(
+                        padding: EdgeInsets.zero,
+                        child: InkWell(
+                          onTap: () {
+                            HapticFeedback.mediumImpact();
+                            _navigateToMode(context, ref, data.mode);
+                          },
+                          borderRadius: BorderRadius.circular(PolieRadius.lg),
+                          child: Padding(
+                            padding: EdgeInsets.all(PolieSpacing.lg),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(PolieSpacing.md),
+                                  decoration: BoxDecoration(
+                                    color: data.accentColor.withOpacity(0.25),
+                                    borderRadius: BorderRadius.circular(PolieRadius.md),
+                                  ),
+                                  child: Icon(data.icon, color: data.accentColor, size: 28),
+                                ),
+                                SizedBox(width: PolieSpacing.md),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data.title,
+                                        style: PolieTypography.h2(context).copyWith(
+                                          color: textPrimary,
+                                        ),
+                                      ),
+                                      SizedBox(height: PolieSpacing.xs),
+                                      Text(
+                                        data.description,
+                                        style: PolieTypography.bodySmall(context).copyWith(
+                                          color: textSecondary,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios_rounded,
+                                  size: 16,
+                                  color: textSecondary,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 2.h),
-                        const Icon(
-                          Icons.psychology_rounded,
-                          color: Colors.white,
-                          size: 64,
-                        ),
-                        SizedBox(height: 1.h),
-                        Text(
-                          'Choose Your Learning Mode',
-                          style: TextStyle(
-                            fontSize: 28.sp,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 0.5.h),
-                        Text(
-                          'Select how you want to practice with Polie',
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            color: Colors.white.withOpacity(0.9),
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
+                      ),
+                    ).animate().fadeIn(delay: (50 * index).ms).slideX(begin: 0.05, end: 0, duration: 300.ms);
+                  },
                 ),
-              ],
-            ),
-          ),
-          // Mode Selection Cards (below header)
-          Positioned(
-            top: 200.h,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(4.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 2.h),
-                  // Translation Mode
-                  _ModeCard(
-                    title: 'Translation',
-                    description: 'Instant translations between English and African languages. Perfect for quick lookups.',
-                    icon: Icons.translate_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF007A3D), Color(0xFF00A8E8)],
-                    ),
-                    badge: 'Quick & Easy',
-                    mode: PolieMode.translation,
-                    onTap: () => _navigateToLanguageSelection(context, ref, PolieMode.translation),
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 2.h),
-                  // Tutor Mode
-                  _ModeCard(
-                    title: 'Tutor',
-                    description: 'Practice conversations with your AI tutor. Get feedback, corrections, and explanations.',
-                    icon: Icons.school_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFCE1126), Color(0xFFFF6B35)],
-                    ),
-                    badge: 'Interactive Learning',
-                    mode: PolieMode.tutor,
-                    onTap: () => _navigateToLanguageSelection(context, ref, PolieMode.tutor),
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 200.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 2.h),
-                  // Roleplay Mode
-                  _ModeCard(
-                    title: 'Roleplay',
-                    description: 'Practice real-world scenarios. Order food, ask for directions, have conversations.',
-                    icon: Icons.theater_comedy_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF9B59B6), Color(0xFFE74C3C)],
-                    ),
-                    badge: 'Real Scenarios',
-                    mode: PolieMode.roleplay,
-                    onTap: () => _navigateToLanguageSelection(context, ref, PolieMode.roleplay),
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 300.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 2.h),
-                  // Conversation Mode
-                  _ModeCard(
-                    title: 'Conversation',
-                    description: 'Free-flowing conversations in your target language. Practice natural dialogue.',
-                    icon: Icons.chat_bubble_outline_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF3498DB), Color(0xFF2ECC71)],
-                    ),
-                    badge: 'Natural Dialogue',
-                    mode: PolieMode.conversation,
-                    onTap: () => _navigateToLanguageSelection(context, ref, PolieMode.conversation),
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 2.h),
-                  // Vocab Mode
-                  _ModeCard(
-                    title: 'Vocabulary',
-                    description: 'Learn new words, their meanings, usage, and practice with spaced repetition.',
-                    icon: Icons.book_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFFF39C12), Color(0xFFE67E22)],
-                    ),
-                    badge: 'Word Mastery',
-                    mode: PolieMode.vocab,
-                    onTap: () => _navigateToLanguageSelection(context, ref, PolieMode.vocab),
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 2.h),
-                  // Review Mode
-                  _ModeCard(
-                    title: 'Review',
-                    description: 'Review previously learned words and phrases. Strengthen your memory.',
-                    icon: Icons.refresh_rounded,
-                    gradient: const LinearGradient(
-                      colors: [Color(0xFF16A085), Color(0xFF1ABC9C)],
-                    ),
-                    badge: 'Memory Boost',
-                    mode: PolieMode.review,
-                    onTap: () => _navigateToLanguageSelection(context, ref, PolieMode.review),
-                    isDark: isDark,
-                  ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.1, end: 0),
-                  SizedBox(height: 4.h),
-                ],
               ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  void _navigateToLanguageSelection(BuildContext context, WidgetRef ref, PolieMode mode) async {
-    // Set the mode first (this will save current chat history and load new mode's history)
-    await ref.read(groqChatProvider.notifier).setMode(mode);
-    
-    // For roleplay mode, navigate to scenario selection after language selection
-    // For other modes, navigate directly to language selection
+  void _navigateToMode(BuildContext context, WidgetRef ref, PolieMode mode) {
+    // NOTE: Do NOT call setMode() here. The language setup screen will call
+    // setModeAndLanguage() atomically once the user picks a language.
+    // Calling setMode() prematurely triggers save/load with (new mode × old language),
+    // which is the wrong history key and causes unnecessary state churn.
+
     if (mode == PolieMode.roleplay) {
-      // First select language, then show scenario selection
       Navigator.push(
         context,
         SmoothPageRoute(
           child: AiChatLanguageSetupScreen(
             initialMode: mode,
             onLanguageSelected: (language, languageName) {
-              // Navigate to scenario selection after language is selected
               Navigator.pushReplacement(
                 context,
                 SmoothPageRoute(
@@ -254,8 +251,6 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
         ),
       );
     } else {
-      // Navigate to language selection
-      // After language is selected, it will load the scoped chat history (mode × language)
       Navigator.push(
         context,
         SmoothPageRoute(
@@ -266,132 +261,18 @@ class PolieModeSelectionScreen extends HookConsumerWidget {
   }
 }
 
-class _ModeCard extends StatelessWidget {
+class _ModeData {
   final String title;
   final String description;
   final IconData icon;
-  final Gradient gradient;
-  final String badge;
+  final Color accentColor;
   final PolieMode mode;
-  final VoidCallback onTap;
-  final bool isDark;
-  
-  const _ModeCard({
+
+  _ModeData({
     required this.title,
     required this.description,
     required this.icon,
-    required this.gradient,
-    required this.badge,
+    required this.accentColor,
     required this.mode,
-    required this.onTap,
-    required this.isDark,
   });
-  
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        child: Container(
-          padding: EdgeInsets.all(6.w),
-          decoration: BoxDecoration(
-            color: isDark ? AfricanTheme.stitchCardDark : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowLarge,
-            border: Border.all(
-              color: isDark ? AfricanTheme.stitchBorderDark : Colors.transparent,
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: EdgeInsets.all(4.w),
-                decoration: BoxDecoration(
-                  gradient: gradient,
-                  borderRadius: BorderRadius.circular(DesignSystem.radiusL),
-                  boxShadow: DesignSystem.shadowMedium,
-                ),
-                child: Icon(icon, color: Colors.white, size: 32),
-              ),
-              SizedBox(width: 4.w),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
-                    ),
-                    SizedBox(height: 1.h),
-                    Text(
-                      description,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: isDark ? Colors.white70 : Colors.black54,
-                        height: 1.4,
-                      ),
-                    ),
-                    SizedBox(height: 1.h),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 0.5.h),
-                      decoration: BoxDecoration(
-                        color: gradient.colors.first.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
-                      ),
-                      child: Text(
-                        badge,
-                        style: TextStyle(
-                          fontSize: 11.sp,
-                          color: gradient.colors.first,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: isDark ? Colors.white54 : Colors.black45,
-                size: 16,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
-
-class _PatternPainter extends CustomPainter {
-  final Color color;
-  
-  _PatternPainter({required this.color});
-  
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1;
-    
-    const spacing = 35.0;
-    for (double i = 0; i < size.width + size.height; i += spacing) {
-      canvas.drawLine(
-        Offset(i, 0),
-        Offset(i - size.height, size.height),
-        paint,
-      );
-    }
-  }
-  
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
-

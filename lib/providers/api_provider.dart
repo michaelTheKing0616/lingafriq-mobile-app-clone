@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history/models/history_response.dart';
 import 'package:lingafriq/history/models/section_history_model.dart';
@@ -22,6 +23,7 @@ import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/extensions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 import '../history_quiz/models/history_quiz_response.dart';
 import '../language_quiz/models/language_quiz_lesson_model.dart';
@@ -47,6 +49,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   String? token;
   String? refreshToken;
+  Completer<String?>? _refreshLock;
 
   /// Load tokens from SharedPreferences on provider initialization
   void _loadTokensFromStorage() {
@@ -64,6 +67,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   /// Refresh access token using refresh token
   Future<String?> refreshAccessToken() async {
+    if (_refreshLock != null) {
+      return _refreshLock!.future;
+    }
+    final completer = Completer<String?>();
+    _refreshLock = completer;
     try {
       if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
         // Try to get from shared preferences
@@ -72,6 +80,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       if (refreshToken == null || (refreshToken?.isEmpty ?? true)) {
+        if (!completer.isCompleted) completer.complete(null);
         return null;
       }
 
@@ -96,14 +105,19 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             await prefs.storeAuthTokens(token!, refreshToken!);
           }
 
+          if (!completer.isCompleted) completer.complete(token);
           return token;
         }
       }
+      if (!completer.isCompleted) completer.complete(null);
       return null;
     } catch (e) {
       token = null;
       refreshToken = null;
+      if (!completer.isCompleted) completer.complete(null);
       return null;
+    } finally {
+      _refreshLock = null;
     }
   }
 
@@ -126,13 +140,61 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  Future<void> sendVerification(String email) async {
+    try {
+      final res = await ref.read(client).post(
+            ApiContract.url(ApiContract.auth.sendVerification),
+            data: {'email': email},
+          );
+      if (res.statusCode != 200) {
+        final error = res.data?['message'] ?? 'Failed to send verification code';
+        throw Exception(error);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> verifyEmail(String email, String code) async {
+    try {
+      final res = await ref.read(client).post(
+            ApiContract.url(ApiContract.auth.verifyEmail),
+            data: {
+              'email': email,
+              'code': code,
+            },
+          );
+      if (res.statusCode != 200) {
+        final error = res.data?['message'] ?? 'Invalid verification code';
+        throw Exception(error);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> resendVerification(String email) async {
+    try {
+      final res = await ref.read(client).post(
+            ApiContract.url(ApiContract.auth.resendVerification),
+            data: {'email': email},
+          );
+      if (res.statusCode != 200) {
+        final error = res.data?['message'] ?? 'Failed to resend verification code';
+        throw Exception(error);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<ProfileModel> login(Map<String, String> data) async {
     try {
       // Log the login attempt with backend URL for debugging
       logger.info('Login API call', context: {
         'endpoint': Api.login,
-        'baseUrl': Api.baseurl,
-        'fullUrl': '${Api.baseurl}${Api.login}',
+        'baseUrl': ApiContract.baseUrl,
+        'fullUrl': ApiContract.url(ApiContract.auth.login),
       });
       
       final res = await ref.read(client).post(Api.login, data: data);
@@ -175,7 +237,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Log detailed error information for debugging
       logger.error('Login API call failed', error: e, context: {
         'endpoint': Api.login,
-        'baseUrl': Api.baseurl,
+        'baseUrl': ApiContract.baseUrl,
+        'fullUrl': ApiContract.url(ApiContract.auth.login),
         'errorType': e.runtimeType.toString(),
         'isDioException': e is DioException,
         'dioErrorType': e is DioException ? e.type.toString() : null,
@@ -298,7 +361,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> updateUserPreferences(Map<String, dynamic> prefs) async {
     try {
       final res = await ref.read(client).put(
-        '${Api.baseurl}${Api.userPreferences}',
+        ApiContract.url(ApiContract.accounts.userPreferences),
         data: prefs,
       );
       return res.statusCode == 200 || res.statusCode == 204;
@@ -312,13 +375,74 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Map<String, dynamic>?> getUserPreferences() async {
     try {
       final res = await ref.read(client).get(
-        '${Api.baseurl}${Api.userPreferences}',
+        ApiContract.url(ApiContract.accounts.userPreferences),
       );
       if (res.statusCode == 200 && res.data is Map) {
         return Map<String, dynamic>.from(res.data);
       }
       return null;
     } catch (e) {
+      return null;
+    }
+  }
+
+  // ============================================
+  // AVATAR API METHODS
+  // ============================================
+
+  /// Fetch user's avatar configuration from the backend.
+  /// Returns null if network fails (offline-safe).
+  Future<Map<String, dynamic>?> getAvatarConfig() async {
+    try {
+      final res = await ref.read(client).get(
+        ApiContract.url(ApiContract.avatar.config),
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        final data = res.data;
+        if (data['success'] == true && data['data'] is Map) {
+          return Map<String, dynamic>.from(data['data']);
+        }
+        return Map<String, dynamic>.from(data);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Failed to fetch avatar config: $e');
+      return null;
+    }
+  }
+
+  /// Save user's avatar configuration to the backend.
+  /// Returns true on success, false on failure (changes are kept locally).
+  Future<bool> saveAvatarConfig(Map<String, dynamic> config) async {
+    try {
+      final res = await ref.read(client).put(
+        ApiContract.url(ApiContract.avatar.config),
+        data: config,
+      );
+      return res.statusCode == 200 && res.data?['success'] == true;
+    } catch (e) {
+      debugPrint('Failed to save avatar config: $e');
+      return false;
+    }
+  }
+
+  /// Unlock a premium avatar item (outfit, accessory, or hair style).
+  /// Called when user purchases with cowries or earns through achievements.
+  Future<Map<String, dynamic>?> unlockAvatarItem({
+    required String itemType,
+    required int itemId,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        ApiContract.url(ApiContract.avatar.unlock),
+        data: {'itemType': itemType, 'itemId': itemId},
+      );
+      if (res.statusCode == 200 && res.data?['success'] == true) {
+        return Map<String, dynamic>.from(res.data['data']);
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Failed to unlock avatar item: $e');
       return null;
     }
   }
@@ -370,6 +494,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
   /// Timeout for lesson/quiz API calls to avoid endless loading (e.g. when backend is slow or unreachable).
   static const _lessonReceiveTimeout = Duration(seconds: 30);
+  static const _userContentBase = '/api/user-content';
 
   Future<LessonResponse> getLessons(int? id) async {
     try {
@@ -644,7 +769,10 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<List<RandomQuizLessonModel>> getRandomQuizLessons(int languageId) async {
     try {
       state = state.copyWith(isLoading: true);
-      final res = await ref.read(client).get(Api.randomQuiz(languageId));
+      final res = await ref.read(client).get(
+        Api.randomQuiz(languageId),
+        options: Options(receiveTimeout: _lessonReceiveTimeout),
+      );
       if (res.statusCode != 200) throw res.data;
       final resList = res.data as List;
       final dataList = <Map<String, dynamic>>[];
@@ -700,7 +828,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       state = state.copyWith(isLoading: false);
       return mappedLessonsList;
     } catch (e) {
-      state = state.copyWith(isLoading: true);
+      state = state.copyWith(isLoading: false);
       rethrow;
     }
   }
@@ -929,7 +1057,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (lastContentId != null) queryParams['lastContentId'] = lastContentId;
 
       final res = await ref.read(client).get(
-        '${Api.baseurl}api/v1/loading-screen/content',
+        ApiContract.url(ApiContract.ai.loadingScreenContent),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
 
@@ -1013,7 +1141,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/learner-activity',
+        ApiContract.url(ApiContract.sync.learnerActivity),
         data: {
           'user_id': userId,
           'language': language,
@@ -1033,7 +1161,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Map<String, dynamic>> getExperimentsConfig() async {
     try {
       final res = await ref.read(client).get(
-        '${Api.baseurl}api/experiments/config',
+        ApiContract.url(ApiContract.sync.experimentsConfig),
       );
       if (res.statusCode == 200 && res.data is Map) {
         return Map<String, dynamic>.from(res.data);
@@ -1064,7 +1192,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> syncGamification(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.gamificationBase}sync',
+        ApiContract.url(ApiContract.gamification.sync),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1082,10 +1210,12 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Backward compatible input: older callers may include `language_code`.
       // Sync controller expects `{ mode, messages, timestamp }`.
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/ai/chat/history/sync/',
+        ApiContract.url(ApiContract.ai.chatHistorySync),
         data: {
           'mode': chatData['mode'],
           'messages': chatData['messages'],
+          if (chatData['languageCode'] != null) 'languageCode': chatData['languageCode'],
+          if (chatData['language_code'] != null) 'language_code': chatData['language_code'],
           if (chatData['timestamp'] != null) 'timestamp': chatData['timestamp'],
         },
       );
@@ -1104,7 +1234,12 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       // Canonical backend route: GET /api/ai/chat/history/:mode
-      final res = await ref.read(client).get('${Api.baseurl}api/ai/chat/history/$mode');
+      final res = await ref.read(client).get(
+        ApiContract.url(ApiContract.ai.chatHistory(mode)),
+        queryParameters: {
+          'languageCode': languageCode,
+        },
+      );
 
       if (res.statusCode != 200 || res.data == null) return null;
 
@@ -1155,7 +1290,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> updateDailyGoal(String goalId, Map<String, dynamic> progress) async {
     try {
       final res = await ref.read(client).patch(
-        '${Api.baseurl}${Api.dailyChallenges}/$goalId',
+        ApiContract.url(ApiContract.gamification.challenges(goalId)),
         data: progress,
       );
       return res.statusCode == 200 || res.statusCode == 204;
@@ -1183,7 +1318,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Map<String, dynamic>> getProgressMetrics() async {
     try {
       final res = await ref.read(client).get(
-        '${Api.baseurl}${Api.gamificationBase}progress',
+        ApiContract.url(ApiContract.gamification.progress),
       );
       if (res.statusCode == 200 && res.data is Map) {
         return Map<String, dynamic>.from(res.data);
@@ -1199,7 +1334,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> updateProgressMetrics(Map<String, dynamic> metrics) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.gamificationBase}progress',
+        ApiContract.url(ApiContract.gamification.progress),
         data: metrics,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1261,7 +1396,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> updateChallengeProgress(String challengeId, Map<String, dynamic> progress) async {
     try {
       final res = await ref.read(client).patch(
-        '${Api.baseurl}${Api.dailyChallenges}/$challengeId',
+        ApiContract.url(ApiContract.gamification.challenges(challengeId)),
         data: progress,
       );
       return res.statusCode == 200 || res.statusCode == 204;
@@ -1275,7 +1410,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> updateMilestoneStats(String milestoneId, int value) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.milestones}',
+        ApiContract.url(ApiContract.gamification.milestones),
         data: {
           'milestoneId': milestoneId,
           'value': value,
@@ -1292,7 +1427,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> addLeagueXP(int xp) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.league}/xp',
+        ApiContract.url(ApiContract.gamification.leagueXp),
         data: {'xp': xp},
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1306,7 +1441,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> useHeart() async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.gamificationBase}hearts/use',
+        ApiContract.url(ApiContract.gamification.heartsUse),
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
@@ -1319,7 +1454,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> refillHearts() async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.gamificationBase}hearts/refill',
+        ApiContract.url(ApiContract.gamification.heartsRefill),
       );
       return res.statusCode == 200 || res.statusCode == 201;
     } catch (e) {
@@ -1332,7 +1467,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> toggleChallengeMode(bool enabled) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.gamificationBase}challenge-mode',
+        ApiContract.url(ApiContract.gamification.challengeMode),
         data: {'enabled': enabled},
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1346,8 +1481,8 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<List<Map<String, dynamic>>> getLeaderboard({String? category}) async {
     try {
       final url = category != null 
-          ? '${Api.baseurl}${Api.leagueLeaderboard}?category=$category'
-          : Api.leagueLeaderboard;
+          ? '${ApiContract.url(ApiContract.gamification.leagueLeaderboard)}?category=$category'
+          : ApiContract.url(ApiContract.gamification.leagueLeaderboard);
       final res = await ref.read(client).get(url);
       if (res.statusCode == 200) {
         if (res.data is List) {
@@ -1375,7 +1510,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       var ok = true;
       for (final event in events) {
         final res = await ref.read(client).post(
-          '${Api.baseurl}api/games/telemetry/',
+          ApiContract.url(ApiContract.games.telemetry),
           data: event,
         );
         ok = ok && (res.statusCode == 200 || res.statusCode == 201);
@@ -1432,7 +1567,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Backend upserts by `session.session_id` and is tolerant to being called
       // for start/turn/complete via the same handler.
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/games/session/start/',
+        ApiContract.url(ApiContract.games.sessionStart),
         data: {
           'session': data['session'],
           if (data['timestamp'] != null) 'timestamp': data['timestamp'],
@@ -1455,7 +1590,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
       // Canonical backend route: PUT /api/games/srs/user/:userId
       final res = await ref.read(client).put(
-        '${Api.baseurl}api/games/srs/user/$userId',
+        ApiContract.url(ApiContract.games.srsUser(userId)),
         data: {
           'srs': data['srs'],
           if (data['timestamp'] != null) 'timestamp': data['timestamp'],
@@ -1472,7 +1607,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Map<String, dynamic>> createUgcLesson(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.userContent}lessons',
+        ApiContract.url('$_userContentBase/lessons'),
         data: data,
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -1489,7 +1624,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Map<String, dynamic>> createUgcQuiz(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.userContent}quizzes',
+        ApiContract.url('$_userContentBase/quizzes'),
         data: data,
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -1506,7 +1641,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Map<String, dynamic>> createUgcStory(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.userContent}stories',
+        ApiContract.url('$_userContentBase/stories'),
         data: data,
       );
       if (res.statusCode == 200 || res.statusCode == 201) {
@@ -1532,7 +1667,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         if (userIds != null && userIds.isNotEmpty) 'user_ids': userIds,
       };
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.userContent}share',
+        ApiContract.url('$_userContentBase/share'),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1557,7 +1692,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           : '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}';
       
       final res = await ref.read(client).get(
-        '${Api.baseurl}${Api.userContent}content$queryString',
+        ApiContract.url('$_userContentBase/content$queryString'),
       );
       if (res.statusCode == 200) {
         if (res.data is List) {
@@ -1588,7 +1723,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         if (review != null && review.isNotEmpty) 'review': review,
       };
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.userContent}rate',
+        ApiContract.url('$_userContentBase/rate'),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1602,7 +1737,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> syncAIChatHistory(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/ai/chat/history/sync/',
+        ApiContract.url(ApiContract.ai.chatHistorySync),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1616,7 +1751,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> syncAIChatSRS(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/ai/chat/srs/sync/',
+        ApiContract.url(ApiContract.ai.chatSrsSync),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1630,7 +1765,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> syncProgress(Map<String, dynamic> data) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.gamificationBase}progress/sync',
+        ApiContract.url(ApiContract.gamification.progressSync),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1651,7 +1786,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       };
       
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/onboarding/save/',
+        ApiContract.url(ApiContract.onboarding.save),
         data: requestBody,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1672,7 +1807,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
 
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/games/telemetry/',
+        ApiContract.url(ApiContract.games.telemetry),
         data: data,
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -1687,7 +1822,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> checkUsernameAvailability(String username) async {
     try {
       final res = await ref.read(client).get(
-        '${Api.baseurl}onboarding/check-username',
+        ApiContract.url(ApiContract.onboarding.checkUsername),
         queryParameters: {'username': username.trim()},
       );
       
@@ -1728,7 +1863,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       }
       
       final res = await ref.read(client).get(
-        '${Api.baseurl}api/chat/search',
+        ApiContract.url(ApiContract.chat.search),
         queryParameters: queryParams,
       );
       
@@ -1764,7 +1899,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       });
       
       final res = await ref.read(client).post(
-        '${Api.baseurl}api/voice/contributions',
+        ApiContract.url(ApiContract.socialAudio.voiceContributions),
         data: formData,
       );
       
@@ -1783,7 +1918,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       return await ref.read(client).get(
-        '${Api.baseurl}${Api.socialAudioRooms}',
+        ApiContract.url(ApiContract.socialAudio.rooms),
         queryParameters: queryParameters,
       );
     } catch (e) {
@@ -1796,7 +1931,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> getSocialAudioRoom(String roomId) async {
     try {
       return await ref.read(client).get(
-        '${Api.baseurl}${Api.socialAudioRoom(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.room(roomId)),
       );
     } catch (e) {
       logger.error('Error getting social audio room', error: e);
@@ -1808,7 +1943,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> createSocialAudioRoom(Map<String, dynamic> data) async {
     try {
       return await ref.read(client).post(
-        '${Api.baseurl}${Api.socialAudioRooms}',
+        ApiContract.url(ApiContract.socialAudio.rooms),
         data: data,
       );
     } catch (e) {
@@ -1821,7 +1956,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> joinSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
     try {
       return await ref.read(client).post(
-        '${Api.baseurl}${Api.socialAudioRoomJoin(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomJoin(roomId)),
         data: data,
       );
     } catch (e) {
@@ -1834,7 +1969,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> leaveSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
     try {
       return await ref.read(client).post(
-        '${Api.baseurl}${Api.socialAudioRoomLeave(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomLeave(roomId)),
         data: data,
       );
     } catch (e) {
@@ -1847,7 +1982,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> updateSocialAudioRoomStatus(String roomId, Map<String, dynamic> data) async {
     try {
       return await ref.read(client).patch(
-        '${Api.baseurl}${Api.socialAudioRoomStatus(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomStatus(roomId)),
         data: data,
       );
     } catch (e) {
@@ -1860,7 +1995,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> getSocialAudioRoomParticipants(String roomId) async {
     try {
       return await ref.read(client).get(
-        '${Api.baseurl}${Api.socialAudioRoomParticipants(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomParticipants(roomId)),
       );
     } catch (e) {
       logger.error('Error getting social audio room participants', error: e);
@@ -1872,7 +2007,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> moderateSocialAudioRoom(String roomId, Map<String, dynamic> data) async {
     try {
       return await ref.read(client).post(
-        '${Api.baseurl}${Api.socialAudioRoomModerate(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomModerate(roomId)),
         data: data,
       );
     } catch (e) {
@@ -1885,7 +2020,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> followSocialAudioUser(String userId, Map<String, dynamic> data) async {
     try {
       return await ref.read(client).post(
-        '${Api.baseurl}${Api.socialAudioFollowUser(userId)}',
+        ApiContract.url(ApiContract.socialAudio.followUser(userId)),
         data: data,
       );
     } catch (e) {
@@ -1898,7 +2033,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> unfollowSocialAudioUser(String userId, Map<String, dynamic> data) async {
     try {
       return await ref.read(client).delete(
-        '${Api.baseurl}${Api.socialAudioUnfollowUser(userId)}',
+        ApiContract.url(ApiContract.socialAudio.followUser(userId)),
         data: data,
       );
     } catch (e) {
@@ -1911,7 +2046,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> getSocialAudioFollowingList(Map<String, dynamic>? queryParameters) async {
     try {
       return await ref.read(client).get(
-        '${Api.baseurl}${Api.socialAudioFollowingList}',
+        ApiContract.url(ApiContract.socialAudio.followingList),
         queryParameters: queryParameters,
       );
     } catch (e) {
@@ -1924,7 +2059,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<Response?> getSocialAudioFollowersList(Map<String, dynamic>? queryParameters) async {
     try {
       return await ref.read(client).get(
-        '${Api.baseurl}${Api.socialAudioFollowers}',
+        ApiContract.url(ApiContract.socialAudio.followers),
         queryParameters: queryParameters,
       );
     } catch (e) {
@@ -1943,7 +2078,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       });
       
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.mediaUpload()}',
+        ApiContract.url(ApiContract.media.upload),
         data: formData,
       );
       
@@ -1961,7 +2096,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> reportChatMessage({required String messageId, String? reason, String? description}) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}chat/report',
+        ApiContract.url(ApiContract.chat.report),
         data: {
           'messageId': messageId,
           if (reason != null) 'reason': reason,
@@ -1979,7 +2114,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> blockUser(String userId) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.connectionBlock()}',
+        ApiContract.url(ApiContract.social.connectionBlock),
         data: {'userId': userId},
       );
       return res.statusCode == 200 || res.statusCode == 201;
@@ -2003,7 +2138,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       };
       
       final res = await ref.read(client).post(
-        '${Api.baseurl}pronunciation/quick',
+        ApiContract.url(ApiContract.games.pronunciationQuick),
         data: data,
       );
       
@@ -2027,7 +2162,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }) async {
     try {
       final res = await ref.read(client).post(
-        '${Api.baseurl}${Api.games}/complete',
+        ApiContract.url(ApiContract.games.complete),
         data: {
           'gameType': gameType,
           'languageId': languageId,

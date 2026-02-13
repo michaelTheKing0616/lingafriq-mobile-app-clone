@@ -2,8 +2,6 @@
 /// Batches multiple requests to reduce API calls and improve efficiency
 
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-
 class BatchProcessor<T> {
   final Duration _batchWindow;
   final int _maxBatchSize;

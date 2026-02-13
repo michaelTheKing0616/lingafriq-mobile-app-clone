@@ -105,6 +105,8 @@ enum PaywallTrigger {
 }
 
 class PaywallService {
+  static const bool _overrideAllAccess = true;
+
   static const String _keyTier = 'subscription_tier';
   static const String _keyTrialEnds = 'trial_ends_at';
   static const String _keyLessonsToday = 'lessons_today';
@@ -119,6 +121,7 @@ class PaywallService {
   // ===== Subscription Status =====
 
   SubscriptionTier getCurrentTier() {
+    if (_overrideAllAccess) return SubscriptionTier.premium;
     final tierString = _prefs.getString(_keyTier) ?? 'free';
     return SubscriptionTier.values.firstWhere(
       (e) => e.toString().split('.').last == tierString,
@@ -141,6 +144,7 @@ class PaywallService {
   }
 
   bool isTrialActive() {
+    if (_overrideAllAccess) return true;
     final trialEndsString = _prefs.getString(_keyTrialEnds);
     if (trialEndsString == null) return false;
 
@@ -149,6 +153,7 @@ class PaywallService {
   }
 
   int getDaysUntilTrialEnds() {
+    if (_overrideAllAccess) return 999;
     if (!isTrialActive()) return 0;
 
     final trialEndsString = _prefs.getString(_keyTrialEnds)!;
@@ -159,6 +164,7 @@ class PaywallService {
   // ===== Usage Tracking =====
 
   Future<bool> canAccessFeature(String feature) async {
+    if (_overrideAllAccess) return true;
     final limits = getCurrentLimits();
 
     switch (feature) {
@@ -176,6 +182,7 @@ class PaywallService {
   }
 
   Future<bool> canTakeLesson() async {
+    if (_overrideAllAccess) return true;
     _resetDailyCountersIfNeeded();
 
     final limits = getCurrentLimits();
@@ -186,6 +193,7 @@ class PaywallService {
   }
 
   Future<void> recordLessonCompleted() async {
+    if (_overrideAllAccess) return;
     _resetDailyCountersIfNeeded();
 
     final lessonsToday = _prefs.getInt(_keyLessonsToday) ?? 0;
@@ -222,6 +230,7 @@ class PaywallService {
   // ===== Paywall Logic =====
 
   Future<bool> shouldShowPaywall(PaywallTrigger trigger) async {
+    if (_overrideAllAccess) return false;
     // Don't show if already subscribed (non-free tier)
     if (getCurrentTier() != SubscriptionTier.free) {
       return false;

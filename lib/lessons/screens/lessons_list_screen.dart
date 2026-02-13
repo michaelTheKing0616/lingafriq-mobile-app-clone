@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -11,6 +12,8 @@ import 'package:lingafriq/widgets/loading_builder.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
 import '../../providers/navigation_provider.dart';
+import '../../providers/offline_download_provider.dart';
+import '../../screens/learning/learning_path_screen.dart';
 import '../models/lesson_response.dart';
 import 'section_lessons_list.dart';
 
@@ -38,7 +41,24 @@ class LessonsListScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BackButton(color: Colors.white),
+                    Row(
+                      children: [
+                        BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                        const Spacer(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.route_rounded,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                          onPressed: () {
+                            ref.read(navigationProvider).navigateTo(
+                                  LearningPathScreen(language: language),
+                                );
+                          },
+                          tooltip: 'View learning path',
+                        ),
+                      ],
+                    ),
                     LangguageTypeHeaderBuilder(
                       title: "Sections",
                       level: '',
@@ -89,7 +109,11 @@ class LessonsListScreen extends ConsumerWidget {
                         return _LessonItem(
                           lesson: lesson,
                           enabled: kDebugMode ? true : isEnabled,
-                        );
+                          index: index,
+                        )
+                            .animate(delay: Duration(milliseconds: index * 50))
+                            .fadeIn(duration: 300.ms)
+                            .slideY(begin: 0.1, end: 0);
                       },
                     ),
                   );
@@ -115,16 +139,25 @@ class LessonsListScreen extends ConsumerWidget {
 class _LessonItem extends ConsumerWidget {
   final Lesson lesson;
   final bool enabled;
+  final int index;
   const _LessonItem({
     Key? key,
     required this.lesson,
     required this.enabled,
+    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final offlineState = ref.watch(offlineDownloadProvider);
+    final offlineNotifier = ref.read(offlineDownloadProvider.notifier);
+    final lessonId = lesson.id.toString();
+    final isDownloaded = offlineNotifier.isDownloaded(lessonId);
+    final downloadProgress = offlineNotifier.getDownloadProgress(lessonId);
+    final isDownloading = offlineState.isDownloading && offlineState.currentDownloadingLessonId == lessonId;
+    
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black26,
       child: InkWell(
@@ -138,6 +171,37 @@ class _LessonItem extends ConsumerWidget {
           children: [
             Row(
               children: [
+                Hero(
+                  tag: 'lesson_icon_${lesson.id}',
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      gradient: enabled
+                          ? LinearGradient(
+                              colors: [
+                                context.primaryColor,
+                                context.primaryColor.withOpacity(0.7),
+                              ],
+                            )
+                          : LinearGradient(
+                              colors: [
+                                context.adaptive26,
+                                context.adaptive26,
+                              ],
+                            ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      Icons.auto_stories_rounded,
+                      color: enabled
+                          ? Colors.white
+                          : context.adaptive54,
+                      size: 24,
+                    ),
+                  ),
+                ),
+                12.widthBox,
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -154,16 +218,66 @@ class _LessonItem extends ConsumerWidget {
                   ],
                 ).expand(),
                 12.widthBox,
-                if (lesson.count == lesson.completed)
-                  Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: context.adaptive8),
-                    child: Icon(
-                      Icons.check,
-                      color: context.primaryColor,
-                    ),
-                  )
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (isDownloading)
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          value: downloadProgress,
+                          valueColor: AlwaysStoppedAnimation<Color>(context.primaryColor),
+                        ),
+                      )
+                    else
+                      IconButton(
+                        icon: Icon(
+                          isDownloaded ? Icons.cloud_done : Icons.cloud_download,
+                          color: isDownloaded ? Colors.green : context.primaryColor,
+                          size: 24,
+                        ),
+                        onPressed: () async {
+                          if (isDownloaded) {
+                            await offlineNotifier.deleteLesson(lessonId);
+                          } else {
+                            try {
+                              await offlineNotifier.downloadLesson(lessonId);
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Lesson downloaded successfully'),
+                                    backgroundColor: Colors.green,
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Failed to download lesson: ${e.toString()}'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                            }
+                          }
+                        },
+                        tooltip: isDownloaded ? 'Remove from offline' : 'Download for offline',
+                      ),
+                    if (lesson.count == lesson.completed)
+                      Container(
+                        margin: const EdgeInsets.only(left: 8, bottom: 16),
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(shape: BoxShape.circle, color: context.adaptive8),
+                        child: Icon(
+                          Icons.check,
+                          color: context.primaryColor,
+                        ),
+                      )
+                  ],
+                ),
               ],
             ),
             12.heightBox,

@@ -24,11 +24,11 @@ class IntroductionScreen extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const BackButton(color: Colors.white),
+                BackButton(color: Theme.of(context).colorScheme.onPrimary),
                 language.name.text.xl2.semiBold
                     .maxLines(2)
                     .ellipsis
-                    .color(Colors.white)
+                    .color(Theme.of(context).colorScheme.onPrimary)
                     .make()
                     .p16(),
               ],
@@ -38,7 +38,7 @@ class IntroductionScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
-                color: context.isDarkMode ? context.cardColor : Colors.white,
+                color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
                 elevation: 12,
                 shadowColor: Colors.black38,
                 child: Column(

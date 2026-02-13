@@ -4,7 +4,6 @@
 
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/providers/dio_provider.dart';

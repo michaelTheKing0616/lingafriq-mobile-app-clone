@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
 
 /// World-class error recovery service
@@ -11,8 +11,6 @@ class ErrorRecoveryService {
   static const int _maxRetries = 3;
   static const Duration _baseRetryDelay = Duration(seconds: 2);
   static const Duration _maxRetryDelay = Duration(seconds: 30);
-
-  final Connectivity _connectivity = Connectivity();
 
   /// Execute operation with automatic retry and error recovery
   Future<T> executeWithRecovery<T>({
@@ -185,8 +183,7 @@ class ErrorRecoveryService {
   /// Check internet connectivity
   Future<bool> _checkConnectivity() async {
     try {
-      final results = await _connectivity.checkConnectivity();
-      return results.any((r) => r != ConnectivityResult.none);
+      return ConnectivityService.hasInternet();
     } catch (e) {
       debugPrint('Error checking connectivity: $e');
       // Assume connected if check fails (to avoid blocking operations)

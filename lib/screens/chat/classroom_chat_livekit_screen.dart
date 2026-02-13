@@ -5,11 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:livekit_client/livekit_client.dart';
 import '../../widgets/whiteboard/interactive_whiteboard.dart';
+import 'package:lingafriq/avatars/avatars.dart';
 
 /// LiveKit Classroom Chat with Video/Audio and Whiteboard
 class ClassroomChatLiveKitScreen extends HookConsumerWidget {
@@ -290,6 +290,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
     LocalParticipant? localParticipant,
     bool isDark,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
@@ -349,7 +350,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
             label: Text('Leave'),
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.error,
-              foregroundColor: Colors.white,
+              foregroundColor: colorScheme.onPrimary,
             ),
           ),
         ],
@@ -371,6 +372,7 @@ class _VideoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -394,13 +396,13 @@ class _VideoTile extends StatelessWidget {
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.6),
+                color: Theme.of(context).colorScheme.scrim.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
               ),
               child: Text(
                 participant['name'] ?? 'Participant',
                 style: PanAfricanTypography.labelSmall(context)
-                    .copyWith(color: Colors.white),
+                    .copyWith(color: colorScheme.onSurface),
               ),
             ),
           ),
@@ -428,17 +430,18 @@ class _VideoTile extends StatelessWidget {
       // Render actual LiveKit video track
       // Use platform-specific rendering (will be handled by LiveKit internally)
       // For now, show a placeholder that indicates video is active
+      final colorScheme = Theme.of(context).colorScheme;
       return Container(
-        color: Colors.black,
+        color: Theme.of(context).colorScheme.surface,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.videocam, size: 48.sp, color: Colors.white),
+              Icon(Icons.videocam, size: 48.sp, color: colorScheme.onSurface),
               SizedBox(height: 2.h),
               Text(
                 'Video Active',
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(color: colorScheme.onSurface, fontSize: 14.sp),
               ),
             ],
           ),
@@ -451,14 +454,9 @@ class _VideoTile extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 40.r,
-            backgroundColor: PanAfricanColors.primary,
-            child: Text(
-              (participant['name'] ?? 'U')[0].toUpperCase(),
-              style: PanAfricanTypography.headlineSmall(context)
-                  .copyWith(color: Colors.white),
-            ),
+          LingAfriqAvatar.fromInitials(
+            username: participant['name'] ?? 'U',
+            size: 80.r,
           ),
           SizedBox(height: PanAfricanSpacing.sm),
           Text(
@@ -470,108 +468,107 @@ class _VideoTile extends StatelessWidget {
     );
   }
 
-  void _showParticipantsList(
-    BuildContext context,
-    List<Map<String, dynamic>> participants,
-    LocalParticipant? localParticipant,
-    Map<String, RemoteParticipant> remoteParticipants,
-  ) {
-    showModalBottomSheet(
-      context: context,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) => Container(
-        padding: EdgeInsets.all(16.sp),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Participants (${participants.length})',
-              style: PanAfricanTypography.titleLarge(context),
-            ),
-            SizedBox(height: 16.h),
-            Expanded(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: participants.length,
-                itemBuilder: (context, index) {
-                  final participant = participants[index];
-                  final isLocal = participant['isLocal'] == true;
-                  final participantId = participant['id'] as String;
-                  final remoteParticipant = remoteParticipants[participantId];
-                  
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: PanAfricanColors.primaryGreen,
-                      child: Icon(
-                        isLocal ? Icons.person : Icons.person_outline,
-                        color: Colors.white,
-                      ),
-                    ),
-                    title: Text(
-                      participant['name'] ?? 'Unknown',
-                      style: PanAfricanTypography.bodyLarge(context),
-                    ),
-                    subtitle: Text(
-                      isLocal ? 'You' : 'Participant',
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (remoteParticipant != null) ...[
-                          Icon(
-                            remoteParticipant.isMicrophoneEnabled() 
-                                ? Icons.mic 
-                                : Icons.mic_off,
-                            color: remoteParticipant.isMicrophoneEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(
-                            remoteParticipant.isCameraEnabled() 
-                                ? Icons.videocam 
-                                : Icons.videocam_off,
-                            color: remoteParticipant.isCameraEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                        ] else if (isLocal && localParticipant != null) ...[
-                          Icon(
-                            localParticipant.isMicrophoneEnabled() 
-                                ? Icons.mic 
-                                : Icons.mic_off,
-                            color: localParticipant.isMicrophoneEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                          SizedBox(width: 8.w),
-                          Icon(
-                            localParticipant.isCameraEnabled() 
-                                ? Icons.videocam 
-                                : Icons.videocam_off,
-                            color: localParticipant.isCameraEnabled() 
-                                ? Colors.green 
-                                : Colors.red,
-                            size: 20.sp,
-                          ),
-                        ],
+}
+
+/// Top-level function so both [ClassroomChatLiveKitScreen] and [_VideoTile] can call it.
+void _showParticipantsList(
+  BuildContext context,
+  List<Map<String, dynamic>> participants,
+  LocalParticipant? localParticipant,
+  Map<String, RemoteParticipant> remoteParticipants,
+) {
+  showModalBottomSheet(
+    context: context,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    ),
+    builder: (context) => Container(
+      padding: EdgeInsets.all(16.sp),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Participants (${participants.length})',
+            style: PanAfricanTypography.titleLarge(context),
+          ),
+          SizedBox(height: 16.h),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: participants.length,
+              itemBuilder: (context, index) {
+                final participant = participants[index];
+                final isLocal = participant['isLocal'] == true;
+                final participantId = participant['id'] as String;
+                final remoteParticipant = remoteParticipants[participantId];
+                
+                return ListTile(
+                  leading: LingAfriqAvatar.fromInitials(
+                    username: participant['name'] ?? 'U',
+                    size: 40,
+                  ),
+                  title: Text(
+                    participant['name'] ?? 'Unknown',
+                    style: PanAfricanTypography.bodyLarge(context),
+                  ),
+                  subtitle: Text(
+                    isLocal ? 'You' : 'Participant',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (remoteParticipant != null) ...[
+                        Icon(
+                          remoteParticipant.isMicrophoneEnabled() 
+                              ? Icons.mic 
+                              : Icons.mic_off,
+                          color: remoteParticipant.isMicrophoneEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Icon(
+                          remoteParticipant.isCameraEnabled() 
+                              ? Icons.videocam 
+                              : Icons.videocam_off,
+                          color: remoteParticipant.isCameraEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
+                      ] else if (isLocal && localParticipant != null) ...[
+                        Icon(
+                          localParticipant.isMicrophoneEnabled() 
+                              ? Icons.mic 
+                              : Icons.mic_off,
+                          color: localParticipant.isMicrophoneEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: 8.w),
+                        Icon(
+                          localParticipant.isCameraEnabled() 
+                              ? Icons.videocam 
+                              : Icons.videocam_off,
+                          color: localParticipant.isCameraEnabled() 
+                              ? Colors.green 
+                              : Colors.red,
+                          size: 20.sp,
+                        ),
                       ],
-                    ),
-                  );
-                },
-              ),
+                    ],
+                  ),
+                );
+              },
             ),
-            SizedBox(height: 16.h),
-          ],
-        ),
+          ),
+          SizedBox(height: 16.h),
+        ],
       ),
-    );
-  }
+    ),
+  );
 }
 

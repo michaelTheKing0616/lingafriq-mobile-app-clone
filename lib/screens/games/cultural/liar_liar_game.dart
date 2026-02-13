@@ -85,11 +85,13 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
       });
     } catch (e) {
       debugPrint('Error loading sentence: $e');
+      // Use fallback content so game is still playable
       setState(() {
-        setLoading(false);
+        _round++;
         _currentSentence = _getFallbackSentence();
         _hasError = Random().nextBool();
         _errorExplanation = 'Check grammar, word order, and verb conjugation.';
+        setLoading(false);
       });
     }
   }

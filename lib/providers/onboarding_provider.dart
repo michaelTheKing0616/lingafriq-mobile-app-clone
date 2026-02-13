@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
@@ -150,6 +149,11 @@ class OnboardingNotifier extends Notifier<OnboardingData> {
       location: state.location,
       placementTestResults: state.placementTestResults,
     );
+  }
+
+  /// Alias for [updateProficiency] — some callers use this name.
+  void updateProficiencyLevel(String level, {bool? literacyPreference}) {
+    updateProficiency(level, literacyPreference: literacyPreference);
   }
   
   void updateLearningStyle(String style, {String? pace}) {

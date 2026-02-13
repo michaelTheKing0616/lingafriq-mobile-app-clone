@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 class CEFRProgressCard extends StatelessWidget {
@@ -14,7 +14,7 @@ class CEFRProgressCard extends StatelessWidget {
 
     return Card(
       margin: const EdgeInsets.all(16),
-      color: isDark ? Colors.grey[800] : Colors.white,
+      color: isDark ? Colors.grey[800] : Theme.of(context).colorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -36,7 +36,7 @@ class CEFRProgressCard extends StatelessWidget {
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      colors: [AppColors.primaryGreen, AppColors.accentGold],
+                      colors: [PanAfricanColors.primary, PanAfricanColors.secondary],
                     ),
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -45,7 +45,7 @@ class CEFRProgressCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ),
@@ -67,7 +67,7 @@ class CEFRProgressCard extends StatelessWidget {
                 minHeight: 12,
                 backgroundColor: isDark ? Colors.grey[700] : Colors.grey[200],
                 valueColor: AlwaysStoppedAnimation<Color>(
-                  AppColors.primaryGreen,
+                  PanAfricanColors.primary,
                 ),
               ),
             ),
@@ -75,12 +75,12 @@ class CEFRProgressCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildLevelIndicator('A1', cefr.level == 'A1', 0),
-                _buildLevelIndicator('A2', cefr.level == 'A2', 20),
-                _buildLevelIndicator('B1', cefr.level == 'B1', 40),
-                _buildLevelIndicator('B2', cefr.level == 'B2', 55),
-                _buildLevelIndicator('C1', cefr.level == 'C1', 70),
-                _buildLevelIndicator('C2', cefr.level == 'C2', 85),
+                _buildLevelIndicator(context, 'A1', cefr.level == 'A1', 0),
+                _buildLevelIndicator(context, 'A2', cefr.level == 'A2', 20),
+                _buildLevelIndicator(context, 'B1', cefr.level == 'B1', 40),
+                _buildLevelIndicator(context, 'B2', cefr.level == 'B2', 55),
+                _buildLevelIndicator(context, 'C1', cefr.level == 'C1', 70),
+                _buildLevelIndicator(context, 'C2', cefr.level == 'C2', 85),
               ],
             ),
           ],
@@ -89,8 +89,9 @@ class CEFRProgressCard extends StatelessWidget {
     );
   }
 
-  Widget _buildLevelIndicator(String level, bool isCurrent, double threshold) {
+  Widget _buildLevelIndicator(BuildContext context, String level, bool isCurrent, double threshold) {
     final isReached = cefr.score >= threshold;
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
     return Column(
       children: [
         Container(
@@ -99,21 +100,21 @@ class CEFRProgressCard extends StatelessWidget {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: isCurrent
-                ? AppColors.primaryGreen
+                ? PanAfricanColors.primary
                 : (isReached
-                    ? AppColors.accentGold
+                    ? PanAfricanColors.secondary
                     : Colors.grey.withOpacity(0.3)),
             border: Border.all(
               color: isCurrent
-                  ? AppColors.primaryGreen
-                  : (isReached ? AppColors.accentGold : Colors.grey),
+                  ? PanAfricanColors.primary
+                  : (isReached ? PanAfricanColors.secondary : Colors.grey),
               width: 2,
             ),
           ),
           child: isCurrent
-              ? const Icon(Icons.check, size: 16, color: Colors.white)
+              ? Icon(Icons.check, size: 16, color: onPrimary)
               : (isReached
-                  ? const Icon(Icons.check, size: 16, color: Colors.white)
+                  ? Icon(Icons.check, size: 16, color: onPrimary)
                   : null),
         ),
         const SizedBox(height: 4),
@@ -123,12 +124,11 @@ class CEFRProgressCard extends StatelessWidget {
             fontSize: 10.sp,
             fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
             color: isCurrent
-                ? AppColors.primaryGreen
-                : (isReached ? AppColors.accentGold : Colors.grey),
+                ? PanAfricanColors.primary
+                : (isReached ? PanAfricanColors.secondary : Colors.grey),
           ),
         ),
       ],
     );
   }
 }
-

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 /// Personality trait ranges (0.0 to 1.0)
 class PersonalityTraits {
   /// Energy level: 0 = calm/serene, 1 = energetic/vibrant
@@ -533,10 +531,14 @@ class PersonalitySystem {
         return _personalities['weaver']!;
       case OnboardingStep.goals:
         return _personalities['pathfinder']!;
+      case OnboardingStep.learningStyle:
+        return _personalities['weaver']!; // Learning style guided by Adisa
       case OnboardingStep.schedule:
         return _personalities['timekeeper']!;
       case OnboardingStep.story:
         return _personalities['griot']!;
+      case OnboardingStep.profile:
+        return _personalities['elder']!; // Profile setup guided by elder
       case OnboardingStep.complete:
         return _personalities['elder']!;
     }

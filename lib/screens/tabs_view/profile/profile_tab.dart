@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -16,6 +17,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import '../../../providers/auth_provider.dart';
 import '../../../providers/dialog_provider.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/pan_african_design_system.dart';
 import 'delete_account_dialogue.dart';
 
 class ProfileTab extends HookConsumerWidget {
@@ -64,10 +66,10 @@ class ProfileTab extends HookConsumerWidget {
                       Chip(
                         labelPadding:
                             const EdgeInsets.symmetric(horizontal: 12),
-                        backgroundColor: AppColors.primaryGreen,
+                        backgroundColor: PanAfricanColors.primary,
                         visualDensity: VisualDensity.compact,
                         label: Text(user?.rank.toString()??'',style: TextStyle(
-                          color: Colors.white
+                          color: Theme.of(context).colorScheme.onPrimary
                         ),),
                         // label: (user?.rank ?? "0")
                         //     .toString()
@@ -99,14 +101,14 @@ class ProfileTab extends HookConsumerWidget {
                 _ProfileItem(
                   title: "Who are we?",
                   onTap: () {
-                    kLaunchUrl('https://lingafriq.com/#about-us');
+                    kLaunchUrl('${EnvConfig.appWebUrl}/#about-us');
                     // ref.read(navigationProvider).navigateTo(const AboutUsScreen());
                   },
                 ),
                 _ProfileItem(
                   title: "App Privacy and User Policy",
                   onTap: () {
-                    kLaunchUrl('https://lingafriq.com/app-policy.html');
+                    kLaunchUrl('${EnvConfig.appWebUrl}/app-policy.html');
                     // ref.read(navigationProvider).navigateTo(const AppPolicyScreen());
                   },
                 ),
@@ -199,8 +201,8 @@ class ProfileImageBuilder extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final current = kAvatarsList.containsKey(user?.avater)
-        ? kAvatarsList[user?.avater]!
+    final current = kAvatarsList.containsKey(user?.avatar)
+        ? kAvatarsList[user?.avatar]!
         : kAvatarsList.values.first;
 
     return Container(
@@ -227,13 +229,13 @@ class ProfileImageBuilder extends ConsumerWidget {
                 onTap: onTap,
                 child: Container(
                   padding: const EdgeInsets.all(2),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surface,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.edit_outlined,
-                    color: AppColors.primaryOrange,
+                    color: PanAfricanColors.tertiary,
                     size: 24.sp,
                   ),
                 ),

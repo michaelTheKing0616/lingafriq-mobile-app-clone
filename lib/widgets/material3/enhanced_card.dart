@@ -4,8 +4,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../utils/haptic_feedback_helper.dart';
-import 'material3_migration_helper.dart';
-
 class EnhancedCard extends StatelessWidget {
   final Widget child;
   final Color? color;

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/models/curriculum_model.dart';
@@ -21,7 +18,7 @@ class CurriculumViewerScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${curriculum['language']} - ${curriculum['level']}'),
-        backgroundColor: AppColors.primaryGreen,
+        backgroundColor: PanAfricanColors.primary,
       ),
       body: ListView.builder(
         padding: const EdgeInsets.all(16),
@@ -32,7 +29,7 @@ class CurriculumViewerScreen extends StatelessWidget {
 
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
-            color: isDark ? Colors.grey[800] : Colors.white,
+            color: isDark ? Colors.grey[800] : Theme.of(context).colorScheme.surface,
             child: ExpansionTile(
               title: Text(
                 'Week ${week['week']}',
@@ -83,7 +80,7 @@ class CurriculumViewerScreen extends StatelessWidget {
                           'Vocabulary: ${(lessonMap['vocab'] as List?)?.length ?? 0} words',
                           style: TextStyle(
                             fontSize: 12.sp,
-                            color: AppColors.primaryGreen,
+                            color: PanAfricanColors.primary,
                           ),
                         ),
                       ],
@@ -92,7 +89,7 @@ class CurriculumViewerScreen extends StatelessWidget {
                   trailing: Icon(
                     Icons.arrow_forward_ios,
                     size: 16,
-                    color: AppColors.primaryGreen,
+                    color: PanAfricanColors.primary,
                   ),
                   onTap: () {
                     // Convert lesson map to CurriculumLesson object

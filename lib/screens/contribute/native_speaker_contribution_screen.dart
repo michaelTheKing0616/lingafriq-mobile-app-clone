@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../services/voice/audio_recording_service.dart';
 import '../../services/voice/voice_api_service.dart';
@@ -119,8 +121,8 @@ class _NativeSpeakerContributionScreenState
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contribute Your Voice'),
-        backgroundColor: isDark ? const Color(0xFF1F3527) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
+        foregroundColor: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
         elevation: 0,
         actions: [
           if (_recordingsCompleted > 0)
@@ -248,7 +250,7 @@ class _NativeSpeakerContributionScreenState
               label: const Text('Start Contributing'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -313,7 +315,7 @@ class _NativeSpeakerContributionScreenState
         Container(
           padding: EdgeInsets.all(16.sp),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
+            color: isDark ? const Color(0xFF1F3527) : Theme.of(context).colorScheme.surface,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
@@ -503,7 +505,7 @@ class _NativeSpeakerContributionScreenState
               label: const Text('Generate Prompts'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
           ],
@@ -628,7 +630,7 @@ class _NativeSpeakerContributionScreenState
                   label: const Text('Submit & Next'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ],
@@ -695,7 +697,7 @@ class _NativeSpeakerContributionScreenState
               label: const Text('Generate More Prompts'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
                 padding: EdgeInsets.symmetric(
                   horizontal: 24.w,
                   vertical: 16.h,
@@ -754,7 +756,9 @@ class _NativeSpeakerContributionScreenState
     } catch (e) {
       setState(() {
         _isLoadingPrompts = false;
-        _loadError = e.toString();
+        _loadError = e is DioException
+            ? TransportErrorPolicy.toUserMessage(e)
+            : e.toString();
       });
     }
   }

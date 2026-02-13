@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../utils/app_colors.dart';
+import '../../utils/pan_african_design_system.dart';
 
 /// A beautiful achievement celebration modal with confetti effect
 /// Shows when user unlocks badges, completes milestones, or achieves special goals
@@ -42,7 +42,7 @@ class AchievementCelebrationModal extends StatefulWidget {
       context: context,
       barrierDismissible: true,
       barrierLabel: 'Achievement',
-      barrierColor: Colors.black54,
+      barrierColor: Theme.of(context).colorScheme.scrim.withOpacity(0.54),
       transitionDuration: const Duration(milliseconds: 400),
       pageBuilder: (context, animation, secondaryAnimation) {
         return AchievementCelebrationModal(
@@ -122,9 +122,9 @@ class _AchievementCelebrationModalState
 
   Color _getConfettiColor() {
     final colors = [
-      AppColors.accentGold,
-      AppColors.primaryOrange,
-      AppColors.primaryGreen,
+      PanAfricanColors.secondary,
+      PanAfricanColors.tertiary,
+      PanAfricanColors.primary,
       Colors.red,
       Colors.blue,
       Colors.purple,
@@ -142,7 +142,7 @@ class _AchievementCelebrationModalState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final accentColor = widget.accentColor ?? AppColors.accentGold;
+    final accentColor = widget.accentColor ?? PanAfricanColors.secondary;
 
     return Stack(
       children: [
@@ -176,8 +176,8 @@ class _AchievementCelebrationModalState
                           const Color(0xFF0D1B2A),
                         ]
                       : [
-                          Colors.white,
-                          Colors.grey.shade50,
+                          Theme.of(context).colorScheme.surface,
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
                         ],
                 ),
                 borderRadius: BorderRadius.circular(24),
@@ -262,7 +262,7 @@ class _AchievementCelebrationModalState
                           style: TextStyle(
                             fontSize: 24.sp,
                             fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
+                            color: isDark ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onSurface,
                           ),
                           textAlign: TextAlign.center,
                         ),
@@ -274,8 +274,8 @@ class _AchievementCelebrationModalState
                           style: TextStyle(
                             fontSize: 14.sp,
                             color: isDark
-                                ? Colors.white70
-                                : Colors.black54,
+                                ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
+                                : Theme.of(context).colorScheme.onSurface.withOpacity(0.54),
                             height: 1.5,
                           ),
                           textAlign: TextAlign.center,
@@ -303,7 +303,7 @@ class _AchievementCelebrationModalState
                                 if (widget.xpReward > 0) ...[
                                   Icon(
                                     Icons.star_rounded,
-                                    color: AppColors.accentGold,
+                                    color: PanAfricanColors.secondary,
                                     size: 24.sp,
                                   ),
                                   SizedBox(width: 6.w),
@@ -312,7 +312,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.accentGold,
+                                      color: PanAfricanColors.secondary,
                                     ),
                                   ),
                                 ],
@@ -329,7 +329,7 @@ class _AchievementCelebrationModalState
                                     style: TextStyle(
                                       fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryOrange,
+                                      color: PanAfricanColors.tertiary,
                                     ),
                                   ),
                                 ],
@@ -347,7 +347,7 @@ class _AchievementCelebrationModalState
                             onPressed: widget.onDismiss,
                             style: FilledButton.styleFrom(
                               backgroundColor: accentColor,
-                              foregroundColor: Colors.white,
+                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
                               padding: EdgeInsets.symmetric(vertical: 16.h),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -443,7 +443,7 @@ void showBadgeUnlockCelebration(
     iconEmoji: badgeEmoji,
     xpReward: xpReward,
     currencyReward: currencyReward,
-    accentColor: AppColors.accentGold,
+    accentColor: PanAfricanColors.secondary,
   );
 }
 
@@ -462,7 +462,7 @@ void showLevelUpCelebration(
     iconEmoji: '🌟',
     xpReward: bonusXP,
     currencyReward: bonusCurrency,
-    accentColor: AppColors.primaryGreen,
+    accentColor: PanAfricanColors.primary,
   );
 }
 
@@ -480,7 +480,7 @@ void showStreakMilestoneCelebration(
     iconEmoji: '🔥',
     xpReward: bonusXP,
     currencyReward: bonusCurrency,
-    accentColor: AppColors.primaryOrange,
+    accentColor: PanAfricanColors.tertiary,
   );
 }
 

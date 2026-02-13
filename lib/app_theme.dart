@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/utils.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 // Font fallback to ensure diacritics/emoji render correctly on all devices.
 const _globalFontFallback = <String>[
@@ -16,20 +17,14 @@ const _globalFontFallback = <String>[
 ];
 
 final lightTheme = ThemeData(
-  useMaterial3: true, // ✅ Material 3 Enabled
-  fontFamily: 'dosis',
+  useMaterial3: true,
+  fontFamily: 'Lato',
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.light,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: primarySwatchLight.shade500, // Use primary color as seed
-    brightness: Brightness.light,
-    primary: primarySwatchLight.shade500,
-    secondary: primarySwatchDark.shade400,
-    tertiary: primarySwatchLight.shade300,
-  ),
-  canvasColor: Colors.white,
-  scaffoldBackgroundColor: Colors.white,
-  cardColor: AppColors.filledLight,
+  colorScheme: PanAfricanColorScheme.light,
+  canvasColor: PanAfricanColorScheme.light.surface,
+  scaffoldBackgroundColor: PanAfricanColorScheme.light.surface,
+  cardColor: PanAfricanColors.cardLight,
   dividerColor: Colors.black.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
@@ -39,12 +34,13 @@ final lightTheme = ThemeData(
       color: Colors.black,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'dosis',
+      fontFamily: 'Lato',
     ),
     centerTitle: true,
   ),
   cardTheme: CardThemeData(
     elevation: 2,
+    color: PanAfricanColorScheme.light.surfaceContainerLow,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
     ),
@@ -53,6 +49,8 @@ final lightTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       elevation: 2,
+      backgroundColor: PanAfricanColorScheme.light.primary,
+      foregroundColor: PanAfricanColorScheme.light.onPrimary,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -61,44 +59,126 @@ final lightTheme = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
+    fillColor: PanAfricanColorScheme.light.surfaceContainerHighest,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide.none,
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.light.outlineVariant,
+        width: 1,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.light.outlineVariant,
+        width: 1,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.light.primary,
+        width: 2,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.light.error,
+        width: 1,
+      ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+  ),
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  ),
+  dialogTheme: DialogThemeData(
+    backgroundColor: PanAfricanColorScheme.light.surfaceContainerHigh,
+    elevation: 6,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    titleTextStyle: TextStyle(
+      color: PanAfricanColorScheme.light.onSurface,
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'Lato',
+    ),
+    contentTextStyle: TextStyle(
+      color: PanAfricanColorScheme.light.onSurfaceVariant,
+      fontSize: 16,
+      fontFamily: 'Lato',
+    ),
+  ),
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: PanAfricanColorScheme.light.surfaceContainerHigh,
+    elevation: 8,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    modalBackgroundColor: PanAfricanColorScheme.light.surfaceContainerHigh,
+  ),
+  chipTheme: ChipThemeData(
+    backgroundColor: PanAfricanColorScheme.light.surfaceContainerHighest,
+    selectedColor: PanAfricanColorScheme.light.primaryContainer,
+    labelStyle: TextStyle(
+      color: PanAfricanColorScheme.light.onSurface,
+      fontSize: 14,
+      fontFamily: 'Lato',
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+  ),
+  listTileTheme: ListTileThemeData(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    titleTextStyle: TextStyle(
+      color: PanAfricanColorScheme.light.onSurface,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      fontFamily: 'Lato',
+    ),
+    subtitleTextStyle: TextStyle(
+      color: PanAfricanColorScheme.light.onSurfaceVariant,
+      fontSize: 14,
+      fontFamily: 'Lato',
+    ),
   ),
 );
 
 final darkTheme = ThemeData(
-  useMaterial3: true, // ✅ Material 3 Enabled
-  fontFamily: 'dosis',
+  useMaterial3: true,
+  fontFamily: 'Lato',
   fontFamilyFallback: _globalFontFallback,
   brightness: Brightness.dark,
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: primarySwatchDark.shade400, // Use primary color as seed
-    brightness: Brightness.dark,
-    primary: primarySwatchDark.shade400,
-    secondary: primarySwatchLight.shade300,
-    tertiary: primarySwatchDark.shade300,
-  ),
+  colorScheme: PanAfricanColorScheme.dark,
   canvasColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
-  cardColor: AppColors.filledDark,
-  dividerColor: Colors.white.withValues(alpha: 0.12),
+  cardColor: PanAfricanColors.cardDark,
+  dividerColor: PanAfricanColorScheme.dark.onSurface.withValues(alpha: 0.12),
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.transparent,
     elevation: 0,
-    iconTheme: const IconThemeData(color: Colors.white),
+    iconTheme: IconThemeData(color: PanAfricanColorScheme.dark.onSurface),
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: PanAfricanColorScheme.dark.onSurface,
       fontSize: 20,
       fontWeight: FontWeight.w600,
-      fontFamily: 'dosis',
+      fontFamily: 'Lato',
     ),
     centerTitle: true,
   ),
   cardTheme: CardThemeData(
     elevation: 2,
+    color: PanAfricanColorScheme.dark.surfaceContainerLow,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
     ),
@@ -107,6 +187,8 @@ final darkTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       elevation: 2,
+      backgroundColor: PanAfricanColorScheme.dark.primary,
+      foregroundColor: PanAfricanColorScheme.dark.onPrimary,
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -115,11 +197,98 @@ final darkTheme = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
+    fillColor: PanAfricanColorScheme.dark.surfaceContainerHighest,
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
-      borderSide: BorderSide.none,
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.dark.outlineVariant,
+        width: 1,
+      ),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.dark.outlineVariant,
+        width: 1,
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.dark.primary,
+        width: 2,
+      ),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(
+        color: PanAfricanColorScheme.dark.error,
+        width: 1,
+      ),
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+  ),
+  pageTransitionsTheme: const PageTransitionsTheme(
+    builders: {
+      TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+      TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+    },
+  ),
+  dialogTheme: DialogThemeData(
+    backgroundColor: PanAfricanColorScheme.dark.surfaceContainerHigh,
+    elevation: 6,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    titleTextStyle: TextStyle(
+      color: PanAfricanColorScheme.dark.onSurface,
+      fontSize: 20,
+      fontWeight: FontWeight.w600,
+      fontFamily: 'Lato',
+    ),
+    contentTextStyle: TextStyle(
+      color: PanAfricanColorScheme.dark.onSurfaceVariant,
+      fontSize: 16,
+      fontFamily: 'Lato',
+    ),
+  ),
+  bottomSheetTheme: BottomSheetThemeData(
+    backgroundColor: PanAfricanColorScheme.dark.surfaceContainerHigh,
+    elevation: 8,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    modalBackgroundColor: PanAfricanColorScheme.dark.surfaceContainerHigh,
+  ),
+  chipTheme: ChipThemeData(
+    backgroundColor: PanAfricanColorScheme.dark.surfaceContainerHighest,
+    selectedColor: PanAfricanColorScheme.dark.primaryContainer,
+    labelStyle: TextStyle(
+      color: PanAfricanColorScheme.dark.onSurface,
+      fontSize: 14,
+      fontFamily: 'Lato',
+    ),
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(8),
+    ),
+  ),
+  listTileTheme: ListTileThemeData(
+    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    titleTextStyle: TextStyle(
+      color: PanAfricanColorScheme.dark.onSurface,
+      fontSize: 16,
+      fontWeight: FontWeight.w500,
+      fontFamily: 'Lato',
+    ),
+    subtitleTextStyle: TextStyle(
+      color: PanAfricanColorScheme.dark.onSurfaceVariant,
+      fontSize: 14,
+      fontFamily: 'Lato',
+    ),
   ),
 );
 

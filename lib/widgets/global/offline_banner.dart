@@ -8,8 +8,8 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import '../../services/offline/offline_handler.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 class OfflineBanner extends StatefulWidget {
   final Widget child;
@@ -27,32 +27,42 @@ class OfflineBanner extends StatefulWidget {
 
 class _OfflineBannerState extends State<OfflineBanner> {
   final OfflineHandler _offlineHandler = OfflineHandler();
-  final Connectivity _connectivity = Connectivity();
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySub;
   bool _isOnline = true;
   Map<String, dynamic> _syncStatus = {};
+  Timer? _connectivityTimer;
+  static const Duration _connectivityPollInterval = Duration(seconds: 5);
 
   @override
   void initState() {
     super.initState();
-    _checkConnectivity();
-    _connectivitySub = _connectivity.onConnectivityChanged.listen((result) {
-      setState(() {
-        _isOnline = result.any((r) => r != ConnectivityResult.none);
-        _syncStatus = _offlineHandler.getSyncStatus();
-      });
-    });
-
+    _refreshConnectivity();
+    _startConnectivityPolling();
     // Update sync status periodically
     _updateSyncStatus();
   }
 
-  Future<void> _checkConnectivity() async {
-    final result = await _connectivity.checkConnectivity();
-    setState(() {
-      _isOnline = result.any((r) => r != ConnectivityResult.none);
-      _syncStatus = _offlineHandler.getSyncStatus();
-    });
+  void _startConnectivityPolling() {
+    _connectivityTimer?.cancel();
+    _connectivityTimer = Timer.periodic(
+      _connectivityPollInterval,
+      (_) => unawaited(_refreshConnectivity()),
+    );
+  }
+
+  Future<void> _refreshConnectivity() async {
+    try {
+      final isOnline = await ConnectivityService.hasInternet();
+      if (!mounted) return;
+      setState(() {
+        _isOnline = isOnline;
+        _syncStatus = _offlineHandler.getSyncStatus();
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _syncStatus = _offlineHandler.getSyncStatus();
+      });
+    }
   }
 
   void _updateSyncStatus() {
@@ -68,7 +78,7 @@ class _OfflineBannerState extends State<OfflineBanner> {
 
   @override
   void dispose() {
-    _connectivitySub?.cancel();
+    _connectivityTimer?.cancel();
     super.dispose();
   }
 
@@ -105,22 +115,24 @@ class _OfflineBannerState extends State<OfflineBanner> {
       color: Colors.orange[700],
       child: SafeArea(
         bottom: false,
-        child: Row(
-          children: [
-            const Icon(Icons.cloud_off, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            const Expanded(
-              child: Text(
-                'You are offline',
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+        child: Builder(
+          builder: (context) => Row(
+            children: [
+              Icon(Icons.cloud_off, color: Theme.of(context).colorScheme.onSurface, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'You are offline',
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w500),
+                ),
               ),
-            ),
-            if (_syncStatus['queue_length'] != null && _syncStatus['queue_length'] > 0)
-              Text(
-                '${_syncStatus['queue_length']} pending',
-                style: const TextStyle(color: Colors.white, fontSize: 12),
-              ),
-          ],
+              if (_syncStatus['queue_length'] != null && _syncStatus['queue_length'] > 0)
+                Text(
+                  '${_syncStatus['queue_length']} pending',
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontSize: 12),
+                ),
+            ],
+          ),
         ),
       ),
     );
@@ -133,26 +145,28 @@ class _OfflineBannerState extends State<OfflineBanner> {
       color: Colors.blue[700],
       child: SafeArea(
         bottom: false,
-        child: Row(
-          children: [
-            const Icon(Icons.sync, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(
-                'Syncing $pendingCount item${pendingCount != 1 ? 's' : ''}...',
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-              ),
-            ),
-            if (_syncStatus['is_syncing'] == true)
-              const SizedBox(
-                width: 16,
-                height: 16,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        child: Builder(
+          builder: (context) => Row(
+            children: [
+              Icon(Icons.sync, color: Theme.of(context).colorScheme.onSurface, size: 20),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Syncing $pendingCount item${pendingCount != 1 ? 's' : ''}...',
+                  style: TextStyle(color: Theme.of(context).colorScheme.onSurface, fontWeight: FontWeight.w500),
                 ),
               ),
-          ],
+              if (_syncStatus['is_syncing'] == true)
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onSurface),
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

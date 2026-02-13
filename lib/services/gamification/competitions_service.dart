@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 class CompetitionsService {
   final Dio _dio;
@@ -13,7 +13,7 @@ class CompetitionsService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/competitions',
+        ApiContract.url(ApiContract.competitions.list),
         queryParameters: {
           if (status != null) 'status': status,
           if (type != null) 'type': type,
@@ -28,7 +28,8 @@ class CompetitionsService {
   /// Get competition details
   Future<Map<String, dynamic>> getCompetition(String competitionId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/competitions/$competitionId');
+      final response = await _dio
+          .get(ApiContract.url(ApiContract.competitions.details(competitionId)));
       return response.data;
     } catch (e) {
       rethrow;
@@ -39,7 +40,7 @@ class CompetitionsService {
   Future<Map<String, dynamic>> getCompetitionResults(String competitionId, {int limit = 50}) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}api/competitions/$competitionId/results',
+        ApiContract.url(ApiContract.competitions.results(competitionId)),
         queryParameters: {'limit': limit},
       );
       return response.data;

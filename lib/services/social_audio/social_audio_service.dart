@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import '../../providers/api_provider.dart';
-import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
 import 'social_audio_cache.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 /// Social Audio Service - Manages Spaces-like audio rooms
 /// Full backend integration with no placeholders
 class SocialAudioService {
@@ -57,7 +55,7 @@ class SocialAudioService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioRooms}',
+        ApiContract.url(ApiContract.socialAudio.rooms),
         queryParameters: queryParams,
       );
 
@@ -91,7 +89,7 @@ class SocialAudioService {
           return cachedRooms;
         }
       }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error discovering rooms: $e');
       // Return cached data on error if available
@@ -108,7 +106,8 @@ class SocialAudioService {
   /// Get room details
   Future<SocialAudioRoom?> getRoom(String roomId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}${Api.socialAudioRoom(roomId)}');
+      final response =
+          await _dio.get(ApiContract.url(ApiContract.socialAudio.room(roomId)));
 
       if (response.statusCode == 200) {
         final data = response.data;
@@ -122,7 +121,7 @@ class SocialAudioService {
         return null;
       }
       debugPrint('Error getting room: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting room: $e');
       rethrow;
@@ -158,7 +157,7 @@ class SocialAudioService {
       };
 
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioRooms}',
+        ApiContract.url(ApiContract.socialAudio.rooms),
         data: data,
       );
 
@@ -183,7 +182,7 @@ class SocialAudioService {
       if (e.response != null) {
         debugPrint('Response data: ${e.response?.data}');
       }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error creating room: $e');
       rethrow;
@@ -198,7 +197,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioRoomJoin(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomJoin(roomId)),
         data: {
           'user_id': userId,
           'role': role.name,
@@ -244,14 +243,8 @@ class SocialAudioService {
       debugPrint('Error joining room: ${e.message}');
       if (e.response != null) {
         debugPrint('Response data: ${e.response?.data}');
-        // Handle specific error cases
-        if (e.response?.statusCode == 403) {
-          throw Exception('Room is full or access denied');
-        } else if (e.response?.statusCode == 404) {
-          throw Exception('Room not found');
-        }
       }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error joining room: $e');
       rethrow;
@@ -265,7 +258,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioRoomLeave(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomLeave(roomId)),
         data: {'user_id': userId},
       );
 
@@ -281,7 +274,7 @@ class SocialAudioService {
       debugPrint('Error leaving room: ${e.message}');
       // Don't throw for 404 - user might already have left
       if (e.response?.statusCode != 404) {
-        rethrow;
+        throw Exception(TransportErrorPolicy.toUserMessage(e));
       }
     } catch (e) {
       debugPrint('Error leaving room: $e');
@@ -296,7 +289,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.patch(
-        '${Api.baseurl}${Api.socialAudioRoomStatus(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomStatus(roomId)),
         data: {'status': status.name},
       );
 
@@ -313,10 +306,7 @@ class SocialAudioService {
       );
     } on DioException catch (e) {
       debugPrint('Error updating room status: ${e.message}');
-      if (e.response?.statusCode == 403) {
-        throw Exception('You do not have permission to update this room');
-      }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error updating room status: $e');
       rethrow;
@@ -330,7 +320,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioRoomSpeakers(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomSpeakers(roomId)),
         data: {'user_id': userId},
       );
 
@@ -344,12 +334,7 @@ class SocialAudioService {
       }
     } on DioException catch (e) {
       debugPrint('Error promoting to speaker: ${e.message}');
-      if (e.response?.statusCode == 403) {
-        throw Exception('You do not have permission to promote users');
-      } else if (e.response?.statusCode == 404) {
-        throw Exception('User or room not found');
-      }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error promoting to speaker: $e');
       rethrow;
@@ -391,7 +376,7 @@ class SocialAudioService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioRoomsScheduled}',
+        ApiContract.url(ApiContract.socialAudio.roomsScheduled),
         queryParameters: queryParams,
       );
 
@@ -419,7 +404,7 @@ class SocialAudioService {
           return cachedRooms;
         }
       }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting scheduled rooms: $e');
       // Return cached data on error
@@ -460,7 +445,7 @@ class SocialAudioService {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioRoomsUser}',
+        ApiContract.url(ApiContract.socialAudio.roomsUser),
         queryParameters: queryParams,
       );
 
@@ -488,7 +473,7 @@ class SocialAudioService {
           return cachedRooms;
         }
       }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting user rooms: $e');
       // Return cached data on error
@@ -519,7 +504,7 @@ class SocialAudioService {
   Future<List<RoomParticipant>> getRoomParticipants(String roomId) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioRoomParticipants(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomParticipants(roomId)),
       );
 
       if (response.statusCode == 200) {
@@ -534,7 +519,7 @@ class SocialAudioService {
       return [];
     } on DioException catch (e) {
       debugPrint('Error getting room participants: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting room participants: $e');
       rethrow;
@@ -550,7 +535,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioRoomModerate(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomModerate(roomId)),
         data: {
           'target_user_id': targetUserId,
           'action': action,
@@ -568,10 +553,7 @@ class SocialAudioService {
       }
     } on DioException catch (e) {
       debugPrint('Error moderating room: ${e.message}');
-      if (e.response?.statusCode == 403) {
-        throw Exception('You do not have permission to moderate this room');
-      }
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error moderating room: $e');
       rethrow;
@@ -586,7 +568,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioRoomHistory(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomHistory(roomId)),
         queryParameters: {
           'limit': limit,
           'offset': offset,
@@ -603,7 +585,7 @@ class SocialAudioService {
       return [];
     } on DioException catch (e) {
       debugPrint('Error getting room history: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting room history: $e');
       rethrow;
@@ -617,7 +599,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioFollowUser(targetUserId)}',
+        ApiContract.url(ApiContract.socialAudio.followUser(targetUserId)),
         data: {'user_id': userId},
       );
 
@@ -631,7 +613,7 @@ class SocialAudioService {
       }
     } on DioException catch (e) {
       debugPrint('Error following user: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error following user: $e');
       rethrow;
@@ -645,7 +627,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.delete(
-        '${Api.baseurl}${Api.socialAudioUnfollowUser(targetUserId)}',
+        ApiContract.url(ApiContract.socialAudio.followUser(targetUserId)),
         data: {'user_id': userId},
       );
 
@@ -659,7 +641,7 @@ class SocialAudioService {
       }
     } on DioException catch (e) {
       debugPrint('Error unfollowing user: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error unfollowing user: $e');
       rethrow;
@@ -674,7 +656,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioFollowingList}',
+        ApiContract.url(ApiContract.socialAudio.followingList),
         queryParameters: {
           'user_id': userId,
           'limit': limit,
@@ -692,7 +674,7 @@ class SocialAudioService {
       return [];
     } on DioException catch (e) {
       debugPrint('Error getting following list: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting following list: $e');
       rethrow;
@@ -707,7 +689,7 @@ class SocialAudioService {
   }) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioFollowers}',
+        ApiContract.url(ApiContract.socialAudio.followers),
         queryParameters: {
           'user_id': userId,
           'limit': limit,
@@ -725,7 +707,7 @@ class SocialAudioService {
       return [];
     } on DioException catch (e) {
       debugPrint('Error getting followers list: ${e.message}');
-      rethrow;
+      throw Exception(TransportErrorPolicy.toUserMessage(e));
     } catch (e) {
       debugPrint('Error getting followers list: $e');
       rethrow;

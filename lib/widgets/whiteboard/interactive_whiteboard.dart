@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -95,7 +94,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
     
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : Colors.white,
+        color: isDark ? PanAfricanColors.cardDark : Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         boxShadow: PanAfricanShadows.md,
       ),
@@ -119,7 +118,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
             child: Row(
               children: [
                 // Color picker
-                _buildColorButton(Colors.black, isDark),
+                _buildColorButton(Theme.of(context).colorScheme.onSurface, isDark),
                 SizedBox(width: PanAfricanSpacing.xs),
                 _buildColorButton(PanAfricanColors.primary, isDark),
                 SizedBox(width: PanAfricanSpacing.xs),
@@ -201,7 +200,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
           border: Border.all(
             color: isSelected 
                 ? PanAfricanColors.primary 
-                : (isDark ? Colors.white24 : Colors.black12),
+                : (isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.24) : Theme.of(context).colorScheme.onSurface.withOpacity(0.12)),
             width: isSelected ? 3 : 1,
           ),
           boxShadow: isSelected ? PanAfricanShadows.sm : null,

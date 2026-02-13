@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/models/tutor_progress_model.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:fl_chart/fl_chart.dart';
 
 /// Tutor Progress Dashboard
 /// Shows CEFR progress, skill levels, and adaptive recommendations
@@ -199,7 +196,7 @@ class _CefrProgressCard extends StatelessWidget {
                           level,
                           style: PanAfricanTypography.labelMedium(context)?.copyWith(
                             color: isCurrent || isCompleted || isNext
-                                ? Colors.white
+                                ? Theme.of(context).colorScheme.onPrimary
                                 : PanAfricanColors.neutralMedium,
                             fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
                           ),

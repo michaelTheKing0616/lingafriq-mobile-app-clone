@@ -22,6 +22,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
     final handleController = useTextEditingController(text: user?.global_id?.replaceFirst('@', '') ?? '');
     final isUpdating = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     Future<void> updateGlobalId() async {
       final newHandle = handleController.text.trim();
@@ -206,7 +207,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                         onPressed: isUpdating.value ? null : updateGlobalId,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PanAfricanColors.primary,
-                          foregroundColor: Colors.white,
+                          foregroundColor: colorScheme.onPrimary,
                         ),
                         child: isUpdating.value
                             ? SizedBox(
@@ -214,7 +215,9 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                                 height: 16.w,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    colorScheme.onPrimary,
+                                  ),
                                 ),
                               )
                             : Text('Save'),

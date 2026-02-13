@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:path_provider/path_provider.dart';
-import '../models/curriculum_model.dart';
 import '../services/polie_content_generator.dart';
 import '../services/polie_cache_service.dart';
 import '../providers/ai_chat_provider_groq.dart';

@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/roleplay_progress_model.dart';
 import '../models/tutor_progress_model.dart';
 import '../models/conversation_analytics_model.dart';
-import '../models/vocabulary_progress_model.dart';
 import '../models/review_progress_model.dart';
 import '../models/translation_history_model.dart';
 import 'roleplay_progress_service.dart';
@@ -14,7 +13,6 @@ import 'conversation_analytics_service.dart';
 import 'vocabulary_progress_service.dart';
 import 'review_progress_service.dart';
 import 'translation_history_service.dart';
-import '../providers/ai_chat_provider_groq.dart';
 
 final aiChatIntegrationServiceProvider = Provider<AiChatIntegrationService>((ref) {
   return AiChatIntegrationService(ref);

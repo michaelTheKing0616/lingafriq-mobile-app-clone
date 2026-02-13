@@ -8,12 +8,10 @@ import '../../models/game/phrase_card_model.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
 import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
 import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../models/lesson_item_model.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:dio/dio.dart';
 
 /// Pronunciation Duel - Head-to-head pronunciation scoring
 class PronunciationDuelGame extends BaseGameScreen {
@@ -205,6 +203,8 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       return const Center(child: Text('No cards available'));
     }
 
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.getGameType().displayName} (${_currentCardIndex + 1}/${_cards.length})'),
@@ -278,7 +278,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
                     label: Text(_isRecording ? 'Stop Recording' : 'Record'),
                     style: FilledButton.styleFrom(
                       backgroundColor: _isRecording ? Colors.red : Colors.blue,
-                      foregroundColor: Colors.white,
+                      foregroundColor: colorScheme.onPrimary,
                       padding: EdgeInsets.symmetric(
                         horizontal: 6.w,
                         vertical: 3.h,

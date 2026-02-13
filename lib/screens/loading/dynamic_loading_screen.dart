@@ -4,12 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
 import 'package:lingafriq/providers/loading_screen_provider.dart';
-import 'package:lingafriq/utils/app_colors.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/images.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -287,19 +283,19 @@ class _DynamicLoadingScreenState
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.accentGold.withOpacity(0.8),
-                  AppColors.primaryOrange.withOpacity(0.6),
-                  AppColors.primaryGreen.withOpacity(0.4),
+                  PanAfricanColors.secondary.withOpacity(0.8),
+                  PanAfricanColors.tertiary.withOpacity(0.6),
+                  PanAfricanColors.primary.withOpacity(0.4),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.accentGold.withOpacity(0.4),
+                  color: PanAfricanColors.secondary.withOpacity(0.4),
                   blurRadius: 30,
                   spreadRadius: 5,
                 ),
                 BoxShadow(
-                  color: AppColors.primaryGreen.withOpacity(0.2),
+                  color: PanAfricanColors.primary.withOpacity(0.2),
                   blurRadius: 50,
                   spreadRadius: 10,
                 ),
@@ -329,7 +325,7 @@ class _DynamicLoadingScreenState
                         ),
                       ),
                       child: CustomPaint(
-                        painter: _StripePainter(),
+                        painter: _StripePainter(stripeColor: Theme.of(context).colorScheme.onSurface),
                       ),
                     ),
 
@@ -360,8 +356,8 @@ class _DynamicLoadingScreenState
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            AppColors.primaryGreen.withOpacity(0.3),
-            AppColors.accentGold.withOpacity(0.2),
+            PanAfricanColors.primary.withOpacity(0.3),
+            PanAfricanColors.secondary.withOpacity(0.2),
           ],
         ),
       ),
@@ -379,7 +375,7 @@ class _DynamicLoadingScreenState
               style: TextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],
@@ -396,7 +392,7 @@ class _DynamicLoadingScreenState
           style: TextStyle(
             fontSize: 36.sp,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.onSurface,
             letterSpacing: 1.5,
           ),
         ),
@@ -405,7 +401,7 @@ class _DynamicLoadingScreenState
           content.greetingTranslation,
           style: TextStyle(
             fontSize: 14.sp,
-            color: Colors.white.withOpacity(0.7),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -430,13 +426,13 @@ class _DynamicLoadingScreenState
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              Colors.white.withOpacity(0.12),
-              Colors.white.withOpacity(0.06),
+              Theme.of(context).colorScheme.onSurface.withOpacity(0.12),
+              Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
             ],
           ),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: AppColors.accentGold.withOpacity(0.3),
+            color: PanAfricanColors.secondary.withOpacity(0.3),
             width: 1,
           ),
         ),
@@ -448,12 +444,12 @@ class _DynamicLoadingScreenState
                 Container(
                   padding: EdgeInsets.all(6.sp),
                   decoration: BoxDecoration(
-                    color: AppColors.accentGold.withOpacity(0.2),
+                    color: PanAfricanColors.secondary.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
                     Icons.auto_awesome,
-                    color: AppColors.accentGold,
+                    color: PanAfricanColors.secondary,
                     size: 16.sp,
                   ),
                 ),
@@ -463,7 +459,7 @@ class _DynamicLoadingScreenState
                   style: TextStyle(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.accentGold,
+                    color: PanAfricanColors.secondary,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -475,7 +471,7 @@ class _DynamicLoadingScreenState
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 14.sp,
-                color: Colors.white.withOpacity(0.9),
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.9),
                 height: 1.6,
                 fontWeight: FontWeight.w400,
               ),
@@ -493,7 +489,7 @@ class _DynamicLoadingScreenState
           widget.message ?? 'Getting things ready...',
           style: TextStyle(
             fontSize: 13.sp,
-            color: Colors.white.withOpacity(0.6),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
             letterSpacing: 0.5,
           ),
         ),
@@ -502,7 +498,7 @@ class _DynamicLoadingScreenState
           width: 200.sp,
           height: 4.sp,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.1),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Stack(
@@ -513,15 +509,15 @@ class _DynamicLoadingScreenState
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        AppColors.accentGold,
-                        AppColors.primaryOrange,
-                        AppColors.primaryGreen,
+                        PanAfricanColors.secondary,
+                        PanAfricanColors.tertiary,
+                        PanAfricanColors.primary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: AppColors.accentGold.withOpacity(0.5),
+                        color: PanAfricanColors.secondary.withOpacity(0.5),
                         blurRadius: 8,
                         spreadRadius: 1,
                       ),
@@ -537,7 +533,7 @@ class _DynamicLoadingScreenState
           '${(_progress * 100).toInt()}%',
           style: TextStyle(
             fontSize: 11.sp,
-            color: AppColors.accentGold.withOpacity(0.8),
+            color: PanAfricanColors.secondary.withOpacity(0.8),
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -548,10 +544,14 @@ class _DynamicLoadingScreenState
 
 /// Custom painter for stripe pattern background
 class _StripePainter extends CustomPainter {
+  final Color stripeColor;
+  
+  _StripePainter({required this.stripeColor});
+  
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.1)
+      ..color = stripeColor.withOpacity(0.1)
       ..strokeWidth = 2;
 
     const spacing = 20.0;

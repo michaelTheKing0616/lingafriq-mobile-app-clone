@@ -15,11 +15,11 @@ void showLingAfriqSuccess(BuildContext context, String message, {VoidCallback? o
   HapticFeedback.lightImpact();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+      content: Text(message, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp)),
       backgroundColor: PanAfricanColors.success,
       behavior: SnackBarBehavior.floating,
       action: (onAction != null && actionLabel != null)
-          ? SnackBarAction(label: actionLabel, textColor: Colors.white, onPressed: onAction)
+          ? SnackBarAction(label: actionLabel, textColor: Theme.of(context).colorScheme.onPrimary, onPressed: onAction)
           : null,
     ),
   );
@@ -30,11 +30,11 @@ void showLingAfriqError(BuildContext context, String message, {VoidCallback? onR
   HapticFeedback.mediumImpact();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+      content: Text(message, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp)),
       backgroundColor: PanAfricanColors.error,
       behavior: SnackBarBehavior.floating,
       action: onRetry != null
-          ? SnackBarAction(label: 'Try again', textColor: Colors.white, onPressed: onRetry)
+          ? SnackBarAction(label: 'Try again', textColor: Theme.of(context).colorScheme.onPrimary, onPressed: onRetry)
           : null,
     ),
   );
@@ -44,7 +44,7 @@ void showLingAfriqInfo(BuildContext context, String message) {
   if (!context.mounted) return;
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, style: TextStyle(color: Colors.white, fontSize: 14.sp)),
+      content: Text(message, style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp)),
       backgroundColor: PanAfricanColors.info,
       behavior: SnackBarBehavior.floating,
     ),
@@ -74,7 +74,7 @@ class LingAfriqEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final textColor = isDark ? Colors.white70 : PanAfricanColors.textSecondary;
+    final textColor = isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary;
     return Center(
       child: Padding(
         padding: EdgeInsets.all(PanAfricanSpacing.xl),
@@ -104,7 +104,7 @@ class LingAfriqEmptyState extends StatelessWidget {
                 label: Text(actionLabel!),
                 style: FilledButton.styleFrom(
                   backgroundColor: PanAfricanColors.primary,
-                  foregroundColor: Colors.white,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg, vertical: PanAfricanSpacing.md),
                 ),
               ),

@@ -3,19 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
 import 'package:just_audio/just_audio.dart';
-import 'dart:math' as math;
-import 'dart:io';
 import 'package:lingafriq/services/voice/audio_recording_service.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 
-/// Pronunciation Trainer with Waveform, Phoneme Timeline, Score Ring, Feedback
+/// Pronunciation Mode — minimal layout, large record orb, waveform, phoneme heatmap, regional toggle, streak.
 class TutorPronunciationModeScreen extends HookConsumerWidget {
   const TutorPronunciationModeScreen({Key? key}) : super(key: key);
 
@@ -24,17 +24,15 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     final textController = useTextEditingController();
     final selectedLanguage = useState<AppLanguage>(AppLanguage.yoruba);
     final isRecording = useState(false);
-    final isPlaying = useState(false);
     final pronunciationResult = useState<Map<String, dynamic>?>(null);
     final isLoading = useState(false);
-    final audioPlayer = useMemoized(() => AudioPlayer());
-    final localizationService = useMemoized(() => DynamicLocalizationService());
     final recorder = useMemoized(() => AudioRecordingService());
     final recordingPath = useState<String?>(null);
+    final useRegionalPronunciation = useState(false);
+    final practiceCount = useState<int>(0);
+    final audioPlayer = useMemoized(() => AudioPlayer()); // for optional playback of recording
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
-    // Load available languages dynamically
     final availableLanguages = AppLanguage.values;
 
     Future<void> recordAndScore() async {
@@ -91,6 +89,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
 
           if (resp.statusCode == 200) {
             pronunciationResult.value = (resp.data is Map) ? (resp.data['data'] ?? resp.data) : resp.data;
+            practiceCount.value = practiceCount.value + 1;
             return;
           }
         } catch (_) {
@@ -130,89 +129,180 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     return LoadingOverlay(
       isLoading: isLoading.value,
       message: 'Analyzing pronunciation...',
-      child: Container(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-            // Text Input
-            TextField(
-              controller: textController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                labelText: 'Text to Practice',
-                hintText: 'Enter text to practice pronunciation...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                ),
-                filled: true,
-                fillColor: isDark
-                    ? PanAfricanColors.surfaceContainerDark
-                    : PanAfricanColors.surfaceContainerLight,
-              ),
-              style: PanAfricanTypography.bodyLarge(context),
+        child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                PolieColors.primary,
+                PolieColors.primaryDark,
+                PolieColors.obsidian,
+              ],
             ),
-            SizedBox(height: PanAfricanSpacing.md),
-
-            // Language Selector - Dynamic
-            FutureBuilder<List<AppLanguage>>(
-              future: Future.value(availableLanguages),
-              builder: (context, snapshot) {
-                return DropdownButtonFormField<AppLanguage>(
-                  value: selectedLanguage.value,
-                  decoration: InputDecoration(
-                    labelText: 'Language',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          ),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(PolieSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Text Input
+                  PolieGlassCard(
+                    padding: EdgeInsets.all(PolieSpacing.md),
+                    child: TextField(
+                      controller: textController,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        labelText: 'Text to Practice',
+                        hintText: 'Enter text to practice pronunciation...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(PolieRadius.md),
+                        ),
+                        filled: true,
+                        fillColor: isDark
+                            ? PolieColors.surfaceContainer
+                            : PolieColors.surfaceContainerLight,
+                      ),
+                      style: PolieTypography.body(context),
                     ),
-                    filled: true,
-                    fillColor: isDark
-                        ? PanAfricanColors.surfaceContainerDark
-                        : PanAfricanColors.surfaceContainerLight,
                   ),
-                  items: availableLanguages.map((lang) => DropdownMenuItem<AppLanguage>(
-                    value: lang,
-                    child: Text(
-                      lang.name.substring(0, 1).toUpperCase() + lang.name.substring(1),
+                  SizedBox(height: PolieSpacing.md),
+
+                  // Language + regional toggle
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PolieGlassCard(
+                          padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.sm),
+                          child: DropdownButtonFormField<AppLanguage>(
+                            value: selectedLanguage.value,
+                            dropdownColor: isDark ? PolieColors.surfaceContainer : PolieColors.surfaceContainerLight,
+                            decoration: InputDecoration(
+                              labelText: 'Language',
+                              border: InputBorder.none,
+                            ),
+                            items: availableLanguages.map((lang) => DropdownMenuItem<AppLanguage>(
+                              value: lang,
+                              child: Text(lang.displayName, style: PolieTypography.body(context)),
+                            )).toList(),
+                            onChanged: (value) {
+                              if (value != null) selectedLanguage.value = value;
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: PolieSpacing.sm),
+                      PolieGlassCard(
+                        padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.sm),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Regional', style: PolieTypography.bodySmall(context)),
+                            SizedBox(width: PolieSpacing.xs),
+                            Switch(
+                              value: useRegionalPronunciation.value,
+                              onChanged: (v) {
+                                HapticFeedback.selectionClick();
+                                useRegionalPronunciation.value = v;
+                              },
+                              activeColor: PolieColors.electricTeal,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (practiceCount.value > 0)
+                    Padding(
+                      padding: EdgeInsets.only(top: PolieSpacing.sm),
+                      child: Center(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md, vertical: PolieSpacing.xs),
+                          decoration: BoxDecoration(
+                            color: PolieColors.goldEmber.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(PolieRadius.pill),
+                            border: Border.all(color: PolieColors.goldEmber.withOpacity(0.5)),
+                          ),
+                          child: Text(
+                            'Sessions: ${practiceCount.value}',
+                            style: PolieTypography.label(context).copyWith(color: PolieColors.goldEmber),
+                          ),
+                        ),
+                      ),
                     ),
-                  )).toList(),
-                  onChanged: (value) {
-                    if (value != null) selectedLanguage.value = value;
-                  },
-                );
-              },
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
+                  SizedBox(height: PolieSpacing.xl),
 
-            // Record Button
-            ElevatedButton.icon(
-              onPressed: isLoading.value ? null : recordAndScore,
-              icon: isRecording.value ? const Icon(Icons.stop) : const Icon(Icons.mic),
-              label: Text(
-                isRecording.value ? 'Stop & Analyze' : 'Record',
-                style: PanAfricanTypography.labelLarge(context)
-                    .copyWith(color: Colors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PanAfricanColors.tertiary,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                ),
+                  // Large record orb
+                  Center(
+                    child: GestureDetector(
+                      onTap: isLoading.value ? null : recordAndScore,
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: isRecording.value ? 140.w : 120.w,
+                        height: isRecording.value ? 140.w : 120.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              PolieColors.electricTeal,
+                              PolieColors.electricTealLight.withOpacity(0.9),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: PolieColors.electricTeal.withOpacity(0.5),
+                              blurRadius: isRecording.value ? 32 : 24,
+                              spreadRadius: isRecording.value ? 4 : 0,
+                            ),
+                            BoxShadow(
+                              color: PolieColors.electricTeal.withOpacity(0.3),
+                              blurRadius: 48,
+                              spreadRadius: -8,
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: Icon(
+                          isRecording.value ? Icons.stop_rounded : Icons.mic_rounded,
+                          size: 48.sp,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: PolieSpacing.sm),
+                  Center(
+                    child: Text(
+                      isRecording.value ? 'Tap to stop & analyze' : 'Tap to record',
+                      style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.textSecondary),
+                    ),
+                  ),
+                  SizedBox(height: PolieSpacing.xl),
+
+                  if (pronunciationResult.value != null) ...[
+                    _buildPronunciationResult(
+                      context,
+                      pronunciationResult.value!,
+                      isDark,
+                    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
+                    if (recordingPath.value != null) ...[
+                      SizedBox(height: PolieSpacing.md),
+                      _ReplayButtons(
+                        recordingPath: recordingPath.value!,
+                        player: audioPlayer,
+                      ),
+                    ],
+                  ],
+                ],
               ),
             ),
-            SizedBox(height: PanAfricanSpacing.xl),
-
-            // Pronunciation Result
-            if (pronunciationResult.value != null)
-              _buildPronunciationResult(
-                context,
-                pronunciationResult.value!,
-                isDark,
-              ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
-          ],
           ),
         ),
       ),
@@ -224,79 +314,76 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     Map<String, dynamic> result,
     bool isDark,
   ) {
-    final overallScore = (result['overallScore'] ?? 0.0) as double;
-    final accuracyScore = (result['accuracyScore'] ?? 0.0) as double;
-    final rhythmScore = (result['rhythmScore'] ?? 0.0) as double;
-    final toneScore = (result['toneScore'] ?? 0.0) as double;
+    final rawOverall = (result['overallScore'] ?? 0.0) as double;
+    final overallScore = rawOverall <= 1 ? rawOverall * 100 : rawOverall;
+    final rawAcc = (result['accuracyScore'] ?? 0.0) as double;
+    final accuracyScore = rawAcc <= 1 ? rawAcc * 100 : rawAcc;
+    final rawRhythm = (result['rhythmScore'] ?? 0.0) as double;
+    final rhythmScore = rawRhythm <= 1 ? rawRhythm * 100 : rawRhythm;
+    final rawTone = (result['toneScore'] ?? 0.0) as double;
+    final toneScore = rawTone <= 1 ? rawTone * 100 : rawTone;
 
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-      decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        boxShadow: PanAfricanShadows.md,
-      ),
+    // Simulated waveform bars (user vs reference) from score
+    final barCount = 24;
+    final userBars = List.generate(barCount, (i) => 0.3 + (i % 5) / 10 * (overallScore / 100));
+    final refBars = List.generate(barCount, (i) => 0.4 + (i % 4) / 10);
+
+    return PolieGlassCard(
+      hasGlow: true,
+      glowColor: PolieColors.electricTeal,
       child: Column(
         children: [
-          // Score Ring
-          _ScoreRing(
-            score: overallScore,
-            size: 150.w,
+          _ScoreRing(score: overallScore, size: 150.w),
+          SizedBox(height: PolieSpacing.lg),
+          Text('Mouth shape', style: PolieTypography.label(context)),
+          SizedBox(height: PolieSpacing.xs),
+          _MouthShapePlaceholder(isDark: isDark),
+          SizedBox(height: PolieSpacing.lg),
+          Text('Waveform comparison', style: PolieTypography.label(context)),
+          SizedBox(height: PolieSpacing.xs),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _WaveformBars(bars: userBars, color: PolieColors.royalAmethyst, height: 40.h),
+              SizedBox(width: PolieSpacing.sm),
+              _WaveformBars(bars: refBars, color: PolieColors.electricTeal.withOpacity(0.7), height: 40.h),
+            ],
           ),
-          SizedBox(height: PanAfricanSpacing.lg),
-
-          // Detailed Scores
+          Padding(
+            padding: EdgeInsets.only(top: PolieSpacing.xs),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('You', style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.royalAmethyst)),
+                SizedBox(width: PolieSpacing.lg),
+                Text('Reference', style: PolieTypography.bodySmall(context).copyWith(color: PolieColors.electricTeal)),
+              ],
+            ),
+          ),
+          SizedBox(height: PolieSpacing.lg),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              _ScoreCard(
-                label: 'Accuracy',
-                score: accuracyScore,
-                color: PanAfricanColors.primary,
-                isDark: isDark,
-              ),
-              _ScoreCard(
-                label: 'Rhythm',
-                score: rhythmScore,
-                color: PanAfricanColors.secondary,
-                isDark: isDark,
-              ),
-              _ScoreCard(
-                label: 'Tone',
-                score: toneScore,
-                color: PanAfricanColors.tertiary,
-                isDark: isDark,
-              ),
+              _ScoreCard(label: 'Accuracy', score: accuracyScore, color: PolieColors.royalAmethyst, isDark: isDark),
+              _ScoreCard(label: 'Rhythm', score: rhythmScore, color: PolieColors.goldEmber, isDark: isDark),
+              _ScoreCard(label: 'Tone', score: toneScore, color: PolieColors.electricTeal, isDark: isDark),
             ],
           ),
-          SizedBox(height: PanAfricanSpacing.lg),
-
-          // Feedback
+          SizedBox(height: PolieSpacing.lg),
           if (result['feedback'] != null) ...[
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.md),
-            Text(
-              'Feedback',
-              style: PanAfricanTypography.titleMedium(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              result['feedback'],
-              style: PanAfricanTypography.bodyMedium(context),
-            ),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.md),
+            Text('Feedback', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.sm),
+            Text(result['feedback'].toString(), style: PolieTypography.body(context)),
           ],
-
-          // Phoneme Feedback
           if (result['phonemeFeedback'] != null &&
               (result['phonemeFeedback'] as List).isNotEmpty) ...[
-            SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.md),
-            Text(
-              'Phoneme Analysis',
-              style: PanAfricanTypography.titleMedium(context),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
+            SizedBox(height: PolieSpacing.lg),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.md),
+            Text('Phoneme Analysis', style: PolieTypography.label(context)),
+            SizedBox(height: PolieSpacing.sm),
             _PhonemeTimeline(
               phonemes: result['phonemeFeedback'] as List,
               isDark: isDark,
@@ -306,28 +393,107 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
           // Next Exercises
           if (result['nextExercises'] != null &&
               (result['nextExercises'] as List).isNotEmpty) ...[
-            SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.md),
+            SizedBox(height: PolieSpacing.lg),
+            Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
+            SizedBox(height: PolieSpacing.md),
             Text(
               'Recommended Practice',
-              style: PanAfricanTypography.titleMedium(context),
+              style: PolieTypography.label(context),
             ),
-            SizedBox(height: PanAfricanSpacing.sm),
+            SizedBox(height: PolieSpacing.sm),
             ...(result['nextExercises'] as List).map((exercise) {
-              return Card(
-                margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                color: PanAfricanColors.primaryContainer.withOpacity(0.3),
+              return Container(
+                margin: EdgeInsets.only(bottom: PolieSpacing.sm),
+                padding: EdgeInsets.all(PolieSpacing.sm),
+                decoration: BoxDecoration(
+                  color: PolieColors.royalAmethyst.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(PolieRadius.md),
+                ),
                 child: ListTile(
-                  leading: Icon(Icons.school, color: PanAfricanColors.primary),
+                  contentPadding: EdgeInsets.zero,
+                  leading: Icon(Icons.school_rounded, color: PolieColors.goldEmber),
                   title: Text(
-                    exercise,
-                    style: PanAfricanTypography.bodyMedium(context),
+                    exercise.toString(),
+                    style: PolieTypography.body(context),
                   ),
                 ),
               );
             }),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Placeholder for future mouth-shape animation (phoneme visualization).
+class _MouthShapePlaceholder extends StatelessWidget {
+  final bool isDark;
+
+  const _MouthShapePlaceholder({required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 80.w,
+      height: 48.w,
+      decoration: BoxDecoration(
+        color: PolieColors.surfaceContainerLight,
+        borderRadius: BorderRadius.circular(40),
+        border: Border.all(color: PolieColors.electricTeal.withOpacity(0.5), width: 2),
+      ),
+      child: Center(
+        child: Icon(
+          Icons.record_voice_over_rounded,
+          size: 32.sp,
+          color: PolieColors.electricTeal.withOpacity(0.8),
+        ),
+      ),
+    );
+  }
+}
+
+/// Replay recording at normal or slow (0.5x) speed.
+class _ReplayButtons extends StatelessWidget {
+  final String recordingPath;
+  final AudioPlayer player;
+
+  const _ReplayButtons({required this.recordingPath, required this.player});
+
+  Future<void> _playAtSpeed(double speed) async {
+    try {
+      await player.setFilePath(recordingPath);
+      await player.setSpeed(speed);
+      await player.play();
+    } catch (e) {
+      debugPrint('Replay failed: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PolieGlassCard(
+      padding: EdgeInsets.symmetric(vertical: PolieSpacing.sm),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextButton.icon(
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              _playAtSpeed(1.0);
+            },
+            icon: Icon(Icons.play_arrow_rounded, color: PolieColors.electricTeal, size: 24),
+            label: Text('Replay', style: PolieTypography.label(context).copyWith(color: PolieColors.electricTeal)),
+          ),
+          SizedBox(width: PolieSpacing.md),
+          TextButton.icon(
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              _playAtSpeed(0.5);
+            },
+            icon: Icon(Icons.slow_motion_video_rounded, color: PolieColors.royalAmethyst, size: 24),
+            label: Text('Slow motion', style: PolieTypography.label(context).copyWith(color: PolieColors.royalAmethyst)),
+          ),
         ],
       ),
     );
@@ -385,10 +551,40 @@ class _ScoreRing extends StatelessWidget {
   }
 
   Color _getScoreColor(double score) {
-    if (score >= 80) return PanAfricanColors.success;
-    if (score >= 60) return PanAfricanColors.secondary;
-    if (score >= 40) return PanAfricanColors.warning;
-    return PanAfricanColors.error;
+    if (score >= 80) return PolieColors.success;
+    if (score >= 60) return PolieColors.electricTeal;
+    if (score >= 40) return PolieColors.goldEmber;
+    return PolieColors.error;
+  }
+}
+
+class _WaveformBars extends StatelessWidget {
+  final List<double> bars;
+  final Color color;
+  final double height;
+
+  const _WaveformBars({required this.bars, required this.color, required this.height});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      width: 120.w,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: bars.map((v) {
+          return Container(
+            width: 3.w,
+            height: (v * height).clamp(8.0, height),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          );
+        }).toList(),
+      ),
+    );
   }
 }
 
@@ -407,25 +603,26 @@ class _ScoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final displayScore = score <= 1 ? score * 100 : score;
     return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.md),
+      padding: EdgeInsets.all(PolieSpacing.md),
       decoration: BoxDecoration(
         color: isDark
-            ? PanAfricanColors.surfaceContainerDark
-            : PanAfricanColors.surfaceContainerLight,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+            ? PolieColors.surfaceContainer
+            : PolieColors.surfaceContainerLight,
+        borderRadius: BorderRadius.circular(PolieRadius.md),
+        border: Border.all(color: color.withOpacity(0.3), width: 1),
       ),
       child: Column(
         children: [
           Text(
-            '${score.toInt()}',
-            style: PanAfricanTypography.headlineSmall(context)
-                .copyWith(color: color),
+            '${displayScore.toInt()}',
+            style: PolieTypography.h2(context).copyWith(color: color),
           ),
-          SizedBox(height: PanAfricanSpacing.xxs),
+          SizedBox(height: PolieSpacing.xs),
           Text(
             label,
-            style: PanAfricanTypography.bodySmall(context),
+            style: PolieTypography.bodySmall(context),
           ),
         ],
       ),
@@ -455,14 +652,14 @@ class _PhonemeTimeline extends StatelessWidget {
           
           return Container(
             width: 50.w,
-            margin: EdgeInsets.only(right: PanAfricanSpacing.xs),
+            margin: EdgeInsets.only(right: PolieSpacing.xs),
             decoration: BoxDecoration(
               color: isCorrect
-                  ? PanAfricanColors.success.withOpacity(0.2)
-                  : PanAfricanColors.error.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
+                  ? PolieColors.success.withOpacity(0.2)
+                  : PolieColors.error.withOpacity(0.2),
+              borderRadius: BorderRadius.circular(PolieRadius.sm),
               border: Border.all(
-                color: isCorrect ? PanAfricanColors.success : PanAfricanColors.error,
+                color: isCorrect ? PolieColors.success : PolieColors.error,
                 width: 2,
               ),
             ),
@@ -472,12 +669,12 @@ class _PhonemeTimeline extends StatelessWidget {
                 children: [
                   Text(
                     phoneme['phoneme'] ?? '',
-                    style: PanAfricanTypography.labelMedium(context),
+                    style: PolieTypography.label(context),
                   ),
                   Icon(
                     isCorrect ? Icons.check : Icons.close,
                     size: 16.sp,
-                    color: isCorrect ? PanAfricanColors.success : PanAfricanColors.error,
+                    color: isCorrect ? PolieColors.success : PolieColors.error,
                   ),
                 ],
               ),

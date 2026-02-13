@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_provider.dart';
-import '../../utils/app_colors.dart';
-import '../../utils/design_system.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../utils/utils.dart';
 
 /// Material 3 compliant streak indicator widget
@@ -29,19 +28,19 @@ class StreakIndicatorWidget extends ConsumerWidget {
     }
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.xs),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.accentOrange.withOpacity(0.3),
-            AppColors.accentGold.withOpacity(0.3),
+            PanAfricanColors.tertiary.withOpacity(0.3),
+            PanAfricanColors.secondary.withOpacity(0.3),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         border: Border.all(
-          color: AppColors.accentOrange.withOpacity(0.5),
+          color: PanAfricanColors.tertiary.withOpacity(0.5),
           width: 1,
         ),
       ),
@@ -58,13 +57,13 @@ class StreakIndicatorWidget extends ConsumerWidget {
                 scale: value,
                 child: Icon(
                   Icons.local_fire_department_rounded,
-                  color: AppColors.accentOrange,
+                  color: PanAfricanColors.tertiary,
                   size: 32.sp,
                 ),
               );
             },
           ),
-          SizedBox(width: 3.w),
+          SizedBox(width: PanAfricanSpacing.xxs),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -72,17 +71,14 @@ class StreakIndicatorWidget extends ConsumerWidget {
               if (showLabel)
                 Text(
                   'Daily Streak',
-                  style: TextStyle(
-                    fontSize: 11.sp,
+                  style: PanAfricanTypography.labelSmall(context).copyWith(
                     color: context.adaptive54,
                   ),
                 ),
               Text(
                 '$streak day${streak != 1 ? 's' : ''}',
-                style: TextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.accentOrange,
+                style: PanAfricanTypography.titleMedium(context).copyWith(
+                  color: PanAfricanColors.tertiary,
                 ),
               ),
             ],
@@ -94,26 +90,27 @@ class StreakIndicatorWidget extends ConsumerWidget {
 
   Widget _buildCompact(BuildContext context, int streak, bool isDark) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.xs,
+        vertical: PanAfricanSpacing.xxs,
+      ),
       decoration: BoxDecoration(
-        color: AppColors.accentOrange.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+        color: PanAfricanColors.tertiary.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.round),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             Icons.local_fire_department_rounded,
-            color: AppColors.accentOrange,
+            color: PanAfricanColors.tertiary,
             size: 18.sp,
           ),
-          SizedBox(width: 2.w),
+          SizedBox(width: PanAfricanSpacing.xxxs),
           Text(
             '$streak',
-            style: TextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.bold,
-              color: AppColors.accentOrange,
+            style: PanAfricanTypography.labelLarge(context).copyWith(
+              color: PanAfricanColors.tertiary,
             ),
           ),
         ],
@@ -142,12 +139,12 @@ class StreakMilestoneWidget extends ConsumerWidget {
     final progress = streak / nextMilestone;
 
     return Container(
-      padding: EdgeInsets.all(4.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.xs),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+        color: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
         border: Border.all(
-          color: isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight,
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
           width: 0.5,
         ),
       ),
@@ -159,37 +156,34 @@ class StreakMilestoneWidget extends ConsumerWidget {
             children: [
               Text(
                 'Next Milestone',
-                style: TextStyle(
-                  fontSize: 14.sp,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
                   fontWeight: FontWeight.w600,
                   color: context.adaptive,
                 ),
               ),
               Text(
                 '$nextMilestone days',
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.accentOrange,
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: PanAfricanColors.tertiary,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: PanAfricanSpacing.xxxs),
           ClipRRect(
-            borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.round),
             child: LinearProgressIndicator(
               value: progress.clamp(0.0, 1.0),
               minHeight: 8.h,
-              backgroundColor: (isDark ? Colors.white : Colors.black).withOpacity(0.1),
-              valueColor: AlwaysStoppedAnimation<Color>(AppColors.accentOrange),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.tertiary),
             ),
           ),
-          SizedBox(height: 1.h),
+          SizedBox(height: PanAfricanSpacing.xxxs),
           Text(
             '${(nextMilestone - streak)} days to go',
-            style: TextStyle(
-              fontSize: 11.sp,
+            style: PanAfricanTypography.labelSmall(context).copyWith(
               color: context.adaptive54,
             ),
           ),

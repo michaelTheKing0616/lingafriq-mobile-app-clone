@@ -88,13 +88,13 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                             Text(
                               currentUser?.username ?? 'User',
                               style: PanAfricanTypography.titleLarge(context)
-                                  .copyWith(color: Colors.white),
+                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
                             Text(
                               currentUser?.email ?? '',
                               style: PanAfricanTypography.bodySmall(context)
-                                  .copyWith(color: Colors.white70),
+                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -142,24 +142,24 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.lesson,
-                        label: 'Tutor Mode',
+                        label: 'Polie Tutor',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: TutorDashboardScreen()),
+                            SmoothPageRoute(child: const PolieModeSelectionScreen()),
                           );
                         },
                         isDark: isDark,
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.chat,
-                        label: 'AI Assistant (Polie)',
+                        label: 'AI Chat',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: PolieModeSelectionScreen()),
+                            SmoothPageRoute(child: AILanguageSelectionScreen()),
                           );
                         },
                         isDark: isDark,
@@ -413,7 +413,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                           onPressed: () => Navigator.pop(context, true),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: PanAfricanColors.error,
-                            foregroundColor: Colors.white,
+                            foregroundColor: Theme.of(context).colorScheme.onPrimary,
                           ),
                           child: Text('Logout'),
                         ),

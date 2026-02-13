@@ -1,13 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import 'package:livekit_client/livekit_client.dart';
 import '../../providers/api_provider.dart';
-import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
-import '../../providers/user_provider.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-
 /// Social Audio Learning Tracker - Tracks learning progress in social audio sessions
 class SocialAudioLearningTracker {
   final ApiProvider _api;
@@ -41,7 +36,7 @@ class SocialAudioLearningTracker {
       };
 
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioLearningTrack}',
+        ApiContract.url(ApiContract.socialAudio.learningTrack),
         data: data,
       );
 
@@ -75,7 +70,7 @@ class SocialAudioLearningTracker {
       };
 
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioLearningWords}',
+        ApiContract.url(ApiContract.socialAudio.learningWords),
         data: data,
       );
 
@@ -105,7 +100,7 @@ class SocialAudioLearningTracker {
       };
 
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioLearningStats}',
+        ApiContract.url(ApiContract.socialAudio.learningStats),
         queryParameters: queryParams,
       );
 
@@ -143,7 +138,7 @@ class SocialAudioLearningTracker {
       };
 
       final response = await _dio.post(
-        '${Api.baseurl}${Api.socialAudioLearningPronunciation}',
+        ApiContract.url(ApiContract.socialAudio.learningPronunciation),
         data: data,
       );
 
@@ -161,7 +156,7 @@ class SocialAudioLearningTracker {
   Future<Map<String, dynamic>?> getRoomLearningSummary(String roomId) async {
     try {
       final response = await _dio.get(
-        '${Api.baseurl}${Api.socialAudioRoomLearningSummary(roomId)}',
+        ApiContract.url(ApiContract.socialAudio.roomLearningSummary(roomId)),
       );
 
       if (response.statusCode == 200) {

@@ -12,7 +12,6 @@
 
 import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Batch request item

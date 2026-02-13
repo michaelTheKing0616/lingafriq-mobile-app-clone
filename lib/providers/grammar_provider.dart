@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dio_provider.dart';
-import '../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../utils/structured_logger.dart';
 
 /// Provider for enhanced grammar explanations with backend integration
@@ -25,7 +24,7 @@ class GrammarNotifier extends Notifier<GrammarState> {
     // Try to fetch from backend
     try {
       final response = await ref.read(client).get(
-        '${Api.baseurl}api/grammar/explanations',
+        ApiContract.url(ApiContract.grammar.explanations),
         queryParameters: {
           'language': language.toLowerCase(),
           'grammar_point': grammarPoint,

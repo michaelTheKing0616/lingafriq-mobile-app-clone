@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../widgets/primary_button.dart';
-import '../../widgets/lingafriq_ui_helpers.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import '../../providers/leaderboard_provider.dart';
 import '../../providers/socket_provider.dart';
 import '../../models/leaderboard_entry_model.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/user_provider.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
+import '../../widgets/empty_state_widget.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 
 /// Leaderboard screen with tribe, country, and global rankings
 class LeaderboardScreen extends ConsumerStatefulWidget {
@@ -86,54 +88,69 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
 
   @override
   Widget build(BuildContext context) {
+    final leaderboardState = ref.watch(leaderboardProvider);
     final leaderboard = ref.watch(leaderboardProvider.notifier);
     final gamification = ref.watch(gamificationProvider.notifier).gamification;
     final user = ref.watch(userProvider);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('Leaderboards'),
-            Text('LingAfriq', style: TextStyle(fontSize: 12, color: Colors.grey)),
-          ],
+        title: Text(
+          'Leaderboards',
+          style: PanAfricanTypography.headlineMedium(context),
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
+          child: Semantics(
+            label: 'Leaderboard tabs: Global, Tribe, Country',
+            child: TabBar(
+              controller: _tabController,
+              onTap: (_) => HapticFeedback.lightImpact(),
+              labelStyle: PanAfricanTypography.titleSmall(context),
+              indicatorColor: PanAfricanColors.secondary,
+              tabs: const [
+                Tab(text: 'Global'),
+                Tab(text: 'Tribe'),
+                Tab(text: 'Country'),
+              ],
+            ),
           ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Global'),
-            Tab(text: 'Tribe'),
-            Tab(text: 'Country'),
-          ],
         ),
       ),
       body: RefreshIndicator(
+        color: PanAfricanColors.primary,
         onRefresh: () => leaderboard.refresh(),
         child: TabBarView(
           controller: _tabController,
           children: [
-            _buildLeaderboardList(LeaderboardType.global, leaderboard.getGlobalLeaderboard()),
+            _buildLeaderboardList(
+              LeaderboardType.global,
+              leaderboard.getGlobalLeaderboard(),
+              isDark,
+              isLoading: leaderboardState.isLoading,
+              error: leaderboardState.errorMessage,
+            ),
             _buildLeaderboardList(
               LeaderboardType.tribe,
               leaderboard.getTribeLeaderboard(gamification.tribe ?? ''),
+              isDark,
+              isLoading: leaderboardState.isLoading,
+              error: leaderboardState.errorMessage,
             ),
             _buildLeaderboardList(
               LeaderboardType.country,
               leaderboard.getCountryLeaderboard(user?.nationality ?? ''),
+              isDark,
+              isLoading: leaderboardState.isLoading,
+              error: leaderboardState.errorMessage,
             ),
           ],
         ),
@@ -141,136 +158,278 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     );
   }
 
-  Widget _buildLeaderboardList(LeaderboardType type, List<LeaderboardEntry> entries) {
+  Widget _buildLeaderboardList(
+    LeaderboardType type,
+    List<LeaderboardEntry> entries,
+    bool isDark, {
+    bool isLoading = false,
+    String? error,
+  }) {
+    if (isLoading && entries.isEmpty) {
+      return ListView.builder(
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        itemCount: 8,
+        itemBuilder: (context, index) => const SkeletonListCard(),
+      );
+    }
+
+    if (error != null && entries.isEmpty) {
+      return AppErrorState(
+        message: error,
+        onRetry: () {
+          HapticFeedback.lightImpact();
+          ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type);
+        },
+        icon: Icons.error_outline_rounded,
+      );
+    }
+
     if (entries.isEmpty) {
-      return LingAfriqEmptyState(
+      return AppEmptyState(
         icon: Icons.leaderboard_outlined,
         title: 'No rankings yet',
         subtitle: 'Complete lessons and quizzes to climb the leaderboard.',
         actionLabel: 'Refresh',
-        onAction: () => ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type),
+        onAction: () {
+          HapticFeedback.lightImpact();
+          ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: type);
+        },
       );
     }
 
-    return OptimizedListView.builder(
-      padding: const EdgeInsets.all(16),
+    // Use ListView.builder directly with proper iOS physics to prevent scroll errors
+    return ListView.builder(
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
       itemCount: entries.length,
+      // Use BouncingScrollPhysics for iOS-native feel and ClampingScrollPhysics fallback
+      physics: const AlwaysScrollableScrollPhysics(
+        parent: BouncingScrollPhysics(),
+      ),
+      // Add item extent estimate for better scroll performance
+      itemExtent: null, // Let items size naturally
+      // Add key for proper widget recycling
+      key: ValueKey('leaderboard_${type.name}'),
       itemBuilder: (context, index) {
+        // Bounds check to prevent RangeError on rapid scrolling
+        if (index < 0 || index >= entries.length) {
+          return const SizedBox.shrink();
+        }
+        
         final entry = entries[index];
         final isCurrentUser = entry.userId == 'current_user';
         
         return _LeaderboardCard(
+          key: ValueKey('leaderboard_card_${entry.userId}_$index'),
           entry: entry,
           isCurrentUser: isCurrentUser,
           rank: index + 1,
-        );
+          isDark: isDark,
+        )
+            .animate(delay: Duration(milliseconds: index * 50))
+            .fadeIn(duration: 300.ms)
+            .slideY(begin: 0.1, end: 0);
       },
     );
   }
 }
 
-class _LeaderboardCard extends StatelessWidget {
+class _LeaderboardCard extends StatefulWidget {
   final LeaderboardEntry entry;
   final bool isCurrentUser;
   final int rank;
+  final bool isDark;
 
   const _LeaderboardCard({
+    super.key,
     required this.entry,
     required this.isCurrentUser,
     required this.rank,
+    required this.isDark,
   });
 
-  Widget _buildRankIcon(int rank) {
-    if (rank == 1) {
-      return const Icon(Icons.emoji_events, color: Colors.amber, size: 32);
-    } else if (rank == 2) {
-      return const Icon(Icons.emoji_events, color: Colors.grey, size: 32);
-    } else if (rank == 3) {
-      return const Icon(Icons.emoji_events, color: Colors.brown, size: 32);
+  @override
+  State<_LeaderboardCard> createState() => _LeaderboardCardState();
+}
+
+class _LeaderboardCardState extends State<_LeaderboardCard> {
+
+  Color _getRankColor(int rank) {
+    switch (rank) {
+      case 1:
+        return PanAfricanColors.secondary; // Gold
+      case 2:
+        return const Color(0xFFA8A8A8); // Silver
+      case 3:
+        return const Color(0xFFCD7F32); // Bronze
+      default:
+        return PanAfricanColors.primary;
     }
-    return Text(
-      '#$rank',
-      style: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
+  }
+
+  Widget _buildRankBadge(BuildContext context, int rank) {
+    final badgeSize = 48.0.w.clamp(40.0, 56.0);
+    final iconSize = 28.0.sp.clamp(22.0, 32.0);
+    final colorScheme = Theme.of(context).colorScheme;
+
+    if (rank <= 3) {
+      final bgColor = _getRankColor(rank);
+      return Container(
+        width: badgeSize,
+        height: badgeSize,
+        decoration: BoxDecoration(
+          color: bgColor,
+          shape: BoxShape.circle,
+          border: rank == 1
+              ? Border.all(color: PanAfricanColors.secondary.withOpacity(0.5), width: 1)
+              : null,
+        ),
+        child: Center(
+          child: Icon(
+            Icons.emoji_events_rounded,
+            color: colorScheme.onPrimary,
+            size: iconSize,
+          ),
+        ),
+      );
+    }
+    return Container(
+      width: badgeSize,
+      height: badgeSize,
+      decoration: BoxDecoration(
+        color: widget.isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+        shape: BoxShape.circle,
+      ),
+      child: Center(
+        child: Text(
+          '#$rank',
+          style: PanAfricanTypography.titleMedium(context),
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: isCurrentUser ? 4 : 1,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: isCurrentUser
-            ? BorderSide(color: Theme.of(context).colorScheme.primary, width: 2)
-            : BorderSide.none,
+    final expanded = _expandedState;
+    return Semantics(
+      label: 'Rank ${widget.rank}: ${widget.entry.username}, ${widget.entry.xp} XP${widget.isCurrentUser ? ", your rank" : ""}',
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          setState(() => _expandedState = !_expandedState);
+        },
+        child: Container(
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+        decoration: BoxDecoration(
+          color: widget.isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.lgBR,
+          border: Border.all(
+            color: widget.isCurrentUser
+                ? PanAfricanColors.primary
+                : (widget.isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            width: widget.isCurrentUser ? 2 : 1,
+          ),
+          boxShadow: widget.isCurrentUser ? PanAfricanShadows.md : PanAfricanShadows.sm,
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
+          child: Row(
+            children: [
+              _buildRankBadge(context, widget.rank),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      widget.entry.username,
+                      style: PanAfricanTypography.titleMedium(
+                        context,
+                        color: widget.isCurrentUser ? PanAfricanColors.primary : null,
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xxs),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.star_rounded,
+                          size: 14.0.sp,
+                          color: PanAfricanColors.secondary,
+                        ),
+                        SizedBox(width: PanAfricanSpacing.xxs),
+                        Text(
+                          '${widget.entry.xp} XP',
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                      ],
+                    ),
+                    if (expanded) ...[
+                      SizedBox(height: PanAfricanSpacing.xs),
+                      if (widget.entry.tribe != null)
+                        Padding(
+                          padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxs),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: PanAfricanSpacing.xs,
+                              vertical: PanAfricanSpacing.xxxs,
+                            ),
+                            decoration: BoxDecoration(
+                              color: PanAfricanColors.primaryContainer,
+                              borderRadius: PanAfricanRadius.roundBR,
+                            ),
+                            child: Text(
+                              widget.entry.tribe!,
+                              style: PanAfricanTypography.labelSmall(
+                                context,
+                                color: PanAfricanColors.onPrimaryContainer,
+                              ),
+                            ),
+                          ),
+                        ),
+                      Text(
+                        'Level ${widget.entry.level} • ${widget.entry.levelTitle}',
+                        style: PanAfricanTypography.bodySmall(context),
+                      ),
+                      SizedBox(height: PanAfricanSpacing.xxs),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.local_fire_department_rounded,
+                            size: 14.0.sp,
+                            color: PanAfricanColors.tertiary,
+                          ),
+                          SizedBox(width: PanAfricanSpacing.xxs),
+                          Text(
+                            '${widget.entry.dailyStreak} day streak',
+                            style: PanAfricanTypography.labelSmall(context),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              Icon(
+                expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
+                color: PanAfricanColors.neutralMedium,
+                size: 20.sp,
+              ),
+            ],
+          ),
+        ),
       ),
-      child: ListTile(
-        leading: SizedBox(
-          width: 50,
-          child: _buildRankIcon(rank),
-        ),
-        title: Row(
-          children: [
-            Expanded(
-              child: Text(
-                entry.username,
-                style: TextStyle(
-                  fontWeight: isCurrentUser ? FontWeight.bold : FontWeight.normal,
-                ),
-              ),
-            ),
-            if (entry.tribe != null)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  entry.tribe!,
-                  style: TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  ),
-                ),
-              ),
-          ],
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Level ${entry.level} • ${entry.levelTitle}'),
-            Row(
-              children: [
-                const Icon(Icons.local_fire_department, size: 16, color: Colors.orange),
-                const SizedBox(width: 4),
-                Text('${entry.dailyStreak} day streak'),
-                const SizedBox(width: 16),
-                Text('${entry.xp} XP'),
-              ],
-            ),
-          ],
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              'Lv. ${entry.level}',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-            ),
-          ],
-        ),
       ),
     );
+  }
+
+  late bool _expandedState;
+
+  @override
+  void initState() {
+    super.initState();
+    _expandedState = widget.isCurrentUser;
   }
 }
 

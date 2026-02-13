@@ -80,6 +80,7 @@ class _ErrorRecoveryWidgetState extends State<ErrorRecoveryWidget> {
           _error = error;
           _stackTrace = stackTrace;
         });
+        return false;
       });
     }
   }

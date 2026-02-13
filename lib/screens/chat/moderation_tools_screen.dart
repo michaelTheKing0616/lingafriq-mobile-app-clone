@@ -6,8 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
 /// Moderation Tools for Global and Community Chat
@@ -157,6 +155,7 @@ class _FlaggedMessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final reason = message['flag_reason'] ?? 'Toxic content';
     final severity = message['severity'] ?? 'medium';
+    final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
@@ -208,7 +207,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       label: Text('Approve'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.success,
-                        foregroundColor: Colors.white,
+                    foregroundColor: colorScheme.onPrimary,
                       ),
                     ),
                     ElevatedButton.icon(
@@ -217,7 +216,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       label: Text('Warn'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.warning,
-                        foregroundColor: Colors.black,
+                        foregroundColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
                     ElevatedButton.icon(
@@ -226,7 +225,7 @@ class _FlaggedMessageCard extends StatelessWidget {
                       label: Text('Delete'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.error,
-                        foregroundColor: Colors.white,
+                    foregroundColor: colorScheme.onPrimary,
                       ),
                     ),
                   ],

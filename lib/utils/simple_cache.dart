@@ -14,8 +14,6 @@
 /// Use this instead of performance_utils.SimpleCache
 
 import 'dart:async';
-import 'package:flutter/foundation.dart';
-
 class CacheEntry<T> {
   final T value;
   final DateTime expiryTime;

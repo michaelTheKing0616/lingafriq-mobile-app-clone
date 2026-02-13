@@ -4,7 +4,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/offline_content_provider.dart';
 import 'package:lingafriq/providers/subscription_provider.dart';
 import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';

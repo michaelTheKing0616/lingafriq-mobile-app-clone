@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/culture_content_model.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
@@ -41,10 +40,13 @@ class CultureMagazineService {
 
       if (response.statusCode == 200 && response.data['success'] == true) {
         final data = response.data['data'];
-        final articles = data['docs'] ?? data['data'] ?? [];
-        
-        return (articles as List)
-            .map((article) => CultureContent.fromBackendMap(article))
+        if (data == null) return [];
+        final articles = data is List
+            ? data
+            : (data['docs'] ?? data['data'] ?? []);
+        final list = articles is List ? articles : [];
+        return list
+            .map((article) => CultureContent.fromBackendMap(article as Map<String, dynamic>))
             .toList();
       } else {
         throw Exception('Failed to fetch articles: ${response.data}');

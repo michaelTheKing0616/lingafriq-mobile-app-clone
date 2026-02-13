@@ -80,14 +80,14 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.all_inclusive_rounded, color: Colors.white, size: 18.sp),
+          Icon(Icons.all_inclusive_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 18.sp),
           SizedBox(width: 4.w),
           Text(
             '∞',
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
         ],
@@ -111,7 +111,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               decoration: BoxDecoration(
                 color: isLow 
                     ? PanAfricanColors.tertiary.withOpacity(0.15)
-                    : (isDark ? Colors.white.withOpacity(0.1) : PanAfricanColors.surface),
+                    : (isDark ? Theme.of(context).colorScheme.surface.withOpacity(0.1) : PanAfricanColors.surface),
                 borderRadius: PanAfricanRadius.roundBR,
                 border: Border.all(
                   color: isLow ? PanAfricanColors.tertiary : Colors.transparent,
@@ -132,7 +132,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: isLow ? PanAfricanColors.tertiary : (isDark ? Colors.white : PanAfricanColors.textPrimary),
+                      color: isLow ? PanAfricanColors.tertiary : (isDark ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.textPrimary),
                     ),
                   ),
                   if (state.isRegenerating) ...[
@@ -161,7 +161,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
     return Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       decoration: BoxDecoration(
-        color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
+        color: isDark ? PanAfricanColors.surfaceDark : Theme.of(context).colorScheme.surface,
         borderRadius: PanAfricanRadius.lgBR,
         boxShadow: PanAfricanShadows.md,
       ),
@@ -211,7 +211,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                   ? 'Next heart in ${state.timeUntilNextHeartFormatted}'
                   : 'Full hearts!',
               style: PanAfricanTypography.bodySmall(context).copyWith(
-                color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+                color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
               ),
             ),
           if (state.currentHearts == 0)
@@ -240,7 +240,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
         child: Container(
           padding: EdgeInsets.all(PanAfricanSpacing.lg),
           decoration: BoxDecoration(
-            color: isDark ? PanAfricanColors.surfaceDark : Colors.white,
+            color: isDark ? PanAfricanColors.surfaceDark : Theme.of(context).colorScheme.surface,
             borderRadius: PanAfricanRadius.xlBR,
             boxShadow: PanAfricanShadows.lg,
           ),
@@ -250,7 +250,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
               Text(
                 '❤️ Hearts',
                 style: PanAfricanTypography.headlineSmall(context).copyWith(
-                  color: isDark ? Colors.white : PanAfricanColors.textPrimary,
+                  color: isDark ? Theme.of(context).colorScheme.onSurface : PanAfricanColors.textPrimary,
                 ),
               ),
               SizedBox(height: PanAfricanSpacing.md),
@@ -271,7 +271,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                       child: Text(
                         'Hearts regenerate every 30 minutes. Use them wisely!',
                         style: PanAfricanTypography.bodySmall(context).copyWith(
-                          color: isDark ? Colors.white70 : PanAfricanColors.textSecondary,
+                          color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.7) : PanAfricanColors.textSecondary,
                         ),
                       ),
                     ),
@@ -289,7 +289,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
                     label: Text('Refill (${HeartsConfig.cowriesCostPerRefill} Cowries)'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                       shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.roundBR),
                     ),

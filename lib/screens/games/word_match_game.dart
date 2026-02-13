@@ -1,11 +1,13 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/modern_card.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
+import 'package:lingafriq/widgets/gamification/combo_tracker.dart';
+import 'package:lingafriq/widgets/gamification/combo_display_widget.dart';
+import 'package:lingafriq/services/sound_effects_service.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 
 class WordMatchGame extends ConsumerStatefulWidget {
   final Language language;
@@ -28,6 +30,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   int _score = 0;
   int _matches = 0;
   bool _gameComplete = false;
+  late final ComboTracker _comboTracker;
 
   // Sample word pairs - In production, these would come from API
   final List<Map<String, String>> _sampleWords = [
@@ -42,7 +45,14 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   @override
   void initState() {
     super.initState();
+    _comboTracker = ComboTracker();
     _initializeGame();
+  }
+  
+  @override
+  void dispose() {
+    _comboTracker.dispose();
+    super.dispose();
   }
 
   void _initializeGame() {
@@ -112,8 +122,13 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
     if (_selectedLeft == null || _selectedRight == null) return;
 
     final isMatch = _selectedLeft!.pair == _selectedRight!.pair;
+    final soundEffects = ref.read(soundEffectsProvider);
 
     if (isMatch) {
+      // Play correct sound and track combo
+      soundEffects.playCorrect();
+      _comboTracker.recordCorrect();
+      
       setState(() {
         _selectedLeft!.isMatched = true;
         _selectedRight!.isMatched = true;
@@ -124,9 +139,16 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
         if (_matches == _wordPairs.length) {
           _gameComplete = true;
+          // Award XP with combo multiplier
+          _awardGameXP();
+          soundEffects.playCelebration();
         }
       });
     } else {
+      // Play incorrect sound and reset combo
+      soundEffects.playIncorrect();
+      _comboTracker.recordIncorrect();
+      
       Future.delayed(const Duration(milliseconds: 500), () {
         if (mounted) {
           setState(() {
@@ -136,6 +158,16 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
         }
       });
     }
+  }
+  
+  Future<void> _awardGameXP() async {
+    final multiplier = _comboTracker.currentMultiplier;
+    await ref.read(gamificationProvider.notifier).awardXP(
+      'game_complete',
+      multiplier: multiplier,
+      sourceId: 'word_match_${widget.language.id}_${DateTime.now().millisecondsSinceEpoch}',
+    );
+    _comboTracker.reset();
   }
 
   @override
@@ -147,36 +179,43 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                AppColors.primaryGreen,
-                AppColors.accentGold,
+                PanAfricanColors.primary,
+                PanAfricanColors.secondary,
               ],
             ),
           ),
         ),
       ),
-      body: _gameComplete
-          ? _buildGameComplete()
-          : Column(
-              children: [
-                _buildScoreBar(),
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _buildCardColumn(_leftCards, true),
+      body: Stack(
+        children: [
+          _gameComplete
+              ? _buildGameComplete()
+              : Column(
+                  children: [
+                    _buildScoreBar(),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: _buildCardColumn(_leftCards, true),
+                          ),
+                          Container(
+                            width: 2,
+                            color: context.adaptive12,
+                          ),
+                          Expanded(
+                            child: _buildCardColumn(_rightCards, false),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width: 2,
-                        color: context.adaptive12,
-                      ),
-                      Expanded(
-                        child: _buildCardColumn(_rightCards, false),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+          // Combo display widget
+          if (!_gameComplete)
+            ComboDisplayWidget(comboTracker: _comboTracker),
+        ],
+      ),
     );
   }
 
@@ -210,7 +249,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   Widget _buildScoreItem(IconData icon, String label, String value) {
     return Column(
       children: [
-        Icon(icon, color: AppColors.primaryGreen, size: 24.sp),
+        Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
         const SizedBox(height: 4),
         Text(
           value,
@@ -242,22 +281,22 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
-          child: ModernCard(
+          child: PanAfricanCard(
             onTap: () => _selectCard(card),
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: card.isMatched
-                    ? AppColors.success.withOpacity(0.2)
+                    ? PanAfricanColors.success.withOpacity(0.2)
                     : isSelected
-                        ? AppColors.primaryGreen.withOpacity(0.2)
+                        ? PanAfricanColors.primary.withOpacity(0.2)
                         : null,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: card.isMatched
-                      ? AppColors.success
+                      ? PanAfricanColors.success
                       : isSelected
-                          ? AppColors.primaryGreen
+                          ? PanAfricanColors.primary
                           : Colors.transparent,
                   width: 2,
                 ),
@@ -268,7 +307,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                   if (card.isMatched)
                     Icon(
                       Icons.check_circle,
-                      color: AppColors.success,
+                      color: PanAfricanColors.success,
                       size: 20.sp,
                     ),
                   if (card.isMatched) const SizedBox(width: 8),
@@ -293,6 +332,8 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   Widget _buildGameComplete() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
@@ -304,15 +345,15 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    AppColors.primaryGreen,
-                    AppColors.accentGold,
+                    PanAfricanColors.primary,
+                    PanAfricanColors.secondary,
                   ],
                 ),
                 shape: BoxShape.circle,
               ),
               child: Icon(
                 Icons.celebration,
-                color: Colors.white,
+                color: colorScheme.onPrimary,
                 size: 64.sp,
               ),
             ),
@@ -337,7 +378,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primaryGreen.withOpacity(0.1),
+                color: PanAfricanColors.primary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
@@ -345,16 +386,17 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 style: TextStyle(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryGreen,
+                  color: PanAfricanColors.primary,
                 ),
               ),
             ),
             const SizedBox(height: 32),
-            PrimaryButton(
-              onTap: () {
-                Navigator.pop(context);
+            PanAfricanButton(
+              onPressed: () {
+                _comboTracker.reset();
+                _initializeGame();
               },
-              text: 'Play Again',
+              label: 'Play Again',
             ),
           ],
         ),

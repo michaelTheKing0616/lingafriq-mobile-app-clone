@@ -117,7 +117,7 @@ You can do this by going to your profile tab, and selecting the "Feedback" optio
                                     width: selected ? 24 : 6,
                                     height: 6,
                                     decoration: BoxDecoration(
-                                      color: selected ? Colors.white : Colors.white38,
+                                      color: selected ? Theme.of(context).colorScheme.onPrimary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.38),
                                       borderRadius: BorderRadius.circular(100),
                                     ),
                                   );
@@ -138,7 +138,7 @@ You can do this by going to your profile tab, and selecting the "Feedback" optio
                                 icon: Icon(
                                   Icons.chevron_right,
                                   size: 36.sp,
-                                  color: Colors.white,
+                                  color: Theme.of(context).colorScheme.onPrimary,
                                 ),
                               )
                             ],
@@ -181,7 +181,7 @@ class _OnboardingItem extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            color: Colors.white,
+            color: Theme.of(context).colorScheme.surface,
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

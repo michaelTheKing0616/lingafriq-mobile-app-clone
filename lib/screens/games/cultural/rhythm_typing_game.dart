@@ -7,7 +7,6 @@ import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:math';
 
 /// Rhythm Typing Game
 class RhythmTypingGame extends BaseGameScreen {
@@ -84,10 +83,12 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
       });
     } catch (e) {
       debugPrint('Error loading challenge: $e');
+      // Use fallback content so game is still playable
       setState(() {
-        setLoading(false);
+        _round++;
         _targetText = _getFallbackText();
         _rhythmPattern = 'DUM da-da DUM';
+        setLoading(false);
       });
     }
   }

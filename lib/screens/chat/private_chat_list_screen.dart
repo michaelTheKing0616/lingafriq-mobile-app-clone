@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,18 +8,15 @@ import 'package:lingafriq/providers/private_chat_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
-import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
-import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
+import 'package:lingafriq/widgets/skeleton_loader.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
+// pan_african_components removed as unused
 
 class PrivateChatListScreen extends ConsumerStatefulWidget {
   const PrivateChatListScreen({super.key});
@@ -36,7 +34,7 @@ class _PrivateChatListScreenState
   @override
   void initState() {
     super.initState();
-    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 500));
+    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 300));
     // Load contacts will be triggered in build method
   }
 
@@ -69,6 +67,7 @@ class _PrivateChatListScreenState
         .toSet();
     final currentUser = ref.watch(userProvider);
     final isDark = context.isDarkMode;
+    final colorScheme = Theme.of(context).colorScheme;
 
     // Load contacts if not already loaded
     if (state.contacts.isEmpty && !state.isLoading) {
@@ -82,7 +81,8 @@ class _PrivateChatListScreenState
         .toList();
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+      backgroundColor:
+          isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: ResponsiveSafeArea(
         child: Stack(
         children: [
@@ -90,32 +90,22 @@ class _PrivateChatListScreenState
           Container(
             height: 15.h,
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF7B2CBF), // Purple
-                  Color(0xFFCE1126), // Red
-                ],
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  blurRadius: 10,
-                  offset: const Offset(0, 5),
-                ),
-              ],
+              gradient: PanAfricanGradients.kenteVibrant,
+              boxShadow: PanAfricanShadows.md,
             ),
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(4.w),
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Row(
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.of(context).pop();
+                      },
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
                         shape: const CircleBorder(),
                       ),
                     ),
@@ -138,9 +128,11 @@ class _PrivateChatListScreenState
                   padding: EdgeInsets.all(PanAfricanSpacing.md),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1F3527) : Colors.white,
-                      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                      boxShadow: DesignSystem.shadowMedium,
+                      color: isDark
+                          ? PanAfricanColors.cardDark
+                          : PanAfricanColors.cardLight,
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+                      boxShadow: PanAfricanShadows.md,
                     ),
                     child: TextField(
                       controller: _searchController,
@@ -148,17 +140,39 @@ class _PrivateChatListScreenState
                           ref.read(privateChatProvider.notifier).search(value)),
                       decoration: InputDecoration(
                         hintText: 'Search by name, email, or language...',
-                        prefixIcon: const Icon(Icons.search),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                        hintStyle: PanAfricanTypography.bodyMedium(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
+                        prefixIcon: Icon(Icons.search, color: PanAfricanColors.neutralMedium),
+                        border: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide.none,
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide.none,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: PanAfricanRadius.lgBR,
+                          borderSide: BorderSide(
+                            color: PanAfricanColors.primary,
+                            width: 2,
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: PanAfricanSpacing.md,
+                          vertical: PanAfricanSpacing.sm,
+                        ),
                       ),
+                      style: PanAfricanTypography.bodyMedium(context),
                     ),
                   ),
                 ),
                 // Contacts List
                 Expanded(
                   child: Container(
-                    color: isDark ? const Color(0xFF102216) : const Color(0xFFF6F8F6),
+                    color: isDark
+                        ? PanAfricanColors.surfaceDark
+                        : PanAfricanColors.surfaceLight,
                     child: _buildContactsList(context, state, contacts, onlineIds, isDark),
                   ),
                 ),
@@ -178,35 +192,27 @@ class _PrivateChatListScreenState
     Set<String> onlineIds,
     bool isDark,
   ) {
+    final colorScheme = Theme.of(context).colorScheme;
     if (state.isLoading) {
-      return const DynamicLoadingScreen();
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
+        itemCount: 6,
+        itemBuilder: (_, __) => SkeletonListCard(),
+      );
     }
-    
+
     if (state.error != null) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.error_outline, color: Colors.red, size: 48.sp),
-            SizedBox(height: 2.h),
-            Text(
-              state.error!,
-              style: TextStyle(color: Colors.red.shade300, fontSize: 16.sp),
-            ),
-            SizedBox(height: 2.h),
-            PrimaryButton(
-              text: 'Retry',
-              onTap: () => ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
-            ),
-          ],
-        ),
+      return AppErrorState(
+        message: state.error!,
+        onRetry: () =>
+            ref.read(privateChatProvider.notifier).loadContacts(forceRefresh: true),
       );
     }
     
     if (contacts.isEmpty) {
       return LingAfriqEmptyState(
         icon: Icons.chat_bubble_outline,
-        title: 'No contacts yet',
+        title: 'No contacts found',
         subtitle: 'Start a LingAfriq chat from the community or add friends to see conversations here.',
       );
     }
@@ -230,20 +236,25 @@ class _PrivateChatListScreenState
         return Container(
           margin: EdgeInsets.only(bottom: 2.h),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1F3527) : Colors.white,
-            borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-            boxShadow: DesignSystem.shadowMedium,
+            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+            boxShadow: PanAfricanShadows.md,
+            border: Border.all(
+              color:
+                  isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+            ),
           ),
           child: ListTile(
-            contentPadding: EdgeInsets.all(4.w),
+            contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
             leading: Stack(
               children: [
                 CircleAvatar(
-                  radius: 24,
-                  backgroundColor: AfricanTheme.primaryGreen,
+                  radius: 24.w,
+                  backgroundColor: PanAfricanColors.primary,
                   child: Text(
                     contact.name.isNotEmpty ? contact.name[0].toUpperCase() : '?',
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    style: PanAfricanTypography.labelMedium(context)
+                        .copyWith(color: colorScheme.onPrimary),
                   ),
                 ),
                 if (isOnline)
@@ -251,12 +262,17 @@ class _PrivateChatListScreenState
                     right: 0,
                     bottom: 0,
                     child: Container(
-                      width: 12,
-                      height: 12,
+                      width: 12.w,
+                      height: 12.w,
                       decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: PanAfricanColors.success,
                         shape: BoxShape.circle,
-                        border: Border.all(color: isDark ? const Color(0xFF1F3527) : Colors.white, width: 2),
+                        border: Border.all(
+                          color: isDark 
+                              ? PanAfricanColors.surfaceContainerDark 
+                              : PanAfricanColors.surfaceContainerLight,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -264,16 +280,12 @@ class _PrivateChatListScreenState
             ),
             title: Text(
               contact.name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+              style: PanAfricanTypography.titleSmall(context),
             ),
             subtitle: Text(
               contact.lastMessage ?? 'No messages yet',
-              style: TextStyle(
-                color: isDark ? Colors.white70 : Colors.black54,
-              ),
+              style: PanAfricanTypography.bodySmall(context)
+                  .copyWith(color: PanAfricanColors.neutralMedium),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -283,27 +295,30 @@ class _PrivateChatListScreenState
               children: [
                 Text(
                   _formatTime(_getLastMessageTimestamp(roomMessages)),
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    color: isDark ? Colors.white70 : Colors.black54,
-                  ),
+                  style: PanAfricanTypography.labelSmall(context)
+                      .copyWith(color: PanAfricanColors.neutralMedium),
                 ),
                 if (unreadCount > 0)
                   Container(
-                    margin: EdgeInsets.only(top: 0.5.h),
-                    padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+                    margin: EdgeInsets.only(top: PanAfricanSpacing.xxs),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.sm,
+                      vertical: PanAfricanSpacing.xxs,
+                    ),
                     decoration: BoxDecoration(
-                      color: AfricanTheme.primaryGreen,
-                      shape: BoxShape.circle,
+                      color: PanAfricanColors.primary,
+                      borderRadius: PanAfricanRadius.roundBR,
                     ),
                     child: Text(
                       unreadCount.toString(),
-                      style: const TextStyle(color: Colors.white, fontSize: 10),
+                      style: PanAfricanTypography.labelSmall(context)
+                          .copyWith(color: colorScheme.onPrimary),
                     ),
                   ),
               ],
             ),
             onTap: () {
+              HapticFeedback.selectionClick();
               Navigator.push(
                 context,
                 SmoothPageRoute(
@@ -362,57 +377,55 @@ class _ContactTile extends StatelessWidget {
     final initials = contact.username.isNotEmpty
         ? contact.username[0].toUpperCase()
         : '?';
+    final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: isDark ? const Color(0xFF1F3527) : Colors.white,
-      borderRadius: BorderRadius.circular(16),
+      color: isDark 
+          ? PanAfricanColors.surfaceContainerDark 
+          : PanAfricanColors.surfaceContainerLight,
+      borderRadius: PanAfricanRadius.lgBR,
       child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
+        borderRadius: PanAfricanRadius.lgBR,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.sm,
+            vertical: PanAfricanSpacing.sm,
+          ),
           child: Row(
             children: [
               CircleAvatar(
-                radius: 26,
-                backgroundColor: AppColors.primaryGreen,
+                radius: 24.w,
+                backgroundColor: PanAfricanColors.primary,
                 child: Text(
                   initials,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: PanAfricanTypography.titleSmall(context)
+                      .copyWith(color: colorScheme.onPrimary),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: PanAfricanSpacing.sm),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       contact.username,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: PanAfricanTypography.titleSmall(context),
                     ),
                     if (contact.email != null)
                       Text(
                         contact.email!,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.grey[400] : Colors.grey[600],
-                        ),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
                     if (contact.language != null &&
                         contact.language!.trim().isNotEmpty)
                       Text(
                         contact.language!,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: isDark ? Colors.grey[500] : Colors.grey[600],
-                        ),
+                        style: PanAfricanTypography.labelSmall(context)
+                            .copyWith(color: PanAfricanColors.neutralMedium),
                       ),
                   ],
                 ),
@@ -421,14 +434,17 @@ class _ContactTile extends StatelessWidget {
                 children: [
                   Icon(
                     isOnline ? Icons.circle : Icons.circle_outlined,
-                    color: isOnline ? Colors.green : Colors.grey,
+                    color: isOnline 
+                        ? PanAfricanColors.success 
+                        : PanAfricanColors.neutralMedium,
                     size: 14,
                   ),
                   Text(
                     isOnline ? 'Online' : 'Offline',
-                    style: TextStyle(
-                      fontSize: 11.sp,
-                      color: isOnline ? Colors.green : Colors.grey,
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
+                      color: isOnline 
+                          ? PanAfricanColors.success 
+                          : PanAfricanColors.neutralMedium,
                     ),
                   ),
                 ],

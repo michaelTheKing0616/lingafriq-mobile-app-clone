@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/ai_chat_provider_groq.dart';
 import '../../models/quest_model.dart';
 import 'dart:convert';

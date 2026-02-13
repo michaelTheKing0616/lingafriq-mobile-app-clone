@@ -528,7 +528,7 @@ class FeedbackCard extends StatelessWidget {
                     label: const Text('Continue'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
               ],
@@ -700,7 +700,7 @@ class _RecordingButtonState extends State<RecordingButton>
               ),
               child: Icon(
                 widget.isRecording ? Icons.stop : Icons.mic,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 size: 36.sp,
               ),
             ),

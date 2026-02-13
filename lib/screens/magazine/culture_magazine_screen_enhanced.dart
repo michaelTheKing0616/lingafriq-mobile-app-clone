@@ -6,12 +6,15 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
+import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
+import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
@@ -21,18 +24,31 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final articles = useState<List<Map<String, dynamic>>>([]);
+    final translatedArticles = useState<Map<String, Map<String, String>>>({});
     final isLoading = useState(false);
+    final isTranslating = useState(false);
     final selectedCategory = useState<String?>(null);
     final showTranslation = useState(false);
     final favoriteArticles = useState<Set<String>>({});
+    final translationService = useMemoized(() => TranslationService());
+    final onboarding = ref.watch(onboardingProvider);
+    final userLanguage = (onboarding.selectedLanguage ?? 'english').toLowerCase();
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    List<Map<String, dynamic>> placeholderArticles() {
+      return [
+        {'_id': '1', 'title': 'Greetings Across Africa', 'slug': 'greetings-across-africa', 'excerpt': 'Learn how to say hello in Yoruba, Swahili, Zulu, and more.', 'category': 'language', 'published': true},
+        {'_id': '2', 'title': 'Proverbs and Wisdom', 'slug': 'proverbs-and-wisdom', 'excerpt': 'African proverbs that teach life lessons and cultural values.', 'category': 'culture', 'published': true},
+        {'_id': '3', 'title': 'Music and Rhythm', 'slug': 'music-and-rhythm', 'excerpt': 'The role of drumming and music in African languages and communication.', 'category': 'culture', 'published': true},
+        {'_id': '4', 'title': 'Family and Respect', 'slug': 'family-and-respect', 'excerpt': 'Terms for family members and showing respect in different African cultures.', 'category': 'language', 'published': true},
+        {'_id': '5', 'title': 'Markets and Bargaining', 'slug': 'markets-and-bargaining', 'excerpt': 'Essential phrases for shopping and bargaining in local markets.', 'category': 'language', 'published': true},
+      ];
+    }
 
     Future<void> loadArticles() async {
       isLoading.value = true;
       try {
-        // Use the canonical API route for articles (published content).
-        // The backend may return `data`, `results`, or a raw list depending on version.
         final response = await ApiService.get(
           Api.cultureArticles(published: true),
           queryParameters: selectedCategory.value != null
@@ -47,22 +63,71 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
               : raw;
 
           if (listCandidate is List) {
-            articles.value =
-                List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+            final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
+            articles.value = list.isNotEmpty ? list : placeholderArticles();
+          } else {
+            articles.value = placeholderArticles();
           }
+        } else {
+          articles.value = placeholderArticles();
         }
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
+        articles.value = placeholderArticles();
       } finally {
         isLoading.value = false;
       }
     }
 
     Future<void> toggleTranslation(String articleId, String language) async {
-      // In production, this would call Polie translation API
+      // Toggle translation view
       showTranslation.value = !showTranslation.value;
+      
+      // If enabling translation and not already translated, translate all articles
+      if (showTranslation.value && translatedArticles.value.isEmpty) {
+        isTranslating.value = true;
+        
+        try {
+          final translations = <String, Map<String, String>>{};
+          
+          for (final article in articles.value) {
+            final id = article['_id']?.toString() ?? '';
+            final title = article['title']?.toString() ?? '';
+            final excerpt = article['excerpt']?.toString() ?? '';
+            
+            if (id.isEmpty) continue;
+            
+            // Translate title
+            final titleResult = await translationService.translate(
+              text: title,
+              sourceLang: 'english',
+              targetLang: language,
+            );
+            
+            // Translate excerpt
+            final excerptResult = await translationService.translate(
+              text: excerpt,
+              sourceLang: 'english',
+              targetLang: language,
+            );
+            
+            translations[id] = {
+              'title': titleResult.translation,
+              'excerpt': excerptResult.translation,
+            };
+          }
+          
+          translatedArticles.value = translations;
+        } catch (e) {
+          if (context.mounted) {
+            ErrorHandler.showError(context, e);
+          }
+        } finally {
+          isTranslating.value = false;
+        }
+      }
     }
 
     Future<void> toggleFavorite(String articleId) async {
@@ -77,7 +142,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     Future<void> shareArticle(Map<String, dynamic> article) async {
       // Share functionality
-      final url = 'https://lingafriq.com/magazine/${article['slug']}';
+      final url = '${EnvConfig.appWebUrl}/magazine/${article['slug']}';
       // Use share_plus package in production
     }
 
@@ -88,15 +153,36 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cultural Magazine'),
-        backgroundColor: Colors.transparent,
+        title: Text('Cultural Magazine', style: PanAfricanTypography.titleLarge(context)),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(PanAfricanIcons.back),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
-          IconButton(
-            icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
-            onPressed: () => showTranslation.value = !showTranslation.value,
-            tooltip: 'Toggle Translation',
-          ),
+          if (isTranslating.value)
+            Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              child: SizedBox(
+                width: 24.w,
+                height: 24.w,
+                child: CircularProgressIndicator(strokeWidth: 2, color: PanAfricanColors.primary),
+              ),
+            )
+          else
+            IconButton(
+              icon: Icon(showTranslation.value ? Icons.translate : Icons.translate_outlined),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                toggleTranslation('', userLanguage);
+              },
+              tooltip: showTranslation.value ? 'Show Original' : 'Translate to $userLanguage',
+            ),
         ],
       ),
       body: Container(
@@ -125,12 +211,63 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
             // Articles Grid
             Expanded(
               child: isLoading.value
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CircularProgressIndicator(
+                            color: PanAfricanColors.primary,
+                          ),
+                          SizedBox(height: PanAfricanSpacing.md),
+                          Text(
+                            'Loading articles...',
+                            style: PanAfricanTypography.bodyMedium(context).copyWith(
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   : articles.value.isEmpty
                       ? Center(
-                          child: Text(
-                            'No articles found',
-                            style: PanAfricanTypography.bodyLarge(context),
+                          child: Padding(
+                            padding: EdgeInsets.all(PanAfricanSpacing.xl),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.article_outlined,
+                                  size: 64,
+                                  color: isDark
+                                      ? PanAfricanColors.neutralMedium
+                                      : PanAfricanColors.neutralLight,
+                                ),
+                                SizedBox(height: PanAfricanSpacing.md),
+                                Text(
+                                  'No articles yet',
+                                  style: PanAfricanTypography.titleMedium(context),
+                                ),
+                                SizedBox(height: PanAfricanSpacing.xs),
+                                Text(
+                                  'Check back soon for cultural content.',
+                                  textAlign: TextAlign.center,
+                                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                    color: isDark ? Theme.of(context).colorScheme.onSurface.withOpacity(0.54) : Theme.of(context).colorScheme.onSurface.withOpacity(0.45),
+                                  ),
+                                ),
+                                SizedBox(height: PanAfricanSpacing.lg),
+                                TextButton.icon(
+                                  onPressed: () => loadArticles(),
+                                  icon: Icon(Icons.refresh_rounded, size: 20, color: PanAfricanColors.primary),
+                                  label: Text(
+                                    'Retry',
+                                    style: PanAfricanTypography.labelLarge(context).copyWith(
+                                      color: PanAfricanColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         )
                       : GridView.builder(
@@ -144,8 +281,20 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                           itemCount: articles.value.length,
                           itemBuilder: (context, index) {
                             final article = articles.value[index];
+                            final articleId = article['_id']?.toString() ?? '';
+                            final translated = translatedArticles.value[articleId];
+                            
+                            // Create display article with translations if available
+                            final displayArticle = showTranslation.value && translated != null
+                                ? {
+                                    ...article,
+                                    'title': translated['title'] ?? article['title'],
+                                    'excerpt': translated['excerpt'] ?? article['excerpt'],
+                                  }
+                                : article;
+                            
                             return _ArticleCard(
-                              article: article,
+                              article: displayArticle,
                               showTranslation: showTranslation.value,
                               isFavorite: favoriteArticles.value.contains(article['_id']),
                               onFavorite: () => toggleFavorite(article['_id']),
@@ -156,6 +305,10 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
                                   SmoothPageRoute(
                                     child: ArticleDetailEnhanced(
                                       article: article,
+                                      translatedTitle: translated?['title'],
+                                      translatedExcerpt: translated?['excerpt'],
+                                      showTranslation: showTranslation.value,
+                                      userLanguage: userLanguage,
                                     ),
                                   ),
                                 );
@@ -206,13 +359,15 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
           return Padding(
             padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
             child: FilterChip(
-              label: Text(category),
+              label: Text(category, style: PanAfricanTypography.labelMedium(context)),
               selected: isSelected,
               onSelected: (selected) {
+                HapticFeedback.selectionClick();
                 onCategoryChanged(selected && category != 'All' ? category.toLowerCase() : null);
               },
               selectedColor: PanAfricanColors.primaryContainer,
               checkmarkColor: PanAfricanColors.primary,
+              backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
             ),
           );
         },
@@ -243,7 +398,10 @@ class _ArticleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(
@@ -268,7 +426,7 @@ class _ArticleCard extends StatelessWidget {
                       child: Icon(
                         Icons.article,
                         size: 48.sp,
-                        color: Colors.white70,
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
                       ),
                     ),
                     Positioned(
@@ -279,16 +437,22 @@ class _ArticleCard extends StatelessWidget {
                           IconButton(
                             icon: Icon(
                               isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: isFavorite ? PanAfricanColors.error : Colors.white,
+                              color: isFavorite ? PanAfricanColors.error : Theme.of(context).colorScheme.onPrimary,
                               size: 20.sp,
                             ),
-                            onPressed: onFavorite,
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              onFavorite();
+                            },
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                           ),
                           IconButton(
-                            icon: Icon(Icons.share, color: Colors.white, size: 20.sp),
-                            onPressed: onShare,
+                            icon: Icon(Icons.share, color: Theme.of(context).colorScheme.onPrimary, size: 20.sp),
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              onShare();
+                            },
                             padding: EdgeInsets.zero,
                             constraints: BoxConstraints(),
                           ),

@@ -7,12 +7,6 @@
 /// 
 /// Production-ready integration patterns (December 2025)
 
-import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/services/monitoring/sentry_service.dart';
-
 /// INTEGRATION PATTERN 1: Basic ErrorHandler for Async Operations
 /// 
 /// Replace this:

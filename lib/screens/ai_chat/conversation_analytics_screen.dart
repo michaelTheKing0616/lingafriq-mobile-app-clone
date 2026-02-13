@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/models/conversation_analytics_model.dart';
 import 'package:lingafriq/services/conversation_analytics_service.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-/// Conversation Analytics Screen
+/// Conversation Analytics Screen - Polie Dark Theme
 /// Shows conversation metrics, fluency trends, and topic coverage
 class ConversationAnalyticsScreen extends HookConsumerWidget {
   final String language;
@@ -25,88 +25,143 @@ class ConversationAnalyticsScreen extends HookConsumerWidget {
     final analyticsService = ref.read(conversationAnalyticsServiceProvider);
     final analytics = useState<ConversationAnalytics?>(null);
     final isLoading = useState(true);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Load analytics
     useEffect(() {
       _loadAnalytics(analyticsService, analytics, isLoading);
       return null;
     }, []);
 
-    if (isLoading.value || analytics.value == null) {
-      return Scaffold(
-        appBar: AppBar(title: Text('Conversation Analytics')),
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    final a = analytics.value!;
-    final topTopics = a.getTopTopics(limit: 5);
-    final topVocab = a.getTopVocabulary(limit: 10);
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Conversation Analytics'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () => _loadAnalytics(analyticsService, analytics, isLoading),
-          ),
-        ],
-      ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: isDark
-              ? PanAfricanGradients.darkSurface
-              : LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    PanAfricanColors.surfaceLight,
-                    PanAfricanColors.surfaceContainerLight,
-                  ],
-                ),
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              PolieColors.primary,
+              PolieColors.primaryDark,
+              PolieColors.obsidian,
+            ],
+          ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: Column(
+            children: [
+              _buildHeader(context, analyticsService, analytics, isLoading),
+              Expanded(
+                child: isLoading.value || analytics.value == null
+                    ? _buildLoadingState(context)
+                    : _buildContent(context, analytics.value!),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+    BuildContext context,
+    ConversationAnalyticsService service,
+    ValueNotifier<ConversationAnalytics?> analytics,
+    ValueNotifier<bool> isLoading,
+  ) {
+    return Container(
+      padding: EdgeInsets.all(PolieSpacing.md),
+      child: Row(
+        children: [
+          _GlassIconButton(
+            icon: Icons.arrow_back_rounded,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          SizedBox(width: PolieSpacing.md),
+          Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Overall Stats
-                _OverallStatsCard(analytics: a, isDark: isDark)
-                    .animate()
-                    .fadeIn(duration: 300.ms)
-                    .slideY(begin: -0.1),
-                SizedBox(height: PanAfricanSpacing.lg),
-
-                // Fluency Score
-                _FluencyCard(analytics: a, isDark: isDark)
-                    .animate(delay: 100.ms)
-                    .fadeIn(duration: 300.ms)
-                    .slideX(begin: 0.1),
-                SizedBox(height: PanAfricanSpacing.lg),
-
-                // Top Topics
-                if (topTopics.isNotEmpty)
-                  _TopTopicsCard(topics: topTopics, isDark: isDark)
-                      .animate(delay: 200.ms)
-                      .fadeIn(duration: 300.ms)
-                      .slideX(begin: -0.1),
-                SizedBox(height: PanAfricanSpacing.lg),
-
-                // Top Vocabulary
-                if (topVocab.isNotEmpty)
-                  _TopVocabularyCard(vocabulary: topVocab, isDark: isDark)
-                      .animate(delay: 300.ms)
-                      .fadeIn(duration: 300.ms)
-                      .slideY(begin: 0.1),
+                Text(
+                  'Conversation Analytics',
+                  style: PolieTypography.h2(context).copyWith(
+                    color: PolieColors.textPrimary,
+                  ),
+                ),
+                Text(
+                  languageName,
+                  style: PolieTypography.bodySmall(context).copyWith(
+                    color: PolieColors.textSecondary,
+                  ),
+                ),
               ],
             ),
           ),
-        ),
+          _GlassIconButton(
+            icon: Icons.refresh_rounded,
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              _loadAnalytics(service, analytics, isLoading);
+            },
+          ),
+        ],
+      ),
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.1);
+  }
+
+  Widget _buildLoadingState(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 48.w,
+            height: 48.w,
+            child: CircularProgressIndicator(
+              strokeWidth: 3,
+              valueColor: AlwaysStoppedAnimation<Color>(PolieColors.royalAmethyst),
+            ),
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          Text(
+            'Loading analytics...',
+            style: PolieTypography.body(context).copyWith(
+              color: PolieColors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, ConversationAnalytics a) {
+    final topTopics = a.getTopTopics(limit: 5);
+    final topVocab = a.getTopVocabulary(limit: 10);
+
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(PolieSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _OverallStatsCard(analytics: a)
+              .animate()
+              .fadeIn(duration: 300.ms)
+              .slideY(begin: -0.1),
+          SizedBox(height: PolieSpacing.lg),
+          _FluencyCard(analytics: a)
+              .animate(delay: 100.ms)
+              .fadeIn(duration: 300.ms)
+              .slideX(begin: 0.1),
+          SizedBox(height: PolieSpacing.lg),
+          if (topTopics.isNotEmpty)
+            _TopTopicsCard(topics: topTopics)
+                .animate(delay: 200.ms)
+                .fadeIn(duration: 300.ms)
+                .slideX(begin: -0.1),
+          SizedBox(height: PolieSpacing.lg),
+          if (topVocab.isNotEmpty)
+            _TopVocabularyCard(vocabulary: topVocab)
+                .animate(delay: 300.ms)
+                .fadeIn(duration: 300.ms)
+                .slideY(begin: 0.1),
+        ],
       ),
     );
   }
@@ -130,77 +185,68 @@ class ConversationAnalyticsScreen extends HookConsumerWidget {
 
 class _OverallStatsCard extends StatelessWidget {
   final ConversationAnalytics analytics;
-  final bool isDark;
 
-  const _OverallStatsCard({
-    required this.analytics,
-    required this.isDark,
-  });
+  const _OverallStatsCard({required this.analytics});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.xl),
-        child: Column(
-          children: [
-            Text(
-              'Overall Statistics',
-              style: PanAfricanTypography.titleLarge(context)?.copyWith(
-                fontWeight: FontWeight.bold,
+    return _PolieGlassCard(
+      child: Column(
+        children: [
+          Text(
+            'Overall Statistics',
+            style: PolieTypography.h2(context).copyWith(
+              color: PolieColors.textPrimary,
+            ),
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _StatItem(
+                label: 'Sessions',
+                value: '${analytics.sessions.length}',
+                icon: Icons.chat_rounded,
+                color: PolieColors.royalAmethyst,
               ),
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _StatItem(
-                  label: 'Sessions',
-                  value: '${analytics.sessions.length}',
-                  icon: Icons.chat,
-                  color: PanAfricanColors.primary,
-                ),
-                _StatItem(
-                  label: 'Messages',
-                  value: '${analytics.totalMessages}',
-                  icon: Icons.message,
-                  color: PanAfricanColors.secondary,
-                ),
-                _StatItem(
-                  label: 'Words',
-                  value: '${analytics.totalWords}',
-                  icon: Icons.text_fields,
-                  color: PanAfricanColors.accent,
-                ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.lg),
-            Divider(),
-            SizedBox(height: PanAfricanSpacing.lg),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _StatItem(
-                  label: 'Topics',
-                  value: '${analytics.allTopics.length}',
-                  icon: Icons.topic,
-                  color: PanAfricanColors.tertiary,
-                ),
-                _StatItem(
-                  label: 'Avg Session',
-                  value: '${analytics.averageSessionLength.toStringAsFixed(1)}m',
-                  icon: Icons.timer,
-                  color: PanAfricanColors.primary,
-                ),
-              ],
-            ),
-          ],
-        ),
+              _StatItem(
+                label: 'Messages',
+                value: '${analytics.totalMessages}',
+                icon: Icons.message_rounded,
+                color: PolieColors.electricTeal,
+              ),
+              _StatItem(
+                label: 'Words',
+                value: '${analytics.totalWords}',
+                icon: Icons.text_fields_rounded,
+                color: PolieColors.goldEmber,
+              ),
+            ],
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          Container(
+            height: 1,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _StatItem(
+                label: 'Topics',
+                value: '${analytics.allTopics.length}',
+                icon: Icons.topic_rounded,
+                color: PolieColors.royalAmethystLight,
+              ),
+              _StatItem(
+                label: 'Avg Session',
+                value: '${analytics.averageSessionLength.toStringAsFixed(1)}m',
+                icon: Icons.timer_rounded,
+                color: PolieColors.electricTealLight,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -223,19 +269,28 @@ class _StatItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Icon(icon, color: color, size: 32.sp),
-        SizedBox(height: PanAfricanSpacing.xs),
+        Container(
+          padding: EdgeInsets.all(PolieSpacing.sm),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.2),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: color, size: 28.sp),
+        ),
+        SizedBox(height: PolieSpacing.sm),
         Text(
           value,
-          style: PanAfricanTypography.titleMedium(context)?.copyWith(
-            fontWeight: FontWeight.bold,
+          style: PolieTypography.h2(context).copyWith(
             color: color,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: PanAfricanSpacing.xxs),
+        SizedBox(height: PolieSpacing.xs),
         Text(
           label,
-          style: PanAfricanTypography.bodySmall(context),
+          style: PolieTypography.bodySmall(context).copyWith(
+            color: PolieColors.textSecondary,
+          ),
         ),
       ],
     );
@@ -244,144 +299,172 @@ class _StatItem extends StatelessWidget {
 
 class _FluencyCard extends StatelessWidget {
   final ConversationAnalytics analytics;
-  final bool isDark;
 
-  const _FluencyCard({
-    required this.analytics,
-    required this.isDark,
-  });
+  const _FluencyCard({required this.analytics});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.speed, color: PanAfricanColors.accent),
-                SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Fluency Score',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+    final fluencyColor = _getFluencyColor(analytics.averageFluency);
+
+    return _PolieGlassCard(
+      glowColor: fluencyColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(PolieSpacing.sm),
+                decoration: BoxDecoration(
+                  color: fluencyColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(PolieRadius.sm),
                 ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.md),
-            Text(
+                child: Icon(Icons.speed_rounded, color: fluencyColor, size: 24.sp),
+              ),
+              SizedBox(width: PolieSpacing.md),
+              Text(
+                'Fluency Score',
+                style: PolieTypography.h2(context).copyWith(
+                  color: PolieColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          Center(
+            child: Text(
               '${analytics.averageFluency.toStringAsFixed(0)}%',
-              style: PanAfricanTypography.displaySmall(context)?.copyWith(
+              style: PolieTypography.h1(context).copyWith(
+                color: fluencyColor,
+                fontSize: 48.sp,
                 fontWeight: FontWeight.bold,
-                color: PanAfricanColors.accent,
               ),
             ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            LinearProgressIndicator(
+          ),
+          SizedBox(height: PolieSpacing.md),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(PolieRadius.pill),
+            child: LinearProgressIndicator(
               value: analytics.averageFluency / 100.0,
-              backgroundColor: PanAfricanColors.neutralLight,
-              valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
+              backgroundColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+              valueColor: AlwaysStoppedAnimation<Color>(fluencyColor),
               minHeight: 8.h,
             ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              _getFluencyDescription(analytics.averageFluency),
-              style: PanAfricanTypography.bodySmall(context),
+          ),
+          SizedBox(height: PolieSpacing.md),
+          Text(
+            _getFluencyDescription(analytics.averageFluency),
+            style: PolieTypography.body(context).copyWith(
+              color: PolieColors.textSecondary,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
+  Color _getFluencyColor(double fluency) {
+    if (fluency >= 90) return PolieColors.success;
+    if (fluency >= 75) return PolieColors.electricTeal;
+    if (fluency >= 60) return PolieColors.goldEmber;
+    if (fluency >= 40) return PolieColors.goldEmberLight;
+    return PolieColors.error;
+  }
+
   String _getFluencyDescription(double fluency) {
-    if (fluency >= 90) return 'Excellent! You\'re very fluent! 🌟';
-    if (fluency >= 75) return 'Great progress! Keep practicing! 💪';
-    if (fluency >= 60) return 'Good! You\'re improving steadily! 📈';
-    if (fluency >= 40) return 'Keep going! Practice makes perfect! 🎯';
-    return 'Getting started! Every conversation helps! 🌱';
+    if (fluency >= 90) return 'Excellent! You\'re very fluent!';
+    if (fluency >= 75) return 'Great progress! Keep practicing!';
+    if (fluency >= 60) return 'Good! You\'re improving steadily!';
+    if (fluency >= 40) return 'Keep going! Practice makes perfect!';
+    return 'Getting started! Every conversation helps!';
   }
 }
 
 class _TopTopicsCard extends StatelessWidget {
   final List<MapEntry<String, int>> topics;
-  final bool isDark;
 
-  const _TopTopicsCard({
-    required this.topics,
-    required this.isDark,
-  });
+  const _TopTopicsCard({required this.topics});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.topic, color: PanAfricanColors.primary),
-                SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Most Discussed Topics',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+    return _PolieGlassCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(PolieSpacing.sm),
+                decoration: BoxDecoration(
+                  color: PolieColors.royalAmethyst.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(PolieRadius.sm),
                 ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.md),
-            ...topics.asMap().entries.map((entry) {
-              final index = entry.key;
-              final topic = entry.value;
-              return Padding(
-                padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 24.w,
-                      height: 24.h,
-                      decoration: BoxDecoration(
-                        color: PanAfricanColors.primary.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          '${index + 1}',
-                          style: PanAfricanTypography.labelSmall(context)?.copyWith(
-                            color: PanAfricanColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                child: Icon(Icons.topic_rounded, color: PolieColors.royalAmethyst, size: 24.sp),
+              ),
+              SizedBox(width: PolieSpacing.md),
+              Text(
+                'Most Discussed Topics',
+                style: PolieTypography.h2(context).copyWith(
+                  color: PolieColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          ...topics.asMap().entries.map((entry) {
+            final index = entry.key;
+            final topic = entry.value;
+            return Padding(
+              padding: EdgeInsets.only(bottom: PolieSpacing.sm),
+              child: Row(
+                children: [
+                  Container(
+                    width: 28.w,
+                    height: 28.w,
+                    decoration: BoxDecoration(
+                      color: PolieColors.royalAmethyst.withOpacity(0.2),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${index + 1}',
+                        style: PolieTypography.label(context).copyWith(
+                          color: PolieColors.royalAmethyst,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-                    SizedBox(width: PanAfricanSpacing.sm),
-                    Expanded(
-                      child: Text(
-                        topic.key,
-                        style: PanAfricanTypography.bodyMedium(context),
+                  ),
+                  SizedBox(width: PolieSpacing.md),
+                  Expanded(
+                    child: Text(
+                      topic.key,
+                      style: PolieTypography.body(context).copyWith(
+                        color: PolieColors.textPrimary,
                       ),
                     ),
-                    Chip(
-                      label: Text('${topic.value}'),
-                      backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                      labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
-                        color: PanAfricanColors.primary,
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PolieSpacing.sm,
+                      vertical: PolieSpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: PolieColors.royalAmethyst.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(PolieRadius.pill),
+                    ),
+                    child: Text(
+                      '${topic.value}',
+                      style: PolieTypography.label(context).copyWith(
+                        color: PolieColors.royalAmethyst,
                       ),
                     ),
-                  ],
-                ),
-              );
-            }),
-          ],
-        ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
       ),
     );
   }
@@ -389,64 +472,144 @@ class _TopTopicsCard extends StatelessWidget {
 
 class _TopVocabularyCard extends StatelessWidget {
   final List<MapEntry<String, int>> vocabulary;
-  final bool isDark;
 
-  const _TopVocabularyCard({
-    required this.vocabulary,
-    required this.isDark,
-  });
+  const _TopVocabularyCard({required this.vocabulary});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.book, color: PanAfricanColors.secondary),
-                SizedBox(width: PanAfricanSpacing.sm),
-                Text(
-                  'Most Used Vocabulary',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
-                    fontWeight: FontWeight.bold,
+    return _PolieGlassCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(PolieSpacing.sm),
+                decoration: BoxDecoration(
+                  color: PolieColors.electricTeal.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(PolieRadius.sm),
+                ),
+                child: Icon(Icons.book_rounded, color: PolieColors.electricTeal, size: 24.sp),
+              ),
+              SizedBox(width: PolieSpacing.md),
+              Text(
+                'Most Used Vocabulary',
+                style: PolieTypography.h2(context).copyWith(
+                  color: PolieColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: PolieSpacing.lg),
+          Wrap(
+            spacing: PolieSpacing.sm,
+            runSpacing: PolieSpacing.sm,
+            children: vocabulary.map((entry) {
+              return Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: PolieSpacing.md,
+                  vertical: PolieSpacing.sm,
+                ),
+                decoration: BoxDecoration(
+                  color: PolieColors.electricTeal.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(PolieRadius.pill),
+                  border: Border.all(
+                    color: PolieColors.electricTeal.withOpacity(0.3),
+                    width: 1,
                   ),
                 ),
-              ],
-            ),
-            SizedBox(height: PanAfricanSpacing.md),
-            Wrap(
-              spacing: PanAfricanSpacing.sm,
-              runSpacing: PanAfricanSpacing.sm,
-              children: vocabulary.map((entry) {
-                return Chip(
-                  label: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(entry.key),
-                      SizedBox(width: PanAfricanSpacing.xs),
-                      Text(
-                        '${entry.value}',
-                        style: PanAfricanTypography.labelSmall(context)?.copyWith(
-                          color: PanAfricanColors.secondary,
-                        ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      entry.key,
+                      style: PolieTypography.label(context).copyWith(
+                        color: PolieColors.textPrimary,
                       ),
-                    ],
-                  ),
-                  backgroundColor: PanAfricanColors.secondary.withOpacity(0.1),
-                  labelStyle: PanAfricanTypography.bodySmall(context)?.copyWith(
-                    color: PanAfricanColors.secondary,
-                  ),
-                );
-              }).toList(),
-            ),
-          ],
-        ),
+                    ),
+                    SizedBox(width: PolieSpacing.xs),
+                    Text(
+                      '${entry.value}',
+                      style: PolieTypography.bodySmall(context).copyWith(
+                        color: PolieColors.electricTeal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+        ],
       ),
     );
   }
 }
 
+/// Reusable Polie glass card
+class _PolieGlassCard extends StatelessWidget {
+  final Widget child;
+  final Color? glowColor;
+
+  const _PolieGlassCard({
+    required this.child,
+    this.glowColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(PolieSpacing.lg),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(PolieRadius.lg),
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+          width: 1,
+        ),
+        boxShadow: glowColor != null
+            ? PolieElevation.level2(context, glowColor: glowColor)
+            : PolieElevation.level1(context),
+      ),
+      child: child,
+    );
+  }
+}
+
+/// Glass icon button
+class _GlassIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  const _GlassIconButton({
+    required this.icon,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onPressed();
+      },
+      child: Container(
+        width: 44.w,
+        height: 44.w,
+        decoration: BoxDecoration(
+          color: PolieColors.surfaceContainerLight,
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            width: 1,
+          ),
+        ),
+        child: Icon(
+          icon,
+          color: PolieColors.textPrimary,
+          size: 22.sp,
+        ),
+      ),
+    );
+  }
+}

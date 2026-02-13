@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'pan_african_design_system.dart';
 
 /// Polie & AI Chat design tokens — Afro-futurist, cinematic learning experience.
 /// Heritage × intelligence × delight. Dark-first; light mode ceremonial.
@@ -28,11 +27,14 @@ class PolieColors {
   static const Color error = Color(0xFFB91C1C);
   static const Color errorMuted = Color(0xFF991B1B);
 
-  // Surfaces (glass-friendly — increased opacity for better text contrast)
+  // @deprecated — Glass-era tokens. Use surfaceContainer / surfaceContainerLight instead.
   static const Color surfaceGlass = Color(0x1FFFFFFF);
   static const Color surfaceGlassDark = Color(0x2BFFFFFF);
   static const Color surfaceContainer = Color(0xFF1E293B);
   static const Color surfaceContainerLight = Color(0xFFF1F5F9);
+
+  // Surfaces — Light mode
+  static const Color surfaceLight = Color(0xFFF5F7F5);
 
   // Text
   static const Color textPrimary = Color(0xFFF8FAFC);
@@ -155,6 +157,48 @@ class PolieTypography {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
     return _baseStyle(14.sp, 1.3, FontWeight.w500, color);
+  }
+
+  static TextStyle h3(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return _baseStyle(20.sp, 1.35, FontWeight.w600, color);
+  }
+
+  static TextStyle titleLarge(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return _baseStyle(22.sp, 1.3, FontWeight.w600, color);
+  }
+
+  static TextStyle titleMedium(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return _baseStyle(18.sp, 1.35, FontWeight.w600, color);
+  }
+
+  static TextStyle titleSmall(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return _baseStyle(16.sp, 1.35, FontWeight.w600, color);
+  }
+
+  static TextStyle bodyLarge(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return _baseStyle(18.sp, 1.5, FontWeight.w400, color);
+  }
+
+  static TextStyle labelLarge(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textSecondary : PolieColors.textSecondaryLight;
+    return _baseStyle(14.sp, 1.3, FontWeight.w600, color);
+  }
+
+  static TextStyle button(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final color = isDark ? PolieColors.textPrimary : PolieColors.textPrimaryLight;
+    return _baseStyle(16.sp, 1.25, FontWeight.w700, color, 0.5);
   }
 }
 

@@ -12,6 +12,7 @@ import '../../models/quiz_model.dart';
 import '../../models/word_correction_model.dart';
 import '../../providers/api_provider.dart';
 import '../../providers/navigation_provider.dart';
+import '../../screens/lesson/lesson_flow_screen.dart';
 import '../../utils/api.dart';
 import '../../widgets/error_widet.dart';
 import '../../widgets/info_widget.dart';
@@ -45,7 +46,42 @@ class LessonSectionsListScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const BackButton(color: Colors.white),
+                    BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Hero(
+                        tag: 'path_node_${lesson.id}',
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                Icons.auto_stories_rounded,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                lesson.name,
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: Theme.of(context).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     LangguageTypeHeaderBuilder(
                       title: "Lessons",
                       level: '',
@@ -118,16 +154,22 @@ class _SectionLessonsList extends ConsumerWidget {
             sectionLesson: sectionLesson,
             enabled: sectionLesson.completed_by != null || isEnabled,
             onOpen: () async {
-              int indexToOpen = index;
-              do {
-                final lesson = sectionLessons[indexToOpen];
-                final result = await openQuizDetail(lesson, ref);
-                if (result != true) break;
-                indexToOpen++;
-              } while (indexToOpen != sectionLessons.length);
+              // Navigate to new unified lesson flow screen
+              final result = await ref.read(navigationProvider).navigateTo(
+                LessonFlowScreen(
+                  lessonId: lesson.id,
+                  sectionLessons: sectionLessons,
+                  lessonTitle: lesson.name,
+                ),
+              );
+              
+              // Refresh section lessons list after returning
               ref.invalidate(sectionLessonsProvider(lesson.id));
-              if (indexToOpen == sectionLessons.length) {
-                ref.read(navigationProvider).pop();
+              
+              // If lesson was completed, pop back to lesson list
+              if (result == true) {
+                // Optionally pop if all sections are complete
+                // This is handled by the LessonFlowScreen itself
               }
             },
           );
@@ -283,7 +325,7 @@ class _SectionLessonItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black26,
       child: InkWell(

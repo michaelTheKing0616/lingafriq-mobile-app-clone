@@ -97,6 +97,7 @@ class AppInitializer {
       final gameLoader = _ref.read(lazyGameLoaderProvider);
       gameLoader.preloadCommonGames().catchError((e) {
         debugPrint('Background game preload failed: $e');
+        return <GameLoadResult>[];
       });
     } catch (e) {
       debugPrint('Background initialization error: $e');

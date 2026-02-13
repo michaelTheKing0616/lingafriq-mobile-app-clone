@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 /// Responsive helper utilities for dynamic UI adaptation
 class ResponsiveHelper {
   /// Get responsive padding based on screen size

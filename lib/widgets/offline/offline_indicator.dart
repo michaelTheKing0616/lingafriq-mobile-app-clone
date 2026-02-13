@@ -3,7 +3,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 
 class OfflineIndicator extends StatefulWidget {
   final Widget child;
@@ -28,7 +28,8 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
   bool _isOnline = true;
   late AnimationController _controller;
   late Animation<double> _slideAnimation;
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySub;
+  Timer? _connectivityTimer;
+  static const Duration _connectivityPollInterval = Duration(seconds: 5);
 
   @override
   void initState() {
@@ -42,20 +43,24 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
     );
 
     _checkConnectivity();
-    _listenToConnectivity();
+    _startConnectivityPolling();
   }
 
   Future<void> _checkConnectivity() async {
-    final result = await Connectivity().checkConnectivity();
-    final isOnline = result.any((r) => r != ConnectivityResult.none);
-    _updateStatus(isOnline);
+    try {
+      final isOnline = await ConnectivityService.hasInternet();
+      _updateStatus(isOnline);
+    } catch (_) {
+      // Keep previous status on failure to avoid unnecessary toggles.
+    }
   }
 
-  void _listenToConnectivity() {
-    _connectivitySub = Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
-      final isOnline = result.any((r) => r != ConnectivityResult.none);
-      _updateStatus(isOnline);
-    });
+  void _startConnectivityPolling() {
+    _connectivityTimer?.cancel();
+    _connectivityTimer = Timer.periodic(
+      _connectivityPollInterval,
+      (_) => unawaited(_checkConnectivity()),
+    );
   }
 
   void _updateStatus(bool isOnline) {
@@ -74,7 +79,7 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
 
   @override
   void dispose() {
-    _connectivitySub?.cancel();
+    _connectivityTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -99,23 +104,25 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
                         vertical: 8,
                       ),
                       color: widget.offlineColor ?? Colors.red,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.cloud_off,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'No Internet Connection',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                      child: Builder(
+                        builder: (context) => Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.cloud_off,
+                              color: Theme.of(context).colorScheme.onSurface,
+                              size: 20,
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 8),
+                            Text(
+                              'Offline Mode',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
             );

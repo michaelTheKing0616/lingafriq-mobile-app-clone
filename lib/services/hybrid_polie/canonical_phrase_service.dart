@@ -5,9 +5,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../config/url_constants.dart';
-import '../../utils/api.dart';
-import '../../utils/supported_languages.dart';
 import '../env_config.dart';
 import 'cache_service.dart';
 
@@ -134,7 +133,7 @@ class CanonicalPhraseService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}hybrid-polie/canonical',
+        ApiContract.url(ApiContract.ai.hybridCanonical),
         data: {
           'phrase': phrase,
           'language': language,

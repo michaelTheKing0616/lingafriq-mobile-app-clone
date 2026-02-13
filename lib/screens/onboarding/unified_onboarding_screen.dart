@@ -10,7 +10,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/backend_sync_provider.dart';
@@ -18,7 +17,6 @@ import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -177,9 +175,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             if (onBack != null)
               IconButton(
                 onPressed: onBack,
-                icon: Icon(Icons.arrow_back_ios_rounded, color: Colors.white, size: 20.sp),
+                icon: Icon(Icons.arrow_back_ios_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 20.sp),
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.white.withOpacity(0.15),
+                  backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
                 ),
               )
             else
@@ -190,9 +188,9 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.12),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.pill),
-                  border: Border.all(color: Colors.white.withOpacity(0.2)),
+                  border: Border.all(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2)),
                 ),
                 child: Row(
                   children: [
@@ -208,19 +206,14 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                               children: [
                                 Container(
                                   height: 6.h,
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                                 ),
                                 AnimatedContainer(
                                   duration: const Duration(milliseconds: 300),
                                   height: 6.h,
                                   width: constraints.maxWidth * progress,
                                   decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        PanAfricanColors.secondary,
-                                        Colors.white,
-                                      ],
-                                    ),
+                                    color: Theme.of(context).colorScheme.primaryContainer,
                                   ),
                                 ),
                               ],
@@ -233,7 +226,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                     Text(
                       '${current + 1}/$total',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -250,7 +243,7 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
                 child: Text(
                   'Skip',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -406,9 +399,7 @@ class _VillageWelcomeStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: PanAfricanGradients.forest,
-      ),
+      color: PanAfricanColors.primary,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
@@ -418,20 +409,9 @@ class _VillageWelcomeStep extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Pa LingAfriq avatar with African sunset glow
                     Container(
                       width: 200.w,
                       height: 200.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: PanAfricanColors.secondary.withOpacity(0.4),
-                            blurRadius: 40,
-                            spreadRadius: 10,
-                          ),
-                        ],
-                      ),
                       child: OnboardingAvatarWidget(
                         step: OnboardingStep.welcome,
                         size: 200.w,
@@ -445,7 +425,7 @@ class _VillageWelcomeStep extends StatelessWidget {
                     Text(
                       'Welcome to',
                       style: PanAfricanTypography.titleMedium(context).copyWith(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                         letterSpacing: 1,
                       ),
                     ).animate().fadeIn(delay: 400.ms),
@@ -453,18 +433,8 @@ class _VillageWelcomeStep extends StatelessWidget {
                     Text(
                       'Kijiji cha Lugha',
                       textAlign: TextAlign.center,
-                      style: PanAfricanTypography.displaySmall(context, color: Colors.white)
-                          .copyWith(
-                        height: 1.1,
-                        letterSpacing: -1,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.3),
-                            blurRadius: 12,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
+                      style: PanAfricanTypography.displaySmall(context, color: Theme.of(context).colorScheme.onPrimary)
+                          .copyWith(height: 1.1, letterSpacing: -1),
                     ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.2, end: 0),
                     SizedBox(height: 12.h),
                     Text(
@@ -482,7 +452,7 @@ class _VillageWelcomeStep extends StatelessWidget {
                         'Your journey to mastering African languages begins here.',
                         textAlign: TextAlign.center,
                         style: PanAfricanTypography.bodyMedium(context).copyWith(
-                          color: Colors.white.withOpacity(0.85),
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
                         ),
                       ),
                     ).animate().fadeIn(delay: 700.ms),
@@ -494,18 +464,14 @@ class _VillageWelcomeStep extends StatelessWidget {
               padding: EdgeInsets.all(24.w),
               child: SizedBox(
                 width: double.infinity,
-                child: PanAfricanButton(
+                child:                 PanAfricanButton(
                   label: 'Begin Your Journey',
                   onPressed: () {
                     HapticFeedback.mediumImpact();
                     onNext();
                   },
-                  hasGradient: true,
-                  gradientColors: [
-                    PanAfricanColors.secondary,
-                    PanAfricanColors.tertiary,
-                  ],
-                  foregroundColor: PanAfricanColors.neutralDarkest,
+                  backgroundColor: PanAfricanColors.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   height: 56.h,
                 ),
               ).animate().fadeIn(delay: 800.ms).slideY(begin: 0.3, end: 0),
@@ -719,7 +685,7 @@ class _ElderQuestionStep extends HookConsumerWidget {
                 Text(
                   'Your Season of Life',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -736,16 +702,16 @@ class _ElderQuestionStep extends HookConsumerWidget {
                         HapticFeedback.selectionClick();
                         selectedAge.value = sel ? age : null;
                       },
-                      backgroundColor: Colors.white.withOpacity(0.25),
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.25),
                       selectedColor: PanAfricanColors.secondary,
                       side: BorderSide(
                         color: isSelected
                             ? PanAfricanColors.secondary
-                            : Colors.white.withOpacity(0.4),
+                            : Theme.of(context).colorScheme.onPrimary.withOpacity(0.4),
                         width: 1.2,
                       ),
                       labelStyle: TextStyle(
-                        color: isSelected ? Colors.black : Colors.white,
+                        color: isSelected ? Theme.of(context).colorScheme.onSurface : Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.w600,
                         fontSize: 13.sp,
                       ),
@@ -765,7 +731,7 @@ class _ElderQuestionStep extends HookConsumerWidget {
                 Text(
                   'Why are you learning? (Select all that apply)',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1015,7 +981,7 @@ class _TimekeeperStep extends HookConsumerWidget {
                 Container(
                   padding: EdgeInsets.all(20.w),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.1),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                   ),
                   child: Column(
@@ -1026,7 +992,7 @@ class _TimekeeperStep extends HookConsumerWidget {
                           Text(
                             'Daily Goal',
                             style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                               fontSize: 14.sp,
                               fontWeight: FontWeight.w600,
                             ),
@@ -1045,7 +1011,7 @@ class _TimekeeperStep extends HookConsumerWidget {
                       SliderTheme(
                         data: SliderTheme.of(context).copyWith(
                           activeTrackColor: PanAfricanColors.secondary,
-                          inactiveTrackColor: Colors.white.withOpacity(0.2),
+                          inactiveTrackColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                           thumbColor: PanAfricanColors.secondary,
                           overlayColor: PanAfricanColors.secondary.withOpacity(0.2),
                         ),
@@ -1061,8 +1027,8 @@ class _TimekeeperStep extends HookConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('5 min', style: TextStyle(color: Colors.white54, fontSize: 12.sp)),
-                          Text('60 min', style: TextStyle(color: Colors.white54, fontSize: 12.sp)),
+                          Text('5 min', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54), fontSize: 12.sp)),
+                          Text('60 min', style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54), fontSize: 12.sp)),
                         ],
                       ),
                     ],
@@ -1073,7 +1039,7 @@ class _TimekeeperStep extends HookConsumerWidget {
                 Text(
                   'Best Time to Learn',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1115,7 +1081,7 @@ class _TimekeeperStep extends HookConsumerWidget {
             child: SwitchListTile(
               title: Text(
                 'Enable Daily Reminders',
-                style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 14.sp),
               ),
               value: remindersEnabled.value,
               onChanged: (v) => remindersEnabled.value = v,
@@ -1194,7 +1160,7 @@ class _GriotStep extends HookConsumerWidget {
                 Text(
                   'Communication Style',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1238,7 +1204,7 @@ class _GriotStep extends HookConsumerWidget {
                 Text(
                   'Gamification Level',
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
@@ -1261,12 +1227,12 @@ class _GriotStep extends HookConsumerWidget {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? PanAfricanColors.secondary.withOpacity(0.2)
-                                : Colors.white.withOpacity(0.1),
+                                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                             border: Border.all(
                               color: isSelected
                                   ? PanAfricanColors.secondary
-                                  : Colors.white.withOpacity(0.2),
+                                  : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                               width: isSelected ? 2 : 1,
                             ),
                           ),
@@ -1279,7 +1245,7 @@ class _GriotStep extends HookConsumerWidget {
                                     Text(
                                       level['label'] as String,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Theme.of(context).colorScheme.onPrimary,
                                         fontSize: 16.sp,
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -1287,7 +1253,7 @@ class _GriotStep extends HookConsumerWidget {
                                     Text(
                                       level['desc'] as String,
                                       style: TextStyle(
-                                        color: Colors.white70,
+                                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
                                         fontSize: 13.sp,
                                       ),
                                     ),
@@ -1457,7 +1423,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                       ? FileImage(File(avatarPath.value!))
                       : null,
                   child: avatarPath.value == null
-                      ? Icon(Icons.person_rounded, size: 50.sp, color: Colors.white)
+                      ? Icon(Icons.person_rounded, size: 50.sp, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                 ),
                 Positioned(
@@ -1469,7 +1435,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                       color: PanAfricanColors.secondary,
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(Icons.camera_alt_rounded, size: 16.sp, color: Colors.black),
+                    child: Icon(Icons.camera_alt_rounded, size: 16.sp, color: Theme.of(context).colorScheme.onSurface),
                   ),
                 ),
               ],
@@ -1478,7 +1444,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
           SizedBox(height: 8.h),
           Text(
             'Tap to add photo (optional)',
-            style: TextStyle(color: Colors.white70, fontSize: 12.sp),
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7), fontSize: 12.sp),
           ),
           SizedBox(height: 24.h),
           // Username field
@@ -1486,21 +1452,21 @@ class _NamingCeremonyStep extends HookConsumerWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: TextField(
               controller: usernameController,
-              style: TextStyle(color: Colors.white, fontSize: 18.sp),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontSize: 18.sp),
               decoration: InputDecoration(
                 labelText: 'Username',
-                labelStyle: TextStyle(color: Colors.white70),
+                labelStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
                 hintText: 'Enter your username',
-                hintStyle: TextStyle(color: Colors.white38),
+                hintStyle: TextStyle(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.38)),
                 filled: true,
-                fillColor: Colors.white.withOpacity(0.1),
+                fillColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                  borderSide: BorderSide(color: Colors.white.withOpacity(0.3)),
+                  borderSide: BorderSide(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3)),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
@@ -1514,14 +1480,14 @@ class _NamingCeremonyStep extends HookConsumerWidget {
                           padding: EdgeInsets.all(12.w),
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            color: Colors.white70,
+                            color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
                           ),
                         ),
                       )
                     : _getUsernameIcon(usernameStatus.value),
                 helperText: _getUsernameHelperText(usernameStatus.value),
                 helperStyle: TextStyle(
-                  color: _getUsernameHelperColor(usernameStatus.value),
+                  color: _getUsernameHelperColor(context, usernameStatus.value),
                   fontSize: 12.sp,
                 ),
               ),
@@ -1585,7 +1551,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
     }
   }
 
-  Color _getUsernameHelperColor(_UsernameStatus status) {
+  Color _getUsernameHelperColor(BuildContext context, _UsernameStatus status) {
     switch (status) {
       case _UsernameStatus.available:
         return PanAfricanColors.success;
@@ -1596,7 +1562,7 @@ class _NamingCeremonyStep extends HookConsumerWidget {
       case _UsernameStatus.invalidFormat:
         return PanAfricanColors.warning;
       default:
-        return Colors.white70;
+        return Theme.of(context).colorScheme.onPrimary.withOpacity(0.7);
     }
   }
 }
@@ -1661,22 +1627,11 @@ class _CharacterStepTemplate extends StatelessWidget {
                 height: 100.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.15),
-                  border: Border.all(color: Colors.white.withOpacity(0.3), width: 2),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                  border: Border.all(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3), width: 2),
                 ),
-                child: Icon(characterIcon, size: 50.sp, color: Colors.white),
+                child: Icon(characterIcon, size: 50.sp, color: Theme.of(context).colorScheme.onPrimary),
               ).animate().scale(duration: 400.ms, curve: Curves.easeOut),
-            SizedBox(height: 16.h),
-            // Character name
-            Text(
-              characterName,
-              style: TextStyle(
-                color: PanAfricanColors.secondary,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1,
-              ),
-            ).animate().fadeIn(delay: 200.ms),
             SizedBox(height: 12.h),
             // Dialogue + Question panel
             Padding(
@@ -1684,36 +1639,29 @@ class _CharacterStepTemplate extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.12),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.12),
                   borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                     width: 1,
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.18),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
                 ),
                 child: Column(
                   children: [
                     Text(
                       dialogue,
                       textAlign: TextAlign.center,
-                      style: PanAfricanTypography.headlineSmall(context, color: Colors.white)
+                      style: PanAfricanTypography.headlineSmall(context, color: Theme.of(context).colorScheme.onPrimary)
                           .copyWith(height: 1.3),
                     ),
                     SizedBox(height: 10.h),
                     Text(
                       question,
                       textAlign: TextAlign.center,
-                      style: PanAfricanTypography.bodyMedium(context, color: Colors.white)
+                      style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary)
                           .copyWith(
                         fontStyle: FontStyle.italic,
-                        color: Colors.white.withOpacity(0.85),
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.85),
                       ),
                     ),
                   ],
@@ -1794,10 +1742,10 @@ class _LanguageCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? PanAfricanColors.secondary.withOpacity(0.25)
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
+              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -1817,7 +1765,7 @@ class _LanguageCard extends StatelessWidget {
                 child: Text(
                   name,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     fontSize: 14.sp,
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                   ),
@@ -1864,7 +1812,7 @@ class _LanguageListTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? PanAfricanColors.secondary.withOpacity(0.2)
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
               color: isSelected ? PanAfricanColors.secondary : Colors.transparent,
@@ -1889,7 +1837,7 @@ class _LanguageListTile extends StatelessWidget {
                     Text(
                       name,
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.onPrimary,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1897,7 +1845,7 @@ class _LanguageListTile extends StatelessWidget {
                     Text(
                       region,
                       style: TextStyle(
-                        color: Colors.white60,
+                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
                         fontSize: 12.sp,
                       ),
                     ),
@@ -1906,7 +1854,7 @@ class _LanguageListTile extends StatelessWidget {
               ),
               Icon(
                 isSelected ? Icons.check_circle_rounded : Icons.radio_button_unchecked_rounded,
-                color: isSelected ? PanAfricanColors.secondary : Colors.white54,
+                color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
                 size: 24.sp,
               ),
             ],
@@ -1942,10 +1890,10 @@ class _ReasonCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? PanAfricanColors.secondary.withOpacity(0.25)
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
+              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -1965,12 +1913,12 @@ class _ReasonCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Colors.white.withOpacity(0.08),
+                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
                   size: 24.sp,
                 ),
               ),
@@ -1978,7 +1926,7 @@ class _ReasonCard extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 11.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -2019,10 +1967,10 @@ class _GoalCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? PanAfricanColors.secondary.withOpacity(0.2)
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
+              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -2042,12 +1990,12 @@ class _GoalCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Colors.white.withOpacity(0.08),
+                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
                   size: 28.sp,
                 ),
               ),
@@ -2055,7 +2003,7 @@ class _GoalCard extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w700,
                 ),
@@ -2064,7 +2012,7 @@ class _GoalCard extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  color: Colors.white60,
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.6),
                   fontSize: 11.sp,
                 ),
               ),
@@ -2114,10 +2062,10 @@ class _TimeCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? PanAfricanColors.secondary.withOpacity(0.2)
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
+              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -2137,12 +2085,12 @@ class _TimeCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Colors.white.withOpacity(0.08),
+                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
                   size: 20.sp,
                 ),
               ),
@@ -2154,7 +2102,7 @@ class _TimeCard extends StatelessWidget {
                   Text(
                     label,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w600,
                     ),
@@ -2162,7 +2110,7 @@ class _TimeCard extends StatelessWidget {
                   Text(
                     time,
                     style: TextStyle(
-                      color: Colors.white54,
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
                       fontSize: 11.sp,
                     ),
                   ),
@@ -2205,10 +2153,10 @@ class _ToneCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: isSelected
                 ? PanAfricanColors.secondary.withOpacity(0.2)
-                : Colors.white.withOpacity(0.1),
+                : Theme.of(context).colorScheme.onPrimary.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PanAfricanRadius.md),
             border: Border.all(
-              color: isSelected ? PanAfricanColors.secondary : Colors.white.withOpacity(0.2),
+              color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
               width: isSelected ? 2 : 1,
             ),
             boxShadow: [
@@ -2228,12 +2176,12 @@ class _ToneCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? PanAfricanColors.secondary.withOpacity(0.2)
-                      : Colors.white.withOpacity(0.08),
+                      : Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected ? PanAfricanColors.secondary : Colors.white,
+                  color: isSelected ? PanAfricanColors.secondary : Theme.of(context).colorScheme.onPrimary,
                   size: 24.sp,
                 ),
               ),
@@ -2241,7 +2189,7 @@ class _ToneCard extends StatelessWidget {
               Text(
                 label,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
                 ),
@@ -2249,7 +2197,7 @@ class _ToneCard extends StatelessWidget {
               Text(
                 description,
                 style: TextStyle(
-                  color: Colors.white54,
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.54),
                   fontSize: 10.sp,
                 ),
                 textAlign: TextAlign.center,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../providers/game_provider.dart';
@@ -6,15 +8,16 @@ import '../../providers/user_provider.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/hearts_provider.dart';
 import '../../services/lazy_game_loader.dart';
-import '../../services/telemetry_service.dart';
 import '../../utils/gamification_integration.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
+import '../../utils/pan_african_design_system.dart';
 import '../../widgets/gamification/gamification_widgets.dart';
+import '../../widgets/gamification/combo_tracker.dart';
+import '../../widgets/gamification/combo_display_widget.dart';
+import '../../services/sound_effects_service.dart';
+import '../../widgets/pan_african_components.dart';
 import '../../widgets/rive_global_guide.dart';
-import '../../games/animation/rive_asset_loader.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/skeleton_loader.dart';
 
 /// Base class for all game screens - handles common functionality
 abstract class BaseGameScreen extends ConsumerStatefulWidget {
@@ -37,11 +40,13 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   DateTime? _startTime;
   bool _isLoading = true;
   String? _error;
+  late final ComboTracker _comboTracker;
 
   GameSession? get session => _session;
   DateTime? get startTime => _startTime;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  ComboTracker get comboTracker => _comboTracker;
   
   // Protected setter for error - allows subclasses to set error
   void setError(String? error) {
@@ -67,41 +72,66 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   @override
   void initState() {
     super.initState();
+    _comboTracker = ComboTracker();
     _initializeGame();
+  }
+  
+  @override
+  void dispose() {
+    _comboTracker.dispose();
+    super.dispose();
   }
 
   Future<void> _initializeGame() async {
     setState(() => _isLoading = true);
     try {
+      // Use logged-in user if available; fall back to guest ID so games
+      // always work even if userProvider hasn't been populated yet.
       final user = ref.read(userProvider);
-      if (user == null) {
-        setState(() {
-          _error = 'User not logged in';
-          _isLoading = false;
-        });
-        return;
-      }
+      final userId = user?.id.toString() ?? 'guest_${DateTime.now().millisecondsSinceEpoch}';
 
-      // Optimize: Preload game if not already loaded
-      final lazyLoader = ref.read(lazyGameLoaderProvider);
-      await lazyLoader.loadGameOnDemand(widget.getGameType());
+      // Optional preload — failure must never block game start
+      try {
+        final lazyLoader = ref.read(lazyGameLoaderProvider);
+        await lazyLoader.loadGameOnDemand(widget.getGameType());
+      } catch (_) {
+        // Preload is non-critical; continue to game
+      }
 
       final gameProv = ref.read(gameProvider.notifier);
       _session = await gameProv.startGame(
-        userId: user.id.toString(),
+        userId: userId,
         gameType: widget.getGameType(),
         language: widget.language,
         level: widget.level,
         cardCount: getCardCount(),
       );
 
+      if (gameProv.availableCards.isEmpty) {
+        setState(() {
+          _error = 'No content available for ${widget.language} yet.\n'
+              'Try selecting a different language (e.g. Yoruba, Swahili).';
+          _isLoading = false;
+        });
+        return;
+      }
+
       _startTime = DateTime.now();
-      await onGameInitialized();
+      _comboTracker.reset(); // Reset combo when starting new game
+
+      // Game-specific init (e.g. AI content generation) is non-fatal.
+      // Cards are already loaded — the game can still function with fallback
+      // content if onGameInitialized() fails.
+      try {
+        await onGameInitialized();
+      } catch (initError) {
+        debugPrint('Game-specific init error (continuing with fallback): $initError');
+      }
       
       setState(() => _isLoading = false);
     } catch (e) {
       setState(() {
-        _error = e.toString();
+        _error = 'Could not start game: $e';
         _isLoading = false;
       });
     }
@@ -136,6 +166,16 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       userAction: userAction,
     );
 
+    // Sound effects and combo tracking
+    final soundEffects = ref.read(soundEffectsProvider);
+    if (result == GameResult.correct) {
+      soundEffects.playCorrect();
+      _comboTracker.recordCorrect();
+    } else {
+      soundEffects.playIncorrect();
+      _comboTracker.recordIncorrect();
+    }
+
     // If incorrect, check hearts system
     if (result == GameResult.incorrect) {
       final canContinue = await GamificationIntegrationHelper.of(ref).onMistake();
@@ -150,16 +190,34 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   /// Show dialog when user runs out of hearts
   void _showOutOfHeartsDialog() {
+    HapticFeedback.mediumImpact();
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         title: Row(
           children: [
-            Icon(Icons.favorite_border, color: Colors.red[400], size: 28),
-            const SizedBox(width: 8),
-            const Text('Out of Hearts!'),
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.xs),
+              decoration: BoxDecoration(
+                color: PanAfricanColors.kenteRed.withOpacity(0.1),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Icon(
+                Icons.favorite_border_rounded,
+                color: PanAfricanColors.kenteRed,
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Text(
+              'Out of Hearts!',
+              style: PanAfricanTypography.titleLarge(context),
+            ),
           ],
         ),
         content: Column(
@@ -167,32 +225,76 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           children: [
             Text(
               'You\'ve run out of hearts. Would you like to refill to continue?',
-              style: TextStyle(color: Colors.grey[700]),
+              style: PanAfricanTypography.bodyMedium(context),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: PanAfricanSpacing.md),
             const HeartsWidget(showRefill: false),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () {
+              HapticFeedback.lightImpact();
               Navigator.pop(ctx);
-              Navigator.pop(context); // Exit game
+              Navigator.pop(context);
             },
-            child: const Text('Exit Game'),
+            child: Text(
+              'Exit Game',
+              style: PanAfricanTypography.labelLarge(context),
+            ),
           ),
           FilledButton.icon(
             onPressed: () async {
-              final success = await GamificationIntegrationHelper.of(ref).refillHearts();
-              if (success && mounted) {
-                Navigator.pop(ctx);
+              HapticFeedback.lightImpact();
+              try {
+                final success = await GamificationIntegrationHelper.of(ref).refillHearts();
+                if (!mounted) return;
+                if (success) {
+                  Navigator.pop(ctx);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Hearts refilled! Continue playing.',
+                        style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      backgroundColor: PanAfricanColors.primary,
+                    ),
+                  );
+                } else {
+                  // Refill failed — insufficient currency
+                  HapticFeedback.heavyImpact();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Not enough cowries to refill hearts. Come back later or earn more!',
+                        style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary),
+                      ),
+                      backgroundColor: PanAfricanColors.kenteRed,
+                      duration: const Duration(seconds: 4),
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (!mounted) return;
+                HapticFeedback.heavyImpact();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Hearts refilled! Continue playing.')),
+                  SnackBar(
+                    content: Text(
+                        'Something went wrong. Please try again later.',
+                        style: PanAfricanTypography.bodyMedium(context, color: Theme.of(context).colorScheme.onPrimary),
+                    ),
+                    backgroundColor: PanAfricanColors.kenteRed,
+                    duration: const Duration(seconds: 3),
+                  ),
                 );
               }
             },
-            icon: const Icon(Icons.favorite),
-            label: const Text('Refill Hearts'),
+            icon: Icon(Icons.favorite_rounded, size: 20.sp),
+            label: Text('Refill Hearts', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
+            style: FilledButton.styleFrom(
+              backgroundColor: PanAfricanColors.kenteRed,
+              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+            ),
           ),
         ],
       ),
@@ -205,16 +307,26 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       final gameProv = ref.read(gameProvider.notifier);
       final endedSession = await gameProv.endGame();
 
-      // Calculate XP based on performance
-      final xpEarned = _calculateXP(endedSession);
+      // Calculate XP based on performance with combo multiplier
+      final baseXP = _calculateXP(endedSession);
+      final multiplier = _comboTracker.currentMultiplier;
+      final xpEarned = (baseXP * multiplier).round();
       final wordsLearned = endedSession.correctCount;
 
-      // Award gamification
-      await GamificationIntegrationHelper.of(ref).onGameComplete(
-        xpEarned: xpEarned,
-        wordsLearned: wordsLearned,
-        accuracy: endedSession.accuracy,
+      // Award gamification with combo multiplier
+      await ref.read(gamificationProvider.notifier).awardXP(
+        'game_complete',
+        multiplier: multiplier,
+        sourceId: '${widget.getGameType().name}_${DateTime.now().millisecondsSinceEpoch}',
       );
+
+      final soundEffects = ref.read(soundEffectsProvider);
+      if (endedSession.accuracy >= 1.0) {
+        soundEffects.playCelebration();
+      } else {
+        soundEffects.playCorrect();
+      }
+      _comboTracker.reset();
 
       if (mounted) {
         _showCompletionDialog(endedSession, xpEarned);
@@ -240,41 +352,63 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   void _showCompletionDialog(GameSession session, int xpEarned) {
     final isPerfect = session.accuracy >= 1.0;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    HapticFeedback.mediumImpact();
     
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         title: Row(
           children: [
-            Icon(
-              isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
-              color: isPerfect ? Colors.amber : Colors.green,
-              size: 28,
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.xs),
+              decoration: BoxDecoration(
+                color: isPerfect 
+                    ? PanAfricanColors.secondary.withOpacity(0.2)
+                    : PanAfricanColors.primary.withOpacity(0.1),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Icon(
+                isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
+                color: isPerfect ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                size: 24.sp,
+              ),
             ),
-            const SizedBox(width: 8),
-            Text(isPerfect ? 'Perfect Score! 🎉' : 'Game Complete!'),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Text(
+                isPerfect ? 'Perfect Score!' : 'Game Complete!',
+                style: PanAfricanTypography.titleLarge(context),
+              ),
+            ),
           ],
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildStatRow(Icons.track_changes, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
-            _buildStatRow(Icons.done_all, 'Correct', '${session.correctCount}/${session.totalTurns}'),
-            _buildStatRow(Icons.timer, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
-            const Divider(),
-            _buildStatRow(Icons.star, 'XP Earned', '+$xpEarned', isHighlight: true),
+            _buildStatRow(Icons.track_changes_rounded, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
+            _buildStatRow(Icons.done_all_rounded, 'Correct', '${session.correctCount}/${session.totalTurns}'),
+            _buildStatRow(Icons.timer_rounded, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
+            Divider(height: PanAfricanSpacing.lg, color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+            _buildStatRow(Icons.star_rounded, 'XP Earned', '+$xpEarned', isHighlight: true),
           ],
         ),
         actions: [
           FilledButton.icon(
             onPressed: () {
+              HapticFeedback.lightImpact();
               Navigator.pop(ctx);
               Navigator.pop(context);
             },
-            icon: const Icon(Icons.check),
-            label: const Text('Done'),
+            icon: Icon(Icons.check_rounded, size: 20.sp),
+            label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
+            style: FilledButton.styleFrom(
+              backgroundColor: PanAfricanColors.primary,
+              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+            ),
           ),
         ],
       ),
@@ -282,21 +416,31 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
   }
 
   Widget _buildStatRow(IconData icon, String label, String value, {bool isHighlight = false}) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final highlightColor = isHighlight ? PanAfricanColors.primary : null;
+    
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xs),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: isHighlight ? Colors.green : Colors.grey),
-          const SizedBox(width: 12),
-          Text(label, style: TextStyle(fontSize: 14, color: Colors.grey[700])),
+          Icon(
+            icon,
+            size: 20.sp,
+            color: isHighlight 
+                ? PanAfricanColors.primary 
+                : (isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight),
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          Text(
+            label,
+            style: PanAfricanTypography.bodyMedium(context),
+          ),
           const Spacer(),
           Text(
             value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: isHighlight ? FontWeight.bold : FontWeight.w500,
-              color: isHighlight ? Colors.green : Colors.black87,
-            ),
+            style: isHighlight
+                ? PanAfricanTypography.titleMedium(context, color: PanAfricanColors.primary)
+                : PanAfricanTypography.titleSmall(context),
           ),
         ],
       ),
@@ -305,29 +449,74 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final gamification = ref.watch(gamificationProvider.notifier).gamification;
+    final heartsState = ref.watch(heartsProvider);
+    
     if (_isLoading) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          title: Text(
+            widget.getGameType().displayName,
+            style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
           ),
-        ),
-        body: Stack(
-          children: [
-            const Center(child: CircularProgressIndicator()),
-            // Rive guide in corner
-            Positioned(
-              top: 16,
-              right: 16,
-              child: RiveGlobalGuide(
-                width: 80.w,
-                height: 80.h,
-                showInCorner: true,
-              ),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                (widget.onBack ?? () => Navigator.pop(context))();
+              },
             ),
-          ],
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
+          ),
+          elevation: 0,
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark ? PanAfricanGradients.darkSurface : null,
+            color: isDark ? null : PanAfricanColors.surfaceLight,
+          ),
+          child: Stack(
+            children: [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SkeletonLoader(
+                      child: Column(
+                        children: [
+                          SkeletonStatCard(),
+                          SizedBox(height: PanAfricanSpacing.lg),
+                          SkeletonStatCard(),
+                          SizedBox(height: PanAfricanSpacing.lg),
+                          SkeletonListCard(),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    Text(
+                      'Loading game...',
+                      style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                top: PanAfricanSpacing.md,
+                right: PanAfricanSpacing.md,
+                child: RiveGlobalGuide(
+                  width: 80.w,
+                  height: 80.h,
+                  showInCorner: true,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -335,40 +524,51 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     if (_error != null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          title: Text(
+            widget.getGameType().displayName,
+            style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
           ),
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                (widget.onBack ?? () => Navigator.pop(context))();
+              },
+            ),
+          ),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
+          ),
+          elevation: 0,
         ),
-        body: Stack(
-          children: [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error, size: 64, color: Colors.red),
-                  const SizedBox(height: 16),
-                  Text('Error: $_error'),
-                  const SizedBox(height: 16),
-                  FilledButton(
-                    onPressed: _initializeGame,
-                    child: const Text('Retry'),
-                  ),
-                ],
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark ? PanAfricanGradients.darkSurface : null,
+            color: isDark ? null : PanAfricanColors.surfaceLight,
+          ),
+          child: Stack(
+            children: [
+              AppErrorState(
+                message: _error!,
+                onRetry: () {
+                  HapticFeedback.lightImpact();
+                  _initializeGame();
+                },
               ),
-            ),
-            // Rive guide in corner
-            Positioned(
-              top: 16,
-              right: 16,
-              child: RiveGlobalGuide(
-                width: 80.w,
-                height: 80.h,
-                showInCorner: true,
+              Positioned(
+                top: PanAfricanSpacing.md,
+                right: PanAfricanSpacing.md,
+                child: RiveGlobalGuide(
+                  width: 80.w,
+                  height: 80.h,
+                  showInCorner: true,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }
@@ -376,21 +576,98 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     return Stack(
       children: [
         buildGameContent(context),
-        // Rive guide in corner for all games
         Positioned(
-          top: 16,
-          right: 16,
+          top: PanAfricanSpacing.md,
+          left: PanAfricanSpacing.md,
+          child: _GameHud(
+            isDark: isDark,
+            level: gamification.level,
+            xp: gamification.xp,
+            streak: gamification.dailyStreak,
+            showHearts: heartsState.challengeModeEnabled,
+          ),
+        ),
+        Positioned(
+          top: PanAfricanSpacing.md,
+          right: PanAfricanSpacing.md,
           child: RiveGlobalGuide(
             width: 80.w,
             height: 80.h,
             showInCorner: true,
           ),
         ),
+        // Combo display widget
+        ComboDisplayWidget(comboTracker: _comboTracker),
       ],
     );
   }
 
   /// Override to build the actual game UI
   Widget buildGameContent(BuildContext context);
+}
+
+class _GameHud extends StatelessWidget {
+  final bool isDark;
+  final int level;
+  final int xp;
+  final int streak;
+  final bool showHearts;
+
+  const _GameHud({
+    required this.isDark,
+    required this.level,
+    required this.xp,
+    required this.streak,
+    required this.showHearts,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Semantics(
+      label: 'Game stats: level $level, ${_formatCompactNumber(xp)} experience points, $streak day streak${showHearts ? ", hearts remaining" : ""}',
+      child: PanAfricanCard(
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.md,
+          vertical: PanAfricanSpacing.xs,
+        ),
+        backgroundColor: isDark
+            ? PanAfricanColors.surfaceContainerDark
+            : PanAfricanColors.surfaceContainerLight,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Semantics(label: 'Level $level', child: PanAfricanBadge(
+              label: 'Lv $level',
+              color: PanAfricanColors.primary,
+              icon: Icons.trending_up_rounded,
+            )),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Semantics(label: '${_formatCompactNumber(xp)} experience points', child: PanAfricanBadge(
+              label: '${_formatCompactNumber(xp)} XP',
+              color: PanAfricanColors.secondary,
+              icon: Icons.star_rounded,
+            )),
+            SizedBox(width: PanAfricanSpacing.sm),
+            Semantics(label: '$streak day streak', child: PanAfricanBadge(
+              label: '$streak',
+              color: PanAfricanColors.tertiary,
+              icon: Icons.local_fire_department_rounded,
+            )),
+            if (showHearts) ...[
+              SizedBox(width: PanAfricanSpacing.sm),
+              Semantics(label: 'Hearts remaining', child: const HeartsWidget(compact: true)),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatCompactNumber(int value) {
+    if (value >= 1000000) return '${(value / 1000000).toStringAsFixed(1)}M';
+    if (value >= 10000) return '${(value / 1000).toStringAsFixed(1)}K';
+    if (value >= 1000) return '${(value / 1000).toStringAsFixed(2)}K';
+    return value.toString();
+  }
 }
 

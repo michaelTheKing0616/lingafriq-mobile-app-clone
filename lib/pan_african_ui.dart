@@ -24,5 +24,5 @@ library pan_african_ui;
 export 'utils/pan_african_design_system.dart';
 export 'widgets/pan_african_app_bar.dart';
 export 'widgets/pan_african_drawer.dart';
-export 'widgets/pan_african_components.dart';
+export 'widgets/pan_african_components.dart' hide PanAfricanIcons;
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +8,6 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/models/translation_history_model.dart';
 import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:uuid/uuid.dart' as uuid;
 
@@ -37,55 +37,133 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     final historyService = ref.read(translationHistoryServiceProvider);
     final chatProvider = ref.read(groqChatProvider.notifier);
 
+    // Set mode+language atomically ONCE on screen entry
+    useEffect(() {
+      chatProvider.setModeAndLanguage(
+        mode: PolieMode.translation,
+        targetLanguage: targetLanguage,
+        sourceLanguage: sourceLanguage,
+      );
+      return null;
+    }, []);
+
     Future<void> translate() async {
       final text = textController.text.trim();
       if (text.isEmpty) return;
 
+      // Input validation
+      if (text.length > 5000) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Text is too long. Please use fewer than 5000 characters.')),
+        );
+        return;
+      }
+
       isLoading.value = true;
       HapticFeedback.mediumImpact();
 
-      try {
-        // Set translation mode
-        await chatProvider.setMode(PolieMode.translation);
-        await chatProvider.setLanguageDirection(sourceLanguage, targetLanguage);
+      const maxRetries = 2;
+      int retryCount = 0;
+      String? lastError;
 
-        // Get translation with enhanced prompt
-        final response = await chatProvider.sendMessage(
-          'Translate this with grammar breakdown, cultural context, and 3-5 alternative translations: "$text"',
-        );
+      while (retryCount <= maxRetries) {
+        try {
+          // Mode+language already set in useEffect init.
+          // Do NOT call setModeAndLanguage per-translation.
 
-        // Parse response to extract translation, alternatives, grammar, and cultural context
-        // This is a simplified version - in production, you'd parse the AI response more carefully
-        final primaryTranslation = _extractPrimaryTranslation(response);
-        final alternatives = _extractAlternatives(response);
-        final grammarBreakdown = _extractGrammarBreakdown(response, text);
-        final culturalContext = _extractCulturalContext(response);
+          // Build structured prompt for better parsing
+          final prompt = '''Translate the following text from $sourceLanguage to $targetLanguage.
 
-        // Create translation entry
-        final entry = TranslationEntry(
-          id: const uuid.Uuid().v4(),
-          sourceText: text,
-          sourceLanguage: sourceLanguage,
-          targetLanguage: targetLanguage,
-          primaryTranslation: primaryTranslation,
-          alternatives: alternatives,
-          grammarBreakdown: grammarBreakdown,
-          culturalContext: culturalContext,
-          timestamp: DateTime.now(),
-        );
+Text to translate: "$text"
 
-        translationResult.value = entry;
+Please provide your response in this format:
+1. Primary Translation: [your main translation]
+2. Alternative Translations:
+   - [alternative 1]
+   - [alternative 2]
+   - [alternative 3]
+3. Grammar Breakdown:
+   - [word]: [part of speech] - [explanation]
+4. Cultural Context: [any relevant cultural notes]
+5. Usage Note: [when/how to use this phrase]''';
 
-        // Save to history
-        await historyService.addTranslation(entry);
-      } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Translation failed: ${e.toString()}')),
+          // Get translation with enhanced prompt
+          final response = await chatProvider.sendMessage(prompt);
+
+          // Validate response
+          if (response.trim().isEmpty) {
+            throw Exception('Empty response received');
+          }
+
+          // Parse response to extract components
+          final primaryTranslation = _extractPrimaryTranslation(response);
+          
+          // Validate primary translation - retry if extraction failed
+          if (primaryTranslation.isEmpty || primaryTranslation == text) {
+            if (retryCount < maxRetries) {
+              retryCount++;
+              await Future.delayed(Duration(milliseconds: 500 * retryCount));
+              continue;
+            }
+          }
+          
+          final alternatives = _extractAlternatives(response);
+          final grammarBreakdown = _extractGrammarBreakdown(response, text);
+          final culturalContext = _extractCulturalContext(response);
+
+          // Create translation entry
+          final entry = TranslationEntry(
+            id: const uuid.Uuid().v4(),
+            sourceText: text,
+            sourceLanguage: sourceLanguage,
+            targetLanguage: targetLanguage,
+            primaryTranslation: primaryTranslation.isNotEmpty ? primaryTranslation : text,
+            alternatives: alternatives,
+            grammarBreakdown: grammarBreakdown,
+            culturalContext: culturalContext,
+            timestamp: DateTime.now(),
           );
+
+          translationResult.value = entry;
+
+          // Save to history (non-blocking)
+          historyService.addTranslation(entry).catchError((e) {
+            debugPrint('Failed to save translation to history: $e');
+          });
+          
+          // Success - exit retry loop
+          isLoading.value = false;
+          return;
+        } catch (e) {
+          lastError = e.toString();
+          debugPrint('Translation attempt ${retryCount + 1} failed: $e');
+          
+          if (retryCount < maxRetries) {
+            retryCount++;
+            await Future.delayed(Duration(milliseconds: 1000 * retryCount));
+          } else {
+            break;
+          }
         }
-      } finally {
-        isLoading.value = false;
+      }
+      
+      // All retries failed
+      isLoading.value = false;
+      if (context.mounted) {
+        final errorMessage = lastError?.contains('network') == true
+            ? 'Network error. Please check your connection.'
+            : lastError?.contains('timeout') == true
+                ? 'Request timed out. Please try again.'
+                : 'Translation failed. Please try again.';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            action: SnackBarAction(
+              label: 'Retry',
+              onPressed: translate,
+            ),
+          ),
+        );
       }
     }
 
@@ -135,13 +213,14 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
                     TextField(
                       controller: textController,
                       maxLines: 4,
+                      maxLength: 2000,
                       decoration: InputDecoration(
                         hintText: 'Enter text to translate...',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                         ),
                         filled: true,
-                        fillColor: isDark ? PanAfricanColors.surfaceDark : Colors.white,
+                        fillColor: isDark ? PanAfricanColors.surfaceDark : Theme.of(context).colorScheme.surface,
                       ),
                     ),
                     SizedBox(height: PanAfricanSpacing.md),
@@ -157,7 +236,7 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
                       label: Text('Translate'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: PanAfricanColors.primary,
-                        foregroundColor: Colors.white,
+                        foregroundColor: Theme.of(context).colorScheme.onPrimary,
                         padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                       ),
                     ),
@@ -272,96 +351,172 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     );
   }
 
+  /// Extracts the primary translation from AI response with robust fallbacks
   String _extractPrimaryTranslation(String response) {
-    // Enhanced extraction with multiple patterns
-    final lines = response.split('\n');
+    if (response.trim().isEmpty) return '';
     
-    // Pattern 1: "Translation:" or "Primary Translation:"
-    for (final line in lines) {
-      final lower = line.toLowerCase();
-      if (lower.contains('translation:') || lower.contains('primary translation:') ||
-          lower.contains('primary:')) {
-        final parts = line.split(':');
-        if (parts.length > 1) {
-          return parts.skip(1).join(':').trim();
-        }
-      }
-    }
+    final lines = response.split('\n').where((l) => l.trim().isNotEmpty).toList();
+    if (lines.isEmpty) return response.trim();
     
-    // Pattern 2: Look for text in quotes after "translation"
-    final quotePattern = RegExp(r'''["']([^"']+)["']''');
-    for (final line in lines) {
-      if (line.toLowerCase().contains('translation')) {
-        final match = quotePattern.firstMatch(line);
+    // Priority patterns (ordered by likelihood)
+    final patterns = [
+      // Pattern 1: "Translation:", "Primary Translation:", "Result:"
+      RegExp(r'(?:primary\s+)?translation\s*:\s*(.+)', caseSensitive: false),
+      RegExp(r'result\s*:\s*(.+)', caseSensitive: false),
+      // Pattern 2: Numbered with translation indicator
+      RegExp(r'^1[\.\)]\s*(.+)', caseSensitive: false),
+      // Pattern 3: Text in quotes (single or double)
+      RegExp(r'''["「『]([^"」』]+)["」』]'''),
+      // Pattern 4: **bold text** (markdown style)
+      RegExp(r'\*\*([^*]+)\*\*'),
+    ];
+    
+    for (final pattern in patterns) {
+      for (final line in lines) {
+        final match = pattern.firstMatch(line);
         if (match != null) {
-          return match.group(1) ?? '';
-        }
-      }
-    }
-    
-    // Pattern 3: First non-empty line that looks like a translation
-    for (final line in lines) {
-      final trimmed = line.trim();
-      if (trimmed.isNotEmpty && 
-          !trimmed.toLowerCase().startsWith('alternative') &&
-          !trimmed.toLowerCase().startsWith('grammar') &&
-          !trimmed.toLowerCase().startsWith('cultural') &&
-          !trimmed.contains(':')) {
-        return trimmed;
-      }
-    }
-    
-    return response.split('\n').first.trim();
-  }
-
-  List<TranslationAlternative> _extractAlternatives(String response) {
-    final alternatives = <TranslationAlternative>[];
-    final lines = response.split('\n');
-    bool inAlternativesSection = false;
-    
-    for (final line in lines) {
-      final trimmed = line.trim();
-      final lower = trimmed.toLowerCase();
-      
-      // Detect alternatives section
-      if (lower.contains('alternative') || lower.contains('variation')) {
-        inAlternativesSection = true;
-        continue;
-      }
-      
-      // Stop at next section
-      if (inAlternativesSection && 
-          (lower.contains('grammar') || lower.contains('cultural') || 
-           lower.contains('context'))) {
-        break;
-      }
-      
-      // Extract numbered alternatives
-      if (inAlternativesSection || trimmed.startsWith(RegExp(r'^\d+[\.\)]'))) {
-        final match = RegExp(r'^\d+[\.\)]\s*(.+)').firstMatch(trimmed);
-        if (match != null) {
-          final translation = match.group(1)?.trim() ?? '';
-          if (translation.isNotEmpty) {
-            alternatives.add(TranslationAlternative(
-              translation: translation,
-              context: _extractContextFromLine(trimmed),
-            ));
+          final result = match.group(1)?.trim() ?? '';
+          if (result.isNotEmpty && result.length > 1) {
+            return _cleanTranslation(result);
           }
         }
       }
     }
     
-    // If no structured alternatives found, try to extract from response
-    if (alternatives.isEmpty) {
-      final quotePattern = RegExp(r'''["']([^"']+)["']''');
-      final matches = quotePattern.allMatches(response);
-      for (final match in matches.skip(1).take(5)) {
-        alternatives.add(TranslationAlternative(
-          translation: match.group(1) ?? '',
-        ));
+    // Pattern: Look for quoted text anywhere in response
+    final quotePattern = RegExp(r'''["']([^"']+)["']''');
+    for (final line in lines) {
+      if (line.toLowerCase().contains('translat')) {
+        final match = quotePattern.firstMatch(line);
+        if (match != null && (match.group(1)?.length ?? 0) > 1) {
+          return _cleanTranslation(match.group(1) ?? '');
+        }
       }
     }
     
+    // Fallback: Find first substantive line that's not a header
+    final headerKeywords = ['alternative', 'grammar', 'cultural', 'context', 
+                           'breakdown', 'note', 'usage', 'example'];
+    for (final line in lines) {
+      final trimmed = line.trim();
+      final lower = trimmed.toLowerCase();
+      
+      // Skip headers and meta lines
+      if (trimmed.length < 2) continue;
+      if (headerKeywords.any((k) => lower.startsWith(k))) continue;
+      if (lower.startsWith('#') || lower.startsWith('*')) continue;
+      if (trimmed.endsWith(':')) continue;
+      
+      // This looks like content
+      return _cleanTranslation(trimmed);
+    }
+    
+    // Ultimate fallback: first line
+    return _cleanTranslation(lines.first);
+  }
+
+  /// Clean up extracted translation text
+  String _cleanTranslation(String text) {
+    return text
+        .replaceAll(RegExp(r'^[\d\.\)\-\*\#]+\s*'), '') // Remove leading numbers/bullets
+        .replaceAll(RegExp(r'^(translation|primary|result)\s*:\s*', caseSensitive: false), '')
+        .replaceAll(RegExp(r'\*+'), '') // Remove markdown bold
+        .replaceAll(RegExp(r'^\s*["\x27]+|["\x27]+\s*$'), '') // Remove surrounding quotes
+        .trim();
+  }
+
+  /// Extracts alternative translations with robust parsing
+  List<TranslationAlternative> _extractAlternatives(String response) {
+    final alternatives = <TranslationAlternative>[];
+    final seen = <String>{}; // Dedupe
+    final lines = response.split('\n');
+    bool inAlternativesSection = false;
+    
+    // Section detection keywords
+    final altKeywords = ['alternative', 'variation', 'other ways', 'also say', 
+                         'other translation', 'could also be'];
+    final endKeywords = ['grammar', 'cultural', 'context', 'breakdown', 
+                         'note', 'usage', 'example'];
+    
+    for (final line in lines) {
+      final trimmed = line.trim();
+      if (trimmed.isEmpty) continue;
+      final lower = trimmed.toLowerCase();
+      
+      // Detect alternatives section
+      if (altKeywords.any((k) => lower.contains(k))) {
+        inAlternativesSection = true;
+        // Check if the same line contains an alternative after the keyword
+        final colonIndex = trimmed.indexOf(':');
+        if (colonIndex > 0 && colonIndex < trimmed.length - 2) {
+          final afterColon = trimmed.substring(colonIndex + 1).trim();
+          if (afterColon.isNotEmpty && !seen.contains(afterColon.toLowerCase())) {
+            seen.add(afterColon.toLowerCase());
+            alternatives.add(TranslationAlternative(
+              translation: _cleanTranslation(afterColon),
+              context: _extractContextFromLine(afterColon),
+            ));
+          }
+        }
+        continue;
+      }
+      
+      // Stop at next section
+      if (inAlternativesSection && endKeywords.any((k) => lower.startsWith(k))) {
+        break;
+      }
+      
+      // Extract numbered/bulleted alternatives
+      final numberedMatch = RegExp(r'^[\d\-\*\•]+[\.\):\s]+(.+)').firstMatch(trimmed);
+      if (numberedMatch != null) {
+        final translation = numberedMatch.group(1)?.trim() ?? '';
+        if (translation.isNotEmpty && !seen.contains(translation.toLowerCase())) {
+          seen.add(translation.toLowerCase());
+          alternatives.add(TranslationAlternative(
+            translation: _cleanTranslation(translation),
+            context: _extractContextFromLine(translation),
+          ));
+        }
+        continue;
+      }
+      
+      // In alternatives section, treat any substantive line as an alternative
+      if (inAlternativesSection && !lower.endsWith(':') && trimmed.length > 2) {
+        if (!seen.contains(trimmed.toLowerCase())) {
+          seen.add(trimmed.toLowerCase());
+          alternatives.add(TranslationAlternative(
+            translation: _cleanTranslation(trimmed),
+            context: _extractContextFromLine(trimmed),
+          ));
+        }
+      }
+    }
+    
+    // Fallback: extract quoted strings
+    if (alternatives.isEmpty) {
+      final quotePatterns = [
+        RegExp(r'''["']([^"']{2,50})["']'''),
+        RegExp(r'''「([^」]{2,50})」'''),
+        RegExp(r'''\*\*([^*]{2,50})\*\*'''),
+      ];
+      
+      for (final pattern in quotePatterns) {
+        final matches = pattern.allMatches(response);
+        // Skip first match (likely primary translation)
+        for (final match in matches.skip(1).take(5)) {
+          final text = match.group(1) ?? '';
+          if (text.isNotEmpty && !seen.contains(text.toLowerCase())) {
+            seen.add(text.toLowerCase());
+            alternatives.add(TranslationAlternative(
+              translation: _cleanTranslation(text),
+            ));
+          }
+        }
+        if (alternatives.isNotEmpty) break;
+      }
+    }
+    
+    // Return max 5 unique alternatives
     return alternatives.take(5).toList();
   }
 
@@ -378,74 +533,141 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     return null;
   }
 
+  /// Extracts grammar breakdown with robust parsing and intelligent fallbacks
   List<GrammarBreakdown> _extractGrammarBreakdown(String response, String sourceText) {
     final breakdown = <GrammarBreakdown>[];
+    final seen = <String>{}; // Dedupe by word
     final lines = response.split('\n');
     bool inGrammarSection = false;
-    final words = sourceText.split(RegExp(r'\s+'));
+    
+    // Section detection keywords
+    final grammarKeywords = ['grammar', 'grammatical', 'breakdown', 'analysis', 
+                             'structure', 'morpholog', 'word-by-word'];
+    final endKeywords = ['cultural', 'context', 'alternative', 'note', 'usage'];
+    
+    // Parts of speech patterns (extended for African languages)
+    final posPattern = RegExp(
+      r'\b(noun|verb|adjective|adverb|pronoun|preposition|conjunction|interjection|'
+      r'particle|prefix|suffix|root|stem|tense|aspect|marker|copula|determiner|'
+      r'auxiliary|modal|gerund|infinitive|imperative|subjunctive)\b',
+      caseSensitive: false,
+    );
     
     for (final line in lines) {
       final trimmed = line.trim();
+      if (trimmed.isEmpty) continue;
       final lower = trimmed.toLowerCase();
       
       // Detect grammar section
-      if (lower.contains('grammar') || lower.contains('grammatical')) {
+      if (grammarKeywords.any((k) => lower.contains(k))) {
         inGrammarSection = true;
         continue;
       }
       
       // Stop at next section
-      if (inGrammarSection && 
-          (lower.contains('cultural') || lower.contains('context') ||
-           lower.contains('alternative'))) {
+      if (inGrammarSection && endKeywords.any((k) => lower.startsWith(k))) {
         break;
       }
       
-      // Extract grammar information
-      if (inGrammarSection || trimmed.contains(':')) {
-        // Pattern: "word: part of speech - explanation"
-        final colonMatch = RegExp(r'^([^:]+):\s*(.+)').firstMatch(trimmed);
-        if (colonMatch != null) {
-          final word = colonMatch.group(1)?.trim() ?? '';
-          final rest = colonMatch.group(2)?.trim() ?? '';
-          
-          // Extract part of speech
-          final posMatch = RegExp(r'(noun|verb|adjective|adverb|pronoun|preposition|conjunction|interjection)', 
-              caseSensitive: false).firstMatch(rest);
-          final pos = posMatch?.group(1)?.toLowerCase() ?? 'unknown';
-          
-          // Extract explanation (everything after POS)
-          final explanation = posMatch != null 
-              ? rest.replaceFirst(posMatch.group(0) ?? '', '').trim()
-              : rest;
-          
-          if (word.isNotEmpty) {
-            breakdown.add(GrammarBreakdown(
-              word: word,
-              partOfSpeech: pos,
-              root: _extractRoot(word),
-              explanation: explanation.isNotEmpty ? explanation : null,
-            ));
-          }
-        }
+      // Skip section headers
+      if (trimmed.endsWith(':') && trimmed.length < 30) continue;
+      
+      // Try to extract grammar info from line
+      GrammarBreakdown? entry = _parseGrammarLine(trimmed, posPattern);
+      
+      if (entry != null && !seen.contains(entry.word.toLowerCase())) {
+        seen.add(entry.word.toLowerCase());
+        breakdown.add(entry);
       }
     }
     
-    // If no structured breakdown found, create basic breakdown from words
-    if (breakdown.isEmpty && words.isNotEmpty) {
-      for (final word in words.take(10)) {
-        if (word.trim().isNotEmpty) {
+    // Fallback: Create basic breakdown from source text words
+    if (breakdown.isEmpty && sourceText.isNotEmpty) {
+      final words = sourceText.split(RegExp(r'\s+'))
+          .where((w) => w.trim().length > 1)
+          .take(8);
+      
+      for (final word in words) {
+        final cleanWord = word.replaceAll(RegExp(r'[^\w\u0080-\uFFFF]'), '');
+        if (cleanWord.isNotEmpty && !seen.contains(cleanWord.toLowerCase())) {
+          seen.add(cleanWord.toLowerCase());
           breakdown.add(GrammarBreakdown(
-            word: word.trim(),
-            partOfSpeech: 'unknown',
-            root: word.trim().toLowerCase(),
-            explanation: 'Grammar analysis for "${word.trim()}"',
+            word: cleanWord,
+            partOfSpeech: 'word',
+            root: _extractRoot(cleanWord),
+            explanation: null, // Don't add fake explanations
           ));
         }
       }
     }
     
-    return breakdown;
+    return breakdown.take(15).toList(); // Limit to 15 entries
+  }
+
+  /// Parse a single line for grammar information
+  GrammarBreakdown? _parseGrammarLine(String line, RegExp posPattern) {
+    // Pattern 1: "word: part of speech - explanation"
+    final colonMatch = RegExp(r'^[\*\-\•]?\s*([^:]+):\s*(.+)').firstMatch(line);
+    if (colonMatch != null) {
+      final word = colonMatch.group(1)?.trim() ?? '';
+      final rest = colonMatch.group(2)?.trim() ?? '';
+      
+      if (word.isEmpty || word.length > 50) return null;
+      
+      final posMatch = posPattern.firstMatch(rest);
+      final pos = posMatch?.group(1)?.toLowerCase() ?? 'word';
+      final explanation = posMatch != null 
+          ? rest.replaceFirst(posMatch.group(0) ?? '', '').replaceAll(RegExp(r'^[\s\-–—]+'), '').trim()
+          : rest;
+      
+      return GrammarBreakdown(
+        word: _cleanTranslation(word),
+        partOfSpeech: pos,
+        root: _extractRoot(word),
+        explanation: explanation.isNotEmpty ? explanation : null,
+      );
+    }
+    
+    // Pattern 2: "word (part of speech): explanation"
+    final parenMatch = RegExp(r'^[\*\-\•]?\s*([^\(]+)\(([^)]+)\):?\s*(.*)').firstMatch(line);
+    if (parenMatch != null) {
+      final word = parenMatch.group(1)?.trim() ?? '';
+      final posText = parenMatch.group(2)?.trim() ?? '';
+      final explanation = parenMatch.group(3)?.trim();
+      
+      if (word.isEmpty || word.length > 50) return null;
+      
+      final posMatch = posPattern.firstMatch(posText);
+      final pos = posMatch?.group(1)?.toLowerCase() ?? posText.toLowerCase();
+      
+      return GrammarBreakdown(
+        word: _cleanTranslation(word),
+        partOfSpeech: pos.length <= 20 ? pos : 'word',
+        root: _extractRoot(word),
+        explanation: explanation?.isNotEmpty == true ? explanation : null,
+      );
+    }
+    
+    // Pattern 3: Numbered list "1. word - explanation"
+    final numberedMatch = RegExp(r'^\d+[\.\)]\s*([^\-–—]+)[\-–—]\s*(.*)').firstMatch(line);
+    if (numberedMatch != null) {
+      final word = numberedMatch.group(1)?.trim() ?? '';
+      final rest = numberedMatch.group(2)?.trim() ?? '';
+      
+      if (word.isEmpty || word.length > 50) return null;
+      
+      final posMatch = posPattern.firstMatch(rest);
+      final pos = posMatch?.group(1)?.toLowerCase() ?? 'word';
+      
+      return GrammarBreakdown(
+        word: _cleanTranslation(word),
+        partOfSpeech: pos,
+        root: _extractRoot(word),
+        explanation: rest.isNotEmpty ? rest : null,
+      );
+    }
+    
+    return null;
   }
 
   String _extractRoot(String word) {
@@ -453,47 +675,92 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
     return word.toLowerCase().replaceAll(RegExp(r'[^\w]'), '');
   }
 
+  /// Extracts cultural context with robust parsing
   CulturalContext? _extractCulturalContext(String response) {
     final lines = response.split('\n');
     bool inCulturalSection = false;
-    String? context;
+    final contextParts = <String>[];
     String? usageNote;
+    
+    // Section detection keywords
+    final culturalKeywords = ['cultural', 'culture', 'significance', 'meaning', 
+                              'background', 'tradition'];
+    final usageKeywords = ['usage', 'note', 'tip', 'remember', 'important', 
+                           'caution', 'warning', 'polite', 'formal', 'informal'];
+    final endKeywords = ['alternative', 'grammar', 'breakdown'];
+    
+    // Cultural topic indicators
+    final culturalTopics = ['tradition', 'custom', 'practice', 'etiquette', 
+                           'respect', 'honor', 'ceremony', 'ritual', 'elder',
+                           'greeting', 'ancestor', 'community', 'family',
+                           'blessing', 'proverb', 'saying', 'wisdom', 'social',
+                           'polite', 'formal', 'informal', 'appropriate'];
     
     for (final line in lines) {
       final trimmed = line.trim();
+      if (trimmed.isEmpty) continue;
       final lower = trimmed.toLowerCase();
       
       // Detect cultural section
-      if (lower.contains('cultural') || lower.contains('culture')) {
+      if (culturalKeywords.any((k) => lower.contains(k) && trimmed.endsWith(':'))) {
         inCulturalSection = true;
         continue;
       }
+      if (culturalKeywords.any((k) => lower.startsWith(k))) {
+        inCulturalSection = true;
+        // Check if content follows the header on same line
+        final colonIndex = trimmed.indexOf(':');
+        if (colonIndex > 0 && colonIndex < trimmed.length - 2) {
+          final content = trimmed.substring(colonIndex + 1).trim();
+          if (content.isNotEmpty) contextParts.add(content);
+        }
+        continue;
+      }
       
-      // Extract context
+      // Stop at next major section
+      if (inCulturalSection && endKeywords.any((k) => lower.startsWith(k))) {
+        break;
+      }
+      
+      // Extract content in cultural section
       if (inCulturalSection) {
-        if (context == null && trimmed.isNotEmpty && 
-            !trimmed.toLowerCase().startsWith('usage') &&
-            !trimmed.toLowerCase().startsWith('note')) {
-          context = trimmed;
-        } else if (lower.contains('usage') || lower.contains('note')) {
-          usageNote = trimmed;
+        // Check for usage notes
+        if (usageKeywords.any((k) => lower.contains(k)) && usageNote == null) {
+          final colonIndex = trimmed.indexOf(':');
+          if (colonIndex > 0) {
+            usageNote = trimmed.substring(colonIndex + 1).trim();
+          } else {
+            usageNote = trimmed;
+          }
+        } else if (!trimmed.endsWith(':') && trimmed.length > 10) {
+          contextParts.add(_cleanTranslation(trimmed));
         }
       }
     }
     
-    // Also check for cultural information in the general response
-    if (context == null) {
-      final culturalKeywords = ['tradition', 'custom', 'practice', 'etiquette', 
-                                'respect', 'honor', 'ceremony', 'ritual'];
+    // Fallback: Search for cultural topic mentions anywhere in response
+    if (contextParts.isEmpty) {
       for (final line in lines) {
-        for (final keyword in culturalKeywords) {
-          if (line.toLowerCase().contains(keyword)) {
-            context = line.trim();
-            break;
+        final lower = line.toLowerCase();
+        if (culturalTopics.any((topic) => lower.contains(topic))) {
+          final trimmed = line.trim();
+          if (trimmed.length > 20 && trimmed.length < 500) {
+            contextParts.add(_cleanTranslation(trimmed));
+            if (contextParts.length >= 3) break; // Limit fallback content
           }
         }
-        if (context != null) break;
       }
+    }
+    
+    // Combine context parts
+    final context = contextParts.isNotEmpty 
+        ? contextParts.take(5).join(' ').trim()
+        : null;
+    
+    // Clean up usage note
+    if (usageNote != null) {
+      usageNote = usageNote.replaceAll(RegExp(r'^(usage|note|tip|remember)[:\s]*', caseSensitive: false), '').trim();
+      if (usageNote.isEmpty) usageNote = null;
     }
     
     if (context != null || usageNote != null) {

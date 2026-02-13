@@ -1,18 +1,32 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dio_provider.dart';
 import 'user_provider.dart';
-import '../utils/api.dart';
+import '../models/revenuecat_mapping.dart';
+import '../services/revenuecat_service.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../utils/structured_logger.dart';
 
 /// Subscription tier provider with backend integration
 class SubscriptionNotifier extends Notifier<SubscriptionState> {
+  static const bool _overrideAllAccess = true;
+  static const SubscriptionTier _overrideTier = SubscriptionTier.premium;
+
+  bool get isOverrideActive => _overrideAllAccess;
+
   @override
   SubscriptionState build() {
     // Load subscription status asynchronously
     Future.microtask(() => _loadSubscriptionStatus());
+    if (_overrideAllAccess) {
+      return SubscriptionState(
+        tier: _overrideTier,
+        isActive: true,
+        expiresAt: null,
+      );
+    }
     return SubscriptionState(
       tier: SubscriptionTier.free,
       isActive: false,
@@ -22,12 +36,24 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
   
   /// Load subscription status from backend and local storage
   Future<void> _loadSubscriptionStatus() async {
+    if (_overrideAllAccess) {
+      state = SubscriptionState(
+        tier: _overrideTier,
+        isActive: true,
+        expiresAt: null,
+      );
+      return;
+    }
+
     try {
+      final fromRevenueCat = await _loadFromRevenueCat();
+      if (fromRevenueCat) return;
+
       // Try to load from backend first
       final user = ref.read(userProvider);
       if (user != null) {
         final response = await ref.read(client).get(
-          '${Api.baseurl}api/subscriptions/status',
+          ApiContract.url(ApiContract.subscriptions.status),
         );
         
         if (response.statusCode == 200 && response.data is Map) {
@@ -81,6 +107,32 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
       // Keep default free tier
     }
   }
+
+  Future<bool> _loadFromRevenueCat() async {
+    final revenueCat = ref.read(revenueCatServiceProvider);
+    final user = ref.read(userProvider);
+
+    await revenueCat.initialize(appUserId: user?.id.toString());
+    if (!revenueCat.isConfigured) return false;
+
+    final info = await revenueCat.getCustomerInfo();
+    if (info == null) return false;
+
+    final rcTier = revenueCat.tierFromCustomerInfo(info);
+    final tier = _mapRevenueCatTier(rcTier);
+    final expiresAt = _getRevenueCatExpiration(info, rcTier);
+    final isActive = tier != SubscriptionTier.free;
+
+    final subscriptionState = SubscriptionState(
+      tier: tier,
+      isActive: isActive,
+      expiresAt: expiresAt,
+    );
+
+    state = subscriptionState;
+    await _saveSubscriptionStatus(subscriptionState);
+    return true;
+  }
   
   /// Save subscription status to local storage
   Future<void> _saveSubscriptionStatus(SubscriptionState status) async {
@@ -113,42 +165,50 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
   /// Subscribe to a subscription tier
   /// This integrates with backend payment processing
   Future<bool> subscribe(SubscriptionTier tier) async {
+    if (_overrideAllAccess) {
+      state = SubscriptionState(
+        tier: tier,
+        isActive: tier != SubscriptionTier.free,
+        expiresAt: null,
+      );
+      await _saveSubscriptionStatus(state);
+      return true;
+    }
+
     try {
+      if (tier == SubscriptionTier.free) {
+        final newState = SubscriptionState(
+          tier: SubscriptionTier.free,
+          isActive: false,
+          expiresAt: null,
+        );
+        state = newState;
+        await _saveSubscriptionStatus(newState);
+        return true;
+      }
+
       final user = ref.read(userProvider);
       if (user == null) {
         throw Exception('User must be logged in to subscribe');
       }
-      
-      // Call backend subscription endpoint
-      final response = await ref.read(client).post(
-        '${Api.baseurl}api/subscriptions/subscribe',
-        data: {
-          'tier': tier.name,
-          'user_id': user.id.toString(),
-        },
+
+      final revenueCat = ref.read(revenueCatServiceProvider);
+      await revenueCat.initialize(appUserId: user.id.toString());
+
+      final rcTier = _mapSubscriptionTier(tier);
+      final info = await revenueCat.purchaseTier(rcTier);
+      if (info == null) return false;
+
+      final resolvedTier = _mapRevenueCatTier(revenueCat.tierFromCustomerInfo(info));
+      final expiresAt = _getRevenueCatExpiration(info, rcTier);
+      final newState = SubscriptionState(
+        tier: resolvedTier,
+        isActive: resolvedTier != SubscriptionTier.free,
+        expiresAt: expiresAt,
       );
-      
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final data = response.data as Map<String, dynamic>;
-        final expiresAtStr = data['expires_at']?.toString();
-        final expiresAt = expiresAtStr != null 
-            ? DateTime.parse(expiresAtStr) 
-            : (tier == SubscriptionTier.lifetime 
-                ? null 
-                : DateTime.now().add(const Duration(days: 30)));
-        
-        final newState = SubscriptionState(
-          tier: tier,
-          isActive: true,
-          expiresAt: expiresAt,
-        );
-        
-        state = newState;
-        await _saveSubscriptionStatus(newState);
-        return true;
-      } else {
-        throw Exception('Subscription failed: ${response.statusCode}');
-      }
+      state = newState;
+      await _saveSubscriptionStatus(newState);
+      return true;
     } catch (e) {
       logger.error('Error subscribing', tag: 'subscription', error: e);
       // Return false but don't throw - let UI handle the error
@@ -158,15 +218,31 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
 
   /// Cancel current subscription
   Future<bool> cancelSubscription() async {
+    if (_overrideAllAccess) {
+      state = SubscriptionState(
+        tier: SubscriptionTier.free,
+        isActive: false,
+        expiresAt: null,
+      );
+      await _saveSubscriptionStatus(state);
+      return true;
+    }
+
     try {
       final user = ref.read(userProvider);
       if (user == null) {
         throw Exception('User must be logged in to cancel subscription');
       }
-      
+
+      final revenueCat = ref.read(revenueCatServiceProvider);
+      if (revenueCat.isConfigured && state.tier != SubscriptionTier.free) {
+        logger.warn('RevenueCat subscriptions must be managed in-store', tag: 'subscription');
+        return false;
+      }
+
       // Call backend to cancel subscription
       final response = await ref.read(client).post(
-        '${Api.baseurl}api/subscriptions/cancel',
+        ApiContract.url(ApiContract.subscriptions.cancel),
         data: {
           'user_id': user.id.toString(),
         },
@@ -201,6 +277,7 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
 
   /// Check if user has access to a specific feature based on subscription tier
   bool hasFeature(String feature) {
+    if (_overrideAllAccess) return true;
     // Check if subscription is active and not expired
     if (!state.isActive || state.isExpired) {
       return false;
@@ -237,10 +314,101 @@ class SubscriptionNotifier extends Notifier<SubscriptionState> {
   Future<void> refresh() async {
     await _loadSubscriptionStatus();
   }
+
+  Future<bool> restorePurchases() async {
+    if (_overrideAllAccess) {
+      state = SubscriptionState(
+        tier: _overrideTier,
+        isActive: true,
+        expiresAt: null,
+      );
+      await _saveSubscriptionStatus(state);
+      return true;
+    }
+
+    try {
+      final revenueCat = ref.read(revenueCatServiceProvider);
+      final user = ref.read(userProvider);
+      await revenueCat.initialize(appUserId: user?.id.toString());
+      if (!revenueCat.isConfigured) return false;
+
+      final info = await revenueCat.restorePurchases();
+      if (info == null) return false;
+
+      final resolvedTier = _mapRevenueCatTier(revenueCat.tierFromCustomerInfo(info));
+      final expiresAt = _getRevenueCatExpiration(info, _mapSubscriptionTier(resolvedTier));
+      final newState = SubscriptionState(
+        tier: resolvedTier,
+        isActive: resolvedTier != SubscriptionTier.free,
+        expiresAt: expiresAt,
+      );
+      state = newState;
+      await _saveSubscriptionStatus(newState);
+      return true;
+    } catch (e) {
+      logger.error('Error restoring purchases', tag: 'subscription', error: e);
+      return false;
+    }
+  }
+
+  bool canAccessFamilyDashboard() {
+    return hasFeature('family_sharing');
+  }
+
+  SubscriptionTier _mapRevenueCatTier(RevenueCatTier tier) {
+    switch (tier) {
+      case RevenueCatTier.premium:
+        return SubscriptionTier.premium;
+      case RevenueCatTier.family:
+        return SubscriptionTier.family;
+      case RevenueCatTier.lifetime:
+        return SubscriptionTier.lifetime;
+      case RevenueCatTier.free:
+        return SubscriptionTier.free;
+    }
+  }
+
+  RevenueCatTier _mapSubscriptionTier(SubscriptionTier tier) {
+    switch (tier) {
+      case SubscriptionTier.premium:
+        return RevenueCatTier.premium;
+      case SubscriptionTier.family:
+        return RevenueCatTier.family;
+      case SubscriptionTier.lifetime:
+        return RevenueCatTier.lifetime;
+      case SubscriptionTier.free:
+        return RevenueCatTier.free;
+    }
+  }
+
+  DateTime? _getRevenueCatExpiration(CustomerInfo info, RevenueCatTier tier) {
+    final entitlementId = _entitlementIdForTier(tier);
+    if (entitlementId == null) return null;
+    final entitlement = info.entitlements.all[entitlementId];
+    final exp = entitlement?.expirationDate;
+    return exp != null ? DateTime.tryParse(exp) : null;
+  }
+
+  String? _entitlementIdForTier(RevenueCatTier tier) {
+    switch (tier) {
+      case RevenueCatTier.premium:
+        return RevenueCatEntitlements.premium;
+      case RevenueCatTier.family:
+        return RevenueCatEntitlements.family;
+      case RevenueCatTier.lifetime:
+        return RevenueCatEntitlements.lifetime;
+      case RevenueCatTier.free:
+        return null;
+    }
+  }
 }
 
 final subscriptionProvider = NotifierProvider<SubscriptionNotifier, SubscriptionState>(() {
   return SubscriptionNotifier();
+});
+
+final revenueCatServiceProvider = Provider<RevenueCatService>((ref) {
+  return RevenueCatService();
 });
 
 enum SubscriptionTier {

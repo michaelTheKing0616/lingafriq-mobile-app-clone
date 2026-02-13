@@ -5,7 +5,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/models/review_progress_model.dart';
 import 'package:lingafriq/services/review_progress_service.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 /// Review Dashboard Screen

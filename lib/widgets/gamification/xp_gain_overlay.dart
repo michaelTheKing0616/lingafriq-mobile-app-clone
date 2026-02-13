@@ -348,7 +348,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
               style: TextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 letterSpacing: 1.5,
               ),
             ),
@@ -361,12 +361,12 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
               Container(
                 padding: EdgeInsets.all(8.w),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.star_rounded,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   size: isLarge ? 28.sp : 24.sp,
                 ),
               ),
@@ -379,7 +379,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
                   style: TextStyle(
                     fontSize: isLarge ? 36.sp : 28.sp,
                     fontWeight: FontWeight.w900,
-                    color: Colors.white,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     shadows: [
                       Shadow(
                         color: Colors.black26,
@@ -396,7 +396,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
                 style: TextStyle(
                   fontSize: isLarge ? 20.sp : 16.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white.withOpacity(0.9),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                 ),
               ),
             ],
@@ -409,7 +409,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
                 vertical: PanAfricanSpacing.xxs,
               ),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.2),
                 borderRadius: PanAfricanRadius.roundBR,
               ),
               child: Text(
@@ -417,7 +417,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
                 style: TextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w600,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ),
@@ -429,7 +429,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
             if (widget.event.newTitle != null)
@@ -438,7 +438,7 @@ class _XPGainAnimationState extends State<_XPGainAnimation>
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontStyle: FontStyle.italic,
-                  color: Colors.white.withOpacity(0.9),
+                  color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
                 ),
               ),
           ],

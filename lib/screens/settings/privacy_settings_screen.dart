@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/app_colors.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
-/// Privacy Settings Screen - Full production implementation
+/// Privacy Settings Screen - Pan-African Design System
 class PrivacySettingsScreen extends HookConsumerWidget {
   const PrivacySettingsScreen({Key? key}) : super(key: key);
 
@@ -32,6 +33,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
     final api = ref.read(apiProvider.notifier);
 
     final analyticsEnabled = useState<bool?>(null);
@@ -68,11 +70,15 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       } else {
         analyticsEnabled.value = await _loadPreference(_prefAnalytics, true);
         dataSharingEnabled.value = await _loadPreference(_prefDataSharing, false);
-        personalizedAdsEnabled.value = await _loadPreference(_prefPersonalizedAds, false);
-        locationTrackingEnabled.value = await _loadPreference(_prefLocationTracking, false);
-        activityStatusEnabled.value = await _loadPreference(_prefActivityStatus, true);
+        personalizedAdsEnabled.value =
+            await _loadPreference(_prefPersonalizedAds, false);
+        locationTrackingEnabled.value =
+            await _loadPreference(_prefLocationTracking, false);
+        activityStatusEnabled.value =
+            await _loadPreference(_prefActivityStatus, true);
         final prefs = await SharedPreferences.getInstance();
-        profileVisibility.value = prefs.getString(_prefProfileVisibility) ?? 'public';
+        profileVisibility.value =
+            prefs.getString(_prefProfileVisibility) ?? 'public';
       }
       isLoading.value = false;
     }
@@ -95,36 +101,42 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     }
 
     Future<void> _updateAnalytics(bool value) async {
+      HapticFeedback.selectionClick();
       analyticsEnabled.value = value;
       await _savePreference(_prefAnalytics, value);
       _syncToBackend(api);
     }
 
     Future<void> _updateDataSharing(bool value) async {
+      HapticFeedback.selectionClick();
       dataSharingEnabled.value = value;
       await _savePreference(_prefDataSharing, value);
       _syncToBackend(api);
     }
 
     Future<void> _updatePersonalizedAds(bool value) async {
+      HapticFeedback.selectionClick();
       personalizedAdsEnabled.value = value;
       await _savePreference(_prefPersonalizedAds, value);
       _syncToBackend(api);
     }
 
     Future<void> _updateLocationTracking(bool value) async {
+      HapticFeedback.selectionClick();
       locationTrackingEnabled.value = value;
       await _savePreference(_prefLocationTracking, value);
       _syncToBackend(api);
     }
 
     Future<void> _updateActivityStatus(bool value) async {
+      HapticFeedback.selectionClick();
       activityStatusEnabled.value = value;
       await _savePreference(_prefActivityStatus, value);
       _syncToBackend(api);
     }
 
     Future<void> _updateProfileVisibility(String value) async {
+      HapticFeedback.selectionClick();
       profileVisibility.value = value;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_prefProfileVisibility, value);
@@ -134,153 +146,229 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     if (isLoading.value) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text('Privacy Settings'),
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: colorScheme.onPrimary,
+            ),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
+          title: Text(
+            'Privacy Settings',
+            style: PanAfricanTypography.titleLarge(context)
+                .copyWith(color: colorScheme.onPrimary),
+          ),
           backgroundColor: PanAfricanColors.primary,
         ),
-        body: const Center(
-          child: CircularProgressIndicator(),
+        body: Center(
+          child: CircularProgressIndicator(
+            color: PanAfricanColors.primary,
+          ),
         ),
       );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Privacy Settings'),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_rounded,
+            color: colorScheme.onPrimary,
+          ),
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          'Privacy Settings',
+          style: PanAfricanTypography.titleLarge(context)
+              .copyWith(color: colorScheme.onPrimary),
+        ),
         backgroundColor: PanAfricanColors.primary,
+        elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
           gradient: isDark
               ? PanAfricanGradients.darkSurface
-              : PanAfricanGradients.forest,
+              : LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    PanAfricanColors.primary.withOpacity(0.05),
+                    PanAfricanColors.surfaceLight,
+                  ],
+                ),
         ),
         child: ResponsiveSafeArea(
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(16.sp),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16.h),
-                
+                SizedBox(height: PanAfricanSpacing.sm),
+
                 // Analytics & Data Collection
-                _buildSectionHeader('Analytics & Data Collection'),
-                SizedBox(height: 12.h),
-                _buildSwitchTile(
-                  title: 'Analytics',
-                  subtitle: 'Help us improve the app by sharing usage data',
-                  value: analyticsEnabled.value ?? true,
-                  onChanged: _updateAnalytics,
-                  icon: Icons.analytics_outlined,
+                _PrivacySection(
+                  title: 'Analytics & Data Collection',
+                  isDark: isDark,
+                  index: 0,
+                  children: [
+                    _PrivacySwitchTile(
+                      icon: Icons.analytics_outlined,
+                      title: 'Analytics',
+                      subtitle: 'Help us improve the app by sharing usage data',
+                      value: analyticsEnabled.value ?? true,
+                      onChanged: _updateAnalytics,
+                      isDark: isDark,
+                    ),
+                    _PrivacyDivider(isDark: isDark),
+                    _PrivacySwitchTile(
+                      icon: Icons.share_outlined,
+                      title: 'Data Sharing',
+                      subtitle: 'Share anonymized data with partners for research',
+                      value: dataSharingEnabled.value ?? false,
+                      onChanged: _updateDataSharing,
+                      isDark: isDark,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8.h),
-                _buildSwitchTile(
-                  title: 'Data Sharing',
-                  subtitle: 'Share anonymized data with partners for research',
-                  value: dataSharingEnabled.value ?? false,
-                  onChanged: _updateDataSharing,
-                  icon: Icons.share_outlined,
-                ),
-                
-                SizedBox(height: 24.h),
-                
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Advertising
-                _buildSectionHeader('Advertising'),
-                SizedBox(height: 12.h),
-                _buildSwitchTile(
-                  title: 'Personalized Ads',
-                  subtitle: 'Show ads based on your interests',
-                  value: personalizedAdsEnabled.value ?? false,
-                  onChanged: _updatePersonalizedAds,
-                  icon: Icons.ads_click_outlined,
+                _PrivacySection(
+                  title: 'Advertising',
+                  isDark: isDark,
+                  index: 1,
+                  children: [
+                    _PrivacySwitchTile(
+                      icon: Icons.ads_click_outlined,
+                      title: 'Personalized Ads',
+                      subtitle: 'Show ads based on your interests',
+                      value: personalizedAdsEnabled.value ?? false,
+                      onChanged: _updatePersonalizedAds,
+                      isDark: isDark,
+                    ),
+                  ],
                 ),
-                
-                SizedBox(height: 24.h),
-                
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Location & Tracking
-                _buildSectionHeader('Location & Tracking'),
-                SizedBox(height: 12.h),
-                _buildSwitchTile(
-                  title: 'Location Tracking',
-                  subtitle: 'Allow app to access your location',
-                  value: locationTrackingEnabled.value ?? false,
-                  onChanged: _updateLocationTracking,
-                  icon: Icons.location_on_outlined,
+                _PrivacySection(
+                  title: 'Location & Tracking',
+                  isDark: isDark,
+                  index: 2,
+                  children: [
+                    _PrivacySwitchTile(
+                      icon: Icons.location_on_outlined,
+                      title: 'Location Tracking',
+                      subtitle: 'Allow app to access your location',
+                      value: locationTrackingEnabled.value ?? false,
+                      onChanged: _updateLocationTracking,
+                      isDark: isDark,
+                    ),
+                  ],
                 ),
-                
-                SizedBox(height: 24.h),
-                
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Profile Visibility
-                _buildSectionHeader('Profile Visibility'),
-                SizedBox(height: 12.h),
-                _buildRadioTile(
-                  title: 'Public',
-                  subtitle: 'Anyone can see your profile',
-                  value: 'public',
-                  groupValue: profileVisibility.value,
-                  onChanged: _updateProfileVisibility,
-                  icon: Icons.public,
+                _PrivacySection(
+                  title: 'Profile Visibility',
+                  isDark: isDark,
+                  index: 3,
+                  children: [
+                    _PrivacyRadioTile(
+                      icon: Icons.public_rounded,
+                      title: 'Public',
+                      subtitle: 'Anyone can see your profile',
+                      value: 'public',
+                      groupValue: profileVisibility.value,
+                      onChanged: _updateProfileVisibility,
+                      isDark: isDark,
+                    ),
+                    _PrivacyDivider(isDark: isDark),
+                    _PrivacyRadioTile(
+                      icon: Icons.people_outline_rounded,
+                      title: 'Friends Only',
+                      subtitle: 'Only your friends can see your profile',
+                      value: 'friends',
+                      groupValue: profileVisibility.value,
+                      onChanged: _updateProfileVisibility,
+                      isDark: isDark,
+                    ),
+                    _PrivacyDivider(isDark: isDark),
+                    _PrivacyRadioTile(
+                      icon: Icons.lock_outline_rounded,
+                      title: 'Private',
+                      subtitle: 'Only you can see your profile',
+                      value: 'private',
+                      groupValue: profileVisibility.value,
+                      onChanged: _updateProfileVisibility,
+                      isDark: isDark,
+                    ),
+                  ],
                 ),
-                SizedBox(height: 8.h),
-                _buildRadioTile(
-                  title: 'Friends Only',
-                  subtitle: 'Only your friends can see your profile',
-                  value: 'friends',
-                  groupValue: profileVisibility.value,
-                  onChanged: _updateProfileVisibility,
-                  icon: Icons.people_outline,
-                ),
-                SizedBox(height: 8.h),
-                _buildRadioTile(
-                  title: 'Private',
-                  subtitle: 'Only you can see your profile',
-                  value: 'private',
-                  groupValue: profileVisibility.value,
-                  onChanged: _updateProfileVisibility,
-                  icon: Icons.lock_outline,
-                ),
-                
-                SizedBox(height: 24.h),
-                
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Activity Status
-                _buildSectionHeader('Activity Status'),
-                SizedBox(height: 12.h),
-                _buildSwitchTile(
-                  title: 'Show Activity Status',
-                  subtitle: 'Let others see when you\'re online',
-                  value: activityStatusEnabled.value ?? true,
-                  onChanged: _updateActivityStatus,
-                  icon: Icons.circle_outlined,
+                _PrivacySection(
+                  title: 'Activity Status',
+                  isDark: isDark,
+                  index: 4,
+                  children: [
+                    _PrivacySwitchTile(
+                      icon: Icons.circle_outlined,
+                      title: 'Show Activity Status',
+                      subtitle: "Let others see when you're online",
+                      value: activityStatusEnabled.value ?? true,
+                      onChanged: _updateActivityStatus,
+                      isDark: isDark,
+                    ),
+                  ],
                 ),
-                
-                SizedBox(height: 32.h),
-                
+                SizedBox(height: PanAfricanSpacing.lg),
+
                 // Info Card
                 Container(
-                  padding: EdgeInsets.all(16.sp),
+                  padding: EdgeInsets.all(PanAfricanSpacing.md),
                   decoration: BoxDecoration(
                     color: PanAfricanColors.primary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.info_outline,
-                        color: PanAfricanColors.primary,
+                      Container(
+                        padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                        decoration: BoxDecoration(
+                          color: PanAfricanColors.primary.withOpacity(0.1),
+                          borderRadius:
+                              BorderRadius.circular(PanAfricanRadius.md),
+                        ),
+                        child: Icon(
+                          Icons.info_outline_rounded,
+                          color: PanAfricanColors.primary,
+                          size: 24.sp,
+                        ),
                       ),
-                      SizedBox(width: 12.w),
+                      SizedBox(width: PanAfricanSpacing.md),
                       Expanded(
                         child: Text(
                           'Your privacy is important to us. These settings help you control how your data is used and shared.',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            color: isDark ? Colors.white70 : Colors.black87,
-                          ),
+                          style: PanAfricanTypography.bodyMedium(context),
                         ),
                       ),
                     ],
                   ),
-                ),
+                )
+                    .animate(delay: 250.ms)
+                    .fadeIn(duration: 300.ms)
+                    .slideY(begin: 0.1, end: 0),
+                SizedBox(height: PanAfricanSpacing.xl),
               ],
             ),
           ),
@@ -288,52 +376,210 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       ),
     );
   }
+}
 
-  Widget _buildSectionHeader(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 18.sp,
-        fontWeight: FontWeight.bold,
-        color: PanAfricanColors.primary,
+class _PrivacySection extends StatelessWidget {
+  final String title;
+  final List<Widget> children;
+  final bool isDark;
+  final int index;
+
+  const _PrivacySection({
+    required this.title,
+    required this.children,
+    required this.isDark,
+    required this.index,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(
+            left: PanAfricanSpacing.sm,
+            bottom: PanAfricanSpacing.sm,
+          ),
+          child: Text(
+            title,
+            style: PanAfricanTypography.titleMedium(context).copyWith(
+              color: PanAfricanColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+            borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+            boxShadow: PanAfricanShadows.sm,
+          ),
+          child: Column(
+            children: children,
+          ),
+        ),
+      ],
+    )
+        .animate(delay: (index * 50).ms)
+        .fadeIn(duration: 300.ms)
+        .slideX(begin: -0.03, end: 0, duration: 300.ms);
+  }
+}
+
+class _PrivacySwitchTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+  final bool isDark;
+
+  const _PrivacySwitchTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: PanAfricanSpacing.sm,
+        vertical: PanAfricanSpacing.md,
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(PanAfricanSpacing.sm),
+            decoration: BoxDecoration(
+              color: PanAfricanColors.primary.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+            ),
+            child: Icon(
+              icon,
+              color: PanAfricanColors.primary,
+              size: 24.sp,
+            ),
+          ),
+          SizedBox(width: PanAfricanSpacing.md),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: PanAfricanTypography.bodyLarge(context),
+                ),
+                Text(
+                  subtitle,
+                  style: PanAfricanTypography.bodySmall(context),
+                ),
+              ],
+            ),
+          ),
+          Switch.adaptive(
+            value: value,
+            onChanged: onChanged,
+            activeColor: PanAfricanColors.primary,
+          ),
+        ],
       ),
     );
   }
+}
 
-  Widget _buildSwitchTile({
-    required String title,
-    required String subtitle,
-    required bool value,
-    required Function(bool) onChanged,
-    required IconData icon,
-  }) {
-    return Card(
-      child: SwitchListTile(
-        title: Text(title),
-        subtitle: Text(subtitle),
-        value: value,
-        onChanged: onChanged,
-        secondary: Icon(icon, color: PanAfricanColors.primary),
+class _PrivacyRadioTile extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final String value;
+  final String groupValue;
+  final ValueChanged<String> onChanged;
+  final bool isDark;
+
+  const _PrivacyRadioTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.groupValue,
+    required this.onChanged,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isSelected = value == groupValue;
+
+    return InkWell(
+      onTap: () => onChanged(value),
+      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: PanAfricanSpacing.sm,
+          vertical: PanAfricanSpacing.md,
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? PanAfricanColors.primary.withOpacity(0.2)
+                    : PanAfricanColors.primary.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              ),
+              child: Icon(
+                icon,
+                color: PanAfricanColors.primary,
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: PanAfricanTypography.bodyLarge(context),
+                  ),
+                  Text(
+                    subtitle,
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ],
+              ),
+            ),
+            Radio<String>(
+              value: value,
+              groupValue: groupValue,
+              onChanged: (v) => onChanged(v!),
+              activeColor: PanAfricanColors.primary,
+            ),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildRadioTile({
-    required String title,
-    required String subtitle,
-    required String value,
-    required String groupValue,
-    required Function(String) onChanged,
-    required IconData icon,
-  }) {
-    return Card(
-      child: RadioListTile<String>(
-        title: Text(title),
-        subtitle: Text(subtitle),
-        value: value,
-        groupValue: groupValue,
-        onChanged: (val) => onChanged(val!),
-        secondary: Icon(icon, color: PanAfricanColors.primary),
+class _PrivacyDivider extends StatelessWidget {
+  final bool isDark;
+
+  const _PrivacyDivider({required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
+      child: Divider(
+        height: 1,
+        color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
       ),
     );
   }

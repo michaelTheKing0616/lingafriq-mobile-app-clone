@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 class ChatSearchScreen extends ConsumerStatefulWidget {
   final String? room;
@@ -27,6 +26,12 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
   bool _isLoading = false;
   String? _error;
   List<Map<String, dynamic>> _results = const [];
+
+  @override
+  void initState() {
+    super.initState();
+    _searchDebouncer = Debouncer(delay: const Duration(milliseconds: 400));
+  }
 
   @override
   void dispose() {
@@ -84,20 +89,36 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(4.w),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
             child: Container(
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1F3527) : Colors.white,
-                borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-                boxShadow: DesignSystem.shadowMedium,
+                color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+                boxShadow: PanAfricanShadows.md,
+                border: Border.all(
+                  color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                ),
               ),
               child: TextField(
                 controller: _queryController,
-                onChanged: _search,
-                decoration: const InputDecoration(
+                onChanged: (value) =>
+                    _searchDebouncer.run(() => _search(value)),
+                decoration: InputDecoration(
                   hintText: 'Search by text…',
-                  prefixIcon: Icon(Icons.search),
+                  hintStyle: PanAfricanTypography.bodyMedium(context).copyWith(
+                    color: isDark
+                        ? PanAfricanColors.textSecondaryDark
+                        : PanAfricanColors.textSecondaryLight,
+                  ),
+                  prefixIcon: Icon(Icons.search, color: isDark
+                      ? PanAfricanColors.textSecondaryDark
+                      : PanAfricanColors.textSecondaryLight),
                   border: InputBorder.none,
+                ),
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: isDark
+                      ? PanAfricanColors.textPrimaryDark
+                      : PanAfricanColors.textPrimaryLight,
                 ),
               ),
             ),
@@ -106,10 +127,12 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
             const LinearProgressIndicator(minHeight: 2),
           if (_error != null)
             Padding(
-              padding: EdgeInsets.all(4.w),
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
               child: Text(
                 _error!,
-                style: TextStyle(color: Colors.red.shade300),
+                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                  color: PanAfricanColors.error,
+                ),
               ),
             ),
           Expanded(
@@ -118,14 +141,15 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                     child: Text(
                       'No messages found.\nTry a different word or phrase.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14.sp,
-                        color: isDark ? Colors.white70 : Colors.black54,
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
+                        color: isDark
+                            ? PanAfricanColors.textSecondaryDark
+                            : PanAfricanColors.textSecondaryLight,
                       ),
                     ),
                   )
                 : ListView.separated(
-                    padding: EdgeInsets.all(4.w),
+                    padding: EdgeInsets.all(PanAfricanSpacing.md),
                     itemCount: _results.length,
                     separatorBuilder: (_, __) => Divider(
                       color: isDark ? Colors.grey[700] : Colors.grey[300],
@@ -145,9 +169,10 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                         ),
                         subtitle: Text(
                           '@$username • $room • ${_formatTime(ts)}',
-                          style: TextStyle(
-                            fontSize: 12.sp,
-                            color: isDark ? Colors.white70 : Colors.black54,
+                          style: PanAfricanTypography.labelSmall(context).copyWith(
+                            color: isDark
+                                ? PanAfricanColors.textSecondaryDark
+                                : PanAfricanColors.textSecondaryLight,
                           ),
                         ),
                       );

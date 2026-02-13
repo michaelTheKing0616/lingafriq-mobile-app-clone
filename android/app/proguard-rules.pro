@@ -32,3 +32,11 @@
 # Keep LiveKit classes
 -keep class io.livekit.** { *; }
 -dontwarn io.livekit.**
+
+# Google ML Kit Text Recognition - suppress missing optional script recognizers
+# The plugin references Chinese/Devanagari/Japanese/Korean recognizers but
+# they are optional dependencies we don't bundle (we only use Latin script).
+-dontwarn com.google.mlkit.vision.text.chinese.**
+-dontwarn com.google.mlkit.vision.text.devanagari.**
+-dontwarn com.google.mlkit.vision.text.japanese.**
+-dontwarn com.google.mlkit.vision.text.korean.**

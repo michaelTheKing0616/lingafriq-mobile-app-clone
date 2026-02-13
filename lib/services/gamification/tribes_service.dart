@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:lingafriq/utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 
 class TribesService {
   final Dio _dio;
@@ -15,7 +15,7 @@ class TribesService {
   }) async {
     try {
       final response = await _dio.post(
-        '${Api.baseurl}api/tribes',
+        ApiContract.url(ApiContract.tribes.list),
         data: {
           'name': name,
           'language_tag': languageTag,
@@ -32,7 +32,8 @@ class TribesService {
   /// Get tribe details
   Future<Map<String, dynamic>> getTribe(String tribeId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/tribes/$tribeId');
+      final response = await _dio
+          .get(ApiContract.url(ApiContract.tribes.details(tribeId)));
       return response.data;
     } catch (e) {
       rethrow;
@@ -42,7 +43,7 @@ class TribesService {
   /// Join a tribe
   Future<void> joinTribe(String tribeId) async {
     try {
-      await _dio.post('${Api.baseurl}api/tribes/$tribeId/join');
+      await _dio.post(ApiContract.url(ApiContract.tribes.join(tribeId)));
     } catch (e) {
       rethrow;
     }
@@ -51,7 +52,7 @@ class TribesService {
   /// Leave a tribe
   Future<void> leaveTribe(String tribeId) async {
     try {
-      await _dio.post('${Api.baseurl}api/tribes/$tribeId/leave');
+      await _dio.post(ApiContract.url(ApiContract.tribes.leave(tribeId)));
     } catch (e) {
       rethrow;
     }
@@ -60,7 +61,8 @@ class TribesService {
   /// Get tribe activity
   Future<List<dynamic>> getTribeActivity(String tribeId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/tribes/$tribeId/activity');
+      final response = await _dio
+          .get(ApiContract.url(ApiContract.tribes.activity(tribeId)));
       return response.data['activities'] ?? [];
     } catch (e) {
       rethrow;
@@ -71,7 +73,7 @@ class TribesService {
   Future<void> depositXP(String tribeId, int amount) async {
     try {
       await _dio.post(
-        '${Api.baseurl}api/tribes/$tribeId/deposit-xp',
+        ApiContract.url(ApiContract.tribes.depositXp(tribeId)),
         data: {'amount': amount},
       );
     } catch (e) {
@@ -88,7 +90,7 @@ class TribesService {
       }
       
       final response = await _dio.get(
-        '${Api.baseurl}api/tribes',
+        ApiContract.url(ApiContract.tribes.list),
         queryParameters: queryParams.isEmpty ? null : queryParams,
       );
       
@@ -105,7 +107,7 @@ class TribesService {
   Future<List<Map<String, dynamic>>> getUserTribes(String userId) async {
     try {
       // Preferred: fetch memberships for the authenticated user (server derives user id from JWT).
-      final response = await _dio.get('${Api.baseurl}api/tribes/me');
+      final response = await _dio.get(ApiContract.url(ApiContract.tribes.me));
       if (response.data is Map &&
           (response.data['success'] == true || response.statusCode == 200) &&
           response.data['data'] != null) {
@@ -124,7 +126,9 @@ class TribesService {
   /// Get classroom progress for a tribe
   Future<Map<String, dynamic>> getClassroomProgress(String tribeId) async {
     try {
-      final response = await _dio.get('${Api.baseurl}api/tribes/$tribeId/classroom/progress');
+      final response = await _dio.get(
+        ApiContract.url(ApiContract.tribes.classroomProgress(tribeId)),
+      );
       return response.data is Map ? Map<String, dynamic>.from(response.data) : {};
     } catch (e) {
       rethrow;

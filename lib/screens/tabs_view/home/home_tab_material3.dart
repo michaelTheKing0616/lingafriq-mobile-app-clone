@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,22 +10,17 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/navigation_provider.dart';
+import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
-import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/language/search_languages_page.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view.dart';
-import '../../../detail_types/introduction_screen.dart';
 
 final languagesProvider = FutureProvider.autoDispose((ref) {
   return ref.read(apiProvider.notifier).getLanguages();
@@ -80,6 +76,8 @@ class HomeTabMaterial3 extends HookConsumerWidget {
     ref.watch(_timerProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = ref.watch(userProvider);
+    ref.watch(dailyGoalsProvider);
+    final dailyGoals = ref.read(dailyGoalsProvider.notifier).goals;
     final title = ref.watch(_titleProvider);
 
     return Scaffold(
@@ -100,6 +98,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.search_rounded),
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -112,6 +111,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.menu_rounded),
                     onPressed: () {
+                      HapticFeedback.lightImpact();
                       ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                     },
                     tooltip: 'Menu',
@@ -134,10 +134,29 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                        padding: EdgeInsets.fromLTRB(
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.lg,
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.sm,
+                        ),
+                        child: _buildHeroCard(
+                          context,
+                          isDark,
+                          userName: user?.username ?? 'Learner',
+                          dailyGoals: dailyGoals,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.lg,
+                          PanAfricanSpacing.md,
+                          PanAfricanSpacing.sm,
+                        ),
                         child: Text(
                           'Featured Languages',
-                          style: PanAfricanTypography.headlineSmall(context),
+                          style: PanAfricanTypography.headlineMedium(context),
                         ),
                       ),
                       Expanded(
@@ -165,7 +184,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
 
                             return ListView.builder(
                               padding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.lg,
+                                horizontal: PanAfricanSpacing.md,
                               ),
                               itemCount: languages.results.length,
                               itemBuilder: (context, index) {
@@ -174,6 +193,7 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                                   language: language,
                                   isDark: isDark,
                                   onTap: () {
+                                    HapticFeedback.lightImpact();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -234,18 +254,20 @@ class _LanguageCard extends StatelessWidget {
         ? (language.total_score / 100).clamp(0.0, 1.0)
         : 0.0;
 
-    return Card(
-      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+    return Container(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
       ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: PanAfricanRadius.lgBR,
+          child: Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Row(
             children: [
               // Language Flag/Image
@@ -321,8 +343,112 @@ class _LanguageCard extends StatelessWidget {
             ],
           ),
         ),
+        ),
       ),
     );
   }
 }
 
+class _HeroCard extends StatelessWidget {
+  final String userName;
+  final List<DailyGoal> dailyGoals;
+  final bool isDark;
+
+  const _HeroCard({
+    required this.userName,
+    required this.dailyGoals,
+    required this.isDark,
+  });
+
+  double _progress() {
+    final todayGoals = dailyGoals.where((goal) => goal.isToday).toList();
+    if (todayGoals.isEmpty) return 0;
+    final total = todayGoals.fold<double>(0, (sum, goal) => sum + goal.progress);
+    return (total / todayGoals.length).clamp(0.0, 1.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = _progress();
+    return Container(
+      decoration: BoxDecoration(
+        gradient: PanAfricanGradients.savannaGold,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
+        boxShadow: PanAfricanShadows.lg,
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Welcome back, $userName',
+                    style: PanAfricanTypography.titleLarge(context).copyWith(
+                      color: PanAfricanColors.neutralDarkest,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  Text(
+                    'Pick a language and keep your streak alive.',
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      color: PanAfricanColors.neutralDark,
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.md),
+                  Row(
+                    children: [
+                      PanAfricanBadge(
+                        label: 'Daily goals',
+                        color: PanAfricanColors.tertiary,
+                        icon: Icons.flag_rounded,
+                      ),
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      PanAfricanBadge(
+                        label: '${(progress * 100).toInt()}% complete',
+                        color: PanAfricanColors.primary,
+                        icon: Icons.check_circle_rounded,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: PanAfricanSpacing.md),
+            Container(
+              width: 56.w,
+              height: 56.w,
+              decoration: BoxDecoration(
+                color: isDark
+                    ? PanAfricanColors.surfaceContainerDark
+                    : PanAfricanColors.surfaceContainerLight,
+                borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+              ),
+              child: Center(
+                child: Text(
+                  '${(progress * 100).toInt()}%',
+                  style: PanAfricanTypography.titleSmall(context),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1);
+  }
+}
+
+Widget _buildHeroCard(
+  BuildContext context,
+  bool isDark, {
+  required String userName,
+  required List<DailyGoal> dailyGoals,
+}) {
+  return _HeroCard(
+    userName: userName,
+    dailyGoals: dailyGoals,
+    isDark: isDark,
+  );
+}

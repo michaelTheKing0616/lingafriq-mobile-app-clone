@@ -10,8 +10,6 @@
 /// Production-ready implementation (December 2025)
 
 import 'dart:collection';
-import 'package:flutter/foundation.dart';
-
 /// Rate limit configuration
 class RateLimitConfig {
   final int maxRequests;

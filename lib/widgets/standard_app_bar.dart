@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/design_system.dart';
+import 'package:flutter/services.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,6 +18,7 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double? elevation;
   final VoidCallback? onBackPressed;
   final PreferredSizeWidget? bottom;
+  final bool centerTitle;
 
   const StandardAppBar({
     Key? key,
@@ -31,6 +33,7 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.elevation,
     this.onBackPressed,
     this.bottom,
+    this.centerTitle = true,
   }) : assert(title != null || titleWidget != null || !showBackButton,
           'Title or titleWidget must be provided if showBackButton is true'),
       super(key: key);
@@ -40,10 +43,10 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = backgroundColor ?? 
         (gradient != null ? Colors.transparent : 
-         (isDark ? const Color(0xFF1F3527) : Colors.white));
+         (isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceLight));
     final fgColor = foregroundColor ?? 
-        (gradient != null ? Colors.white : 
-         (isDark ? Colors.white : Colors.black87));
+        (gradient != null ? Theme.of(context).colorScheme.onPrimary : 
+         (isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight));
 
     final effectiveActions = <Widget>[
       // World-class navigation: if both back + menu are requested, show back as leading
@@ -64,9 +67,18 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: gradient != null ? Colors.transparent : bgColor,
       foregroundColor: fgColor,
       elevation: elevation ?? 0,
+      centerTitle: centerTitle,
       leading: _buildLeading(context, fgColor),
-      title: titleWidget ?? (title != null ? Text(title!) : null),
-      actions: effectiveActions.isEmpty ? null : effectiveActions,
+      title: titleWidget ?? (title != null 
+          ? Text(
+              title!,
+              style: PanAfricanTypography.titleLarge(context, color: fgColor),
+            ) 
+          : null),
+      actions: effectiveActions.isEmpty ? null : [
+        ...effectiveActions,
+        SizedBox(width: PanAfricanSpacing.xs),
+      ],
       bottom: bottom,
       flexibleSpace: gradient != null
           ? Container(
@@ -83,16 +95,26 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget? _buildLeading(BuildContext context, Color iconColor) {
     if (showBackButton) {
       return IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: Icon(PanAfricanIcons.back, size: 24.sp),
         color: iconColor,
-        onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+        padding: EdgeInsets.all(PanAfricanSpacing.sm),
+        onPressed: () {
+          HapticFeedback.lightImpact();
+          if (onBackPressed != null) {
+            onBackPressed!();
+          } else {
+            Navigator.of(context).pop();
+          }
+        },
         tooltip: 'Back',
       );
     } else if (showDrawerButton) {
       return IconButton(
-        icon: const Icon(Icons.menu),
+        icon: Icon(PanAfricanIcons.menu, size: 24.sp),
         color: iconColor,
+        padding: EdgeInsets.all(PanAfricanSpacing.sm),
         onPressed: () {
+          HapticFeedback.lightImpact();
           Scaffold.of(context).openDrawer();
         },
         tooltip: 'Menu',
@@ -137,7 +159,7 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
       showBackButton: showBackButton,
       showDrawerButton: showDrawerButton,
       gradient: gradient,
-      foregroundColor: Colors.white,
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
       onBackPressed: onBackPressed,
       bottom: bottom,
     );
@@ -177,21 +199,18 @@ class StandardGradientHeader extends StatelessWidget {
       height: height.h,
       decoration: BoxDecoration(
         gradient: gradient,
-        borderRadius: const BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(PanAfricanRadius.xxl),
+          bottomRight: Radius.circular(PanAfricanRadius.xxl),
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
+        boxShadow: PanAfricanShadows.lg,
       ),
       child: ResponsiveSafeArea(
         child: Padding(
-          padding: EdgeInsets.all(4.w),
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.md,
+            vertical: PanAfricanSpacing.sm,
+          ),
           child: Column(
             children: [
               Row(
@@ -199,34 +218,42 @@ class StandardGradientHeader extends StatelessWidget {
                 children: [
                   if (showBackButton)
                     IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: onBackPressed ?? () => Navigator.of(context).pop(),
+                      icon: Icon(PanAfricanIcons.back, color: Theme.of(context).colorScheme.onPrimary, size: 24.sp),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        if (onBackPressed != null) {
+                          onBackPressed!();
+                        } else {
+                          Navigator.of(context).pop();
+                        }
+                      },
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
                         shape: const CircleBorder(),
+                        padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       ),
                     )
                   else if (showDrawerButton)
                     IconButton(
-                      icon: const Icon(Icons.menu, color: Colors.white),
-                      onPressed: () => Scaffold.of(context).openDrawer(),
+                      icon: Icon(PanAfricanIcons.menu, color: Theme.of(context).colorScheme.onPrimary, size: 24.sp),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Scaffold.of(context).openDrawer();
+                      },
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.2),
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
                         shape: const CircleBorder(),
+                        padding: EdgeInsets.all(PanAfricanSpacing.sm),
                       ),
                     )
                   else
-                    const SizedBox(width: 48),
+                    SizedBox(width: 48.w),
                   if (title != null || titleWidget != null)
                     Expanded(
                       child: titleWidget ??
                           Text(
                             title!,
-                            style: TextStyle(
-                              fontSize: 24.sp,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                            style: PanAfricanTypography.headlineSmall(context, color: Theme.of(context).colorScheme.onPrimary),
                             textAlign: TextAlign.center,
                           ),
                     )
@@ -239,17 +266,21 @@ class StandardGradientHeader extends StatelessWidget {
                         ...?actions,
                         if (showDrawerButton && showBackButton)
                           IconButton(
-                            icon: const Icon(Icons.menu, color: Colors.white),
-                            onPressed: () => Scaffold.of(context).openDrawer(),
+                            icon: Icon(PanAfricanIcons.menu, color: Theme.of(context).colorScheme.onPrimary, size: 24.sp),
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              Scaffold.of(context).openDrawer();
+                            },
                             style: IconButton.styleFrom(
-                              backgroundColor: Colors.white.withOpacity(0.2),
+                              backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
                               shape: const CircleBorder(),
+                              padding: EdgeInsets.all(PanAfricanSpacing.sm),
                             ),
                           ),
                       ],
                     )
                   else
-                    const SizedBox(width: 48),
+                    SizedBox(width: 48.w),
                 ],
               ),
             ],

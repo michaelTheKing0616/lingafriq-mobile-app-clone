@@ -1,0 +1,269 @@
+{
+  "@@locale": "en",
+  "@@last_modified": "2026-02-04",
+  
+  "appTitle": "LingAfriq",
+  "@appTitle": {
+    "description": "The app title"
+  },
+  
+  "welcomeMessage": "Welcome to LingAfriq",
+  "@welcomeMessage": {
+    "description": "Welcome message shown on home screen"
+  },
+  
+  "continueButton": "Continue",
+  "@continueButton": {
+    "description": "Continue button text"
+  },
+  
+  "startLearning": "Start Learning",
+  "@startLearning": {
+    "description": "Start learning button"
+  },
+  
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading indicator text"
+  },
+  
+  "errorOccurred": "An error occurred",
+  "@errorOccurred": {
+    "description": "Generic error message"
+  },
+  
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Retry button text"
+  },
+  
+  "home": "Home",
+  "@home": {
+    "description": "Home tab label"
+  },
+  
+  "learn": "Learn",
+  "@learn": {
+    "description": "Learn tab label"
+  },
+  
+  "games": "Games",
+  "@games": {
+    "description": "Games tab label"
+  },
+  
+  "profile": "Profile",
+  "@profile": {
+    "description": "Profile tab label"
+  },
+  
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  
+  "language": "Language",
+  "@language": {
+    "description": "Language selection label"
+  },
+  
+  "selectLanguage": "Select Language",
+  "@selectLanguage": {
+    "description": "Language selection prompt"
+  },
+  
+  "lessons": "Lessons",
+  "@lessons": {
+    "description": "Lessons section title"
+  },
+  
+  "quizzes": "Quizzes",
+  "@quizzes": {
+    "description": "Quizzes section title"
+  },
+  
+  "takeQuiz": "Take a Quiz",
+  "@takeQuiz": {
+    "description": "Take quiz button"
+  },
+  
+  "takeLesson": "Take a Lesson",
+  "@takeLesson": {
+    "description": "Take lesson button"
+  },
+  
+  "dailyStreak": "Daily Streak",
+  "@dailyStreak": {
+    "description": "Streak counter label"
+  },
+  
+  "daysStreak": "{count} days",
+  "@daysStreak": {
+    "description": "Streak days count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "xpEarned": "{count} XP",
+  "@xpEarned": {
+    "description": "XP earned display",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  
+  "level": "Level",
+  "@level": {
+    "description": "Level label"
+  },
+  
+  "beginner": "Beginner",
+  "@beginner": {
+    "description": "Beginner level"
+  },
+  
+  "intermediate": "Intermediate",
+  "@intermediate": {
+    "description": "Intermediate level"
+  },
+  
+  "advanced": "Advanced",
+  "@advanced": {
+    "description": "Advanced level"
+  },
+  
+  "correct": "Correct!",
+  "@correct": {
+    "description": "Correct answer feedback"
+  },
+  
+  "incorrect": "Incorrect",
+  "@incorrect": {
+    "description": "Incorrect answer feedback"
+  },
+  
+  "next": "Next",
+  "@next": {
+    "description": "Next button"
+  },
+  
+  "back": "Back",
+  "@back": {
+    "description": "Back button"
+  },
+  
+  "skip": "Skip",
+  "@skip": {
+    "description": "Skip button"
+  },
+  
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+  
+  "save": "Save",
+  "@save": {
+    "description": "Save button"
+  },
+  
+  "done": "Done",
+  "@done": {
+    "description": "Done button"
+  },
+  
+  "submit": "Submit",
+  "@submit": {
+    "description": "Submit button"
+  },
+  
+  "logout": "Log Out",
+  "@logout": {
+    "description": "Logout button"
+  },
+  
+  "login": "Log In",
+  "@login": {
+    "description": "Login button"
+  },
+  
+  "signup": "Sign Up",
+  "@signup": {
+    "description": "Signup button"
+  },
+  
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+  
+  "password": "Password",
+  "@password": {
+    "description": "Password field label"
+  },
+  
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Forgot password link"
+  },
+  
+  "noAccount": "Don't have an account?",
+  "@noAccount": {
+    "description": "No account text"
+  },
+  
+  "haveAccount": "Already have an account?",
+  "@haveAccount": {
+    "description": "Have account text"
+  },
+  
+  "congratulations": "Congratulations!",
+  "@congratulations": {
+    "description": "Congratulations message"
+  },
+  
+  "lessonComplete": "Lesson Complete!",
+  "@lessonComplete": {
+    "description": "Lesson completion message"
+  },
+  
+  "quizComplete": "Quiz Complete!",
+  "@quizComplete": {
+    "description": "Quiz completion message"
+  },
+  
+  "accuracy": "Accuracy",
+  "@accuracy": {
+    "description": "Accuracy label"
+  },
+  
+  "score": "Score",
+  "@score": {
+    "description": "Score label"
+  },
+  
+  "aiTutor": "AI Tutor",
+  "@aiTutor": {
+    "description": "AI Tutor feature name"
+  },
+  
+  "cultureMagazine": "Culture Magazine",
+  "@cultureMagazine": {
+    "description": "Culture Magazine feature name"
+  },
+  
+  "tribes": "Tribes",
+  "@tribes": {
+    "description": "Tribes feature name"
+  },
+  
+  "leaderboard": "Leaderboard",
+  "@leaderboard": {
+    "description": "Leaderboard feature name"
+  }
+}

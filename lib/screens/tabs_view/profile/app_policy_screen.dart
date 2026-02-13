@@ -16,7 +16,7 @@ class AppPolicyScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const BackButton(color: Colors.white),
+                  BackButton(color: Theme.of(context).colorScheme.onPrimary),
                   const Spacer(),
                   "App Policy".text.xl4.medium.white.make().p16(),
                 ],

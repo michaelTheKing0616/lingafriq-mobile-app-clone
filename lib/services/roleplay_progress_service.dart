@@ -1,14 +1,11 @@
 /// Roleplay Progress Service
 /// Manages roleplay progress tracking, difficulty adaptation, and analytics
-import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/roleplay_progress_model.dart';
 import '../providers/user_provider.dart';
 import '../providers/backend_sync_provider.dart';
-import '../providers/api_provider.dart';
-
 final roleplayProgressServiceProvider = Provider<RoleplayProgressService>((ref) {
   return RoleplayProgressService(ref);
 });

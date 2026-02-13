@@ -9,8 +9,7 @@
 
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
-import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../utils/simple_cache.dart';
 import '../../core/utils/retry_helper.dart';
 import '../../core/errors/app_exceptions.dart';
@@ -74,7 +73,7 @@ class AudioGenerationService {
           // Use same TTS endpoint as VoiceApiService.synthesizeSpeech()
           // but with caching and lesson-item-specific handling
           final response = await _dio.post(
-            '${Api.baseurl}api/voice/tts/synthesize',
+            ApiContract.url(ApiContract.voice.ttsSynthesize),
             data: {
               'text': text,
               'language': _getLanguageName(languageCode),
@@ -179,7 +178,8 @@ class AudioGenerationService {
 
   Future<String> _saveAudioToStorage(String lessonItemId, Uint8List audioData) async {
     final filename = 'lesson_audio/$lessonItemId.wav';
-    final hostname = Api.baseurl.replaceAll('/api', '');
+    final hostname =
+        ApiContract.baseUrl.replaceFirst(RegExp(r'/api$'), '');
     return '$hostname/uploads/media/$filename';
   }
 

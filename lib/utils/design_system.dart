@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lingafriq/utils/app_colors.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 /// Modern Design System for LingAfriq
@@ -56,26 +56,26 @@ class DesignSystem {
   static const LinearGradient accentGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [AppColors.primaryGreen, AppColors.accentGold],
+    colors: [PanAfricanColors.primary, PanAfricanColors.secondary],
   );
 
-  // Stitch Design Gradients
+  // Pan-African Design Gradients
   static const LinearGradient stitchPrimaryGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [AppColors.stitchPrimary, Color(0xFF22C55E)],
+    colors: [PanAfricanColors.primary, Color(0xFF22C55E)],
   );
 
   static const LinearGradient successGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
-    colors: [AppColors.success, Color(0xFF66BB6A)],
+    colors: [PanAfricanColors.success, Color(0xFF66BB6A)],
   );
 
   // Card Styles
   static BoxDecoration cardDecoration(BuildContext context, {bool elevated = true}) {
     return BoxDecoration(
-      color: context.isDarkMode ? AppColors.surfaceDark : AppColors.surfaceLight,
+      color: context.isDarkMode ? AppColors.surfaceDark : PanAfricanColors.surfaceLight,
       borderRadius: BorderRadius.circular(radiusL),
       boxShadow: elevated ? shadowMedium : null,
     );
@@ -128,11 +128,11 @@ class ModernCardV2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
-    final cardColor = color ?? (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight);
+    final cardColor = color ?? (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
     final border = isSelected 
-        ? Border.all(color: AppColors.stitchPrimary, width: 2)
+        ? Border.all(color: PanAfricanColors.primary, width: 2)
         : Border.all(
-            color: borderColor ?? (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight),
+            color: borderColor ?? (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
             width: 2,
           );
 
@@ -141,7 +141,7 @@ class ModernCardV2 extends StatelessWidget {
       padding: padding ?? EdgeInsets.all(DesignSystem.spacingM),
       decoration: BoxDecoration(
         color: isSelected 
-            ? AppColors.stitchPrimary.withOpacity(0.2)
+            ? PanAfricanColors.primary.withOpacity(0.2)
             : cardColor,
         borderRadius: BorderRadius.circular(borderRadius),
         border: border,
@@ -186,11 +186,11 @@ class ModernLanguageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = context.isDarkMode;
     final cardColor = isSelected
-        ? AppColors.stitchPrimary.withOpacity(0.2)
-        : (isDark ? AppColors.stitchCardDark : AppColors.stitchCardLight);
+        ? PanAfricanColors.primary.withOpacity(0.2)
+        : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
     final borderColor = isSelected
-        ? AppColors.stitchPrimary
-        : (isDark ? AppColors.stitchBorderDark : AppColors.stitchBorderLight);
+        ? PanAfricanColors.primary
+        : (isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight);
 
     return Container(
       margin: EdgeInsets.only(bottom: DesignSystem.spacingM),
@@ -248,7 +248,7 @@ class ModernLanguageCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight,
+                          color: isDark ? PanAfricanColors.textPrimaryLight : PanAfricanColors.textPrimaryDark,
                         ),
                       ),
                       if (isFeatured)
@@ -256,7 +256,7 @@ class ModernLanguageCard extends StatelessWidget {
                           'Most popular course',
                           style: TextStyle(
                             fontSize: 14,
-                            color: (isDark ? AppColors.stitchTextDark : AppColors.stitchTextLight)
+                            color: (isDark ? PanAfricanColors.textPrimaryLight : PanAfricanColors.textPrimaryDark)
                                 .withOpacity(0.8),
                           ),
                         ),
@@ -274,7 +274,7 @@ class ModernLanguageCard extends StatelessWidget {
                     ),
                     child: Icon(
                       Icons.check,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 18,
                     ),
                   ),

@@ -32,6 +32,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
     final validationMessage = useState<String?>(null);
     final isValid = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final colorScheme = Theme.of(context).colorScheme;
 
     // Reserved names that cannot be used
     final reservedNames = [
@@ -374,7 +375,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                         : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: colorScheme.onPrimary,
                       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(PanAfricanRadius.md),
@@ -383,7 +384,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                     child: Text(
                       'Save Handle',
                       style: PanAfricanTypography.titleMedium(context)?.copyWith(
-                        color: Colors.white,
+                        color: colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

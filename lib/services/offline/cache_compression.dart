@@ -2,7 +2,6 @@
 /// Uses gzip compression for text-based data
 
 import 'dart:convert';
-import 'dart:io';
 import 'package:archive/archive.dart';
 
 class CacheCompression {

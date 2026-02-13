@@ -8,9 +8,6 @@
 /// - Cultural context integration
 /// - Difficulty-appropriate responses
 
-import 'package:flutter/foundation.dart';
-import '../../models/lesson_item_model.dart';
-
 /// Dialogue flow type
 enum DialogueFlowType {
   greeting,

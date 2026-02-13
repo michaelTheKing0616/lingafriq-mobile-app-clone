@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 /// Material 3 Navigation Rail - For larger screens
 class NavigationRailM3 extends StatelessWidget {
   final int selectedIndex;

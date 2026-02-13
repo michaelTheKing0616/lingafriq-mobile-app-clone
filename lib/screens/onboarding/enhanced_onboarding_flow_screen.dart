@@ -13,7 +13,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
 import 'placement_test_screen.dart';
-import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,7 +22,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:lingafriq/services/connectivity_service.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:async';
 import 'dart:io';
@@ -50,6 +49,14 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           _goToNext(pageController, currentStep);
         },
       ),
+      _Step1_5ProficiencyLevel(
+        pageController: pageController,
+        currentStep: currentStep,
+        onNext: (data) {
+          onboardingData.value = {...onboardingData.value, ...data};
+          _goToNext(pageController, currentStep);
+        },
+      ),
       _Step2LearningLanguage(
         pageController: pageController,
         currentStep: currentStep,
@@ -67,6 +74,14 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
         },
       ),
       _Step4LearningReasons(
+        pageController: pageController,
+        currentStep: currentStep,
+        onNext: (data) {
+          onboardingData.value = {...onboardingData.value, ...data};
+          _goToNext(pageController, currentStep);
+        },
+      ),
+      _Step4_5DailyTimeGoal(
         pageController: pageController,
         currentStep: currentStep,
         onNext: (data) {
@@ -182,64 +197,84 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     bool isDark,
     {VoidCallback? onBack}
   ) {
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.lg),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              if (onBack != null)
-                IconButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    onBack();
-                  },
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  style: IconButton.styleFrom(
-                    backgroundColor: Colors.white.withOpacity(0.15),
+    final progressValue = (currentStep + 1) / totalSteps;
+    final progressPercent = ((currentStep + 1) / totalSteps * 100).toInt();
+    return Semantics(
+      label: 'Onboarding progress. Step ${currentStep + 1} of $totalSteps. $progressPercent percent complete.',
+      value: '$progressPercent%',
+      child: Container(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                if (onBack != null)
+                  Semantics(
+                    label: 'Go back to previous step',
+                    button: true,
+                    child: IconButton(
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        onBack();
+                      },
+                      icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onPrimary),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.15),
+                      ),
+                    ),
+                  )
+                else
+                  SizedBox(width: 48.w, height: 48.w),
+                const Spacer(),
+                Semantics(
+                  label: 'Onboarding',
+                  header: true,
+                  child: Text(
+                    'Onboarding',
+                    style: PanAfricanTypography.titleMedium(context)
+                        .copyWith(color: Theme.of(context).colorScheme.onPrimary),
                   ),
-                )
-              else
-                SizedBox(width: 48.w, height: 48.w),
-              const Spacer(),
-              Text(
-                'Onboarding',
-                style: PanAfricanTypography.titleMedium(context).copyWith(color: Colors.white),
-              ),
-              const Spacer(),
-              TextButton(
-                onPressed: () => _skipOnboarding(context, ref),
-                child: Text(
-                  'Skip',
-                  style: PanAfricanTypography.labelLarge(context).copyWith(color: Colors.white70),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Step ${currentStep + 1} of $totalSteps',
-                style: PanAfricanTypography.labelMedium(context)
-                    .copyWith(color: Colors.white),
-              ),
-              Text(
-                '${((currentStep + 1) / totalSteps * 100).toInt()}%',
-                style: PanAfricanTypography.labelMedium(context)
-                    .copyWith(color: Colors.white),
-              ),
-            ],
-          ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          LinearProgressIndicator(
-            value: (currentStep + 1) / totalSteps,
-            backgroundColor: Colors.white.withOpacity(0.3),
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            minHeight: 4.h,
-          ),
-        ],
+                const Spacer(),
+                Semantics(
+                  label: 'Skip onboarding',
+                  button: true,
+                  child: TextButton(
+                    onPressed: () => _skipOnboarding(context, ref),
+                    child: Text(
+                      'Skip',
+                      style: PanAfricanTypography.labelLarge(context)
+                          .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Step ${currentStep + 1} of $totalSteps',
+                  style: PanAfricanTypography.labelMedium(context)
+                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                ),
+                Text(
+                  '$progressPercent%',
+                  style: PanAfricanTypography.labelMedium(context)
+                      .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                ),
+              ],
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            LinearProgressIndicator(
+              value: progressValue,
+              backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+              valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
+              minHeight: 4.h,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -368,10 +403,9 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           logger.warn('Placement test prompt already shown; skipping duplicate prompt');
         } else {
         // Check connectivity before showing placement test
-        final connectivity = Connectivity();
-        final hasConnection = await connectivity.checkConnectivity();
-        
-        if (hasConnection != ConnectivityResult.none) {
+        final hasConnection = await ConnectivityService.hasInternet();
+
+        if (hasConnection) {
           // Show placement test as optional - user can skip
           final shouldTakeTest = await showDialog<bool>(
             context: context,
@@ -606,9 +640,13 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Popular Languages',
-                  style: PanAfricanTypography.titleMedium(context),
+                Semantics(
+                  label: 'Popular Languages',
+                  header: true,
+                  child: Text(
+                    'Popular Languages',
+                    style: PanAfricanTypography.titleMedium(context),
+                  ),
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
               ],
@@ -633,39 +671,46 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                       final lang = _majorLanguages[index];
                       final isSelected = selectedLanguage.value == lang['code'];
 
-                      return GestureDetector(
-                        onTap: () {
-                          selectedLanguage.value = lang['code'];
-                          HapticFeedback.mediumImpact();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? PanAfricanColors.primary
-                                : (isDark
-                                    ? PanAfricanColors.cardDark
-                                    : PanAfricanColors.cardLight),
-                            borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-                            border: Border.all(
+                      return Semantics(
+                        label: 'Select ${lang['name'] ?? ''} as proficiency language. ${isSelected ? 'Selected' : ''}',
+                        button: true,
+                        selected: isSelected,
+                        child: GestureDetector(
+                          onTap: () {
+                            selectedLanguage.value = lang['code'];
+                            HapticFeedback.mediumImpact();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
                               color: isSelected
-                                  ? PanAfricanColors.secondary
-                                  : PanAfricanColors.borderLight,
-                              width: isSelected ? 3 : 1,
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(lang['flag'] ?? '🌍', style: TextStyle(fontSize: 48.sp)),
-                              SizedBox(height: PanAfricanSpacing.sm),
-                              Text(
-                                lang['name'] ?? '',
-                                style: PanAfricanTypography.titleMedium(context).copyWith(
-                                  color: isSelected ? Colors.white : null,
-                                ),
-                                textAlign: TextAlign.center,
+                                  ? PanAfricanColors.primary
+                                  : (isDark
+                                      ? PanAfricanColors.cardDark
+                                      : PanAfricanColors.cardLight),
+                              borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                              border: Border.all(
+                                color: isSelected
+                                    ? PanAfricanColors.secondary
+                                    : PanAfricanColors.borderLight,
+                                width: isSelected ? 3 : 1,
                               ),
-                            ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ExcludeSemantics(
+                                  child: Text(lang['flag'] ?? '🌍', style: TextStyle(fontSize: 48.sp)),
+                                ),
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Text(
+                                  lang['name'] ?? '',
+                                  style: PanAfricanTypography.titleMedium(context).copyWith(
+                                    color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -675,12 +720,16 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                   
                   // "Other Languages" button
                   if (!showOtherLanguages.value)
-                    OutlinedButton.icon(
-                      onPressed: () => showOtherLanguages.value = true,
-                      icon: Icon(Icons.language),
-                      label: Text('Show All Languages (${allLanguages.length - _majorLanguages.length} more)'),
-                      style: OutlinedButton.styleFrom(
-                        minimumSize: Size(double.infinity, 50.h),
+                    Semantics(
+                      label: 'Show all languages. ${allLanguages.length - _majorLanguages.length} more languages available.',
+                      button: true,
+                      child: OutlinedButton.icon(
+                        onPressed: () => showOtherLanguages.value = true,
+                        icon: Icon(Icons.language),
+                        label: Text('Show All Languages (${allLanguages.length - _majorLanguages.length} more)'),
+                        style: OutlinedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50.h),
+                        ),
                       ),
                     ),
                   
@@ -697,6 +746,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                     TextField(
                       onChanged: (value) => searchQuery.value = value,
                       decoration: InputDecoration(
+                        labelText: 'Search languages',
                         hintText: 'Search languages...',
                         prefixIcon: Icon(Icons.search),
                         border: OutlineInputBorder(
@@ -727,11 +777,11 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                           title: Text(
                             lang['name'] ?? '',
                             style: PanAfricanTypography.bodyLarge(context).copyWith(
-                              color: isSelected ? Colors.white : null,
+                              color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                             ),
                           ),
                           trailing: isSelected
-                              ? Icon(Icons.check_circle, color: Colors.white)
+                              ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                               : null,
                           onTap: () {
                             selectedLanguage.value = lang['code'];
@@ -745,24 +795,200 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
               ),
             ),
           ),
-          Padding(
+                Padding(
             padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: ElevatedButton(
-              onPressed: selectedLanguage.value != null ? saveAndNext : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: PanAfricanColors.secondary,
-                foregroundColor: Colors.black,
-                minimumSize: Size(double.infinity, 50.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+            child: Semantics(
+              label: 'Continue to next step',
+              button: true,
+              enabled: selectedLanguage.value != null,
+              child: ElevatedButton(
+                onPressed: selectedLanguage.value != null ? saveAndNext : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: PanAfricanColors.secondary,
+                  foregroundColor: Theme.of(context).colorScheme.onSurface,
+                  minimumSize: Size(double.infinity, 50.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                  ),
+                  disabledBackgroundColor: PanAfricanColors.borderLight,
                 ),
-                disabledBackgroundColor: PanAfricanColors.borderLight,
+                child: Text('Continue'),
               ),
-              child: Text('Continue'),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+// Step 1.5: Proficiency Level Self-Assessment
+class _Step1_5ProficiencyLevel extends HookConsumerWidget {
+  final Function(Map<String, dynamic>) onNext;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+
+  const _Step1_5ProficiencyLevel({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedLevel = useState<String?>(null);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final levels = [
+      {'code': 'beginner', 'name': 'Beginner', 'description': 'I\'m just starting out', 'icon': Icons.stars},
+      {'code': 'elementary', 'name': 'Elementary', 'description': 'I know a few words', 'icon': Icons.star_border},
+      {'code': 'intermediate', 'name': 'Intermediate', 'description': 'I can have basic conversations', 'icon': Icons.star_half},
+      {'code': 'advanced', 'name': 'Advanced', 'description': 'I\'m quite fluent', 'icon': Icons.star},
+      {'code': 'native', 'name': 'Native', 'description': 'I speak this language natively', 'icon': Icons.verified},
+    ];
+
+    return _OnboardingStepTemplate(
+      title: 'What\'s your current level?',
+      description: 'Help us personalize your learning experience',
+      isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
+      child: _buildOptionSelector(
+        context,
+        levels.map((l) => l['code'] as String).toList(),
+        selectedLevel.value,
+        (value) => selectedLevel.value = value,
+        isDark,
+        () async {
+          if (selectedLevel.value == null) return;
+          
+          // Save locally first
+          try {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('onboarding_proficiency_level', selectedLevel.value!);
+          } catch (e) {
+            logger.error('Error saving proficiency level locally', error: e);
+          }
+
+          // Queue sync with backend
+          try {
+            final syncProvider = ref.read(backendSyncProvider.notifier);
+            await syncProvider.queueSync(SyncTask(
+              type: SyncType.onboarding,
+              data: {
+                'step': 'proficiency_level',
+                'proficiency_level': selectedLevel.value,
+                'timestamp': DateTime.now().toIso8601String(),
+              },
+            ));
+          } catch (e) {
+            logger.warn('Failed to queue sync for proficiency level, continuing locally', error: e);
+          }
+
+          onNext({'proficiency_level': selectedLevel.value});
+        },
+        customBuilder: (option, isSelected) {
+          final level = levels.firstWhere((l) => l['code'] == option);
+          return Card(
+            margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+            color: isSelected
+                ? PanAfricanColors.primary
+                : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+            child: ListTile(
+              leading: Icon(
+                level['icon'] as IconData,
+                color: isSelected ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.primary,
+                size: 28.sp,
+              ),
+              title: Text(
+                level['name'] as String,
+                style: PanAfricanTypography.titleMedium(context).copyWith(
+                  color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
+                ),
+              ),
+              subtitle: Text(
+                level['description'] as String,
+                style: PanAfricanTypography.bodySmall(context).copyWith(
+                  color: isSelected 
+                      ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                      : (isDark ? Colors.grey[400] : Colors.grey[600]),
+                ),
+              ),
+              trailing: isSelected
+                  ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
+                  : null,
+              onTap: () {
+                selectedLevel.value = option;
+                HapticFeedback.mediumImpact();
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildOptionSelector(
+    BuildContext context,
+    List<String> options,
+    String? selected,
+    Function(String) onSelect,
+    bool isDark,
+    VoidCallback onContinue, {
+    Widget Function(String option, bool isSelected)? customBuilder,
+  }) {
+    return Column(
+      children: [
+        Expanded(
+          child: OptimizedListView.builder(
+            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+            itemCount: options.length,
+            itemBuilder: (context, index) {
+              final option = options[index];
+              final isSelected = selected == option;
+              if (customBuilder != null) {
+                return customBuilder(option, isSelected);
+              }
+              return Card(
+                margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+                color: isSelected
+                    ? PanAfricanColors.primary
+                    : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
+                child: ListTile(
+                  title: Text(
+                    option.toUpperCase(),
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
+                    ),
+                  ),
+                  trailing: isSelected
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
+                      : null,
+                  onTap: () {
+                    onSelect(option);
+                    HapticFeedback.mediumImpact();
+                  },
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
+          child: ElevatedButton(
+            onPressed: selected != null ? onContinue : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: PanAfricanColors.secondary,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
+              minimumSize: Size(double.infinity, 50.h),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              ),
+            ),
+            child: Text('Continue'),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -881,7 +1107,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
                         Text(
                           lang['name'] ?? '',
                           style: PanAfricanTypography.titleMedium(context).copyWith(
-                            color: isSelected ? Colors.white : null,
+                            color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -898,7 +1124,7 @@ class _Step2LearningLanguage extends HookConsumerWidget {
               onPressed: saveAndNext,
               style: ElevatedButton.styleFrom(
                 backgroundColor: PanAfricanColors.secondary,
-                foregroundColor: Colors.black,
+                foregroundColor: Theme.of(context).colorScheme.onSurface,
                 minimumSize: Size(double.infinity, 50.h),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(PanAfricanRadius.md),
@@ -1005,11 +1231,11 @@ class _Step3AgeCategory extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1026,7 +1252,7 @@ class _Step3AgeCategory extends HookConsumerWidget {
             onPressed: selected != null ? onContinue : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.secondary,
-              foregroundColor: Colors.black,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(PanAfricanRadius.md),
@@ -1055,7 +1281,7 @@ class _Step4LearningReasons extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selected = useState<Set<String>>({});
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final reasons = ['heritage', 'travel', 'school', 'business', 'curiosity', 'family', 'culture'];
+    final reasons = ['heritage', 'travel', 'career', 'school', 'business', 'curiosity', 'family', 'culture', 'brain_training'];
 
     return _OnboardingStepTemplate(
       title: 'Why are you learning?',
@@ -1150,13 +1376,157 @@ class _Step4LearningReasons extends HookConsumerWidget {
             onPressed: selected.isNotEmpty ? onContinue : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.secondary,
-              foregroundColor: Colors.black,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
             child: Text('Continue'),
           ),
         ),
       ],
+    );
+  }
+}
+
+// Step 4.5: Daily Time Goal Selection
+class _Step4_5DailyTimeGoal extends HookConsumerWidget {
+  final Function(Map<String, dynamic>) onNext;
+  final PageController? pageController;
+  final ValueNotifier<int>? currentStep;
+
+  const _Step4_5DailyTimeGoal({
+    required this.onNext,
+    this.pageController,
+    this.currentStep,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedDuration = useState<int?>(null);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final durations = [
+      {'minutes': 5, 'label': '5 min', 'description': 'Quick practice'},
+      {'minutes': 10, 'label': '10 min', 'description': 'Light learning'},
+      {'minutes': 15, 'label': '15 min', 'description': 'Balanced'},
+      {'minutes': 20, 'label': '20 min', 'description': 'Dedicated study'},
+    ];
+
+    return _OnboardingStepTemplate(
+      title: 'How much time can you commit daily?',
+      description: 'Choose your daily learning goal',
+      isDark: isDark,
+      pageController: pageController,
+      currentStep: currentStep,
+      child: Column(
+        children: [
+          Expanded(
+            child: GridView.builder(
+              padding: EdgeInsets.all(PanAfricanSpacing.lg),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: PanAfricanSpacing.md,
+                mainAxisSpacing: PanAfricanSpacing.md,
+              ),
+              itemCount: durations.length,
+              itemBuilder: (context, index) {
+                final duration = durations[index];
+                final minutes = duration['minutes'] as int;
+                final isSelected = selectedDuration.value == minutes;
+
+                return GestureDetector(
+                  onTap: () {
+                    selectedDuration.value = minutes;
+                    HapticFeedback.mediumImpact();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: isSelected
+                          ? PanAfricanGradients.sunset
+                          : null,
+                      color: isSelected
+                          ? null
+                          : (isDark
+                              ? PanAfricanColors.cardDark
+                              : PanAfricanColors.cardLight),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                      border: Border.all(
+                        color: isSelected
+                            ? PanAfricanColors.secondary
+                            : PanAfricanColors.borderLight,
+                        width: isSelected ? 3 : 1,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          duration['label'] as String,
+                          style: PanAfricanTypography.headlineSmall(context).copyWith(
+                            color: isSelected ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: PanAfricanSpacing.xs),
+                        Text(
+                          duration['description'] as String,
+                          style: PanAfricanTypography.bodySmall(context).copyWith(
+                            color: isSelected 
+                                ? Theme.of(context).colorScheme.onPrimary.withOpacity(0.8)
+                                : (isDark ? Colors.grey[400] : Colors.grey[600]),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(PanAfricanSpacing.lg),
+            child: ElevatedButton(
+              onPressed: selectedDuration.value != null
+                  ? () async {
+                      // Save locally first
+                      try {
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setInt('onboarding_daily_time_goal', selectedDuration.value!);
+                      } catch (e) {
+                        logger.error('Error saving daily time goal locally', error: e);
+                      }
+
+                      // Queue sync with backend
+                      try {
+                        final syncProvider = ref.read(backendSyncProvider.notifier);
+                        await syncProvider.queueSync(SyncTask(
+                          type: SyncType.onboarding,
+                          data: {
+                            'step': 'daily_time_goal',
+                            'daily_time_goal_minutes': selectedDuration.value,
+                            'timestamp': DateTime.now().toIso8601String(),
+                          },
+                        ));
+                      } catch (e) {
+                        logger.warn('Failed to queue sync for daily time goal, continuing locally', error: e);
+                      }
+
+                      onNext({'daily_time_goal_minutes': selectedDuration.value});
+                    }
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: PanAfricanColors.secondary,
+                foregroundColor: Theme.of(context).colorScheme.onSurface,
+                minimumSize: Size(double.infinity, 50.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                ),
+              ),
+              child: Text('Continue'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -1251,11 +1621,11 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
                   title: Text(
                     option.replaceAll('_', ' ').toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1272,7 +1642,7 @@ class _Step5PrimaryGoal extends HookConsumerWidget {
             onPressed: selected != null ? onContinue : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.secondary,
-              foregroundColor: Colors.black,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
             child: Text('Continue'),
@@ -1372,11 +1742,11 @@ class _Step6LearningStyle extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1393,7 +1763,7 @@ class _Step6LearningStyle extends HookConsumerWidget {
             onPressed: selected != null ? onContinue : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.secondary,
-              foregroundColor: Colors.black,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
             child: Text('Continue'),
@@ -1493,11 +1863,11 @@ class _Step7PacePreference extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1514,7 +1884,7 @@ class _Step7PacePreference extends HookConsumerWidget {
             onPressed: selected != null ? onContinue : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.secondary,
-              foregroundColor: Colors.black,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
             child: Text('Continue'),
@@ -1614,11 +1984,11 @@ class _Step8AppTone extends HookConsumerWidget {
                   title: Text(
                     option.toUpperCase(),
                     style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: isSelected ? Colors.white : null,
+                      color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                     ),
                   ),
                   trailing: isSelected
-                      ? Icon(Icons.check_circle, color: Colors.white)
+                      ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                       : null,
                   onTap: () {
                     onSelect(option);
@@ -1635,7 +2005,7 @@ class _Step8AppTone extends HookConsumerWidget {
             onPressed: selected != null ? onContinue : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: PanAfricanColors.secondary,
-              foregroundColor: Colors.black,
+              foregroundColor: Theme.of(context).colorScheme.onSurface,
               minimumSize: Size(double.infinity, 50.h),
             ),
             child: Text('Continue'),
@@ -1712,11 +2082,11 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                         title: Text(
                           time.toUpperCase(),
                           style: PanAfricanTypography.titleMedium(context).copyWith(
-                            color: isSelected ? Colors.white : null,
+                            color: isSelected ? Theme.of(context).colorScheme.onPrimary : null,
                           ),
                         ),
                         trailing: isSelected
-                            ? Icon(Icons.check_circle, color: Colors.white)
+                            ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
                             : null,
                         onTap: () {
                           timeOfDay.value = time;
@@ -1778,7 +2148,7 @@ class _Step9SchedulePreferences extends HookConsumerWidget {
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: PanAfricanColors.secondary,
-                foregroundColor: Colors.black,
+                foregroundColor: Theme.of(context).colorScheme.onSurface,
                 minimumSize: Size(double.infinity, 50.h),
               ),
               child: Text('Continue'),
@@ -1923,7 +2293,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                                 ? FileImage(File(path))
                                 : null,
                             child: path == null
-                                ? Icon(Icons.person, size: 60.sp, color: Colors.white)
+                                ? Icon(Icons.person, size: 60.sp, color: Theme.of(context).colorScheme.onPrimary)
                                 : null,
                           ),
                           if (path != null)
@@ -1933,7 +2303,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                               child: CircleAvatar(
                                 radius: 18.r,
                                 backgroundColor: PanAfricanColors.secondary,
-                                child: Icon(Icons.check, size: 18.sp, color: Colors.black),
+                                child: Icon(Icons.check, size: 18.sp, color: Theme.of(context).colorScheme.onSurface),
                               ),
                             ),
                         ],
@@ -2047,7 +2417,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
                       : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PanAfricanColors.secondary,
-                    foregroundColor: Colors.black,
+                    foregroundColor: Theme.of(context).colorScheme.onSurface,
                     minimumSize: Size(double.infinity, 50.h),
                     disabledBackgroundColor: PanAfricanColors.borderLight,
                   ),

@@ -80,6 +80,17 @@ class StructuredLogger {
     _log(LogLevel.warn, message, tag: tag, context: context, error: error, stackTrace: stackTrace);
   }
 
+  /// Alias for [warn] — some callers use `warning` by convention.
+  void warning(
+    String message, {
+    String? tag,
+    Map<String, dynamic>? context,
+    Object? error,
+    StackTrace? stackTrace,
+  }) {
+    warn(message, tag: tag, context: context, error: error, stackTrace: stackTrace);
+  }
+
   /// Log error message
   void error(
     String message, {
@@ -102,6 +113,20 @@ class StructuredLogger {
     _log(LogLevel.fatal, message, tag: tag, context: context, error: error, stackTrace: stackTrace);
   }
 
+  /// Redacts sensitive values from a context map before logging.
+  static Map<String, dynamic> _sanitize(Map<String, dynamic> context) {
+    const sensitiveKeys = {
+      'token', 'password', 'authorization', 'secret', 'key', 'email', 'phone',
+    };
+    return context.map((key, value) {
+      final lowerKey = key.toString().toLowerCase();
+      if (sensitiveKeys.any((s) => lowerKey.contains(s))) {
+        return MapEntry(key, '***REDACTED***');
+      }
+      return MapEntry(key, value);
+    });
+  }
+
   /// Internal log method
   void _log(
     LogLevel level,
@@ -116,11 +141,14 @@ class StructuredLogger {
       return;
     }
 
+    final rawContext = context ?? {};
+    final safeContext = _sanitize(rawContext);
+
     final entry = LogEntry(
       level: level,
       message: message,
       tag: tag,
-      context: context ?? {},
+      context: safeContext,
       error: error,
       stackTrace: stackTrace,
       timestamp: DateTime.now(),
@@ -133,8 +161,8 @@ class StructuredLogger {
     if (kDebugMode) {
       final prefix = '[${level.name}]${tag != null ? ' [$tag]' : ''}';
       debugPrint('$prefix $message');
-      if (context != null && context.isNotEmpty) {
-        debugPrint('  Context: $context');
+      if (safeContext.isNotEmpty) {
+        debugPrint('  Context: $safeContext');
       }
       if (error != null) {
         debugPrint('  Error: $error');

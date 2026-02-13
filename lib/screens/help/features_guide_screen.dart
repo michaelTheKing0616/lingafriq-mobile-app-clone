@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/utils/african_theme.dart';
-import 'package:lingafriq/utils/design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 /// Comprehensive Features Guide Screen
 /// Explains all modules, features, and how to use them
@@ -430,7 +426,7 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
   Widget _buildSectionHeader(String title, IconData icon) {
     return Row(
       children: [
-        Icon(icon, size: 28.sp, color: AfricanTheme.primaryGreen),
+        Icon(icon, size: 28.sp, color: PanAfricanColors.primary),
         SizedBox(width: 12.w),
         Text(
           title,
@@ -454,10 +450,10 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
       margin: EdgeInsets.only(bottom: 16.h),
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       ),
       child: ExpansionTile(
-        leading: Icon(icon, color: AfricanTheme.primaryGreen),
+        leading: Icon(icon, color: PanAfricanColors.primary),
         title: Text(
           title,
           style: TextStyle(
@@ -492,7 +488,7 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
                           Icon(
                             Icons.check_circle_outline,
                             size: 20.sp,
-                            color: AfricanTheme.primaryGreen,
+                            color: PanAfricanColors.primary,
                           ),
                           SizedBox(width: 8.w),
                           Expanded(
@@ -516,7 +512,7 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       ),
       child: Padding(
         padding: EdgeInsets.all(16.w),
@@ -525,7 +521,7 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
           children: [
             Row(
               children: [
-                Icon(Icons.info_outline_rounded, color: AfricanTheme.primaryGreen),
+                Icon(Icons.info_outline_rounded, color: PanAfricanColors.primary),
                 SizedBox(width: 8.w),
                 Text(
                   'Terminology',
@@ -547,7 +543,7 @@ class _FeaturesGuideScreenState extends State<FeaturesGuideScreen>
                         style: TextStyle(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
-                          color: AfricanTheme.primaryGreen,
+                          color: PanAfricanColors.primary,
                         ),
                       ),
                       SizedBox(height: 4.h),

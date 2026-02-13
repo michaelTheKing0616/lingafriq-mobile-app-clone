@@ -39,7 +39,7 @@ class CoursesTab extends HookConsumerWidget {
                       scaffoldState.openDrawer();
                     }
                   },
-                  icon: const Icon(Icons.menu_rounded, color: Colors.white),
+                  icon: Icon(Icons.menu_rounded, color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 // const PointsAndProfileImageBuilder(),
                 GreetingsBuilder(
@@ -114,7 +114,7 @@ class _ProgressItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
-      color: context.isDarkMode ? context.cardColor : Colors.white,
+      color: context.isDarkMode ? context.cardColor : Theme.of(context).colorScheme.surface,
       elevation: 12,
       shadowColor: Colors.black38,
       child: InkWell(

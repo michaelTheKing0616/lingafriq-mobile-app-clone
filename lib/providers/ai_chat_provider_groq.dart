@@ -7,11 +7,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'base_provider.dart';
 import 'api_provider.dart';
 import 'backend_sync_provider.dart';
 import 'user_provider.dart';
+import '../config/url_constants.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
 import '../services/hybrid_polie/hybrid_polie_orchestrator.dart';
@@ -22,12 +24,8 @@ import '../services/ai/conversation_context_manager.dart';
 import '../services/ai/conversation_practice_enhancer.dart';
 import '../services/error/error_recovery_service.dart';
 import '../services/monitoring/performance_analytics.dart';
-import '../utils/conversation_integration_helper.dart';
-import '../services/tutor_progress_service.dart';
-import '../services/conversation_analytics_service.dart';
-import '../services/vocabulary_progress_service.dart';
-import '../services/review_progress_service.dart';
 import '../utils/structured_logger.dart';
+import '../utils/api_service.dart';
 
 /// Comprehensive AI Chat Provider using Groq API with Aya 8B
 /// Features:
@@ -200,12 +198,12 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // API Configuration - uses centralized EnvConfig
   static String get _groqApiKey => EnvConfig.groqApiKey;
 
-  static const String _groqUrl = 'https://api.groq.com/openai/v1/chat/completions';
+  static String get _groqUrl => UrlConstants.groqChatCompletions;
   // Groq model names to try in order (favor accuracy for African languages)
   // Note: Aya 8B can be less reliable for some translations (e.g., Yoruba),
   // so we prefer the larger Llama model first for quality, then fall back.
   static const List<String> _modelNames = [
-    'llama-3.1-70b-versatile',   // Highest quality, multilingual, free on Groq
+    'llama-3.3-70b-versatile',   // Highest quality, multilingual, free on Groq
     'llama-3.1-8b-instant',      // Faster fallback
     'aya-8b',                    // Cohere Aya 8B (if available)
     'cohere/aya-8b',             // Alternate naming
@@ -400,8 +398,8 @@ SUPPORTED AFRICAN LANGUAGES (verify accuracy):
 - Afrikaans (South Africa)
 - Pidgin English (Nigerian Pidgin)
 
-User's native language: $_sourceLanguage
-Target language: $_targetLanguage
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 
 AVOIDING WRONG-LANGUAGE RESPONSES:
 - Never begin Yoruba when asked about Swahili (or vice-versa).
@@ -527,8 +525,8 @@ SUPPORTED AFRICAN LANGUAGES:
 - Afrikaans
 - And many other African languages
 
-The user's native language is: $_sourceLanguage
-The user wants to learn: $_targetLanguage
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
+The user wants to learn: ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 
 TRANSLATION ACCURACY:
 - Always output **correct orthography + diacritics** for languages that require them
@@ -661,8 +659,8 @@ PROGRESS TRACKING:
 
 $scenarioContext
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current CEFR level: ${_cefrInfo.level}
 $examplesText
 
@@ -754,8 +752,8 @@ For common situations, provide starter templates:
 - Asking for help: "Ẹ lè ràn mí lọ́wọ́?"
 - Expressing opinions: "Mo rò pé..."
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current proficiency: ${_cefrInfo.level}
 
 Be warm, natural, encouraging, and culturally sensitive. Make conversation feel like talking to a friend who happens to be a native speaker.''';
@@ -858,8 +856,8 @@ OFFLINE MODE SUPPORT:
 - Support offline study
 - Sync progress when online
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current CEFR Level: ${_cefrInfo.level}
 
 Make vocabulary learning engaging, visual, and effective. Use spaced repetition to ensure long-term retention.''';
@@ -958,8 +956,8 @@ CUSTOM INTERVALS:
 - Support custom review schedules
 - Respect user preferences
 
-Target language: $_targetLanguage
-User's native language: $_sourceLanguage
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 Current CEFR Level: ${_cefrInfo.level}
 
 Make reviews efficient, engaging, and scientifically optimized for long-term retention. Celebrate progress and maintain motivation.''';
@@ -1043,6 +1041,49 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     logger.info('Switched mode', tag: 'ai-chat', context: {'mode': modeName, 'messagesCount': _messages.length});
   }
   
+  /// Atomically set mode AND language in one operation.
+  /// This avoids the race condition where setMode saves/loads with the wrong
+  /// language, then setLanguage saves/loads again with the wrong mode key.
+  /// The chat history key is: ai_chat_history_groq_{mode}_{language}
+  Future<void> setModeAndLanguage({
+    required PolieMode mode,
+    required String targetLanguage,
+    String sourceLanguage = 'English',
+  }) async {
+    // 1. Save current history under the CURRENT key before switching anything
+    await _saveChatHistory();
+
+    // 2. Update all fields at once (no intermediate save/load)
+    _mode = mode;
+    _tutorMode = mode == PolieMode.tutor;
+    _sourceLanguage = sourceLanguage;
+    _targetLanguage = targetLanguage;
+    _selectedLanguage = targetLanguage;
+
+    if (mode != PolieMode.roleplay) {
+      _currentRoleplayScenario = null;
+      _roleplayTurnCount = 0;
+      _roleplayBranches.clear();
+    }
+
+    // 3. Persist preferences
+    await _saveModeAndLanguage();
+
+    // 4. Clear and load history for the NEW key (correct mode × language)
+    _messages.clear();
+    await _loadChatHistory();
+    _initializeSystemPrompt();
+
+    state = state.copyWith();
+
+    final modeName = _mode.toString().split('.').last;
+    logger.info('Switched mode+language atomically', tag: 'ai-chat', context: {
+      'mode': modeName,
+      'language': targetLanguage,
+      'messagesCount': _messages.length,
+    });
+  }
+
   /// Set the current roleplay scenario
   Future<void> setRoleplayScenario(RoleplayEntry scenario) async {
     _currentRoleplayScenario = scenario;
@@ -1269,10 +1310,6 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
         _turn = ConversationTurn.ai;
         _userInterrupt = false;
 
-        if (_groqApiKey == 'YOUR_GROQ_API_KEY' || _groqApiKey.isEmpty) {
-          throw Exception('AI Chat is not configured. Please set your Groq API key.');
-        }
-
         // Try different model names if previous one failed
         final currentModel = _modelNames[modelIndex];
 
@@ -1393,6 +1430,55 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
             .join('\n\n');
         if (enhancedSystemPrompt.isNotEmpty) {
           effectiveSystemPrompt = enhancedSystemPrompt;
+        }
+
+        // When app has no Groq key, use backend completion proxy (no streaming)
+        if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
+          try {
+            await ApiService.initialize();
+            final apiMessages = messagesList
+                .map<Map<String, dynamic>>((m) => {'role': m['role'] as String, 'content': m['content'] as String})
+                .toList();
+            final resp = await ApiService.post(
+              '/api/ai/chat/completion',
+              data: {
+                'messages': apiMessages,
+                'systemPrompt': effectiveSystemPrompt ?? systemPrompt,
+                'temperature': _mode == PolieMode.translation ? 0.2 : 0.7,
+                'max_tokens': 500,
+                'language': _targetLanguage,
+                'languageCode': SupportedLanguages.getLanguageCode(_targetLanguage),
+                'cefr': _cefrInfo.level,
+                'mode': _mode.name,
+              },
+            );
+            if (resp.statusCode == 200 && resp.data != null) {
+              final content = (resp.data is Map) ? (resp.data['content']?.toString() ?? '').trim() : '';
+              if (content.isNotEmpty) {
+                final assistantMessage = ChatMessage(
+                  role: 'assistant',
+                  content: content,
+                  timestamp: DateTime.now(),
+                );
+                _messages.add(assistantMessage);
+                _turn = ConversationTurn.user;
+                state = state.copyWith(isLoading: false);
+                return;
+              }
+              throw Exception('AI returned an empty response. Please try again.');
+            }
+            // Non-200 response (e.g. if validateStatus allowed it): extract error from body
+            final respData = resp.data;
+            String errMsg = 'Request failed. Please try again.';
+            if (respData is Map) {
+              errMsg = (respData['error'] ?? respData['message'] ?? respData['detail'] ?? errMsg).toString();
+            } else if (respData is String && respData.trim().isNotEmpty) {
+              errMsg = respData.trim();
+            }
+            throw Exception(errMsg);
+          } on DioException catch (e) {
+            throw Exception(TransportErrorPolicy.toUserMessage(e));
+          }
         }
         
         // Log the final message structure for debugging
@@ -1703,39 +1789,15 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
 
         state = state.copyWith(isLoading: false);
 
-        if (e is DioException) {
-          if (e.response?.statusCode == 401) {
-            throw Exception('Invalid API key. Please check your Groq API key.');
-          } else if (e.response?.statusCode == 404) {
-            throw Exception('Model not found. Tried: ${_modelNames.join(", ")}. Please check Groq API documentation for available models.');
-          } else if (e.response?.statusCode == 429) {
-            throw Exception('Rate limit exceeded. Please try again later.');
-          }
-        }
-
-        // Provide more helpful error messages
-        String errorMessage = 'Failed to send message';
+        String errorMessage;
         if (e is DioException) {
           if (e.response != null) {
-            final statusCode = e.response!.statusCode;
             final errorData = e.response!.data;
-            if (statusCode == 400) {
-              errorMessage = 'Invalid request format. Please check your message and try again.';
-              // Log the actual error for debugging
+            if (e.response!.statusCode == 400) {
               logger.error('Groq API 400 error', tag: 'ai-chat', context: {'errorData': errorData});
-            } else if (statusCode == 401) {
-              errorMessage = 'Invalid API key. Please check your Groq API key.';
-            } else if (statusCode == 429) {
-              errorMessage = 'Rate limit exceeded. Please try again in a few moments.';
-            } else {
-              errorMessage = 'Request failed (${statusCode}). Please try again.';
             }
-          } else if (e.type == DioExceptionType.connectionTimeout ||
-                     e.type == DioExceptionType.receiveTimeout) {
-            errorMessage = 'Connection timed out. Please check your internet connection.';
-          } else if (e.type == DioExceptionType.connectionError) {
-            errorMessage = 'Connection error. Please check your internet connection.';
           }
+          errorMessage = TransportErrorPolicy.toUserMessage(e);
         } else if (e is TimeoutException) {
           errorMessage = 'Request timed out. Please try again.';
         } else {
@@ -1752,9 +1814,9 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
   }
 
   // Non-streaming version (fallback)
-  Future<String> sendMessage(String userMessage) async {
+  Future<String> sendMessage(String userMessage, {String? systemPromptOverride}) async {
     String fullResponse = '';
-    await for (final chunk in sendMessageStream(userMessage)) {
+    await for (final chunk in sendMessageStream(userMessage, systemPromptOverride: systemPromptOverride)) {
       fullResponse += chunk;
     }
     return fullResponse;
@@ -2000,7 +2062,7 @@ Return only valid JSON.
   Future<String> transcribeAudio(Uint8List audioData) async {
     try {
       final response = await _dio.post(
-        "https://api.groq.com/openai/v1/audio/transcriptions",
+        UrlConstants.groqAudioTranscriptions,
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
           'model': 'whisper-large-v3',
@@ -2024,7 +2086,7 @@ Return only valid JSON.
   Future<double> scorePronunciation(Uint8List audioData) async {
     try {
       final response = await _dio.post(
-        "https://api.groq.com/openai/v1/audio/transcriptions",
+        UrlConstants.groqAudioTranscriptions,
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(audioData, filename: 'audio.wav'),
           'model': 'whisper-large-v3',
@@ -2058,7 +2120,7 @@ Return only valid JSON.
     try {
       // Transcribe user audio using Groq Whisper
       final transResp = await _dio.post(
-        "https://api.groq.com/openai/v1/audio/transcriptions",
+        UrlConstants.groqAudioTranscriptions,
         data: FormData.fromMap({
           'file': MultipartFile.fromBytes(userAudio, filename: 'speech.wav'),
           'model': 'whisper-large-v3',

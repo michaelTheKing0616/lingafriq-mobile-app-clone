@@ -85,6 +85,8 @@ class SecretsManager {
     _secrets['NLLB_API_URL'] = _getEnv('NLLB_API_URL');
     _secrets['MIXPANEL_TOKEN'] = _getEnv('MIXPANEL_TOKEN');
     _secrets['AMPLITUDE_API_KEY'] = _getEnv('AMPLITUDE_API_KEY');
+    _secrets['REVENUECAT_API_KEY_IOS'] = _getEnv('REVENUECAT_API_KEY_IOS');
+    _secrets['REVENUECAT_API_KEY_ANDROID'] = _getEnv('REVENUECAT_API_KEY_ANDROID');
 
     // Load sensitive secrets from secure storage (if not in env)
     for (final key in _secrets.keys) {
@@ -149,6 +151,8 @@ class SecretsManager {
       'NLLB_API_URL': 'NLLB_API_URL',
       'MIXPANEL_TOKEN': 'MIXPANEL_TOKEN',
       'AMPLITUDE_API_KEY': 'AMPLITUDE_API_KEY',
+      'REVENUECAT_API_KEY_IOS': 'REVENUECAT_API_KEY_IOS',
+      'REVENUECAT_API_KEY_ANDROID': 'REVENUECAT_API_KEY_ANDROID',
     };
 
     final dartDefineKey = keyMap[key] ?? key;

@@ -1,9 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../models/language_village_model.dart';
 import 'base_provider.dart';
 import 'dio_provider.dart' show client;
-import '../utils/api.dart';
 import 'user_provider.dart';
 import '../utils/structured_logger.dart';
 
@@ -36,7 +35,8 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
     try {
       // Fetch from backend API
       final dioClient = ref.read(client);
-      final response = await dioClient.get('${Api.baseurl}${Api.villages}');
+      final response =
+          await dioClient.get(ApiContract.url(ApiContract.villages.list));
       
       if (response.statusCode == 200) {
         final responseData = response.data;
@@ -87,7 +87,8 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
         if (user != null) {
           final dioClient = ref.read(client);
           final response = await dioClient.post(
-            '${Api.baseurl}${Api.villageLivekitToken(village.language.toLowerCase())}',
+            ApiContract.url(ApiContract.villages
+                .livekitToken(village.language.toLowerCase())),
             data: {
               'userId': user.id.toString(),
               'villageId': village.id,
@@ -108,7 +109,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
               _participants.add(VillageParticipant(
                 userId: user.id.toString(),
                 username: user.username ?? 'User',
-                avatar: user.avater,
+                avatar: user.avatar,
                 isSpeaking: false,
                 joinedAt: DateTime.now(),
               ));
@@ -161,7 +162,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       // Create via backend API
       final dioClient = ref.read(client);
       final response = await dioClient.post(
-        '${Api.baseurl}${Api.villages}',
+        ApiContract.url(ApiContract.villages.list),
         data: {
           'lang': language.toLowerCase(),
           'name': name,
@@ -173,18 +174,24 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
       if (response.statusCode == 201 && response.data is Map) {
         final responseData = response.data as Map<String, dynamic>;
         final villageData = responseData['village'] ?? responseData;
+        final raw = villageData is Map<String, dynamic> ? villageData : <String, dynamic>{};
         final newVillage = LanguageVillage(
-          id: villageData['_id']?.toString() ?? villageData['id']?.toString() ?? '',
-          name: villageData['name']?.toString() ?? name,
-          language: villageData['lang']?.toString() ?? language,
-          description: villageData['description']?.toString() ?? description,
-          currentParticipants: 1,
-          maxParticipants: (villageData['max_participants'] ?? 50) as int,
+          id: raw['_id']?.toString() ?? raw['id']?.toString() ?? '',
+          name: raw['name']?.toString() ?? name,
+          language: raw['lang']?.toString() ?? language,
+          description: raw['description']?.toString() ?? description,
+          currentParticipants: (raw['current_participants'] ?? raw['currentParticipants'] ?? 0) as int,
+          maxParticipants: (raw['max_participants'] ?? raw['maxParticipants'] ?? 50) as int,
           hostId: user.id.toString(),
         );
 
+        if (newVillage.id.isEmpty) {
+          logger.warn('Create village response missing id', tag: 'language-village', context: {'raw': raw});
+        }
         _villages.add(newVillage);
         state = state.copyWith();
+        // Refetch list from backend so UI stays in sync with server
+        await _loadVillages();
         return true;
       } else {
         logger.warn('Failed to create village', tag: 'language-village', context: {'statusCode': response.statusCode});

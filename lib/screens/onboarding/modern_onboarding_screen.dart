@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
@@ -9,6 +10,7 @@ import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/screens/auth/world_class_login_screen.dart';
 import 'package:lingafriq/screens/tabs_view/tabs_view_material3.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/african_theme.dart';
 import 'package:lingafriq/utils/design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -81,7 +83,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
             ),
             // Page Indicator at bottom
             Positioned(
-              bottom: MediaQuery.of(context).padding.bottom + 40,
+              bottom: MediaQuery.of(context).padding.bottom + PanAfricanSpacing.xl,
               left: 0,
               right: 0,
               child: Consumer(
@@ -92,14 +94,14 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                       final isActive = currentPage.value == index;
                       return AnimatedContainer(
                         duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: isActive ? 24 : 8,
-                        height: 8,
+                        margin: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xxs),
+                        width: isActive ? 24.w : 8.w,
+                        height: 8.h,
                         decoration: BoxDecoration(
                           color: isActive 
-                              ? Colors.white 
-                              : Colors.white.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(4),
+                              ? Theme.of(context).colorScheme.onPrimary 
+                              : Theme.of(context).colorScheme.onPrimary.withOpacity(0.3),
+                          borderRadius: PanAfricanRadius.smBR,
                         ),
                       );
                     }),
@@ -110,10 +112,11 @@ class ModernOnboardingScreen extends HookConsumerWidget {
             // Skip Button
             if (currentPage.value < 3)
               Positioned(
-                top: MediaQuery.of(context).padding.top + 16,
-                right: 20,
+                top: MediaQuery.of(context).padding.top + PanAfricanSpacing.md,
+                right: PanAfricanSpacing.md,
                 child: TextButton(
                   onPressed: () {
+                    HapticFeedback.lightImpact();
                     pageController.animateToPage(
                       3,
                       duration: const Duration(milliseconds: 500),
@@ -122,11 +125,7 @@ class ModernOnboardingScreen extends HookConsumerWidget {
                   },
                   child: Text(
                     'Skip',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
                   ),
                 ),
               ),
@@ -152,7 +151,7 @@ class _WelcomeScreen extends StatelessWidget {
       opacity: animationController,
       child: Container(
         decoration: BoxDecoration(
-          gradient: AfricanTheme.africanSavanna,
+          gradient: PanAfricanGradients.forest,
         ),
         child: ResponsiveSafeArea(
           child: Column(
@@ -164,12 +163,12 @@ class _WelcomeScreen extends StatelessWidget {
                     children: [
                       // African-inspired illustration with animation
                       Container(
-                        width: 280,
-                        height: 280,
+                        width: 280.w,
+                        height: 280.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          gradient: AfricanTheme.africanSunset,
-                          boxShadow: AfricanTheme.africanShadow,
+                          gradient: PanAfricanGradients.sunset,
+                          boxShadow: PanAfricanShadows.xl,
                         ),
                         child: Stack(
                           alignment: Alignment.center,
@@ -177,7 +176,7 @@ class _WelcomeScreen extends StatelessWidget {
                             // Animated background pattern
                             Positioned.fill(
                               child: AfricanPatternDecoration(
-                                patternColor: Colors.white,
+                                patternColor: Theme.of(context).colorScheme.onPrimary,
                                 opacity: 0.1,
                                 child: Container(),
                               ),
@@ -185,11 +184,11 @@ class _WelcomeScreen extends StatelessWidget {
                             // Main icon
                             Icon(
                               Icons.language,
-                              size: 120,
-                              color: Colors.white,
+                              size: 120.sp,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             )
                                 .animate(onPlay: (controller) => controller.repeat())
-                                .shimmer(duration: 2000.ms, color: Colors.white.withOpacity(0.3))
+                                .shimmer(duration: 2000.ms, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.3))
                                 .then()
                                 .scale(begin: const Offset(1.0, 1.0), end: const Offset(1.1, 1.1), duration: 1000.ms)
                                 .then()
@@ -200,7 +199,7 @@ class _WelcomeScreen extends StatelessWidget {
                           .animate()
                           .scale(delay: 200.ms, duration: 600.ms, curve: Curves.elasticOut)
                           .fadeIn(duration: 400.ms),
-                      const SizedBox(height: 48),
+                      SizedBox(height: PanAfricanSpacing.xxl),
                       SlideTransition(
                         position: Tween<Offset>(
                           begin: const Offset(0, 0.3),
@@ -212,10 +211,7 @@ class _WelcomeScreen extends StatelessWidget {
                         child: Text(
                           'Your journey to fluency\nstarts now!',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 36,
-                            fontWeight: FontWeight.w800,
-                            color: Colors.white,
+                          style: PanAfricanTypography.displaySmall(context, color: Theme.of(context).colorScheme.onPrimary).copyWith(
                             height: 1.2,
                             letterSpacing: -0.5,
                             shadows: [
@@ -228,17 +224,13 @@ class _WelcomeScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      SizedBox(height: PanAfricanSpacing.md),
                       FadeTransition(
                         opacity: animationController,
                         child: Text(
                           'Discover the beauty of African languages',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white.withOpacity(0.9),
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: PanAfricanTypography.bodyLarge(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
                         ),
                       ),
                     ],
@@ -269,45 +261,42 @@ class _FeaturesScreen extends StatelessWidget {
         'icon': Icons.games_rounded,
         'title': 'Learn languages, play games',
         'description': 'Fun, bite-sized lessons make learning addictive and effective',
-        'color': AfricanTheme.primaryGreen,
+        'color': PanAfricanColors.primary,
       },
       {
         'icon': Icons.trending_up_rounded,
         'title': 'Track your progress',
         'description': 'Stay motivated with personalized challenges and daily goals',
-        'color': AfricanTheme.accentGold,
+        'color': PanAfricanColors.secondary,
       },
       {
         'icon': Icons.people_rounded,
         'title': 'Connect with culture',
         'description': 'Learn about history, traditions, and cultural expressions',
-        'color': AfricanTheme.deepRed,
+        'color': PanAfricanColors.tertiary,
       },
     ];
     
     return Container(
-      color: AfricanTheme.backgroundLight,
+      color: PanAfricanColors.surfaceLight,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
                 child: Column(
                   children: [
-                    const SizedBox(height: 40),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
                         'Learn a new language,\nthe fun way',
                         textAlign: TextAlign.center,
-                        style: AfricanTheme.headingStyle(context).copyWith(
-                          fontSize: 32,
-                          color: AfricanTheme.textDark,
-                        ),
+                        style: PanAfricanTypography.headlineLarge(context),
                       ),
                     ),
-                    const SizedBox(height: 48),
+                    SizedBox(height: PanAfricanSpacing.xxl),
                     ...features.asMap().entries.map((entry) {
                       final index = entry.key;
                       final feature = entry.value;
@@ -362,12 +351,12 @@ class _FeatureCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-        boxShadow: DesignSystem.shadowMedium,
+        color: PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.xlBR,
+        boxShadow: PanAfricanShadows.md,
         border: Border.all(
           color: color.withOpacity(0.2),
           width: 2,
@@ -376,38 +365,31 @@ class _FeatureCard extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 64,
-            height: 64,
+            width: 64.w,
+            height: 64.w,
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(DesignSystem.radiusL),
+              borderRadius: PanAfricanRadius.lgBR,
             ),
             child: Icon(
               icon,
               color: color,
-              size: 32,
+              size: 32.sp,
             ),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: PanAfricanSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: AfricanTheme.textDark,
-                  ),
+                  style: PanAfricanTypography.titleMedium(context),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: PanAfricanSpacing.xxs),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AfricanTheme.textDark.withOpacity(0.7),
-                  ),
+                  style: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondary),
                 ),
               ],
             ),
@@ -431,21 +413,14 @@ class _AdventureScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AfricanTheme.skyBlue,
-            AfricanTheme.primaryGreen,
-          ],
-        ),
+        gradient: PanAfricanGradients.forest,
       ),
       child: Stack(
         children: [
           // Background pattern
           Positioned.fill(
             child: AfricanPatternDecoration(
-              patternColor: Colors.white,
+              patternColor: Theme.of(context).colorScheme.onPrimary,
               opacity: 0.1,
               child: Container(),
             ),
@@ -467,12 +442,12 @@ class _AdventureScreen extends StatelessWidget {
                             curve: Curves.elasticOut,
                           )),
                           child: Container(
-                            width: 200,
-                            height: 200,
+                            width: 200.w,
+                            height: 200.w,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              gradient: AfricanTheme.africanSunset,
-                              boxShadow: AfricanTheme.africanShadow,
+                              gradient: PanAfricanGradients.sunset,
+                              boxShadow: PanAfricanShadows.xl,
                             ),
                             child: Stack(
                               alignment: Alignment.center,
@@ -480,7 +455,7 @@ class _AdventureScreen extends StatelessWidget {
                                 // Animated pattern
                                 Positioned.fill(
                                   child: AfricanPatternDecoration(
-                                    patternColor: Colors.white,
+                                    patternColor: Theme.of(context).colorScheme.onPrimary,
                                     opacity: 0.15,
                                     child: Container(),
                                   ),
@@ -488,8 +463,8 @@ class _AdventureScreen extends StatelessWidget {
                                 // Rotating icon
                                 Icon(
                                   Icons.explore_rounded,
-                                  size: 100,
-                                  color: Colors.white,
+                                  size: 100.sp,
+                                  color: Theme.of(context).colorScheme.onPrimary,
                                 )
                                     .animate(onPlay: (controller) => controller.repeat())
                                     .rotate(duration: 3000.ms, begin: 0, end: 0.1)
@@ -499,16 +474,13 @@ class _AdventureScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 48),
+                        SizedBox(height: PanAfricanSpacing.xxl),
                         FadeTransition(
                           opacity: animationController,
                           child: Text(
                             'Ready for a\npan-African adventure?',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
+                            style: PanAfricanTypography.displayMedium(context, color: Theme.of(context).colorScheme.onPrimary).copyWith(
                               height: 1.2,
                               letterSpacing: -1,
                               shadows: [
@@ -521,17 +493,13 @@ class _AdventureScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: PanAfricanSpacing.md),
                         FadeTransition(
                           opacity: animationController,
                           child: Text(
                             'Explore 54 countries, 2000+ languages,\nand connect with 1+ billion voices',
                             textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.w400,
-                            ),
+                            style: PanAfricanTypography.bodyLarge(context, color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9)),
                           ),
                         ),
                       ],
@@ -567,57 +535,51 @@ class _GetStartedScreen extends StatelessWidget {
         'icon': Icons.explore_rounded,
         'title': 'Explore Cultures',
         'description': 'Discover the rich heritage of African languages',
-        'color': AfricanTheme.deepRed,
+        'color': PanAfricanColors.tertiary,
       },
       {
         'icon': Icons.work_rounded,
         'title': 'Boost Your Career',
         'description': 'Open doors to international opportunities',
-        'color': AfricanTheme.skyBlue,
+        'color': PanAfricanColors.kenteBlue,
       },
       {
         'icon': Icons.school_rounded,
         'title': 'Excel Academically',
         'description': 'Prepare for studies and broaden knowledge',
-        'color': AfricanTheme.vibrantPurple,
+        'color': PanAfricanColors.ankaraPurple,
       },
     ];
     
     return Container(
-      color: AfricanTheme.backgroundLight,
+      color: PanAfricanColors.surfaceLight,
       child: ResponsiveSafeArea(
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
                 child: Column(
                   children: [
-                    const SizedBox(height: 20),
+                    SizedBox(height: PanAfricanSpacing.md),
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
                         'Your Language Journey\nStarts Here!',
                         textAlign: TextAlign.center,
-                        style: AfricanTheme.headingStyle(context).copyWith(
-                          fontSize: 32,
-                          color: AfricanTheme.primaryGreen,
-                        ),
+                        style: PanAfricanTypography.headlineLarge(context, color: PanAfricanColors.primary),
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     FadeTransition(
                       opacity: animationController,
                       child: Text(
                         'Choose your path and unlock new opportunities',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: AfricanTheme.textDark.withOpacity(0.7),
-                        ),
+                        style: PanAfricanTypography.bodyLarge(context, color: PanAfricanColors.textSecondary),
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     ...paths.asMap().entries.map((entry) {
                       final index = entry.key;
                       final path = entry.value;
@@ -644,7 +606,7 @@ class _GetStartedScreen extends StatelessWidget {
                                 description: path['description'] as String,
                                 color: path['color'] as Color,
                                 onTap: () {
-                                  // Track path selection
+                                  HapticFeedback.mediumImpact();
                                   ref.read(onboardingProvider.notifier).updatePath(pathKey);
                                 },
                               );
@@ -653,7 +615,7 @@ class _GetStartedScreen extends StatelessWidget {
                         ),
                       );
                     }),
-                    const SizedBox(height: 32),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     // Get Started Button
                     SlideTransition(
                       position: Tween<Offset>(
@@ -668,22 +630,24 @@ class _GetStartedScreen extends StatelessWidget {
                         child: SizedBox(
                           width: double.infinity,
                           child: FilledButton(
-                            onPressed: onGetStarted,
+                            onPressed: () {
+                              HapticFeedback.mediumImpact();
+                              onGetStarted();
+                            },
                             style: FilledButton.styleFrom(
-                              backgroundColor: AfricanTheme.primaryGreen,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: PanAfricanColors.primary,
+                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                              padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(DesignSystem.radiusRound),
+                                borderRadius: PanAfricanRadius.roundBR,
                               ),
                               elevation: 8,
-                              shadowColor: AfricanTheme.primaryGreen.withOpacity(0.4),
+                              shadowColor: PanAfricanColors.primary.withOpacity(0.4),
                             ),
                             child: Text(
                               'Get Started',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                              style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary).copyWith(
+                                fontSize: 18.sp,
                                 letterSpacing: 0.5,
                               ),
                             ),
@@ -691,20 +655,19 @@ class _GetStartedScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+                    SizedBox(height: PanAfricanSpacing.md),
                     // Login Button
                     TextButton(
-                      onPressed: onLogin,
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        onLogin();
+                      },
                       child: Text(
                         'Already learning? Log in',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: AfricanTheme.primaryGreen,
-                        ),
+                        style: PanAfricanTypography.labelLarge(context, color: PanAfricanColors.primary),
                       ),
                     ),
-                    const SizedBox(height: 20),
+                    SizedBox(height: PanAfricanSpacing.md),
                   ],
                 ),
               ),
@@ -736,14 +699,14 @@ class _PathCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
+      borderRadius: PanAfricanRadius.xlBR,
       child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(20),
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(DesignSystem.radiusXL),
-          boxShadow: DesignSystem.shadowMedium,
+          color: PanAfricanColors.cardLight,
+          borderRadius: PanAfricanRadius.xlBR,
+          boxShadow: PanAfricanShadows.md,
           border: Border(
             bottom: BorderSide(
               color: color,
@@ -754,8 +717,8 @@ class _PathCard extends StatelessWidget {
         child: Row(
         children: [
           Container(
-            width: 56,
-            height: 56,
+            width: 56.w,
+            height: 56.w,
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               shape: BoxShape.circle,
@@ -763,29 +726,22 @@ class _PathCard extends StatelessWidget {
             child: Icon(
               icon,
               color: color,
-              size: 28,
+              size: 28.sp,
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: PanAfricanSpacing.md),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: color,
-                  ),
+                  style: PanAfricanTypography.titleMedium(context, color: color),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: PanAfricanSpacing.xxs),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: AfricanTheme.textDark.withOpacity(0.7),
-                  ),
+                  style: PanAfricanTypography.bodyMedium(context, color: PanAfricanColors.textSecondary),
                 ),
               ],
             ),

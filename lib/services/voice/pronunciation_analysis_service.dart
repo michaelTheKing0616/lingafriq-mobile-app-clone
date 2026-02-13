@@ -13,14 +13,11 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
-import '../../providers/dio_provider.dart';
-import '../../utils/api.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import '../../core/network/api_client_with_recovery.dart';
 import '../../models/lesson_item_model.dart';
 import 'tone_error_detection_service.dart';
 import 'pitch_visualization_service.dart';
-import 'voice_api_service.dart';
-
 /// Pronunciation analysis result
 class PronunciationAnalysisResult {
   final double overallScore;
@@ -221,7 +218,7 @@ class PronunciationAnalysisService {
       });
 
       final response = await _dio.post(
-        '${Api.baseurl}api/voice/pronunciation/analyze',
+        ApiContract.url(ApiContract.pronunciation.analyze),
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
@@ -263,7 +260,7 @@ class PronunciationAnalysisService {
     }
 
     final response = await client.post<Map<String, dynamic>>(
-      '${Api.baseurl}api/voice/pronunciation/analyze',
+      ApiContract.url(ApiContract.pronunciation.analyze),
       data: formData,
       options: Options(
         contentType: 'multipart/form-data',
@@ -307,7 +304,7 @@ class PronunciationAnalysisService {
     try {
       final client = ApiClientWithRecovery(_dio);
       final response = await client.get<Map<String, dynamic>>(
-        '${Api.baseurl}api/voice/pronunciation/history',
+        ApiContract.url(ApiContract.pronunciation.history),
         queryParameters: {
           'user_id': userId,
           'lesson_item_id': lessonItemId,

@@ -100,7 +100,7 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                           },
                           style: SegmentedButton.styleFrom(
                             selectedBackgroundColor: PanAfricanColors.primary,
-                            selectedForegroundColor: Colors.white,
+                            selectedForegroundColor: Theme.of(context).colorScheme.onPrimary,
                             backgroundColor: isDark
                                 ? PanAfricanColors.surfaceContainerDark
                                 : PanAfricanColors.surfaceContainerLight,

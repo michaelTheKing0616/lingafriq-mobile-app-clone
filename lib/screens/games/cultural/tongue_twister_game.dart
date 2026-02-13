@@ -7,7 +7,6 @@ import '../../../widgets/error_boundary.dart';
 import '../../loading/dynamic_loading_screen.dart';
 import '../base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'dart:math';
 
 /// Rapid Tongue Twister Race Game
 class TongueTwisterGame extends BaseGameScreen {
@@ -78,10 +77,12 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
       });
     } catch (e) {
       debugPrint('Error loading tongue twister: $e');
+      // Use fallback content so game is still playable
       setState(() {
-        setLoading(false);
+        _round++;
         _currentTwister = _getFallbackTwister();
         _pronunciationGuide = 'Practice saying this quickly!';
+        setLoading(false);
       });
     }
   }
