@@ -1,4 +1,4 @@
-/// CredentialStorageService - Service wrapper for CredentialStorage
+// CredentialStorageService - Service wrapper for CredentialStorage
 import 'credential_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

@@ -1,5 +1,5 @@
-/// Offline Indicator Widget - Shows connection status
-/// Displays a banner when device is offline
+// Offline Indicator Widget - Shows connection status
+// Displays a banner when device is offline
 
 import 'dart:async';
 import 'package:flutter/material.dart';

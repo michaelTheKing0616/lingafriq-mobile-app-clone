@@ -29,6 +29,7 @@ class GameLoadResult {
 /// Lazy Game Loader Service
 /// Optimizes game loading by preloading common games and lazy-loading others
 class LazyGameLoader {
+  // ignore: unused_field
   final Ref _ref;
   final Map<GameType, bool> _loadedGames = {};
   final Map<GameType, DateTime> _loadTimes = {};

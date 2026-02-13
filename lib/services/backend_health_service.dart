@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 /// Backend Health Check Service
 /// Monitors backend connectivity and endpoint availability
 class BackendHealthService {
+  // ignore: unused_field
   final Ref _ref;
   final Dio _dio;
 

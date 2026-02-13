@@ -523,7 +523,7 @@ Quality requirements:
                             IconButton(
                               onPressed: () {
                                 HapticFeedback.lightImpact();
-                                onSpeakParagraph!(para);
+                                onSpeakParagraph(para);
                               },
                               icon: Icon(Icons.record_voice_over_rounded, color: PolieColors.goldEmber, size: 22.sp),
                               tooltip: 'Listen',
@@ -584,7 +584,7 @@ Quality requirements:
                     ),
                   ],
                 ),
-                if (alternateEnding != null && alternateEnding!.isNotEmpty) ...[
+                if (alternateEnding != null && alternateEnding.isNotEmpty) ...[
                   SizedBox(height: PolieSpacing.md),
                   PolieGlassCard(
                     hasGlow: true,
@@ -595,7 +595,7 @@ Quality requirements:
                       children: [
                         Text('Alternate ending', style: PolieTypography.label(context)),
                         SizedBox(height: PolieSpacing.sm),
-                        Text(alternateEnding!, style: PolieTypography.body(context)),
+                        Text(alternateEnding, style: PolieTypography.body(context)),
                       ],
                     ),
                   ),

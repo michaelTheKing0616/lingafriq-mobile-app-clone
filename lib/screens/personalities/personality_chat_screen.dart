@@ -1,7 +1,7 @@
-/// Historical Personality Chat Screen
-/// Chat with historical African personalities
-/// 
-/// Production-ready implementation (December 2025)
+// Historical Personality Chat Screen
+// Chat with historical African personalities
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

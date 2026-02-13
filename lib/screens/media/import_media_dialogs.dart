@@ -285,7 +285,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                   Expanded(
                     child: Text(
                       'Edit Lesson',
-                      style: PanAfricanTypography.titleLarge(context)?.copyWith(
+                      style: PanAfricanTypography.titleLarge(context).copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),

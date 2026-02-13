@@ -1,12 +1,12 @@
-/// Offline Phrase Pack Manager
-/// Manages downloadable phrase packs for offline translation
-/// 
-/// Features:
-/// - Downloadable language packs
-/// - Version management
-/// - Storage optimization
-/// - Automatic updates
-/// - Progress tracking
+// Offline Phrase Pack Manager
+// Manages downloadable phrase packs for offline translation
+// 
+// Features:
+// - Downloadable language packs
+// - Version management
+// - Storage optimization
+// - Automatic updates
+// - Progress tracking
 
 import 'dart:convert';
 import 'dart:io';
@@ -185,6 +185,7 @@ class OfflinePhrasePackManager {
   final Map<String, PhrasePack> _installedPacks = {};
   final Map<String, Map<String, String>> _loadedPhrases = {};
   final Map<String, Map<String, String>> _loadedWords = {};
+  // ignore: unused_field
   final Dio _dio = Dio();
 
   /// Initialize the manager

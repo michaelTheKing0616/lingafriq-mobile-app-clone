@@ -1,5 +1,5 @@
-/// Cache Compression - Compresses cached data to save storage space
-/// Uses gzip compression for text-based data
+// Cache Compression - Compresses cached data to save storage space
+// Uses gzip compression for text-based data
 
 import 'dart:convert';
 import 'package:archive/archive.dart';

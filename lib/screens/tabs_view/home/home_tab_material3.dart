@@ -4,10 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
@@ -305,7 +303,7 @@ class _LanguageCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      language.name ?? 'Unknown Language',
+                      language.name,
                       style: PanAfricanTypography.titleMedium(context),
                     ),
                     SizedBox(height: PanAfricanSpacing.xs),

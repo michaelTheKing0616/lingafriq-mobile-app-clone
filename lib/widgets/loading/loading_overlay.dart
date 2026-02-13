@@ -1,5 +1,5 @@
-/// Loading Overlay Widget - Shows loading indicator over content
-/// Provides a clean loading experience with optional message
+// Loading Overlay Widget - Shows loading indicator over content
+// Provides a clean loading experience with optional message
 
 import 'package:flutter/material.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';

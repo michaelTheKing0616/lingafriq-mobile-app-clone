@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';

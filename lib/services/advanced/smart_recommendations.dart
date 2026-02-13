@@ -1,5 +1,5 @@
-/// Smart Recommendations Service
-/// Provides personalized content recommendations based on user behavior
+// Smart Recommendations Service
+// Provides personalized content recommendations based on user behavior
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

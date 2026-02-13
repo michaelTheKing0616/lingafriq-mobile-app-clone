@@ -1,12 +1,12 @@
-/// Lazy Image Widget
-/// Efficiently loads and caches images
-/// 
-/// Features:
-/// - Automatic caching
-/// - Placeholder support
-/// - Error handling
-/// - Progressive loading
-/// - Memory-efficient
+// Lazy Image Widget
+// Efficiently loads and caches images
+// 
+// Features:
+// - Automatic caching
+// - Placeholder support
+// - Error handling
+// - Progressive loading
+// - Memory-efficient
 
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';

@@ -1,6 +1,6 @@
-/// Enhanced Pronunciation Service using ASR + MFA (Montreal Forced Aligner)
-/// Provides phoneme-level pronunciation feedback with improved accuracy
-/// Supports multiple language models and real-time feedback
+// Enhanced Pronunciation Service using ASR + MFA (Montreal Forced Aligner)
+// Provides phoneme-level pronunciation feedback with improved accuracy
+// Supports multiple language models and real-time feedback
 
 import 'dart:io';
 import 'package:dio/dio.dart';

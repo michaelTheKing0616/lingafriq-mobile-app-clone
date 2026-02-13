@@ -14,8 +14,7 @@ import 'package:lingafriq/services/offline/selective_sync.dart'
     show SelectiveSyncService, SyncCategory, SyncPreference;
 import 'package:lingafriq/services/offline/cache_encryption.dart'
     show CacheEncryptionService;
-import 'package:lingafriq/services/offline/offline_service.dart'
-    show OfflineService, CacheStats;
+import 'package:lingafriq/services/offline/offline_service.dart' show OfflineService;
 import 'package:lingafriq/screens/settings/edit_profile_screen.dart';
 import 'package:lingafriq/screens/settings/change_password_screen.dart';
 import 'package:lingafriq/screens/settings/privacy_settings_screen.dart';
@@ -29,6 +28,7 @@ import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {

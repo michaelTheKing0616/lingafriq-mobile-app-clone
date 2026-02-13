@@ -12,6 +12,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/services/deep_link_service.dart';
 import 'package:lingafriq/providers/offline_download_provider.dart';
+import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 
 /// Detailed lesson screen with AI-generated content
 class LessonDetailScreen extends ConsumerStatefulWidget {
@@ -112,7 +113,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final lessonIdStr = widget.lesson.id?.toString() ?? '';
+    final lessonIdStr = widget.lesson.id.toString();
     final isDownloaded = lessonIdStr.isNotEmpty &&
         ref.watch(offlineDownloadProvider).downloadedLessonIds.contains(lessonIdStr);
 
@@ -143,7 +144,7 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {
-              final lessonId = widget.lesson.id?.toString() ?? '';
+              final lessonId = widget.lesson.id.toString();
               final link = DeepLinkService.lessonLink(lessonId);
               Share.share('Check out this lesson on LingAfriq: ${widget.lesson.title}\n$link');
             },
@@ -817,8 +818,8 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
                   }),
                 ] else if (widget.explanations.isNotEmpty) ...[
                   ...widget.explanations.map((exp) {
-                    final explanation = (exp as Map<String, dynamic>?)?['explanation'] as String? ?? '';
-                    final title = (exp as Map<String, dynamic>?)?['title'] as String? ?? '';
+                    final explanation = (exp as Map<String, dynamic>?)?['explanation'] ?? '';
+                    final title = (exp as Map<String, dynamic>?)?['title'] ?? '';
                     return Padding(
                       padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
                       child: Column(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shimmer/shimmer.dart';
@@ -49,6 +48,7 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
+  // ignore: unused_field
   bool _isPressed = false;
 
   @override
@@ -294,6 +294,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _glowAnimation;
+  // ignore: unused_field
   bool _isHovered = false;
 
   @override

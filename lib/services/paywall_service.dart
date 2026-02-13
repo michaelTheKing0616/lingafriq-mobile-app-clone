@@ -1,15 +1,15 @@
-/// Sophisticated Paywall Service
-/// Smart subscription tier management with behavioral triggers
-/// 
-/// Features:
-/// - Usage-based paywall triggers
-/// - A/B testing for conversion optimization
-/// - Trial period management
-/// - Grace periods for expired subscriptions
-/// - Smart upgrade prompts based on behavior
-/// - Freemium limits enforcement
-/// 
-/// Production-ready implementation
+// Sophisticated Paywall Service
+// Smart subscription tier management with behavioral triggers
+// 
+// Features:
+// - Usage-based paywall triggers
+// - A/B testing for conversion optimization
+// - Trial period management
+// - Grace periods for expired subscriptions
+// - Smart upgrade prompts based on behavior
+// - Freemium limits enforcement
+// 
+// Production-ready implementation
 
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';

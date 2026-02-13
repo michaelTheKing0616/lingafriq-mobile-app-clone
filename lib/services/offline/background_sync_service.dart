@@ -1,5 +1,5 @@
-/// Background Sync Service - Handles background data synchronization
-/// Uses WorkManager for periodic background sync even when app is closed
+// Background Sync Service - Handles background data synchronization
+// Uses WorkManager for periodic background sync even when app is closed
 
 import 'package:workmanager/workmanager.dart';
 import 'package:flutter/foundation.dart';

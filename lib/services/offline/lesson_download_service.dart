@@ -262,7 +262,7 @@ class LessonDownloadService {
     int totalSize = 0;
 
     for (final audioUrl in audioUrls) {
-      if (audioUrl == null || audioUrl.isEmpty) continue;
+      if (audioUrl.isEmpty) continue;
       
       final fileName = _getFileNameFromUrl(audioUrl);
       final localPath = '${_audioDirectory!.path}/$language/$lessonId/$fileName';

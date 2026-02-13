@@ -31,7 +31,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
     setLoading(true);
     setError(null);
     try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      ref.read(polieContentGeneratorProvider);
       await _loadNewFood();
       setLoading(false);
     } catch (e) {
@@ -39,6 +39,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
       setError(e.toString());
     }
   }
+  // ignore: unused_field
   Map<String, dynamic>? _currentFood;
   List<String> _foodOptions = [];
   String? _selectedFood;

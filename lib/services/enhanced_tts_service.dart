@@ -1,21 +1,21 @@
-/// Enhanced Text-to-Speech Service for African Languages
-/// Uses REAL free, high-quality TTS models specifically for African languages
-/// 
-/// Features:
-/// - Uses backend voice service (XTTS, MMS-TTS, Coqui) for African languages
-/// - Automatic language selection from user profile
-/// - Natural-sounding voices with emotion
-/// - Speed and pitch adjustment
-/// - Caching for performance
-/// - Fallback to system TTS only when backend unavailable
-/// 
-/// FREE Models Used (via backend):
-/// - Meta's MMS-TTS (Massively Multilingual Speech) - 1000+ languages including African
-/// - XTTS v2 (Coqui) - Zero-shot voice cloning, excellent for African languages
-/// - VoiceAI TTS - Open-source, African language support
-/// - System TTS as last resort fallback
-/// 
-/// Production-ready with user language preference integration
+// Enhanced Text-to-Speech Service for African Languages
+// Uses REAL free, high-quality TTS models specifically for African languages
+// 
+// Features:
+// - Uses backend voice service (XTTS, MMS-TTS, Coqui) for African languages
+// - Automatic language selection from user profile
+// - Natural-sounding voices with emotion
+// - Speed and pitch adjustment
+// - Caching for performance
+// - Fallback to system TTS only when backend unavailable
+// 
+// FREE Models Used (via backend):
+// - Meta's MMS-TTS (Massively Multilingual Speech) - 1000+ languages including African
+// - XTTS v2 (Coqui) - Zero-shot voice cloning, excellent for African languages
+// - VoiceAI TTS - Open-source, African language support
+// - System TTS as last resort fallback
+// 
+// Production-ready with user language preference integration
 
 import 'dart:io';
 import 'package:flutter_tts/flutter_tts.dart';

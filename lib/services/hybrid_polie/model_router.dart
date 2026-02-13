@@ -1,6 +1,6 @@
-/// Hybrid Polie Model Router
-/// Routes tasks to the best model for each specific task
-/// Combines LLaMA-3.1-70B (dialogue/roleplay) with specialist models (translation/orthography)
+// Hybrid Polie Model Router
+// Routes tasks to the best model for each specific task
+// Combines LLaMA-3.1-70B (dialogue/roleplay) with specialist models (translation/orthography)
 
 enum TaskType {
   translate,

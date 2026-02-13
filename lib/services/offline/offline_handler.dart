@@ -1,11 +1,11 @@
-/// Offline Handler Service
-/// Manages offline functionality and data synchronization
-/// 
-/// Features:
-/// - Offline data caching
-/// - Sync queue management
-/// - Conflict resolution
-/// - Background sync
+// Offline Handler Service
+// Manages offline functionality and data synchronization
+// 
+// Features:
+// - Offline data caching
+// - Sync queue management
+// - Conflict resolution
+// - Background sync
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';

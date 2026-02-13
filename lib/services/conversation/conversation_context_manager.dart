@@ -1,12 +1,12 @@
-/// Conversation Context Manager
-/// Manages conversation context, personality consistency, and natural dialogue flows
-/// 
-/// Features:
-/// - Multi-turn conversation context retention
-/// - Personality consistency tracking
-/// - Natural dialogue flow generation
-/// - Context-aware responses
-/// - Conversation history management
+// Conversation Context Manager
+// Manages conversation context, personality consistency, and natural dialogue flows
+// 
+// Features:
+// - Multi-turn conversation context retention
+// - Personality consistency tracking
+// - Natural dialogue flow generation
+// - Context-aware responses
+// - Conversation history management
 
 import 'package:flutter/foundation.dart';
 

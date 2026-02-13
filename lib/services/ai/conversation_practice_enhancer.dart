@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';
 

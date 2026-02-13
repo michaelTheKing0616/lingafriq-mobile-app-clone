@@ -105,7 +105,7 @@ class AppDrawer extends HookConsumerWidget {
                         ),
                         child: Center(
                           child: Text(
-                            currentUser?.username?[0].toUpperCase() ?? 'U',
+                            currentUser?.username[0].toUpperCase() ?? 'U',
                             style: PanAfricanTypography.headlineSmall(context)
                                 .copyWith(color: PanAfricanColors.neutralDarkest),
                           ),

@@ -1,5 +1,5 @@
-/// Lesson Item Verification Service
-/// Handles native speaker verification of lesson items
+// Lesson Item Verification Service
+// Handles native speaker verification of lesson items
 
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

@@ -1,17 +1,17 @@
-/// Simple Cache Utility (Consolidated)
-/// Provides in-memory caching with TTL (Time To Live)
-/// 
-/// Features:
-/// - Key-value storage (String keys, typed values)
-/// - Automatic expiration with timer-based cleanup
-/// - LRU eviction when cache is full
-/// - Memory-efficient
-/// - Thread-safe singleton
-/// - Cache statistics
-/// - getOrCompute methods for lazy loading
-/// 
-/// This is the consolidated cache implementation.
-/// Use this instead of performance_utils.SimpleCache
+// Simple Cache Utility (Consolidated)
+// Provides in-memory caching with TTL (Time To Live)
+// 
+// Features:
+// - Key-value storage (String keys, typed values)
+// - Automatic expiration with timer-based cleanup
+// - LRU eviction when cache is full
+// - Memory-efficient
+// - Thread-safe singleton
+// - Cache statistics
+// - getOrCompute methods for lazy loading
+// 
+// This is the consolidated cache implementation.
+// Use this instead of performance_utils.SimpleCache
 
 import 'dart:async';
 class CacheEntry<T> {

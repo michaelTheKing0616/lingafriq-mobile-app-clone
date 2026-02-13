@@ -11,7 +11,6 @@ import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/social/language_villages_screen.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/avatars/avatars.dart';

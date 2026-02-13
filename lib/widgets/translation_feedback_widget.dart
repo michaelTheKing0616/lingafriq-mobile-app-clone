@@ -1,12 +1,12 @@
-/// Translation Quality Feedback Widget
-/// Allows users to rate and provide feedback on translations
-/// 
-/// Features:
-/// - Star rating (1-5)
-/// - Quick quality indicators
-/// - Correction input
-/// - Comment field
-/// - Pan-African styled UI
+// Translation Quality Feedback Widget
+// Allows users to rate and provide feedback on translations
+// 
+// Features:
+// - Star rating (1-5)
+// - Quick quality indicators
+// - Correction input
+// - Comment field
+// - Pan-African styled UI
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -193,7 +193,7 @@ class _TranslationFeedbackSheetState extends State<TranslationFeedbackSheet> {
                   children: [
                     Text(
                       widget.sourceText,
-                      style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
                         color: PanAfricanColors.neutralMedium,
                       ),
                       maxLines: 2,
@@ -202,7 +202,7 @@ class _TranslationFeedbackSheetState extends State<TranslationFeedbackSheet> {
                     Divider(height: PanAfricanSpacing.lg),
                     Text(
                       widget.translatedText,
-                      style: PanAfricanTypography.bodyLarge(context)?.copyWith(
+                      style: PanAfricanTypography.bodyLarge(context).copyWith(
                         fontWeight: FontWeight.w600,
                       ),
                       maxLines: 2,
@@ -377,7 +377,7 @@ class _TranslationFeedbackSheetState extends State<TranslationFeedbackSheet> {
             SizedBox(height: 4.h),
             Text(
               label,
-              style: PanAfricanTypography.labelSmall(context)?.copyWith(
+              style: PanAfricanTypography.labelSmall(context).copyWith(
                 color: isSelected ? color : PanAfricanColors.neutralMedium,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               ),

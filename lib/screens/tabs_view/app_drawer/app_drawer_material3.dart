@@ -2,33 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart' hide PanAfricanIcons;
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/theme_mode_provider.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
-import 'package:lingafriq/screens/dashboard/dashboard_screen_material3.dart';
 import 'package:lingafriq/screens/profile/profile_screen_material3.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
-import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
 import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
-import 'package:lingafriq/screens/chat/tribe_chat_screen_material3.dart';
-import 'package:lingafriq/screens/chat/community_chat_screen_material3.dart';
 import 'package:lingafriq/screens/chat/live_classroom_screen_material3.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen_enhanced.dart';
 import 'package:lingafriq/screens/social_audio/room_discovery_screen.dart';
@@ -75,7 +68,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         radius: 30.r,
                         backgroundColor: PanAfricanColors.secondary,
                         child: Text(
-                          currentUser?.username?[0].toUpperCase() ?? 'U',
+                          currentUser?.username[0].toUpperCase() ?? 'U',
                           style: PanAfricanTypography.headlineSmall(context)
                               .copyWith(color: PanAfricanColors.neutralDarkest),
                         ),

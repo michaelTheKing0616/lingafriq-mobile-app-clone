@@ -3,7 +3,6 @@
 // Import patterns and helper methods
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';

@@ -1,7 +1,7 @@
-/// ErrorHandler Integration Example
-/// Shows the pattern for integrating ErrorHandler across all screens
-/// 
-/// Copy this pattern to all screens requiring error handling
+// ErrorHandler Integration Example
+// Shows the pattern for integrating ErrorHandler across all screens
+// 
+// Copy this pattern to all screens requiring error handling
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

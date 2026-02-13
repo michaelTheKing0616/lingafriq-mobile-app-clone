@@ -1,5 +1,5 @@
-/// Supported Languages Utility
-/// Centralized management of all supported African languages
+// Supported Languages Utility
+// Centralized management of all supported African languages
 
 class SupportedLanguages {
   static const Map<String, Map<String, dynamic>> _languages = {

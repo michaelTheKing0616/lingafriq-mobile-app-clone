@@ -29,7 +29,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
   Future<void> _initializeGame() async {
     setLoading(true); setError(null);
     try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      ref.read(polieContentGeneratorProvider);
       // Initialize game content
       setLoading(false);
     } catch (e) {

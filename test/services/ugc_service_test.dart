@@ -1,8 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
-import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
 
 void main() {
   group('UserGeneratedContentService', () {

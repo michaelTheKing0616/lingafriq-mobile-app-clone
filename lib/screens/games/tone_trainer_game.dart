@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/loading_screen_content.dart';
@@ -36,12 +37,16 @@ class DynamicLoadingScreen extends ConsumerStatefulWidget {
   /// Optional message to display
   final String? message;
 
+  /// Optional child to show after loading (e.g. game content from ToneTrainerGame)
+  final Widget? child;
+
   const DynamicLoadingScreen({
     Key? key,
     this.onLoadingComplete,
     this.loadingDuration,
     this.waitForDuration = true,
     this.message,
+    this.child,
   }) : super(key: key);
   
   /// Shows a loading screen for an async operation, ensuring minimum display time
@@ -126,7 +131,7 @@ class _DynamicLoadingScreenState
   void initState() {
     super.initState();
     
-    _factIndex = Random().nextInt(_fallbackFacts.length);
+    _factIndex = math.Random().nextInt(_fallbackFacts.length);
     
     // Refresh content to get a new one
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -567,3 +572,68 @@ class _StripePainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
+/// Tone Trainer game screen. Shown from game_router for GameType.toneTrainer.
+/// Uses dynamic loading then a placeholder; full game UI can be added later.
+class ToneTrainerGame extends ConsumerWidget {
+  final String language;
+  final String level;
+  final VoidCallback? onBack;
+
+  const ToneTrainerGame({
+    Key? key,
+    required this.language,
+    required this.level,
+    this.onBack,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return DynamicLoadingScreen(
+      loadingDuration: kMinLoadingDisplayTime,
+      onLoadingComplete: () => onBack?.call(),
+      child: _ToneTrainerPlaceholder(
+        language: language,
+        level: level,
+        onBack: onBack,
+      ),
+    );
+  }
+}
+
+/// Placeholder body for Tone Trainer until full game is implemented.
+class _ToneTrainerPlaceholder extends StatelessWidget {
+  final String language;
+  final String level;
+  final VoidCallback? onBack;
+
+  const _ToneTrainerPlaceholder({
+    required this.language,
+    required this.level,
+    this.onBack,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return Scaffold(
+      backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFF0A0A0A),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_rounded),
+          onPressed: () => onBack?.call(),
+        ),
+        title: Text('Tone Trainer', style: PanAfricanTypography.titleMedium(context)),
+      ),
+      body: Center(
+        child: Padding(
+          padding: EdgeInsets.all(24.sp),
+          child: Text(
+            'Tone Trainer for $language (level $level)',
+            style: PanAfricanTypography.bodyLarge(context),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ),
+    );
+  }
+}

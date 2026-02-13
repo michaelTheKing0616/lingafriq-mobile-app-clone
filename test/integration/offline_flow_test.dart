@@ -3,7 +3,6 @@ import 'package:lingafriq/services/offline/offline_progress_service.dart';
 import 'package:lingafriq/services/offline/vocabulary_store.dart';
 import 'package:lingafriq/services/offline/media_cache_manager.dart';
 import 'package:lingafriq/models/offline/local_vocabulary.dart';
-import 'package:lingafriq/models/offline/local_progress.dart';
 
 void main() {
   group('Offline Flow Integration Test', () {

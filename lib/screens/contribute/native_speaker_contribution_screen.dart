@@ -5,14 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../services/voice/audio_recording_service.dart';
-import '../../services/voice/voice_api_service.dart';
 import '../../services/polie_content_generator.dart';
 import '../../widgets/voice/pronunciation_feedback_widget.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/api_provider.dart';
-import '../../utils/error_handler.dart';
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 
 /// Recording Prompt Model
 class RecordingPrompt {

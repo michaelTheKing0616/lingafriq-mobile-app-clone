@@ -31,7 +31,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
     setLoading(true);
     setError(null);
     try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      ref.read(polieContentGeneratorProvider);
       await _loadNewScenario();
       setLoading(false);
     } catch (e) {
@@ -39,6 +39,7 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
       setError(e.toString());
     }
   }
+  // ignore: unused_field
   Map<String, dynamic>? _currentScenario;
   List<String> _greetingOptions = [];
   String? _selectedGreeting;

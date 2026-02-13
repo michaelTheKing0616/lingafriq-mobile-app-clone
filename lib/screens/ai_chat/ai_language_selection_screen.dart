@@ -8,7 +8,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart'
-    show DynamicLocalizationService, AppLanguage;
+    show AppLanguage;
 import 'package:lingafriq/services/sound_effects_service.dart';
 import 'ai_mode_selection_screen.dart';
 

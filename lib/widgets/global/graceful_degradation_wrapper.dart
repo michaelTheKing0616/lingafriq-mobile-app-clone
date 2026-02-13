@@ -1,10 +1,10 @@
-/// Graceful Degradation Wrapper
-/// Provides fallback UI when features are unavailable
-/// 
-/// Features:
-/// - Automatic feature detection
-/// - Fallback UI rendering
-/// - Feature availability checks
+// Graceful Degradation Wrapper
+// Provides fallback UI when features are unavailable
+// 
+// Features:
+// - Automatic feature detection
+// - Fallback UI rendering
+// - Feature availability checks
 
 import 'package:flutter/material.dart';
 import 'package:lingafriq/services/connectivity_service.dart';

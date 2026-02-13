@@ -34,6 +34,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   int _score = 0;
   int _round = 0;
   final int _maxRounds = 5;
+  // ignore: unused_field
   bool _isLoading = false;
   String _storyPrompt = '';
 

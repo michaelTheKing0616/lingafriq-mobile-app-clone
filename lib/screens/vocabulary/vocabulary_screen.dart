@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
-import '../../models/offline/local_vocabulary.dart';
 import '../../services/vocabulary/vocabulary_service.dart';
 import '../../services/offline/vocabulary_store.dart';
-import '../../providers/user_provider.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/empty_state_widget.dart';
 import '../../widgets/error_state_widget.dart';
@@ -19,9 +17,9 @@ class VocabularyScreen extends ConsumerStatefulWidget {
   final String? language;
 
   const VocabularyScreen({
-    Key? key,
+    super.key,
     this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<VocabularyScreen> createState() => _VocabularyScreenState();

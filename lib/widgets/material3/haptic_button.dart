@@ -1,5 +1,5 @@
-/// Haptic Button Widget
-/// Material 3 button with haptic feedback and animations
+// Haptic Button Widget
+// Material 3 button with haptic feedback and animations
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

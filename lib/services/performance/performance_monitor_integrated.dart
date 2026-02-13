@@ -1,18 +1,16 @@
-/// Integrated Performance Monitor
-/// Tracks performance metrics for all optimized components
-/// 
-/// Features:
-/// - Screen load time tracking
-/// - List rendering performance
-/// - Image loading metrics
-/// - Cache hit/miss rates
-/// - API call performance
-/// - Memory usage tracking
+// Integrated Performance Monitor
+// Tracks performance metrics for all optimized components
+// 
+// Features:
+// - Screen load time tracking
+// - List rendering performance
+// - Image loading metrics
+// - Cache hit/miss rates
+// - API call performance
+// - Memory usage tracking
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:collection';
 import 'dart:math' as math;
 
 /// Performance metric types

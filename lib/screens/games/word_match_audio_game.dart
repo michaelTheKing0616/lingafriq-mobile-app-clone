@@ -42,6 +42,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   String? _selectedLeft;
   String? _selectedRight;
   final List<_MatchResult> _results = [];
+  // ignore: unused_field
   GameSession? _session;
   DateTime? _startTime;
   bool _isLoading = true;

@@ -1,12 +1,12 @@
-/// Security Headers Validator
-/// Validates security headers from API responses
-/// 
-/// Features:
-/// - Validates required security headers
-/// - Warns on missing headers
-/// - Enforces security policies
-/// 
-/// Production-ready implementation (December 2025)
+// Security Headers Validator
+// Validates security headers from API responses
+// 
+// Features:
+// - Validates required security headers
+// - Warns on missing headers
+// - Enforces security policies
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:dio/dio.dart';
 import 'package:lingafriq/utils/structured_logger.dart';

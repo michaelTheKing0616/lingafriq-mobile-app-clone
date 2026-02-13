@@ -30,13 +30,14 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
   Future<void> _initializeGame() async {
     setLoading(true); setError(null);
     try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      ref.read(polieContentGeneratorProvider);
       // Initialize game content
       setLoading(false);
     } catch (e) {
       setLoading(false); setError(e.toString());
     }
   }
+  // ignore: unused_field
   Map<String, dynamic>? _currentBlessing;
   List<String> _meaningOptions = [];
   String? _selectedMeaning;

@@ -1,13 +1,13 @@
-/// Certificate Pinning Utility
-/// Implements certificate pinning for enhanced security
-/// 
-/// Features:
-/// - Public key pinning
-/// - Certificate pinning
-/// - Fallback handling
-/// - Development mode bypass
-/// 
-/// Production-ready implementation (December 2025)
+// Certificate Pinning Utility
+// Implements certificate pinning for enhanced security
+// 
+// Features:
+// - Public key pinning
+// - Certificate pinning
+// - Fallback handling
+// - Development mode bypass
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:convert';
 import 'dart:io';

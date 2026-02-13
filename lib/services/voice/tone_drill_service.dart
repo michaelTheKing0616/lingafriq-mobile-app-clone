@@ -1,6 +1,6 @@
-/// Tone Drill Service
-/// Generates and manages tone practice drills for tonal languages
-/// Creates minimal-pair exercises, repetition drills, and contrast exercises
+// Tone Drill Service
+// Generates and manages tone practice drills for tonal languages
+// Creates minimal-pair exercises, repetition drills, and contrast exercises
 
 import '../../models/lesson_item_model.dart';
 import 'tone_error_detection_service.dart';
@@ -39,6 +39,7 @@ class DrillAttempt {
 
 /// Tone Drill Service
 class ToneDrillService {
+  // ignore: unused_field
   final ToneErrorDetectionService _toneErrorService = ToneErrorDetectionService();
 
   /// Generate drill from lesson item

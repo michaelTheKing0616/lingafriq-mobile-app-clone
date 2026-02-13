@@ -126,10 +126,10 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
 
   Widget _buildHeader(BuildContext context, WidgetRef ref, String greeting, bool isDark) {
     final user = ref.watch(userProvider);
-    final displayName = user?.username?.isNotEmpty == true
-        ? user!.username
-        : (user?.first_name?.isNotEmpty == true
-            ? '${user!.first_name} ${user.last_name}'.trim()
+    final displayName = user != null && user.username.isNotEmpty
+        ? user.username
+        : (user != null && user.first_name.isNotEmpty
+            ? '${user.first_name} ${user.last_name}'.trim()
             : null) ?? 'there';
     final greetingLine = '$greeting, $displayName';
     final onSurface = Theme.of(context).colorScheme.onSurface;
@@ -420,7 +420,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  language.name ?? 'Language',
+                                  language.name,
                                   style:
                                       PanAfricanTypography.titleSmall(context),
                                   maxLines: 1,

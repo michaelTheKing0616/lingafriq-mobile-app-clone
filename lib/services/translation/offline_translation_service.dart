@@ -1,24 +1,21 @@
-/// Offline Translation Service
-/// World-class offline translation using on-device ML models
-/// 
-/// Features:
-/// - On-device NLLB-200 model for offline translation
-/// - Support for 200+ languages including African languages
-/// - Fast, privacy-preserving translations
-/// - Works completely offline
-/// - Model caching and management
-/// - TFLite model integration
-/// - Intelligent cache management
-/// 
-/// Uses state-of-the-art on-device ML models (February 2026)
+// Offline Translation Service
+// World-class offline translation using on-device ML models
+// 
+// Features:
+// - On-device NLLB-200 model for offline translation
+// - Support for 200+ languages including African languages
+// - Fast, privacy-preserving translations
+// - Works completely offline
+// - Model caching and management
+// - TFLite model integration
+// - Intelligent cache management
+// 
+// Uses state-of-the-art on-device ML models (February 2026)
 
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 /// Translation Result
 class TranslationResult {
@@ -82,12 +79,14 @@ class OfflineTranslationService {
   static const String _modelVersion = '2.1';
   
   // Model download URLs (HuggingFace hosted quantized models)
+  // ignore: unused_field
   static const String _modelBaseUrl = 'https://huggingface.co/datasets/lingafriq/translation-models/resolve/main';
   
   // Maximum cache entries for translations
   static const int _maxCacheEntries = 5000;
   
   // NLLB-200 language codes mapping
+  // ignore: unused_field
   static const Map<String, String> _nllbLanguageCodes = {
     'english': 'eng_Latn',
     'yoruba': 'yor_Latn',

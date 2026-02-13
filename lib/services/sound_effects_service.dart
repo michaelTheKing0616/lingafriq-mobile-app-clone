@@ -64,6 +64,7 @@ class SoundEffectsService {
   double _volume = 0.7;
   
   // Cached audio sources for performance
+  // ignore: unused_field
   final Map<SoundEffect, Source> _cachedSources = {};
   
   SoundEffectsService() {

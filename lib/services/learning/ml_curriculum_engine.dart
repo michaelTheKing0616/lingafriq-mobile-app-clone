@@ -16,9 +16,12 @@ import 'spaced_repetition_service.dart';
 /// - Confidence-based progression
 
 class MLCurriculumEngine {
+  // ignore: unused_field
   static const String _userProgressKey = 'ml_curriculum_progress';
+  // ignore: unused_field
   static const String _errorPatternsKey = 'ml_error_patterns';
   
+  // ignore: unused_field
   final SpacedRepetitionService _srsService = SpacedRepetitionService();
   
   /// User performance data

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -13,7 +12,6 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/services/polie_mention_handler.dart';
 import 'package:lingafriq/avatars/avatars.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GlobalChatScreen extends ConsumerStatefulWidget {
   final String? language;

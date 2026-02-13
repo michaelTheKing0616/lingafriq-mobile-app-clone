@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/api_service.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 /// Moderation Tools for Global and Community Chat
 class ModerationToolsScreen extends HookConsumerWidget {

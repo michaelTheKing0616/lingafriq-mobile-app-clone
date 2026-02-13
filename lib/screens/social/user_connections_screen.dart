@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
@@ -10,11 +9,9 @@ import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/screens/chat/global_chat_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_list_screen.dart';
 import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserConnectionsScreen extends ConsumerStatefulWidget {
   const UserConnectionsScreen({Key? key}) : super(key: key);

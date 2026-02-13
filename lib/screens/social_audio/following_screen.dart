@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../providers/social_audio_provider.dart';
 import '../../providers/user_provider.dart';
-import '../../services/social_audio/social_audio_service.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/loading/loading_overlay.dart';
 

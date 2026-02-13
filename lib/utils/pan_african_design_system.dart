@@ -150,6 +150,7 @@ class PanAfricanGradients {
   PanAfricanGradients._();
 
   static const Color _primary = Color(0xFF1B7340);
+  // ignore: unused_field
   static const Color _primaryDark = Color(0xFF0D4D29);
   static const Color _primaryContainer = Color(0xFFB7F5CD);
   static const Color _surface = Color(0xFFFAFAFA);

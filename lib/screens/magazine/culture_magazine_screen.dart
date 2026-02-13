@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:lingafriq/models/culture_content_model.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/services/culture_magazine_service.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
-import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 
 class CultureMagazineScreen extends ConsumerStatefulWidget {
@@ -26,6 +20,7 @@ class CultureMagazineScreen extends ConsumerStatefulWidget {
 class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  // ignore: unused_field
   String _selectedCategory = 'All';
   
   // API state

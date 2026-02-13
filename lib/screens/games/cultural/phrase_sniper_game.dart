@@ -30,13 +30,14 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
   Future<void> _initializeGame() async {
     setLoading(true); setError(null);
     try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      ref.read(polieContentGeneratorProvider);
       // Initialize game content
       setLoading(false);
     } catch (e) {
       setLoading(false); setError(e.toString());
     }
   }
+  // ignore: unused_field
   Map<String, dynamic>? _currentPhrase;
   List<String> _translationOptions = [];
   String? _selectedTranslation;

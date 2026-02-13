@@ -1,5 +1,5 @@
-/// API Service - Centralized HTTP client for backend communication
-/// Provides clean, type-safe API calls with error handling and authentication
+// API Service - Centralized HTTP client for backend communication
+// Provides clean, type-safe API calls with error handling and authentication
 
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';

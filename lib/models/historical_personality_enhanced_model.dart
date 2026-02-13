@@ -1,7 +1,7 @@
-/// Enhanced Historical Personality Model
-/// Comprehensive model for historical personalities with knowledge base, memory, and educational features
+// Enhanced Historical Personality Model
+// Comprehensive model for historical personalities with knowledge base, memory, and educational features
 
-/// Enhanced Historical Personality
+// Enhanced Historical Personality
 class EnhancedHistoricalPersonality {
   final String id;
   final String name;

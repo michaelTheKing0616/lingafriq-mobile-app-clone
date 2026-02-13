@@ -1,7 +1,7 @@
 import '../gamekit/game_scoring.dart';
 import '../gamekit/game_turn_context.dart';
 import 'drum_rhythm_models.dart';
-import '../../services/polie_game_client.dart' show PolieGameClient, PolieEvaluationResult, GameEvaluationException;
+import '../../services/polie_game_client.dart' show PolieGameClient, GameEvaluationException;
 
 /// Drum Rhythm scoring engine - uses Polie backend evaluation
 class DrumRhythmScoringEngine extends GameScoringEngine {

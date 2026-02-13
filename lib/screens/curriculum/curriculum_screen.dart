@@ -13,7 +13,6 @@ import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
   const CurriculumScreen({Key? key}) : super(key: key);

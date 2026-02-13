@@ -1,8 +1,8 @@
-/// Print Statement Replacement Helper
-/// Provides utilities to help migrate from print/debugPrint to structured logging
-/// 
-/// This file contains helper functions and documentation for replacing print statements
-/// with structured logging throughout the codebase.
+// Print Statement Replacement Helper
+// Provides utilities to help migrate from print/debugPrint to structured logging
+// 
+// This file contains helper functions and documentation for replacing print statements
+// with structured logging throughout the codebase.
 
 import 'package:lingafriq/utils/structured_logger.dart';
 

@@ -5,6 +5,7 @@ import 'package:lingafriq/config/api_contract.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
 /// Social Audio Learning Tracker - Tracks learning progress in social audio sessions
 class SocialAudioLearningTracker {
+  // ignore: unused_field
   final ApiProvider _api;
   final Dio _dio;
 

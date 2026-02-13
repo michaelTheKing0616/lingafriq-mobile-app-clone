@@ -1,20 +1,20 @@
-/// Enhanced Voice Recognition Service
-/// Uses multiple free, high-quality models for African languages
-/// 
-/// Features:
-/// - Multi-model ensemble for better accuracy
-/// - Offline support with on-device models
-/// - Real-time feedback with confidence scoring
-/// - Tone and pronunciation analysis
-/// - Support for 100+ African languages
-/// 
-/// Free Models Used:
-/// - Wav2Vec2 (Meta/Facebook) - Best for African languages
-/// - Whisper (OpenAI) - Multi-lingual fallback
-/// - Coqui STT - Open-source alternative
-/// - Mozilla Common Voice models
-///
-/// Production-ready implementation
+// Enhanced Voice Recognition Service
+// Uses multiple free, high-quality models for African languages
+// 
+// Features:
+// - Multi-model ensemble for better accuracy
+// - Offline support with on-device models
+// - Real-time feedback with confidence scoring
+// - Tone and pronunciation analysis
+// - Support for 100+ African languages
+// 
+// Free Models Used:
+// - Wav2Vec2 (Meta/Facebook) - Best for African languages
+// - Whisper (OpenAI) - Multi-lingual fallback
+// - Coqui STT - Open-source alternative
+// - Mozilla Common Voice models
+//
+// Production-ready implementation
 
 import 'dart:async';
 import 'dart:io';
@@ -223,10 +223,26 @@ class EnhancedVoiceService {
     VoiceRecognitionConfig config,
   ) async {
     try {
-      // Run multiple models in parallel
+      // Run multiple models in parallel; use try/catch so failed results become null
+      Future<VoiceRecognitionResult?> safeWav2Vec2() async {
+        try {
+          return await _recognizeWithWav2Vec2(audioFile, config);
+        } catch (_) {
+          return null;
+        }
+      }
+
+      Future<VoiceRecognitionResult?> safeWhisper() async {
+        try {
+          return await _recognizeWithWhisper(audioFile, config);
+        } catch (_) {
+          return null;
+        }
+      }
+
       final results = await Future.wait([
-        _recognizeWithWav2Vec2(audioFile, config).catchError((e) => null),
-        _recognizeWithWhisper(audioFile, config).catchError((e) => null),
+        safeWav2Vec2(),
+        safeWhisper(),
       ]);
 
       // Filter out failed results

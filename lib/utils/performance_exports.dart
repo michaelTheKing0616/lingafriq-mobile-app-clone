@@ -1,5 +1,5 @@
-/// Performance Utilities Exports
-/// Central export file for all performance-related utilities
+// Performance Utilities Exports
+// Central export file for all performance-related utilities
 
 export '../widgets/performance/optimized_list_view.dart';
 export '../widgets/performance/lazy_image.dart';

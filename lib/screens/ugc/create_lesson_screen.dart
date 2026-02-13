@@ -5,9 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/providers/api_provider.dart';
 
 /// Screen for creating user-generated lessons
 class CreateLessonScreen extends HookConsumerWidget {

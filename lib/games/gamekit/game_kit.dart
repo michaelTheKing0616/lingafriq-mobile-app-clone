@@ -1,17 +1,17 @@
-/// Elite GameKit - Unified Game Engine
-///
-/// This file exports all public GameKit APIs for easy importing.
-/// Use this for a clean, organized import:
-///
-/// ```dart
-/// import 'package:lingafriq/games/gamekit/game_kit.dart';
-/// ```
-///
-/// This provides access to:
-/// - Game engine and lifecycle management
-/// - Game factory and registry
-/// - Screen integration utilities
-/// - All game types and configurations
+// Elite GameKit - Unified Game Engine
+//
+// This file exports all public GameKit APIs for easy importing.
+// Use this for a clean, organized import:
+//
+// ```dart
+// import 'package:lingafriq/games/gamekit/game_kit.dart';
+// ```
+//
+// This provides access to:
+// - Game engine and lifecycle management
+// - Game factory and registry
+// - Screen integration utilities
+// - All game types and configurations
 
 // Core game engine
 export 'game_engine.dart';

@@ -5,7 +5,7 @@ import 'game_result.dart';
 import 'game_turn_context.dart';
 import 'game_scoring.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import '../../services/polie_game_client.dart' show PolieGameClient, PolieGameContent, PolieEvaluationResult, GameEvaluationException;
+import '../../services/polie_game_client.dart' show PolieGameClient, PolieGameContent, GameEvaluationException;
 import 'batch_game_factory.dart';
 import 'game_migration_helper.dart';
 

@@ -1,12 +1,12 @@
-/// Dialogue Flow Generator
-/// Generates natural, context-aware dialogue flows for conversation practice
-/// 
-/// Features:
-/// - Natural conversation starters
-/// - Context-aware follow-up questions
-/// - Topic transitions
-/// - Cultural context integration
-/// - Difficulty-appropriate responses
+// Dialogue Flow Generator
+// Generates natural, context-aware dialogue flows for conversation practice
+// 
+// Features:
+// - Natural conversation starters
+// - Context-aware follow-up questions
+// - Topic transitions
+// - Cultural context integration
+// - Difficulty-appropriate responses
 
 /// Dialogue flow type
 enum DialogueFlowType {

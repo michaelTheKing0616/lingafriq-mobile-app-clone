@@ -1,13 +1,13 @@
-/// Lesson Content Manager
-/// 
-/// This system allows easy addition of new lessons to the curriculum.
-/// Lessons can be added here and will be available in the app.
-/// 
-/// To add a new lesson:
-/// 1. Add a new LessonContent entry below
-/// 2. Specify the language ID it belongs to
-/// 3. Add lesson sections with content
-/// 4. The lesson will appear in the app automatically
+// Lesson Content Manager
+// 
+// This system allows easy addition of new lessons to the curriculum.
+// Lessons can be added here and will be available in the app.
+// 
+// To add a new lesson:
+// 1. Add a new LessonContent entry below
+// 2. Specify the language ID it belongs to
+// 3. Add lesson sections with content
+// 4. The lesson will appear in the app automatically
 
 class LessonContent {
   final int languageId;

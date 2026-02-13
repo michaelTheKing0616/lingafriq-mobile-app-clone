@@ -1,5 +1,5 @@
-/// Tutor Progress Model
-/// Tracks tutor mode learning progress, CEFR advancement, and adaptive difficulty
+// Tutor Progress Model
+// Tracks tutor mode learning progress, CEFR advancement, and adaptive difficulty
 import 'dart:convert';
 
 /// Tutor Session Result

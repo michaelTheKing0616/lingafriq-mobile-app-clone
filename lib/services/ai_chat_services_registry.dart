@@ -1,6 +1,6 @@
-/// AI Chat Services Registry
-/// Central registry for all AI chat-related services
-/// Ensures all services are properly available throughout the app
+// AI Chat Services Registry
+// Central registry for all AI chat-related services
+// Ensures all services are properly available throughout the app
 
 export 'roleplay_progress_service.dart';
 export 'translation_history_service.dart';

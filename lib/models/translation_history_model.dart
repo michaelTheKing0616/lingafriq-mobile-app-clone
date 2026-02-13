@@ -1,5 +1,5 @@
-/// Translation History Model
-/// Stores translation history with alternatives, grammar breakdown, and cultural context
+// Translation History Model
+// Stores translation history with alternatives, grammar breakdown, and cultural context
 import 'dart:convert';
 
 /// Grammar Breakdown

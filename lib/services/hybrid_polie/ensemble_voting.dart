@@ -1,5 +1,5 @@
-/// Ensemble Voting System
-/// Uses multiple models and votes on best output for critical tasks
+// Ensemble Voting System
+// Uses multiple models and votes on best output for critical tasks
 
 import 'package:flutter/foundation.dart';
 import 'translation_service.dart';
@@ -44,7 +44,7 @@ class EnsembleVoting {
     ]);
 
     // Filter out nulls
-    final validResults = results.where((r) => r != null && r.toString().isNotEmpty).toList();
+    final validResults = results.where((r) => r.toString().isNotEmpty).toList();
 
     if (validResults.isEmpty) {
       throw Exception('All models failed in ensemble voting');
@@ -103,7 +103,7 @@ class EnsembleVoting {
     ]);
 
     // Filter out nulls
-    final validResults = results.where((r) => r != null && r.toString().isNotEmpty).toList();
+    final validResults = results.where((r) => r.toString().isNotEmpty).toList();
 
     if (validResults.isEmpty) {
       return phrase; // Fallback to original

@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-import 'dart:typed_data';
-import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -233,6 +230,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
 
   // Tutor & Adaptive Fields
   bool _tutorMode = true;
+  // ignore: unused_field
   bool _adaptive = true;
   int _difficulty = 1; // 1-5
   int _successStreak = 0;
@@ -1215,7 +1213,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
       effectiveSystemPrompt = _practiceEnhancer.getEnhancedPrompt(
         conversationId: conversationId,
         flowState: flowState,
-        basePrompt: effectiveSystemPrompt!,
+        basePrompt: effectiveSystemPrompt,
         currentTopic: previousContext['topics']?.isNotEmpty == true 
             ? (previousContext['topics'] as List).first 
             : null,

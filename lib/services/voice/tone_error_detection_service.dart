@@ -1,12 +1,12 @@
-/// Tone Error Detection Service
-/// Detects tone errors in tonal languages (Yoruba, Igbo, Twi) and generates targeted drills
-/// 
-/// Features:
-/// - Pitch contour extraction and analysis
-/// - Tone pattern comparison
-/// - Syllable-level error detection
-/// - Automatic minimal-pair drill generation
-/// - Visual feedback with pitch visualization
+// Tone Error Detection Service
+// Detects tone errors in tonal languages (Yoruba, Igbo, Twi) and generates targeted drills
+// 
+// Features:
+// - Pitch contour extraction and analysis
+// - Tone pattern comparison
+// - Syllable-level error detection
+// - Automatic minimal-pair drill generation
+// - Visual feedback with pitch visualization
 
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';

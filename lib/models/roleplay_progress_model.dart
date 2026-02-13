@@ -1,5 +1,5 @@
-/// Roleplay Progress Model
-/// Tracks user progress through roleplay scenarios
+// Roleplay Progress Model
+// Tracks user progress through roleplay scenarios
 import 'dart:convert';
 
 /// Scenario Progress

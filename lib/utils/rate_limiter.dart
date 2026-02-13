@@ -1,13 +1,13 @@
-/// Rate Limiting Utility
-/// Prevents excessive API calls and protects backend from overload
-/// 
-/// Features:
-/// - Per-endpoint rate limiting
-/// - Sliding window algorithm
-/// - Configurable limits
-/// - Automatic retry with backoff
-/// 
-/// Production-ready implementation (December 2025)
+// Rate Limiting Utility
+// Prevents excessive API calls and protects backend from overload
+// 
+// Features:
+// - Per-endpoint rate limiting
+// - Sliding window algorithm
+// - Configurable limits
+// - Automatic retry with backoff
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:collection';
 /// Rate limit configuration

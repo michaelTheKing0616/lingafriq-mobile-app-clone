@@ -1,14 +1,13 @@
-/// Batch Processor Utility
-/// Processes items in batches for better performance and memory management
-/// 
-/// Features:
-/// - Configurable batch size
-/// - Progress reporting
-/// - Error handling per batch
-/// - Memory-efficient processing
+// Batch Processor Utility
+// Processes items in batches for better performance and memory management
+// 
+// Features:
+// - Configurable batch size
+// - Progress reporting
+// - Error handling per batch
+// - Memory-efficient processing
 
 import 'dart:async';
-import 'dart:collection';
 import 'dart:collection';
 
 /// Batch processing result

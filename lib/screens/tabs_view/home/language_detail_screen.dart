@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/screens/tabs_view/home/take_quiz_screen.dart';
 import 'package:lingafriq/utils/constants.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
 import '../../../history/screens/history_list_screen.dart';
-import '../../../lessons/screens/lessons_list_screen.dart';
 import '../../../mannerisms/screens/mannerism_list_screen.dart';
 import '../../../providers/navigation_provider.dart';
 import '../../../screens/learning/learning_path_screen.dart';
-import '../../../widgets/greegins_builder.dart';
 import '../../../widgets/responsive_safe_area.dart';
 
 class LanguageDetailScreen extends ConsumerWidget {
@@ -48,7 +41,7 @@ class LanguageDetailScreen extends ConsumerWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
                   child: Text(
-                    language.name ?? 'Language',
+                    language.name,
                     style: PanAfricanTypography.headlineMedium(context).copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),

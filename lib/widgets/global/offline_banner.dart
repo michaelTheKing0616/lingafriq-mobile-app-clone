@@ -1,10 +1,10 @@
-/// Offline Banner Widget
-/// Displays a banner when device is offline
-/// 
-/// Features:
-/// - Automatic visibility based on connectivity
-/// - Shows sync queue status
-/// - Manual sync trigger
+// Offline Banner Widget
+// Displays a banner when device is offline
+// 
+// Features:
+// - Automatic visibility based on connectivity
+// - Shows sync queue status
+// - Manual sync trigger
 
 import 'dart:async';
 import 'package:flutter/material.dart';

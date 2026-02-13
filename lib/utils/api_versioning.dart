@@ -1,13 +1,13 @@
-/// API Versioning Utility
-/// Provides version-aware API endpoint management
-/// 
-/// Features:
-/// - API version routing
-/// - Version negotiation
-/// - Deprecation warnings
-/// - Backward compatibility
-/// 
-/// Production-ready implementation (December 2025)
+// API Versioning Utility
+// Provides version-aware API endpoint management
+// 
+// Features:
+// - API version routing
+// - Version negotiation
+// - Deprecation warnings
+// - Backward compatibility
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:lingafriq/services/env_config.dart';
 

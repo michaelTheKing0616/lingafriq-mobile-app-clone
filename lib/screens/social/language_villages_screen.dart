@@ -11,6 +11,7 @@ import '../../widgets/pan_african_components.dart';
 import '../../screens/chat/live_classroom_screen_material3.dart';
 import 'package:lingafriq/avatars/avatars.dart';
 import 'package:flutter/services.dart';
+import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Language Villages Screen - Voice rooms for target-language-only practice
 class LanguageVillagesScreen extends ConsumerWidget {

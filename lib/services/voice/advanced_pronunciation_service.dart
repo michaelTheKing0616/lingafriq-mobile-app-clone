@@ -1,19 +1,18 @@
-/// Advanced Pronunciation Service with Wav2Vec2 Integration
-/// World-class pronunciation assessment with real-time feedback and phoneme-level analysis
-/// 
-/// Features:
-/// - Wav2Vec2-based pronunciation scoring
-/// - Real-time feedback during recording
-/// - Phoneme-level accuracy analysis
-/// - Tone/intonation analysis for tonal languages
-/// - Fluency metrics
-/// - Detailed improvement suggestions
-/// 
-/// Uses state-of-the-art ML models for African languages (December 2025)
+// Advanced Pronunciation Service with Wav2Vec2 Integration
+// World-class pronunciation assessment with real-time feedback and phoneme-level analysis
+// 
+// Features:
+// - Wav2Vec2-based pronunciation scoring
+// - Real-time feedback during recording
+// - Phoneme-level accuracy analysis
+// - Tone/intonation analysis for tonal languages
+// - Fluency metrics
+// - Detailed improvement suggestions
+// 
+// Uses state-of-the-art ML models for African languages (December 2025)
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -285,6 +284,7 @@ final advancedPronunciationServiceProvider = Provider<AdvancedPronunciationServi
 /// - Fluency metrics
 /// - Detailed improvement suggestions
 class AdvancedPronunciationService {
+  // ignore: unused_field
   final Ref _ref;
   final Dio _dio;
 

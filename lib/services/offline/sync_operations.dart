@@ -1,14 +1,14 @@
-/// Background Sync Operations
-/// Implements specific sync operations for different data types
-/// 
-/// Features:
-/// - User progress sync
-/// - Lesson completion sync
-/// - Vocabulary progress sync
-/// - Gamification data sync
-/// - Conflict resolution
-/// 
-/// Production-ready implementation (December 2025)
+// Background Sync Operations
+// Implements specific sync operations for different data types
+// 
+// Features:
+// - User progress sync
+// - Lesson completion sync
+// - Vocabulary progress sync
+// - Gamification data sync
+// - Conflict resolution
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:convert';
 import 'package:lingafriq/utils/api_service.dart';
@@ -86,12 +86,12 @@ class SyncOperations {
           // Sync progress metrics to backend using ApiService
           final response = await ApiService.post('/api/gamification/progress/sync', data: progressData);
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
             logger.debug('Synced progress item: $synced/${pendingProgress.length}');
           } else {
-            errors.add('Failed to sync progress item: API returned ${response?.statusCode ?? "null"}');
-            logger.warn('Progress sync failed', context: {'item': progressData, 'statusCode': response?.statusCode});
+            errors.add('Failed to sync progress item: API returned ${response.statusCode}');
+            logger.warn('Progress sync failed', context: {'item': progressData, 'statusCode': response.statusCode});
           }
         } catch (e) {
           errors.add('Failed to sync progress item: $e');
@@ -161,10 +161,10 @@ class SyncOperations {
             'timestamp': DateTime.now().toIso8601String(),
           });
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
           } else {
-            errors.add('Failed to sync lesson completion: API returned ${response?.statusCode ?? "null"}');
+            errors.add('Failed to sync lesson completion: API returned ${response.statusCode}');
           }
         } catch (e) {
           errors.add('Failed to sync lesson completion: $e');
@@ -231,10 +231,10 @@ class SyncOperations {
             'timestamp': DateTime.now().toIso8601String(),
           });
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
           } else {
-            errors.add('Failed to sync vocabulary item: API returned ${response?.statusCode ?? "null"}');
+            errors.add('Failed to sync vocabulary item: API returned ${response.statusCode}');
           }
         } catch (e) {
           errors.add('Failed to sync vocabulary item: $e');
@@ -295,11 +295,11 @@ class SyncOperations {
           // Sync gamification data (XP, badges, achievements, etc.)
           final response = await ApiService.post('/api/gamification/sync', data: gamificationData);
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
           } else {
-            errors.add('Failed to sync gamification data: API returned ${response?.statusCode ?? "null"}');
-            logger.warn('Gamification sync failed', context: {'data': gamificationData, 'statusCode': response?.statusCode});
+            errors.add('Failed to sync gamification data: API returned ${response.statusCode}');
+            logger.warn('Gamification sync failed', context: {'data': gamificationData, 'statusCode': response.statusCode});
           }
         } catch (e) {
           errors.add('Failed to sync gamification data: $e');
@@ -361,10 +361,10 @@ class SyncOperations {
           // Canonical backend route: POST /api/ai/chat/history/sync/
           final response = await ApiService.post('/api/ai/chat/history/sync/', data: roleplayData);
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
           } else {
-            errors.add('Failed to sync roleplay progress: API returned ${response?.statusCode ?? "null"}');
+            errors.add('Failed to sync roleplay progress: API returned ${response.statusCode}');
           }
         } catch (e) {
           errors.add('Failed to sync roleplay progress: $e');
@@ -426,10 +426,10 @@ class SyncOperations {
           // Canonical backend route: POST /api/ai/chat/history/sync/
           final response = await ApiService.post('/api/ai/chat/history/sync/', data: tutorData);
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
           } else {
-            errors.add('Failed to sync tutor progress: API returned ${response?.statusCode ?? "null"}');
+            errors.add('Failed to sync tutor progress: API returned ${response.statusCode}');
           }
         } catch (e) {
           errors.add('Failed to sync tutor progress: $e');
@@ -496,10 +496,10 @@ class SyncOperations {
             'timestamp': DateTime.now().toIso8601String(),
           });
           
-          if (response != null && (response.statusCode == 200 || response.statusCode == 201)) {
+          if (response.statusCode == 200 || response.statusCode == 201) {
             synced++;
           } else {
-            errors.add('Failed to sync review progress: API returned ${response?.statusCode ?? "null"}');
+            errors.add('Failed to sync review progress: API returned ${response.statusCode}');
           }
         } catch (e) {
           errors.add('Failed to sync review progress: $e');

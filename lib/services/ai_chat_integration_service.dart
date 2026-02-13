@@ -1,5 +1,5 @@
-/// AI Chat Integration Service
-/// Integrates all progress tracking services with the AI chat provider
+// AI Chat Integration Service
+// Integrates all progress tracking services with the AI chat provider
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../models/roleplay_progress_model.dart';

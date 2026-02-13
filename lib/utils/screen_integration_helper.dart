@@ -1,11 +1,11 @@
-/// Screen Integration Helper
-/// Provides utilities for integrating error handling and performance utilities across screens
-/// 
-/// Features:
-/// - Error boundary wrapping
-/// - Performance monitoring
-/// - Cache integration
-/// - Debounced actions
+// Screen Integration Helper
+// Provides utilities for integrating error handling and performance utilities across screens
+// 
+// Features:
+// - Error boundary wrapping
+// - Performance monitoring
+// - Cache integration
+// - Debounced actions
 
 import 'package:flutter/material.dart';
 import '../core/errors/global_error_handler.dart';

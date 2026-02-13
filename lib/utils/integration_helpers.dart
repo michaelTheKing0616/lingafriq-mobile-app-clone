@@ -1,8 +1,8 @@
-/// Integration Helpers
-/// Utilities to quickly integrate ErrorHandler and Performance utilities
-/// across all screens
-/// 
-/// Production-ready integration helpers (December 2025)
+// Integration Helpers
+// Utilities to quickly integrate ErrorHandler and Performance utilities
+// across all screens
+// 
+// Production-ready integration helpers (December 2025)
 
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/error_handler.dart';

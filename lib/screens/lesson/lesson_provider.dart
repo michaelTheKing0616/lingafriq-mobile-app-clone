@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod/legacy.dart';
-import 'package:state_notifier/state_notifier.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';

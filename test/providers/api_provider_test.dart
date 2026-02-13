@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/base_provider.dart';
-import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -78,7 +77,7 @@ void main() {
   
   group('BaseProviderState', () {
     test('copyWith should create new state with updated values', () {
-      const state = BaseProviderState(isLoading: false);
+      final state = BaseProviderState(isLoading: false);
       final newState = state.copyWith(isLoading: true);
 
       expect(state.isLoading, false);
@@ -86,7 +85,7 @@ void main() {
     });
 
     test('copyWith without parameters should return same values', () {
-      const state = BaseProviderState(isLoading: true);
+      final state = BaseProviderState(isLoading: true);
       final newState = state.copyWith();
 
       expect(newState.isLoading, true);

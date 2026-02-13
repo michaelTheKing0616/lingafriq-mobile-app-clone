@@ -1,11 +1,11 @@
-/// Spaced Repetition Service
-/// Implements spaced repetition algorithm for optimal learning retention
-/// 
-/// Features:
-/// - SM-2 algorithm implementation
-/// - Adaptive scheduling
-/// - Performance tracking
-/// - Review queue management
+// Spaced Repetition Service
+// Implements spaced repetition algorithm for optimal learning retention
+// 
+// Features:
+// - SM-2 algorithm implementation
+// - Adaptive scheduling
+// - Performance tracking
+// - Review queue management
 
 import '../../utils/simple_cache.dart';
 import 'dart:math' as math;

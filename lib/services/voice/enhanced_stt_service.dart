@@ -1,15 +1,14 @@
-/// Enhanced Speech-to-Text Service
-/// Extends VoiceApiService with accent recognition and dialect support
-/// 
-/// Features:
-/// - Language-specific models
-/// - Accent recognition
-/// - Dialect support
-/// - Confidence scoring
-/// - Word-level timestamps
-/// - Falls back to basic STT when enhanced features unavailable
+// Enhanced Speech-to-Text Service
+// Extends VoiceApiService with accent recognition and dialect support
+// 
+// Features:
+// - Language-specific models
+// - Accent recognition
+// - Dialect support
+// - Confidence scoring
+// - Word-level timestamps
+// - Falls back to basic STT when enhanced features unavailable
 
-import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/config/api_contract.dart';

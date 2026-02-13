@@ -3,11 +3,7 @@
 // Import this and use these implementations to replace placeholder games
 
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
-import '../../services/polie_content_generator.dart';
-import '../../widgets/error_boundary.dart';
-import '../../screens/loading/dynamic_loading_screen.dart';
 import 'base_game_screen.dart';
 
 /// Template implementation pattern for all cultural games

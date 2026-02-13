@@ -1,5 +1,5 @@
-/// Conversation Analytics Service
-/// Tracks conversation metrics, fluency, and provides topic suggestions
+// Conversation Analytics Service
+// Tracks conversation metrics, fluency, and provides topic suggestions
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

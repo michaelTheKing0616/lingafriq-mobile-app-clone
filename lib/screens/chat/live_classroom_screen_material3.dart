@@ -301,7 +301,7 @@ class _ClassroomView extends HookConsumerWidget {
               for (final participant in room.remoteParticipants.values) {
                 remoteParts[participant.sid] = participant;
                 participantList.add({
-                  'name': participant.name ?? 'Participant',
+                  'name': participant.name,
                   'id': participant.sid,
                   'isLocal': false,
                 });
@@ -966,7 +966,7 @@ class _VideoTile extends StatelessWidget {
 
     if (videoTrack != null) {
       // Render actual LiveKit video track using VideoTrackRenderer
-      return VideoTrackRenderer(videoTrack!);
+      return VideoTrackRenderer(videoTrack);
     }
 
     // Fallback to avatar when no video track available

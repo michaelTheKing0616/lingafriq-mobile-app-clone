@@ -1,5 +1,4 @@
 import 'package:riverpod/legacy.dart';
-import 'package:state_notifier/state_notifier.dart';
 import '../config/api_contract.dart';
 import '../services/connectivity_service.dart';
 import '../services/offline/lesson_download_service.dart';

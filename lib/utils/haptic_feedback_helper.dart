@@ -1,5 +1,5 @@
-/// Haptic Feedback Helper
-/// Provides consistent haptic feedback throughout the app
+// Haptic Feedback Helper
+// Provides consistent haptic feedback throughout the app
 import 'package:flutter/services.dart';
 
 class HapticHelper {

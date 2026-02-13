@@ -1,11 +1,11 @@
-/// Biometric Authentication - World-class Fingerprint/Face ID authentication
-/// Provides secure biometric authentication using local_auth package
-/// 
-/// Security considerations:
-/// - Uses platform-native biometric APIs (Face ID, Touch ID, Android BiometricPrompt)
-/// - Supports strong biometrics only for enhanced security
-/// - Provides detailed error handling for debugging and user feedback
-/// - Configurable security levels (biometric-only vs fallback to device PIN)
+// Biometric Authentication - World-class Fingerprint/Face ID authentication
+// Provides secure biometric authentication using local_auth package
+// 
+// Security considerations:
+// - Uses platform-native biometric APIs (Face ID, Touch ID, Android BiometricPrompt)
+// - Supports strong biometrics only for enhanced security
+// - Provides detailed error handling for debugging and user feedback
+// - Configurable security levels (biometric-only vs fallback to device PIN)
 
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;

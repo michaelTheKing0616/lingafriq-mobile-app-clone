@@ -1,13 +1,12 @@
-/// Audio Generation Service
-/// Handles audio generation for lesson items with caching and error handling
-/// 
-/// Features:
-/// - Audio generation with caching
-/// - Background generation queue
-/// - Progress tracking
-/// - Automatic retry on failure
+// Audio Generation Service
+// Handles audio generation for lesson items with caching and error handling
+// 
+// Features:
+// - Audio generation with caching
+// - Background generation queue
+// - Progress tracking
+// - Automatic retry on failure
 
-import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import '../../utils/simple_cache.dart';
@@ -40,6 +39,7 @@ class AudioGenerationResult {
 class AudioGenerationService {
   final Dio _dio;
   final SimpleCache _cache = SimpleCache();
+  // ignore: unused_field
   VoiceApiService? _voiceApiService;
   static const Duration _cacheTTL = Duration(days: 30);
   static const String _cachePrefix = 'audio_';

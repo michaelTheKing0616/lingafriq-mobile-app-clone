@@ -34,7 +34,9 @@ class _ToneDrillScreenState extends State<ToneDrillScreen> {
   ToneErrorResult? _lastResult;
   bool _isRecording = false;
   bool _isAnalyzing = false;
+  // ignore: unused_field
   Uint8List? _recordedAudio;
+  // ignore: unused_field
   List<PitchPoint> _userPitchContour = [];
   int _currentDrillIndex = 0;
 

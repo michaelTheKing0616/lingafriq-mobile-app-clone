@@ -1,4 +1,4 @@
-/// ProverbUnlocker game models
+// ProverbUnlocker game models
 import 'dart:math' as math;
 
 class ProverbUnlockerContent {

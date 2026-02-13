@@ -1,5 +1,5 @@
-/// Roleplay Progress Service
-/// Manages roleplay progress tracking, difficulty adaptation, and analytics
+// Roleplay Progress Service
+// Manages roleplay progress tracking, difficulty adaptation, and analytics
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
@@ -53,7 +52,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
           } else if (raw is Map && raw['docs'] is List) {
             list = raw['docs'] as List;
           } else if (data?['messages'] is List) {
-            list = data!['messages'] as List;
+            list = data!['messages'];
           }
           messages.value = list
               .map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()})

@@ -1,15 +1,14 @@
-/// Screen Performance Tracker
-/// Automatically tracks screen load times and performance metrics
-/// 
-/// Features:
-/// - Automatic screen load tracking
-/// - Route transition monitoring
-/// - Memory usage tracking
-/// - Navigation performance
+// Screen Performance Tracker
+// Automatically tracks screen load times and performance metrics
+// 
+// Features:
+// - Automatic screen load tracking
+// - Route transition monitoring
+// - Memory usage tracking
+// - Navigation performance
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/painting.dart';
 import 'dart:async';
 import 'performance_monitor_integrated.dart';
 

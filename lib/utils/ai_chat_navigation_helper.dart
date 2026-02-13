@@ -1,5 +1,5 @@
-/// AI Chat Navigation Helper
-/// Utility functions for navigating to AI chat screens and dashboards
+// AI Chat Navigation Helper
+// Utility functions for navigating to AI chat screens and dashboards
 import 'package:flutter/material.dart';
 import '../screens/ai_chat/roleplay_scenario_selection_screen.dart';
 import '../screens/ai_chat/roleplay_completion_summary_screen.dart';

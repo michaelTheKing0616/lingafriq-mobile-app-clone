@@ -10,7 +10,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/services/voice/audio_recording_service.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';

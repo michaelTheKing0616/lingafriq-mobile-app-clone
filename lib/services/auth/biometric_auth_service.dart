@@ -1,5 +1,5 @@
-/// BiometricAuthService - Service wrapper for BiometricAuth
-/// Provides a singleton service layer for biometric authentication
+// BiometricAuthService - Service wrapper for BiometricAuth
+// Provides a singleton service layer for biometric authentication
 import 'biometric_auth.dart';
 import 'package:local_auth/local_auth.dart';
 

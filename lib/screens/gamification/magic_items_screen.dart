@@ -20,6 +20,7 @@ class MagicItemsScreen extends ConsumerStatefulWidget {
 
 class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
   bool _isLoading = false;
+  // ignore: unused_field
   List<dynamic> _userInventory = [];
   List<dynamic> _availableItems = [];
 

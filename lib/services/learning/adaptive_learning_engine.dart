@@ -1,11 +1,11 @@
-/// Adaptive Learning Engine
-/// Adjusts learning path based on user performance
-/// 
-/// Features:
-/// - Performance tracking
-/// - Difficulty adjustment
-/// - Personalized recommendations
-/// - Learning curve analysis
+// Adaptive Learning Engine
+// Adjusts learning path based on user performance
+// 
+// Features:
+// - Performance tracking
+// - Difficulty adjustment
+// - Personalized recommendations
+// - Learning curve analysis
 
 import '../../models/lesson_item_model.dart';
 import '../../utils/simple_cache.dart';

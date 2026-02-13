@@ -1,14 +1,14 @@
-/// Request Batching Utility
-/// Batches multiple API requests into single calls for efficiency
-/// 
-/// Features:
-/// - Automatic batching
-/// - Configurable batch size
-/// - Batch timeout
-/// - Error handling
-/// - Retry logic
-/// 
-/// Production-ready implementation (December 2025)
+// Request Batching Utility
+// Batches multiple API requests into single calls for efficiency
+// 
+// Features:
+// - Automatic batching
+// - Configurable batch size
+// - Batch timeout
+// - Error handling
+// - Retry logic
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:async';
 import 'package:dio/dio.dart';

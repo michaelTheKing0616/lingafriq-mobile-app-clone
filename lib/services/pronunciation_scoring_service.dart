@@ -1,13 +1,13 @@
-/// Pronunciation Scoring Service
-/// Provides pronunciation assessment with MFA service integration
-/// Falls back gracefully to basic scoring when MFA unavailable
-/// 
-/// Features:
-/// - MFA (Montreal Forced Aligner) integration when deployed
-/// - Phoneme-level error detection
-/// - Word-level scoring
-/// - Pronunciation feedback generation
-/// - Graceful fallback to basic scoring
+// Pronunciation Scoring Service
+// Provides pronunciation assessment with MFA service integration
+// Falls back gracefully to basic scoring when MFA unavailable
+// 
+// Features:
+// - MFA (Montreal Forced Aligner) integration when deployed
+// - Phoneme-level error detection
+// - Word-level scoring
+// - Pronunciation feedback generation
+// - Graceful fallback to basic scoring
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';

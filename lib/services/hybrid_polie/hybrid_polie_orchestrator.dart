@@ -1,6 +1,6 @@
-/// Hybrid Polie Orchestrator
-/// Coordinates multiple models to provide the best response
-/// Combines LLaMA (dialogue) + NLLB (translation) + AfriTeVa (canonical) + diacritics enforcement
+// Hybrid Polie Orchestrator
+// Coordinates multiple models to provide the best response
+// Combines LLaMA (dialogue) + NLLB (translation) + AfriTeVa (canonical) + diacritics enforcement
 
 import 'dart:async';
 import 'package:dio/dio.dart';

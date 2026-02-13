@@ -19,7 +19,7 @@
 /// - [PanAfricanButton] - Primary buttons
 /// - [PanAfricanAppBar] - App bar widget
 /// - And many more components...
-library pan_african_ui;
+library;
 
 export 'utils/pan_african_design_system.dart';
 export 'widgets/pan_african_app_bar.dart';

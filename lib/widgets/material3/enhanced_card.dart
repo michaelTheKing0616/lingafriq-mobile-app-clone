@@ -1,5 +1,5 @@
-/// Enhanced Material 3 Card
-/// Card with animations, haptic feedback, and proper elevation
+// Enhanced Material 3 Card
+// Card with animations, haptic feedback, and proper elevation
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';

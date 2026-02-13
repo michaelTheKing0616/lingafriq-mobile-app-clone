@@ -6,7 +6,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
@@ -507,7 +506,7 @@ class _Flashcard extends StatelessWidget {
                 Chip(
                   label: Text(word.category),
                   backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                  labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
+                  labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                     color: PanAfricanColors.primary,
                   ),
                 ),
@@ -518,7 +517,7 @@ class _Flashcard extends StatelessWidget {
                 // Show word
                 Text(
                   word.word,
-                  style: PanAfricanTypography.displayMedium(context)?.copyWith(
+                  style: PanAfricanTypography.displayMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                     color: PanAfricanColors.primary,
                   ),
@@ -533,7 +532,7 @@ class _Flashcard extends StatelessWidget {
                 // Show meaning/translation from metadata or service
                 Text(
                   _getWordMeaning(word),
-                  style: PanAfricanTypography.displaySmall(context)?.copyWith(
+                  style: PanAfricanTypography.displaySmall(context).copyWith(
                     fontWeight: FontWeight.bold,
                     color: PanAfricanColors.secondary,
                   ),
@@ -546,7 +545,7 @@ class _Flashcard extends StatelessWidget {
                   Text(
                     _getWordExample(word)!,
                     textAlign: TextAlign.center,
-                    style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
                       fontStyle: FontStyle.italic,
                     ),
                   ),

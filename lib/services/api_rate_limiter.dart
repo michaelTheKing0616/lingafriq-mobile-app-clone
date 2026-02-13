@@ -1,12 +1,12 @@
-/// API Rate Limiter with Exponential Backoff
-/// Prevents excessive API calls and handles rate limiting gracefully
-/// 
-/// Features:
-/// - Client-side rate limiting per endpoint
-/// - Exponential backoff with jitter
-/// - Queue management for pending requests
-/// - Automatic retry with configurable limits
-/// - Persistent state across app restarts
+// API Rate Limiter with Exponential Backoff
+// Prevents excessive API calls and handles rate limiting gracefully
+// 
+// Features:
+// - Client-side rate limiting per endpoint
+// - Exponential backoff with jitter
+// - Queue management for pending requests
+// - Automatic retry with configurable limits
+// - Persistent state across app restarts
 
 import 'dart:async';
 import 'dart:math';

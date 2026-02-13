@@ -1,11 +1,11 @@
-/// Translation Quality Metrics Service
-/// Tracks, measures, and improves translation quality across the app
-/// 
-/// Features:
-/// - Quality scoring based on user feedback
-/// - Model performance tracking
-/// - A/B testing for translation improvements
-/// - Analytics for continuous improvement
+// Translation Quality Metrics Service
+// Tracks, measures, and improves translation quality across the app
+// 
+// Features:
+// - Quality scoring based on user feedback
+// - Model performance tracking
+// - A/B testing for translation improvements
+// - Analytics for continuous improvement
 
 import 'dart:convert';
 import 'package:flutter/foundation.dart';

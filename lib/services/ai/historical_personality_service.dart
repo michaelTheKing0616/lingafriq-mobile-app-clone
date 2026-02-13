@@ -1,15 +1,15 @@
-/// Historical African Personalities AI Chat Service
-/// World-class personality simulation with complete knowledge base
-/// 
-/// Features:
-/// - Complete knowledge of historical personalities
-/// - Authentic dialogue simulation
-/// - Cultural and historical context
-/// - Memory system for conversations
-/// - Personality-consistent responses
-/// - Integrated with Polie architecture
-/// 
-/// Production-ready implementation (December 2025)
+// Historical African Personalities AI Chat Service
+// World-class personality simulation with complete knowledge base
+// 
+// Features:
+// - Complete knowledge of historical personalities
+// - Authentic dialogue simulation
+// - Cultural and historical context
+// - Memory system for conversations
+// - Personality-consistent responses
+// - Integrated with Polie architecture
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:async';
 import 'package:dio/dio.dart';
@@ -192,6 +192,7 @@ final historicalPersonalityServiceProvider = Provider<HistoricalPersonalityServi
 /// - Memory system
 /// - Personality consistency
 class HistoricalPersonalityService {
+  // ignore: unused_field
   final Ref _ref;
   final Dio _dio;
 

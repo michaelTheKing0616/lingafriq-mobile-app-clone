@@ -1,5 +1,5 @@
-/// Lesson Item Model
-/// Represents a lesson item (vocabulary, sentence, proverb, etc.)
+// Lesson Item Model
+// Represents a lesson item (vocabulary, sentence, proverb, etc.)
 
 class LessonItem {
   final String id;

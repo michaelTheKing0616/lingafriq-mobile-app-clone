@@ -1,5 +1,5 @@
-/// Cache Encryption - Encrypts sensitive cached data
-/// Uses AES encryption for secure local storage
+// Cache Encryption - Encrypts sensitive cached data
+// Uses AES encryption for secure local storage
 
 import 'dart:convert';
 import 'package:encrypt/encrypt.dart';

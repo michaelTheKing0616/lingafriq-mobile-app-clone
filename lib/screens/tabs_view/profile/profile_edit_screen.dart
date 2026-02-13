@@ -12,7 +12,6 @@ import 'package:lingafriq/utils/validators.dart';
 import 'package:lingafriq/widgets/primary_text_field.dart';
 import 'package:lingafriq/widgets/titled_drop_down.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 import '../../../widgets/delete_account_dialogue.dart';
 import '../../../services/account_service.dart';

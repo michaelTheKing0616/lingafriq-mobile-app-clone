@@ -3,8 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/screens/lesson/lesson_flow_screen.dart';
 import 'package:lingafriq/lessons/models/section_lesson_model.dart';
-import 'package:lingafriq/screens/lesson/models/lesson_content.dart';
-import 'package:mocktail/mocktail.dart';
 
 void main() {
   group('LessonFlowScreen Widget Tests', () {

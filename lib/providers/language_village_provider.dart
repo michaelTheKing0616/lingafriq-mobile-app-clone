@@ -108,7 +108,7 @@ class LanguageVillageProvider extends Notifier<BaseProviderState>
               // Add user to participants list
               _participants.add(VillageParticipant(
                 userId: user.id.toString(),
-                username: user.username ?? 'User',
+                username: user.username,
                 avatar: user.avatar,
                 isSpeaking: false,
                 joinedAt: DateTime.now(),

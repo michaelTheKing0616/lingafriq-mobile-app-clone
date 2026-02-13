@@ -1,7 +1,7 @@
-/// Social Learning Service
-/// Manages study groups and friend challenges
-/// 
-/// Production-ready implementation
+// Social Learning Service
+// Manages study groups and friend challenges
+// 
+// Production-ready implementation
 
 import 'package:dio/dio.dart';
 import 'package:lingafriq/models/social_group.dart';

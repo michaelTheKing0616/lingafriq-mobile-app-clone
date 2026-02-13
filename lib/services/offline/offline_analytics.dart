@@ -1,5 +1,5 @@
-/// Offline Analytics - Tracks offline usage and sync metrics
-/// Provides insights into offline behavior and sync performance
+// Offline Analytics - Tracks offline usage and sync metrics
+// Provides insights into offline behavior and sync performance
 
 import 'package:shared_preferences/shared_preferences.dart';
 

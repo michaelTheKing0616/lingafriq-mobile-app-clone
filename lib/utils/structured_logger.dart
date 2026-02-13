@@ -1,14 +1,14 @@
-/// Structured Logging Infrastructure
-/// World-class logging system for production applications
-/// 
-/// Features:
-/// - Log levels (DEBUG, INFO, WARN, ERROR, FATAL)
-/// - Structured logging with context
-/// - Sentry integration
-/// - Performance logging
-/// - Log rotation and retention
-/// 
-/// Production-ready implementation (December 2025)
+// Structured Logging Infrastructure
+// World-class logging system for production applications
+// 
+// Features:
+// - Log levels (DEBUG, INFO, WARN, ERROR, FATAL)
+// - Structured logging with context
+// - Sentry integration
+// - Performance logging
+// - Log rotation and retention
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:flutter/foundation.dart';
 import 'package:lingafriq/services/monitoring/sentry_service.dart';

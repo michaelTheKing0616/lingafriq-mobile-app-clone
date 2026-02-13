@@ -4,12 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/screens/ugc/create_lesson_screen.dart';
 import 'package:lingafriq/screens/ugc/create_quiz_screen.dart';
 import 'package:lingafriq/screens/ugc/create_story_screen.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Hub screen for User-Generated Content
 class UGCHubScreen extends ConsumerStatefulWidget {

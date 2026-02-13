@@ -1,5 +1,5 @@
-/// Vocabulary Progress Model
-/// Tracks vocabulary learning, mastery, and spaced repetition
+// Vocabulary Progress Model
+// Tracks vocabulary learning, mastery, and spaced repetition
 import 'dart:convert';
 
 /// Vocabulary Word

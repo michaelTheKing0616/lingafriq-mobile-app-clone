@@ -1,11 +1,11 @@
-/// Gamification widgets export file
-/// 
-/// This file exports all gamification-related widgets for easy importing.
-/// 
-/// Usage:
-/// ```dart
-/// import 'package:lingafriq/widgets/gamification/gamification_widgets.dart';
-/// ```
+// Gamification widgets export file
+// 
+// This file exports all gamification-related widgets for easy importing.
+// 
+// Usage:
+// ```dart
+// import 'package:lingafriq/widgets/gamification/gamification_widgets.dart';
+// ```
 
 // Core gamification widgets
 export 'xp_progress_widget.dart';

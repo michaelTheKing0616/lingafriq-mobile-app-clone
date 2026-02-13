@@ -36,7 +36,7 @@
 /// ref.read(avatarEventHandlerProvider).handleEvent(AvatarEvent.levelUp);
 /// ```
 
-library avatars;
+library;
 
 // Core systems
 export 'avatar_engine.dart';

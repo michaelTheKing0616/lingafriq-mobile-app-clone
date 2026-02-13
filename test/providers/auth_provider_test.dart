@@ -2,20 +2,19 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/base_provider.dart';
-import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('BaseProviderState (auth state)', () {
     test('should create with default values', () {
-      const state = BaseProviderState();
+      final state = BaseProviderState();
 
       expect(state.errorMessage, isNull);
       expect(state.isLoading, false);
     });
 
     test('copyWith should create new state with updated values', () {
-      const state = BaseProviderState(isLoading: false);
+      final state = BaseProviderState(isLoading: false);
       final newState = state.copyWith(isLoading: true);
 
       expect(state.isLoading, false);
@@ -23,7 +22,7 @@ void main() {
     });
 
     test('copyWith without parameters should return same values', () {
-      const state = BaseProviderState(isLoading: true, errorMessage: 'test error');
+      final state = BaseProviderState(isLoading: true, errorMessage: 'test error');
       final newState = state.copyWith();
 
       expect(newState.isLoading, true);
@@ -31,7 +30,7 @@ void main() {
     });
 
     test('clearError via copyWith should reset errorMessage', () {
-      const state = BaseProviderState(errorMessage: 'Some error');
+      final state = BaseProviderState(errorMessage: 'Some error');
       final newState = state.copyWith(clearError: true);
 
       expect(newState.errorMessage, isNull);

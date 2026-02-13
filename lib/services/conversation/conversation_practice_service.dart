@@ -1,11 +1,11 @@
-/// Conversation Practice Service
-/// Manages conversation practice sessions with context and personality
-/// 
-/// Features:
-/// - Multi-turn conversations
-/// - Context retention
-/// - Personality consistency
-/// - Dialogue flow generation
+// Conversation Practice Service
+// Manages conversation practice sessions with context and personality
+// 
+// Features:
+// - Multi-turn conversations
+// - Context retention
+// - Personality consistency
+// - Dialogue flow generation
 
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';

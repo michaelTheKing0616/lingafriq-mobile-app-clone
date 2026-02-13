@@ -1,5 +1,5 @@
-/// Review Prompt Widget
-/// Intelligently shows review prompts at optimal times
+// Review Prompt Widget
+// Intelligently shows review prompts at optimal times
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

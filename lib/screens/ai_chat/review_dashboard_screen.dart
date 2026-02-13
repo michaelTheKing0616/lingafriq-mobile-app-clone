@@ -149,7 +149,7 @@ class _OverallStatsCard extends StatelessWidget {
           children: [
             Text(
               'Review Statistics',
-              style: PanAfricanTypography.titleLarge(context)?.copyWith(
+              style: PanAfricanTypography.titleLarge(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -187,7 +187,7 @@ class _OverallStatsCard extends StatelessWidget {
             SizedBox(height: PanAfricanSpacing.sm),
             Text(
               '${statistics.averageAccuracy.toStringAsFixed(1)}%',
-              style: PanAfricanTypography.headlineMedium(context)?.copyWith(
+              style: PanAfricanTypography.headlineMedium(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: PanAfricanColors.accent,
               ),
@@ -227,7 +227,7 @@ class _StatItem extends StatelessWidget {
         SizedBox(height: PanAfricanSpacing.xs),
         Text(
           value,
-          style: PanAfricanTypography.titleMedium(context)?.copyWith(
+          style: PanAfricanTypography.titleMedium(context).copyWith(
             fontWeight: FontWeight.bold,
             color: color,
           ),
@@ -266,7 +266,7 @@ class _AccuracyTrendCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Accuracy Trend (Last 7 Days)',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -341,7 +341,7 @@ class _AccuracyByTypeCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Accuracy by Type',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -386,7 +386,7 @@ class _AccuracyByTypeCard extends StatelessWidget {
                         SizedBox(width: PanAfricanSpacing.sm),
                         Text(
                           '${percentage.toStringAsFixed(0)}%',
-                          style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                          style: PanAfricanTypography.bodyMedium(context).copyWith(
                             fontWeight: FontWeight.bold,
                             color: percentage >= 80 
                                 ? PanAfricanColors.success 
@@ -445,7 +445,7 @@ class _RecentSessionsCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Recent Sessions',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),

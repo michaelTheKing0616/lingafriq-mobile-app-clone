@@ -88,7 +88,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                           horizontal: PanAfricanSpacing.md,
                         ),
                         child: Text(
-                          widget.language.name ?? 'Learning Path',
+                          widget.language.name,
                           style: PanAfricanTypography.headlineMedium(context)
                               .copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
@@ -154,7 +154,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.language.name ?? 'Learning Path',
+                            widget.language.name,
                             style: PanAfricanTypography.headlineMedium(context)
                                 .copyWith(
                               color: Theme.of(context).colorScheme.onPrimary,
@@ -205,7 +205,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                         horizontal: PanAfricanSpacing.md,
                       ),
                       child: Text(
-                        widget.language.name ?? 'Learning Path',
+                        widget.language.name,
                         style: PanAfricanTypography.headlineMedium(context)
                             .copyWith(
                           color: Theme.of(context).colorScheme.onPrimary,
@@ -242,7 +242,7 @@ class _LearningPathScreenState extends ConsumerState<LearningPathScreen> {
                       horizontal: PanAfricanSpacing.md,
                     ),
                     child: Text(
-                      widget.language.name ?? 'Learning Path',
+                      widget.language.name,
                       style: PanAfricanTypography.headlineMedium(context)
                           .copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,

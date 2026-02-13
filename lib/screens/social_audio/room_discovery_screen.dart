@@ -6,11 +6,9 @@ import '../../providers/social_audio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../widgets/lingafriq_ui_helpers.dart';
 import '../../widgets/loading/loading_overlay.dart';
-import '../../widgets/primary_button.dart';
 import '../../widgets/responsive_safe_area.dart';
 import 'room_detail_screen.dart';
 import 'create_room_screen.dart';
-import 'scheduled_sessions_screen.dart';
 
 /// Room Discovery Screen - Browse and search for language practice rooms
 class RoomDiscoveryScreen extends ConsumerStatefulWidget {

@@ -1,6 +1,6 @@
-/// Intelligent Review Service
-/// Determines optimal timing for review prompts based on user engagement
-/// Inspired by best practices from Duolingo, Babbel, and other top apps
+// Intelligent Review Service
+// Determines optimal timing for review prompts based on user engagement
+// Inspired by best practices from Duolingo, Babbel, and other top apps
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/foundation.dart';

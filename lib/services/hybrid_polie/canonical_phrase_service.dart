@@ -1,6 +1,6 @@
-/// Canonical Phrase Service using AfriTeVa/AfriT5
-/// Generates orthographically correct phrases with proper diacritics
-/// Uses backend API with fallback to HuggingFace Inference API
+// Canonical Phrase Service using AfriTeVa/AfriT5
+// Generates orthographically correct phrases with proper diacritics
+// Uses backend API with fallback to HuggingFace Inference API
 
 import 'dart:convert';
 import 'package:dio/dio.dart';

@@ -12,7 +12,6 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/services/sound_effects_service.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FillInTheBlankGame extends ConsumerStatefulWidget {
   final Language language;

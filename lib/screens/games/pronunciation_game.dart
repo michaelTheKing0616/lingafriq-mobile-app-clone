@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -183,16 +182,14 @@ class _PronunciationGameState extends ConsumerState<PronunciationGame> {
           
           try {
             final updatedUser = await ref.read(apiProvider.notifier).getProfileUser(user.id);
-            if (updatedUser != null) {
-              final newPoints = updatedUser.completed_point;
-              debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
-              ref.read(userProvider.notifier).overrideUser(updatedUser);
-              
-              if (newPoints > oldPoints) {
-                debugPrint('✅ Game points successfully added!');
-              } else {
-                debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
-              }
+            final newPoints = updatedUser.completed_point;
+            debugPrint('User points after update: $newPoints (increase: ${newPoints - oldPoints})');
+            ref.read(userProvider.notifier).overrideUser(updatedUser);
+            
+            if (newPoints > oldPoints) {
+              debugPrint('✅ Game points successfully added!');
+            } else {
+              debugPrint('⚠️ Points may not have been added. Backend may need game completion endpoint.');
             }
           } catch (e) {
             debugPrint('Error refreshing user profile: $e');

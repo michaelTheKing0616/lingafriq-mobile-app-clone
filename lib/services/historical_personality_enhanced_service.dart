@@ -1,5 +1,5 @@
-/// Enhanced Historical Personality Service
-/// Provides world-class personality simulation with memory, knowledge base, and educational features
+// Enhanced Historical Personality Service
+// Provides world-class personality simulation with memory, knowledge base, and educational features
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

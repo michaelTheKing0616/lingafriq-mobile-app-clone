@@ -14,7 +14,6 @@ import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/services/deep_link_service.dart';
 

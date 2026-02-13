@@ -1,5 +1,5 @@
-/// Batch Processor for Hybrid Polie
-/// Batches multiple requests to reduce API calls and improve efficiency
+// Batch Processor for Hybrid Polie
+// Batches multiple requests to reduce API calls and improve efficiency
 
 import 'dart:async';
 class BatchProcessor<T> {

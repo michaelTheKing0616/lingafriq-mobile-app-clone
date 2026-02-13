@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/screens/lesson/models/lesson_content.dart';
-import 'package:lingafriq/lessons/models/section_lesson_model.dart';
 
 void main() {
   group('LessonSectionType', () {

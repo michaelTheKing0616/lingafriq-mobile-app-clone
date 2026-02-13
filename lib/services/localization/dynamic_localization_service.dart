@@ -1,11 +1,10 @@
-/// Dynamic Localization Service - Manages app language and localization
-/// Supports runtime language switching and RTL languages
+// Dynamic Localization Service - Manages app language and localization
+// Supports runtime language switching and RTL languages
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'dart:ui' as ui show TextDirection;
-import 'package:flutter/foundation.dart';
 
 enum AppLanguage {
   english('en', 'English'),

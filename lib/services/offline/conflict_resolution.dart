@@ -1,5 +1,5 @@
-/// Conflict Resolution - Handles data conflicts during offline sync
-/// Implements Last-Write-Wins and custom conflict resolution strategies
+// Conflict Resolution - Handles data conflicts during offline sync
+// Implements Last-Write-Wins and custom conflict resolution strategies
 
 enum ConflictResolutionStrategy {
   lastWriteWins,

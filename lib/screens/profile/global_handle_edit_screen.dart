@@ -7,7 +7,6 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/config/app_config.dart';
 import 'package:lingafriq/utils/api.dart';
@@ -237,7 +236,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                                   SizedBox(height: PanAfricanSpacing.xxs),
                                   Text(
                                     '@$currentGlobalId',
-                                    style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                                    style: PanAfricanTypography.titleMedium(context).copyWith(
                                       color: PanAfricanColors.primary,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -327,7 +326,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                           Expanded(
                             child: Text(
                               validationMessage.value!,
-                              style: PanAfricanTypography.bodySmall(context)?.copyWith(
+                              style: PanAfricanTypography.bodySmall(context).copyWith(
                                 color: isValid.value
                                     ? PanAfricanColors.success
                                     : PanAfricanColors.error,
@@ -383,7 +382,7 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
                     ),
                     child: Text(
                       'Save Handle',
-                      style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
                         color: colorScheme.onPrimary,
                         fontWeight: FontWeight.bold,
                       ),

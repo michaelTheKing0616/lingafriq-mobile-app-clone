@@ -1,15 +1,14 @@
-/// Pronunciation Analysis Service
-/// Analyzes pronunciation with detailed feedback
-/// Extends VoiceApiService.analyzePronunciation() with tone analysis and LessonItem integration
-/// 
-/// Features:
-/// - Phoneme-level analysis
-/// - Tone accuracy for tonal languages
-/// - Fluency metrics
-/// - Improvement suggestions
-/// - Integration with VoiceApiService for core analysis
+// Pronunciation Analysis Service
+// Analyzes pronunciation with detailed feedback
+// Extends VoiceApiService.analyzePronunciation() with tone analysis and LessonItem integration
+// 
+// Features:
+// - Phoneme-level analysis
+// - Tone accuracy for tonal languages
+// - Fluency metrics
+// - Improvement suggestions
+// - Integration with VoiceApiService for core analysis
 
-import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';

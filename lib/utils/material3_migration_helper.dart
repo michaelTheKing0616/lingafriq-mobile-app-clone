@@ -1,7 +1,7 @@
-/// Material 3 Migration Helper
-/// 
-/// This file provides helper functions and constants for Material 3 migration
-/// Use these utilities to ensure consistent Material 3 adoption
+// Material 3 Migration Helper
+// 
+// This file provides helper functions and constants for Material 3 migration
+// Use these utilities to ensure consistent Material 3 adoption
 
 import 'package:flutter/material.dart';
 

@@ -1,11 +1,11 @@
-/// Lesson Item Service
-/// Manages lesson items with caching and offline support
-/// 
-/// Features:
-/// - Fetch lesson items with caching
-/// - Offline support
-/// - Filtering and searching
-/// - Progress tracking
+// Lesson Item Service
+// Manages lesson items with caching and offline support
+// 
+// Features:
+// - Fetch lesson items with caching
+// - Offline support
+// - Filtering and searching
+// - Progress tracking
 
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';

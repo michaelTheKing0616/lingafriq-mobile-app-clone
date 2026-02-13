@@ -15,7 +15,6 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
-import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/utils/utils.dart';
@@ -106,13 +105,13 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
                               children: [
                                 if (user != null)
                                   Text(
-                                    user.username ?? 'User',
+                                    user.username,
                                     style: PanAfricanTypography.headlineSmall(context),
                                   ),
                                 SizedBox(height: PanAfricanSpacing.xs),
                                 if (user != null)
                                   Text(
-                                    user.email ?? '',
+                                    user.email,
                                     style: PanAfricanTypography.bodyMedium(context).copyWith(
                                       color: PanAfricanColors.neutralMedium,
                                     ),

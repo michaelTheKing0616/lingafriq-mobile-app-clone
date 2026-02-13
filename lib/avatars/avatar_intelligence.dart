@@ -16,6 +16,7 @@ import 'avatar_providers.dart';
 /// - Learning patterns (adaptive personality)
 
 class AvatarIntelligence {
+  // ignore: unused_field
   final Ref _ref;
   
   // User learning context

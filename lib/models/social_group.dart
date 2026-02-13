@@ -1,7 +1,7 @@
-/// Social Learning Group Models
-/// For study groups and friend challenges
-/// 
-/// Production-ready implementation
+// Social Learning Group Models
+// For study groups and friend challenges
+// 
+// Production-ready implementation
 
 class StudyGroup {
   final String id;

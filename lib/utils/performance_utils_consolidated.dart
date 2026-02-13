@@ -1,7 +1,7 @@
-/// Consolidated Performance Utilities
-/// 
-/// This file re-exports the consolidated implementations from their dedicated files
-/// Use this for convenience imports, or import directly from the source files
+// Consolidated Performance Utilities
+// 
+// This file re-exports the consolidated implementations from their dedicated files
+// Use this for convenience imports, or import directly from the source files
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';

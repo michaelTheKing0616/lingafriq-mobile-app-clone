@@ -1,5 +1,5 @@
-/// Selective Sync - Allows users to choose what data to sync
-/// Optimizes bandwidth and storage by syncing only selected content
+// Selective Sync - Allows users to choose what data to sync
+// Optimizes bandwidth and storage by syncing only selected content
 
 import 'package:shared_preferences/shared_preferences.dart';
 

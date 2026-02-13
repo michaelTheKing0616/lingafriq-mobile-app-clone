@@ -1,5 +1,5 @@
-/// Material 3 Migration Helper
-/// Utility functions for Material 3 styling and components
+// Material 3 Migration Helper
+// Utility functions for Material 3 styling and components
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

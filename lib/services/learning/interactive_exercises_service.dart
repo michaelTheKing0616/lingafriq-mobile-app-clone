@@ -1,15 +1,15 @@
-/// Interactive Exercises & Story-Based Learning Service
-/// World-class interactive learning experiences
-/// 
-/// Features:
-/// - Story-based learning with branching narratives
-/// - Interactive exercises (fill-in-blank, multiple choice, etc.)
-/// - Adaptive difficulty
-/// - Immediate feedback
-/// - Progress tracking
-/// - Cultural context integration
-/// 
-/// Production-ready implementation (December 2025)
+// Interactive Exercises & Story-Based Learning Service
+// World-class interactive learning experiences
+// 
+// Features:
+// - Story-based learning with branching narratives
+// - Interactive exercises (fill-in-blank, multiple choice, etc.)
+// - Adaptive difficulty
+// - Immediate feedback
+// - Progress tracking
+// - Cultural context integration
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:async';
 import 'package:dio/dio.dart';
@@ -224,6 +224,7 @@ final interactiveExercisesServiceProvider = Provider<InteractiveExercisesService
 
 /// Interactive Exercises Service
 class InteractiveExercisesService {
+  // ignore: unused_field
   final Ref _ref;
   final Dio _dio;
 

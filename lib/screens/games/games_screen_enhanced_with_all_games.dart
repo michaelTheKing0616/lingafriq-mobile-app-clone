@@ -7,7 +7,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/models/game/game_session_model.dart';
 import 'package:lingafriq/services/lazy_game_loader.dart';
 

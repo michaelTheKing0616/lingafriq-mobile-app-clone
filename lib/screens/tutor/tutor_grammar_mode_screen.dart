@@ -490,7 +490,7 @@ Quality requirements:
               spacing: PolieSpacing.xs,
               runSpacing: PolieSpacing.xs,
               children: (result['sentenceAnatomy'] as List).map((e) {
-                final m = e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{};
+                final m = e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{};
                 final part = m['part']?.toString() ?? '';
                 final label = m['label']?.toString() ?? '';
                 final hint = (m['colorHint']?.toString() ?? '').toLowerCase();

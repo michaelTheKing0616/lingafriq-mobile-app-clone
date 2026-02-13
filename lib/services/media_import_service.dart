@@ -1,12 +1,12 @@
-/// Media Import Service for AI Chat
-/// Handles image/video import and processing for AI assistance
-/// 
-/// Features:
-/// - Image picker integration (camera + gallery)
-/// - Text extraction from images (OCR) using Google ML Kit
-/// - Image description generation
-/// - Video frame extraction for analysis
-/// - Support for multiple image formats
+// Media Import Service for AI Chat
+// Handles image/video import and processing for AI assistance
+// 
+// Features:
+// - Image picker integration (camera + gallery)
+// - Text extraction from images (OCR) using Google ML Kit
+// - Image description generation
+// - Video frame extraction for analysis
+// - Support for multiple image formats
 
 import 'dart:io';
 import 'package:flutter/foundation.dart';

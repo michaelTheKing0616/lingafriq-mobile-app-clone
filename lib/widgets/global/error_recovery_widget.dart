@@ -1,11 +1,11 @@
-/// Error Recovery Widget
-/// Provides error handling with retry functionality for any widget
-/// 
-/// Features:
-/// - Automatic error detection
-/// - Retry mechanism
-/// - User-friendly error messages
-/// - Fallback UI
+// Error Recovery Widget
+// Provides error handling with retry functionality for any widget
+// 
+// Features:
+// - Automatic error detection
+// - Retry mechanism
+// - User-friendly error messages
+// - Fallback UI
 
 import 'package:flutter/material.dart';
 import '../../core/errors/global_error_handler.dart';
@@ -36,6 +36,7 @@ class ErrorRecoveryWidget extends StatefulWidget {
 class _ErrorRecoveryWidgetState extends State<ErrorRecoveryWidget> {
   int _retryCount = 0;
   Object? _error;
+  // ignore: unused_field
   StackTrace? _stackTrace;
 
   @override

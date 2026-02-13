@@ -1,12 +1,12 @@
-/// Error Handler Utility
-/// Provides consistent error handling and user-friendly error messages
-/// 
-/// Features:
-/// - Comprehensive error categorization
-/// - User-friendly error messages
-/// - Retry mechanisms with exponential backoff
-/// - Error logging and tracking support
-/// - Global error boundary widget
+// Error Handler Utility
+// Provides consistent error handling and user-friendly error messages
+// 
+// Features:
+// - Comprehensive error categorization
+// - User-friendly error messages
+// - Retry mechanisms with exponential backoff
+// - Error logging and tracking support
+// - Global error boundary widget
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

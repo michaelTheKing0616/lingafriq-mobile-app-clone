@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/models/tutor_progress_model.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 /// Tutor Progress Dashboard
@@ -161,7 +162,7 @@ class _CefrProgressCard extends StatelessWidget {
           children: [
             Text(
               'CEFR Progress',
-              style: PanAfricanTypography.titleLarge(context)?.copyWith(
+              style: PanAfricanTypography.titleLarge(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -194,7 +195,7 @@ class _CefrProgressCard extends StatelessWidget {
                       child: Center(
                         child: Text(
                           level,
-                          style: PanAfricanTypography.labelMedium(context)?.copyWith(
+                          style: PanAfricanTypography.labelMedium(context).copyWith(
                             color: isCurrent || isCompleted || isNext
                                 ? Theme.of(context).colorScheme.onPrimary
                                 : PanAfricanColors.neutralMedium,
@@ -207,7 +208,7 @@ class _CefrProgressCard extends StatelessWidget {
                       SizedBox(height: PanAfricanSpacing.xs),
                       Text(
                         '${progress.cefrScore.toStringAsFixed(0)}%',
-                        style: PanAfricanTypography.bodySmall(context)?.copyWith(
+                        style: PanAfricanTypography.bodySmall(context).copyWith(
                           color: PanAfricanColors.primary,
                           fontWeight: FontWeight.bold,
                         ),
@@ -245,7 +246,7 @@ class _CefrProgressCard extends StatelessWidget {
                     SizedBox(width: PanAfricanSpacing.sm),
                     Text(
                       'Ready for $nextLevel!',
-                      style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
                         color: PanAfricanColors.accent,
                         fontWeight: FontWeight.bold,
                       ),
@@ -288,7 +289,7 @@ class _SkillLevelsCard extends StatelessWidget {
           children: [
             Text(
               'Skill Levels',
-              style: PanAfricanTypography.titleMedium(context)?.copyWith(
+              style: PanAfricanTypography.titleMedium(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -322,7 +323,7 @@ class _SkillLevelsCard extends StatelessWidget {
                             ),
                             child: Text(
                               'Needs Practice',
-                              style: PanAfricanTypography.labelSmall(context)?.copyWith(
+                              style: PanAfricanTypography.labelSmall(context).copyWith(
                                 color: PanAfricanColors.error,
                               ),
                             ),
@@ -330,7 +331,7 @@ class _SkillLevelsCard extends StatelessWidget {
                         SizedBox(width: PanAfricanSpacing.sm),
                         Text(
                           '${score.toStringAsFixed(0)}%',
-                          style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                          style: PanAfricanTypography.bodyMedium(context).copyWith(
                             fontWeight: FontWeight.bold,
                             color: color,
                           ),
@@ -384,7 +385,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Adaptive Recommendations',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -394,7 +395,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
             if (weakAreas.isNotEmpty) ...[
               Text(
                 'Focus Areas:',
-                style: PanAfricanTypography.labelLarge(context)?.copyWith(
+                style: PanAfricanTypography.labelLarge(context).copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -406,7 +407,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
                   return Chip(
                     label: Text(area),
                     backgroundColor: PanAfricanColors.error.withOpacity(0.1),
-                    labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
+                    labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.error,
                     ),
                   );
@@ -417,7 +418,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
             if (recommendedTopics.isNotEmpty) ...[
               Text(
                 'Recommended Topics:',
-                style: PanAfricanTypography.labelLarge(context)?.copyWith(
+                style: PanAfricanTypography.labelLarge(context).copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -429,7 +430,7 @@ class _AdaptiveRecommendationsCard extends StatelessWidget {
                   return Chip(
                     label: Text(topic),
                     backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                    labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
+                    labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.primary,
                     ),
                   );
@@ -463,7 +464,7 @@ class _StatisticsCard extends StatelessWidget {
           children: [
             Text(
               'Statistics',
-              style: PanAfricanTypography.titleMedium(context)?.copyWith(
+              style: PanAfricanTypography.titleMedium(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -545,7 +546,7 @@ class _StatItem extends StatelessWidget {
         SizedBox(height: PanAfricanSpacing.xs),
         Text(
           value,
-          style: PanAfricanTypography.titleMedium(context)?.copyWith(
+          style: PanAfricanTypography.titleMedium(context).copyWith(
             fontWeight: FontWeight.bold,
             color: color,
           ),

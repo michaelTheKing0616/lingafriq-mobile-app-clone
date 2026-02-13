@@ -1,7 +1,7 @@
-/// Translation Service using NLLB-200
-/// Handles high-quality translation between English and African languages
-/// Uses backend API with fallback to HuggingFace Inference API
-/// Includes rate limiting with exponential backoff and offline support
+// Translation Service using NLLB-200
+// Handles high-quality translation between English and African languages
+// Uses backend API with fallback to HuggingFace Inference API
+// Includes rate limiting with exponential backoff and offline support
 
 import 'dart:convert';
 import 'package:dio/dio.dart';

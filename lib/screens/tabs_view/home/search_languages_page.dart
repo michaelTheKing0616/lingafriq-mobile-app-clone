@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 import '../../../models/language_response.dart';
-import 'home_tab.dart';
 
 /// Pan-African styled search delegate for languages
 class SearchLanguageDelegate extends SearchDelegate<Language?> {
@@ -75,7 +74,7 @@ class SearchLanguageDelegate extends SearchDelegate<Language?> {
     if (query.isEmpty) return languages;
     final lowerQuery = query.toLowerCase();
     return languages.where((lang) {
-      final name = lang.name?.toLowerCase() ?? '';
+      final name = lang.name.toLowerCase();
       return name.contains(lowerQuery);
     }).toList();
   }
@@ -218,7 +217,7 @@ class _SearchLanguageCard extends StatelessWidget {
                 SizedBox(height: PanAfricanSpacing.sm),
                 // Language Name
                 Text(
-                  language.name ?? 'Unknown',
+                  language.name,
                   style: PanAfricanTypography.titleMedium(context),
                   textAlign: TextAlign.center,
                   maxLines: 1,

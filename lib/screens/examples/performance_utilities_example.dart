@@ -1,7 +1,7 @@
-/// Performance Utilities Integration Example
-/// Shows the pattern for integrating performance utilities
-/// 
-/// Copy these patterns to applicable screens
+// Performance Utilities Integration Example
+// Shows the pattern for integrating performance utilities
+// 
+// Copy these patterns to applicable screens
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

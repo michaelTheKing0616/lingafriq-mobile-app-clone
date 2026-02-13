@@ -4,7 +4,7 @@ import 'game_engine.dart';
 import 'game_animation_bridge.dart';
 import 'game_session.dart';
 import 'game_scoring.dart';
-import '../../services/polie_game_client.dart' show PolieGameClient, PolieEvaluationResult, GameEvaluationException;
+import '../../services/polie_game_client.dart' show PolieGameClient, PolieEvaluationResult;
 import '../../services/rive_gamification_service.dart';
 import '../animation/rive_game_guide.dart';
 import 'game_result.dart';

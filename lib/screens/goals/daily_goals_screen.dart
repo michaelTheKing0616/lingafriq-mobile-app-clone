@@ -13,7 +13,6 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DailyGoalsScreen extends ConsumerStatefulWidget {
   const DailyGoalsScreen({Key? key}) : super(key: key);

@@ -107,7 +107,7 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
                 // Scenarios List
                 Text(
                   'Scenarios',
-                  style: PanAfricanTypography.titleLarge(context)?.copyWith(
+                  style: PanAfricanTypography.titleLarge(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -217,7 +217,7 @@ class _OverallStatsCard extends StatelessWidget {
           children: [
             Text(
               'Overall Progress',
-              style: PanAfricanTypography.titleLarge(context)?.copyWith(
+              style: PanAfricanTypography.titleLarge(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -293,7 +293,7 @@ class _StatItem extends StatelessWidget {
         SizedBox(height: PanAfricanSpacing.xs),
         Text(
           value,
-          style: PanAfricanTypography.titleMedium(context)?.copyWith(
+          style: PanAfricanTypography.titleMedium(context).copyWith(
             fontWeight: FontWeight.bold,
             color: color,
           ),
@@ -368,7 +368,7 @@ class _DifficultyProgressCard extends StatelessWidget {
           children: [
             Text(
               'Difficulty Progress',
-              style: PanAfricanTypography.titleMedium(context)?.copyWith(
+              style: PanAfricanTypography.titleMedium(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -384,7 +384,7 @@ class _DifficultyProgressCard extends StatelessWidget {
                       width: 60.w,
                       child: Text(
                         diff,
-                        style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+                        style: PanAfricanTypography.bodyMedium(context).copyWith(
                           fontWeight: isCurrent ? FontWeight.bold : FontWeight.normal,
                           color: isCurrent ? PanAfricanColors.primary : null,
                         ),
@@ -444,7 +444,7 @@ class _ScenarioProgressCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       scenario.scenarioName,
-                      style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -459,7 +459,7 @@ class _ScenarioProgressCard extends StatelessWidget {
                   Chip(
                     label: Text(scenario.category),
                     backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                    labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
+                    labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.primary,
                     ),
                   ),
@@ -467,7 +467,7 @@ class _ScenarioProgressCard extends StatelessWidget {
                   Chip(
                     label: Text(scenario.difficulty),
                     backgroundColor: PanAfricanColors.secondary.withOpacity(0.1),
-                    labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
+                    labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                       color: PanAfricanColors.secondary,
                     ),
                   ),

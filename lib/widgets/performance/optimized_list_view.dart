@@ -1,11 +1,11 @@
-/// Optimized ListView Widget
-/// Provides performance optimizations for large lists
-/// 
-/// Features:
-/// - Lazy loading
-/// - Viewport-based rendering
-/// - Memory-efficient item recycling
-/// - Configurable item extent
+// Optimized ListView Widget
+// Provides performance optimizations for large lists
+// 
+// Features:
+// - Lazy loading
+// - Viewport-based rendering
+// - Memory-efficient item recycling
+// - Configurable item extent
 
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,7 @@
-/// Historical Personality Selection Screen
-/// Browse and select historical African personalities to chat with
-/// 
-/// Production-ready implementation (December 2025)
+// Historical Personality Selection Screen
+// Browse and select historical African personalities to chat with
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

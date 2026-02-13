@@ -1,14 +1,14 @@
-/// ML-based Adaptive Learning Service
-/// World-class personalized learning paths
-/// 
-/// Features:
-/// - ML-based difficulty adjustment
-/// - Learning curve prediction
-/// - Performance-based adaptation
-/// - Personalized content recommendations
-/// - Spaced repetition integration
-/// 
-/// Production-ready implementation (December 2025)
+// ML-based Adaptive Learning Service
+// World-class personalized learning paths
+// 
+// Features:
+// - ML-based difficulty adjustment
+// - Learning curve prediction
+// - Performance-based adaptation
+// - Personalized content recommendations
+// - Spaced repetition integration
+// 
+// Production-ready implementation (December 2025)
 
 import 'dart:async';
 import 'package:dio/dio.dart';
@@ -176,6 +176,7 @@ final adaptiveLearningServiceProvider = Provider<AdaptiveLearningService>((ref) 
 /// - Personalized recommendations
 /// - Performance analysis
 class AdaptiveLearningService {
+  // ignore: unused_field
   final Ref _ref;
   final Dio _dio;
 

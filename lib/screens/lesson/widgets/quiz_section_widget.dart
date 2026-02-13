@@ -185,7 +185,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                     enabled: selectedAnswer != null,
                     child: PanAfricanButton(
                       onPressed: selectedAnswer != null
-                          ? () => _checkAnswer(questionId, selectedAnswer!)
+                          ? () => _checkAnswer(questionId, selectedAnswer)
                           : null,
                       label: isChecked
                           ? (_currentQuestionIndex == questions.length - 1

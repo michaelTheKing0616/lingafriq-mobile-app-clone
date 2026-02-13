@@ -1,14 +1,14 @@
-/// Sentry Error Tracking Service
-/// World-class error tracking and crash reporting
-/// 
-/// Features:
-/// - Automatic crash reporting
-/// - Error tracking with context
-/// - Performance monitoring
-/// - User feedback collection
-/// - Release tracking
-/// 
-/// Uses Sentry SDK for Flutter (December 2025)
+// Sentry Error Tracking Service
+// World-class error tracking and crash reporting
+// 
+// Features:
+// - Automatic crash reporting
+// - Error tracking with context
+// - Performance monitoring
+// - User feedback collection
+// - Release tracking
+// 
+// Uses Sentry SDK for Flutter (December 2025)
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';
@@ -24,6 +24,7 @@ class SentryService {
   SentryService._internal();
 
   bool _initialized = false;
+  // ignore: unused_field
   String? _dsn;
   String? _environment;
   String? _release;

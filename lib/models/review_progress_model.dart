@@ -1,5 +1,5 @@
-/// Review Progress Model
-/// Tracks review sessions, SRS performance, and review statistics
+// Review Progress Model
+// Tracks review sessions, SRS performance, and review statistics
 import 'dart:convert';
 
 /// Review Session Result

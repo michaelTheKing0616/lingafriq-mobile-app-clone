@@ -1,7 +1,7 @@
-/// Environment Configuration
-/// Centralized access to environment variables and API keys
-/// Keys are injected via GitHub Actions secrets during build
-/// Production defaults avoid localhost; override via --dart-define during build.
+// Environment Configuration
+// Centralized access to environment variables and API keys
+// Keys are injected via GitHub Actions secrets during build
+// Production defaults avoid localhost; override via --dart-define during build.
 
 class EnvConfig {
   // Private constructor to prevent instantiation

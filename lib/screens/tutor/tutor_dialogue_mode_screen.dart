@@ -9,7 +9,7 @@ import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:uuid/uuid.dart';
 import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
@@ -541,7 +541,7 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
                         borderRadius: PolieRadius.sm,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: (hints as List).map<Widget>((h) => Padding(
+                          children: hints.map<Widget>((h) => Padding(
                             padding: EdgeInsets.only(bottom: PolieSpacing.xs),
                             child: Text(h.toString(), style: PolieTypography.bodySmall(context)),
                           )).toList(),

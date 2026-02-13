@@ -30,13 +30,14 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
   Future<void> _initializeGame() async {
     setLoading(true); setError(null);
     try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
+      ref.read(polieContentGeneratorProvider);
       // Initialize game content
       setLoading(false);
     } catch (e) {
       setLoading(false); setError(e.toString());
     }
   }
+  // ignore: unused_field
   Map<String, dynamic>? _currentStory;
   List<String> _storyParts = [];
   String? _selectedPart;

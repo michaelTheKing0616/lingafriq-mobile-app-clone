@@ -1,5 +1,5 @@
-/// Offline Service - Manages offline data synchronization and caching
-/// Provides offline-first architecture with automatic sync when online
+// Offline Service - Manages offline data synchronization and caching
+// Provides offline-first architecture with automatic sync when online
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';

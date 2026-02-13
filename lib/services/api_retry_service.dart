@@ -1,14 +1,14 @@
-/// API Retry Service
-/// Implements intelligent retry logic for failed API requests
-/// 
-/// Features:
-/// - Exponential backoff
-/// - Jitter to prevent thundering herd
-/// - Retry only on transient errors
-/// - Circuit breaker integration
-/// - Offline queue support
-/// 
-/// Production-ready implementation
+// API Retry Service
+// Implements intelligent retry logic for failed API requests
+// 
+// Features:
+// - Exponential backoff
+// - Jitter to prevent thundering herd
+// - Retry only on transient errors
+// - Circuit breaker integration
+// - Offline queue support
+// 
+// Production-ready implementation
 
 import 'dart:math';
 import 'package:dio/dio.dart';

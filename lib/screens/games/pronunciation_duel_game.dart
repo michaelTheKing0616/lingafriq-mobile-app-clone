@@ -110,7 +110,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
         category: 'vocabulary',
         type: 'word',
         text: _currentCard!.text,
-        translation: _currentCard!.gloss ?? _currentCard!.text,
+        translation: _currentCard!.gloss,
         difficulty: 0.5,
         qualityScore: 0.0,
       );

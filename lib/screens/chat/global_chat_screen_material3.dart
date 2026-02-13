@@ -41,7 +41,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     List<Map<String, dynamic>> _parseMessageList(dynamic raw) {
       if (raw == null) return [];
       if (raw is List) {
-        return raw.map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()}).toList();
+        return raw.map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()}).toList();
       }
       return [];
     }
@@ -64,7 +64,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           if (raw is List) {
             list = _parseMessageList(raw);
           } else if (raw is Map) {
-            final data = raw as Map;
+            final data = raw;
             list = _parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
           }
           messages.value = list;

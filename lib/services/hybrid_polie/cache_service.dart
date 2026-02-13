@@ -1,5 +1,5 @@
-/// Cache Service for Hybrid Polie
-/// Implements caching for translations and canonical phrases to reduce API calls
+// Cache Service for Hybrid Polie
+// Implements caching for translations and canonical phrases to reduce API calls
 
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';

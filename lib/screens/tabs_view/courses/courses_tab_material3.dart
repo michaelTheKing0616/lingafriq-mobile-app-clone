@@ -5,22 +5,17 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/models/language_response.dart';
-import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 import 'package:lingafriq/widgets/adaptive_progress_indicator.dart';
 import 'package:lingafriq/widgets/error_widet.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/pan_african_app_bar.dart';
-import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
-import 'package:riverpod/riverpod.dart';
 
 /// Beautiful Material 3 Courses Tab with Pan-African Design
 class CoursesTabMaterial3 extends HookConsumerWidget {
@@ -245,7 +240,7 @@ class _ProgressCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          language.name ?? 'Unknown Language',
+                          language.name,
                           style: PanAfricanTypography.titleMedium(context),
                         ),
                         SizedBox(height: PanAfricanSpacing.xs),

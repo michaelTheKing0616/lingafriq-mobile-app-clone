@@ -1,13 +1,13 @@
-/// Integrated Screen Example
-/// Demonstrates how to use all performance utilities, error handling, and analytics together
-/// 
-/// This is a reference implementation showing best practices for:
-/// - Error handling with retry
-/// - Performance tracking
-/// - Caching
-/// - Debounced search
-/// - Optimized list rendering
-/// - Lazy image loading
+// Integrated Screen Example
+// Demonstrates how to use all performance utilities, error handling, and analytics together
+// 
+// This is a reference implementation showing best practices for:
+// - Error handling with retry
+// - Performance tracking
+// - Caching
+// - Debounced search
+// - Optimized list rendering
+// - Lazy image loading
 
 import 'package:flutter/material.dart';
 import '../utils/performance_exports.dart';

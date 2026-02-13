@@ -1,5 +1,5 @@
-/// Credential Storage - Secure storage for user credentials
-/// Uses Flutter Secure Storage for encrypted local storage
+// Credential Storage - Secure storage for user credentials
+// Uses Flutter Secure Storage for encrypted local storage
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

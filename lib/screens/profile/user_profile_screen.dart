@@ -15,7 +15,6 @@ import 'package:lingafriq/widgets/gamification/level_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/currency_display_widget.dart';
 import 'package:lingafriq/widgets/gamification/streak_display_widget.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
-import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 /// User Profile Screen - Pan-African Design System
@@ -116,7 +115,7 @@ class UserProfileScreen extends ConsumerWidget {
                                     width: 100.w,
                                     height: 100.w,
                                     placeholder: _AvatarPlaceholder(
-                                      initial: (user.username ?? 'U')[0]
+                                      initial: user.username[0]
                                           .toUpperCase(),
                                     ),
                                   ),

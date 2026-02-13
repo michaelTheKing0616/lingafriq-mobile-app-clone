@@ -1,22 +1,22 @@
-/// Adaptive Learning Path Service
-/// Sophisticated ML-based learning path adaptation
-/// 
-/// Features:
-/// - Personalized difficulty adjustment
-/// - Spaced repetition optimization (SM-2 algorithm)
-/// - Learning style detection
-/// - Content recommendation based on performance
-/// - Multi-objective optimization (speed vs mastery)
-/// - Forgetting curve prediction
-/// - Optimal review timing
-/// 
-/// Free ML Techniques:
-/// - Collaborative filtering
-/// - Item Response Theory (IRT)
-/// - Bayesian Knowledge Tracing
-/// - Q-learning for path optimization
-/// 
-/// Production-ready implementation
+// Adaptive Learning Path Service
+// Sophisticated ML-based learning path adaptation
+// 
+// Features:
+// - Personalized difficulty adjustment
+// - Spaced repetition optimization (SM-2 algorithm)
+// - Learning style detection
+// - Content recommendation based on performance
+// - Multi-objective optimization (speed vs mastery)
+// - Forgetting curve prediction
+// - Optimal review timing
+// 
+// Free ML Techniques:
+// - Collaborative filtering
+// - Item Response Theory (IRT)
+// - Bayesian Knowledge Tracing
+// - Q-learning for path optimization
+// 
+// Production-ready implementation
 
 import 'dart:math';
 import 'package:lingafriq/utils/structured_logger.dart';

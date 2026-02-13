@@ -112,7 +112,7 @@ class CurriculumService {
         return cached;
       }
 
-      final polieGenerator = _ref.read(polieContentGeneratorProvider);
+      _ref.read(polieContentGeneratorProvider);
       
       // Generate comprehensive lesson content
       final systemPrompt = '''You are Polie, an expert language tutor for $language. Generate comprehensive lesson content for a $level level lesson titled "$lessonTitle".
@@ -182,7 +182,7 @@ Return structured JSON with: grammar_explanations, dialogue, examples, cultural_
         return cached;
       }
 
-      final polieGenerator = _ref.read(polieContentGeneratorProvider);
+      _ref.read(polieContentGeneratorProvider);
       final groqChatNotifier = _ref.read(groqChatProvider.notifier);
       
       final systemPrompt = '''You are Polie, a native $language speaker. Generate a natural, culturally-appropriate dialogue between two speakers.

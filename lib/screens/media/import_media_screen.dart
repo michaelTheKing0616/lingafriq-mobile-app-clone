@@ -2,20 +2,15 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/api_service.dart';
-import 'package:lingafriq/utils/integration_helpers.dart';
-import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
-import 'package:lingafriq/providers/navigation_provider.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
   const ImportMediaScreen({Key? key}) : super(key: key);
@@ -441,7 +436,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
 
       final path = result.files.single.path!;
       final name = result.files.single.name;
-      final ext = (name.split('.').lastOrNull?.toString() ?? '').toLowerCase();
+      final ext = (name.split('.').lastOrNull.toString()).toLowerCase();
 
       // Text: read directly (safe; no binary)
       if (ext == 'txt') {
@@ -785,7 +780,7 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
             Navigator.pushNamed(context, '/lesson-detail', arguments: {'lessonId': lessonId})
                 .catchError((_) => Navigator.pushNamed(context, '/curriculum'));
           } else {
-            Navigator.pushNamed(context, '/curriculum').catchError((_) {});
+            Navigator.pushNamed(context, '/curriculum').catchError((_) => Future.value(null));
           }
         }
       } else {

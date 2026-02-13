@@ -1,5 +1,5 @@
-/// Tutor Progress Service
-/// Manages tutor mode progress, CEFR advancement, and adaptive difficulty
+// Tutor Progress Service
+// Manages tutor mode progress, CEFR advancement, and adaptive difficulty
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';

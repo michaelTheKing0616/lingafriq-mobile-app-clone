@@ -8,6 +8,7 @@ import 'social_audio_cache.dart';
 /// Social Audio Service - Manages Spaces-like audio rooms
 /// Full backend integration with no placeholders
 class SocialAudioService {
+  // ignore: unused_field
   final ApiProvider _api;
   final Dio _dio;
 

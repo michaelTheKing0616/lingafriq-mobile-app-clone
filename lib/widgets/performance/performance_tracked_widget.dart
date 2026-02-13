@@ -1,10 +1,10 @@
-/// Performance Tracked Widget
-/// Wraps widgets to automatically track performance metrics
-/// 
-/// Features:
-/// - Automatic build time tracking
-/// - Render time measurement
-/// - Memory usage monitoring
+// Performance Tracked Widget
+// Wraps widgets to automatically track performance metrics
+// 
+// Features:
+// - Automatic build time tracking
+// - Render time measurement
+// - Memory usage monitoring
 
 import 'package:flutter/material.dart';
 import '../../services/performance/performance_monitor_integrated.dart';

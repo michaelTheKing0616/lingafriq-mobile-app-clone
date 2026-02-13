@@ -7,7 +7,6 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 
 class GlobalProgressScreen extends ConsumerStatefulWidget {

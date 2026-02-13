@@ -1,5 +1,5 @@
-/// Screen Helper Utilities
-/// Provides wrappers and helpers for consistent error handling and performance optimization across all screens
+// Screen Helper Utilities
+// Provides wrappers and helpers for consistent error handling and performance optimization across all screens
 
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';

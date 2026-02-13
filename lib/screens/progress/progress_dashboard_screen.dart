@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../utils/error_handler.dart' hide ErrorBoundary;
-import '../../utils/integration_helpers.dart';
-import '../../utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lingafriq/providers/progress_tracking_provider.dart';

@@ -64,7 +64,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                 // Header
                 Text(
                   'Scenario Complete! 🎉',
-                  style: PanAfricanTypography.headlineMedium(context)?.copyWith(
+                  style: PanAfricanTypography.headlineMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                     color: PanAfricanColors.primary,
                   ),
@@ -102,7 +102,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                             children: [
                               Text(
                                 '+${xpEarned.value} XP',
-                                style: PanAfricanTypography.headlineSmall(context)?.copyWith(
+                                style: PanAfricanTypography.headlineSmall(context).copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: PanAfricanColors.accent,
                                 ),
@@ -288,7 +288,7 @@ class _ScoreCard extends StatelessWidget {
             // Score
             Text(
               '$score',
-              style: PanAfricanTypography.displaySmall(context)?.copyWith(
+              style: PanAfricanTypography.displaySmall(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: PanAfricanColors.primary,
               ),
@@ -347,7 +347,7 @@ class _MetricItem extends StatelessWidget {
         SizedBox(height: PanAfricanSpacing.xs),
         Text(
           value,
-          style: PanAfricanTypography.titleMedium(context)?.copyWith(
+          style: PanAfricanTypography.titleMedium(context).copyWith(
             fontWeight: FontWeight.bold,
             color: color,
           ),
@@ -382,7 +382,7 @@ class _PerformanceMetrics extends StatelessWidget {
           children: [
             Text(
               'Performance Summary',
-              style: PanAfricanTypography.titleMedium(context)?.copyWith(
+              style: PanAfricanTypography.titleMedium(context).copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -446,7 +446,7 @@ class _MetricRow extends StatelessWidget {
         ),
         Text(
           value,
-          style: PanAfricanTypography.bodyMedium(context)?.copyWith(
+          style: PanAfricanTypography.bodyMedium(context).copyWith(
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -479,7 +479,7 @@ class _VocabularySection extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Vocabulary Learned',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -493,7 +493,7 @@ class _VocabularySection extends StatelessWidget {
                 return Chip(
                   label: Text(word),
                   backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                  labelStyle: PanAfricanTypography.bodySmall(context)?.copyWith(
+                  labelStyle: PanAfricanTypography.bodySmall(context).copyWith(
                     color: PanAfricanColors.primary,
                   ),
                 );
@@ -530,7 +530,7 @@ class _GrammarSection extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Grammar Points',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),

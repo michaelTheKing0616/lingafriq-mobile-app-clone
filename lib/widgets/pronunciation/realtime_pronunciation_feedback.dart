@@ -1,15 +1,15 @@
-/// Real-time Pronunciation Feedback Widget
-/// Elsa Speak-level real-time feedback during recording
-/// 
-/// Features:
-/// - Real-time waveform visualization
-/// - Phoneme highlighting
-/// - Instant correction indicators
-/// - Visual pronunciation guide
-/// - Tone visualization
-/// - Fluency meter
-/// 
-/// Production-ready implementation (December 2025)
+// Real-time Pronunciation Feedback Widget
+// Elsa Speak-level real-time feedback during recording
+// 
+// Features:
+// - Real-time waveform visualization
+// - Phoneme highlighting
+// - Instant correction indicators
+// - Visual pronunciation guide
+// - Tone visualization
+// - Fluency meter
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

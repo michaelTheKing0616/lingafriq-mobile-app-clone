@@ -1,5 +1,5 @@
-/// Material 3 Motion System
-/// Implements Material 3 motion patterns and transitions
+// Material 3 Motion System
+// Implements Material 3 motion patterns and transitions
 
 import 'package:flutter/material.dart';
 

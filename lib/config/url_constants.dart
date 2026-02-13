@@ -1,7 +1,7 @@
-/// Centralized URL constants for the LingAfriq app.
-/// All external service URLs should be defined here or via EnvConfig/SecretsManager.
-/// Verified against official docs (Jan 2025).
-/// See APP_URLS_AUDIT.md for full audit and override instructions.
+// Centralized URL constants for the LingAfriq app.
+// All external service URLs should be defined here or via EnvConfig/SecretsManager.
+// Verified against official docs (Jan 2025).
+// See APP_URLS_AUDIT.md for full audit and override instructions.
 
 class UrlConstants {
   UrlConstants._();

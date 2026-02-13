@@ -1,5 +1,5 @@
-/// Performance Utilities
-/// Helper functions for optimizing app performance
+// Performance Utilities
+// Helper functions for optimizing app performance
 
 import 'dart:async';
 import 'package:flutter/material.dart';

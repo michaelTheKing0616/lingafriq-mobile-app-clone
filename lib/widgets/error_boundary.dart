@@ -23,6 +23,7 @@ class ErrorBoundary extends StatefulWidget {
 
 class _ErrorBoundaryState extends State<ErrorBoundary> {
   bool _hasError = false;
+  // ignore: unused_field
   String? _errorMessage;
 
   @override

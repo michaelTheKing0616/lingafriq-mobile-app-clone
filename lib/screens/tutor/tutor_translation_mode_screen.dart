@@ -8,7 +8,7 @@ import 'package:lingafriq/utils/supported_languages.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode, GroqChatProvider;
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
 import 'package:lingafriq/services/hybrid_polie/hybrid_polie_orchestrator.dart';
 import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';

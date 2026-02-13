@@ -1,11 +1,11 @@
-/// Polie Mention Handler Service
-/// Detects @Polie mentions in chat messages and triggers AI assistance
-/// 
-/// Features:
-/// - Case-insensitive @Polie detection
-/// - Extracts query text after mention
-/// - Provides inline AI responses in chat
-/// - Supports multiple mention patterns (@polie, @Polie, @POLIE)
+// Polie Mention Handler Service
+// Detects @Polie mentions in chat messages and triggers AI assistance
+// 
+// Features:
+// - Case-insensitive @Polie detection
+// - Extracts query text after mention
+// - Provides inline AI responses in chat
+// - Supports multiple mention patterns (@polie, @Polie, @POLIE)
 
 import 'dart:async';
 import 'package:flutter/foundation.dart';

@@ -17,7 +17,6 @@ import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../providers/dio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'base_game_screen.dart';
-import '../../widgets/skeleton_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 
@@ -231,6 +230,7 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
   PhraseCard? _currentCard;
   String? _selectedWord;
   List<String> _wordOptions = [];
+  // ignore: unused_field
   int _score = 0;
   bool _showResult = false;
   bool _isCorrect = false;
@@ -262,12 +262,12 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
   }
 
   List<String> _generateWordOptions(PhraseCard card) {
-    final options = [card.gloss ?? card.text];
+    final options = [card.gloss];
     // Add 3 random wrong options from other cards
     final otherCards = _cards.where((c) => c.cardId != card.cardId).toList();
     otherCards.shuffle(Random());
     for (int i = 0; i < 3 && i < otherCards.length; i++) {
-      options.add(otherCards[i].gloss ?? otherCards[i].text);
+      options.add(otherCards[i].gloss);
     }
     options.shuffle(Random());
     return options;
@@ -278,7 +278,7 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
     
     setState(() {
       _selectedWord = word;
-      _isCorrect = word == (_currentCard!.gloss ?? _currentCard!.text);
+      _isCorrect = word == _currentCard!.gloss;
       _showResult = true;
       if (_isCorrect) _score++;
     });
@@ -296,7 +296,7 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
       confidence: _isCorrect ? 1.0 : 0.0,
       feedback: {
         'selected_word': word,
-        'correct_word': _currentCard!.gloss ?? _currentCard!.text,
+        'correct_word': _currentCard!.gloss,
         'image_url': _currentCard!.imageUrl,
       },
     );
@@ -389,7 +389,7 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
                                       ? Colors.green
                                       : (!_isCorrect && word == _selectedWord
                                           ? Colors.red
-                                          : (word == (_currentCard!.gloss ?? _currentCard!.text) && _showResult
+                                          : (word == _currentCard!.gloss && _showResult
                                               ? Colors.green.shade100
                                               : null)))
                                   : PanAfricanColors.primary,
@@ -447,6 +447,7 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
   String? _targetLocation;
   int _currentRound = 0;
   final int _maxRounds = 5;
+  // ignore: unused_field
   int _score = 0;
   bool _showResult = false;
 
@@ -478,7 +479,7 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
       final random = Random();
       for (int i = 0; i < _cards.length && i < 8; i++) {
         final card = _cards[i];
-        _wordPositions[card.gloss ?? card.text] = Offset(
+        _wordPositions[card.gloss] = Offset(
           random.nextDouble() * 0.8 + 0.1, // 0.1 to 0.9
           random.nextDouble() * 0.8 + 0.1,
         );
@@ -505,7 +506,7 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
           : 0;
 
       completeTurn(
-        cardId: _cards.firstWhere((c) => (c.gloss ?? c.text) == word).cardId,
+        cardId: _cards.firstWhere((c) => c.gloss == word).cardId,
         result: isCorrect ? GameResult.correct : GameResult.incorrect,
         durationMs: duration,
         confidence: isCorrect ? 1.0 : 0.0,
@@ -571,7 +572,7 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
                     borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                   ),
                   child: Text(
-                    _targetLocation ?? '',
+                    _targetLocation!,
                     style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -1590,6 +1591,7 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
   int _currentStepIndex = 0;
   List<String> _stepOptions = [];
   String? _selectedStep;
+  // ignore: unused_field
   int _score = 0;
   bool _showResult = false;
   bool _isCorrect = false;

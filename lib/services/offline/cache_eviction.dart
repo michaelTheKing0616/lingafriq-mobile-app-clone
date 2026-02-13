@@ -1,14 +1,14 @@
-/// Cache Eviction Policies
-/// Implements intelligent cache management with eviction strategies
-/// 
-/// Features:
-/// - LRU (Least Recently Used) eviction
-/// - Size-based eviction
-/// - Time-based eviction
-/// - Priority-based eviction
-/// - Configurable limits
-/// 
-/// Production-ready implementation (December 2025)
+// Cache Eviction Policies
+// Implements intelligent cache management with eviction strategies
+// 
+// Features:
+// - LRU (Least Recently Used) eviction
+// - Size-based eviction
+// - Time-based eviction
+// - Priority-based eviction
+// - Configurable limits
+// 
+// Production-ready implementation (December 2025)
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/utils/structured_logger.dart';

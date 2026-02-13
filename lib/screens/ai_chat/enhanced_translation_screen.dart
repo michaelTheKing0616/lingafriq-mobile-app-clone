@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -799,7 +798,7 @@ class _PrimaryTranslationCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Translation',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -815,7 +814,7 @@ class _PrimaryTranslationCard extends StatelessWidget {
             SizedBox(height: PanAfricanSpacing.md),
             Text(
               entry.primaryTranslation,
-              style: PanAfricanTypography.headlineSmall(context)?.copyWith(
+              style: PanAfricanTypography.headlineSmall(context).copyWith(
                 fontWeight: FontWeight.bold,
                 color: PanAfricanColors.primary,
               ),
@@ -851,7 +850,7 @@ class _AlternativesCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Alternative Translations',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -874,7 +873,7 @@ class _AlternativesCard extends StatelessWidget {
                       child: Center(
                         child: Text(
                           '${entry.key + 1}',
-                          style: PanAfricanTypography.labelSmall(context)?.copyWith(
+                          style: PanAfricanTypography.labelSmall(context).copyWith(
                             color: PanAfricanColors.secondary,
                             fontWeight: FontWeight.bold,
                           ),
@@ -923,7 +922,7 @@ class _GrammarBreakdownCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Grammar Breakdown',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -940,7 +939,7 @@ class _GrammarBreakdownCard extends StatelessWidget {
                       children: [
                         Text(
                           item.word,
-                          style: PanAfricanTypography.titleSmall(context)?.copyWith(
+                          style: PanAfricanTypography.titleSmall(context).copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -948,7 +947,7 @@ class _GrammarBreakdownCard extends StatelessWidget {
                         Chip(
                           label: Text(item.partOfSpeech),
                           backgroundColor: PanAfricanColors.accent.withOpacity(0.1),
-                          labelStyle: PanAfricanTypography.labelSmall(context)?.copyWith(
+                          labelStyle: PanAfricanTypography.labelSmall(context).copyWith(
                             color: PanAfricanColors.accent,
                           ),
                         ),
@@ -996,7 +995,7 @@ class _CulturalContextCard extends StatelessWidget {
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Cultural Context',
-                  style: PanAfricanTypography.titleMedium(context)?.copyWith(
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -1024,7 +1023,7 @@ class _CulturalContextCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         this.context.usageNote!,
-                        style: PanAfricanTypography.bodySmall(context)?.copyWith(
+                        style: PanAfricanTypography.bodySmall(context).copyWith(
                           color: PanAfricanColors.tertiary,
                         ),
                       ),
