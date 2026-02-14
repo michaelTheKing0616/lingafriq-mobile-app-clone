@@ -12,7 +12,6 @@ class SocialFeedNotifier extends Notifier<List<SocialFeedItem>> {
   }
 
   void _setupSocketListeners() {
-    final socketNotifier = ref.read(socketProvider.notifier);
     // Listen for real-time feed updates via Socket.io
     // This would be implemented based on your socket setup
   }

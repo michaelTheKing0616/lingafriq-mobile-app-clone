@@ -142,9 +142,6 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
     }
     
     // Use API data
-    final featuredContent = _featuredArticles;
-    final allContent = _allArticles;
-
     return Scaffold(
       backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
       body: Stack(
@@ -337,76 +334,6 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildAllContent(
-    BuildContext context,
-    List<CultureContent> featured,
-    List<CultureContent> all,
-    bool isDark,
-  ) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Featured Section
-          if (featured.isNotEmpty) ...[
-            Padding(
-              padding: EdgeInsets.all(16.sp),
-              child: Text(
-                'Featured',
-                style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 280.sp,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: 16.sp),
-                itemCount: featured.length,
-                itemBuilder: (context, index) {
-                  return _buildFeaturedCard(context, featured[index], isDark);
-                },
-              ),
-            ),
-          ],
-          
-          // All Content
-          Padding(
-            padding: EdgeInsets.all(16.sp),
-            child: Text(
-                'Explore',
-                style: TextStyle(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-            ),
-          ),
-          ...all.map((content) => _buildContentCard(context, content, isDark)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryContent(BuildContext context, ContentType type, bool isDark) {
-    // Use API data filtered by type, with Polie fallback if empty
-    final apiContent = _allArticles.where((c) => c.type == type).toList();
-    final content = apiContent.isNotEmpty 
-        ? apiContent 
-        : _getPolieFallbackContent(type);
-    
-    return ListView.builder(
-      padding: EdgeInsets.all(16.sp),
-      itemCount: content.length,
-      itemBuilder: (context, index) {
-        return _buildContentCard(context, content[index], isDark);
-      },
     );
   }
 
@@ -792,34 +719,6 @@ class _CultureMagazineScreenState extends ConsumerState<CultureMagazineScreen>
         return 'African culture is a vibrant mosaic of traditions, languages, and customs...';
       case ContentType.recipe:
         return 'Traditional African cuisine reflects the continent\'s rich agricultural heritage...';
-    }
-  }
-
-  /// Generate Polie content on-demand (async, for future use)
-  Future<List<CultureContent>> _generatePolieContent(ContentType type, String language) async {
-    try {
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      final articleData = await polieGenerator.generateCulturalArticle(
-        language: language,
-        type: _contentTypeToString(type),
-      );
-
-      return [
-        CultureContent(
-          id: 'polie_${DateTime.now().millisecondsSinceEpoch}',
-          title: articleData['title']?.toString() ?? _getTypeTitle(type),
-          description: articleData['description']?.toString() ?? _getTypeDescription(type),
-          type: type,
-          content: articleData['content']?.toString() ?? _getTypeContent(type),
-          language: language,
-          country: '🇿🇦',
-          publishDate: articleData['publishDate'] as DateTime? ?? DateTime.now(),
-          isFeatured: false,
-        ),
-      ];
-    } catch (e) {
-      debugPrint('Error generating Polie content: $e');
-      return _getPolieFallbackContent(type);
     }
   }
 

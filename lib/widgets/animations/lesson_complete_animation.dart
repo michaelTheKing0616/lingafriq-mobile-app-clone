@@ -147,8 +147,6 @@ class _LessonCompleteAnimationState extends State<LessonCompleteAnimation>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Material(
       color: Colors.black.withOpacity(0.7),
       child: Stack(

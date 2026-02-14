@@ -142,11 +142,6 @@ class ConversationPracticeEnhancer {
         return ConversationFlow.greeting;
       }
 
-      final lastUserMessage = messages.lastWhere(
-        (m) => m['role'] == 'user',
-        orElse: () => {'content': ''},
-      )['content'] as String;
-
       final lowerMessage = currentMessage.toLowerCase();
 
       // Analyze message content to determine flow

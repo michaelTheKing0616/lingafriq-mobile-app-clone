@@ -74,7 +74,6 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
 
           // Listen for remote participants via room events
           room.addListener(() {
-            final remoteParts = <String, RemoteParticipant>{};
             final participantList = <Map<String, dynamic>>[
               {
                 'name': localP?.name ?? 'You',
@@ -266,10 +265,6 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
           // This would typically send updates via WebSocket or LiveKit data channel
           if (room != null) {
             // Send drawing updates through LiveKit data channel
-            final data = {
-              'type': 'whiteboard_update',
-              'points': points.map((p) => p.toJson()).toList(),
-            };
             // room.localParticipant?.publishData(
             //   jsonEncode(data).codeUnits,
             //   reliable: true,

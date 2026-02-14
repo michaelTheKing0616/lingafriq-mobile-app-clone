@@ -459,8 +459,6 @@ Respond in JSON format:
       final user = _ref.read(userProvider);
       if (user == null) return;
       
-      final api = _ref.read(apiProvider.notifier);
-      
       // Sync vocabulary data
       // Note: This would need a corresponding backend endpoint
       // For now, we'll just save locally

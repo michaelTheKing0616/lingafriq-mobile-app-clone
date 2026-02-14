@@ -38,7 +38,7 @@ class _SplashScreenMaterial3State extends ConsumerState<SplashScreenMaterial3> {
                 }
               },
             );
-      } catch (e, st) {
+      } catch (e) {
         if (mounted) {
           ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());
         }

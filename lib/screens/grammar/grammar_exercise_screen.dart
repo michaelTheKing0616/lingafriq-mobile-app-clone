@@ -256,8 +256,6 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
 
   void _showFinalSummary() async {
     final multiplier = _comboTracker.currentMultiplier;
-    final baseXP = _exercises.length * 10;
-    final xpEarned = (baseXP * multiplier).round();
 
     await ref.read(gamificationProvider.notifier).awardXP(
       'grammar_exercise',

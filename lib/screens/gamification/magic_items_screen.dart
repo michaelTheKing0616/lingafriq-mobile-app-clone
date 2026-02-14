@@ -75,62 +75,6 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
     }
   }
 
-  Future<void> _claimItem(String itemCode) async {
-    setState(() => _isLoading = true);
-    try {
-      final itemsService = ref.read(itemsServiceProvider);
-      final user = ref.read(userProvider);
-      
-      if (user != null) {
-        await itemsService.claimItem(user.id.toString(), itemCode);
-        await _loadItems(); // Reload inventory
-        
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Item claimed successfully!'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
-  Future<void> _useItem(String itemId) async {
-    setState(() => _isLoading = true);
-    try {
-      final itemsService = ref.read(itemsServiceProvider);
-      final user = ref.read(userProvider);
-      
-      if (user != null) {
-        final result = await itemsService.useItem(user.id.toString(), itemId);
-        await _loadItems(); // Reload inventory
-        
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Item used! Effect: ${result['effect']}'),
-              backgroundColor: Colors.green,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ErrorHandler.showError(context, e);
-      }
-    } finally {
-      setState(() => _isLoading = false);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final items = _availableItems.isNotEmpty 

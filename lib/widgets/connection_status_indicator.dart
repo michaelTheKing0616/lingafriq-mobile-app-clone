@@ -68,7 +68,6 @@ class _ConnectionBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = backgroundColor ?? 
         (status.isOffline 
             ? Colors.red.withOpacity(0.9)

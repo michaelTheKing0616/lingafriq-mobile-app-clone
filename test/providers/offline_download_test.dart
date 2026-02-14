@@ -66,12 +66,8 @@ void main() {
 
   group('OfflineDownloadNotifier', () {
     late ProviderContainer container;
-    late MockLocalDatabaseService mockDb;
-    late MockLessonDownloadService mockDownloadService;
 
     setUp(() {
-      mockDb = MockLocalDatabaseService();
-      mockDownloadService = MockLessonDownloadService();
       container = ProviderContainer(
         overrides: [
           // Note: In real implementation, these would be properly mocked
@@ -112,8 +108,6 @@ void main() {
     });
 
     test('should prevent duplicate downloads', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Start download
       // Note: In real test, we would mock the download service
       // and verify that downloadSingleLesson is not called twice
@@ -121,8 +115,6 @@ void main() {
     });
 
     test('should update state after successful download', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Download lesson
       // Note: In real test, we would:
       // 1. Mock downloadSingleLesson to succeed
@@ -132,8 +124,6 @@ void main() {
     });
 
     test('should handle download errors gracefully', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Simulate download error
       // Note: In real test, we would:
       // 1. Mock downloadSingleLesson to throw error
@@ -143,8 +133,6 @@ void main() {
     });
 
     test('should delete downloaded lesson', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Delete lesson
       // Note: In real test, we would:
       // 1. Add a lesson to downloadedLessonIds
@@ -153,8 +141,6 @@ void main() {
     });
 
     test('should download all lessons for language', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Download all lessons
       // Note: In real test, we would:
       // 1. Mock downloadLessonPack to succeed
@@ -163,8 +149,6 @@ void main() {
     });
 
     test('should prevent concurrent downloads', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Try to download multiple lessons simultaneously
       // Note: In real test, we would verify that
       // only one download happens at a time
@@ -182,8 +166,6 @@ void main() {
     });
 
     test('should calculate storage size', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Get storage size
       // Note: In real test, we would:
       // 1. Mock getDatabaseSizeBytes to return 1000
@@ -192,8 +174,6 @@ void main() {
     });
 
     test('should handle storage size calculation errors', () async {
-      final notifier = container.read(offlineDownloadProvider.notifier);
-      
       // Simulate error in storage calculation
       // Note: In real test, we would:
       // 1. Mock getDatabaseSizeBytes to throw error

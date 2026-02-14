@@ -56,15 +56,12 @@ class _ConversationScenariosScreenState extends ConsumerState<ConversationScenar
   }
 
   Future<void> _loadProgress() async {
-    final prefs = await SharedPreferences.getInstance();
-    final progressJson = prefs.getString('scenario_progress') ?? '{}';
     // Parse progress JSON and populate _progressMap
     // For now, using empty map
   }
 
   Future<void> _saveProgress(String scenarioId, ScenarioProgress progress) async {
     _progressMap[scenarioId] = progress;
-    final prefs = await SharedPreferences.getInstance();
     // Save progress to SharedPreferences
   }
 

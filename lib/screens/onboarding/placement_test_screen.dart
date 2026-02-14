@@ -405,7 +405,6 @@ class PlacementTestScreen extends HookConsumerWidget {
                       if (currentQuestion['type'] == 'multiple_choice' &&
                           currentQuestion['options'] != null)
                         ...(currentQuestion['options'] as List).asMap().entries.map((entry) {
-                          final index = entry.key;
                           final option = entry.value;
                           final isSelected = answers.value[currentQuestionIndex.value] == option;
 

@@ -260,7 +260,6 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
 
   Widget _buildUserCard(BuildContext context, Map<String, dynamic> userData, bool isDark) {
     final username = userData['username'] ?? 'Anonymous';
-    final userId = userData['userId'] ?? '';
     final isOnline = userData['isOnline'] ?? true;
     final colorScheme = Theme.of(context).colorScheme;
 

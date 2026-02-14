@@ -311,7 +311,6 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       final baseXP = _calculateXP(endedSession);
       final multiplier = _comboTracker.currentMultiplier;
       final xpEarned = (baseXP * multiplier).round();
-      final wordsLearned = endedSession.correctCount;
 
       // Award gamification with combo multiplier
       await ref.read(gamificationProvider.notifier).awardXP(
@@ -417,7 +416,6 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
 
   Widget _buildStatRow(IconData icon, String label, String value, {bool isHighlight = false}) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final highlightColor = isHighlight ? PanAfricanColors.primary : null;
     
     return Padding(
       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xs),

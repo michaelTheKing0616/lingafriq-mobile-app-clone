@@ -732,7 +732,6 @@ class _TribesTab extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final tribeData = useState<Map<String, dynamic>?>(null);
     final isLoading = useState(true);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     Future<void> _loadTribeData() async {
       isLoading.value = true;

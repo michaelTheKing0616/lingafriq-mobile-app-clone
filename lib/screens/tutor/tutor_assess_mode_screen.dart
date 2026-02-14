@@ -447,7 +447,6 @@ class _RadarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final keys = dimensions.keys.toList();
     if (keys.isEmpty) return const SizedBox.shrink();
-    final n = keys.length;
     final values = keys.map((k) {
       final v = dimensions[k];
       if (v is num) return v.toDouble().clamp(0.0, 1.0);

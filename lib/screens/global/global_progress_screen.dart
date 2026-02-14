@@ -41,8 +41,6 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
     final isDark = context.isDarkMode;
     final textPrimary =
         isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight;
-    final textSecondary =
-        isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight;
     final leaderboardState = ref.watch(leaderboardProvider);
     final profiles = leaderboardState.profiles.value ?? [];
     

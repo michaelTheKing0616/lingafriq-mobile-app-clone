@@ -187,7 +187,6 @@ class SimpleCache {
 
   /// Get cache stats
   Map<String, dynamic> getStats() {
-    final now = DateTime.now();
     int expired = 0;
     int active = 0;
 

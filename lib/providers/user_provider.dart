@@ -25,7 +25,6 @@ class UserProvider extends Notifier<ProfileModel?> {
     if (state != null) {
       // Note: completed_point is final in ProfileModel, so we need to create a new instance
       // This is a simplified implementation - in production, you'd update via API
-      final currentPoints = state!.completed_point;
       // The actual update should happen via API, this is just for local state
       // The API call should update the backend and then refresh the user profile
     }

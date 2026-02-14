@@ -412,66 +412,6 @@ class ProfileTabMaterial3 extends HookConsumerWidget {
   }
 }
 
-class _ProfileImageBuilder extends ConsumerWidget {
-  final VoidCallback? onTap;
-  final bool showEditIcon;
-
-  const _ProfileImageBuilder({
-    required this.onTap,
-    this.showEditIcon = true,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
-    final current = kAvatarsList.containsKey(user?.avatar)
-        ? kAvatarsList[user?.avatar]!
-        : kAvatarsList.values.first;
-
-    return Stack(
-      children: [
-        Container(
-          width: 0.25.sw,
-          height: 0.25.sw,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: PanAfricanGradients.savannaGold,
-            boxShadow: PanAfricanShadows.glowGold(0.6),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(1000),
-            child: Image.asset(
-              current,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        if (showEditIcon)
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: InkWell(
-              onTap: onTap,
-              child: Container(
-                padding: EdgeInsets.all(4.w),
-                decoration: BoxDecoration(
-                  color: PanAfricanColors.cardLight,
-                  shape: BoxShape.circle,
-                  boxShadow: PanAfricanShadows.sm,
-                ),
-                child: Icon(
-                  Icons.edit_outlined,
-                  color: PanAfricanColors.primary,
-                  size: 20.sp,
-                ),
-              ),
-            ),
-          ),
-      ],
-    );
-  }
-}
-
 class _ProfileCard extends StatelessWidget {
   final Widget child;
   final VoidCallback onTap;

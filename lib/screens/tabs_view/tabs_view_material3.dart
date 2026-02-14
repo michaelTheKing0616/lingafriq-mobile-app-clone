@@ -74,7 +74,6 @@ class _TabsViewMaterial3State extends ConsumerState<TabsViewMaterial3> {
   Widget build(BuildContext context) {
     final index = ref.watch(tabIndexProvider);
     final scaffoldKey = ref.watch(scaffoldKeyProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       key: scaffoldKey,

@@ -33,7 +33,6 @@ class LearningPathWidget extends StatelessWidget {
 
     final screenWidth = MediaQuery.of(context).size.width;
     final nodeRadius = nodeSize / 2;
-    final pathWidth = screenWidth - (horizontalPadding * 2);
     final leftX = horizontalPadding + nodeRadius;
     final rightX = screenWidth - horizontalPadding - nodeRadius;
     final centerX = screenWidth / 2;

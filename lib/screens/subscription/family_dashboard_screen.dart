@@ -62,7 +62,6 @@ class _FamilyDashboardScreenState
 
   @override
   Widget build(BuildContext context) {
-    final sub = ref.watch(subscriptionProvider);
     final canAccessFamily =
         ref.read(subscriptionProvider.notifier).canAccessFamilyDashboard();
     final isDark = context.isDarkMode;

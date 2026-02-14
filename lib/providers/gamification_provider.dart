@@ -71,7 +71,7 @@ class GamificationProvider extends Notifier<BaseProviderState>
           // Update local state from backend response (authoritative totals)
           try {
             final userXP = await ref.read(apiProvider.notifier).getUserXP(user.id.toString());
-            if (userXP != null && userXP is Map<String, dynamic>) {
+            if (userXP != null) {
               final totalXP = (userXP['totalXP'] as num?)?.toInt() ?? _gamification.xp;
               final backendLevel = (userXP['level'] as num?)?.toInt();
               final newLevel = backendLevel ?? LevelTitles.getLevelFromXP(totalXP);

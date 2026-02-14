@@ -300,7 +300,6 @@ The user is learning $userLanguage.''';
         break;
         
       case PolieAssistanceType.general:
-      default:
         systemContext = '''You are Polie, a friendly African language learning assistant.
 Help with any language learning questions. Be encouraging and helpful.
 If the question is about a specific language, provide relevant cultural context.
@@ -353,7 +352,6 @@ The user is learning $userLanguage.''';
         emoji = '🗣️';
         break;
       case PolieAssistanceType.general:
-      default:
         emoji = '🤖';
     }
     

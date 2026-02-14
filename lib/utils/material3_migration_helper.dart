@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 class Material3Helper {
   /// Get Material 3 button style for primary actions
   static ButtonStyle filledButtonStyle(BuildContext context) {
-    final theme = Theme.of(context);
     return FilledButton.styleFrom(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       shape: RoundedRectangleBorder(
@@ -19,7 +18,6 @@ class Material3Helper {
 
   /// Get Material 3 button style for secondary actions
   static ButtonStyle outlinedButtonStyle(BuildContext context) {
-    final theme = Theme.of(context);
     return OutlinedButton.styleFrom(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       shape: RoundedRectangleBorder(
@@ -30,7 +28,6 @@ class Material3Helper {
 
   /// Get Material 3 button style for text actions
   static ButtonStyle textButtonStyle(BuildContext context) {
-    final theme = Theme.of(context);
     return TextButton.styleFrom(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     );

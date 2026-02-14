@@ -131,7 +131,6 @@ class DiacriticsEnforcer {
     
     // Simple Levenshtein-based similarity
     final longer = a.length > b.length ? a : b;
-    final shorter = a.length > b.length ? b : a;
     final editDistance = _levenshteinDistance(a, b);
     return (longer.length - editDistance) / longer.length;
   }

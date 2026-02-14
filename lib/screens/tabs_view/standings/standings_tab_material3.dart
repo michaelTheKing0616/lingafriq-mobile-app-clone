@@ -91,6 +91,7 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                           ],
                           selected: {index},
                           onSelectionChanged: (Set<int> newSelection) {
+                            // ignore: invalid_use_of_visible_for_testing_member
                             ref.read(_tabIndexProvider.notifier).state =
                                 newSelection.first;
                           },

@@ -205,7 +205,6 @@ class EmotionSystem {
         );
         
       case AvatarContext.idle:
-      default:
         return EmotionState.simple(AvatarEmotion.idle, intensity: EmotionIntensity.subtle);
     }
   }

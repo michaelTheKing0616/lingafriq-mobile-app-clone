@@ -163,7 +163,7 @@ class CreateLessonScreen extends HookConsumerWidget {
                         .where((t) => t.isNotEmpty)
                         .toList();
                     
-                    final lesson = await ugcService.createLesson(
+                    await ugcService.createLesson(
                       language: selectedLanguage.value,
                       title: titleController.text,
                       content: contentController.text,

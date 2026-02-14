@@ -565,7 +565,6 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     ValueNotifier<String> selectedLanguage,
     WidgetRef ref,
   ) async {
-    final localizationService = DynamicLocalizationService();
     await DynamicLocalizationService.initialize();
 
     final languages = AppLanguage.values.map((lang) => lang.name).toList();

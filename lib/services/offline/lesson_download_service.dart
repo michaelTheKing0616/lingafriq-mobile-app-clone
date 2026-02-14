@@ -291,7 +291,7 @@ class LessonDownloadService {
 
     final List<String> imagePaths = [];
     for (final imageUrl in imageUrls) {
-      if (imageUrl == null || imageUrl.isEmpty) continue;
+      if (imageUrl.isEmpty) continue;
       
       final fileName = _getFileNameFromUrl(imageUrl);
       final localPath = '${_audioDirectory!.path}/$language/$lessonId/images/$fileName';
@@ -352,7 +352,7 @@ class LessonDownloadService {
         localPath,
         cancelToken: cancelToken,
         onReceiveProgress: (received, total) {
-          onProgress(received, total ?? 0);
+          onProgress(received, total);
         },
       );
       

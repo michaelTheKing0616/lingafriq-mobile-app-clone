@@ -846,7 +846,6 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
     }
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colorScheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -1374,9 +1373,6 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
       final audioFile = File(audioPath);
       if (!await audioFile.exists()) return;
 
-      final audioData = await audioFile.readAsBytes();
-      final pronunciationService = PronunciationAnalysisService(dio);
-      
       // Create a lesson item from current lyrics line
       final currentLine = _lyrics[_currentLineIndex];
       // This would use actual lesson item - simplified for now
@@ -1735,7 +1731,6 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
       );
     }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final progress = (_currentStepIndex + 1) / _recipeSteps.length;
 
     return Scaffold(

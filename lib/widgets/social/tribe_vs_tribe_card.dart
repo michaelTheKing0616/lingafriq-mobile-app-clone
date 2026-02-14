@@ -28,7 +28,6 @@ class TribeVsTribeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final sortedTribes = participatingTribes.toList()
       ..sort((a, b) => (tribeScores[b] ?? 0).compareTo(tribeScores[a] ?? 0));
-    final winner = sortedTribes.isNotEmpty ? sortedTribes[0] : null;
     final daysRemaining = endDate.difference(DateTime.now()).inDays;
 
     return Card(

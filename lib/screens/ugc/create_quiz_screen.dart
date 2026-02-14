@@ -185,7 +185,7 @@ class CreateQuizScreen extends HookConsumerWidget {
                         context: context,
                         operation: () async {
                           final ugcService = ref.read(userGeneratedContentServiceProvider);
-                          final quiz = await ugcService.createQuiz(
+                          await ugcService.createQuiz(
                             language: selectedLanguage.value,
                             title: titleController.text,
                             questions: questions.value,

@@ -93,8 +93,6 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
       }
 
       if (result != null && mounted) {
-        final livekitToken = result['livekit_token'] as String;
-        final livekitUrl = result['livekit_url'] as String?;
         final room = result['room'] as SocialAudioRoom;
         
         // Navigate to LiveKit room with token

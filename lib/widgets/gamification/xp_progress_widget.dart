@@ -269,8 +269,6 @@ class _XPGainAnimationState extends State<XPGainAnimation>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-    
     return SlideTransition(
       position: _slideAnimation,
       child: FadeTransition(

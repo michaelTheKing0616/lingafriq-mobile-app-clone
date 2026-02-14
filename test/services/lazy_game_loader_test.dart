@@ -118,7 +118,7 @@ void main() {
 
     test('should handle concurrent load requests gracefully', () async {
       final container = ProviderContainer();
-      final loader = container.read(lazyGameLoaderProvider);
+      container.read(lazyGameLoaderProvider);
 
       final futures = <Future<void>>[];
       for (var i = 0; i < 5; i++) {

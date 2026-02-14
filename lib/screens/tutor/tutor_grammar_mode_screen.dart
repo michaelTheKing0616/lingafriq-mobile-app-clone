@@ -49,7 +49,6 @@ class TutorGrammarModeScreen extends HookConsumerWidget {
     final userLevel = useState('A1');
     final isLoading = useState(false);
     final grammarResult = useState<Map<String, dynamic>?>(null);
-    final localizationService = useMemoized(() => DynamicLocalizationService());
     final availableLanguages = AppLanguage.values;
     final topicInput = useState('');
 

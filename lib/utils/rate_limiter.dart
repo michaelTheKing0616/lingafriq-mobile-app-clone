@@ -150,10 +150,6 @@ class RateLimiter {
   /// Get rate limit status
   Map<String, dynamic> getStatus({String? endpoint}) {
     _cleanOldRequests(endpoint: endpoint);
-    
-    final queue = endpoint != null
-        ? _endpointRequests[endpoint]
-        : _requestTimes;
 
     final remaining = getRemainingRequests(endpoint: endpoint);
     final timeUntilNext = getTimeUntilNextRequest(endpoint: endpoint);

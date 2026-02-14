@@ -32,7 +32,6 @@ class TutorDialogueModeScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final messageController = useTextEditingController();
     final selectedLanguage = useState<AppLanguage>(AppLanguage.yoruba);
-    final sessionId = useMemoized(() => const Uuid().v4());
     final messages = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(false);
     final scrollController = useScrollController();

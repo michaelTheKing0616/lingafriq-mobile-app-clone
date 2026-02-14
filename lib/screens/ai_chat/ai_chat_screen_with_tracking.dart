@@ -487,8 +487,8 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
       vocabulary.addAll(userInput.split(' ').where((w) => w.length > 3).take(5));
     }
 
-    // Create interaction
-    final interaction = TutorInteraction(
+    // Create interaction (would batch and record in production)
+    TutorInteraction(
       type: 'question',
       content: userInput,
       userResponse: userInput,

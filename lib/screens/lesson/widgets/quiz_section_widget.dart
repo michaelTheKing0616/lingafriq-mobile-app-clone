@@ -214,7 +214,6 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     final questionId = question.id;
     final selectedAnswer = _selectedAnswers[questionId];
     final isChecked = _checkedAnswers[questionId] ?? false;
-    final isCorrect = widget.isAnswerCorrect?.call(questionId, selectedAnswer ?? '') ?? false;
 
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.w),

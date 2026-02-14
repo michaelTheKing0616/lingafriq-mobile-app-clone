@@ -1880,12 +1880,6 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     _memory[word] = entry;
     _saveSRSMemory();
   }
-  
-  /// Legacy method for backward compatibility
-  void _updateSRSLegacy(String word, bool correct) {
-    final quality = correct ? 4 : 2; // Map bool to quality scale
-    _updateSRS(word, quality);
-  }
 
   String? _dueReview() {
     final now = DateTime.now();

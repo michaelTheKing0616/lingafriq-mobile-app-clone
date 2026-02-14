@@ -69,7 +69,6 @@ class LearningPathPainter extends CustomPainter {
     path.moveTo(start.x, start.y);
     
     final midX = (start.x + end.x) / 2;
-    final midY = (start.y + end.y) / 2;
     
     final controlPointX = midX;
     final controlPointY = start.y + (end.y - start.y) * 0.3;

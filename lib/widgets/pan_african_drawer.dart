@@ -443,7 +443,6 @@ class PanAfricanDrawer extends ConsumerWidget {
   }
 
   Widget _buildDrawerTile(BuildContext context, _DrawerItem item) {
-    final isDark = context.isDark;
     final iconColor = item.accentColor ?? context.panPrimary;
     
     return ListTile(

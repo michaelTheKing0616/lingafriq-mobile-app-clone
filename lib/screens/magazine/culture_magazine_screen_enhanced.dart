@@ -139,9 +139,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     }
 
     Future<void> shareArticle(Map<String, dynamic> article) async {
-      // Share functionality
-      final url = '${EnvConfig.appWebUrl}/magazine/${article['slug']}';
-      // Use share_plus package in production
+      // Share functionality - use share_plus package in production
     }
 
     useEffect(() {

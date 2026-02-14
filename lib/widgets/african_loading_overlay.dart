@@ -267,7 +267,6 @@ class _AfricanLoadingOverlayState extends ConsumerState<AfricanLoadingOverlay>
   @override
   Widget build(BuildContext context) {
     final backendContent = ref.watch(loadingScreenProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final currentFact = _africanFacts[_currentFactIndex];
     
     return Material(

@@ -25,8 +25,6 @@ class ProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = context.isDarkMode;
-
     return PanAfricanCard(
       padding: EdgeInsets.zero,
       margin: EdgeInsets.zero,

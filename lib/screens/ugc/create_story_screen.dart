@@ -164,7 +164,7 @@ class CreateStoryScreen extends HookConsumerWidget {
                         .where((v) => v.isNotEmpty)
                         .toList();
                     
-                    final story = await ugcService.createStory(
+                    await ugcService.createStory(
                       language: selectedLanguage.value,
                       title: titleController.text,
                       story: storyController.text,

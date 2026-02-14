@@ -16,7 +16,6 @@ class LevelDisplayWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gamification = ref.watch(gamificationProvider);
     final gamificationData = ref.watch(gamificationProvider.notifier).gamification;
 
     if (compact) {

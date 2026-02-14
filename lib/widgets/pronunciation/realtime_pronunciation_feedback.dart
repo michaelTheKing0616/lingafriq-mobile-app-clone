@@ -43,7 +43,6 @@ class RealtimePronunciationFeedback extends HookConsumerWidget {
     final waveformData = useState<List<double>>([]);
     final currentPhoneme = useState<String?>(null);
     final pronunciationScore = useState<double?>(null);
-    final audioPlayer = useMemoized(() => ref.read(advancedPronunciationServiceProvider));
 
     // Listen to feedback stream
     useEffect(() {

@@ -101,7 +101,6 @@ class MagazineEnhancedFeatures {
 
   /// Share article
   static Future<void> shareArticle(String articleId, String title) async {
-    final url = '${EnvConfig.appWebUrl}/magazine/$articleId';
     // Use share_plus package in production
     // await Share.share('Check out this article: $title\n$url');
   }
@@ -173,7 +172,6 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
     final relatedArticles = useState<List<Map<String, dynamic>>>([]);
     final vocabulary = useState<List<Map<String, dynamic>>>([]);
     final culturalContext = useState<Map<String, dynamic>?>(null);
-    final translation = useState<Map<String, dynamic>?>(null);
     final isTranslating = useState(false);
     final translationService = useMemoized(() => TranslationService());
     final contentTranslation = useState<String?>(null);

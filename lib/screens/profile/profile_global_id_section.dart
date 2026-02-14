@@ -21,7 +21,6 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
     final isEditing = useState(false);
     final handleController = useTextEditingController(text: user?.global_id?.replaceFirst('@', '') ?? '');
     final isUpdating = useState(false);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
 
     Future<void> updateGlobalId() async {

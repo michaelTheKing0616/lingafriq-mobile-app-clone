@@ -61,8 +61,6 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
   }
 
   Future<void> _loadCompletedItems() async {
-    final prefs = await SharedPreferences.getInstance();
-    final completedJson = prefs.getString('cultural_completed') ?? '{}';
     // Parse and populate _completedItems
   }
 
@@ -70,7 +68,6 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
     setState(() {
       _completedItems[itemId] = true;
     });
-    final prefs = await SharedPreferences.getInstance();
     // Save completion status
   }
 

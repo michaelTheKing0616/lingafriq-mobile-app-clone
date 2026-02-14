@@ -66,7 +66,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () async {
-              final result = await Navigator.push(
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const CreateRoomScreen(),
@@ -274,7 +274,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
       child: InkWell(
         onTap: () async {
           // CRITICAL FIX: Convert .then() to async/await for better error handling
-          final result = await Navigator.push(
+          await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => RoomDetailScreen(roomId: room.id),

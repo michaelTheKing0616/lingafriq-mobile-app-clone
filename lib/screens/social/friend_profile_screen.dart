@@ -90,9 +90,6 @@ class FriendProfileScreen extends HookConsumerWidget {
     final level = data['level'] ?? 1;
     final badges = data['badges'] as List? ?? [];
     final languages = data['languages'] as List? ?? [];
-    final memberSince = data['createdAt'] != null
-        ? DateTime.parse(data['createdAt'].toString())
-        : DateTime.now();
 
     return SingleChildScrollView(
       child: Column(

@@ -15,8 +15,6 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colorScheme = Theme.of(context).colorScheme;
-    final user = ref.watch(userProvider);
     final dio = ref.read(client);
 
     final selectedQuestType = useState<String?>('complete_lessons');

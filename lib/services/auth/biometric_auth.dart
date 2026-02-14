@@ -256,8 +256,6 @@ class BiometricAuth {
         return 'Weak Biometric';
       case BiometricType.iris:
         return 'Iris';
-      default:
-        return 'Biometric';
     }
   }
 

@@ -113,7 +113,6 @@ ${classSummary.trim()}
   /// Uses caching to improve performance for common queries
   Future<Map<String, dynamic>> generateProverb(String language, {String? theme}) async {
     // Check cache first
-    final cacheKey = theme != null ? 'proverb_$theme' : 'proverb';
     final cached = await PolieCacheService.getCachedContent('proverb', language, additional: theme);
     if (cached != null) {
       debugPrint('✅ Using cached proverb for $language${theme != null ? ' ($theme)' : ''}');

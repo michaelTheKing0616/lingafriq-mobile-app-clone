@@ -169,8 +169,6 @@ class _QuizButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
       width: 0.6.sw,
       decoration: BoxDecoration(

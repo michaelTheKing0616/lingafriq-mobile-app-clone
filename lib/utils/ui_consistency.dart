@@ -489,7 +489,6 @@ class LingAfriqSecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bColor = borderColor ?? PanAfricanColors.primary;
     final fgColor = foregroundColor ?? bColor;
     

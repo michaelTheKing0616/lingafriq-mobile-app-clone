@@ -32,7 +32,6 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
     final showAnswer = useState(false);
     final isLoading = useState(true);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final swipeController = useAnimationController();
 
     // Load words
     useEffect(() {
@@ -408,39 +407,6 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
       // Completed all cards
       // Could show completion screen
     }
-  }
-
-  String _getWordMeaning(WordMastery word) {
-    if (word.metadata != null && word.metadata!['meaning'] != null) {
-      return word.metadata!['meaning'] as String;
-    }
-    if (word.metadata != null && word.metadata!['translation'] != null) {
-      return word.metadata!['translation'] as String;
-    }
-    return 'Meaning not available';
-  }
-
-  String? _getWordExample(WordMastery word) {
-    if (word.metadata != null) {
-      if (word.metadata!['example'] != null) {
-        return word.metadata!['example'] as String;
-      }
-      if (word.metadata!['exampleSentence'] != null) {
-        return word.metadata!['exampleSentence'] as String;
-      }
-      if (word.metadata!['examples'] != null && 
-          (word.metadata!['examples'] as List).isNotEmpty) {
-        return (word.metadata!['examples'] as List).first as String;
-      }
-    }
-    return null;
-  }
-
-  String? _getWordPronunciation(WordMastery word) {
-    if (word.metadata != null && word.metadata!['pronunciation'] != null) {
-      return word.metadata!['pronunciation'] as String;
-    }
-    return null;
   }
 }
 

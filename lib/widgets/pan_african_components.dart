@@ -71,11 +71,8 @@ class _PanAfricanButtonState extends State<PanAfricanButton>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = widget.backgroundColor ?? PanAfricanColors.primary;
     final fgColor = widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimary;
-    final gradientColors = widget.gradientColors ??
-        [PanAfricanColors.primary, PanAfricanColors.secondary];
 
     Widget button;
 
@@ -323,7 +320,6 @@ class _PanAfricanCardState extends State<PanAfricanCard>
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final cardColor =
         widget.backgroundColor ?? (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight);
-    final glowColor = widget.glowColor ?? PanAfricanColors.primary;
 
     Widget card = Container(
       margin: widget.margin ?? EdgeInsets.zero,

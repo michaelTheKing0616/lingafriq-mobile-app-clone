@@ -476,8 +476,6 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
         return _buildMultipleChoiceQuestion(question);
       case QuestionType.fillInBlank:
         return _buildFillInBlankQuestion(question);
-      default:
-        return SizedBox.shrink();
     }
   }
 

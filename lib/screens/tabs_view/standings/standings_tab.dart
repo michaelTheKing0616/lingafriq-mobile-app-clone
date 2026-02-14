@@ -69,6 +69,7 @@ class StandingsTab extends HookConsumerWidget {
                     },
                     onValueChanged: (value) {
                       final index = value == "global" ? 0 : 1;
+                      // ignore: invalid_use_of_visible_for_testing_member
                       ref.read(_tabIndexProvider.notifier).state = index;
                     },
                   ).py8(),

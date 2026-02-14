@@ -491,7 +491,6 @@ class MLCurriculumEngine {
   
   Future<void> _loadUserData(String userId) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       // Load performance and error patterns
       // Simplified - in production, use proper serialization
     } catch (e) {
@@ -501,7 +500,6 @@ class MLCurriculumEngine {
   
   Future<void> _saveUserData(String userId) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
       // Save performance and error patterns
       // Simplified - in production, use proper serialization
     } catch (e) {

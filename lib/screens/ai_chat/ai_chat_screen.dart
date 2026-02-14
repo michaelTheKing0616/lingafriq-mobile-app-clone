@@ -80,7 +80,6 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
   @override
   Widget build(BuildContext context) {
     final chatNotifier = ref.read(groqChatProvider.notifier);
-    final chatState = ref.watch(groqChatProvider);
 
     return Scaffold(
       drawer: const AppDrawer(),

@@ -258,7 +258,6 @@ class _LeagueWidgetState extends ConsumerState<LeagueWidget> {
 
   Widget _buildLeaderboardEntry(LeaguePosition pos, LeagueState state, bool isDark) {
     final isCurrentUser = pos.isCurrentUser;
-    final config = state.tierConfig;
 
     return Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.xs),

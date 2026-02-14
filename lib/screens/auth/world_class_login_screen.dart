@@ -599,7 +599,6 @@ class WorldClassLoginScreen extends HookConsumerWidget {
 
     if (await storage.hasStoredCredentials()) {
       final email = await storage.getStoredEmail();
-      final password = await storage.getStoredPassword();
       
       if (email != null) {
         emailController.text = email;

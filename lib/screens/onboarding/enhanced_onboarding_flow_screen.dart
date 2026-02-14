@@ -313,49 +313,6 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
     }
   }
 
-  /// Helper function to save onboarding data with offline support
-  static Future<void> _saveOnboardingDataOffline(
-    String key,
-    dynamic value,
-    Map<String, dynamic>? apiData,
-    String? apiEndpoint,
-  ) async {
-    // Always save locally first
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      if (value is String) {
-        await prefs.setString(key, value);
-      } else if (value is List) {
-        await prefs.setStringList(key, value.cast<String>());
-      } else if (value is int) {
-        await prefs.setInt(key, value);
-      } else if (value is bool) {
-        await prefs.setBool(key, value);
-      } else if (value is Map) {
-        await prefs.setString(key, value.toString());
-      }
-    } catch (e) {
-      logger.error('Error saving $key locally', error: e);
-    }
-
-    // Try to sync with backend, but don't block if it fails
-    if (apiEndpoint != null && apiData != null) {
-      try {
-        await ApiService.post(
-          apiEndpoint,
-          data: apiData,
-        ).timeout(
-          const Duration(seconds: 5),
-          onTimeout: () {
-            throw TimeoutException('Backend sync timeout');
-          },
-        );
-      } catch (e) {
-        // Log but continue - user can proceed even if backend is unavailable
-        logger.warn('Backend sync failed for $key, continuing locally', error: e);
-      }
-    }
-  }
 
   Future<void> _completeOnboarding(
     Map<String, dynamic> data,

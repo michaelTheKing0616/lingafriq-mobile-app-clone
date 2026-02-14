@@ -23,7 +23,6 @@ class VoiceContributionScreen extends HookConsumerWidget {
     final prompts = useState<List<Map<String, dynamic>>>([]);
     final selectedPrompt = useState<Map<String, dynamic>?>(null);
     final audioFile = useState<File?>(null);
-    final isRecording = useState(false);
     final isSubmitting = useState(false);
     final userStats = useState<Map<String, dynamic>?>(null);
     final isLoading = useState(true);

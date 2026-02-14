@@ -16,7 +16,6 @@ class ExampleScreenWithErrorHandler extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = useState(false);
-    final data = useState<Map<String, dynamic>?>(null);
 
     Future<void> loadData() async {
       try {

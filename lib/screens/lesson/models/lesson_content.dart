@@ -176,7 +176,6 @@ class LessonContent {
               return '';
             });
             final splittedText = textWithBrackets.split(regex);
-            final englishChoices = brackets.map((e) => e.split('/').last.trim()).toList();
             final choiceQuestions = brackets.map((e) => e.split('/').first.trim()).toList();
 
             wordQuestions = choiceQuestions.asMap().entries.map((entry) {

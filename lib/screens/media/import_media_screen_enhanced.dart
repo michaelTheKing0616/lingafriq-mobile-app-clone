@@ -178,8 +178,6 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
         isGeneratingLesson.value = false;
       }
     }
-
-    final isLoading = useState(false);
     
     return LoadingOverlay(
       isLoading: isUploading.value || isTranscribing.value || isGeneratingLesson.value,

@@ -170,12 +170,6 @@ class RequestBatcher {
         return;
       }
 
-      // Extract IDs from endpoints (assuming RESTful API with IDs)
-      final ids = group.map((item) {
-        final parts = item.endpoint.split('/');
-        return parts.last;
-      }).toList();
-
       // Make batch request (assuming backend supports /batch endpoint)
       final response = await dio.post(
         '/api/v1/batch',

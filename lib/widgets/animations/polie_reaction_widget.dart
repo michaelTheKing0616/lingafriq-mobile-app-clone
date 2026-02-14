@@ -374,10 +374,6 @@ class _ExcitedFacePainter extends CustomPainter {
 class _SleepingFacePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white
-      ..style = PaintingStyle.fill;
-
     final center = Offset(size.width / 2, size.height / 2);
     final radius = size.width / 2;
 

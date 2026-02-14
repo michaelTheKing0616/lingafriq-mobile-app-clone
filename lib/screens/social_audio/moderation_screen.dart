@@ -162,8 +162,6 @@ class _ModerationScreenState extends ConsumerState<ModerationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Room Moderation'),

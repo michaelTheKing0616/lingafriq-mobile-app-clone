@@ -420,20 +420,6 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
     return tribeNames[tribeId] ?? tribeId;
   }
 
-  String _formatDuration(Duration duration) {
-    if (duration.inDays > 0) {
-      return '${duration.inDays} day${duration.inDays > 1 ? 's' : ''}';
-    } else if (duration.inHours > 0) {
-      return '${duration.inHours} hour${duration.inHours > 1 ? 's' : ''}';
-    } else {
-      return '${duration.inMinutes} minute${duration.inMinutes > 1 ? 's' : ''}';
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.month}/${date.day}/${date.year}';
-  }
-
   Widget _buildTribeCard(
     BuildContext context, {
     required int index,

@@ -12,7 +12,6 @@ class ResponsiveHelper {
     double? right,
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
     final isSmall = screenWidth < 360;
     final isLarge = screenWidth > 600;
     

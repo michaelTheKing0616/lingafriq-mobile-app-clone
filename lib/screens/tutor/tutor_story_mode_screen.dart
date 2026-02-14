@@ -32,7 +32,6 @@ class TutorStoryModeScreen extends HookConsumerWidget {
     final showTranslation = useState(false);
     final showVocabulary = useState(false);
     final currentQuizIndex = useState<int?>(null);
-    final localizationService = useMemoized(() => DynamicLocalizationService());
     final availableLanguages = AppLanguage.values;
     final flutterTts = useMemoized(() => FlutterTts());
     final revealedParagraphs = useState(1);

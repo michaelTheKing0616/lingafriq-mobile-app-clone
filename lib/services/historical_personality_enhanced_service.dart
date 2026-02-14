@@ -90,16 +90,6 @@ class EnhancedHistoricalPersonalityService {
     };
   }
 
-  /// Save enhanced data to cache
-  Future<void> _saveEnhancedData(String personalityId, Map<String, dynamic> data) async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('personality_enhanced_$personalityId', jsonEncode(data));
-    } catch (e) {
-      debugPrint('Error saving enhanced personality data: $e');
-    }
-  }
-
   /// Get or create personality memory
   Future<PersonalityChatMemory> getPersonalityMemory(String personalityId, String userId) async {
     try {

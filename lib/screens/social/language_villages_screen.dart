@@ -402,7 +402,6 @@ class _VillageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final colorScheme = Theme.of(context).colorScheme;
     final occupancy = village.maxParticipants > 0
         ? (village.currentParticipants / village.maxParticipants).clamp(0.0, 1.0)
