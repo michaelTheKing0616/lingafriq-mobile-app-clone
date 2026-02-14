@@ -8,10 +8,10 @@ class MomentumBar extends StatelessWidget {
   final int streak;
 
   const MomentumBar({
-    Key? key,
+    super.key,
     required this.momentum,
     required this.streak,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

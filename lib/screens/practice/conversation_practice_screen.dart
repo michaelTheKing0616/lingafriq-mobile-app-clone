@@ -13,11 +13,11 @@ class ConversationPracticeScreen extends ConsumerStatefulWidget {
   final String? personality;
 
   const ConversationPracticeScreen({
-    Key? key,
+    super.key,
     required this.languageCode,
     required this.level,
     this.personality,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ConversationPracticeScreen> createState() => _ConversationPracticeScreenState();

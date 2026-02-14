@@ -12,14 +12,14 @@ class AnimatedCard extends StatelessWidget {
   final int delayMs;
 
   const AnimatedCard({
-    Key? key,
+    super.key,
     required this.child,
     this.onTap,
     this.padding,
     this.color,
     this.elevation,
     this.delayMs = 0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

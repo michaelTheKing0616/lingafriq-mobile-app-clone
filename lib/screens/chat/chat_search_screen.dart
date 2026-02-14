@@ -11,10 +11,10 @@ class ChatSearchScreen extends ConsumerStatefulWidget {
   final String type; // 'global' | 'private' | 'all'
 
   const ChatSearchScreen({
-    Key? key,
+    super.key,
     this.room,
     this.type = 'all',
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ChatSearchScreen> createState() => _ChatSearchScreenState();

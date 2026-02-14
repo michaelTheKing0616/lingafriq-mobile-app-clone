@@ -21,7 +21,7 @@ import 'package:lingafriq/widgets/error_state_widget.dart';
 
 /// Beautiful Material 3 Profile Screen with Pan-African Design
 class ProfileScreenMaterial3 extends HookConsumerWidget {
-  const ProfileScreenMaterial3({Key? key}) : super(key: key);
+  const ProfileScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

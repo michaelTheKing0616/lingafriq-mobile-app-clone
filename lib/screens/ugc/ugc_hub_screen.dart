@@ -11,7 +11,7 @@ import 'package:lingafriq/screens/ugc/create_story_screen.dart';
 
 /// Hub screen for User-Generated Content
 class UGCHubScreen extends ConsumerStatefulWidget {
-  const UGCHubScreen({Key? key}) : super(key: key);
+  const UGCHubScreen({super.key});
 
   @override
   ConsumerState<UGCHubScreen> createState() => _UGCHubScreenState();

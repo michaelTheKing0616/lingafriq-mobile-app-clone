@@ -32,7 +32,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
-  const SettingsScreenMaterial3({Key? key}) : super(key: key);
+  const SettingsScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

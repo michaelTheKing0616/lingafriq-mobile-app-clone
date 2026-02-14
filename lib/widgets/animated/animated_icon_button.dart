@@ -10,13 +10,13 @@ class AnimatedIconButton extends StatefulWidget {
   final String? tooltip;
 
   const AnimatedIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     this.onPressed,
     this.color,
     this.size,
     this.tooltip,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedIconButton> createState() => _AnimatedIconButtonState();

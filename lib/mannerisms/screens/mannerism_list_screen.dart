@@ -20,9 +20,9 @@ final mannerismsListProvider = FutureProvider.autoDispose.family<MannerismRespon
 class MannerismsListScreen extends ConsumerWidget {
   final Language language;
   const MannerismsListScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -116,10 +116,9 @@ class _MannerismItem extends ConsumerWidget {
   final Mannerism mannerism;
   final bool enabled;
   const _MannerismItem({
-    Key? key,
     required this.mannerism,
     required this.enabled,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

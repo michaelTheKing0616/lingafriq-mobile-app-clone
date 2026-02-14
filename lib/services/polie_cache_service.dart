@@ -15,7 +15,7 @@ class PolieCacheService {
     final keyString = '$type:$language${additional != null ? ':$additional' : ''}';
     final bytes = utf8.encode(keyString);
     final digest = sha256.convert(bytes);
-    return '${_cachePrefix}${digest.toString().substring(0, 16)}';
+    return '$_cachePrefix${digest.toString().substring(0, 16)}';
   }
 
   /// Check if cached content exists and is valid

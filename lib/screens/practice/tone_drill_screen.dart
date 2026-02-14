@@ -15,10 +15,10 @@ class ToneDrillScreen extends StatefulWidget {
   final List<ToneError>? initialErrors;
 
   const ToneDrillScreen({
-    Key? key,
+    super.key,
     required this.lessonItem,
     this.initialErrors,
-  }) : super(key: key);
+  });
 
   @override
   State<ToneDrillScreen> createState() => _ToneDrillScreenState();

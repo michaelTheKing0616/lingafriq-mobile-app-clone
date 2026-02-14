@@ -18,11 +18,11 @@ class EnhancedTranslationScreen extends HookConsumerWidget {
   final String? initialText;
 
   const EnhancedTranslationScreen({
-    Key? key,
+    super.key,
     required this.sourceLanguage,
     required this.targetLanguage,
     this.initialText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

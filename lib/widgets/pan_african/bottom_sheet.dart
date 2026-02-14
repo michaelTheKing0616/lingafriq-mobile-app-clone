@@ -21,7 +21,7 @@ class PanAfricanBottomSheet extends StatelessWidget {
   final EdgeInsets? padding;
 
   const PanAfricanBottomSheet({
-    Key? key,
+    super.key,
     required this.child,
     this.title,
     this.subtitle,
@@ -30,7 +30,7 @@ class PanAfricanBottomSheet extends StatelessWidget {
     this.onClose,
     this.maxHeight,
     this.padding,
-  }) : super(key: key);
+  });
 
   /// Shows a Pan-African styled bottom sheet
   static Future<T?> show<T>({

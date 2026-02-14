@@ -13,12 +13,12 @@ class XPProgressWidget extends ConsumerWidget {
   final Color? backgroundColor;
 
   const XPProgressWidget({
-    Key? key,
+    super.key,
     this.showTitle = true,
     this.compact = false,
     this.progressColor,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -208,10 +208,10 @@ class XPGainAnimation extends StatefulWidget {
   final VoidCallback? onComplete;
 
   const XPGainAnimation({
-    Key? key,
+    super.key,
     required this.xpGained,
     this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<XPGainAnimation> createState() => _XPGainAnimationState();

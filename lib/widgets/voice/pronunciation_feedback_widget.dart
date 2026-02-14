@@ -10,11 +10,11 @@ class PronunciationScoreRing extends StatelessWidget {
   final String? label;
   
   const PronunciationScoreRing({
-    Key? key,
+    super.key,
     required this.score,
     this.size = 100,
     this.label,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -103,12 +103,12 @@ class ScoreBreakdownBars extends StatelessWidget {
   final double? confidenceScore;
   
   const ScoreBreakdownBars({
-    Key? key,
+    super.key,
     required this.phonemeScore,
     required this.toneScore,
     required this.fluencyScore,
     this.confidenceScore,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -208,11 +208,11 @@ class WaveformVisualizer extends StatefulWidget {
   final double height;
   
   const WaveformVisualizer({
-    Key? key,
+    super.key,
     required this.amplitudes,
     this.color = Colors.blue,
     this.height = 60,
-  }) : super(key: key);
+  });
   
   @override
   State<WaveformVisualizer> createState() => _WaveformVisualizerState();
@@ -285,11 +285,11 @@ class PitchContourChart extends StatelessWidget {
   final double height;
   
   const PitchContourChart({
-    Key? key,
+    super.key,
     required this.learnerPitch,
     this.referencePitch,
     this.height = 100,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -419,11 +419,11 @@ class FeedbackCard extends StatelessWidget {
   final VoidCallback? onContinue;
   
   const FeedbackCard({
-    Key? key,
+    super.key,
     required this.response,
     this.onRetry,
     this.onContinue,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -623,11 +623,11 @@ class RecordingButton extends StatefulWidget {
   final Stream<double>? amplitudeStream;
   
   const RecordingButton({
-    Key? key,
+    super.key,
     required this.isRecording,
     required this.onPressed,
     this.amplitudeStream,
-  }) : super(key: key);
+  });
   
   @override
   State<RecordingButton> createState() => _RecordingButtonState();

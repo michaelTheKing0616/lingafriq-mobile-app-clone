@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -7,13 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/achievement_model.dart';
 import 'package:lingafriq/providers/achievements_provider.dart';
 import 'package:lingafriq/utils/utils.dart';
-import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
-import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
-import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/services/deep_link_service.dart';
 
@@ -237,91 +233,6 @@ class AchievementsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatItem(String value, String label, Color color) {
-    return Column(
-      children: [
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: color,
-          ),
-        ),
-        SizedBox(height: 4.sp),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: color.withValues(alpha: 0.8),
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _showAchievementDetail(BuildContext context, Achievement achievement, bool isDark) {
-    final rarityColor = _getRarityColor(achievement.rarity, isDark);
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: isDark ? PanAfricanColors.surfaceDark : PanAfricanColors.surfaceLight,
-        title: Row(
-          children: [
-            Text(achievement.icon, style: const TextStyle(fontSize: 28)),
-            SizedBox(width: PanAfricanSpacing.sm),
-            Expanded(
-              child: Text(
-                achievement.name,
-                style: PanAfricanTypography.titleMedium(context),
-              ),
-            ),
-          ],
-        ),
-        content: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                achievement.description,
-                style: PanAfricanTypography.bodyMedium(context),
-              ),
-              SizedBox(height: PanAfricanSpacing.md),
-              Text('+${achievement.xpReward} XP', style: TextStyle(color: rarityColor, fontWeight: FontWeight.bold)),
-              if (achievement.isUnlocked && achievement.unlockedAt != null)
-                Padding(
-                  padding: EdgeInsets.only(top: PanAfricanSpacing.sm),
-                  child: Text(
-                    'Unlocked ${_formatDate(achievement.unlockedAt!)}',
-                    style: PanAfricanTypography.bodySmall(context),
-                  ),
-                ),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('Close'),
-          ),
-          PanAfricanButton(
-            label: 'Practice with Polie',
-            onPressed: () {
-              Navigator.pop(ctx);
-              if (context.mounted) {
-                Navigator.push(
-                  context,
-                  SmoothPageRoute(child: PolieModeSelectionScreen()),
-                );
-              }
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   Color _getRarityColor(AchievementRarity rarity, bool isDark) {
     switch (rarity) {
       case AchievementRarity.common:
@@ -334,23 +245,6 @@ class AchievementsScreen extends ConsumerWidget {
         return Colors.purple;
       case AchievementRarity.legendary:
         return PanAfricanColors.tertiary;
-    }
-  }
-
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inDays == 0) {
-      return 'today';
-    } else if (difference.inDays == 1) {
-      return 'yesterday';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays} days ago';
-    } else if (difference.inDays < 30) {
-      return '${(difference.inDays / 7).floor()} weeks ago';
-    } else {
-      return '${(difference.inDays / 30).floor()} months ago';
     }
   }
 

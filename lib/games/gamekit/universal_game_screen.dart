@@ -18,12 +18,12 @@ class UniversalGameScreen extends BaseGameScreen {
   final String gameId;
 
   const UniversalGameScreen({
-    Key? key,
+    super.key,
     required super.language,
     required this.gameId,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() {

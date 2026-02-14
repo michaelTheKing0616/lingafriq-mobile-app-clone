@@ -165,14 +165,14 @@ class SafeFutureBuilder<T> extends StatelessWidget {
   final Duration? cacheTTL;
 
   const SafeFutureBuilder({
-    Key? key,
+    super.key,
     required this.future,
     required this.builder,
     this.errorBuilder,
     this.loadingWidget,
     this.cacheKey,
     this.cacheTTL,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +207,7 @@ class SafeFutureBuilder<T> extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return builder(context, snapshot.data!);
+          return builder(context, snapshot.data as T);
         }
 
         return const SizedBox.shrink();

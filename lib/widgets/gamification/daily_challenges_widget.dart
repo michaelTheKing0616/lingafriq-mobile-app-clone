@@ -16,10 +16,10 @@ class DailyChallengesWidget extends ConsumerStatefulWidget {
   final VoidCallback? onViewAll;
 
   const DailyChallengesWidget({
-    Key? key,
+    super.key,
     this.compact = false,
     this.onViewAll,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<DailyChallengesWidget> createState() => _DailyChallengesWidgetState();

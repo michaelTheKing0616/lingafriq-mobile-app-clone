@@ -12,7 +12,7 @@ import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
 class GrammarHubScreen extends HookConsumerWidget {
-  const GrammarHubScreen({Key? key}) : super(key: key);
+  const GrammarHubScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

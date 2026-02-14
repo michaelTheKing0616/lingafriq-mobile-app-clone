@@ -12,7 +12,7 @@ import 'create_room_screen.dart';
 
 /// Room Discovery Screen - Browse and search for language practice rooms
 class RoomDiscoveryScreen extends ConsumerStatefulWidget {
-  const RoomDiscoveryScreen({Key? key}) : super(key: key);
+  const RoomDiscoveryScreen({super.key});
 
   @override
   ConsumerState<RoomDiscoveryScreen> createState() => _RoomDiscoveryScreenState();

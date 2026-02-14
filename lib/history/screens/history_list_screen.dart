@@ -20,9 +20,9 @@ final historyListProvider = FutureProvider.autoDispose.family<HistoryResponse, i
 class HistoryListScreen extends ConsumerWidget {
   final Language language;
   const HistoryListScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,10 +117,9 @@ class _HistoryItem extends ConsumerWidget {
   final History history;
   final bool enabled;
   const _HistoryItem({
-    Key? key,
     required this.history,
     required this.enabled,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

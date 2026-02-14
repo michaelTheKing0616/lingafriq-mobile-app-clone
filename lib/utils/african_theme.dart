@@ -100,11 +100,11 @@ class AfricanPatternDecoration extends StatelessWidget {
   final double opacity;
   
   const AfricanPatternDecoration({
-    Key? key,
+    super.key,
     required this.child,
     this.patternColor,
     this.opacity = 0.1,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {

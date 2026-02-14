@@ -12,9 +12,9 @@ import 'leader_board_provider.dart';
 class CountryTab extends ConsumerWidget {
   final List<ProfileModel> profiles;
   const CountryTab({
-    Key? key,
+    super.key,
     required this.profiles,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

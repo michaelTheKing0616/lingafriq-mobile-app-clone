@@ -15,8 +15,6 @@ import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:lingafriq/widgets/lingafriq_ui_helpers.dart';
 import 'package:lingafriq/widgets/performance/optimized_list_view.dart';
 import 'package:lingafriq/avatars/avatars.dart';
-import 'package:lingafriq/providers/chat_socket_provider.dart';
-import 'package:lingafriq/providers/user_provider.dart';
 
 /// Tribe Chat Screen with Material 3 Design
 class TribeChatScreen extends HookConsumerWidget {
@@ -24,10 +22,10 @@ class TribeChatScreen extends HookConsumerWidget {
   final String tribeName;
 
   const TribeChatScreen({
-    Key? key,
+    super.key,
     required this.tribeId,
     required this.tribeName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,14 +36,10 @@ class TribeChatScreen extends HookConsumerWidget {
     final loadError = useState<String?>(null);
     final scrollController = useScrollController();
     final showMembers = useState(false);
-    final socketNotifier = ref.read(chatSocketProvider.notifier);
-    final socketState = ref.watch(chatSocketProvider);
-    final currentUser = ref.watch(userProvider);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final roomId = 'tribe_$tribeId';
 
-    List<Map<String, dynamic>> _parseList(dynamic raw) {
+    List<Map<String, dynamic>> parseList(dynamic raw) {
       if (raw == null) return [];
       if (raw is List) {
         return raw.map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()}).toList();
@@ -53,7 +47,7 @@ class TribeChatScreen extends HookConsumerWidget {
       return [];
     }
 
-    String _connectionMessage(dynamic e) {
+    String connectionMessage(dynamic e) {
       final msg = e.toString().toLowerCase();
       if (msg.contains('socket') || msg.contains('connection') || msg.contains('unavailable') || msg.contains('failed host')) {
         return 'Server unavailable. Check your connection and try again.';
@@ -72,16 +66,16 @@ class TribeChatScreen extends HookConsumerWidget {
         if (response.statusCode == 200 && response.data != null) {
           final data = response.data as Map<String, dynamic>?;
           final list = data?['data'] != null
-              ? _parseList(data!['data'])
+              ? parseList(data!['data'])
               : data?['messages'] != null
-                  ? _parseList(data!['messages'])
+                  ? parseList(data!['messages'])
                   : <Map<String, dynamic>>[];
           messages.value = list;
         }
       } catch (e) {
         loadError.value = e is DioException
             ? TransportErrorPolicy.toUserMessage(e)
-            : _connectionMessage(e);
+            : connectionMessage(e);
         if (context.mounted) ErrorHandler.showError(context, e);
       }
     }
@@ -95,7 +89,7 @@ class TribeChatScreen extends HookConsumerWidget {
         if (response.statusCode == 200 && response.data != null) {
           final data = response.data as Map<String, dynamic>?;
           final raw = data?['data'] ?? data?['members'];
-          members.value = _parseList(raw);
+          members.value = parseList(raw);
         }
       } catch (e) {
         if (context.mounted) ErrorHandler.showError(context, e);
@@ -359,7 +353,6 @@ class _TribeMessageBubble extends StatelessWidget {
     final raw = sender?['username'] ?? sender?['first_name'] ?? 'Unknown';
     final senderName = raw != null && raw.toString().trim().isNotEmpty ? raw.toString() : 'Unknown';
     final timestamp = message['createdAt'] ?? message['timestamp'];
-    final avatarUrl = sender?['avatar_url'] ?? sender?['avatar'] ?? message['avatar'];
     final globalId = sender?['global_id'] ?? message['global_id'];
     final messageText = message['message'] ?? message['body'] ?? message['text'] ?? '';
     final bubbleColor = isDark

@@ -8,10 +8,10 @@ class EditTranscriptionDialog extends StatefulWidget {
   final Function(String) onSave;
 
   const EditTranscriptionDialog({
-    Key? key,
+    super.key,
     required this.initialText,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<EditTranscriptionDialog> createState() => _EditTranscriptionDialogState();
@@ -77,10 +77,10 @@ class CustomizeTranscriptionDialog extends StatefulWidget {
   final Function(Map<String, dynamic>) onCustomize;
 
   const CustomizeTranscriptionDialog({
-    Key? key,
+    super.key,
     required this.transcription,
     required this.onCustomize,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomizeTranscriptionDialog> createState() => _CustomizeTranscriptionDialogState();
@@ -224,10 +224,10 @@ class EditLessonDialog extends StatefulWidget {
   final Function(Map<String, dynamic>) onSave;
 
   const EditLessonDialog({
-    Key? key,
+    super.key,
     required this.initialLesson,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   State<EditLessonDialog> createState() => _EditLessonDialogState();
@@ -398,7 +398,7 @@ class _EditLessonDialogState extends State<EditLessonDialog> {
                           ),
                         ),
                       );
-                    }).toList(),
+                    }),
                     if (_sections.isEmpty)
                       Container(
                         padding: EdgeInsets.all(PanAfricanSpacing.xl),

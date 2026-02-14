@@ -17,7 +17,7 @@ import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 
 /// Pronunciation Mode — minimal layout, large record orb, waveform, phoneme heatmap, regional toggle, streak.
 class TutorPronunciationModeScreen extends HookConsumerWidget {
-  const TutorPronunciationModeScreen({Key? key}) : super(key: key);
+  const TutorPronunciationModeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -641,7 +641,7 @@ class _PhonemeTimeline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 60.h,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

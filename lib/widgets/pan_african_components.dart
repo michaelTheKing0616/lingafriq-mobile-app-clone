@@ -26,7 +26,7 @@ class PanAfricanButton extends StatefulWidget {
   final double? height;
 
   const PanAfricanButton({
-    Key? key,
+    super.key,
     required this.label,
     this.onPressed,
     this.icon,
@@ -38,7 +38,7 @@ class PanAfricanButton extends StatefulWidget {
     this.gradientColors,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   State<PanAfricanButton> createState() => _PanAfricanButtonState();
@@ -229,11 +229,11 @@ class PanAfricanSecondaryButton extends StatelessWidget {
   final IconData? icon;
 
   const PanAfricanSecondaryButton({
-    Key? key,
+    super.key,
     required this.label,
     this.onPressed,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +267,7 @@ class PanAfricanCard extends StatefulWidget {
   final Color? backgroundColor;
 
   const PanAfricanCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.margin,
@@ -280,7 +280,7 @@ class PanAfricanCard extends StatefulWidget {
     this.glowColor,
     this.elevation,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   State<PanAfricanCard> createState() => _PanAfricanCardState();
@@ -420,13 +420,13 @@ class PanAfricanBottomSheet extends StatelessWidget {
   final EdgeInsets? padding;
 
   const PanAfricanBottomSheet({
-    Key? key,
+    super.key,
     this.title,
     this.subtitle,
     required this.child,
     this.actions,
     this.padding,
-  }) : super(key: key);
+  });
 
   static Future<T?> show<T>({
     required BuildContext context,
@@ -446,9 +446,9 @@ class PanAfricanBottomSheet extends StatelessWidget {
           child: PanAfricanBottomSheet(
             title: title,
             subtitle: subtitle,
-            child: child,
             actions: actions,
             padding: padding,
+            child: child,
           ),
         );
       },
@@ -528,12 +528,12 @@ class PanAfricanDialog extends StatelessWidget {
   final List<Widget> actions;
 
   const PanAfricanDialog({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     required this.child,
     required this.actions,
-  }) : super(key: key);
+  });
 
   static Future<T?> show<T>({
     required BuildContext context,
@@ -550,8 +550,8 @@ class PanAfricanDialog extends StatelessWidget {
         return PanAfricanDialog(
           title: title,
           subtitle: subtitle,
-          child: child,
           actions: actions,
+          child: child,
         );
       },
     );
@@ -618,11 +618,11 @@ class PanAfricanTabBar extends StatelessWidget implements PreferredSizeWidget {
   final bool isScrollable;
 
   const PanAfricanTabBar({
-    Key? key,
+    super.key,
     this.controller,
     required this.tabs,
     this.isScrollable = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -672,14 +672,14 @@ class PanAfricanListTile extends StatelessWidget {
   final EdgeInsets? padding;
 
   const PanAfricanListTile({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.leading,
     this.trailing,
     this.onTap,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -755,7 +755,7 @@ class PanAfricanAvatar extends StatelessWidget {
   final Widget? badge;
 
   const PanAfricanAvatar({
-    Key? key,
+    super.key,
     this.imageUrl,
     this.initials,
     this.size,
@@ -764,7 +764,7 @@ class PanAfricanAvatar extends StatelessWidget {
     this.showBadge = false,
     this.badgeColor,
     this.badge,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -841,12 +841,12 @@ class PanAfricanSkeleton extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   const PanAfricanSkeleton({
-    Key? key,
+    super.key,
     required this.width,
     required this.height,
     this.isCircle = false,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -886,14 +886,14 @@ class PanAfricanEmptyState extends StatelessWidget {
   final bool hasGlow;
 
   const PanAfricanEmptyState({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     required this.description,
     this.actionLabel,
     this.onAction,
     this.hasGlow = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -948,11 +948,11 @@ class PanAfricanErrorState extends StatelessWidget {
   final VoidCallback? onRetry;
 
   const PanAfricanErrorState({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -971,9 +971,9 @@ class PanAfricanLoadingState extends StatelessWidget {
   final String message;
 
   const PanAfricanLoadingState({
-    Key? key,
+    super.key,
     this.message = 'Loading...',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1015,12 +1015,12 @@ class ScaleOnTap extends StatefulWidget {
   final Duration duration;
 
   const ScaleOnTap({
-    Key? key,
+    super.key,
     required this.child,
     this.onTap,
     this.scale = 0.95,
     this.duration = const Duration(milliseconds: 100),
-  }) : super(key: key);
+  });
 
   @override
   State<ScaleOnTap> createState() => _ScaleOnTapState();
@@ -1085,7 +1085,7 @@ class PanAfricanTextField extends StatelessWidget {
   final String? helperText;
 
   const PanAfricanTextField({
-    Key? key,
+    super.key,
     this.label,
     this.hint,
     this.controller,
@@ -1097,7 +1097,7 @@ class PanAfricanTextField extends StatelessWidget {
     this.onSuffixTap,
     this.errorText,
     this.helperText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1168,13 +1168,13 @@ class PanAfricanChip extends StatelessWidget {
   final Color? backgroundColor;
 
   const PanAfricanChip({
-    Key? key,
+    super.key,
     required this.label,
     this.selected = false,
     this.onSelected,
     this.icon,
     this.backgroundColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1211,11 +1211,11 @@ class PanAfricanBadge extends StatelessWidget {
   final IconData? icon;
 
   const PanAfricanBadge({
-    Key? key,
+    super.key,
     required this.label,
     this.color,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1262,11 +1262,11 @@ class PanAfricanProgressBar extends StatelessWidget {
   final double? height;
 
   const PanAfricanProgressBar({
-    Key? key,
+    super.key,
     required this.progress,
     this.color,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -1297,10 +1297,10 @@ class PanAfricanDivider extends StatelessWidget {
   final double? thickness;
 
   const PanAfricanDivider({
-    Key? key,
+    super.key,
     this.hasGradient = false,
     this.thickness,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

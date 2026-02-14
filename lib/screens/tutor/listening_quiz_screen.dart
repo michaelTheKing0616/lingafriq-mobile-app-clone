@@ -15,8 +15,7 @@ import 'package:lingafriq/providers/gamification_provider.dart';
 class ListeningQuizScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> passageData;
 
-  const ListeningQuizScreen({Key? key, required this.passageData})
-      : super(key: key);
+  const ListeningQuizScreen({super.key, required this.passageData});
 
   @override
   ConsumerState<ListeningQuizScreen> createState() =>

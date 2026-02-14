@@ -15,9 +15,9 @@ class PronunciationGame extends ConsumerStatefulWidget {
   final Language language;
 
   const PronunciationGame({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<PronunciationGame> createState() => _PronunciationGameState();

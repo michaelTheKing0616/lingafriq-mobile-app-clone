@@ -29,7 +29,7 @@ final tabIndexProvider =
 final scaffoldKeyProvider = Provider(((ref) => GlobalKey<ScaffoldState>()));
 
 class TabsView extends StatefulHookConsumerWidget {
-  const TabsView({Key? key}) : super(key: key);
+  const TabsView({super.key});
 
   @override
   ConsumerState<TabsView> createState() => _TabsViewState();
@@ -67,7 +67,7 @@ class _TabsViewState extends ConsumerState<TabsView> {
 }
 
 class _BottomNavigationBar extends HookConsumerWidget {
-  const _BottomNavigationBar({Key? key}) : super(key: key);
+  const _BottomNavigationBar();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

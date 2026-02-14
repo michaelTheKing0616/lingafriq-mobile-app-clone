@@ -17,7 +17,7 @@ import '../home/language_detail_screen.dart';
 import '../tabs_view.dart';
 
 class CoursesTab extends HookConsumerWidget {
-  const CoursesTab({Key? key}) : super(key: key);
+  const CoursesTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -107,9 +107,8 @@ class CoursesTab extends HookConsumerWidget {
 class _ProgressItem extends ConsumerWidget {
   final Language language;
   const _ProgressItem({
-    Key? key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

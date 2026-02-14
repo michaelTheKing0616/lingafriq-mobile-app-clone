@@ -11,7 +11,7 @@ import '../../services/monitoring/sentry_service.dart';
 
 /// Example Screen with ErrorHandler Integration
 class ExampleScreenWithErrorHandler extends HookConsumerWidget {
-  const ExampleScreenWithErrorHandler({Key? key}) : super(key: key);
+  const ExampleScreenWithErrorHandler({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

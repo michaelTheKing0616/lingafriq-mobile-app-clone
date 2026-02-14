@@ -20,10 +20,10 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
   final String otherUserName;
 
   const PrivateChatScreenMaterial3({
-    Key? key,
+    super.key,
     required this.otherUserId,
     required this.otherUserName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,7 +55,7 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
             list = data!['messages'];
           }
           messages.value = list
-              .map((e) => e is Map ? Map<String, dynamic>.from(e as Map) : <String, dynamic>{'body': e.toString()})
+              .map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()})
               .toList();
         }
       } catch (e) {

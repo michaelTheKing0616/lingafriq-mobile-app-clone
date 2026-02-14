@@ -2,7 +2,6 @@
 // Provides wrappers and helpers for consistent error handling and performance optimization across all screens
 
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import '../core/errors/global_error_handler.dart';
 import '../core/errors/app_exceptions.dart';
 import 'performance_utils.dart';
@@ -15,11 +14,11 @@ class ScreenWrapper extends StatelessWidget {
   final String? errorMessage;
 
   const ScreenWrapper({
-    Key? key,
+    super.key,
     required this.child,
     this.onRetry,
     this.errorMessage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +125,9 @@ mixin PerformanceOptimizedScreen<T extends StatefulWidget> on State<T> {
   }
 
   /// Get cached data or compute and cache
-  T? getCachedOrCompute<T>(String key, T Function() compute, {Duration? ttl}) {
+  U? getCachedOrCompute<U>(String key, U Function() compute, {Duration? ttl}) {
     final cached = cache.get(key);
-    if (cached != null && cached is T) {
+    if (cached != null && cached is U) {
       return cached;
     }
     
@@ -149,9 +148,9 @@ class OptimizedScreenBuilder extends StatelessWidget {
   ) builder;
 
   const OptimizedScreenBuilder({
-    Key? key,
+    super.key,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -169,9 +168,8 @@ class _OptimizedScreenBuilderStateful extends StatefulWidget {
   ) builder;
 
   const _OptimizedScreenBuilderStateful({
-    Key? key,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   State<_OptimizedScreenBuilderStateful> createState() => _OptimizedScreenBuilderStatefulState();

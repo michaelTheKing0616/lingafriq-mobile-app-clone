@@ -14,10 +14,10 @@ class ModerationToolsScreen extends HookConsumerWidget {
   final String? chatId; // villageId for community, null for global
 
   const ModerationToolsScreen({
-    Key? key,
+    super.key,
     required this.chatType,
     this.chatId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

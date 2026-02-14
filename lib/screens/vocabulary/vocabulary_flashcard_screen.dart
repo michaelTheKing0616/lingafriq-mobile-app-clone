@@ -17,11 +17,11 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
   final String? category;
 
   const VocabularyFlashcardScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
     this.category,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -417,12 +417,12 @@ class _Flashcard extends StatelessWidget {
   final bool isDark;
 
   const _Flashcard({
-    Key? key,
+    super.key,
     required this.word,
     required this.isFlipped,
     required this.showAnswer,
     required this.isDark,
-  }) : super(key: key);
+  });
 
   String _getWordMeaning(WordMastery word) {
     // Try to get meaning from metadata
@@ -453,7 +453,7 @@ class _Flashcard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.9,
       height: MediaQuery.of(context).size.height * 0.5,
       child: Container(

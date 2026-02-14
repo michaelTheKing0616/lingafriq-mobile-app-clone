@@ -6,7 +6,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
-    Key? key,
+    super.key,
     this.enabled = true,
     this.isOutline = false,
     this.text,
@@ -20,7 +20,7 @@ class PrimaryButton extends StatelessWidget {
     this.icon,
     this.loading = false,
     this.height,
-  }) : super(key: key);
+  });
 
   final bool enabled;
   final bool isOutline;

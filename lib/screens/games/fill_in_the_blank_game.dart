@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:lingafriq/data/language_words.dart';
 import 'package:lingafriq/models/language_response.dart';
 import 'package:lingafriq/providers/api_provider.dart';
@@ -17,9 +16,9 @@ class FillInTheBlankGame extends ConsumerStatefulWidget {
   final Language language;
 
   const FillInTheBlankGame({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<FillInTheBlankGame> createState() => _FillInTheBlankGameState();

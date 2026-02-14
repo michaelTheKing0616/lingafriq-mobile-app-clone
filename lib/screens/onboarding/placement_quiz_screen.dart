@@ -12,9 +12,9 @@ class PlacementQuizScreen extends HookConsumerWidget {
   final VoidCallback onComplete;
 
   const PlacementQuizScreen({
-    Key? key,
+    super.key,
     required this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -121,12 +121,11 @@ class _PlacementQuizScaffold extends StatefulWidget {
   final LocalizationService localization;
 
   const _PlacementQuizScaffold({
-    Key? key,
     required this.languageCode,
     required this.questions,
     required this.onFinished,
     required this.localization,
-  }) : super(key: key);
+  });
 
   @override
   State<_PlacementQuizScaffold> createState() => _PlacementQuizScaffoldState();

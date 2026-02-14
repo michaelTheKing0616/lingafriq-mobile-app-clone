@@ -14,7 +14,7 @@ import '../../providers/gamification_provider.dart';
 
 /// Tribe vs Tribe Events Screen
 class TribeVsTribeScreen extends ConsumerStatefulWidget {
-  const TribeVsTribeScreen({Key? key}) : super(key: key);
+  const TribeVsTribeScreen({super.key});
 
   @override
   ConsumerState<TribeVsTribeScreen> createState() => _TribeVsTribeScreenState();
@@ -149,9 +149,7 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
     }
 
     // Use API data if available, otherwise fallback to local provider
-    final displayEvent = _currentCompetition != null 
-        ? _currentCompetition 
-        : (currentEvent != null ? {
+    final displayEvent = _currentCompetition ?? (currentEvent != null ? {
             'name': currentEvent.name,
             'description': currentEvent.description,
             'isActive': currentEvent.isActive,

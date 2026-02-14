@@ -26,7 +26,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 
 /// Beautiful Material 3 Dashboard with Pan-African Design
 class DashboardScreenMaterial3 extends HookConsumerWidget {
-  const DashboardScreenMaterial3({Key? key}) : super(key: key);
+  const DashboardScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -557,7 +557,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    title: Text(language.name ?? 'Language'),
+                    title: Text(language.name),
                     subtitle: progress > 0
                         ? LinearProgressIndicator(
                             value: progress,

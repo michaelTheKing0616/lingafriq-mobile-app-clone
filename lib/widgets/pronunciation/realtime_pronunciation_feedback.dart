@@ -28,13 +28,13 @@ class RealtimePronunciationFeedback extends HookConsumerWidget {
   final Function(AdvancedPronunciationResult)? onAnalysisComplete;
 
   const RealtimePronunciationFeedback({
-    Key? key,
+    super.key,
     required this.expectedText,
     required this.language,
     this.feedbackStream,
     this.onRecordingComplete,
     this.onAnalysisComplete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

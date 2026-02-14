@@ -471,10 +471,15 @@ class FeedbackEngine {
   
   String _getEncouragement(double score) {
     String category;
-    if (score >= 0.85) category = 'excellent';
-    else if (score >= 0.7) category = 'good';
-    else if (score >= 0.5) category = 'okay';
-    else category = 'struggling';
+    if (score >= 0.85) {
+      category = 'excellent';
+    } else if (score >= 0.7) {
+      category = 'good';
+    } else if (score >= 0.5) {
+      category = 'okay';
+    } else {
+      category = 'struggling';
+    }
     
     final phrases = _encouragementPhrases[category]!;
     phrases.shuffle();

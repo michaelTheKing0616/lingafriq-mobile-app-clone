@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
@@ -9,7 +8,7 @@ import 'package:lingafriq/services/user_generated_content_service.dart';
 
 /// Enhanced Create Quiz Screen with Validation Feedback
 class CreateQuizScreenEnhanced extends HookConsumerWidget {
-  const CreateQuizScreenEnhanced({Key? key}) : super(key: key);
+  const CreateQuizScreenEnhanced({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

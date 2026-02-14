@@ -10,7 +10,7 @@ import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -40,7 +40,7 @@ const List<String> _kGrammarTopicSuggestions = [
 
 /// Grammar Explanation Mode Screen — knowledge card, topic autocomplete, lesson view, Try It drawer.
 class TutorGrammarModeScreen extends HookConsumerWidget {
-  const TutorGrammarModeScreen({Key? key}) : super(key: key);
+  const TutorGrammarModeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -494,9 +494,13 @@ Quality requirements:
                 final label = m['label']?.toString() ?? '';
                 final hint = (m['colorHint']?.toString() ?? '').toLowerCase();
                 Color color = PolieColors.royalAmethyst;
-                if (hint.contains('subject')) color = PolieColors.electricTeal;
-                else if (hint.contains('verb')) color = PolieColors.goldEmber;
-                else if (hint.contains('object')) color = PolieColors.royalAmethyst;
+                if (hint.contains('subject')) {
+                  color = PolieColors.electricTeal;
+                } else if (hint.contains('verb')) {
+                  color = PolieColors.goldEmber;
+                } else if (hint.contains('object')) {
+                  color = PolieColors.royalAmethyst;
+                }
                 return Container(
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
                   decoration: BoxDecoration(

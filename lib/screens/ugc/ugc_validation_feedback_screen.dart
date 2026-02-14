@@ -13,10 +13,10 @@ class UGCValidationFeedbackScreen extends HookConsumerWidget {
   final String contentType; // 'lesson', 'quiz', 'story'
 
   const UGCValidationFeedbackScreen({
-    Key? key,
+    super.key,
     required this.contentId,
     required this.contentType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

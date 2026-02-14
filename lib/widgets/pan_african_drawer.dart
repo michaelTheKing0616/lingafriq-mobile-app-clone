@@ -16,7 +16,7 @@ import '../screens/tabs_view/tabs_view.dart';
 /// - Beautiful transitions and animations
 /// - Material 3 compliant
 class PanAfricanDrawer extends ConsumerWidget {
-  const PanAfricanDrawer({Key? key}) : super(key: key);
+  const PanAfricanDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

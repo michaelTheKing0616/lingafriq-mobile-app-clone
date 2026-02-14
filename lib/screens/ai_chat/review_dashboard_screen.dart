@@ -14,10 +14,10 @@ class ReviewDashboardScreen extends HookConsumerWidget {
   final String languageName;
 
   const ReviewDashboardScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

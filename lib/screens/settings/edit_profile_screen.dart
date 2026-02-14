@@ -15,7 +15,7 @@ import 'dart:convert';
 
 /// Edit Profile Screen - Pan-African Design System
 class EditProfileScreen extends HookConsumerWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+  const EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +35,7 @@ class EditProfileScreen extends HookConsumerWidget {
     final isLoading = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
-    Future<void> _pickImage() async {
+    Future<void> pickImage() async {
       try {
         HapticFeedback.selectionClick();
         final ImagePicker picker = ImagePicker();
@@ -55,7 +55,7 @@ class EditProfileScreen extends HookConsumerWidget {
       }
     }
 
-    Future<void> _takePhoto() async {
+    Future<void> takePhoto() async {
       try {
         HapticFeedback.selectionClick();
         final ImagePicker picker = ImagePicker();
@@ -75,9 +75,10 @@ class EditProfileScreen extends HookConsumerWidget {
       }
     }
 
-    Future<void> _saveProfile() async {
-      if (formKey.currentState == null || !formKey.currentState!.validate())
+    Future<void> saveProfile() async {
+      if (formKey.currentState == null || !formKey.currentState!.validate()) {
         return;
+      }
 
       HapticFeedback.mediumImpact();
       isLoading.value = true;
@@ -117,7 +118,7 @@ class EditProfileScreen extends HookConsumerWidget {
       }
     }
 
-    void _showImagePicker() {
+    void showImagePicker() {
       HapticFeedback.lightImpact();
       showModalBottomSheet(
         context: context,
@@ -156,7 +157,7 @@ class EditProfileScreen extends HookConsumerWidget {
                     title: 'Choose from Gallery',
                     onTap: () {
                       Navigator.pop(context);
-                      _pickImage();
+                      pickImage();
                     },
                     isDark: isDark,
                   ),
@@ -165,7 +166,7 @@ class EditProfileScreen extends HookConsumerWidget {
                     title: 'Take Photo',
                     onTap: () {
                       Navigator.pop(context);
-                      _takePhoto();
+                      takePhoto();
                     },
                     isDark: isDark,
                   ),
@@ -260,7 +261,7 @@ class EditProfileScreen extends HookConsumerWidget {
                           bottom: 0,
                           right: 0,
                           child: GestureDetector(
-                            onTap: _showImagePicker,
+                            onTap: showImagePicker,
                             child: Container(
                               padding: EdgeInsets.all(PanAfricanSpacing.sm),
                               decoration: BoxDecoration(
@@ -363,7 +364,7 @@ class EditProfileScreen extends HookConsumerWidget {
                   // Save Button
                   _SaveButton(
                     isLoading: isLoading.value,
-                    onPressed: _saveProfile,
+                    onPressed: saveProfile,
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                 ],

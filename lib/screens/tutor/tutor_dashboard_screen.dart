@@ -15,7 +15,7 @@ import 'tutor_assess_mode_screen.dart';
 
 /// Beautiful Material 3 Tutor Dashboard with 6 Mode Tabs
 class TutorDashboardScreen extends StatefulWidget {
-  const TutorDashboardScreen({Key? key}) : super(key: key);
+  const TutorDashboardScreen({super.key});
 
   @override
   State<TutorDashboardScreen> createState() => _TutorDashboardScreenState();

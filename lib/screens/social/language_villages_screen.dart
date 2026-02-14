@@ -15,7 +15,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Language Villages Screen - Voice rooms for target-language-only practice
 class LanguageVillagesScreen extends ConsumerWidget {
-  const LanguageVillagesScreen({Key? key}) : super(key: key);
+  const LanguageVillagesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

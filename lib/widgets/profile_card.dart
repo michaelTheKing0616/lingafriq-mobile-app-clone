@@ -14,14 +14,14 @@ class ProfileCard extends StatelessWidget {
   final bool showEditIcon;
 
   const ProfileCard({
-    Key? key,
+    super.key,
     this.username,
     this.email,
     this.avatarPath,
     this.rank,
     this.onEditTap,
     this.showEditIcon = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -192,13 +192,13 @@ class ProfileMenuItem extends StatelessWidget {
   final Widget? trailing;
 
   const ProfileMenuItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.onTap,
     this.iconColor,
     this.trailing,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

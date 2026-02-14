@@ -31,9 +31,6 @@ class DiacriticsEnforcer {
       'mo n kọ ẹkọ': 'Mo ń kọ́ ẹ̀kọ́',
       'mo n kọ': 'Mo ń kọ́',
       'ewa': 'Ẹwà',
-      'mo n kọ ẹkọ': 'Mo ń kọ́ ẹ̀kọ́',
-      'bawo ni o': 'Báwo ní o',
-      'bawo ni o?': 'Báwo ní o?',
     },
     'hausa': {
       'sannu': 'Sannu',

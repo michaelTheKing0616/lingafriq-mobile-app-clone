@@ -583,67 +583,6 @@ class _VideoGrid extends StatelessWidget {
   }
 }
 
-/// Whiteboard Painter
-class _WhiteboardPainter extends CustomPainter {
-  final List<Map<String, dynamic>> paths;
-  final List<Offset> currentPath;
-  final Color currentColor;
-  final double strokeWidth;
-
-  _WhiteboardPainter({
-    required this.paths,
-    required this.currentPath,
-    required this.currentColor,
-    required this.strokeWidth,
-  });
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    // Draw saved paths
-    for (final pathData in paths) {
-      final paint = Paint()
-        ..color = pathData['color'] as Color
-        ..strokeWidth = pathData['strokeWidth'] as double
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round;
-
-      final path = Path();
-      final points = pathData['points'] as List<Offset>;
-      if (points.isNotEmpty) {
-        path.moveTo(points.first.dx, points.first.dy);
-        for (int i = 1; i < points.length; i++) {
-          path.lineTo(points[i].dx, points[i].dy);
-        }
-        canvas.drawPath(path, paint);
-      }
-    }
-
-    // Draw current path
-    if (currentPath.isNotEmpty) {
-      final paint = Paint()
-        ..color = currentColor
-        ..strokeWidth = strokeWidth
-        ..style = PaintingStyle.stroke
-        ..strokeCap = StrokeCap.round;
-
-      final path = Path();
-      path.moveTo(currentPath.first.dx, currentPath.first.dy);
-      for (int i = 1; i < currentPath.length; i++) {
-        path.lineTo(currentPath[i].dx, currentPath[i].dy);
-      }
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(_WhiteboardPainter oldDelegate) {
-    return oldDelegate.paths != paths ||
-        oldDelegate.currentPath != currentPath ||
-        oldDelegate.currentColor != currentColor ||
-        oldDelegate.strokeWidth != strokeWidth;
-  }
-}
-
 /// Classroom Controls
 class _ClassroomControls extends StatelessWidget {
   final bool isVideoEnabled;

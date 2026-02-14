@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../models/game/game_session_model.dart';
@@ -25,11 +24,11 @@ class WordMatchAudioGame extends ConsumerStatefulWidget {
   final String? level;
 
   const WordMatchAudioGame({
-    Key? key,
+    super.key,
     this.onBack,
     required this.language,
     this.level,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<WordMatchAudioGame> createState() => _WordMatchAudioGameState();

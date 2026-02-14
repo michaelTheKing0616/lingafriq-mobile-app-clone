@@ -15,10 +15,10 @@ class ConversationAnalyticsScreen extends HookConsumerWidget {
   final String languageName;
 
   const ConversationAnalyticsScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

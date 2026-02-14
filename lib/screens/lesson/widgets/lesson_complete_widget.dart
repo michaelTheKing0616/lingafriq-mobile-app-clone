@@ -15,7 +15,7 @@ class LessonCompleteWidget extends StatelessWidget {
   final VoidCallback? onShare;
 
   const LessonCompleteWidget({
-    Key? key,
+    super.key,
     required this.totalXP,
     this.comboBonus = 0,
     required this.accuracy,
@@ -23,7 +23,7 @@ class LessonCompleteWidget extends StatelessWidget {
     this.bestCombo = 0,
     required this.onContinue,
     this.onShare,
-  }) : super(key: key);
+  });
 
   String _formatTime(int seconds) {
     final minutes = seconds ~/ 60;

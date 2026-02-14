@@ -147,7 +147,7 @@ void main() {
           const ProviderScope(
             child: MaterialApp(
               home: MediaQuery(
-                data: const MediaQueryData(textScaleFactor: 2.0),
+                data: MediaQueryData(textScaleFactor: 2.0),
                 child: MockPlacementTestScreen(),
               ),
             ),

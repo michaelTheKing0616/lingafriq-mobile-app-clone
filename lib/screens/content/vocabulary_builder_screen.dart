@@ -16,9 +16,9 @@ class VocabularyBuilderScreen extends ConsumerStatefulWidget {
   final String? language;
 
   const VocabularyBuilderScreen({
-    Key? key,
+    super.key,
     this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<VocabularyBuilderScreen> createState() => _VocabularyBuilderScreenState();

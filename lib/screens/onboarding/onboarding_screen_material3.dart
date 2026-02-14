@@ -9,7 +9,7 @@ import 'package:lingafriq/screens/onboarding/unified_onboarding_screen.dart';
 /// - Comprehensive personalization questions
 /// - Backend sync and offline-first data persistence
 class OnboardingScreenMaterial3 extends StatelessWidget {
-  const OnboardingScreenMaterial3({Key? key}) : super(key: key);
+  const OnboardingScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context) {

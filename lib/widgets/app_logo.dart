@@ -6,11 +6,11 @@ class AppLogo extends StatelessWidget {
   final double? height;
   final String? logoOverride;
   const AppLogo({
-    Key? key,
+    super.key,
     this.logoOverride,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

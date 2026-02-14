@@ -24,9 +24,9 @@ final lessonsListProvider = FutureProvider.autoDispose.family<LessonResponse, in
 class LessonsListScreen extends ConsumerWidget {
   final Language language;
   const LessonsListScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -141,11 +141,10 @@ class _LessonItem extends ConsumerWidget {
   final bool enabled;
   final int index;
   const _LessonItem({
-    Key? key,
     required this.lesson,
     required this.enabled,
     required this.index,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

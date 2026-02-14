@@ -25,7 +25,7 @@ class PanAfricanDialog extends StatelessWidget {
   final bool hasGradientHeader;
 
   const PanAfricanDialog({
-    Key? key,
+    super.key,
     required this.title,
     this.message,
     this.content,
@@ -37,7 +37,7 @@ class PanAfricanDialog extends StatelessWidget {
     this.onSecondaryPressed,
     this.isDestructive = false,
     this.hasGradientHeader = false,
-  }) : super(key: key);
+  });
 
   /// Shows a Pan-African styled dialog
   static Future<T?> show<T>({

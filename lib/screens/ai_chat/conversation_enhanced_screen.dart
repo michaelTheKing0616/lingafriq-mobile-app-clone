@@ -15,10 +15,10 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
   final String languageName;
 
   const ConversationEnhancedScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

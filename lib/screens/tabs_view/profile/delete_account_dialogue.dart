@@ -7,7 +7,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 
 class DeleteAccountDialog extends StatelessWidget {
-  const DeleteAccountDialog({Key? key}) : super(key: key);
+  const DeleteAccountDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +67,7 @@ class DeleteAccountDialog extends StatelessWidget {
 }
 
 class EnterPasswordDialog extends HookConsumerWidget {
-  const EnterPasswordDialog({Key? key}) : super(key: key);
+  const EnterPasswordDialog({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -14,10 +14,10 @@ class TutorialSectionWidget extends ConsumerStatefulWidget {
   final VoidCallback onContinue;
 
   const TutorialSectionWidget({
-    Key? key,
+    super.key,
     required this.content,
     required this.onContinue,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<TutorialSectionWidget> createState() => _TutorialSectionWidgetState();

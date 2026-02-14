@@ -9,7 +9,7 @@ class LanguageSelector extends StatelessWidget {
   final String selectedLanguage;
   final Function(String) onLanguageChanged;
 
-  const LanguageSelector({
+  const LanguageSelector({super.key, 
     required this.selectedLanguage,
     required this.onLanguageChanged,
   });
@@ -78,7 +78,7 @@ class GameSection extends StatelessWidget {
   final List<GameType> games;
   final Function(GameType) onGameSelected;
 
-  const GameSection({
+  const GameSection({super.key, 
     required this.title,
     required this.games,
     required this.onGameSelected,

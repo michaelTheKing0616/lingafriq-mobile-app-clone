@@ -13,9 +13,9 @@ class ComboDisplayWidget extends StatefulWidget {
   final ComboTracker comboTracker;
 
   const ComboDisplayWidget({
-    Key? key,
+    super.key,
     required this.comboTracker,
-  }) : super(key: key);
+  });
 
   @override
   State<ComboDisplayWidget> createState() => _ComboDisplayWidgetState();

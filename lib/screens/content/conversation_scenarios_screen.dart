@@ -8,7 +8,6 @@ import 'package:lingafriq/screens/ai_chat/ai_chat_screen_with_tracking.dart';
 import 'package:lingafriq/data/roleplay_dataset.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 /// Conversation Practice Scenarios Screen
@@ -18,10 +17,10 @@ class ConversationScenariosScreen extends ConsumerStatefulWidget {
   final String? languageName;
 
   const ConversationScenariosScreen({
-    Key? key,
+    super.key,
     this.language,
     this.languageName,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ConversationScenariosScreen> createState() => _ConversationScenariosScreenState();
@@ -29,7 +28,7 @@ class ConversationScenariosScreen extends ConsumerStatefulWidget {
 
 class _ConversationScenariosScreenState extends ConsumerState<ConversationScenariosScreen> {
   List<ConversationScenario> _scenarios = [];
-  Map<String, ScenarioProgress> _progressMap = {};
+  final Map<String, ScenarioProgress> _progressMap = {};
   bool _isLoading = true;
 
   @override

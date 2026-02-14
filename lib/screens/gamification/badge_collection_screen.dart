@@ -10,7 +10,7 @@ import '../../widgets/empty_state_widget.dart';
 
 /// Screen displaying all badges with unlock status
 class BadgeCollectionScreen extends ConsumerStatefulWidget {
-  const BadgeCollectionScreen({Key? key}) : super(key: key);
+  const BadgeCollectionScreen({super.key});
 
   @override
   ConsumerState<BadgeCollectionScreen> createState() => _BadgeCollectionScreenState();

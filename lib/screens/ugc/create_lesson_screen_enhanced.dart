@@ -13,7 +13,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 
 /// Enhanced Create Lesson Screen with Validation Feedback and Quality Badges
 class CreateLessonScreenEnhanced extends HookConsumerWidget {
-  const CreateLessonScreenEnhanced({Key? key}) : super(key: key);
+  const CreateLessonScreenEnhanced({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,7 +28,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu', 'afrikaans'];
 
-    List<String> _extractBadges(Map<String, dynamic>? validation) {
+    List<String> extractBadges(Map<String, dynamic>? validation) {
       if (validation == null) return [];
       final badges = <String>[];
       
@@ -65,7 +65,7 @@ class CreateLessonScreenEnhanced extends HookConsumerWidget {
 
         if (response.statusCode == 200) {
           validationResult.value = response.data['data'];
-          qualityBadges.value = _extractBadges(response.data['data']);
+          qualityBadges.value = extractBadges(response.data['data']);
         }
       } catch (e) {
         if (context.mounted) {

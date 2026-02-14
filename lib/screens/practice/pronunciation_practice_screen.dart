@@ -15,9 +15,9 @@ class PronunciationPracticeScreen extends ConsumerStatefulWidget {
   final LessonItem lessonItem;
 
   const PronunciationPracticeScreen({
-    Key? key,
+    super.key,
     required this.lessonItem,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<PronunciationPracticeScreen> createState() => _PronunciationPracticeScreenState();
@@ -327,7 +327,7 @@ class _PronunciationPracticeScreenState extends ConsumerState<PronunciationPract
               ...result.toneErrors!.errors.map((error) => ListTile(
                 dense: true,
                 title: Text('Syllable ${error.syllableIndex + 1}: Expected ${error.expectedTone}, got ${error.actualTone}'),
-                subtitle: Text('${error.syllableText}'),
+                subtitle: Text(error.syllableText),
               )),
             ],
           ],

@@ -9,7 +9,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 
 /// Subscription screen with tier selection
 class SubscriptionScreen extends ConsumerWidget {
-  const SubscriptionScreen({Key? key}) : super(key: key);
+  const SubscriptionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

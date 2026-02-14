@@ -8,9 +8,9 @@ import 'top_gradient_box_builder.dart';
 class LoadingBuilder extends StatelessWidget {
   final String title;
   const LoadingBuilder({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class LoadingBuilder extends StatelessWidget {
               ],
             ),
           ).shimmer();
-        }).toList(),
+        }),
         // LessonsList(language: language).expand(),
       ],
     );

@@ -12,13 +12,13 @@ class LoadingOverlay extends StatelessWidget {
   final Color? progressIndicatorColor;
 
   const LoadingOverlay({
-    Key? key,
+    super.key,
     required this.isLoading,
     required this.child,
     this.message,
     this.color,
     this.progressIndicatorColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

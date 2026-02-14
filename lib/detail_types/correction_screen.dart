@@ -275,7 +275,6 @@ class _CorrectionScreenState extends ConsumerState<CorrectionScreen> {
 class _ChoicesSheet extends ConsumerWidget {
   final List<Map<String, String?>> selected;
   const _ChoicesSheet({
-    super.key,
     required this.selected,
   });
 

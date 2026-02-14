@@ -19,10 +19,10 @@ class CommunityChatScreen extends HookConsumerWidget {
   final String villageName;
 
   const CommunityChatScreen({
-    Key? key,
+    super.key,
     required this.villageId,
     required this.villageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

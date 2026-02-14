@@ -17,10 +17,10 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
   final String languageName;
 
   const RoleplayProgressDashboardScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -168,7 +168,7 @@ class RoleplayProgressDashboardScreen extends HookConsumerWidget {
                         .animate()
                         .fadeIn(duration: 200.ms)
                         .slideX(begin: 0.1);
-                  }).toList(),
+                  }),
               ],
             ),
           ),
@@ -380,7 +380,7 @@ class _DifficultyProgressCard extends StatelessWidget {
                 padding: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
                 child: Row(
                   children: [
-                    Container(
+                    SizedBox(
                       width: 60.w,
                       child: Text(
                         diff,

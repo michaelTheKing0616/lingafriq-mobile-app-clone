@@ -12,10 +12,10 @@ class LeagueWidget extends ConsumerStatefulWidget {
   final int maxLeaderboardEntries;
 
   const LeagueWidget({
-    Key? key,
+    super.key,
     this.showLeaderboard = true,
     this.maxLeaderboardEntries = 10,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<LeagueWidget> createState() => _LeagueWidgetState();

@@ -11,7 +11,7 @@ import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 /// Change Password Screen - Pan-African Design System
 class ChangePasswordScreen extends HookConsumerWidget {
-  const ChangePasswordScreen({Key? key}) : super(key: key);
+  const ChangePasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,9 +28,10 @@ class ChangePasswordScreen extends HookConsumerWidget {
     final isLoading = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormState>());
 
-    Future<void> _changePassword() async {
-      if (formKey.currentState == null || !formKey.currentState!.validate())
+    Future<void> changePassword() async {
+      if (formKey.currentState == null || !formKey.currentState!.validate()) {
         return;
+      }
 
       HapticFeedback.mediumImpact();
       isLoading.value = true;
@@ -210,7 +211,7 @@ class ChangePasswordScreen extends HookConsumerWidget {
                   // Change Password Button
                   _ChangePasswordButton(
                     isLoading: isLoading.value,
-                    onPressed: _changePassword,
+                    onPressed: changePassword,
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
                 ],

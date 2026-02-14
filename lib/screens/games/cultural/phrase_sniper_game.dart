@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Phrase Sniper Game
 class PhraseSniperGame extends BaseGameScreen {
   const PhraseSniperGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.phraseSniper;
@@ -158,7 +157,7 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
     });
 
     completeTurn(
-      cardId: 'phrase_${_round}',
+      cardId: 'phrase_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 3000,
       confidence: _isCorrect ? 1.0 : 0.0,

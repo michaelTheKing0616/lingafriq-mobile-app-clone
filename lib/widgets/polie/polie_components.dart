@@ -12,13 +12,13 @@ class PolieGlassCard extends StatelessWidget {
   final double? borderRadius;
 
   const PolieGlassCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.hasGlow = false,
     this.glowColor,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +53,14 @@ class PolieLanguagePill extends StatelessWidget {
   final VoidCallback? onTap;
 
   const PolieLanguagePill({
-    Key? key,
+    super.key,
     required this.label,
     this.regionTag,
     this.isSelected = false,
     this.isDetecting = false,
     this.accentColor,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -139,12 +139,12 @@ class PolieChatBubble extends StatelessWidget {
   final String? correctionText;
 
   const PolieChatBubble({
-    Key? key,
+    super.key,
     required this.text,
     this.role = PolieChatBubbleRole.assistant,
     this.isCorrectionOverlay = false,
     this.correctionText,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -236,13 +236,13 @@ class PoliePrimaryButton extends StatelessWidget {
   final IconData? icon;
 
   const PoliePrimaryButton({
-    Key? key,
+    super.key,
     required this.label,
     this.onPressed,
     this.loading = false,
     this.enabled = true,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +330,7 @@ class PolieInputField extends StatelessWidget {
   final int? maxLength;
 
   const PolieInputField({
-    Key? key,
+    super.key,
     this.controller,
     this.focusNode,
     this.hintText,
@@ -342,7 +342,7 @@ class PolieInputField extends StatelessWidget {
     this.enabled = true,
     this.maxLines = 1,
     this.maxLength,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -413,12 +413,12 @@ class PolieFloatingLanguagePill extends StatelessWidget {
   final VoidCallback? onTap;
 
   const PolieFloatingLanguagePill({
-    Key? key,
+    super.key,
     required this.languageName,
     this.regionTag,
     this.accentColor,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -9,13 +9,13 @@ class GreetingsBuilder extends StatelessWidget {
   final Widget? subtitle;
   final Widget? trailing;
   const GreetingsBuilder({
-    Key? key,
+    super.key,
     required this.pageTitle,
     this.greetingTitle,
     this.showGreeting = true,
     this.subtitle,
     this.trailing,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

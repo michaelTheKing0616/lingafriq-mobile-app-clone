@@ -14,7 +14,7 @@ import 'package:lingafriq/screens/chat/private_chat_screen.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 
 class UserConnectionsScreen extends ConsumerStatefulWidget {
-  const UserConnectionsScreen({Key? key}) : super(key: key);
+  const UserConnectionsScreen({super.key});
 
   @override
   ConsumerState<UserConnectionsScreen> createState() => _UserConnectionsScreenState();

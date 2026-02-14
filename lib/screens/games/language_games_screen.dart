@@ -15,7 +15,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 class LanguageGamesScreen extends HookConsumerWidget {
   final VoidCallback? onBack;
   
-  const LanguageGamesScreen({Key? key, this.onBack}) : super(key: key);
+  const LanguageGamesScreen({super.key, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

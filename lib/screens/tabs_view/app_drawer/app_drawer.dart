@@ -41,7 +41,7 @@ import 'package:lingafriq/models/offline/local_vocabulary.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawer extends HookConsumerWidget {
-  const AppDrawer({Key? key}) : super(key: key);
+  const AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

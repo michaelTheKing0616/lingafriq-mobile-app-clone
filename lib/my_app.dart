@@ -57,7 +57,7 @@ import 'models/offline/local_vocabulary.dart';
 import 'widgets/empty_state_widget.dart';
 
 class MyApp extends ConsumerStatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -286,7 +286,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
 }
 
 class _Unfocus extends StatelessWidget {
-  const _Unfocus({Key? key, required this.child}) : super(key: key);
+  const _Unfocus({required this.child});
 
   final Widget? child;
 

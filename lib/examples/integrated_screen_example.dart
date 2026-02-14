@@ -15,7 +15,7 @@ import '../utils/performance_exports.dart';
 import '../widgets/global/error_recovery_widget.dart';
 
 class IntegratedScreenExample extends StatefulWidget {
-  const IntegratedScreenExample({Key? key}) : super(key: key);
+  const IntegratedScreenExample({super.key});
 
   @override
   State<IntegratedScreenExample> createState() => _IntegratedScreenExampleState();
@@ -215,7 +215,7 @@ class _IntegratedScreenExampleState extends State<IntegratedScreenExample>
 
 /// Example of using SafeFutureBuilder
 class SafeFutureBuilderExample extends StatelessWidget {
-  const SafeFutureBuilderExample({Key? key}) : super(key: key);
+  const SafeFutureBuilderExample({super.key});
 
   Future<List<String>> _loadData() async {
     await Future.delayed(const Duration(seconds: 1));

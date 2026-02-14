@@ -77,7 +77,7 @@ class RiveGamificationService {
   void _handleGamificationChange() {
     if (_controller == null) return;
 
-    final gamificationNotifier = _ref.read(gamificationProvider.notifier);
+    _ref.read(gamificationProvider.notifier);
     
     // Reactions are handled by direct method calls (reactToXPGain, reactToLevelUp, etc.)
     // This listener is kept for future enhancements

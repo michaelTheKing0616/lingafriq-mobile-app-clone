@@ -11,9 +11,9 @@ class ModerationScreen extends ConsumerStatefulWidget {
   final String roomId;
 
   const ModerationScreen({
-    Key? key,
+    super.key,
     required this.roomId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ModerationScreen> createState() => _ModerationScreenState();

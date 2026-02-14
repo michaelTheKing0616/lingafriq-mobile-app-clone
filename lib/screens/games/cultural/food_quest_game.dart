@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Food Quest Game
 class FoodQuestGame extends BaseGameScreen {
   const FoodQuestGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.foodQuest;
@@ -155,7 +154,7 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
     });
 
     completeTurn(
-      cardId: 'food_${_round}',
+      cardId: 'food_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 5000,
       confidence: _isCorrect ? 1.0 : 0.0,

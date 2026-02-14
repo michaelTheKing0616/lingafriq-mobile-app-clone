@@ -71,9 +71,7 @@ class CurriculumProvider extends Notifier<BaseProviderState> with BaseProviderMi
               curriculumData = await curriculumService.loadExpandedCurriculum(language, level);
             }
             
-            if (curriculumData == null) {
-              curriculumData = await curriculumService.loadCompactCurriculum(language, level);
-            }
+            curriculumData ??= await curriculumService.loadCompactCurriculum(language, level);
             
             if (curriculumData != null && curriculumData['units'] != null) {
               final units = (curriculumData['units'] as List)

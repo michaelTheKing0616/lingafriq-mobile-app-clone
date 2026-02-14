@@ -14,7 +14,7 @@ import '../../utils/performance_utils.dart';
 import 'personality_chat_screen.dart';
 
 class PersonalitySelectionScreen extends HookConsumerWidget {
-  const PersonalitySelectionScreen({Key? key}) : super(key: key);
+  const PersonalitySelectionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

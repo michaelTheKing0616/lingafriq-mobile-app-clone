@@ -12,7 +12,7 @@ import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// Magic Items & Boosters Screen
 class MagicItemsScreen extends ConsumerStatefulWidget {
-  const MagicItemsScreen({Key? key}) : super(key: key);
+  const MagicItemsScreen({super.key});
 
   @override
   ConsumerState<MagicItemsScreen> createState() => _MagicItemsScreenState();

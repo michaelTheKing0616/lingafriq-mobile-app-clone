@@ -8,13 +8,13 @@ class NavigationRailM3 extends StatelessWidget {
   final Widget? leading;
 
   const NavigationRailM3({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     this.onDestinationSelected,
     required this.destinations,
     this.trailing,
     this.leading,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

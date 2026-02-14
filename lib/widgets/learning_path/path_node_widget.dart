@@ -29,13 +29,13 @@ class PathNodeWidget extends ConsumerStatefulWidget {
   final double size;
 
   const PathNodeWidget({
-    Key? key,
+    super.key,
     required this.lesson,
     required this.state,
     required this.index,
     this.onTap,
     this.size = 64,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<PathNodeWidget> createState() => _PathNodeWidgetState();

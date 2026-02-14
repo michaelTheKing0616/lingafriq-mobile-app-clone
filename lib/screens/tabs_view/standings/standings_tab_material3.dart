@@ -91,7 +91,7 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                           ],
                           selected: {index},
                           onSelectionChanged: (Set<int> newSelection) {
-                            // ignore: invalid_use_of_visible_for_testing_member
+                            // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
                             ref.read(_tabIndexProvider.notifier).state =
                                 newSelection.first;
                           },
@@ -123,7 +123,7 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
 }
 
 class _StandingsBuilder extends HookConsumerWidget {
-  const _StandingsBuilder({super.key});
+  const _StandingsBuilder();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

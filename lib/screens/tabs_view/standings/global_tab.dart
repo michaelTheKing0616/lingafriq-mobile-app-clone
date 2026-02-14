@@ -11,9 +11,9 @@ import 'standing_item.dart';
 class GlobalTab extends ConsumerWidget {
   final List<ProfileModel> profiles;
   const GlobalTab({
-    Key? key,
+    super.key,
     required this.profiles,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

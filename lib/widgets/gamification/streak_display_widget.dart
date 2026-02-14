@@ -8,10 +8,10 @@ class StreakDisplayWidget extends ConsumerStatefulWidget {
   final bool compact;
 
   const StreakDisplayWidget({
-    Key? key,
+    super.key,
     this.showFreeze = true,
     this.compact = false,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<StreakDisplayWidget> createState() => _StreakDisplayWidgetState();

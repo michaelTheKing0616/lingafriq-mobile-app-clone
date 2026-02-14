@@ -1,7 +1,7 @@
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:lingafriq/config/api_contract.dart';
 class GamificationSocketService {
-  IO.Socket? _socket;
+  io.Socket? _socket;
   final String _baseUrl;
 
   GamificationSocketService({String? baseUrl})
@@ -15,9 +15,9 @@ class GamificationSocketService {
       return;
     }
 
-    _socket = IO.io(
+    _socket = io.io(
       'http://$_baseUrl',
-      IO.OptionBuilder()
+      io.OptionBuilder()
           .setTransports(['websocket', 'polling'])
           .setAuth({'token': token})
           .enableAutoConnect()

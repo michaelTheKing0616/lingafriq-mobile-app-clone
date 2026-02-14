@@ -12,7 +12,7 @@ import '../../config/api_contract.dart';
 
 /// Social Gifting Screen - Send lessons to friends
 class SocialGiftingScreen extends HookConsumerWidget {
-  const SocialGiftingScreen({Key? key}) : super(key: key);
+  const SocialGiftingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

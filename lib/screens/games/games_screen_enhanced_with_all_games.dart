@@ -13,7 +13,7 @@ import 'package:lingafriq/services/lazy_game_loader.dart';
 
 /// Enhanced Games Screen with ALL 35+ Games Properly Categorized
 class GamesScreenEnhanced extends HookConsumerWidget {
-  const GamesScreenEnhanced({Key? key}) : super(key: key);
+  const GamesScreenEnhanced({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

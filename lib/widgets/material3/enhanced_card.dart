@@ -16,7 +16,7 @@ class EnhancedCard extends StatelessWidget {
   final BorderRadius? borderRadius;
 
   const EnhancedCard({
-    Key? key,
+    super.key,
     required this.child,
     this.color,
     this.elevation,
@@ -26,7 +26,7 @@ class EnhancedCard extends StatelessWidget {
     this.animate = true,
     this.animationDelay = 0,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

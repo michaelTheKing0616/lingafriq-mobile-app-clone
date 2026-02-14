@@ -7,11 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Roleplay Adventure - Branching dialogue scenarios
 class RoleplayAdventureGame extends BaseGameScreen {
   const RoleplayAdventureGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.roleplayAdventure;
@@ -21,7 +21,7 @@ class RoleplayAdventureGame extends BaseGameScreen {
 }
 
 class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureGame> {
-  String _scenario = 'market';
+  final String _scenario = 'market';
   String _npcMessage = '';
   final List<String> _dialogueHistory = [];
   final List<_DialogueOption> _options = [];

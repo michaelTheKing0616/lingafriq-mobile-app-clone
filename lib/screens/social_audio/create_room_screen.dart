@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 
 /// Create Room Screen - Create a new language practice room
 class CreateRoomScreen extends ConsumerStatefulWidget {
-  const CreateRoomScreen({Key? key}) : super(key: key);
+  const CreateRoomScreen({super.key});
 
   @override
   ConsumerState<CreateRoomScreen> createState() => _CreateRoomScreenState();

@@ -16,7 +16,7 @@ import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 import '../../../providers/shared_preferences_provider.dart';
 
 class ChangePasswordScreen extends HookConsumerWidget {
-  const ChangePasswordScreen({Key? key}) : super(key: key);
+  const ChangePasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

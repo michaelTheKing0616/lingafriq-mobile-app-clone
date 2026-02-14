@@ -17,13 +17,13 @@ class PerformanceTrackedWidget extends StatefulWidget {
   final Map<String, dynamic>? metadata;
 
   const PerformanceTrackedWidget({
-    Key? key,
+    super.key,
     required this.child,
     required this.identifier,
     this.trackBuildTime = true,
     this.trackRenderTime = false,
     this.metadata,
-  }) : super(key: key);
+  });
 
   @override
   State<PerformanceTrackedWidget> createState() => _PerformanceTrackedWidgetState();
@@ -59,8 +59,8 @@ class _PerformanceTrackedWidgetState extends State<PerformanceTrackedWidget> {
     if (widget.trackRenderTime) {
       result = _TrackRenderTime(
         identifier: widget.identifier,
-        child: result,
         metadata: widget.metadata,
+        child: result,
       );
     }
 
@@ -75,11 +75,10 @@ class _TrackRenderTime extends StatefulWidget {
   final Map<String, dynamic>? metadata;
 
   const _TrackRenderTime({
-    Key? key,
     required this.child,
     required this.identifier,
     this.metadata,
-  }) : super(key: key);
+  });
 
   @override
   State<_TrackRenderTime> createState() => _TrackRenderTimeState();
@@ -122,14 +121,14 @@ class PerformanceTrackedListView extends StatelessWidget {
   final double? itemExtent;
 
   const PerformanceTrackedListView({
-    Key? key,
+    super.key,
     required this.identifier,
     required this.itemCount,
     required this.itemBuilder,
     this.controller,
     this.padding,
     this.itemExtent,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -165,13 +164,13 @@ class PerformanceTrackedImage extends StatelessWidget {
   final BoxFit fit;
 
   const PerformanceTrackedImage({
-    Key? key,
+    super.key,
     required this.identifier,
     required this.imageUrl,
     this.width,
     this.height,
     this.fit = BoxFit.cover,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

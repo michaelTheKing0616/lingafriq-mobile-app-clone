@@ -14,9 +14,9 @@ class RoomDetailScreen extends ConsumerStatefulWidget {
   final String roomId;
 
   const RoomDetailScreen({
-    Key? key,
+    super.key,
     required this.roomId,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<RoomDetailScreen> createState() => _RoomDetailScreenState();

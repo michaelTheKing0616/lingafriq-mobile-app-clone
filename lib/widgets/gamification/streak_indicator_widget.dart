@@ -11,10 +11,10 @@ class StreakIndicatorWidget extends ConsumerWidget {
   final bool showLabel;
 
   const StreakIndicatorWidget({
-    Key? key,
+    super.key,
     this.compact = false,
     this.showLabel = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -121,7 +121,7 @@ class StreakIndicatorWidget extends ConsumerWidget {
 /// Streak milestone widget
 /// Shows progress towards streak milestones
 class StreakMilestoneWidget extends ConsumerWidget {
-  const StreakMilestoneWidget({Key? key}) : super(key: key);
+  const StreakMilestoneWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

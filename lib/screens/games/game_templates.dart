@@ -13,8 +13,6 @@ import '../../models/game/game_session_model.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../providers/game_provider.dart';
 import '../../services/polie_content_generator.dart';
-import '../../services/voice/pronunciation_analysis_service.dart';
-import '../../providers/dio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,11 +28,11 @@ mixin GameTemplateMixin<T extends BaseGameScreen> on BaseGameScreenState<T> {
 /// Listen & Sketch Game
 class ListenSketchGame extends BaseGameScreen {
   const ListenSketchGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.listenAndSketch;
@@ -211,11 +209,11 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
 /// Picture-Word Association Game
 class PictureWordGame extends BaseGameScreen {
   const PictureWordGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.pictureWordAssociation;
@@ -427,11 +425,11 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
 /// Memory Map Game
 class MemoryMapGame extends BaseGameScreen {
   const MemoryMapGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.memoryMap;
@@ -708,11 +706,11 @@ class _MapPainter extends CustomPainter {
 /// Conversation Relay Game
 class ConversationRelayGame extends BaseGameScreen {
   const ConversationRelayGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.conversationRelay;
@@ -793,7 +791,7 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
         : 0;
 
     completeTurn(
-      cardId: 'conv_${_turnCount}',
+      cardId: 'conv_$_turnCount',
       result: GameResult.correct, // Conversation practice is always correct
       durationMs: duration,
       confidence: 1.0,
@@ -952,11 +950,11 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
 /// Grammar Jam Game
 class GrammarJamGame extends BaseGameScreen {
   const GrammarJamGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.grammarJam;
@@ -1077,7 +1075,7 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
         : 0;
 
     completeTurn(
-      cardId: 'grammar_${_currentIndex}',
+      cardId: 'grammar_$_currentIndex',
       result: isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
       confidence: isCorrect ? 1.0 : 0.0,
@@ -1263,11 +1261,11 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
 /// Pronunciation Karaoke Game
 class PronunciationKaraokeGame extends BaseGameScreen {
   const PronunciationKaraokeGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.pronunciationKaraoke;
@@ -1369,7 +1367,6 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
 
   Future<void> _scorePronunciation(String audioPath) async {
     try {
-      final dio = ref.read(client);
       final audioFile = File(audioPath);
       if (!await audioFile.exists()) return;
 
@@ -1388,7 +1385,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
           : 0;
 
       completeTurn(
-        cardId: 'karaoke_${_currentSongIndex}_${_currentLineIndex}',
+        cardId: 'karaoke_${_currentSongIndex}_$_currentLineIndex',
         result: score >= 85 ? GameResult.correct : GameResult.partial,
         durationMs: duration,
         confidence: score / 100.0,
@@ -1568,11 +1565,11 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
 /// Quiz Chef Game
 class QuizChefGame extends BaseGameScreen {
   const QuizChefGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.quizChef;
@@ -1695,7 +1692,7 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
         : 0;
 
     completeTurn(
-      cardId: 'recipe_step_${_currentStepIndex}',
+      cardId: 'recipe_step_$_currentStepIndex',
       result: isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
       confidence: isCorrect ? 1.0 : 0.0,

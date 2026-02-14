@@ -14,9 +14,9 @@ class WritingPracticeScreen extends ConsumerStatefulWidget {
   final String? language;
 
   const WritingPracticeScreen({
-    Key? key,
+    super.key,
     this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<WritingPracticeScreen> createState() => _WritingPracticeScreenState();
@@ -31,7 +31,7 @@ class _WritingPracticeScreenState extends ConsumerState<WritingPracticeScreen>
   String _userAnswer = '';
   bool _isEvaluating = false;
   WritingFeedback? _feedback;
-  Map<String, bool> _completedExercises = {};
+  final Map<String, bool> _completedExercises = {};
 
   @override
   void initState() {

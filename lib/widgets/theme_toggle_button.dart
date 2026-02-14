@@ -13,11 +13,11 @@ class ThemeToggleButton extends ConsumerWidget {
   final EdgeInsets? padding;
 
   const ThemeToggleButton({
-    Key? key,
+    super.key,
     this.showLabel = false,
     this.isFloating = false,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

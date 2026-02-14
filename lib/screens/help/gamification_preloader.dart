@@ -6,7 +6,7 @@ import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
 class GamificationPreloader extends StatelessWidget {
   final VoidCallback? onComplete;
 
-  const GamificationPreloader({Key? key, this.onComplete}) : super(key: key);
+  const GamificationPreloader({super.key, this.onComplete});
 
   @override
   Widget build(BuildContext context) {

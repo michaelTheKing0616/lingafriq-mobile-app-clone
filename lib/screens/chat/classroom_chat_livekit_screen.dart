@@ -17,10 +17,10 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
   final String roomName;
 
   const ClassroomChatLiveKitScreen({
-    Key? key,
+    super.key,
     required this.roomId,
     required this.roomName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

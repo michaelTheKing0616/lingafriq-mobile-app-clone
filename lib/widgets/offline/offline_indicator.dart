@@ -12,12 +12,12 @@ class OfflineIndicator extends StatefulWidget {
   final Duration animationDuration;
 
   const OfflineIndicator({
-    Key? key,
+    super.key,
     required this.child,
     this.offlineColor,
     this.onlineColor,
     this.animationDuration = const Duration(milliseconds: 300),
-  }) : super(key: key);
+  });
 
   @override
   State<OfflineIndicator> createState() => _OfflineIndicatorState();

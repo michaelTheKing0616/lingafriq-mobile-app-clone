@@ -6,7 +6,7 @@ import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
 class PoliePreloader extends StatelessWidget {
   final VoidCallback? onComplete;
 
-  const PoliePreloader({Key? key, this.onComplete}) : super(key: key);
+  const PoliePreloader({super.key, this.onComplete});
 
   @override
   Widget build(BuildContext context) {

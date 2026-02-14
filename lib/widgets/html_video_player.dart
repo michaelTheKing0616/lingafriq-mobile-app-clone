@@ -6,9 +6,9 @@ import 'package:lingafriq/utils/utils.dart';
 class HtmlVideoPlayer extends StatefulWidget {
   final String videoUrl;
   const HtmlVideoPlayer({
-    Key? key,
+    super.key,
     required this.videoUrl,
-  }) : super(key: key);
+  });
 
   @override
   State<HtmlVideoPlayer> createState() => _HtmlVideoPlayerState();

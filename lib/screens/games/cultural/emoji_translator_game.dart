@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Emoji Translator Game
 class EmojiTranslatorGame extends BaseGameScreen {
   const EmojiTranslatorGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.emojiTranslator;
@@ -94,7 +93,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
     final options = <String>[];
 
     for (var line in lines) {
-      if (line.contains(RegExp(r'[😀-🙏🌀-🗿]'))) {
+      if (line.contains(RegExp(r'[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}]', unicode: true))) {
         emojis = line.trim();
       }
       if (line.trim().startsWith(RegExp(r'[A-D]\.|1\.|2\.|3\.|4\.'))) {
@@ -128,7 +127,7 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
     });
 
     completeTurn(
-      cardId: 'emoji_${_round}',
+      cardId: 'emoji_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 3000,
       confidence: _isCorrect ? 1.0 : 0.0,

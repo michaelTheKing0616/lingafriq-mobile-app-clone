@@ -14,7 +14,7 @@ import 'dart:io';
 /// Voice Contribution Screen
 /// Allows native speakers to volunteer their voices for African languages
 class VoiceContributionScreen extends HookConsumerWidget {
-  const VoiceContributionScreen({Key? key}) : super(key: key);
+  const VoiceContributionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -22,7 +22,7 @@ import 'package:lingafriq/widgets/skeleton_loader.dart';
 
 /// Redesigned Global Chat with Material 3 and Language-Specific Channels
 class GlobalChatScreenMaterial3 extends HookConsumerWidget {
-  const GlobalChatScreenMaterial3({Key? key}) : super(key: key);
+  const GlobalChatScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,7 +38,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    List<Map<String, dynamic>> _parseMessageList(dynamic raw) {
+    List<Map<String, dynamic>> parseMessageList(dynamic raw) {
       if (raw == null) return [];
       if (raw is List) {
         return raw.map((e) => e is Map ? Map<String, dynamic>.from(e) : <String, dynamic>{'body': e.toString()}).toList();
@@ -62,10 +62,10 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           List<Map<String, dynamic>> list = [];
           final raw = response.data;
           if (raw is List) {
-            list = _parseMessageList(raw);
+            list = parseMessageList(raw);
           } else if (raw is Map) {
             final data = raw;
-            list = _parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
+            list = parseMessageList(data['data'] ?? data['messages'] ?? data['results'] ?? data['leaderboard']);
           }
           messages.value = list;
         }

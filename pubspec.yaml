@@ -109,6 +109,11 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
+  flutter_localizations:
+    sdk: flutter
+  flutter_riverpod: any
+  http: any
+  collection: any
 dependency_overrides:
   # Fix record_linux compatibility issue - update to latest compatible version
   record_platform_interface: ^1.4.0

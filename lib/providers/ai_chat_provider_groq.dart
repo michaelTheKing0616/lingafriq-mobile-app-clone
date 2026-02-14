@@ -231,7 +231,7 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Tutor & Adaptive Fields
   bool _tutorMode = true;
   // ignore: unused_field
-  bool _adaptive = true;
+  final bool _adaptive = true;
   int _difficulty = 1; // 1-5
   int _successStreak = 0;
   int _failureStreak = 0;
@@ -1202,7 +1202,7 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     var effectiveSystemPrompt = systemPromptOverride ?? _systemPrompt;
     
     // Enhance system prompt with conversation practice features
-    final conversationId = '${_mode}_${_selectedLanguage}_${_sourceLanguage}';
+    final conversationId = '${_mode}_${_selectedLanguage}_$_sourceLanguage';
     final flowState = _practiceEnhancer.analyzeConversationFlow(
       messages: _messages.map((m) => {'role': m.role, 'content': m.content}).toList(),
       currentMessage: sanitizedMessage,
@@ -1586,13 +1586,13 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
           
           if (response.statusCode == 400) {
             // Provide more helpful error message
-            throw Exception('Invalid request format. ${errorDetail}\n\nPlease ensure:\n- Your message is not empty\n- API key is valid\n- Message format is correct');
+            throw Exception('Invalid request format. $errorDetail\n\nPlease ensure:\n- Your message is not empty\n- API key is valid\n- Message format is correct');
           } else if (response.statusCode == 401) {
             throw Exception('Invalid API key. Please check your Groq API key in settings.');
           } else if (response.statusCode == 429) {
             throw Exception('Rate limit exceeded. Please try again in a few moments.');
           } else {
-            throw Exception('Request failed with status ${response.statusCode}: ${errorDetail}');
+            throw Exception('Request failed with status ${response.statusCode}: $errorDetail');
           }
         }
 
@@ -1871,16 +1871,6 @@ Make reviews efficient, engaging, and scientifically optimized for long-term ret
     }
   }
 
-  // ----- Word Memory (SRS) - Enhanced with SM-2 variant -----
-  /// Update SRS using SM-2 algorithm
-  /// quality: 0-5 (0=complete blackout, 5=perfect recall)
-  void _updateSRS(String word, int quality) {
-    final entry = _memory[word] ?? WordMemory();
-    entry.updateWithSM2(quality);
-    _memory[word] = entry;
-    _saveSRSMemory();
-  }
-
   String? _dueReview() {
     final now = DateTime.now();
     for (final entry in _memory.entries) {
@@ -2012,8 +2002,12 @@ Return only valid JSON.
     final n = ref.length;
     final m = hyp.length;
     final dp = List.generate(n + 1, (_) => List<int>.filled(m + 1, 0));
-    for (var i = 0; i <= n; i++) dp[i][0] = i;
-    for (var j = 0; j <= m; j++) dp[0][j] = j;
+    for (var i = 0; i <= n; i++) {
+      dp[i][0] = i;
+    }
+    for (var j = 0; j <= m; j++) {
+      dp[0][j] = j;
+    }
     for (var i = 1; i <= n; i++) {
       for (var j = 1; j <= m; j++) {
         dp[i][j] = [
@@ -2384,47 +2378,6 @@ Return only JSON.
     }
   }
 
-  /// Legacy sync method (kept for backward compatibility)
-  /// Now properly includes languageCode for backend validation
-  Future<void> _syncChatHistoryToBackendLegacy() async {
-    try {
-      final user = ref.read(userProvider);
-      if (user == null) return;
-
-      final messagesJson = _messages.map((msg) => msg.toJson()).toList();
-      
-      final syncProvider = ref.read(backendSyncProvider.notifier);
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.aiChatHistory,
-        data: {
-          'user_id': user.id.toString(),
-          'mode': _modeNameForBackend,
-          'languageCode': _languageCodeForBackend, // Fixed: was missing
-          'messages': messagesJson,
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
-      
-      // Also sync SRS memory
-      final memoryJson = <String, dynamic>{};
-      _memory.forEach((key, value) {
-        memoryJson[key] = value.toJson();
-      });
-      
-      await syncProvider.queueSync(SyncTask(
-        type: SyncType.aiChatSRS,
-        data: {
-          'user_id': user.id.toString(),
-          'memory': memoryJson,
-          'cefr': _cefrInfo.toJson(),
-          'timestamp': DateTime.now().toIso8601String(),
-        },
-      ));
-    } catch (e) {
-      logger.error('Error queuing chat sync', tag: 'ai-chat', error: e);
-    }
-  }
-
   Future<void> _loadChatHistory() async {
     try {
       // Try loading from backend first
@@ -2496,16 +2449,6 @@ Return only JSON.
       // On error, clear messages to prevent showing wrong mode's history
       _messages.clear();
       state = state.copyWith();
-    }
-  }
-
-  Future<void> _saveSRSMemory() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final memoryJson = _memory.map((key, value) => MapEntry(key, value.toJson()));
-      await prefs.setString('srs_memory', jsonEncode(memoryJson));
-    } catch (e) {
-      logger.error('Error saving SRS memory', tag: 'ai-chat', error: e);
     }
   }
 

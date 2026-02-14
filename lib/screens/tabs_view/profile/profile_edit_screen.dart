@@ -18,10 +18,9 @@ import '../../../services/account_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/avatars/avatars.dart';
-import 'package:lingafriq/config/api_contract.dart';
 
 class ProfileEditScreen extends HookConsumerWidget {
-  const ProfileEditScreen({Key? key}) : super(key: key);
+  const ProfileEditScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +30,6 @@ class ProfileEditScreen extends HookConsumerWidget {
     final globalIdController = useTextEditingController(text: user?.global_id ?? user?.username ?? '');
     final selectedCountry = useState<String?>(user?.nationality);
     final isLoading = ref.watch(apiProvider.select((value) => value.isLoading));
-    final isUpdatingHandle = useState(false);
     final handleError = useState<String?>(null);
     final avatarConfig = ref.watch(userAvatarConfigProvider);
 

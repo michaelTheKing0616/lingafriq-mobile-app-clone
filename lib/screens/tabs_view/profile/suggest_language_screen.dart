@@ -9,7 +9,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/titled_drop_down.dart';
 
 class SuggestLanguageScreen extends HookConsumerWidget {
-  const SuggestLanguageScreen({Key? key}) : super(key: key);
+  const SuggestLanguageScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

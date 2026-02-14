@@ -14,11 +14,11 @@ class BadgeGalleryWidget extends ConsumerWidget {
   final VoidCallback? onBadgeTap;
 
   const BadgeGalleryWidget({
-    Key? key,
+    super.key,
     this.showLocked = true,
     this.crossAxisCount = 3,
     this.onBadgeTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -189,10 +189,10 @@ class BadgeDetailDialog extends StatelessWidget {
   final bool isUnlocked;
 
   const BadgeDetailDialog({
-    Key? key,
+    super.key,
     required this.badge,
     required this.isUnlocked,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

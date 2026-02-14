@@ -20,11 +20,11 @@ import 'package:path_provider/path_provider.dart';
 /// ToneForge game screen - Flagship implementation
 class ToneForgeScreen extends BaseGameScreen {
   const ToneForgeScreen({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.toneTrainer;

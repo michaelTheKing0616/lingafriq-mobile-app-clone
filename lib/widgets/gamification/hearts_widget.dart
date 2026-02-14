@@ -17,11 +17,11 @@ class HeartsWidget extends ConsumerStatefulWidget {
   final bool showRefill;
 
   const HeartsWidget({
-    Key? key,
+    super.key,
     this.compact = false,
     this.onTap,
     this.showRefill = true,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<HeartsWidget> createState() => _HeartsWidgetState();
@@ -326,7 +326,7 @@ class _HeartsWidgetState extends ConsumerState<HeartsWidget>
 
 /// Small hearts indicator for app bar
 class HeartsAppBarIndicator extends ConsumerWidget {
-  const HeartsAppBarIndicator({Key? key}) : super(key: key);
+  const HeartsAppBarIndicator({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

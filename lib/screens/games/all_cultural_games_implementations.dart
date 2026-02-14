@@ -81,6 +81,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
   int get score => _score;
   int get round => _round;
   int get maxRounds => _maxRounds;
+  @override
   bool get isLoading => _isLoading;
   String get description => _description;
 
@@ -147,7 +148,7 @@ mixin StandardGameState<T extends BaseGameScreen> on BaseGameScreenState<T> {
     });
 
     completeTurn(
-      cardId: '${gameType}_${_round}',
+      cardId: '${gameType}_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 5000,
       confidence: _isCorrect ? 1.0 : 0.0,

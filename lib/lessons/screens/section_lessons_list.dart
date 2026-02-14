@@ -29,9 +29,9 @@ final sectionLessonsProvider =
 class LessonSectionsListScreen extends ConsumerWidget {
   final Lesson lesson;
   const LessonSectionsListScreen({
-    Key? key,
+    super.key,
     required this.lesson,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -126,10 +126,9 @@ class _SectionLessonsList extends ConsumerWidget {
   final List<SectionLessonModel> sectionLessons;
 
   const _SectionLessonsList({
-    Key? key,
     required this.lesson,
     required this.sectionLessons,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -315,12 +314,11 @@ class _SectionLessonItem extends ConsumerWidget {
   final bool enabled;
   final VoidCallback onOpen;
   const _SectionLessonItem({
-    Key? key,
     required this.lessonId,
     required this.sectionLesson,
     required this.enabled,
     required this.onOpen,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

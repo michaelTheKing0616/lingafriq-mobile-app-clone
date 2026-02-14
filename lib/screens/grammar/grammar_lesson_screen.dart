@@ -15,9 +15,9 @@ class GrammarLessonScreen extends HookConsumerWidget {
   final GrammarTopic topic;
 
   const GrammarLessonScreen({
-    Key? key,
+    super.key,
     required this.topic,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -198,7 +198,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
           ...examples.map((example) {
             final ex = example as Map<String, dynamic>;
             return _buildExampleCard(context, ex, isDark);
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -279,7 +279,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
             final index = entry.key;
             final rule = entry.value.toString();
             return _buildRuleCard(context, index + 1, rule, isDark);
-          }).toList(),
+          }),
         ],
       ),
     );
@@ -368,7 +368,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

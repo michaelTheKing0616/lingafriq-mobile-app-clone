@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
@@ -154,13 +153,13 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
   final String userLanguage;
 
   const ArticleDetailEnhanced({
-    Key? key,
+    super.key,
     required this.article,
     this.translatedTitle,
     this.translatedExcerpt,
     this.showTranslation = false,
     this.userLanguage = 'english',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

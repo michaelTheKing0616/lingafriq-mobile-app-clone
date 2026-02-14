@@ -22,7 +22,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 /// Modern Dashboard Screen - Based on Figma Make Dashboard Design
 class ModernDashboardScreen extends HookConsumerWidget {
-  const ModernDashboardScreen({Key? key}) : super(key: key);
+  const ModernDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -67,14 +67,14 @@ class ModernDashboardScreen extends HookConsumerWidget {
                                 user?.avatar != null && user!.avatar!.isNotEmpty
                                     ? ClipOval(
                                         child: LazyImage(
-                                          imageUrl: user!.avatar!,
+                                          imageUrl: user.avatar!,
                                           width: 48,
                                           height: 48,
                                           placeholder: CircleAvatar(
                                             radius: 24,
                                             backgroundColor: Theme.of(context).colorScheme.surface,
                                             child: Text(
-                                              (user.username ?? 'U')[0].toUpperCase(),
+                                              (user.username)[0].toUpperCase(),
                                               style: TextStyle(
                                                 color: const Color(0xFFCE1126),
                                                 fontWeight: FontWeight.bold,

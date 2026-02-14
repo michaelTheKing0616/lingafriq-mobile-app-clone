@@ -17,13 +17,13 @@ class QuizSectionWidget extends StatefulWidget {
   final bool Function(int questionId, String option)? isAnswerCorrect;
 
   const QuizSectionWidget({
-    Key? key,
+    super.key,
     required this.content,
     required this.onAnswerSelected,
     required this.onCheckAnswer,
     this.isAnswerChecked,
     this.isAnswerCorrect,
-  }) : super(key: key);
+  });
 
   @override
   State<QuizSectionWidget> createState() => _QuizSectionWidgetState();
@@ -308,7 +308,7 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                           )
                         : Offset.zero,
                     child: Semantics(
-                      label: 'Answer option ${optionLabel}: ${option.text}. ${isSelected ? 'Selected' : ''}',
+                      label: 'Answer option $optionLabel: ${option.text}. ${isSelected ? 'Selected' : ''}',
                       button: true,
                       selected: isSelected,
                       child: PanAfricanCard(

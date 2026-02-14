@@ -13,12 +13,12 @@ class WordQuizSectionWidget extends StatefulWidget {
   final List<String?>? currentAnswers;
 
   const WordQuizSectionWidget({
-    Key? key,
+    super.key,
     required this.content,
     required this.onAnswerChanged,
     required this.onCheck,
     this.currentAnswers,
-  }) : super(key: key);
+  });
 
   @override
   State<WordQuizSectionWidget> createState() => _WordQuizSectionWidgetState();

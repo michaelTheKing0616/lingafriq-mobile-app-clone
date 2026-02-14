@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/providers/api_provider.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import 'package:lingafriq/utils/structured_logger.dart';
 
 /// Chat Socket Provider - Wraps socket service for chat functionality
@@ -11,7 +11,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   String _activeRoom = 'general';
   bool _isConnected = false;
   final Map<String, List<Map<String, dynamic>>> _roomMessages = {};
-  IO.Socket? _socket;
+  io.Socket? _socket;
 
   @override
   ChatSocketState build() {
@@ -37,9 +37,9 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
       // Use the base URL directly - socket.io client handles protocol conversion
       final baseUrl = ApiContract.baseUrl;
       
-      _socket = IO.io(
+      _socket = io.io(
         baseUrl,
-        IO.OptionBuilder()
+        io.OptionBuilder()
             .setTransports(['websocket', 'polling'])
             .setAuth({'token': token ?? ''})
             .enableAutoConnect()

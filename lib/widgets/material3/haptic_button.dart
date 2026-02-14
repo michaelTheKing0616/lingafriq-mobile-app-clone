@@ -14,13 +14,13 @@ class HapticFilledButton extends StatelessWidget {
   final bool animate;
 
   const HapticFilledButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.tooltip,
     this.style,
     this.animate = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +60,13 @@ class HapticOutlinedButton extends StatelessWidget {
   final bool animate;
 
   const HapticOutlinedButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.tooltip,
     this.style,
     this.animate = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -106,13 +106,13 @@ class HapticTextButton extends StatelessWidget {
   final bool animate;
 
   const HapticTextButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.tooltip,
     this.style,
     this.animate = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -153,14 +153,14 @@ class HapticIconButton extends StatelessWidget {
   final String actionType;
 
   const HapticIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     this.onPressed,
     this.tooltip,
     this.color,
     this.iconSize,
     this.actionType = 'button_press',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

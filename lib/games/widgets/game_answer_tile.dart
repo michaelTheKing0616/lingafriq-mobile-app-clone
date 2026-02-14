@@ -14,14 +14,14 @@ class GameAnswerTile extends StatefulWidget {
   final IconData? icon;
 
   const GameAnswerTile({
-    Key? key,
+    super.key,
     required this.text,
     this.isCorrect = false,
     this.isSelected = false,
     this.showResult = false,
     this.onTap,
     this.icon,
-  }) : super(key: key);
+  });
 
   @override
   State<GameAnswerTile> createState() => _GameAnswerTileState();

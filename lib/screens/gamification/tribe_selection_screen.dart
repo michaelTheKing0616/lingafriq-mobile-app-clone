@@ -17,7 +17,7 @@ import '../../screens/loading/dynamic_loading_screen.dart';
 
 /// Tribe Selection Screen
 class TribeSelectionScreen extends ConsumerStatefulWidget {
-  const TribeSelectionScreen({Key? key}) : super(key: key);
+  const TribeSelectionScreen({super.key});
 
   @override
   ConsumerState<TribeSelectionScreen> createState() => _TribeSelectionScreenState();

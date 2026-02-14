@@ -86,11 +86,11 @@ class RiveGameGuide extends StatefulWidget {
   final double? height;
 
   const RiveGameGuide({
-    Key? key,
+    super.key,
     required this.controller,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   State<RiveGameGuide> createState() => _RiveGameGuideState();

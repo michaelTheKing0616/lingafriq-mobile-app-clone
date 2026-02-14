@@ -40,7 +40,7 @@ class QuizScreen extends HookConsumerWidget {
   final bool isTakeQuiz;
   final bool isCompleted;
   const QuizScreen({
-    Key? key,
+    super.key,
     required this.title,
     required this.quiz,
     required this.endpointToHit,
@@ -385,7 +385,6 @@ class QuizScreen extends HookConsumerWidget {
 class _DotIndicator extends ConsumerWidget {
   final List<QuizModel> quiz;
   const _DotIndicator({
-    super.key,
     required this.quiz,
   });
 
@@ -433,7 +432,7 @@ class QuizItem extends HookWidget {
     final surfaceColor =
         isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight;
 
-    Color _optionBorder(String option) {
+    Color optionBorder(String option) {
       if (isReview && option == quiz.answer) return PanAfricanColors.success;
       if (isReview && selectedValue == option && option != quiz.answer) {
         return PanAfricanColors.error;
@@ -442,7 +441,7 @@ class QuizItem extends HookWidget {
       return isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight;
     }
 
-    Color _optionBackground(String option) {
+    Color optionBackground(String option) {
       if (isReview && option == quiz.answer) {
         return PanAfricanColors.success.withOpacity(0.12);
       }
@@ -483,7 +482,7 @@ class QuizItem extends HookWidget {
                       selected.value = option;
                       onSelect.call(option);
                     },
-              backgroundColor: _optionBackground(option),
+              backgroundColor: optionBackground(option),
               padding: EdgeInsets.symmetric(
                 horizontal: PanAfricanSpacing.md,
                 vertical: PanAfricanSpacing.sm,
@@ -495,9 +494,9 @@ class QuizItem extends HookWidget {
                     height: 28.w,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: _optionBorder(option), width: 2),
+                      border: Border.all(color: optionBorder(option), width: 2),
                       color: isSelected || (isReview && isCorrect)
-                          ? _optionBorder(option).withOpacity(0.15)
+                          ? optionBorder(option).withOpacity(0.15)
                           : Colors.transparent,
                     ),
                     child: Icon(
@@ -506,7 +505,7 @@ class QuizItem extends HookWidget {
                           : (isReview && isSelected && !isCorrect)
                               ? Icons.close_rounded
                               : (isSelected ? Icons.circle : Icons.circle_outlined),
-                      color: _optionBorder(option),
+                      color: optionBorder(option),
                       size: 16.sp,
                     ),
                   ),

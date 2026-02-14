@@ -9,12 +9,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 /// Beautiful Material 3 Badge Collection Screen
 class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
-  const BadgeCollectionScreenMaterial3({Key? key}) : super(key: key);
+  const BadgeCollectionScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedCategory = useState<String?>(null);
-    final selectedRarity = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Mock data - replace with actual provider
@@ -22,7 +21,6 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
     final unlockedBadges = useState<Set<String>>({});
 
     final categories = ['All', 'Learning', 'Streak', 'Community', 'Achievement'];
-    final rarities = ['All', 'Common', 'Uncommon', 'Rare', 'Epic', 'Legendary'];
 
     return Scaffold(
       appBar: AppBar(

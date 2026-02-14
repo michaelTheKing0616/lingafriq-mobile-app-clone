@@ -219,7 +219,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
       final xpGain = await ref.read(gamificationProvider.notifier).awardXP(
         'quiz_answer',
         multiplier: multiplier,
-        sourceId: 'quiz_${sectionId}_${questionId}',
+        sourceId: 'quiz_${sectionId}_$questionId',
       );
 
       state = state.copyWith(
@@ -274,7 +274,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
       final xpGain = await ref.read(gamificationProvider.notifier).awardXP(
         'word_quiz_complete',
         multiplier: multiplier,
-        sourceId: 'word_quiz_${sectionId}',
+        sourceId: 'word_quiz_$sectionId',
       );
 
       state = state.copyWith(
@@ -324,7 +324,7 @@ class LessonFlowNotifier extends StateNotifier<LessonFlowState> {
         final xpGain = await ref.read(gamificationProvider.notifier).awardXP(
           section.type.isTutorial ? 'tutorial_complete' : 'quiz_complete',
           multiplier: multiplier,
-          sourceId: 'section_${sectionId}',
+          sourceId: 'section_$sectionId',
         );
 
         state = state.copyWith(

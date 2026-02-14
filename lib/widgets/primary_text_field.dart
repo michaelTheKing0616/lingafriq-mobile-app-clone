@@ -4,7 +4,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 
 class PrimaryTextField extends StatelessWidget {
   const PrimaryTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.title,
     this.validator,
@@ -23,7 +23,7 @@ class PrimaryTextField extends StatelessWidget {
     this.minLines,
     this.maxLines,
     this.border,
-  }) : super(key: key);
+  });
   final TextEditingController controller;
   final String title;
   final String? Function(String?)? validator;

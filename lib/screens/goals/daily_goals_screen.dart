@@ -15,7 +15,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 
 class DailyGoalsScreen extends ConsumerStatefulWidget {
-  const DailyGoalsScreen({Key? key}) : super(key: key);
+  const DailyGoalsScreen({super.key});
 
   @override
   ConsumerState<DailyGoalsScreen> createState() => _DailyGoalsScreenState();

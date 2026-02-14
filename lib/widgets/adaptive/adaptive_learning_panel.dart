@@ -15,7 +15,7 @@ import '../../providers/experiments_provider.dart';
 /// Pan-African adaptive learning panel for the dashboard/home.
 /// Shows CEFR, SRS status, and smart recommendations powered by Polie + gamification.
 class AdaptiveLearningPanel extends ConsumerWidget {
-  const AdaptiveLearningPanel({Key? key}) : super(key: key);
+  const AdaptiveLearningPanel({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -162,10 +162,9 @@ class _AdaptiveStatChip extends StatelessWidget {
   final String value;
 
   const _AdaptiveStatChip({
-    Key? key,
     required this.label,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -207,11 +206,10 @@ class _AdaptiveRecommendationTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const _AdaptiveRecommendationTile({
-    Key? key,
     required this.recommendation,
     required this.isDark,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

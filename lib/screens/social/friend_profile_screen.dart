@@ -15,9 +15,9 @@ class FriendProfileScreen extends HookConsumerWidget {
   final String friendId;
 
   const FriendProfileScreen({
-    Key? key,
+    super.key,
     required this.friendId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +25,7 @@ class FriendProfileScreen extends HookConsumerWidget {
     final friendData = useState<Map<String, dynamic>?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<void> _loadFriendProfile() async {
+    Future<void> loadFriendProfile() async {
       isLoading.value = true;
       await safeAsync(
         context: context,
@@ -45,7 +45,7 @@ class FriendProfileScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadFriendProfile();
+      loadFriendProfile();
       return null;
     }, []);
 

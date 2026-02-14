@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +17,7 @@ import 'package:lingafriq/utils/supported_languages.dart';
 
 /// Enhanced Import Media Screen with Transcription Preview, Lesson Generation Preview, Edit/Customize
 class ImportMediaScreenEnhanced extends HookConsumerWidget {
-  const ImportMediaScreenEnhanced({Key? key}) : super(key: key);
+  const ImportMediaScreenEnhanced({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,7 +60,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       }
     }
 
-    Future<void> _pollTranscription(String mediaId) async {
+    Future<void> pollTranscription(String mediaId) async {
       for (int i = 0; i < 30; i++) {
         await Future.delayed(Duration(seconds: 2));
         try {
@@ -125,16 +124,20 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
 
           if (transcribeResponse.statusCode == 202) {
             // Poll for transcription result
-            await _pollTranscription(mediaId);
+            await pollTranscription(mediaId);
           }
         }
       } catch (e, stack) {
         debugPrint('Import media upload error: $e $stack');
         final msg = e.toString().toLowerCase();
         String friendly = 'Upload or transcription failed. Please check your connection and try again.';
-        if (msg.contains('unsupported language')) friendly = 'Please select a supported language.';
-        else if (msg.contains('timeout') || msg.contains('socket')) friendly = 'Connection timed out. Please try again.';
-        else if (msg.contains('too large') || msg.contains('size')) friendly = 'File is too large. Try a file under 100 MB.';
+        if (msg.contains('unsupported language')) {
+          friendly = 'Please select a supported language.';
+        } else if (msg.contains('timeout') || msg.contains('socket')) {
+          friendly = 'Connection timed out. Please try again.';
+        } else if (msg.contains('too large') || msg.contains('size')) {
+          friendly = 'File is too large. Try a file under 100 MB.';
+        }
         if (context.mounted) {
           showLingAfriqError(context, friendly);
         }

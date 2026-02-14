@@ -113,7 +113,7 @@ class ModernCardV2 extends StatelessWidget {
   final Color? borderColor;
 
   const ModernCardV2({
-    Key? key,
+    super.key,
     required this.child,
     this.onTap,
     this.padding,
@@ -123,7 +123,7 @@ class ModernCardV2 extends StatelessWidget {
     this.borderRadius = DesignSystem.radiusL,
     this.isSelected = false,
     this.borderColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -174,13 +174,13 @@ class ModernLanguageCard extends StatelessWidget {
   final bool isSelected;
 
   const ModernLanguageCard({
-    Key? key,
+    super.key,
     required this.languageName,
     this.imageUrl,
     required this.onTap,
     this.isFeatured = false,
     this.isSelected = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +222,7 @@ class ModernLanguageCard extends StatelessWidget {
                         ? DecorationImage(
                             image: NetworkImage(imageUrl!),
                             fit: BoxFit.cover,
-                            onError: (exception, stackTrace) => null,
+                            onError: (exception, stackTrace) {},
                           )
                         : null,
                     color: imageUrl == null || imageUrl!.isEmpty
@@ -294,11 +294,11 @@ class ModernSectionHeader extends StatelessWidget {
   final Widget? action;
 
   const ModernSectionHeader({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.action,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

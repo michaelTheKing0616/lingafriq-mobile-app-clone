@@ -11,13 +11,13 @@ class AnimatedPressButton extends StatefulWidget {
   final bool enableHapticFeedback;
 
   const AnimatedPressButton({
-    Key? key,
+    super.key,
     required this.child,
     this.onPressed,
     this.duration = const Duration(milliseconds: 150),
     this.pressScale = 0.95,
     this.enableHapticFeedback = true,
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedPressButton> createState() => _AnimatedPressButtonState();

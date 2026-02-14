@@ -29,7 +29,7 @@ import 'dart:io';
 
 /// Enhanced 9-Step Onboarding Flow with Beautiful Material 3 + Pan-African Design
 class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
-  const EnhancedOnboardingFlowScreen({Key? key}) : super(key: key);
+  const EnhancedOnboardingFlowScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -49,7 +49,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           _goToNext(pageController, currentStep);
         },
       ),
-      _Step1_5ProficiencyLevel(
+      _Step15ProficiencyLevel(
         pageController: pageController,
         currentStep: currentStep,
         onNext: (data) {
@@ -81,7 +81,7 @@ class EnhancedOnboardingFlowScreen extends HookConsumerWidget {
           _goToNext(pageController, currentStep);
         },
       ),
-      _Step4_5DailyTimeGoal(
+      _Step45DailyTimeGoal(
         pageController: pageController,
         currentStep: currentStep,
         onNext: (data) {
@@ -746,7 +746,7 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
                           },
                         ),
                       );
-                    }).toList(),
+                    }),
                   ],
                 ],
               ),
@@ -780,12 +780,12 @@ class _Step1ProficiencyLanguage extends HookConsumerWidget {
 }
 
 // Step 1.5: Proficiency Level Self-Assessment
-class _Step1_5ProficiencyLevel extends HookConsumerWidget {
+class _Step15ProficiencyLevel extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
   final PageController? pageController;
   final ValueNotifier<int>? currentStep;
 
-  const _Step1_5ProficiencyLevel({
+  const _Step15ProficiencyLevel({
     required this.onNext,
     this.pageController,
     this.currentStep,
@@ -1345,12 +1345,12 @@ class _Step4LearningReasons extends HookConsumerWidget {
 }
 
 // Step 4.5: Daily Time Goal Selection
-class _Step4_5DailyTimeGoal extends HookConsumerWidget {
+class _Step45DailyTimeGoal extends HookConsumerWidget {
   final Function(Map<String, dynamic>) onNext;
   final PageController? pageController;
   final ValueNotifier<int>? currentStep;
 
-  const _Step4_5DailyTimeGoal({
+  const _Step45DailyTimeGoal({
     required this.onNext,
     this.pageController,
     this.currentStep,
@@ -2138,7 +2138,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
     final isChecking = useState(false);
     final avatarPath = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    Timer? _debounceTimer;
+    Timer? debounceTimer;
 
     // Listen to username changes and validate
     useEffect(() {
@@ -2147,7 +2147,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
         username.value = text;
 
         // Clear previous timer
-        _debounceTimer?.cancel();
+        debounceTimer?.cancel();
 
         if (text.isEmpty) {
           usernameStatus.value = UsernameStatus.initial;
@@ -2178,7 +2178,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
         // Debounce API check
         usernameStatus.value = UsernameStatus.checking;
         isChecking.value = true;
-        _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+        debounceTimer = Timer(const Duration(milliseconds: 500), () async {
           try {
             final api = ref.read(apiProvider.notifier);
             final isAvailable = await api.checkUsernameAvailability(text);
@@ -2201,7 +2201,7 @@ class _Step10ProfileSetup extends HookConsumerWidget {
       usernameController.addListener(listener);
 
       return () {
-        _debounceTimer?.cancel();
+        debounceTimer?.cancel();
         usernameController.removeListener(listener);
       };
     }, []);
@@ -2423,8 +2423,6 @@ class _Step10ProfileSetup extends HookConsumerWidget {
         return 'Only letters, numbers, and underscores are allowed';
       case UsernameStatus.error:
         return 'Could not verify availability. You can still continue.';
-      default:
-        return null;
     }
   }
 }

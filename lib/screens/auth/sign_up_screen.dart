@@ -13,7 +13,7 @@ import 'package:lingafriq/screens/auth/email_verification_screen.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class SignupScreen extends HookConsumerWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

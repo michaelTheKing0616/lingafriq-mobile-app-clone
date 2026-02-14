@@ -12,7 +12,7 @@ import 'package:lingafriq/screens/subscription/subscription_screen.dart';
 
 /// Screen for managing offline content downloads
 class OfflineContentScreen extends ConsumerWidget {
-  const OfflineContentScreen({Key? key}) : super(key: key);
+  const OfflineContentScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

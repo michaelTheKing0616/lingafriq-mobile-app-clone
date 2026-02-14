@@ -8,10 +8,10 @@ class UGCQualityBadgesWidget extends StatelessWidget {
   final bool isDark;
 
   const UGCQualityBadgesWidget({
-    Key? key,
+    super.key,
     required this.badges,
     this.isDark = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

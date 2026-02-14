@@ -6,11 +6,11 @@ class InfoWidget extends StatelessWidget {
   final String? subText;
   final VoidCallback? onRefresh;
   const InfoWidget({
-    Key? key,
+    super.key,
     required this.text,
     this.subText,
     this.onRefresh,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

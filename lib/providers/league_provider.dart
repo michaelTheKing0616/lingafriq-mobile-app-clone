@@ -155,7 +155,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
         // Find user's rank
         int userRank = 0;
         for (int i = 0; i < leaderboard.length; i++) {
-          if (leaderboard[i].oduserId == user?.id) {
+          if (leaderboard[i].oduserId == '${user?.id}') {
             userRank = i + 1;
             break;
           }
@@ -176,7 +176,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
             willPromote: rank <= config.promoteCount,
             willDemote: config.demoteCount > 0 && 
                 rank > leaderboard.length - config.demoteCount,
-            isCurrentUser: pos.oduserId == user?.id,
+            isCurrentUser: pos.oduserId == '${user?.id}',
           );
         }).toList();
         
@@ -202,7 +202,7 @@ class LeagueNotifier extends Notifier<LeagueState> {
     } else if (state.userRank > 0) {
       final toPromote = state.userRank - config.promoteCount;
       if (toPromote > 0) {
-        return '📈 ${toPromote} more spots to reach the promotion zone!';
+        return '📈 $toPromote more spots to reach the promotion zone!';
       }
     }
     return '💪 Keep learning to climb the leaderboard!';

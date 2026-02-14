@@ -62,7 +62,7 @@ final _titleProvider =
 });
 
 class HomeTab extends HookConsumerWidget {
-  const HomeTab({Key? key}) : super(key: key);
+  const HomeTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -185,7 +185,6 @@ class HomeTab extends HookConsumerWidget {
     String? username,
     UserGamificationModel gamification,
   ) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     final levelProgress = _getLevelProgress(gamification);
     final initials = _getInitials(username);
 
@@ -474,11 +473,10 @@ class _HeroPill extends StatelessWidget {
   final Color color;
 
   const _HeroPill({
-    Key? key,
     required this.label,
     required this.icon,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -515,13 +513,12 @@ class _QuickActionCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const _QuickActionCard({
-    Key? key,
     required this.title,
     required this.subtitle,
     required this.icon,
     required this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -571,12 +568,11 @@ class _HighlightCard extends StatelessWidget {
   final Color color;
 
   const _HighlightCard({
-    Key? key,
     required this.label,
     required this.value,
     required this.icon,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -615,10 +611,10 @@ class LanguageItem extends ConsumerWidget {
   final Language language;
   final Function? onTap;
   const LanguageItem({
-    Key? key,
+    super.key,
     required this.language,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

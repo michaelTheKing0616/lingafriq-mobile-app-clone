@@ -11,14 +11,14 @@ class BadgeM3 extends StatelessWidget {
   final BadgePosition position;
 
   const BadgeM3({
-    Key? key,
+    super.key,
     required this.child,
     this.label,
     this.backgroundColor,
     this.textColor,
     this.isVisible = true,
     this.position = BadgePosition.topEnd,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

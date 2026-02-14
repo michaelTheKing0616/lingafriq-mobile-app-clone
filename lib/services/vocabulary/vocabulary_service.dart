@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../providers/api_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../providers/ai_chat_provider_groq.dart';
 

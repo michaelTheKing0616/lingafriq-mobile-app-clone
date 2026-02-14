@@ -14,11 +14,8 @@ import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatPro
 import 'package:lingafriq/utils/roleplay_session_helper.dart';
 import 'package:lingafriq/utils/ai_chat_navigation_helper.dart';
 import 'package:lingafriq/services/ai_chat_integration_service.dart';
-import 'package:lingafriq/services/conversation_analytics_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
-import 'package:lingafriq/services/review_progress_service.dart';
-import 'package:lingafriq/services/translation_history_service.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/models/tutor_progress_model.dart';
 
@@ -32,13 +29,13 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
   final dynamic initialScenario; // RoleplayEntry for roleplay mode
 
   const AIChatScreenWithTracking({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
     required this.mode,
     required this.modeName,
     this.initialScenario,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,11 +47,8 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final scrollController = useScrollController();
     final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref as Ref));
     final integrationService = ref.read(aiChatIntegrationServiceProvider);
-    final conversationService = ref.read(conversationAnalyticsServiceProvider);
     final tutorService = ref.read(tutorProgressServiceProvider);
     final vocabService = ref.read(vocabularyProgressServiceProvider);
-    final reviewService = ref.read(reviewProgressServiceProvider);
-    final translationService = ref.read(translationHistoryServiceProvider);
     final chatProvider = ref.read(groqChatProvider.notifier);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -101,7 +95,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     }, []);
 
     // Load chat history
-    Future<void> _loadChatHistory() async {
+    Future<void> loadChatHistory() async {
       isLoadingHistory.value = true;
       loadHistoryError.value = null;
       try {
@@ -124,7 +118,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadChatHistory();
+      loadChatHistory();
       return null;
     }, []);
 
@@ -214,10 +208,8 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     }
 
     // Handle session completion
-    Future<void> _handleSessionCompletion() async {
+    Future<void> handleSessionCompletion() async {
       if (sessionStartTime.value == null) return;
-
-      final sessionDuration = DateTime.now().difference(sessionStartTime.value!);
 
       // Record conversation session
       if (mode == 'conversation') {
@@ -263,7 +255,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     return PopScope(
       onPopInvokedWithResult: (didPop, result) async {
         if (didPop) {
-          await _handleSessionCompletion();
+          await handleSessionCompletion();
         }
       },
       child: LoadingOverlay(
@@ -318,7 +310,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                       : loadHistoryError.value != null
                           ? AppErrorState(
                               message: loadHistoryError.value!,
-                              onRetry: _loadChatHistory,
+                              onRetry: loadChatHistory,
                             )
                           : messages.value.isEmpty
                               ? AppEmptyState(

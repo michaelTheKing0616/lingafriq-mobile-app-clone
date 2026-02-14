@@ -29,7 +29,7 @@ class PanAfricanAppBar extends ConsumerWidget implements PreferredSizeWidget {
   final bool automaticallyImplyLeading;
 
   const PanAfricanAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.actions,
@@ -44,7 +44,7 @@ class PanAfricanAppBar extends ConsumerWidget implements PreferredSizeWidget {
     this.bottom,
     this.flexibleSpace,
     this.automaticallyImplyLeading = true,
-  }) : super(key: key);
+  });
 
   @override
   Size get preferredSize => Size.fromHeight(
@@ -156,14 +156,14 @@ class PanAfricanHeader extends StatelessWidget {
   final Widget? bottomWidget;
 
   const PanAfricanHeader({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.trailing,
     this.height,
     this.showPattern = true,
     this.bottomWidget,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

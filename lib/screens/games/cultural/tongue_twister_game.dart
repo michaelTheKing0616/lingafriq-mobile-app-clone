@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -11,11 +10,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Rapid Tongue Twister Race Game
 class TongueTwisterGame extends BaseGameScreen {
   const TongueTwisterGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.rapidTongueTwisterRace;
@@ -127,7 +126,7 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
     });
 
     completeTurn(
-      cardId: 'twister_${_round}',
+      cardId: 'twister_$_round',
       result: GameResult.correct,
       durationMs: 2000,
       confidence: 1.0,

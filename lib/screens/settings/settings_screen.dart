@@ -11,7 +11,7 @@ import 'package:lingafriq/providers/offline_download_provider.dart';
 class SettingsScreen extends ConsumerStatefulWidget {
   final VoidCallback? onBack;
 
-  const SettingsScreen({Key? key, this.onBack}) : super(key: key);
+  const SettingsScreen({super.key, this.onBack});
 
   @override
   ConsumerState<SettingsScreen> createState() => _SettingsScreenState();

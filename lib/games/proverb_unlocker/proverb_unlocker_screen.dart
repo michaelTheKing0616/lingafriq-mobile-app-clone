@@ -15,11 +15,11 @@ import 'proverb_unlocker_models.dart';
 /// This replaces the old implementation with random logic
 class ProverbUnlockerScreen extends BaseGameScreen {
   const ProverbUnlockerScreen({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.proverbUnlocker;

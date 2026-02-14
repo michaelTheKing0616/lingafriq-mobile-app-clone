@@ -26,11 +26,11 @@ abstract class BaseGameScreen extends ConsumerStatefulWidget {
   final VoidCallback? onBack;
 
   const BaseGameScreen({
-    Key? key,
+    super.key,
     required this.language,
     this.level,
     this.onBack,
-  }) : super(key: key);
+  });
 
   GameType getGameType();
 }

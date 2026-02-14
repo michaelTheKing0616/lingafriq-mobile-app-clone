@@ -22,9 +22,9 @@ final mannerismTutorialsProvider =
 class MannerismSectionsListScreen extends ConsumerWidget {
   final Mannerism mannerism;
   const MannerismSectionsListScreen({
-    Key? key,
+    super.key,
     required this.mannerism,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -85,10 +85,9 @@ class _MannerismTutorials extends ConsumerWidget {
   final List<MannerismTutorialModel> mannerismTutorials;
 
   const _MannerismTutorials({
-    Key? key,
     required this.mannerism,
     required this.mannerismTutorials,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -156,12 +155,11 @@ class _SectionMannerismItem extends ConsumerWidget {
   final bool enabled;
   final VoidCallback onOpen;
   const _SectionMannerismItem({
-    Key? key,
     required this.mannerismId,
     required this.mannerismTutorial,
     required this.enabled,
     required this.onOpen,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

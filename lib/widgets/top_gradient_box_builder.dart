@@ -4,10 +4,10 @@ class TopGradientBox extends StatelessWidget {
   final Widget child;
   final double borderRadius;
   const TopGradientBox({
-    Key? key,
+    super.key,
     required this.child,
     this.borderRadius = 6,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

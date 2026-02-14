@@ -22,13 +22,13 @@ class ResponsiveSafeArea extends StatelessWidget {
   final bool right;
 
   const ResponsiveSafeArea({
-    Key? key,
+    super.key,
     required this.child,
     this.top = true,
     this.bottom = true,
     this.left = true,
     this.right = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

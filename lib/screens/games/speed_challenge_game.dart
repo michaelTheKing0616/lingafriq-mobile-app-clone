@@ -15,9 +15,9 @@ class SpeedChallengeGame extends ConsumerStatefulWidget {
   final Language language;
 
   const SpeedChallengeGame({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<SpeedChallengeGame> createState() => _SpeedChallengeGameState();

@@ -33,9 +33,9 @@ class PortraitPlayerPage extends ConsumerWidget {
   final String videoUrl;
 
   const PortraitPlayerPage({
-    Key? key,
+    super.key,
     required this.videoUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

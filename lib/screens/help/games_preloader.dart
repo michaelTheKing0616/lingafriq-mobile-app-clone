@@ -6,7 +6,7 @@ import 'package:lingafriq/screens/help/feature_preloader_screen.dart';
 class GamesPreloader extends StatelessWidget {
   final VoidCallback? onComplete;
 
-  const GamesPreloader({Key? key, this.onComplete}) : super(key: key);
+  const GamesPreloader({super.key, this.onComplete});
 
   @override
   Widget build(BuildContext context) {

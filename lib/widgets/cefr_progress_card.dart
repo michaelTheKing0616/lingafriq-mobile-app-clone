@@ -6,7 +6,7 @@ import 'package:lingafriq/utils/utils.dart';
 class CEFRProgressCard extends StatelessWidget {
   final CEFRInfo cefr;
 
-  const CEFRProgressCard({Key? key, required this.cefr}) : super(key: key);
+  const CEFRProgressCard({super.key, required this.cefr});
 
   @override
   Widget build(BuildContext context) {

@@ -228,7 +228,7 @@ Return ONLY valid JSON.''';
       lessons.add(QuestLesson(
         id: '${chapter.id}_lesson_${lessons.length + 1}',
         title: title,
-        description: block.length > 100 ? block.substring(0, 100) + '...' : block,
+        description: block.length > 100 ? '${block.substring(0, 100)}...' : block,
         lessonType: 'vocabulary',
         order: lessons.length + 1,
         content: {'text': block},

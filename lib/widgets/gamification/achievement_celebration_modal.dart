@@ -16,7 +16,7 @@ class AchievementCelebrationModal extends StatefulWidget {
   final Color? accentColor;
 
   const AchievementCelebrationModal({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.iconEmoji,
@@ -25,7 +25,7 @@ class AchievementCelebrationModal extends StatefulWidget {
     this.currencyName = 'Cowries',
     required this.onDismiss,
     this.accentColor,
-  }) : super(key: key);
+  });
 
   /// Show the modal as an overlay
   static void show({

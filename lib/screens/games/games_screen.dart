@@ -22,7 +22,7 @@ final languagesForGamesProvider = FutureProvider.autoDispose((ref) {
 });
 
 class GamesScreen extends ConsumerWidget {
-  const GamesScreen({Key? key}) : super(key: key);
+  const GamesScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -166,11 +166,10 @@ class _GameLanguageCard extends StatelessWidget {
   final int colorIndex;
 
   const _GameLanguageCard({
-    Key? key,
     required this.language,
     required this.onTap,
     this.colorIndex = 0,
-  }) : super(key: key);
+  });
 
   // Vibrant category colors for visual interest
   static const List<Color> _categoryColors = [
@@ -265,9 +264,9 @@ class GameTypesScreen extends StatelessWidget {
   final Language language;
 
   const GameTypesScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -391,13 +390,12 @@ class _GameTypeCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const _GameTypeCard({
-    Key? key,
     required this.icon,
     required this.title,
     required this.description,
     required this.color,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -16,10 +16,10 @@ class EmailVerificationScreen extends HookConsumerWidget {
   final String? firstName;
 
   const EmailVerificationScreen({
-    Key? key,
+    super.key,
     required this.email,
     this.firstName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

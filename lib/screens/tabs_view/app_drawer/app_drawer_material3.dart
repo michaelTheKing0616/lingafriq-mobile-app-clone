@@ -32,7 +32,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 /// Modern Pan-African App Drawer with Future-Forward Styling
 class AppDrawerMaterial3 extends HookConsumerWidget {
-  const AppDrawerMaterial3({Key? key}) : super(key: key);
+  const AppDrawerMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

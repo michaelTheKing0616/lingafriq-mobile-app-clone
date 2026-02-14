@@ -15,7 +15,7 @@ import 'ai_mode_selection_screen.dart';
 /// AI Chat — Screen 1: Choose Your Language
 /// Full-screen globe abstraction with floating language orbs and color auras.
 class AILanguageSelectionScreen extends HookConsumerWidget {
-  const AILanguageSelectionScreen({Key? key}) : super(key: key);
+  const AILanguageSelectionScreen({super.key});
 
   List<Map<String, String>> get languages {
     final flagMap = {

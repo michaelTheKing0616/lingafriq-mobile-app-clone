@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Village Quest Game - NPC conversation game
 class VillageQuestGame extends BaseGameScreen {
   const VillageQuestGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.villageQuest;
@@ -147,7 +146,7 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
     });
 
     completeTurn(
-      cardId: 'scenario_${_round}',
+      cardId: 'scenario_$_round',
       result: isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 3000,
       confidence: isCorrect ? 1.0 : 0.0,

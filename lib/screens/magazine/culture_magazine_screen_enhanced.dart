@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -17,7 +16,7 @@ import 'culture_magazine_enhanced_features.dart';
 
 /// Enhanced Cultural Magazine Screen with Polie Translation, Cultural Context, Vocabulary
 class CultureMagazineScreenEnhanced extends HookConsumerWidget {
-  const CultureMagazineScreenEnhanced({Key? key}) : super(key: key);
+  const CultureMagazineScreenEnhanced({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

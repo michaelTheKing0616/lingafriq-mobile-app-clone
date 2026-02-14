@@ -16,11 +16,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Pronunciation Duel - Head-to-head pronunciation scoring
 class PronunciationDuelGame extends BaseGameScreen {
   const PronunciationDuelGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.pronunciationDuel;

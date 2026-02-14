@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:velocity_x/velocity_x.dart';
 
@@ -14,9 +13,9 @@ class CulturalHubScreen extends ConsumerStatefulWidget {
   final String? language;
 
   const CulturalHubScreen({
-    Key? key,
+    super.key,
     this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<CulturalHubScreen> createState() => _CulturalHubScreenState();
@@ -26,7 +25,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   List<CulturalContent> _allContent = [];
-  Map<String, bool> _completedItems = {};
+  final Map<String, bool> _completedItems = {};
   bool _isLoading = true;
   final AudioPlayer _audioPlayer = AudioPlayer();
 

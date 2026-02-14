@@ -16,10 +16,10 @@ class OfflineBanner extends StatefulWidget {
   final bool showWhenOnline;
 
   const OfflineBanner({
-    Key? key,
+    super.key,
     required this.child,
     this.showWhenOnline = false,
-  }) : super(key: key);
+  });
 
   @override
   State<OfflineBanner> createState() => _OfflineBannerState();

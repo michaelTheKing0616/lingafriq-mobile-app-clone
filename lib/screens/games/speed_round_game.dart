@@ -11,11 +11,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Speed Round Remix - Adaptive rapid-fire questions
 class SpeedRoundGame extends BaseGameScreen {
   const SpeedRoundGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.speedRoundRemix;

@@ -7,8 +7,7 @@ import 'package:lingafriq/models/curriculum_model.dart';
 class CurriculumViewerScreen extends StatelessWidget {
   final Map<String, dynamic> curriculum;
 
-  const CurriculumViewerScreen({Key? key, required this.curriculum})
-      : super(key: key);
+  const CurriculumViewerScreen({super.key, required this.curriculum});
 
   @override
   Widget build(BuildContext context) {

@@ -63,13 +63,13 @@ class LingAfriqEmptyState extends StatelessWidget {
   final VoidCallback? onAction;
 
   const LingAfriqEmptyState({
-    Key? key,
+    super.key,
     this.icon = Icons.inbox_outlined,
     required this.title,
     this.subtitle,
     this.actionLabel,
     this.onAction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class LingAfriqRetryBlock extends StatelessWidget {
   final String message;
   final VoidCallback onRetry;
 
-  const LingAfriqRetryBlock({Key? key, required this.message, required this.onRetry}) : super(key: key);
+  const LingAfriqRetryBlock({super.key, required this.message, required this.onRetry});
 
   @override
   Widget build(BuildContext context) {

@@ -167,12 +167,18 @@ extension MLCurriculumAdvancedHeuristics on MLCurriculumEngine {
     double confidence = 0.5;
     
     // More attempts = higher confidence
-    if (attemptCount >= 10) confidence += 0.2;
-    else if (attemptCount >= 5) confidence += 0.1;
+    if (attemptCount >= 10) {
+      confidence += 0.2;
+    } else if (attemptCount >= 5) {
+      confidence += 0.1;
+    }
     
     // More error patterns = higher confidence in prediction
-    if (patternCount >= 3) confidence += 0.15;
-    else if (patternCount >= 1) confidence += 0.05;
+    if (patternCount >= 3) {
+      confidence += 0.15;
+    } else if (patternCount >= 1) {
+      confidence += 0.05;
+    }
     
     // User confidence affects prediction confidence
     confidence = (confidence + userConfidence) / 2;
@@ -190,9 +196,13 @@ extension MLCurriculumAdvancedHeuristics on MLCurriculumEngine {
     if (recentAttempts.isNotEmpty) {
       // Infer from scores (simplified - in production, store level)
       final lastScore = recentAttempts.last.overallScore;
-      if (lastScore > 0.8) lastLevel = 'advanced';
-      else if (lastScore > 0.6) lastLevel = 'intermediate';
-      else lastLevel = 'beginner';
+      if (lastScore > 0.8) {
+        lastLevel = 'advanced';
+      } else if (lastScore > 0.6) {
+        lastLevel = 'intermediate';
+      } else {
+        lastLevel = 'beginner';
+      }
     }
     
     // Determine new level

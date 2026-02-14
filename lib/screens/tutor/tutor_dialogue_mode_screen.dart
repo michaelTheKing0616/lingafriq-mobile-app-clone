@@ -26,7 +26,7 @@ const List<Map<String, dynamic>> kDialogueRoles = [
 
 /// Dialogue Mode — premium chat (PolieChatBubble), role selection, real-time correction overlay, tone/difficulty slider.
 class TutorDialogueModeScreen extends HookConsumerWidget {
-  const TutorDialogueModeScreen({Key? key}) : super(key: key);
+  const TutorDialogueModeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +41,7 @@ class TutorDialogueModeScreen extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<Map<String, dynamic>> _generateDialogueTurnWithGroq({
+    Future<Map<String, dynamic>> generateDialogueTurnWithGroq({
       required String language,
       required String userMessage,
       required List<Map<String, String>> contextTurns,
@@ -211,7 +211,7 @@ Rules:
                   })
               .toList();
 
-          final result = await _generateDialogueTurnWithGroq(
+          final result = await generateDialogueTurnWithGroq(
             language: selectedLanguage.value.name,
             userMessage: userMessage['text'].toString(),
             contextTurns: contextTurns,

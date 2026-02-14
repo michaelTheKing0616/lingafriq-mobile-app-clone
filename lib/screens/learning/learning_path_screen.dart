@@ -21,9 +21,9 @@ class LearningPathScreen extends ConsumerStatefulWidget {
   final Language language;
 
   const LearningPathScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<LearningPathScreen> createState() => _LearningPathScreenState();

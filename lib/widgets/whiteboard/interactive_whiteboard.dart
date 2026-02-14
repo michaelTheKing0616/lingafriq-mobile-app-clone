@@ -11,11 +11,11 @@ class InteractiveWhiteboard extends StatefulWidget {
   final List<DrawingPoint>? initialDrawing;
 
   const InteractiveWhiteboard({
-    Key? key,
+    super.key,
     this.roomId,
     this.onDrawingUpdate,
     this.initialDrawing,
-  }) : super(key: key);
+  });
 
   @override
   State<InteractiveWhiteboard> createState() => _InteractiveWhiteboardState();

@@ -20,11 +20,11 @@ class PolieReactionWidget extends StatefulWidget {
   final VoidCallback? onTap;
 
   const PolieReactionWidget({
-    Key? key,
+    super.key,
     this.state = PolieReactionState.idle,
     this.size = 80,
     this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   State<PolieReactionWidget> createState() => _PolieReactionWidgetState();
@@ -164,7 +164,6 @@ class _PolieReactionWidgetState extends State<PolieReactionWidget>
       case PolieReactionState.sleeping:
         return PanAfricanColors.neutralMedium;
       case PolieReactionState.idle:
-      default:
         return PanAfricanColors.primary;
     }
   }
@@ -180,7 +179,6 @@ class _PolieReactionWidgetState extends State<PolieReactionWidget>
       case PolieReactionState.sleeping:
         return _buildSleepingFace(size);
       case PolieReactionState.idle:
-      default:
         return _buildIdleFace(size);
     }
   }

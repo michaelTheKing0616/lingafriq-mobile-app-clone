@@ -13,7 +13,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 /// Global ID Display and Edit Section for Profile
 /// Shows user's unique handle and allows editing with uniqueness validation
 class ProfileGlobalIdSection extends HookConsumerWidget {
-  const ProfileGlobalIdSection({Key? key}) : super(key: key);
+  const ProfileGlobalIdSection({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

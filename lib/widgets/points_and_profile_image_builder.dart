@@ -11,8 +11,8 @@ class PointsAndProfileImageBuilder extends ConsumerWidget {
   final Size? size;
   const PointsAndProfileImageBuilder({
     this.size,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

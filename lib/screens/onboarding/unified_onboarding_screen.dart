@@ -34,7 +34,7 @@ import 'placement_test_screen.dart';
 /// - Comprehensive personalization questions
 /// - Backend sync and offline-first data persistence
 class UnifiedOnboardingScreen extends HookConsumerWidget {
-  const UnifiedOnboardingScreen({Key? key}) : super(key: key);
+  const UnifiedOnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -409,7 +409,7 @@ class _VillageWelcomeStep extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 200.w,
                       height: 200.w,
                       child: OnboardingAvatarWidget(
@@ -1272,7 +1272,7 @@ class _GriotStep extends HookConsumerWidget {
                       ),
                     ),
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),

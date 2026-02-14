@@ -24,7 +24,7 @@ class LazyImage extends StatelessWidget {
   final bool useOldImageOnUrlChange;
 
   const LazyImage({
-    Key? key,
+    super.key,
     required this.imageUrl,
     this.placeholder,
     this.errorWidget,
@@ -35,7 +35,7 @@ class LazyImage extends StatelessWidget {
     this.errorWidgetWidget,
     this.fadeInDuration = const Duration(milliseconds: 300),
     this.useOldImageOnUrlChange = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

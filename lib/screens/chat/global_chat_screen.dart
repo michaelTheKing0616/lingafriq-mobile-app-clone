@@ -16,7 +16,7 @@ import 'package:lingafriq/avatars/avatars.dart';
 class GlobalChatScreen extends ConsumerStatefulWidget {
   final String? language;
   
-  const GlobalChatScreen({Key? key, this.language}) : super(key: key);
+  const GlobalChatScreen({super.key, this.language});
 
   @override
   ConsumerState<GlobalChatScreen> createState() => _GlobalChatScreenState();

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Elders' Blessings Challenge Game
 class EldersBlessingsGame extends BaseGameScreen {
   const EldersBlessingsGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.eldersBlessingsChallenge;
@@ -152,7 +151,7 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
     });
 
     completeTurn(
-      cardId: 'blessing_${_round}',
+      cardId: 'blessing_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 3000,
       confidence: _isCorrect ? 1.0 : 0.0,

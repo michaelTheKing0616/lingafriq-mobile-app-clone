@@ -11,10 +11,10 @@ class FlashcardReviewScreen extends ConsumerStatefulWidget {
   final String language;
 
   const FlashcardReviewScreen({
-    Key? key,
+    super.key,
     required this.words,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<FlashcardReviewScreen> createState() => _FlashcardReviewScreenState();

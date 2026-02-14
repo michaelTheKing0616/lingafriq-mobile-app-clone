@@ -115,13 +115,13 @@ class OptimizedListView extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const OptimizedListView({
-    Key? key,
+    super.key,
     required this.itemCount,
     required this.itemBuilder,
     this.itemExtent,
     this.controller,
     this.padding,
-  }) : super(key: key);
+  });
 
   /// Factory constructor for builder pattern compatibility
   static Widget builder({
@@ -189,14 +189,14 @@ class LazyImage extends StatelessWidget {
   final double? height;
 
   const LazyImage({
-    Key? key,
+    super.key,
     this.imageUrl,
     this.placeholder,
     this.errorWidget,
     this.fit,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

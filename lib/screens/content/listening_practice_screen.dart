@@ -14,9 +14,9 @@ class ListeningPracticeScreen extends ConsumerStatefulWidget {
   final String? language;
 
   const ListeningPracticeScreen({
-    Key? key,
+    super.key,
     this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ListeningPracticeScreen> createState() => _ListeningPracticeScreenState();
@@ -30,7 +30,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
   bool _isPlaying = false;
   final AudioPlayer _audioPlayer = AudioPlayer();
   Map<String, String> _answers = {};
-  Map<String, bool> _completedExercises = {};
+  final Map<String, bool> _completedExercises = {};
 
   @override
   void initState() {

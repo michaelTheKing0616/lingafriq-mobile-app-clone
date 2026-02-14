@@ -8,7 +8,7 @@ import 'package:lingafriq/services/user_generated_content_service.dart';
 
 /// Enhanced Create Story Screen with Validation Feedback
 class CreateStoryScreenEnhanced extends HookConsumerWidget {
-  const CreateStoryScreenEnhanced({Key? key}) : super(key: key);
+  const CreateStoryScreenEnhanced({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

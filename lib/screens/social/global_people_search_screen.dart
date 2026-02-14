@@ -14,7 +14,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
 class GlobalPeopleSearchScreen extends ConsumerStatefulWidget {
-  const GlobalPeopleSearchScreen({Key? key}) : super(key: key);
+  const GlobalPeopleSearchScreen({super.key});
 
   @override
   ConsumerState<GlobalPeopleSearchScreen> createState() =>

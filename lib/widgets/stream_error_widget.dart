@@ -8,10 +8,10 @@ class StreamErrorWidget extends StatelessWidget {
   final Object error;
   final GestureTapCallback? onTryAgain;
   const StreamErrorWidget({
-    Key? key,
+    super.key,
     required this.error,
     this.onTryAgain,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,10 +8,10 @@ class CommunityChatScreenMaterial3 extends StatelessWidget {
   final String villageName;
 
   const CommunityChatScreenMaterial3({
-    Key? key,
+    super.key,
     required this.villageId,
     required this.villageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

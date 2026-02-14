@@ -10,12 +10,12 @@ class ProgressMeter extends StatelessWidget {
   final String? label;
 
   const ProgressMeter({
-    Key? key,
+    super.key,
     required this.progress,
     this.color,
     this.height = 8.0,
     this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

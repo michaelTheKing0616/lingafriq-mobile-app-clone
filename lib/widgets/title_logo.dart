@@ -5,10 +5,10 @@ class TitleLogo extends StatelessWidget {
   final double? width;
   final double? height;
   const TitleLogo({
-    Key? key,
+    super.key,
     this.width,
     this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

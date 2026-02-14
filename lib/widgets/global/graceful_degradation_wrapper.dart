@@ -18,14 +18,14 @@ class GracefulDegradationWrapper extends StatelessWidget {
   final Function()? onRetry;
 
   const GracefulDegradationWrapper({
-    Key? key,
+    super.key,
     required this.child,
     this.offlineFallback,
     this.errorFallback,
     this.checkConnectivity = true,
     this.checkPermissions = false,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +49,13 @@ class _FeatureCheckWrapper extends StatefulWidget {
   final Function()? onRetry;
 
   const _FeatureCheckWrapper({
-    Key? key,
     required this.child,
     this.offlineFallback,
     this.errorFallback,
     this.checkConnectivity = true,
     this.checkPermissions = false,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   State<_FeatureCheckWrapper> createState() => _FeatureCheckWrapperState();

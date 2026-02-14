@@ -25,7 +25,7 @@ class TranslationFeedbackSheet extends StatefulWidget {
   final VoidCallback? onFeedbackSubmitted;
 
   const TranslationFeedbackSheet({
-    Key? key,
+    super.key,
     required this.sourceText,
     required this.translatedText,
     required this.sourceLang,
@@ -33,7 +33,7 @@ class TranslationFeedbackSheet extends StatefulWidget {
     required this.model,
     this.abTestVariant,
     this.onFeedbackSubmitted,
-  }) : super(key: key);
+  });
 
   /// Show the feedback sheet
   static Future<void> show(
@@ -400,7 +400,7 @@ class TranslationFeedbackButton extends StatelessWidget {
   final bool compact;
 
   const TranslationFeedbackButton({
-    Key? key,
+    super.key,
     required this.sourceText,
     required this.translatedText,
     required this.sourceLang,
@@ -408,7 +408,7 @@ class TranslationFeedbackButton extends StatelessWidget {
     required this.model,
     this.abTestVariant,
     this.compact = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -463,13 +463,13 @@ class QuickTranslationFeedback extends StatefulWidget {
   final String model;
 
   const QuickTranslationFeedback({
-    Key? key,
+    super.key,
     required this.sourceText,
     required this.translatedText,
     required this.sourceLang,
     required this.targetLang,
     required this.model,
-  }) : super(key: key);
+  });
 
   @override
   State<QuickTranslationFeedback> createState() => _QuickTranslationFeedbackState();

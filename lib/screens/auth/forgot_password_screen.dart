@@ -14,7 +14,7 @@ import 'package:lingafriq/widgets/title_logo.dart';
 import 'package:loading_overlay_pro/loading_overlay_pro.dart';
 
 class ForgotPasswordScreen extends HookConsumerWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

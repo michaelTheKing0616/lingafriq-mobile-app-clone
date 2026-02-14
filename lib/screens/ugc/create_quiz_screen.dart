@@ -9,7 +9,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Screen for creating user-generated quizzes
 class CreateQuizScreen extends HookConsumerWidget {
-  const CreateQuizScreen({Key? key}) : super(key: key);
+  const CreateQuizScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

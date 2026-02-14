@@ -21,7 +21,7 @@ import '../../../utils/pan_african_design_system.dart';
 import 'delete_account_dialogue.dart';
 
 class ProfileTab extends HookConsumerWidget {
-  const ProfileTab({Key? key}) : super(key: key);
+  const ProfileTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -157,9 +157,9 @@ class ProfileTab extends HookConsumerWidget {
 class ProfileDetailsBuilder extends ConsumerWidget {
   final CrossAxisAlignment? crossAxisAlignment;
   const ProfileDetailsBuilder({
-    Key? key,
+    super.key,
     this.crossAxisAlignment,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -192,11 +192,11 @@ class ProfileImageBuilder extends ConsumerWidget {
   final bool showEditIcon;
   final Size? size;
   const ProfileImageBuilder({
-    Key? key,
+    super.key,
     this.onTap,
     this.showEditIcon = true,
     this.size,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -253,12 +253,10 @@ class _ProfileItem extends StatelessWidget {
   final Widget? child;
   final EdgeInsets? padding;
   const _ProfileItem(
-      {Key? key,
-      required this.title,
+      {required this.title,
       required this.onTap,
       this.child,
-      this.padding})
-      : super(key: key);
+      this.padding});
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,7 @@ class LanguageVillageCard extends StatelessWidget {
   final Color? accentColor;
 
   const LanguageVillageCard({
-    Key? key,
+    super.key,
     required this.villageName,
     required this.language,
     required this.activeUsers,
@@ -22,7 +22,7 @@ class LanguageVillageCard extends StatelessWidget {
     required this.description,
     this.onTap,
     this.accentColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

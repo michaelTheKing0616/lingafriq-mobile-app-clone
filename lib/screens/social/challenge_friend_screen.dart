@@ -27,9 +27,9 @@ class ChallengeFriendScreen extends HookConsumerWidget {
   final String? friendId;
 
   const ChallengeFriendScreen({
-    Key? key,
+    super.key,
     this.friendId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,7 +44,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
     final showSuccess = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<void> _loadFriends() async {
+    Future<void> loadFriends() async {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
@@ -68,7 +68,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       }
     }
 
-    void _selectFriendById(String id, List<Map<String, dynamic>> friendsList) {
+    void selectFriendById(String id, List<Map<String, dynamic>> friendsList) {
       final friend = friendsList.firstWhere(
         (f) => (f['id']?.toString() ?? f['_id']?.toString()) == id,
         orElse: () => {},
@@ -78,7 +78,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       }
     }
 
-    String _challengeTypeToString(ChallengeType type) {
+    String challengeTypeToString(ChallengeType type) {
       switch (type) {
         case ChallengeType.xpRace:
           return 'xp_race';
@@ -91,7 +91,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       }
     }
 
-    int _durationToDays(ChallengeDuration duration) {
+    int durationToDays(ChallengeDuration duration) {
       switch (duration) {
         case ChallengeDuration.oneDay:
           return 1;
@@ -105,14 +105,14 @@ class ChallengeFriendScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadFriends();
+      loadFriends();
       if (friendId != null) {
-        _selectFriendById(friendId!, friends.value);
+        selectFriendById(friendId!, friends.value);
       }
       return null;
     }, []);
 
-    Future<void> _sendChallenge() async {
+    Future<void> sendChallenge() async {
       if (selectedFriend.value == null ||
           selectedChallengeType.value == null ||
           selectedDuration.value == null) {
@@ -129,8 +129,8 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       try {
         final challengeData = {
           'friendId': selectedFriend.value!['id']?.toString() ?? selectedFriend.value!['_id']?.toString(),
-          'type': _challengeTypeToString(selectedChallengeType.value!),
-          'duration': _durationToDays(selectedDuration.value!),
+          'type': challengeTypeToString(selectedChallengeType.value!),
+          'duration': durationToDays(selectedDuration.value!),
           'cowriesStake': selectedCowries.value,
         };
 
@@ -164,7 +164,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       }
     }
 
-    String _challengeTypeLabel(ChallengeType type) {
+    String challengeTypeLabel(ChallengeType type) {
       switch (type) {
         case ChallengeType.xpRace:
           return 'XP Race';
@@ -177,7 +177,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       }
     }
 
-    String _challengeTypeDescription(ChallengeType type) {
+    String challengeTypeDescription(ChallengeType type) {
       switch (type) {
         case ChallengeType.xpRace:
           return 'Who earns more XP this week';
@@ -190,7 +190,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
       }
     }
 
-    String _durationLabel(ChallengeDuration duration) {
+    String durationLabel(ChallengeDuration duration) {
       switch (duration) {
         case ChallengeDuration.oneDay:
           return '1 Day';
@@ -297,15 +297,15 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                       _buildChallengeTypeSelection(
                         context,
                         selectedChallengeType,
-                        _challengeTypeLabel,
-                        _challengeTypeDescription,
+                        challengeTypeLabel,
+                        challengeTypeDescription,
                         isDark,
                       ),
                       SizedBox(height: PolieSpacing.xl),
                       _buildDurationSelection(
                         context,
                         selectedDuration,
-                        _durationLabel,
+                        durationLabel,
                         isDark,
                       ),
                       SizedBox(height: PolieSpacing.xl),
@@ -321,8 +321,8 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                         selectedChallengeType,
                         selectedDuration,
                         selectedCowries,
-                        _challengeTypeLabel,
-                        _durationLabel,
+                        challengeTypeLabel,
+                        durationLabel,
                         isDark,
                       ),
                       SizedBox(height: PolieSpacing.xl),
@@ -334,7 +334,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                                   selectedChallengeType.value == null ||
                                   selectedDuration.value == null
                               ? null
-                              : _sendChallenge,
+                              : sendChallenge,
                           style: FilledButton.styleFrom(
                             backgroundColor: PolieColors.goldEmber,
                             padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),

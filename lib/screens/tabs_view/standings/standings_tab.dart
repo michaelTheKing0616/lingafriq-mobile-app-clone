@@ -21,7 +21,7 @@ class StandingsTabIndexNotifier extends Notifier<int> {
 final _tabIndexProvider = NotifierProvider<StandingsTabIndexNotifier, int>(StandingsTabIndexNotifier.new);
 
 class StandingsTab extends HookConsumerWidget {
-  const StandingsTab({Key? key}) : super(key: key);
+  const StandingsTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -69,7 +69,7 @@ class StandingsTab extends HookConsumerWidget {
                     },
                     onValueChanged: (value) {
                       final index = value == "global" ? 0 : 1;
-                      // ignore: invalid_use_of_visible_for_testing_member
+                      // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
                       ref.read(_tabIndexProvider.notifier).state = index;
                     },
                   ).py8(),
@@ -94,7 +94,7 @@ class StandingsTab extends HookConsumerWidget {
 }
 
 class _StandingsBuilder extends HookConsumerWidget {
-  const _StandingsBuilder({Key? key}) : super(key: key);
+  const _StandingsBuilder();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

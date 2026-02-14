@@ -16,11 +16,11 @@ class AiChatLanguageSetupScreen extends ConsumerStatefulWidget {
   final Function(String language, String languageName)? onLanguageSelected;
 
   const AiChatLanguageSetupScreen({
-    Key? key,
+    super.key,
     this.initialMode = PolieMode.translation,
     this.onBack,
     this.onLanguageSelected,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<AiChatLanguageSetupScreen> createState() =>

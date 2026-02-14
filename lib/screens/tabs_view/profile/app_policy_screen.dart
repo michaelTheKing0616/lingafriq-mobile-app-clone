@@ -3,7 +3,7 @@ import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/widgets/top_gradient_box_builder.dart';
 
 class AppPolicyScreen extends StatelessWidget {
-  const AppPolicyScreen({Key? key}) : super(key: key);
+  const AppPolicyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

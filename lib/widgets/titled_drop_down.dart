@@ -10,14 +10,14 @@ class TitledDropDown<T> extends StatelessWidget {
   final List<T> items;
   final T? value;
   const TitledDropDown({
-    Key? key,
+    super.key,
     required this.title,
     this.hint,
     this.onChanged,
     required this.titles,
     required this.items,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

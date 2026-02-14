@@ -15,7 +15,7 @@ final questProvider = NotifierProvider<QuestProvider, BaseProviderState>(() {
 
 /// Quest provider for "The Great Journey" story mode
 class QuestProvider extends Notifier<BaseProviderState> {
-  List<QuestChapter> _chapters = QuestDefinitions.getGreatJourneyChapters();
+  final List<QuestChapter> _chapters = QuestDefinitions.getGreatJourneyChapters();
   final Map<String, int> _lessonProgress = {}; // lessonId -> completion status
 
   List<QuestChapter> get chapters => List.unmodifiable(_chapters);
@@ -106,7 +106,7 @@ class QuestProvider extends Notifier<BaseProviderState> {
         final chapterNum = chapter.chapterNumber;
         final lesson = chapter.lessons.firstWhere((l) => l.id == lessonId);
         final lessonOrder = lesson.order;
-        final nodeId = 'great_journey_ch${chapterNum}_l${lessonOrder}';
+        final nodeId = 'great_journey_ch${chapterNum}_l$lessonOrder';
         
         // Complete the journey node via API
         await journeyService.completeNode(

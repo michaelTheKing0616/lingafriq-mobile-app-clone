@@ -8,10 +8,10 @@ class CurrencyDisplayWidget extends ConsumerWidget {
   final bool showLabels;
 
   const CurrencyDisplayWidget({
-    Key? key,
+    super.key,
     this.compact = false,
     this.showLabels = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

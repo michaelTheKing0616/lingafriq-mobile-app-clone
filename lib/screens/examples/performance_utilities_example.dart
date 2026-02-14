@@ -10,7 +10,7 @@ import '../../utils/performance_utils.dart';
 
 /// Example Screen with Performance Utilities
 class ExampleScreenWithPerformanceUtils extends HookConsumerWidget {
-  const ExampleScreenWithPerformanceUtils({Key? key}) : super(key: key);
+  const ExampleScreenWithPerformanceUtils({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

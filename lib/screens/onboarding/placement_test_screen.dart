@@ -20,9 +20,9 @@ class PlacementTestScreen extends HookConsumerWidget {
   final String language;
 
   const PlacementTestScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -642,7 +642,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

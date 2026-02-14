@@ -21,7 +21,7 @@ class PanAfricanTabBar extends StatelessWidget {
   final EdgeInsets? padding;
 
   const PanAfricanTabBar({
-    Key? key,
+    super.key,
     required this.tabs,
     this.controller,
     this.initialIndex,
@@ -31,7 +31,7 @@ class PanAfricanTabBar extends StatelessWidget {
     this.labelColor,
     this.unselectedLabelColor,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -133,12 +133,12 @@ class PanAfricanSegmentedControl<T> extends StatelessWidget {
   final Map<T, IconData>? icons;
 
   const PanAfricanSegmentedControl({
-    Key? key,
+    super.key,
     required this.options,
     required this.selectedValue,
     required this.onChanged,
     this.icons,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

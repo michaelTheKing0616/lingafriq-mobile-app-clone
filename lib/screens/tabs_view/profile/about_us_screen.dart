@@ -4,7 +4,7 @@ import 'package:lingafriq/utils/utils.dart';
 import '../../../widgets/top_gradient_box_builder.dart';
 
 class AboutUsScreen extends StatelessWidget {
-  const AboutUsScreen({Key? key}) : super(key: key);
+  const AboutUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

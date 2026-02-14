@@ -22,10 +22,10 @@ class UserSearchGlobalIdScreen extends HookConsumerWidget {
   final String? currentChatType; // 'global', 'community', 'tribe', 'private'
 
   const UserSearchGlobalIdScreen({
-    Key? key,
+    super.key,
     required this.onUserSelected,
     this.currentChatType,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -310,7 +310,7 @@ class _UserResultCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(PanAfricanRadius.xs),
                         ),
                         child: Text(
-                          '@${globalId}',
+                          '@$globalId',
                           style: PanAfricanTypography.labelSmall(context)
                               .copyWith(color: PanAfricanColors.primary),
                         ),

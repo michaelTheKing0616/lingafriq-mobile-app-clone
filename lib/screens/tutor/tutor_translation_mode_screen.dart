@@ -17,7 +17,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 /// Translation Mode — Afro-futurist UI. Dual language pills, glass canvas, Adaptive/Literal tabs.
 class TutorTranslationModeScreen extends HookConsumerWidget {
-  const TutorTranslationModeScreen({Key? key}) : super(key: key);
+  const TutorTranslationModeScreen({super.key});
 
   static String _displayName(AppLanguage lang) => lang.name;
   static String? _regionTag(AppLanguage lang) => SupportedLanguages.getCountry(lang.code);

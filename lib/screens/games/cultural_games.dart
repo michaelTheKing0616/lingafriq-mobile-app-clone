@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
 import '../../services/polie_content_generator.dart';
@@ -33,11 +32,11 @@ export 'cultural/drum_word_game.dart';
 /// Proverb Unlocker Game
 class ProverbUnlockerGame extends BaseGameScreen {
   const ProverbUnlockerGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.proverbUnlocker;
@@ -152,7 +151,7 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
 
     // Record turn
     completeTurn(
-      cardId: 'proverb_${_round}',
+      cardId: 'proverb_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 5000,
       confidence: _isCorrect ? 1.0 : 0.0,
@@ -369,11 +368,11 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
 @Deprecated('Use DrumRhythmScreen from lib/games/drum_rhythm/drum_rhythm_screen.dart')
 class DrumRhythmGame extends BaseGameScreen {
   const DrumRhythmGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.drumRhythmShadowing;
@@ -399,11 +398,11 @@ class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
 /// Market Bargaining Simulator Game
 class MarketBargainingGame extends BaseGameScreen {
   const MarketBargainingGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.marketBargainingSimulator;
@@ -498,7 +497,7 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
     });
 
     completeTurn(
-      cardId: 'bargain_${_round}',
+      cardId: 'bargain_$_round',
       result: _isAccepted ? GameResult.correct : GameResult.partial,
       durationMs: 10000,
       confidence: _isAccepted ? 1.0 : 0.5,
@@ -629,7 +628,7 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
                       style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      '${_sellerPrice} ${widget.language == 'Swahili' ? 'shillings' : 'naira'}',
+                      '$_sellerPrice ${widget.language == 'Swahili' ? 'shillings' : 'naira'}',
                       style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600, color: Colors.blue),
                     ),
                   ],

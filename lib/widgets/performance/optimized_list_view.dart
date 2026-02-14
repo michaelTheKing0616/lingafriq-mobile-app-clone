@@ -20,7 +20,7 @@ class OptimizedListView extends StatelessWidget {
   final double cacheExtent;
 
   const OptimizedListView({
-    Key? key,
+    super.key,
     required this.itemCount,
     required this.itemBuilder,
     this.padding,
@@ -29,7 +29,7 @@ class OptimizedListView extends StatelessWidget {
     this.shrinkWrap = false,
     this.physics,
     this.cacheExtent = 250.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +129,7 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
   final double cacheExtent;
 
   const _OptimizedListViewHorizontal({
-    Key? key,
+    super.key,
     required this.itemCount,
     required this.itemBuilder,
     this.padding,
@@ -138,7 +138,7 @@ class _OptimizedListViewHorizontal extends StatelessWidget {
     this.shrinkWrap = false,
     this.physics,
     this.cacheExtent = 250.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +181,7 @@ class _OptimizedGridView extends StatelessWidget {
   final Axis scrollDirection;
 
   const _OptimizedGridView({
-    Key? key,
+    super.key,
     required this.itemCount,
     required this.itemBuilder,
     this.padding,
@@ -190,7 +190,7 @@ class _OptimizedGridView extends StatelessWidget {
     this.physics,
     required this.gridDelegate,
     this.scrollDirection = Axis.vertical,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +219,7 @@ class OptimizedListViewWithSeparators extends StatelessWidget {
   final ScrollPhysics? physics;
 
   const OptimizedListViewWithSeparators({
-    Key? key,
+    super.key,
     required this.itemCount,
     required this.itemBuilder,
     required this.separatorBuilder,
@@ -228,7 +228,7 @@ class OptimizedListViewWithSeparators extends StatelessWidget {
     this.itemExtent,
     this.shrinkWrap = false,
     this.physics,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -21,11 +21,11 @@ class LessonDetailScreen extends ConsumerStatefulWidget {
   final String level;
 
   const LessonDetailScreen({
-    Key? key,
+    super.key,
     required this.lesson,
     required this.language,
     required this.level,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<LessonDetailScreen> createState() => _LessonDetailScreenState();
@@ -819,7 +819,7 @@ class _GrammarTipsCardState extends State<_GrammarTipsCard> {
                 ] else if (widget.explanations.isNotEmpty) ...[
                   ...widget.explanations.map((exp) {
                     final explanation = (exp as Map<String, dynamic>?)?['explanation'] ?? '';
-                    final title = (exp as Map<String, dynamic>?)?['title'] ?? '';
+                    final title = (exp)?['title'] ?? '';
                     return Padding(
                       padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
                       child: Column(

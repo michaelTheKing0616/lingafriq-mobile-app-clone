@@ -11,14 +11,14 @@ class TextButtonM3 extends StatelessWidget {
   final bool enabled;
 
   const TextButtonM3({
-    Key? key,
+    super.key,
     required this.text,
     this.onPressed,
     this.icon,
     this.foregroundColor,
     this.fontSize,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

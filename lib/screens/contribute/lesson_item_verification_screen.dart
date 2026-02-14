@@ -8,9 +8,9 @@ class LessonItemVerificationScreen extends ConsumerStatefulWidget {
   final String? languageCode;
 
   const LessonItemVerificationScreen({
-    Key? key,
+    super.key,
     this.languageCode,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<LessonItemVerificationScreen> createState() => _LessonItemVerificationScreenState();

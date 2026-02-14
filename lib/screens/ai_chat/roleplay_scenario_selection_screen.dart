@@ -17,10 +17,10 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
   final String languageName;
 
   const RoleplayScenarioSelectionScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
-  }) : super(key: key);
+  });
 
   static const List<ScenarioCategory> categories = [
     ScenarioCategory(

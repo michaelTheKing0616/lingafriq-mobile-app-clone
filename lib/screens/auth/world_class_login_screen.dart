@@ -1,5 +1,6 @@
 /// World-Class Login Screen
 /// Surpasses best apps with smooth animations, biometric auth, auto-fill, and modern UX
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,7 @@ import 'package:lingafriq/screens/auth/world_class_signup_screen.dart';
 import 'package:lingafriq/screens/auth/forgot_password_screen.dart';
 
 class WorldClassLoginScreen extends HookConsumerWidget {
-  const WorldClassLoginScreen({Key? key}) : super(key: key);
+  const WorldClassLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

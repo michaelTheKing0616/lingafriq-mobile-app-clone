@@ -19,7 +19,7 @@ class ModernCard extends StatelessWidget {
   final bool animate;
 
   const ModernCard({
-    Key? key,
+    super.key,
     required this.child,
     this.padding,
     this.margin,
@@ -31,7 +31,7 @@ class ModernCard extends StatelessWidget {
     this.gradient,
     this.border,
     this.animate = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class LanguageCard extends StatelessWidget {
   final bool isFeatured;
 
   const LanguageCard({
-    Key? key,
+    super.key,
     required this.name,
     this.backgroundImage,
     this.completed = 0,
@@ -108,7 +108,7 @@ class LanguageCard extends StatelessWidget {
     this.totalScore = 0,
     this.onTap,
     this.isFeatured = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

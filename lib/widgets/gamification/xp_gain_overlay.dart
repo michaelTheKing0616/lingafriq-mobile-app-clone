@@ -99,9 +99,9 @@ class XPGainOverlayWidget extends ConsumerWidget {
   final Widget child;
 
   const XPGainOverlayWidget({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -10,7 +10,7 @@ import '../../utils/pan_african_design_system.dart';
 /// Explains the Ubuntu mechanic and shows how many lessons/XP the learner
 /// has donated by protecting their streak when they miss a day.
 class UbuntuCardWidget extends ConsumerWidget {
-  const UbuntuCardWidget({Key? key}) : super(key: key);
+  const UbuntuCardWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -121,11 +121,10 @@ class _StatPill extends StatelessWidget {
   final String value;
 
   const _StatPill({
-    Key? key,
     required this.icon,
     required this.label,
     required this.value,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -38,7 +38,7 @@ class VisualPitchFeedbackWidget extends StatelessWidget {
   final double height;
 
   const VisualPitchFeedbackWidget({
-    Key? key,
+    super.key,
     required this.nativePitch,
     required this.userPitch,
     required this.timePoints,
@@ -47,7 +47,7 @@ class VisualPitchFeedbackWidget extends StatelessWidget {
     this.feedback,
     this.isRealTime = false,
     this.height = 200,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

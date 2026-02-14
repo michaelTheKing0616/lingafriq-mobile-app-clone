@@ -29,7 +29,7 @@ class PanAfricanListTile extends StatelessWidget {
   final bool hasDivider;
 
   const PanAfricanListTile({
-    Key? key,
+    super.key,
     required this.title,
     this.subtitle,
     this.description,
@@ -46,7 +46,7 @@ class PanAfricanListTile extends StatelessWidget {
     this.isEnabled = true,
     this.padding,
     this.hasDivider = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -221,12 +221,12 @@ class PanAfricanListSection extends StatelessWidget {
   final bool showBackground;
 
   const PanAfricanListSection({
-    Key? key,
+    super.key,
     required this.title,
     required this.children,
     this.padding,
     this.showBackground = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

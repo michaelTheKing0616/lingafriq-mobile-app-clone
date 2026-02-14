@@ -12,7 +12,7 @@ class LazyGameList extends HookConsumerWidget {
   final Function(String) onLanguageChanged;
   final Function(GameType) onGameSelected;
 
-  const LazyGameList({
+  const LazyGameList({super.key, 
     required this.selectedLanguage,
     required this.onLanguageChanged,
     required this.onGameSelected,

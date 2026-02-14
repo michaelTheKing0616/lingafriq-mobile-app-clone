@@ -22,8 +22,7 @@ class UserProfileScreen extends ConsumerWidget {
   final VoidCallback? onBack;
   final VoidCallback? onLogout;
 
-  const UserProfileScreen({Key? key, this.onBack, this.onLogout})
-      : super(key: key);
+  const UserProfileScreen({super.key, this.onBack, this.onLogout});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

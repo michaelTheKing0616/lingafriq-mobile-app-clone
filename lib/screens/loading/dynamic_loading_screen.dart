@@ -38,12 +38,12 @@ class DynamicLoadingScreen extends ConsumerStatefulWidget {
   final String? message;
 
   const DynamicLoadingScreen({
-    Key? key,
+    super.key,
     this.onLoadingComplete,
     this.loadingDuration,
     this.waitForDuration = true,
     this.message,
-  }) : super(key: key);
+  });
   
   /// Shows a loading screen for an async operation, ensuring minimum display time
   static Future<T?> showWhileLoading<T>({

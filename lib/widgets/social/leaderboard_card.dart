@@ -15,7 +15,7 @@ class LeaderboardCard extends StatelessWidget {
   final Color? rankColor;
 
   const LeaderboardCard({
-    Key? key,
+    super.key,
     required this.rank,
     required this.username,
     this.avatarUrl,
@@ -24,7 +24,7 @@ class LeaderboardCard extends StatelessWidget {
     this.tribe,
     this.isCurrentUser = false,
     this.rankColor,
-  }) : super(key: key);
+  });
 
   Color get _rankColor {
     if (rankColor != null) return rankColor!;

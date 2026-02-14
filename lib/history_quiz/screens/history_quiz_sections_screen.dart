@@ -32,9 +32,9 @@ final historyQuizSectionsProvider =
 class HistoryQuizSectionsListScreen extends StatefulWidget {
   final Language language;
   const HistoryQuizSectionsListScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   State<HistoryQuizSectionsListScreen> createState() => _HistoryQuizSectionsListScreenState();
@@ -71,7 +71,7 @@ class _HistoryQuizSectionsListScreenState extends State<HistoryQuizSectionsListS
 
 class HistoryQuizSectionsList extends HookConsumerWidget {
   final Language language;
-  const HistoryQuizSectionsList({Key? key, required this.language}) : super(key: key);
+  const HistoryQuizSectionsList({super.key, required this.language});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -278,12 +278,11 @@ class _HistoryQuizItem extends ConsumerWidget {
   final bool enabled;
   final VoidCallback onOpen;
   const _HistoryQuizItem({
-    Key? key,
     required this.languageId,
     required this.historyQuiz,
     required this.enabled,
     required this.onOpen,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -15,7 +15,7 @@ class FeaturePreloaderScreen extends StatefulWidget {
   final Duration? duration;
 
   const FeaturePreloaderScreen({
-    Key? key,
+    super.key,
     required this.featureName,
     required this.featureDescription,
     required this.terms,
@@ -23,7 +23,7 @@ class FeaturePreloaderScreen extends StatefulWidget {
     required this.icon,
     this.onComplete,
     this.duration,
-  }) : super(key: key);
+  });
 
   @override
   State<FeaturePreloaderScreen> createState() => _FeaturePreloaderScreenState();
@@ -54,7 +54,7 @@ class _FeaturePreloaderScreenState extends State<FeaturePreloaderScreen>
 
   @override
   Widget build(BuildContext context) {
-    final totalPages = 1 + (widget.terms.length > 0 ? 1 : 0) + (widget.tips.length > 0 ? 1 : 0);
+    final totalPages = 1 + (widget.terms.isNotEmpty ? 1 : 0) + (widget.tips.isNotEmpty ? 1 : 0);
     
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,

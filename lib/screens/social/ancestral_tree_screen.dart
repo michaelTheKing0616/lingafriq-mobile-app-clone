@@ -10,7 +10,7 @@ import '../../widgets/skeleton_loader.dart';
 
 /// Ancestral Tree - Visualize everyone you've helped
 class AncestralTreeScreen extends ConsumerWidget {
-  const AncestralTreeScreen({Key? key}) : super(key: key);
+  const AncestralTreeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

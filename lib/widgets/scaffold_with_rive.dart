@@ -18,7 +18,7 @@ class ScaffoldWithRive extends ConsumerWidget {
   final bool riveInCorner;
 
   const ScaffoldWithRive({
-    Key? key,
+    super.key,
     required this.body,
     this.appBar,
     this.floatingActionButton,
@@ -29,7 +29,7 @@ class ScaffoldWithRive extends ConsumerWidget {
     this.showRiveGuide = true,
     this.riveAlignment = Alignment.topRight,
     this.riveInCorner = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

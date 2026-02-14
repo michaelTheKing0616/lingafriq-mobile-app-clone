@@ -11,12 +11,12 @@ class LessonCompleteAnimation extends StatefulWidget {
   final String? message;
 
   const LessonCompleteAnimation({
-    Key? key,
+    super.key,
     required this.xpGained,
     this.comboBonus,
     required this.onContinue,
     this.message,
-  }) : super(key: key);
+  });
 
   @override
   State<LessonCompleteAnimation> createState() => _LessonCompleteAnimationState();

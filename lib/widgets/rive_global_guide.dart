@@ -15,12 +15,12 @@ class RiveGlobalGuide extends ConsumerStatefulWidget {
   final bool showInCorner;
 
   const RiveGlobalGuide({
-    Key? key,
+    super.key,
     this.width,
     this.height,
     this.alignment = Alignment.center,
     this.showInCorner = false,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<RiveGlobalGuide> createState() => _RiveGlobalGuideState();
@@ -74,10 +74,10 @@ class FloatingRiveGuide extends StatelessWidget {
   final Offset? position;
 
   const FloatingRiveGuide({
-    Key? key,
+    super.key,
     this.size,
     this.position,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

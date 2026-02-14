@@ -14,7 +14,7 @@ class TribeVsTribeCard extends StatelessWidget {
   final bool isActive;
 
   const TribeVsTribeCard({
-    Key? key,
+    super.key,
     required this.eventName,
     required this.participatingTribes,
     required this.tribeScores,
@@ -22,7 +22,7 @@ class TribeVsTribeCard extends StatelessWidget {
     required this.endDate,
     this.onTap,
     this.isActive = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

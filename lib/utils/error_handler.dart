@@ -392,7 +392,7 @@ class ApiError extends AppError {
 
 /// Generic AppError implementation
 class _GenericAppError extends AppError {
-  _GenericAppError(String message, [dynamic originalError]) : super(message, originalError);
+  _GenericAppError(super.message, [super.originalError]);
 }
 
 /// Error converter utility
@@ -453,11 +453,11 @@ class ErrorBoundary extends StatefulWidget {
   final void Function(FlutterErrorDetails details)? onError;
 
   const ErrorBoundary({
-    Key? key,
+    super.key,
     required this.child,
     this.errorBuilder,
     this.onError,
-  }) : super(key: key);
+  });
 
   @override
   State<ErrorBoundary> createState() => _ErrorBoundaryState();

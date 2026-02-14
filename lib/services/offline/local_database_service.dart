@@ -27,7 +27,7 @@ class LocalDatabaseService {
   Box? _metadataBox;
 
   bool _isInitialized = false;
-  int _schemaVersion = 1;
+  final int _schemaVersion = 1;
 
   /// Initialize Hive database
   /// Call this from main.dart before runApp()

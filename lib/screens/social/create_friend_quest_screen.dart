@@ -4,13 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../providers/dio_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../config/api_contract.dart';
 
 class CreateFriendQuestScreen extends HookConsumerWidget {
-  const CreateFriendQuestScreen({Key? key}) : super(key: key);
+  const CreateFriendQuestScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +24,7 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
     final isLoadingFriends = useState<bool>(true);
     final isCreating = useState<bool>(false);
 
-    Future<void> _loadFriends() async {
+    Future<void> loadFriends() async {
       try {
         isLoadingFriends.value = true;
         final response = await dio.get(
@@ -53,11 +52,11 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadFriends();
+      loadFriends();
       return null;
     }, []);
 
-    Future<void> _createQuest() async {
+    Future<void> createQuest() async {
       if (selectedQuestType.value == null) {
         ErrorHandler.showError(context, 'Please select a quest type');
         return;
@@ -144,13 +143,13 @@ class CreateFriendQuestScreen extends HookConsumerWidget {
               friends.value,
               isLoadingFriends.value,
               isDark,
-              _loadFriends,
+              loadFriends,
             ),
             SizedBox(height: PanAfricanSpacing.xl),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: isCreating.value ? null : _createQuest,
+                onPressed: isCreating.value ? null : createQuest,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: PanAfricanColors.primary,
                   foregroundColor: Theme.of(context).colorScheme.onPrimary,

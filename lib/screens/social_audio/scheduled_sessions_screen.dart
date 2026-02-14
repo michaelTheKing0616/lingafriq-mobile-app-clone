@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 
 /// Scheduled Sessions Screen - View and manage scheduled rooms
 class ScheduledSessionsScreen extends ConsumerStatefulWidget {
-  const ScheduledSessionsScreen({Key? key}) : super(key: key);
+  const ScheduledSessionsScreen({super.key});
 
   @override
   ConsumerState<ScheduledSessionsScreen> createState() => _ScheduledSessionsScreenState();
@@ -68,9 +68,7 @@ class _ScheduledSessionsScreenState extends ConsumerState<ScheduledSessionsScree
   }
 
   Widget _buildScheduledRoomCard(SocialAudioRoom room, bool isDark) {
-    final timeUntil = room.scheduledStartTime != null
-        ? room.scheduledStartTime!.difference(DateTime.now())
-        : null;
+    final timeUntil = room.scheduledStartTime?.difference(DateTime.now());
 
     return Card(
       margin: EdgeInsets.only(bottom: 2.h),

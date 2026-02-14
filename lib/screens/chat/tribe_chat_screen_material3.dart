@@ -8,10 +8,10 @@ class TribeChatScreenMaterial3 extends StatelessWidget {
   final String tribeName;
 
   const TribeChatScreenMaterial3({
-    Key? key,
+    super.key,
     required this.tribeId,
     required this.tribeName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

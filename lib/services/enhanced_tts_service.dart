@@ -126,7 +126,7 @@ class EnhancedTTSService {
     try {
       // Check cache first
       if (effectiveConfig.enableCache) {
-        final cacheKey = '${text}_${effectiveLanguage}';
+        final cacheKey = '${text}_$effectiveLanguage';
         if (_audioCache.containsKey(cacheKey)) {
           logger.debug('Playing cached audio', context: {
             'text': text.length > 50 ? text.substring(0, 50) : text,

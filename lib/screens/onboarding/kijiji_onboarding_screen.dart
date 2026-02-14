@@ -17,7 +17,7 @@ import 'package:lingafriq/services/localization/dynamic_localization_service.dar
 /// Comprehensive 10-Step Story-Driven Onboarding
 /// "Kijiji cha Lugha" - The Language Village
 class KijijiOnboardingScreen extends HookConsumerWidget {
-  const KijijiOnboardingScreen({Key? key}) : super(key: key);
+  const KijijiOnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -1142,7 +1142,7 @@ class _HealerScreen extends HookConsumerWidget {
                   },
                   activeColor: Theme.of(context).colorScheme.onPrimary,
                 );
-              }).toList(),
+              }),
               const SizedBox(height: 48),
               FilledButton(
                 onPressed: onNext,

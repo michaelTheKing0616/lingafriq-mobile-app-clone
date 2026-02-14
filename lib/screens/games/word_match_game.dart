@@ -13,9 +13,9 @@ class WordMatchGame extends ConsumerStatefulWidget {
   final Language language;
 
   const WordMatchGame({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<WordMatchGame> createState() => _WordMatchGameState();

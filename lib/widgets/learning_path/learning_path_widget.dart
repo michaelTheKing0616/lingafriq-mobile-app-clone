@@ -16,14 +16,14 @@ class LearningPathWidget extends StatelessWidget {
   final double horizontalPadding;
 
   const LearningPathWidget({
-    Key? key,
+    super.key,
     required this.lessons,
     required this.currentIndex,
     this.scrollController,
     this.nodeSize = 64,
     this.nodeSpacing = 120,
     this.horizontalPadding = 80,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

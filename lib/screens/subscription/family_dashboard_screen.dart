@@ -10,7 +10,7 @@ import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/utils/utils.dart';
 
 class FamilyDashboardScreen extends ConsumerStatefulWidget {
-  const FamilyDashboardScreen({Key? key}) : super(key: key);
+  const FamilyDashboardScreen({super.key});
 
   @override
   ConsumerState<FamilyDashboardScreen> createState() =>

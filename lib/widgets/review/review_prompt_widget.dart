@@ -12,9 +12,9 @@ class ReviewPromptWidget extends ConsumerStatefulWidget {
   final Widget child;
 
   const ReviewPromptWidget({
-    Key? key,
+    super.key,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ReviewPromptWidget> createState() => _ReviewPromptWidgetState();
@@ -38,10 +38,9 @@ class _ReviewPromptWidgetState extends ConsumerState<ReviewPromptWidget> {
 
     if (!mounted) return;
 
-    final gamification = ref.read(gamificationProvider);
     final user = ref.read(userProvider);
 
-    if (user == null || gamification == null) return;
+    if (user == null) return;
 
     // Get engagement metrics
     final gamificationModel = ref.read(gamificationProvider.notifier).gamification;

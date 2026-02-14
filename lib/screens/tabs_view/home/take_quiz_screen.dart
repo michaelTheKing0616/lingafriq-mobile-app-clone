@@ -29,9 +29,9 @@ import '../../../widgets/responsive_safe_area.dart';
 class TakeQuizScreen extends ConsumerWidget {
   final Language language;
   const TakeQuizScreen({
-    Key? key,
+    super.key,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -299,7 +299,7 @@ class TakeQuizScreen extends ConsumerWidget {
 
 class _RandomTextBuilder extends StatelessWidget {
   final VoidCallback onTap;
-  const _RandomTextBuilder({Key? key, required this.onTap}) : super(key: key);
+  const _RandomTextBuilder({required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -333,9 +333,8 @@ class _LanguageTextBuilder extends StatelessWidget {
   final VoidCallback onTap;
 
   const _LanguageTextBuilder({
-    Key? key,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -372,10 +371,9 @@ class _HistoryTextBuilder extends StatelessWidget {
 
   final Size? size;
   const _HistoryTextBuilder({
-    Key? key,
     this.size,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

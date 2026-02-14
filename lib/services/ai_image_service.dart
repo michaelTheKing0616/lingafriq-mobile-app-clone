@@ -21,7 +21,7 @@ import 'package:lingafriq/config/url_constants.dart';
 /// Note: GROQ_API_KEY is used separately for Polie AI chat feature
 class AIImageService {
   static String _fallbackAvatarAsset({required String country, required String language}) {
-    final seed = (country.trim().toLowerCase() + '|' + language.trim().toLowerCase())
+    final seed = ('${country.trim().toLowerCase()}|${language.trim().toLowerCase()}')
         .codeUnits
         .fold<int>(0, (a, b) => a + b);
     final idx = (seed % 10) + 1; // avatar_1..avatar_10

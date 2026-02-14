@@ -16,7 +16,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 class ModernOnboardingScreen extends HookConsumerWidget {
-  const ModernOnboardingScreen({Key? key}) : super(key: key);
+  const ModernOnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -136,9 +136,8 @@ class _WelcomeScreen extends StatelessWidget {
   final AnimationController animationController;
   
   const _WelcomeScreen({
-    Key? key,
     required this.animationController,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -245,9 +244,8 @@ class _FeaturesScreen extends StatelessWidget {
   final AnimationController animationController;
   
   const _FeaturesScreen({
-    Key? key,
     required this.animationController,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -336,12 +334,11 @@ class _FeatureCard extends StatelessWidget {
   final Color color;
   
   const _FeatureCard({
-    Key? key,
     required this.icon,
     required this.title,
     required this.description,
     required this.color,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -400,9 +397,8 @@ class _AdventureScreen extends StatelessWidget {
   final AnimationController animationController;
   
   const _AdventureScreen({
-    Key? key,
     required this.animationController,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -517,11 +513,10 @@ class _GetStartedScreen extends StatelessWidget {
   final VoidCallback onLogin;
   
   const _GetStartedScreen({
-    Key? key,
     required this.animationController,
     required this.onGetStarted,
     required this.onLogin,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {
@@ -682,13 +677,12 @@ class _PathCard extends StatelessWidget {
   final VoidCallback? onTap;
   
   const _PathCard({
-    Key? key,
     required this.icon,
     required this.title,
     required this.description,
     required this.color,
     this.onTap,
-  }) : super(key: key);
+  });
   
   @override
   Widget build(BuildContext context) {

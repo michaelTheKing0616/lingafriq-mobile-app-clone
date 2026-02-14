@@ -17,7 +17,7 @@ import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 
 /// Beautiful Material 3 Games Screen
 class GamesScreenMaterial3 extends HookConsumerWidget {
-  const GamesScreenMaterial3({Key? key}) : super(key: key);
+  const GamesScreenMaterial3({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

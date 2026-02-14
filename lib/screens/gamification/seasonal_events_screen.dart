@@ -12,7 +12,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 /// Seasonal Events Screen
 class SeasonalEventsScreen extends HookConsumerWidget {
-  const SeasonalEventsScreen({Key? key}) : super(key: key);
+  const SeasonalEventsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

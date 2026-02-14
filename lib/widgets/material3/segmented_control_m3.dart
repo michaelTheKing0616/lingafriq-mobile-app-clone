@@ -10,13 +10,13 @@ class SegmentedControlM3<T> extends StatelessWidget {
   final IconData Function(T)? iconBuilder;
 
   const SegmentedControlM3({
-    Key? key,
+    super.key,
     required this.options,
     this.selected,
     this.onSelectionChanged,
     required this.labelBuilder,
     this.iconBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class SegmentedControlM3<T> extends StatelessWidget {
           icon: iconBuilder != null ? Icon(iconBuilder!(option), size: 18.sp) : null,
         );
       }).toList(),
-      selected: selected != null ? {selected!} : <T>{},
+      selected: selected != null ? {selected as T} : <T>{},
       onSelectionChanged: (Set<T> newSelection) {
         if (newSelection.isNotEmpty && onSelectionChanged != null) {
           onSelectionChanged!(newSelection.first);

@@ -42,13 +42,13 @@ class AfricanLoadingOverlay extends ConsumerStatefulWidget {
   final bool showProgress;
 
   const AfricanLoadingOverlay({
-    Key? key,
+    super.key,
     this.isFullScreen = true,
     this.minDisplayDuration = kMinLoadingDuration,
     this.onComplete,
     this.message,
     this.showProgress = true,
-  }) : super(key: key);
+  });
 
   /// Shows the loading overlay and executes an async operation
   /// Returns the result of the operation

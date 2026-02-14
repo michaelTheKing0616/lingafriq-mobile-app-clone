@@ -13,7 +13,7 @@ import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
 class SocialHubScreen extends HookConsumerWidget {
-  const SocialHubScreen({Key? key}) : super(key: key);
+  const SocialHubScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -127,7 +127,7 @@ class _FeedTab extends HookConsumerWidget {
     final isLoading = useState(false);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<void> _refreshFeed() async {
+    Future<void> refreshFeed() async {
       isLoading.value = true;
       await ref.read(socialFeedProvider.notifier).loadFeed();
       isLoading.value = false;
@@ -135,7 +135,7 @@ class _FeedTab extends HookConsumerWidget {
 
     if (feedItems.isEmpty && !isLoading.value) {
       return RefreshIndicator(
-        onRefresh: _refreshFeed,
+        onRefresh: refreshFeed,
         color: PolieColors.goldEmber,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -174,7 +174,7 @@ class _FeedTab extends HookConsumerWidget {
     }
 
     return RefreshIndicator(
-      onRefresh: _refreshFeed,
+      onRefresh: refreshFeed,
       color: PolieColors.goldEmber,
       child: ListView.builder(
         padding: EdgeInsets.all(PolieSpacing.lg),
@@ -304,7 +304,7 @@ class _FriendsTab extends HookConsumerWidget {
     final isLoading = useState(true);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<void> _loadFriends() async {
+    Future<void> loadFriends() async {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
@@ -329,7 +329,7 @@ class _FriendsTab extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadFriends();
+      loadFriends();
       return null;
     }, []);
 
@@ -535,7 +535,7 @@ class _ChallengesTab extends HookConsumerWidget {
     final isLoading = useState(true);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<void> _loadChallenges() async {
+    Future<void> loadChallenges() async {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
@@ -556,7 +556,7 @@ class _ChallengesTab extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadChallenges();
+      loadChallenges();
       return null;
     }, []);
 
@@ -733,7 +733,7 @@ class _TribesTab extends HookConsumerWidget {
     final tribeData = useState<Map<String, dynamic>?>(null);
     final isLoading = useState(true);
 
-    Future<void> _loadTribeData() async {
+    Future<void> loadTribeData() async {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
@@ -751,7 +751,7 @@ class _TribesTab extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadTribeData();
+      loadTribeData();
       return null;
     }, []);
 

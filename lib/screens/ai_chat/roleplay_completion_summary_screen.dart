@@ -20,12 +20,12 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
   final VoidCallback? onContinue;
 
   const RoleplayCompletionSummaryScreen({
-    Key? key,
+    super.key,
     required this.result,
     required this.language,
     required this.languageName,
     this.onContinue,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

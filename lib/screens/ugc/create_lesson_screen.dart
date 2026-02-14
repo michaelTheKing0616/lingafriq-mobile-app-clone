@@ -9,7 +9,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Screen for creating user-generated lessons
 class CreateLessonScreen extends HookConsumerWidget {
-  const CreateLessonScreen({Key? key}) : super(key: key);
+  const CreateLessonScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

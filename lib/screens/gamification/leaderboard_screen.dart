@@ -15,7 +15,7 @@ import '../../widgets/skeleton_loader.dart';
 
 /// Leaderboard screen with tribe, country, and global rankings
 class LeaderboardScreen extends ConsumerStatefulWidget {
-  const LeaderboardScreen({Key? key}) : super(key: key);
+  const LeaderboardScreen({super.key});
 
   @override
   ConsumerState<LeaderboardScreen> createState() => _LeaderboardScreenState();

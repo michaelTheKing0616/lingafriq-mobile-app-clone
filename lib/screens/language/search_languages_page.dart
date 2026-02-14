@@ -7,7 +7,7 @@ import '../../widgets/pan_african_app_bar.dart';
 
 /// Search Languages Page - Allows users to search and select languages
 class SearchLanguagesPage extends HookConsumerWidget {
-  const SearchLanguagesPage({Key? key}) : super(key: key);
+  const SearchLanguagesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

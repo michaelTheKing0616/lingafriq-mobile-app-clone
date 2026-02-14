@@ -9,10 +9,10 @@ class LevelDisplayWidget extends ConsumerWidget {
   final bool compact;
 
   const LevelDisplayWidget({
-    Key? key,
+    super.key,
     this.showXP = true,
     this.compact = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

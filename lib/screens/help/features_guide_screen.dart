@@ -6,7 +6,7 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 /// Comprehensive Features Guide Screen
 /// Explains all modules, features, and how to use them
 class FeaturesGuideScreen extends StatefulWidget {
-  const FeaturesGuideScreen({Key? key}) : super(key: key);
+  const FeaturesGuideScreen({super.key});
 
   @override
   State<FeaturesGuideScreen> createState() => _FeaturesGuideScreenState();

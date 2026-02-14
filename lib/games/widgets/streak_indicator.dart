@@ -8,10 +8,10 @@ class StreakIndicator extends StatelessWidget {
   final Color? color;
 
   const StreakIndicator({
-    Key? key,
+    super.key,
     required this.streak,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

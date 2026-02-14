@@ -40,12 +40,12 @@ class SharedAxisTransitionBuilder extends StatelessWidget {
   final Widget child;
 
   const SharedAxisTransitionBuilder({
-    Key? key,
+    super.key,
     required this.animation,
     required this.secondaryAnimation,
     required this.transitionType,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

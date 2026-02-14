@@ -25,8 +25,8 @@ class AvatarIntelligence {
   int _totalXPToday = 0;
   DateTime? _lastActivityTime;
   double _userConfidence = 0.5;
-  List<String> _recentMistakes = [];
-  List<String> _recentSuccesses = [];
+  final List<String> _recentMistakes = [];
+  final List<String> _recentSuccesses = [];
   
   // Personality adaptation
   double _adaptedWarmth = 0.5;

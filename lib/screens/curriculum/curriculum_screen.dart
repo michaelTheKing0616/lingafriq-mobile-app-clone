@@ -15,7 +15,7 @@ import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
-  const CurriculumScreen({Key? key}) : super(key: key);
+  const CurriculumScreen({super.key});
 
   @override
   ConsumerState<CurriculumScreen> createState() => _CurriculumScreenState();

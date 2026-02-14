@@ -14,7 +14,7 @@ class LangguageTypeHeaderBuilder extends StatelessWidget {
   final String type;
   final int completed;
   const LangguageTypeHeaderBuilder({
-    Key? key,
+    super.key,
     required this.title,
     required this.level,
     required this.count,
@@ -23,7 +23,7 @@ class LangguageTypeHeaderBuilder extends StatelessWidget {
     required this.type,
     required this.completed,
     // this.showCount = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

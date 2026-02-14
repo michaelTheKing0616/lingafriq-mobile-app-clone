@@ -17,16 +17,16 @@ class ShareProgressScreen extends HookConsumerWidget {
   final String cardType; // 'daily_streak', 'weekly_stats', 'achievement'
 
   const ShareProgressScreen({
-    Key? key,
+    super.key,
     this.cardType = 'daily_streak',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final globalKey = useMemoized(() => GlobalKey());
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<void> _shareCard() async {
+    Future<void> shareCard() async {
       try {
         final RenderRepaintBoundary boundary =
             globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
@@ -49,7 +49,7 @@ class ShareProgressScreen extends HookConsumerWidget {
       }
     }
 
-    Future<void> _saveToGallery() async {
+    Future<void> saveToGallery() async {
       // TODO: add image_gallery_saver package and uncomment to enable save to gallery
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Save to gallery not available — add image_gallery_saver package')),
@@ -105,7 +105,7 @@ class ShareProgressScreen extends HookConsumerWidget {
                   children: [
                     Expanded(
                       child: OutlinedButton.icon(
-                        onPressed: _saveToGallery,
+                        onPressed: saveToGallery,
                         icon: Icon(Icons.download_rounded),
                         label: Text('Save'),
                         style: OutlinedButton.styleFrom(
@@ -119,7 +119,7 @@ class ShareProgressScreen extends HookConsumerWidget {
                       child: PoliePrimaryButton(
                         label: 'Share',
                         icon: Icons.share_rounded,
-                        onPressed: _shareCard,
+                        onPressed: shareCard,
                       ),
                     ),
                   ],

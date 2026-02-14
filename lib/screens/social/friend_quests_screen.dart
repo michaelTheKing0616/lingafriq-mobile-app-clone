@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../providers/dio_provider.dart';
-import '../../providers/user_provider.dart';
 import '../../utils/error_handler.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../config/api_contract.dart';
@@ -13,19 +12,17 @@ import '../../services/deep_link_service.dart';
 import 'create_friend_quest_screen.dart';
 
 class FriendQuestsScreen extends HookConsumerWidget {
-  const FriendQuestsScreen({Key? key}) : super(key: key);
+  const FriendQuestsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colorScheme = Theme.of(context).colorScheme;
-    final user = ref.watch(userProvider);
     final dio = ref.read(client);
     final quests = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState<bool>(true);
     final selectedTab = useState<int>(0); // 0: active, 1: completed
 
-    Future<void> _loadQuests() async {
+    Future<void> loadQuests() async {
       try {
         isLoading.value = true;
         final response = await dio.get(
@@ -48,7 +45,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
     }
 
     useEffect(() {
-      _loadQuests();
+      loadQuests();
       return null;
     }, []);
 
@@ -69,14 +66,14 @@ class FriendQuestsScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
-          _buildTabBar(context, selectedTab, _loadQuests),
+          _buildTabBar(context, selectedTab, loadQuests),
           Expanded(
             child: isLoading.value
                 ? Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
                 : quests.value.isEmpty
                     ? _buildEmptyState(context, isDark)
                     : RefreshIndicator(
-                        onRefresh: _loadQuests,
+                        onRefresh: loadQuests,
                         color: PanAfricanColors.primary,
                         child: ListView.builder(
                           padding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -87,7 +84,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                               quests.value[index],
                               isDark,
                               ref,
-                              _loadQuests,
+                              loadQuests,
                             );
                           },
                         ),
@@ -102,7 +99,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
             MaterialPageRoute(
               builder: (context) => const CreateFriendQuestScreen(),
             ),
-          ).then((_) => _loadQuests());
+          ).then((_) => loadQuests());
         },
         backgroundColor: PanAfricanColors.primary,
         icon: const Icon(Icons.add),
@@ -229,7 +226,6 @@ class FriendQuestsScreen extends HookConsumerWidget {
         ? DateTime.parse(quest['expiresAt'])
         : null;
     final participants = List<Map<String, dynamic>>.from(quest['participants'] ?? []);
-    final progressList = List<Map<String, dynamic>>.from(quest['progress'] ?? []);
     final rewardXP = quest['rewardXP'] as num? ?? 100;
 
     final progressPercent = target > 0 ? (totalProgress / target).clamp(0.0, 1.0) : 0.0;

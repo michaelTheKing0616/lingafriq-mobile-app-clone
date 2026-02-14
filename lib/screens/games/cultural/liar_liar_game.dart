@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Liar Liar Game - Detect grammatical errors
 class LiarLiarGame extends BaseGameScreen {
   const LiarLiarGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.liarLiar;
@@ -147,7 +146,7 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
     });
 
     completeTurn(
-      cardId: 'sentence_${_round}',
+      cardId: 'sentence_$_round',
       result: isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 3000,
       confidence: isCorrect ? 1.0 : 0.0,

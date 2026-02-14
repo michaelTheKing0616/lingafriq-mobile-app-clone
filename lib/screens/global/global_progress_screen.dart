@@ -10,7 +10,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 
 class GlobalProgressScreen extends ConsumerStatefulWidget {
-  const GlobalProgressScreen({Key? key}) : super(key: key);
+  const GlobalProgressScreen({super.key});
 
   @override
   ConsumerState<GlobalProgressScreen> createState() => _GlobalProgressScreenState();
@@ -222,7 +222,7 @@ class _GlobalProgressScreenState extends ConsumerState<GlobalProgressScreen> {
               child: _buildStatCard(
                 context,
                 'Total Users',
-                '${(stats['totalUsers'] as int).toString()}',
+                (stats['totalUsers'] as int).toString(),
                 '👥',
                 isDark,
               ),

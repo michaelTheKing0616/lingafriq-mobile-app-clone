@@ -14,10 +14,10 @@ class TutorProgressDashboardScreen extends HookConsumerWidget {
   final String languageName;
 
   const TutorProgressDashboardScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

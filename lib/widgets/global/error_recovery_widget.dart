@@ -20,14 +20,14 @@ class ErrorRecoveryWidget extends StatefulWidget {
   final Duration retryDelay;
 
   const ErrorRecoveryWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.errorMessage,
     this.onRetry,
     this.fallback,
     this.maxRetries = 3,
     this.retryDelay = const Duration(seconds: 1),
-  }) : super(key: key);
+  });
 
   @override
   State<ErrorRecoveryWidget> createState() => _ErrorRecoveryWidgetState();

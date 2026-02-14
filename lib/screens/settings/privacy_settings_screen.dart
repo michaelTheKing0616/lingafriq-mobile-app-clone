@@ -11,7 +11,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 
 /// Privacy Settings Screen - Pan-African Design System
 class PrivacySettingsScreen extends HookConsumerWidget {
-  const PrivacySettingsScreen({Key? key}) : super(key: key);
+  const PrivacySettingsScreen({super.key});
 
   static const String _prefAnalytics = 'privacy_analytics_enabled';
   static const String _prefDataSharing = 'privacy_data_sharing_enabled';
@@ -88,7 +88,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       return null;
     }, []);
 
-    Future<void> _syncToBackend(ApiProvider api) async {
+    Future<void> syncToBackend(ApiProvider api) async {
       final prefs = {
         'analytics': analyticsEnabled.value ?? true,
         'data_sharing': dataSharingEnabled.value ?? false,
@@ -100,47 +100,47 @@ class PrivacySettingsScreen extends HookConsumerWidget {
       await api.updateUserPreferences(prefs);
     }
 
-    Future<void> _updateAnalytics(bool value) async {
+    Future<void> updateAnalytics(bool value) async {
       HapticFeedback.selectionClick();
       analyticsEnabled.value = value;
       await _savePreference(_prefAnalytics, value);
-      _syncToBackend(api);
+      syncToBackend(api);
     }
 
-    Future<void> _updateDataSharing(bool value) async {
+    Future<void> updateDataSharing(bool value) async {
       HapticFeedback.selectionClick();
       dataSharingEnabled.value = value;
       await _savePreference(_prefDataSharing, value);
-      _syncToBackend(api);
+      syncToBackend(api);
     }
 
-    Future<void> _updatePersonalizedAds(bool value) async {
+    Future<void> updatePersonalizedAds(bool value) async {
       HapticFeedback.selectionClick();
       personalizedAdsEnabled.value = value;
       await _savePreference(_prefPersonalizedAds, value);
-      _syncToBackend(api);
+      syncToBackend(api);
     }
 
-    Future<void> _updateLocationTracking(bool value) async {
+    Future<void> updateLocationTracking(bool value) async {
       HapticFeedback.selectionClick();
       locationTrackingEnabled.value = value;
       await _savePreference(_prefLocationTracking, value);
-      _syncToBackend(api);
+      syncToBackend(api);
     }
 
-    Future<void> _updateActivityStatus(bool value) async {
+    Future<void> updateActivityStatus(bool value) async {
       HapticFeedback.selectionClick();
       activityStatusEnabled.value = value;
       await _savePreference(_prefActivityStatus, value);
-      _syncToBackend(api);
+      syncToBackend(api);
     }
 
-    Future<void> _updateProfileVisibility(String value) async {
+    Future<void> updateProfileVisibility(String value) async {
       HapticFeedback.selectionClick();
       profileVisibility.value = value;
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_prefProfileVisibility, value);
-      _syncToBackend(api);
+      syncToBackend(api);
     }
 
     if (isLoading.value) {
@@ -223,7 +223,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       title: 'Analytics',
                       subtitle: 'Help us improve the app by sharing usage data',
                       value: analyticsEnabled.value ?? true,
-                      onChanged: _updateAnalytics,
+                      onChanged: updateAnalytics,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -232,7 +232,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       title: 'Data Sharing',
                       subtitle: 'Share anonymized data with partners for research',
                       value: dataSharingEnabled.value ?? false,
-                      onChanged: _updateDataSharing,
+                      onChanged: updateDataSharing,
                       isDark: isDark,
                     ),
                   ],
@@ -250,7 +250,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       title: 'Personalized Ads',
                       subtitle: 'Show ads based on your interests',
                       value: personalizedAdsEnabled.value ?? false,
-                      onChanged: _updatePersonalizedAds,
+                      onChanged: updatePersonalizedAds,
                       isDark: isDark,
                     ),
                   ],
@@ -268,7 +268,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       title: 'Location Tracking',
                       subtitle: 'Allow app to access your location',
                       value: locationTrackingEnabled.value ?? false,
-                      onChanged: _updateLocationTracking,
+                      onChanged: updateLocationTracking,
                       isDark: isDark,
                     ),
                   ],
@@ -287,7 +287,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       subtitle: 'Anyone can see your profile',
                       value: 'public',
                       groupValue: profileVisibility.value,
-                      onChanged: _updateProfileVisibility,
+                      onChanged: updateProfileVisibility,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -297,7 +297,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       subtitle: 'Only your friends can see your profile',
                       value: 'friends',
                       groupValue: profileVisibility.value,
-                      onChanged: _updateProfileVisibility,
+                      onChanged: updateProfileVisibility,
                       isDark: isDark,
                     ),
                     _PrivacyDivider(isDark: isDark),
@@ -307,7 +307,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       subtitle: 'Only you can see your profile',
                       value: 'private',
                       groupValue: profileVisibility.value,
-                      onChanged: _updateProfileVisibility,
+                      onChanged: updateProfileVisibility,
                       isDark: isDark,
                     ),
                   ],
@@ -325,7 +325,7 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       title: 'Show Activity Status',
                       subtitle: "Let others see when you're online",
                       value: activityStatusEnabled.value ?? true,
-                      onChanged: _updateActivityStatus,
+                      onChanged: updateActivityStatus,
                       isDark: isDark,
                     ),
                   ],

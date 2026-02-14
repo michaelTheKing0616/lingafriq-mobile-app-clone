@@ -28,9 +28,9 @@ final sectionHistoryProvider =
 class HistorySectionsListScreen extends ConsumerWidget {
   final History history;
   const HistorySectionsListScreen({
-    Key? key,
+    super.key,
     required this.history,
-  }) : super(key: key);
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sectionHistoriesAsync = ref.watch(sectionHistoryProvider(history.id));
@@ -92,10 +92,9 @@ class _SectionHistoryList extends ConsumerWidget {
   final History history;
   final List<SectionHistoryModel> sectionHistories;
   const _SectionHistoryList({
-    Key? key,
     required this.history,
     required this.sectionHistories,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -247,12 +246,11 @@ class _SectionHistoryItem extends ConsumerWidget {
   final bool enabled;
   final VoidCallback onOpen;
   const _SectionHistoryItem({
-    Key? key,
     required this.historyId,
     required this.sectionHistory,
     required this.enabled,
     required this.onOpen,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

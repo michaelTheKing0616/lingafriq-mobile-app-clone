@@ -9,7 +9,7 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
-import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show DynamicLocalizationService, AppLanguage;
+import 'package:lingafriq/services/localization/dynamic_localization_service.dart' show AppLanguage;
 import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/api_service.dart';
@@ -18,7 +18,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 /// Story Mode — cultural banner, paragraph reveal, tap-for-translation, TTS narration, moral card, save to library, alternate endings.
 class TutorStoryModeScreen extends HookConsumerWidget {
-  const TutorStoryModeScreen({Key? key}) : super(key: key);
+  const TutorStoryModeScreen({super.key});
 
   static const String _kSavedStoriesKey = 'polie_saved_stories';
 
@@ -67,7 +67,7 @@ class TutorStoryModeScreen extends HookConsumerWidget {
       } catch (_) {}
     }
 
-    Future<Map<String, dynamic>> _generateStoryWithGroq({
+    Future<Map<String, dynamic>> generateStoryWithGroq({
       required String theme,
       required String language,
       required String userLevel,
@@ -215,7 +215,7 @@ Quality requirements:
       await safeAsync(
         context: context,
         operation: () async {
-          final result = await _generateStoryWithGroq(
+          final result = await generateStoryWithGroq(
             theme: themeController.text.trim(),
             language: selectedLanguage.value.name,
             userLevel: userLevel.value,

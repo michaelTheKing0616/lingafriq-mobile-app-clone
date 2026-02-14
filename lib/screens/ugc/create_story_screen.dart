@@ -9,7 +9,7 @@ import 'package:lingafriq/utils/integration_helpers.dart';
 
 /// Screen for creating user-generated stories
 class CreateStoryScreen extends HookConsumerWidget {
-  const CreateStoryScreen({Key? key}) : super(key: key);
+  const CreateStoryScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

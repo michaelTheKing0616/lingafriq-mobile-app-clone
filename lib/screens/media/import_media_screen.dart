@@ -13,7 +13,7 @@ import 'package:lingafriq/screens/loading/dynamic_loading_screen.dart';
 import 'package:lingafriq/services/polie_content_generator.dart';
 
 class ImportMediaScreen extends ConsumerStatefulWidget {
-  const ImportMediaScreen({Key? key}) : super(key: key);
+  const ImportMediaScreen({super.key});
 
   @override
   ConsumerState<ImportMediaScreen> createState() => _ImportMediaScreenState();
@@ -527,40 +527,6 @@ class _ImportMediaScreenState extends ConsumerState<ImportMediaScreen> {
     await check();
     if (!mounted || _processingStatus == 'completed' || _processingStatus == 'failed') return;
     _pollTimer = Timer.periodic(const Duration(seconds: 3), (_) => check());
-  }
-
-  Future<void> _importFromUrl(String url) async {
-    setState(() => _isLoading = true);
-    try {
-      // Use Polie to extract and summarize content from URL
-      final polieGenerator = ref.read(polieContentGeneratorProvider);
-      
-      // Generate a summary/extraction prompt for Polie
-      final extractedContent = await polieGenerator.generateGameContent(
-        gameType: 'content_extraction',
-        language: _selectedLanguage ?? 'English',
-        additionalContext: 'Extract and summarize the main content from this URL: $url',
-      );
-      
-      setState(() {
-        _importedText = extractedContent['content']?.toString() ?? 
-                       'Content extracted from URL. You can now create a lesson from this text.';
-        _isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        _importedText = 'Unable to extract content from URL. Please try pasting the text directly or check your connection.';
-        _isLoading = false;
-      });
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error extracting content: $e'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
   }
 
   void _createLesson(BuildContext context) {

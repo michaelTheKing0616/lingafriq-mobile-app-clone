@@ -11,13 +11,13 @@ class ShakeAnimation extends StatefulWidget {
   final VoidCallback? onComplete;
 
   const ShakeAnimation({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 400),
     this.shakeDistance = 10.0,
     this.oscillations = 3,
     this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<ShakeAnimation> createState() => _ShakeAnimationState();
@@ -128,14 +128,14 @@ class ControlledShakeAnimation extends StatefulWidget {
   final VoidCallback? onComplete;
 
   const ControlledShakeAnimation({
-    Key? key,
+    super.key,
     required this.child,
     required this.controller,
     this.duration = const Duration(milliseconds: 400),
     this.shakeDistance = 10.0,
     this.oscillations = 3,
     this.onComplete,
-  }) : super(key: key);
+  });
 
   @override
   State<ControlledShakeAnimation> createState() => _ControlledShakeAnimationState();

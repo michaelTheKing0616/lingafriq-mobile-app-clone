@@ -14,7 +14,7 @@ import '../../widgets/animations/smooth_transitions.dart';
 
 /// "The Great Journey" Quest/Story Mode Screen
 class QuestScreen extends ConsumerStatefulWidget {
-  const QuestScreen({Key? key}) : super(key: key);
+  const QuestScreen({super.key});
 
   @override
   ConsumerState<QuestScreen> createState() => _QuestScreenState();

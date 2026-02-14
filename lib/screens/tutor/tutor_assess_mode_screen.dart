@@ -24,7 +24,7 @@ const List<Map<String, dynamic>> kAssessmentTypes = [
 
 /// Proficiency Assessment — calm ceremonial layout, CEFR reveal animation, radar chart, learning path CTA.
 class TutorAssessModeScreen extends HookConsumerWidget {
-  const TutorAssessModeScreen({Key? key}) : super(key: key);
+  const TutorAssessModeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +36,7 @@ class TutorAssessModeScreen extends HookConsumerWidget {
     final availableLanguages = AppLanguage.values;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    Future<Map<String, dynamic>> _generateAssessmentWithGroq({
+    Future<Map<String, dynamic>> generateAssessmentWithGroq({
       required String language,
       required String type,
       String? knownCefrLevel,
@@ -141,7 +141,7 @@ Keep lists practical. Use culturally appropriate examples.
               if (data is Map && data['cefr_level'] != null) knownCefr = data['cefr_level']?.toString();
             }
           } catch (_) {}
-          final result = await _generateAssessmentWithGroq(
+          final result = await generateAssessmentWithGroq(
             language: selectedLanguage.value.name,
             type: assessmentType.value,
             knownCefrLevel: knownCefr,
@@ -496,8 +496,11 @@ class _RadarChartPainter extends CustomPainter {
         final a = -math.pi / 2 + i * angleStep;
         final x = center.dx + radius * r * math.cos(a);
         final y = center.dy + radius * r * math.sin(a);
-        if (i == 0) path.moveTo(x, y);
-        else path.lineTo(x, y);
+        if (i == 0) {
+          path.moveTo(x, y);
+        } else {
+          path.lineTo(x, y);
+        }
       }
       path.close();
       canvas.drawPath(path, gridPaint);
@@ -514,8 +517,11 @@ class _RadarChartPainter extends CustomPainter {
       final r = radius * values[i];
       final x = center.dx + r * math.cos(a);
       final y = center.dy + r * math.sin(a);
-      if (i == 0) dataPath.moveTo(x, y);
-      else dataPath.lineTo(x, y);
+      if (i == 0) {
+        dataPath.moveTo(x, y);
+      } else {
+        dataPath.lineTo(x, y);
+      }
     }
     dataPath.close();
     canvas.drawPath(

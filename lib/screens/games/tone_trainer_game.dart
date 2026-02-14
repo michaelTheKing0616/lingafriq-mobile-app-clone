@@ -41,13 +41,13 @@ class DynamicLoadingScreen extends ConsumerStatefulWidget {
   final Widget? child;
 
   const DynamicLoadingScreen({
-    Key? key,
+    super.key,
     this.onLoadingComplete,
     this.loadingDuration,
     this.waitForDuration = true,
     this.message,
     this.child,
-  }) : super(key: key);
+  });
   
   /// Shows a loading screen for an async operation, ensuring minimum display time
   static Future<T?> showWhileLoading<T>({
@@ -580,11 +580,11 @@ class ToneTrainerGame extends ConsumerWidget {
   final VoidCallback? onBack;
 
   const ToneTrainerGame({
-    Key? key,
+    super.key,
     required this.language,
     required this.level,
     this.onBack,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

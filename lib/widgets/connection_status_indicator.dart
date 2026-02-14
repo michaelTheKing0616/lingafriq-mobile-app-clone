@@ -12,12 +12,12 @@ class ConnectionStatusIndicator extends ConsumerWidget {
   final Color? textColor;
 
   const ConnectionStatusIndicator({
-    Key? key,
+    super.key,
     this.showWhenConnected = false,
     this.padding,
     this.backgroundColor,
     this.textColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,7 +117,7 @@ class _ConnectionBanner extends StatelessWidget {
 
 /// Compact connection status indicator (icon only)
 class CompactConnectionIndicator extends ConsumerWidget {
-  const CompactConnectionIndicator({Key? key}) : super(key: key);
+  const CompactConnectionIndicator({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

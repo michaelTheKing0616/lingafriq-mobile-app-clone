@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -12,11 +11,11 @@ import 'dart:math';
 /// Clan Lineage Story Builder Game
 class ClanStoryGame extends BaseGameScreen {
   const ClanStoryGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.clanLineageStoryBuilder;
@@ -35,7 +34,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
   int _round = 0;
   final int _maxRounds = 5;
   // ignore: unused_field
-  bool _isLoading = false;
+  final bool _isLoading = false;
   String _storyPrompt = '';
 
   @override
@@ -116,7 +115,7 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
     });
 
     completeTurn(
-      cardId: 'story_${_round}',
+      cardId: 'story_$_round',
       result: _isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: 5000,
       confidence: _isCorrect ? 1.0 : 0.0,

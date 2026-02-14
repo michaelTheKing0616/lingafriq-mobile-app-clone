@@ -18,13 +18,13 @@ class AIChatScreen extends HookConsumerWidget {
   final dynamic initialScenario; // RoleplayEntry for roleplay mode
 
   const AIChatScreen({
-    Key? key,
+    super.key,
     required this.language,
     required this.languageName,
     required this.mode,
     required this.modeName,
     this.initialScenario,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +36,7 @@ class AIChatScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     // Load chat history function
-    Future<void> _loadChatHistory() async {
+    Future<void> loadChatHistory() async {
       try {
         final response = await ApiService.get(
           '/ai-chat/history',
@@ -57,7 +57,7 @@ class AIChatScreen extends HookConsumerWidget {
 
     // Load chat history for this language×mode combination
     useEffect(() {
-      _loadChatHistory();
+      loadChatHistory();
       return null;
     }, []);
 

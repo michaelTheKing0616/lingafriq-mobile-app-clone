@@ -11,10 +11,10 @@ class StandingItem extends ConsumerWidget {
   final ProfileModel profile;
   final int index;
   const StandingItem({
-    Key? key,
+    super.key,
     required this.profile,
     required this.index,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

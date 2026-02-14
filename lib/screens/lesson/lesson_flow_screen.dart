@@ -26,11 +26,11 @@ class LessonFlowScreen extends HookConsumerWidget {
   final String lessonTitle;
 
   const LessonFlowScreen({
-    Key? key,
+    super.key,
     required this.lessonId,
     required this.sectionLessons,
     required this.lessonTitle,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

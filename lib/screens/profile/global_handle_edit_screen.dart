@@ -19,9 +19,9 @@ class GlobalHandleEditScreen extends HookConsumerWidget {
   final String? currentGlobalId;
 
   const GlobalHandleEditScreen({
-    Key? key,
+    super.key,
     this.currentGlobalId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

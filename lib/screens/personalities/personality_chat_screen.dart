@@ -16,9 +16,9 @@ class PersonalityChatScreen extends HookConsumerWidget {
   final HistoricalPersonality personality;
 
   const PersonalityChatScreen({
-    Key? key,
+    super.key,
     required this.personality,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

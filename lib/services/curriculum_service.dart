@@ -100,7 +100,7 @@ class CurriculumService {
   }) async {
     try {
       // Check cache first
-      final cacheKey = '${language}_${level}_${lessonTitle}';
+      final cacheKey = '${language}_${level}_$lessonTitle';
       final cached = await PolieCacheService.getCachedContent(
         'lesson_content',
         language,
@@ -232,7 +232,7 @@ Return JSON with: script (array of {speaker, text}), notes, cultural_context.'''
     required List<String> grammar,
   }) async {
     try {
-      final cacheKey = 'exercises_${language}_${level}';
+      final cacheKey = 'exercises_${language}_$level';
       final cached = await PolieCacheService.getCachedContent(
         'exercises',
         language,

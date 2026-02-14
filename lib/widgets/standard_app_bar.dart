@@ -21,7 +21,7 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool centerTitle;
 
   const StandardAppBar({
-    Key? key,
+    super.key,
     this.title,
     this.titleWidget,
     this.actions,
@@ -35,8 +35,7 @@ class StandardAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.bottom,
     this.centerTitle = true,
   }) : assert(title != null || titleWidget != null || !showBackButton,
-          'Title or titleWidget must be provided if showBackButton is true'),
-      super(key: key);
+          'Title or titleWidget must be provided if showBackButton is true');
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +138,7 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
 
   const GradientAppBar({
-    Key? key,
+    super.key,
     this.title,
     this.titleWidget,
     this.actions,
@@ -148,7 +147,7 @@ class GradientAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.gradient,
     this.onBackPressed,
     this.bottom,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +181,7 @@ class StandardGradientHeader extends StatelessWidget {
   final VoidCallback? onBackPressed;
 
   const StandardGradientHeader({
-    Key? key,
+    super.key,
     this.title,
     this.titleWidget,
     this.actions,
@@ -191,7 +190,7 @@ class StandardGradientHeader extends StatelessWidget {
     required this.gradient,
     this.height = 200,
     this.onBackPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

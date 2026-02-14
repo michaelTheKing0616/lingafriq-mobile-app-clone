@@ -17,12 +17,12 @@ class ClassroomDashboardScreen extends ConsumerStatefulWidget {
   final String? classroomCode;
 
   const ClassroomDashboardScreen({
-    Key? key,
+    super.key,
     required this.tribeId,
     required this.tribeName,
     required this.languageTag,
     this.classroomCode,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ClassroomDashboardScreen> createState() =>
@@ -181,7 +181,7 @@ class _ClassroomDashboardScreenState
                     .animate()
                     .fadeIn(duration: 300.ms)
                     .slideY(begin: 0.05))
-                .toList(),
+                ,
           ],
         ),
       ),

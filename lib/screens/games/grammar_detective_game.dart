@@ -7,11 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Grammar Detective - Find and fix grammar errors
 class GrammarDetectiveGame extends BaseGameScreen {
   const GrammarDetectiveGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.grammarDetective;

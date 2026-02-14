@@ -8,11 +8,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Story Builder - Collaborative story construction
 class StoryBuilderGame extends BaseGameScreen {
   const StoryBuilderGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.storyBuilder;

@@ -12,12 +12,12 @@ class ScreenWrapper extends ConsumerWidget {
   final VoidCallback? onRetry;
 
   const ScreenWrapper({
-    Key? key,
+    super.key,
     required this.child,
     this.errorMessage,
     this.showLoading = false,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -15,7 +15,7 @@ import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 class PolieModeSelectionScreen extends ConsumerWidget {
   final VoidCallback? onBack;
 
-  const PolieModeSelectionScreen({Key? key, this.onBack}) : super(key: key);
+  const PolieModeSelectionScreen({super.key, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -80,8 +80,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: isDark ? PolieColors.obsidian : PolieColors.surfaceContainerLight,
-      body: Container(
-        child: SafeArea(
+      body: SafeArea(
           child: Column(
             children: [
               Padding(
@@ -219,7 +218,6 @@ class PolieModeSelectionScreen extends ConsumerWidget {
               ),
             ],
           ),
-        ),
       ),
     );
   }

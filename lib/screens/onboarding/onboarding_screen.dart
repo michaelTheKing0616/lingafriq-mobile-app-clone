@@ -23,7 +23,7 @@ final _indexProvider =
 });
 
 class OnboardingScreen extends HookConsumerWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -161,14 +161,13 @@ class _OnboardingItem extends StatelessWidget {
   final double? width;
   final double? textfontsize;
   const _OnboardingItem({
-    Key? key,
     required this.topImage,
     required this.bottomImage,
     required this.title,
     required this.description,
     this.width,
     this.textfontsize,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

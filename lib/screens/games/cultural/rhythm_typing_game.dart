@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../models/game/game_session_model.dart';
 import '../../../services/polie_content_generator.dart';
@@ -11,11 +10,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 /// Rhythm Typing Game
 class RhythmTypingGame extends BaseGameScreen {
   const RhythmTypingGame({
-    Key? key,
+    super.key,
     required super.language,
     super.level,
     super.onBack,
-  }) : super(key: key);
+  });
 
   @override
   GameType getGameType() => GameType.rhythmTyping;
@@ -136,7 +135,7 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
       });
 
       completeTurn(
-        cardId: 'typing_${_round}',
+        cardId: 'typing_$_round',
         result: GameResult.correct,
         durationMs: 2000,
         confidence: 1.0,

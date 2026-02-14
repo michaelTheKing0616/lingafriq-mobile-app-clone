@@ -77,10 +77,10 @@ class RoleplayProgressService {
         : scenarioProgress.bestScore;
     
     // Update branches explored
-    final newBranches = [
+    final newBranches = <dynamic>{
       ...scenarioProgress.branchesExplored,
       ...result.branchesTaken,
-    ].toSet().toList();
+    }.toList().cast<String>();
     
     // Update vocabulary
     final newVocabulary = Map<String, int>.from(scenarioProgress.vocabularyUsed);

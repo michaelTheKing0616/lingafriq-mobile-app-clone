@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
-import 'package:lingafriq/providers/chat_socket_provider.dart';
 
 class SocialFeedNotifier extends Notifier<List<SocialFeedItem>> {
   @override

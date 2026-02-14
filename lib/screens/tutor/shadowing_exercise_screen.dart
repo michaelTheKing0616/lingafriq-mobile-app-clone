@@ -16,10 +16,10 @@ class ShadowingExerciseScreen extends ConsumerStatefulWidget {
   final String language;
 
   const ShadowingExerciseScreen({
-    Key? key,
+    super.key,
     required this.referenceText,
     required this.language,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<ShadowingExerciseScreen> createState() =>

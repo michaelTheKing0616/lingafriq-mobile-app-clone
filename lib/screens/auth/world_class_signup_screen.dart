@@ -1,5 +1,6 @@
 /// World-Class Signup Screen
 /// Surpasses best apps with smooth animations, validation, and modern UX
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,7 @@ import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 
 class WorldClassSignupScreen extends HookConsumerWidget {
-  const WorldClassSignupScreen({Key? key}) : super(key: key);
+  const WorldClassSignupScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

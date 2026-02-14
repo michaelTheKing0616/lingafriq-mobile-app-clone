@@ -9,7 +9,7 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 class DailyChallengesScreen extends HookConsumerWidget {
   final VoidCallback? onBack;
 
-  const DailyChallengesScreen({Key? key, this.onBack}) : super(key: key);
+  const DailyChallengesScreen({super.key, this.onBack});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -264,7 +264,7 @@ class DailyChallengesScreen extends HookConsumerWidget {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                   ],
                 ],
               ),

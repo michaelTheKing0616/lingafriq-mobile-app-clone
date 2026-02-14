@@ -17,10 +17,10 @@ class GamifiedReviewScreen extends ConsumerStatefulWidget {
   final VoidCallback? onDecline;
 
   const GamifiedReviewScreen({
-    Key? key,
+    super.key,
     this.onComplete,
     this.onDecline,
-  }) : super(key: key);
+  });
 
   @override
   ConsumerState<GamifiedReviewScreen> createState() => _GamifiedReviewScreenState();

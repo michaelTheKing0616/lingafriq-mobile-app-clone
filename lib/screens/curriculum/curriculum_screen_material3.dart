@@ -275,7 +275,7 @@ class _WeekCard extends StatelessWidget {
                     style: PanAfricanTypography.titleLarge(context),
                   ),
                   Chip(
-                    label: Text('${completedLessons}/${lessons.length}'),
+                    label: Text('$completedLessons/${lessons.length}'),
                     backgroundColor: PanAfricanColors.primaryContainer.withOpacity(0.3),
                   ),
                 ],

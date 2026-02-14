@@ -8,7 +8,7 @@ import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProgressDashboardScreen extends ConsumerWidget {
-  const ProgressDashboardScreen({Key? key}) : super(key: key);
+  const ProgressDashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
