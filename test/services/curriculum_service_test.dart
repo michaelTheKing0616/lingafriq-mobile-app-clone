@@ -1,11 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/services/curriculum_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('Curriculum Service Tests', () {
+    setUpAll(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+      SharedPreferences.setMockInitialValues({});
+    });
+
     test('Curriculum service initialization', () {
       final container = ProviderContainer();
+      addTearDown(container.dispose);
       final service = container.read(curriculumServiceProvider);
       
       expect(service, isNotNull);
@@ -13,6 +20,7 @@ void main() {
 
     test('Fallback lesson content generation', () async {
       final container = ProviderContainer();
+      addTearDown(container.dispose);
       final service = container.read(curriculumServiceProvider);
       
       // Test fallback content (will work even if AI fails)
@@ -36,6 +44,7 @@ void main() {
 
     test('Fallback dialogue generation', () async {
       final container = ProviderContainer();
+      addTearDown(container.dispose);
       final service = container.read(curriculumServiceProvider);
       
       final vocab = [
@@ -54,6 +63,7 @@ void main() {
 
     test('Fallback exercise generation', () async {
       final container = ProviderContainer();
+      addTearDown(container.dispose);
       final service = container.read(curriculumServiceProvider);
       
       final vocab = [

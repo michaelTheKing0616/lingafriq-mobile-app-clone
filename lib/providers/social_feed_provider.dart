@@ -1,7 +1,12 @@
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+
+/// When true, loadFeed skips API call and keeps empty state (for tests).
+@visibleForTesting
+bool kSocialFeedSkipApi = false;
 
 class SocialFeedNotifier extends Notifier<List<SocialFeedItem>> {
   @override
@@ -16,6 +21,7 @@ class SocialFeedNotifier extends Notifier<List<SocialFeedItem>> {
   }
 
   Future<void> loadFeed() async {
+    if (kSocialFeedSkipApi) return;
     try {
       final response = await ApiService.get(
         ApiContract.url('/api/social/feed'),

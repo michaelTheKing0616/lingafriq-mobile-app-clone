@@ -95,6 +95,12 @@ void main() {
       );
 
       await tester.pump();
+      expect(find.byType(GrammarExerciseScreen), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+      // Allow async _loadExercises to complete (no pumpAndSettle - screen has ongoing animations)
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(GrammarExerciseScreen), findsOneWidget);
     });

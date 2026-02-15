@@ -53,7 +53,8 @@ void main() {
           index: 0,
         ),
       ));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('1'), findsOneWidget);
       expect(find.byIcon(Icons.play_circle_filled_rounded), findsOneWidget);
@@ -96,12 +97,13 @@ void main() {
           onTap: () => tapped = true,
         ),
       ));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
-      await tester.tap(find.byType(PathNodeWidget));
-      await tester.pumpAndSettle();
+      await tester.tap(find.text('1'));
+      await tester.pump();
 
-      expect(tapped, true);
+      expect(tapped, isTrue);
     });
 
     testWidgets('tap on locked node does not trigger onTap', (WidgetTester tester) async {
@@ -130,7 +132,8 @@ void main() {
           index: 2,
         ),
       ));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('3'), findsOneWidget);
     });

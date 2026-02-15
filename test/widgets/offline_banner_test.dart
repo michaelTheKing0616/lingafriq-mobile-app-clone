@@ -14,10 +14,8 @@ void main() {
           ),
         ),
       );
-
-      // Note: This test requires mocking ConnectivityService
-      // In a real test environment, you'd mock hasInternet to return false
-      // and verify the banner appears
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 6));
 
       expect(find.text('Test Content'), findsOneWidget);
     });
@@ -31,10 +29,8 @@ void main() {
           ),
         ),
       );
-
-      // Note: This test requires mocking ConnectivityService
-      // In a real test environment, you'd mock hasInternet to return true
-      // and verify the banner does not appear
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 6));
 
       expect(find.text('Test Content'), findsOneWidget);
     });
@@ -49,10 +45,8 @@ void main() {
           ),
         ),
       );
-
-      // Note: This test requires mocking OfflineHandler.getSyncStatus
-      // In a real test environment, you'd mock sync status with pending items
-      // and verify the sync banner appears
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 6));
 
       expect(find.text('Test Content'), findsOneWidget);
     });
@@ -66,9 +60,8 @@ void main() {
           ),
         ),
       );
-
-      // Note: This test requires mocking ConnectivityService
-      // In a real test environment, you'd verify the text "You are offline" appears
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 6));
 
       expect(find.text('Test Content'), findsOneWidget);
     });
@@ -82,9 +75,8 @@ void main() {
           ),
         ),
       );
-
-      // Note: This test requires mocking OfflineHandler.getSyncStatus
-      // In a real test environment, you'd verify pending count appears
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 6));
 
       expect(find.text('Test Content'), findsOneWidget);
     });

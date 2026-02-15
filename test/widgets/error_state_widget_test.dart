@@ -6,7 +6,7 @@ import '../helpers/test_utils.dart';
 void main() {
   group('AppErrorState Widget', () {
     testWidgets('displays error message', (WidgetTester tester) async {
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         const AppErrorState(
           message: 'Test error message',
@@ -17,7 +17,7 @@ void main() {
     });
 
     testWidgets('displays default message when not provided', (WidgetTester tester) async {
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         const AppErrorState(),
       );
@@ -31,7 +31,7 @@ void main() {
     testWidgets('shows retry button when onRetry is provided', (WidgetTester tester) async {
       bool retryCalled = false;
 
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         AppErrorState(
           message: 'Test error',
@@ -51,7 +51,7 @@ void main() {
     });
 
     testWidgets('hides retry button when onRetry is null', (WidgetTester tester) async {
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         const AppErrorState(
           message: 'Test error',
@@ -62,7 +62,7 @@ void main() {
     });
 
     testWidgets('displays custom icon when provided', (WidgetTester tester) async {
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         const AppErrorState(
           message: 'Test error',
@@ -74,7 +74,7 @@ void main() {
     });
 
     testWidgets('displays default error icon when icon not provided', (WidgetTester tester) async {
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         const AppErrorState(
           message: 'Test error',
@@ -85,15 +85,20 @@ void main() {
     });
 
     testWidgets('centers content vertically and horizontally', (WidgetTester tester) async {
-      await pumpWidgetWithMaterial(
+      await pumpWidgetWithScreenUtil(
         tester,
         const AppErrorState(
           message: 'Test error',
         ),
       );
 
-      final centerFinder = find.byType(Center);
-      expect(centerFinder, findsOneWidget);
+      // AppErrorState wraps content in a Center; Flutter's Icon widget also
+      // adds an internal Center, so we verify at least one Center exists.
+      final centerFinder = find.descendant(
+        of: find.byType(AppErrorState),
+        matching: find.byType(Center),
+      );
+      expect(centerFinder, findsAtLeastNWidgets(1));
     });
   });
 }

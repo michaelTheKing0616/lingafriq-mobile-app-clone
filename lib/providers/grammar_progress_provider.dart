@@ -1,9 +1,14 @@
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import '../utils/structured_logger.dart';
 import '../config/api_contract.dart';
 import '../utils/api_service.dart';
+
+/// When true, skip backend API sync in updateMastery (for tests).
+@visibleForTesting
+bool kGrammarProgressSkipBackendSync = false;
 
 class GrammarProgressNotifier extends Notifier<Map<String, GrammarMastery>> {
   static const String _storageKey = 'grammar_progress';
@@ -83,6 +88,8 @@ class GrammarProgressNotifier extends Notifier<Map<String, GrammarMastery>> {
 
     state = {...state, topicId: newMastery};
     await _saveToLocal();
+
+    if (kGrammarProgressSkipBackendSync) return;
 
     try {
       await ApiService.post(

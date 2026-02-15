@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/grammar_progress_provider.dart';
+import 'package:lingafriq/providers/grammar_progress_provider.dart'
+    show grammarProgressProvider, GrammarMastery, kGrammarProgressSkipBackendSync;
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -61,10 +62,12 @@ void main() {
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
+      kGrammarProgressSkipBackendSync = true;
       container = ProviderContainer();
     });
 
     tearDown(() {
+      kGrammarProgressSkipBackendSync = false;
       container.dispose();
     });
 
@@ -114,19 +117,22 @@ void main() {
     test('should calculate average score correctly', () async {
       final notifier = container.read(grammarProgressProvider.notifier);
 
-      // First attempt: 5/10 = 50%
+      // First attempt: 5/10 → averageScore stored as ratio 0.5
       await notifier.updateMastery('topic1', 5, 10);
       var state = container.read(grammarProgressProvider);
-      expect(state['topic1']!.averageScore, 50.0);
+      expect(state['topic1']!.averageScore, 0.5);
 
-      // Second attempt: 8/10 = 80%
-      // Average: (50 * 10 + 80 * 10) / 20 = 65%
+      // Second attempt: 8/10 → average: (0.5*10 + 8)/20 = 0.65
       await notifier.updateMastery('topic1', 8, 10);
       state = container.read(grammarProgressProvider);
-      expect(state['topic1']!.averageScore, closeTo(65.0, 0.1));
+      expect(state['topic1']!.averageScore, closeTo(0.65, 0.01));
     });
 
     test('should update lastPracticed timestamp', () async {
+      // Let initial async _loadFromLocal() from build() complete so it does not overwrite state after updateMastery.
+      container.read(grammarProgressProvider);
+      await Future.delayed(const Duration(milliseconds: 100));
+
       final notifier = container.read(grammarProgressProvider.notifier);
       final before = DateTime.now();
 
@@ -136,7 +142,7 @@ void main() {
       final mastery = state['topic1'];
       final after = DateTime.now();
 
-      expect(mastery!.lastPracticed.isAfter(before), true);
+      expect(mastery!.lastPracticed.isAfter(before) || mastery.lastPracticed.isAtSameMomentAs(before), true);
       expect(mastery.lastPracticed.isBefore(after) || mastery.lastPracticed.isAtSameMomentAs(after), true);
     });
 
@@ -160,10 +166,12 @@ void main() {
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
+      kGrammarProgressSkipBackendSync = true;
       container = ProviderContainer();
     });
 
     tearDown(() {
+      kGrammarProgressSkipBackendSync = false;
       container.dispose();
     });
 

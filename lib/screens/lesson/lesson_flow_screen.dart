@@ -39,11 +39,17 @@ class LessonFlowScreen extends HookConsumerWidget {
     final lessonState = ref.watch(lessonFlowProvider(lessonId));
     final comboTracker = lessonFlow.comboTracker;
 
-    // Initialize on first build
+    // Initialize after build to avoid modifying provider during build (fixes widget tests).
+    // Defer to post-frame + microtask so the state write runs outside the frame entirely.
     useEffect(() {
-      if (lessonState.sections.isEmpty) {
-        lessonFlow.initialize(sectionLessons);
-      }
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future.microtask(() {
+          final state = ref.read(lessonFlowProvider(lessonId));
+          if (state.sections.isEmpty) {
+            ref.read(lessonFlowProvider(lessonId).notifier).initialize(sectionLessons);
+          }
+        });
+      });
       return null;
     }, []);
 

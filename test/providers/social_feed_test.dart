@@ -1,8 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/providers/social_feed_provider.dart';
+import 'package:lingafriq/providers/social_feed_provider.dart'
+    show socialFeedProvider, SocialFeedItem, kSocialFeedSkipApi;
 
 void main() {
+  setUp(() {
+    kSocialFeedSkipApi = true;
+  });
+
+  tearDown(() {
+    kSocialFeedSkipApi = false;
+  });
+
   group('SocialFeedNotifier', () {
     test('initial state is empty list', () {
       final container = ProviderContainer();
@@ -29,7 +38,6 @@ void main() {
       addTearDown(container.dispose);
 
       final notifier = container.read(socialFeedProvider.notifier);
-      notifier.loadFeed();
       final before = container.read(socialFeedProvider).length;
 
       notifier.addFeedItem(SocialFeedItem(

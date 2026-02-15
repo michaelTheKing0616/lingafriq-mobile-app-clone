@@ -1,13 +1,36 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/services/offline/vocabulary_store.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/models/offline/local_vocabulary.dart';
 
 void main() {
   group('VocabularyStore SM-2 Algorithm', () {
     late VocabularyStore store;
+    late LocalDatabaseService db;
 
-    setUp(() {
+    setUpAll(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+
+      // Mock path_provider for unit tests
+      const MethodChannel channel =
+          MethodChannel('plugins.flutter.io/path_provider');
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+        if (methodCall.method == 'getApplicationDocumentsDirectory') {
+          return Directory.systemTemp.path;
+        }
+        return null;
+      });
+
+      db = LocalDatabaseService();
+      await db.init();
+    });
+
+    setUp(() async {
       store = VocabularyStore();
+      await db.clearAll();
     });
 
     group('Quality 0-2 resets repetitions', () {
@@ -31,9 +54,11 @@ void main() {
         expect(updated!.repetitions, equals(0));
         expect(updated.interval, equals(1));
         expect(updated.nextReviewDate, isNotNull);
+        // Use inHours to avoid timing flake: DateTime.now() called in SRS
+        // and here differ by milliseconds, making inDays truncate to 0.
         expect(
-          updated.nextReviewDate!.difference(DateTime.now()).inDays,
-          equals(1),
+          updated.nextReviewDate!.difference(DateTime.now()).inHours,
+          greaterThanOrEqualTo(23),
         );
       });
 
@@ -316,19 +341,19 @@ void main() {
 
         await store.addWord(vocab);
 
-        expect(
-          () => store.reviewWord('test12', -1),
+        expectLater(
+          store.reviewWord('test12', -1),
           throwsA(isA<ArgumentError>()),
         );
-        expect(
-          () => store.reviewWord('test12', 6),
+        expectLater(
+          store.reviewWord('test12', 6),
           throwsA(isA<ArgumentError>()),
         );
       });
 
-      test('throws error for non-existent vocabulary', () {
-        expect(
-          () => store.reviewWord('nonexistent', 3),
+      test('throws error for non-existent vocabulary', () async {
+        expectLater(
+          store.reviewWord('nonexistent', 3),
           throwsA(isA<Exception>()),
         );
       });

@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -57,12 +58,19 @@ void main() {
   
   group('OnboardingNotifier', () {
     late ProviderContainer container;
-    
+
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
-      container = ProviderContainer();
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
+        ],
+      );
+      // Allow _loadOnboardingData microtask to complete before tests run
+      await Future.delayed(const Duration(milliseconds: 10));
     });
-    
+
     tearDown(() {
       container.dispose();
     });

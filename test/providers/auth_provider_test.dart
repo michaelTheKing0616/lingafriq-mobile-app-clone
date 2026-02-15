@@ -2,9 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/providers/base_provider.dart';
+import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('BaseProviderState (auth state)', () {
     test('should create with default values', () {
       final state = BaseProviderState();
@@ -42,7 +44,12 @@ void main() {
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({});
-      container = ProviderContainer();
+      final prefs = await SharedPreferences.getInstance();
+      container = ProviderContainer(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(SharedPreferencesProvider(prefs)),
+        ],
+      );
     });
 
     tearDown(() {

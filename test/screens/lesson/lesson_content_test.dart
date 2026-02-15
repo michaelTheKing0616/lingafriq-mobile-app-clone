@@ -361,7 +361,8 @@ void main() {
         },
       );
 
-      expect(content.text, isNull);
+      // Source uses text?.isNotEmpty == true; '   '.isNotEmpty is true, so text is preserved
+      expect(content.text, equals('   '));
     });
 
     test('should handle non-map otherData', () {

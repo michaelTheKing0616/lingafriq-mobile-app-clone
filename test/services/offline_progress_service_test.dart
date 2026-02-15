@@ -1,13 +1,36 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lingafriq/services/offline/offline_progress_service.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/models/offline/local_progress.dart';
 
 void main() {
   group('OfflineProgressService', () {
     late OfflineProgressService progressService;
+    late LocalDatabaseService db;
 
-    setUp(() {
+    setUpAll(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+
+      // Mock path_provider for unit tests
+      const MethodChannel channel =
+          MethodChannel('plugins.flutter.io/path_provider');
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+        if (methodCall.method == 'getApplicationDocumentsDirectory') {
+          return Directory.systemTemp.path;
+        }
+        return null;
+      });
+
+      db = LocalDatabaseService();
+      await db.init();
+    });
+
+    setUp(() async {
       progressService = OfflineProgressService();
+      await db.clearAll();
     });
 
     group('Recording progress', () {
@@ -77,8 +100,7 @@ void main() {
         await progressService.markAsSynced([progressId]);
 
         final unsynced = progressService.getUnsyncedProgress();
-        final syncedIds = unsynced.map((p) => p.id).toList();
-        expect(syncedIds.contains(progressId), isFalse);
+        expect(unsynced.any((p) => p.id == progressId), isFalse);
       });
     });
 
@@ -93,8 +115,7 @@ void main() {
         await progressService.markAsSynced([progressId]);
 
         final unsynced = progressService.getUnsyncedProgress();
-        final syncedIds = unsynced.map((p) => p.id).toList();
-        expect(syncedIds.contains(progressId), isFalse);
+        expect(unsynced.any((p) => p.id == progressId), isFalse);
       });
 
       test('marks multiple progress items as synced', () async {
@@ -112,9 +133,8 @@ void main() {
         await progressService.markAsSynced([id1, id2]);
 
         final unsynced = progressService.getUnsyncedProgress();
-        final syncedIds = unsynced.map((p) => p.id).toList();
-        expect(syncedIds.contains(id1), isFalse);
-        expect(syncedIds.contains(id2), isFalse);
+        expect(unsynced.any((p) => p.id == id1), isFalse);
+        expect(unsynced.any((p) => p.id == id2), isFalse);
       });
     });
 
@@ -164,7 +184,7 @@ void main() {
     });
 
     group('Progress dashboard data', () {
-      test('returns empty dashboard for no progress', () {
+      test('returns empty dashboard for no progress', () async {
         final dashboard = progressService.getProgressDashboardData();
         expect(dashboard['totalXP'], equals(0));
         expect(dashboard['totalLessons'], equals(0));

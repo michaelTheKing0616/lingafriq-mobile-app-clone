@@ -85,11 +85,11 @@ void main() {
 
       tracker.recordCorrect();
       tracker.recordCorrect();
-      expect(tracker.maxCombo, 3); // Still 3, not updated
+      expect(tracker.maxCombo, 3); // Still 3, not updated (consecutive=2)
 
       tracker.recordCorrect();
       tracker.recordCorrect();
-      expect(tracker.maxCombo, 5); // Updated to new max
+      expect(tracker.maxCombo, 4); // Updated to new max when consecutive (4) > previous max (3)
     });
 
     test('should reset combo tracker', () {

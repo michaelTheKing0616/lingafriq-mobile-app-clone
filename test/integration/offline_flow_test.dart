@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lingafriq/services/offline/local_database_service.dart';
 import 'package:lingafriq/services/offline/offline_progress_service.dart';
 import 'package:lingafriq/services/offline/vocabulary_store.dart';
 import 'package:lingafriq/services/offline/media_cache_manager.dart';
@@ -10,10 +13,32 @@ void main() {
     late VocabularyStore vocabularyStore;
     late MediaCacheManager cacheManager;
 
-    setUp(() {
+    setUpAll(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+
+      // Mock path_provider for unit tests
+      const MethodChannel channel =
+          MethodChannel('plugins.flutter.io/path_provider');
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+        if (methodCall.method == 'getApplicationDocumentsDirectory') {
+          return Directory.systemTemp.path;
+        }
+        return null;
+      });
+
+      await LocalDatabaseService().init();
+    });
+
+    setUp(() async {
       progressService = OfflineProgressService();
       vocabularyStore = VocabularyStore();
       cacheManager = MediaCacheManager();
+      await LocalDatabaseService().clearAll();
+    });
+
+    tearDownAll(() async {
+      await LocalDatabaseService().close();
     });
 
     test('download -> offline access -> sync flow', () async {

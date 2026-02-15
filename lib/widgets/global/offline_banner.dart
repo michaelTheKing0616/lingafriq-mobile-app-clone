@@ -30,6 +30,7 @@ class _OfflineBannerState extends State<OfflineBanner> {
   bool _isOnline = true;
   Map<String, dynamic> _syncStatus = {};
   Timer? _connectivityTimer;
+  Timer? _syncStatusTimer;
   static const Duration _connectivityPollInterval = Duration(seconds: 5);
 
   @override
@@ -66,7 +67,8 @@ class _OfflineBannerState extends State<OfflineBanner> {
   }
 
   void _updateSyncStatus() {
-    Future.delayed(const Duration(seconds: 5), () {
+    _syncStatusTimer?.cancel();
+    _syncStatusTimer = Timer(const Duration(seconds: 5), () {
       if (mounted) {
         setState(() {
           _syncStatus = _offlineHandler.getSyncStatus();
@@ -79,6 +81,7 @@ class _OfflineBannerState extends State<OfflineBanner> {
   @override
   void dispose() {
     _connectivityTimer?.cancel();
+    _syncStatusTimer?.cancel();
     super.dispose();
   }
 

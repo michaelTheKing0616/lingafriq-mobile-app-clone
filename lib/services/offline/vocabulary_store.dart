@@ -118,12 +118,16 @@ class VocabularyStore {
     );
   }
 
-  /// Calculate new ease factor based on SM-2 formula
-  /// EF' = EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02))
+  /// Calculate new ease factor based on SM-2 formula (modified)
+  /// Base: EF' = EF + (0.1 - (5-q) * (0.08 + (5-q) * 0.02))
+  /// Modification: quality >= 4 always produces at least a small positive
+  /// adjustment (0.01) so that "good" answers are rewarded, not just "perfect".
   double _calculateNewEaseFactor(double currentEF, int quality) {
     final q = quality.toDouble();
     final delta = 0.1 - (5 - q) * (0.08 + (5 - q) * 0.02);
-    final newEF = currentEF + delta;
+    // Standard SM-2 gives delta=0 for q=4; ensure a minimum positive reward
+    final adjustedDelta = quality >= 4 && delta <= 0 ? 0.01 : delta;
+    final newEF = currentEF + adjustedDelta;
     return newEF.clamp(_minEaseFactor, double.infinity);
   }
 
