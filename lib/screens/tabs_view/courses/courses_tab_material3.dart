@@ -321,6 +321,7 @@ class _ProgressCard extends StatelessWidget {
         ),
         ),
       ),
+    ),
     );
   }
 }

@@ -321,7 +321,6 @@ class _PasswordTextField extends StatelessWidget {
           ),
         ),
       ),
-    ),
     );
   }
 }
@@ -369,7 +368,6 @@ class _ChangePasswordButton extends StatelessWidget {
             ),
           ),
         ),
-      ),
       ),
     );
   }

@@ -696,7 +696,6 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                           },
                         ),
                       ),
-                    ),
                     );
                   }).toList(),
                 ),
@@ -1073,7 +1072,6 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                           ),
                         ),
                       ),
-                    ),
                     );
                   }).toList(),
                 ),

@@ -679,7 +679,6 @@ class _DifficultyChip extends StatelessWidget {
           ),
         ),
       ),
-    ),
     );
   }
 }

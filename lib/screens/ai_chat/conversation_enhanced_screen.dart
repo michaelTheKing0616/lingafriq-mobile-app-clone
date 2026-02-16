@@ -386,6 +386,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
               ),
             ),
           ),
+        ),
           SizedBox(width: PolieSpacing.sm),
           Semantics(
             label: isLoading.value ? 'Sending' : 'Send message',

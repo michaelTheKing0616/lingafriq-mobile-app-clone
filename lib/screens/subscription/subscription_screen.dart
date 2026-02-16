@@ -277,7 +277,6 @@ class SubscriptionScreen extends ConsumerWidget {
           ],
         ),
       ),
-      ),
     )
         .animate()
         .fadeIn(duration: 400.ms)

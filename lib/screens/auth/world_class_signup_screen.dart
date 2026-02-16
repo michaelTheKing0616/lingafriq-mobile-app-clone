@@ -839,6 +839,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
           ),
         ),
+        ),
       ],
     );
   }

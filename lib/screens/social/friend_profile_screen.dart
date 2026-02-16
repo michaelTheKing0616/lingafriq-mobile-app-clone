@@ -402,7 +402,6 @@ class FriendProfileScreen extends HookConsumerWidget {
                   ),
                   child: Text('Block'),
                 ),
-                ),
               ),
             ],
           ),

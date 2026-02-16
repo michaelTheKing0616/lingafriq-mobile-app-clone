@@ -305,6 +305,7 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
             ),
           ),
         ),
+        ),
       );
     }
     

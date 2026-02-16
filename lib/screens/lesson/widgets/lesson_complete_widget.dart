@@ -137,7 +137,6 @@ class LessonCompleteWidget extends StatelessWidget {
               ),
             ],
           ),
-          ),
 
           if (comboBonus > 0) ...[
             SizedBox(height: 16.h),

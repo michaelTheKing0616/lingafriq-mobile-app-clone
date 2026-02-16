@@ -273,7 +273,6 @@ Quality requirements:
                           ),
                           style: PolieTypography.body(context),
                         ),
-                        ),
                         if (filteredTopics.isNotEmpty) ...[
                           SizedBox(height: PolieSpacing.sm),
                           Text(

@@ -365,6 +365,7 @@ class _AssessmentResultsView extends StatelessWidget {
               ),
             ),
           ),
+          ),
           SizedBox(height: PolieSpacing.xl),
           // Radar chart (strengths & gaps)
           if (dimensions != null && dimensions.isNotEmpty) ...[

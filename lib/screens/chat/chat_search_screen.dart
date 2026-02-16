@@ -135,6 +135,7 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
               ),
             ),
           ),
+          ),
           if (_isLoading)
             const LinearProgressIndicator(minHeight: 2),
           if (_error != null)
