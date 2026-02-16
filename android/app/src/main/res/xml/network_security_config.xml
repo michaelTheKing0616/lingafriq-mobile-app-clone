@@ -17,7 +17,7 @@
     <!-- Uncomment and update with actual certificate hashes for production -->
     <!--
     <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">api.lingafriq.com</domain>
+        <domain includeSubdomains="true">admin.lingafriq.com</domain>
         <pin-set expiration="2027-01-01">
             <pin digest="SHA-256">YOUR_CERTIFICATE_PIN_HERE</pin>
             <pin digest="SHA-256">YOUR_BACKUP_PIN_HERE</pin>

@@ -10,15 +10,15 @@ class EnvConfig {
   /// Backend API base URL (alias for backendBaseUrl)
   static String get baseUrl => backendBaseUrl;
 
-  /// CDN/base URL for static assets (e.g. media)
+  /// CDN/base URL for static assets (e.g. media served via nginx)
   static String get cdnUrl {
-    const url = String.fromEnvironment('CDN_URL', defaultValue: 'https://cdn.lingafriq.com');
+    const url = String.fromEnvironment('CDN_URL', defaultValue: 'https://admin.lingafriq.com');
     return url;
   }
 
   /// WebSocket base URL for real-time connections
   static String get wsUrl {
-    const url = String.fromEnvironment('WS_URL', defaultValue: 'wss://api.lingafriq.com');
+    const url = String.fromEnvironment('WS_URL', defaultValue: 'wss://admin.lingafriq.com');
     return url;
   }
 
@@ -34,6 +34,7 @@ class EnvConfig {
     'http://34.121.156.251:8000/',
     'http://34.67.162.25:8000/',
     'http://64.227.113.179:8000/',
+    'https://api.lingafriq.com/',
   ];
 
   /// Groq API Key for LLaMA access
@@ -79,9 +80,9 @@ class EnvConfig {
   
   /// Backend base URL
   /// Set via --dart-define=BACKEND_URL=https://your-api.com during build.
-  /// Production default: https://api.lingafriq.com (no localhost fallback).
+  /// Production: https://admin.lingafriq.com (nginx → localhost:4000).
   static String get backendBaseUrl {
-    const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://api.lingafriq.com');
+    const url = String.fromEnvironment('BACKEND_URL', defaultValue: 'https://admin.lingafriq.com');
     return url;
   }
   

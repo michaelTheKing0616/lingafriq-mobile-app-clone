@@ -1,35 +1,76 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 
 class TransportErrorPolicy {
   TransportErrorPolicy._();
 
+  /// True when the device genuinely has no network connectivity (DNS failure,
+  /// airplane mode, Wi-Fi off, etc.). Does NOT include cases where the device
+  /// has internet but the specific server is unreachable.
   static bool isNetworkIssue(DioException error) {
+    // Only connectionError type can be a true network issue
     if (error.type != DioExceptionType.connectionError) return false;
+
     final message = (error.message ?? error.toString()).toLowerCase();
-    return message.contains('failed host lookup') ||
-        message.contains('name resolution') ||
-        message.contains('network is unreachable') ||
-        message.contains('no route to host') ||
-        message.contains('socketexception') ||
-        message.contains('os error');
+    final errorStr = (error.error?.toString() ?? '').toLowerCase();
+    final combined = '$message $errorStr';
+
+    // These patterns indicate the device itself has no connectivity
+    return combined.contains('failed host lookup') ||
+        combined.contains('name resolution') ||
+        combined.contains('network is unreachable') ||
+        combined.contains('no address associated') ||
+        combined.contains('no route to host') ||
+        combined.contains('network unreachable') ||
+        combined.contains('errno = 101') || // ENETUNREACH on Linux/Android
+        combined.contains('errno = 7');     // No address associated
   }
 
+  /// True when the device has internet but the backend server specifically is
+  /// unreachable, timing out, or returning 5xx errors.
   static bool isBackendIssue(DioException error) {
     final statusCode = error.response?.statusCode;
+
+    // All timeout types indicate backend unreachability
     if (error.type == DioExceptionType.connectionTimeout ||
         error.type == DioExceptionType.sendTimeout ||
         error.type == DioExceptionType.receiveTimeout) {
       return true;
     }
+
+    // Server-side errors
     if (statusCode != null && statusCode >= 500) {
       return true;
     }
-    if (error.type == DioExceptionType.connectionError) {
-      final message = (error.message ?? error.toString()).toLowerCase();
-      return message.contains('connection refused') ||
-          message.contains('connection reset') ||
-          message.contains('connection closed');
+
+    // connectionError that is NOT a network issue is a backend issue
+    // (e.g. connection refused, connection reset, SSL handshake failure)
+    if (error.type == DioExceptionType.connectionError && !isNetworkIssue(error)) {
+      return true;
     }
+
+    // Bad certificate usually means server config issue, not network
+    if (error.type == DioExceptionType.badCertificate) {
+      return true;
+    }
+
+    // Unknown errors with SocketException that aren't network issues
+    if (error.type == DioExceptionType.unknown) {
+      final inner = error.error;
+      if (inner is SocketException) {
+        // Check if it's specifically a network issue or a server issue
+        final msg = inner.toString().toLowerCase();
+        if (msg.contains('connection refused') ||
+            msg.contains('connection reset') ||
+            msg.contains('connection closed') ||
+            msg.contains('broken pipe') ||
+            msg.contains('software caused connection abort') ||
+            msg.contains('handshake')) {
+          return true;
+        }
+      }
+    }
+
     return false;
   }
 
@@ -47,12 +88,17 @@ class TransportErrorPolicy {
   }
 
   static String toUserMessage(DioException error) {
+    // Check backend issue FIRST — many connection errors are server-side, not
+    // network-side. Previous order caused "no internet" for server-down cases.
     if (isBackendIssue(error)) {
       final statusCode = error.response?.statusCode;
       if (statusCode != null && statusCode >= 500) {
         return 'Server is temporarily unavailable. Your data is saved locally and will sync when the server is back online.';
       }
-      return 'Cannot connect to server. Please try again shortly.';
+      if (error.type == DioExceptionType.badCertificate) {
+        return 'Could not verify server security certificate. Please update the app or try again later.';
+      }
+      return 'Cannot connect to the LingAfriq server. The server may be temporarily down — please try again shortly.';
     }
 
     if (isNetworkIssue(error)) {
@@ -85,9 +131,7 @@ class TransportErrorPolicy {
     }
 
     if (error.type == DioExceptionType.cancel) return 'Request was cancelled.';
-    if (error.type == DioExceptionType.badCertificate) {
-      return 'Security certificate error. Please try again.';
-    }
+
     return 'Unable to reach server. Please try again.';
   }
 }

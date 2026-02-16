@@ -1,7 +1,7 @@
 import 'package:lingafriq/services/env_config.dart';
 
 class Api {
-  // Use EnvConfig.backendBaseUrl; defaults to https://api.lingafriq.com if BACKEND_URL not set.
+  // Use EnvConfig.backendBaseUrl; defaults to https://admin.lingafriq.com if BACKEND_URL not set.
   // Override via --dart-define=BACKEND_URL=... during build.
   static String get baseurl {
     final envUrl = EnvConfig.backendBaseUrl;

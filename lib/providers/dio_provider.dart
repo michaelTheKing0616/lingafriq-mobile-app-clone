@@ -16,7 +16,7 @@ import '../utils/api.dart';
 /// Production API domains that require certificate pinning
 /// Add your production API domain here when deploying
 const _pinnedDomains = <String>[
-  'api.lingafriq.com',
+  'admin.lingafriq.com',
   'lingafriq.com',
 ];
 

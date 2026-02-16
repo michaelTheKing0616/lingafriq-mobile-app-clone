@@ -416,6 +416,18 @@ class ErrorConverter {
     }
     
     if (error is SocketException) {
+      // Distinguish between genuine network issues and server-specific failures
+      final msg = error.toString().toLowerCase();
+      if (msg.contains('connection refused') ||
+          msg.contains('connection reset') ||
+          msg.contains('connection closed') ||
+          msg.contains('broken pipe') ||
+          msg.contains('handshake')) {
+        return _GenericAppError(
+          'Cannot connect to the LingAfriq server. The server may be temporarily down — please try again shortly.',
+          error,
+        );
+      }
       return _GenericAppError('No internet connection. Please check your network settings.', error);
     }
     

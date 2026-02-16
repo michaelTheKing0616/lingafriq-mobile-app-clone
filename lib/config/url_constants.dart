@@ -36,7 +36,8 @@ class UrlConstants {
 
   // ─── LingAfriq Backend & Web ──────────────────────────────────────────────
   /// Backend API default (override via BACKEND_URL / BACKEND_API_URL at build or runtime).
-  static const String backendDefault = 'https://api.lingafriq.com';
+  /// Production: nginx at admin.lingafriq.com proxies to Node backend on :4000.
+  static const String backendDefault = 'https://admin.lingafriq.com';
 
   /// App/website base for legal and support links.
   static const String appWebBase = 'https://lingafriq.com';

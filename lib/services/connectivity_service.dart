@@ -14,7 +14,7 @@ class ConnectivityService {
 
   static String get _backendHost {
     final uri = Uri.tryParse(EnvConfig.backendBaseUrl);
-    return uri?.host ?? 'api.lingafriq.com';
+    return uri?.host ?? 'admin.lingafriq.com';
   }
 
   static Future<bool> hasInternet({Dio? dio}) async {

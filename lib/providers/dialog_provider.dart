@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'navigation_provider.dart';
 import '../utils/error_handler.dart';
+import '../utils/transport_error_policy.dart';
 
 final dialogProvider = Provider.autoDispose.family<DialogProvider, Object?>((ref, Object? error) {
   return DialogProvider(ref.container, error);
@@ -68,45 +70,73 @@ class DialogProvider {
 
   Future<void> showExceptionDialog() async {
     _log("ERROR RUNTIME TYPE ${e.runtimeType}");
-    if (e is SocketException || e.toString().contains("SocketException")) {
+
+    // Use TransportErrorPolicy for DioExceptions to accurately distinguish
+    // between network-level failures (no internet) and backend-level failures
+    // (server unreachable, timeout, connection refused). Previously, ALL
+    // SocketException-containing errors showed "not connected to internet"
+    // even when internet was fine but the server was unreachable.
+    if (e is DioException) {
+      final dioError = e as DioException;
+      final String title;
+      final String message;
+
+      if (TransportErrorPolicy.isNetworkIssue(dioError)) {
+        title = 'No Internet Connection';
+        message = 'Please check your network settings and try again.';
+      } else if (TransportErrorPolicy.isBackendIssue(dioError)) {
+        title = 'Server Unavailable';
+        message = 'Cannot connect to the LingAfriq server. '
+            'The server may be temporarily down. '
+            'Please try again in a few moments.';
+      } else {
+        // Delegate to ErrorConverter for status-code-specific handling
+        final appError = ErrorConverter.toAppError(dioError);
+        final userMessage = ErrorConverter.getUserMessage(appError);
+        title = _titleForAppError(appError);
+        message = userMessage;
+      }
+
       await showPlatformDialogue(
-        title: 'Network Error',
-        content: const SelectableText("Seems like, you're not connected to internet"),
+        title: title,
+        content: SelectableText(message),
       );
       return;
     }
 
-    // Use ErrorConverter for consistent error handling
+    // Raw SocketException (not wrapped in DioException) — genuine network issue
+    if (e is SocketException) {
+      await showPlatformDialogue(
+        title: 'No Internet Connection',
+        content: const SelectableText(
+          'Please check your network settings and try again.',
+        ),
+      );
+      return;
+    }
+
+    // Use ErrorConverter for all other errors
     final appError = ErrorConverter.toAppError(e);
     final userMessage = ErrorConverter.getUserMessage(appError);
-
-    // CRITICAL: Never show raw HTTP status codes to users (especially 429)
-    // Always use user-friendly titles
-    String title = "We're sorry";
-    if (appError is ApiError) {
-      final statusCode = appError.statusCode;
-      // Map status codes to friendly titles without exposing raw codes
-      if (statusCode == 429) {
-        title = "Please slow down";
-      } else if (statusCode == 401) {
-        title = "Authentication required";
-      } else if (statusCode == 403) {
-        title = "Access denied";
-      } else if (statusCode == 404) {
-        title = "Not found";
-      } else if (statusCode != null && statusCode >= 500) {
-        title = "Server error";
-      } else {
-        title = "Oops, an error occurred";
-      }
-    } else {
-      title = "Oops, an error occurred";
-    }
+    final title = _titleForAppError(appError);
 
     await showPlatformDialogue(
       title: title,
       content: SelectableText(userMessage),
     );
+  }
+
+  /// Maps an AppError to a user-friendly dialog title.
+  String _titleForAppError(AppError appError) {
+    if (appError is ApiError) {
+      final statusCode = appError.statusCode;
+      if (statusCode == 429) return 'Please slow down';
+      if (statusCode == 401) return 'Authentication required';
+      if (statusCode == 403) return 'Access denied';
+      if (statusCode == 404) return 'Not found';
+      if (statusCode != null && statusCode >= 500) return 'Server error';
+    }
+    return 'Oops, an error occurred';
   }
 
   void showSuccessSnackBar({String? message}) {

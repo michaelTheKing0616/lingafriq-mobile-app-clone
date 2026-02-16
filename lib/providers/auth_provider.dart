@@ -38,15 +38,26 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<void> navigateBasedOnCondition() async {
     final prefs = ref.read(sharedPreferencesProvider).prefs;
 
-    // App version gate: after an update, require onboarding + login again (no auto-login)
+    // App version gate: after a MAJOR or MINOR version change, require
+    // onboarding + login again. Build number increments (e.g. 1.6.0+161 →
+    // 1.6.0+180) do NOT reset credentials or onboarding — they represent
+    // internal iteration, not user-facing feature changes.
     try {
       final info = await PackageInfo.fromPlatform();
-      final currentVersion = '${info.version}+${info.buildNumber}';
+      final currentSemver = info.version; // e.g. "1.6.0"
+      final currentFull = '${info.version}+${info.buildNumber}';
       final lastSeenVersion = prefs.getString(_lastSeenAppVersionKey);
-      if (lastSeenVersion == null || lastSeenVersion != currentVersion) {
-        logger.info('App version changed, resetting flow', context: {
+
+      // Extract semver portion from stored version (strip build number)
+      final lastSeenSemver = lastSeenVersion?.split('+').first;
+
+      if (lastSeenSemver == null || lastSeenSemver != currentSemver) {
+        // Semver changed (e.g. 1.5.0 → 1.6.0) — full reset
+        logger.info('App semver changed, resetting onboarding & auth flow', context: {
           'lastSeen': lastSeenVersion,
-          'current': currentVersion,
+          'current': currentFull,
+          'lastSemver': lastSeenSemver,
+          'currentSemver': currentSemver,
         });
         await prefs.setBool('onboarding_seen', false);
         await prefs.remove('onboarding_complete');
@@ -59,7 +70,14 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         } catch (_) {
           // Ignore clear errors
         }
-        await prefs.setString(_lastSeenAppVersionKey, currentVersion);
+        await prefs.setString(_lastSeenAppVersionKey, currentFull);
+      } else if (lastSeenVersion != currentFull) {
+        // Only build number changed — update stored version without resetting
+        logger.info('Build number changed, preserving auth & onboarding', context: {
+          'lastSeen': lastSeenVersion,
+          'current': currentFull,
+        });
+        await prefs.setString(_lastSeenAppVersionKey, currentFull);
       }
     } catch (e) {
       logger.warn('Version check failed, continuing with existing flow', error: e);

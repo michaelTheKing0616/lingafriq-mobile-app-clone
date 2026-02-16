@@ -258,7 +258,7 @@ void main() {
           type: DioExceptionType.badCertificate,
         );
         final message = TransportErrorPolicy.toUserMessage(error);
-        expect(message, contains('Security certificate'));
+        expect(message, contains('security certificate'));
       });
     });
   });

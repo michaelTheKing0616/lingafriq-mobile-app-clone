@@ -422,18 +422,22 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         HapticFeedback.lightImpact();
 
         try {
-          // Store credentials for auto-fill
-          await storage.storeCredentials(
-            email: emailController.text.trim(),
-            password: passwordController.text.trim(),
-          );
-
-          // Login
-          await ref.read(authProvider.notifier).login(
+          // Login first — only persist credentials after success.
+          // Storing before login meant failed attempts (server down, wrong
+          // password) left stale credentials that auto-login would retry.
+          final user = await ref.read(authProvider.notifier).login(
                 email: emailController.text.trim(),
                 password: passwordController.text.trim(),
                 storeCredentials: true,
               );
+
+          // Persist credentials only on successful login
+          if (user != null) {
+            await storage.storeCredentials(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim(),
+            );
+          }
         } catch (e) {
           if (context.mounted) {
             ErrorHandler.showError(context, e);
