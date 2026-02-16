@@ -88,10 +88,33 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       'backendUrl': ApiContract.baseUrl,
     });
 
-    // CRITICAL FIX: Check if onboarding was actually COMPLETED, not just seen
+    // Onboarding gate: only skip onboarding when *explicitly completed*.
+    //
+    // Three flags are involved:
+    //   • onboarding_seen  (bool)   – set to true when the user *starts* onboarding
+    //   • onboarding_complete (String 'true') – set at the END of the unified flow
+    //   • onboarding_data (String)  – serialised answers, also set at the end
+    //
+    // Previous logic treated `hasOnboardingData` as a proxy for completion,
+    // which caused onboarding to be skipped when old data existed from a
+    // prior build that never set the `onboarding_complete` flag, or when the
+    // semver didn't change so the version-check reset didn't trigger.
+    //
+    // Fix: require the explicit `onboarding_complete` flag. If old data
+    // exists without it, migrate it forward so existing users are not forced
+    // to redo onboarding.
     final isOnboardingSeen = ref.read(sharedPreferencesProvider).isOnboardingSeen;
-    final onboardingComplete = prefs.getString('onboarding_complete') == 'true';
+    var onboardingComplete = prefs.getString('onboarding_complete') == 'true';
     final hasOnboardingData = prefs.getString('onboarding_data') != null;
+
+    // Migration: if a previous build stored onboarding_data but never set
+    // onboarding_complete, honour the old data so returning users aren't
+    // forced to redo onboarding.
+    if (!onboardingComplete && hasOnboardingData && isOnboardingSeen) {
+      await prefs.setString('onboarding_complete', 'true');
+      onboardingComplete = true;
+      logger.info('Migrated legacy onboarding data → onboarding_complete=true');
+    }
 
     logger.info('Onboarding status check', context: {
       'isOnboardingSeen': isOnboardingSeen,
@@ -99,13 +122,12 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       'hasOnboardingData': hasOnboardingData,
     });
 
-    // If onboarding wasn't fully completed, reset and show onboarding
-    if (!isOnboardingSeen || (!onboardingComplete && !hasOnboardingData)) {
-      if (isOnboardingSeen && !onboardingComplete) {
-        await prefs.setBool('onboarding_seen', false);
-        await prefs.remove('onboarding_complete');
-        await prefs.remove('onboarding_data');
-      }
+    // Show onboarding if it was never completed.
+    if (!onboardingComplete) {
+      // Reset partial state so the flow starts fresh
+      await prefs.setBool('onboarding_seen', false);
+      await prefs.remove('onboarding_complete');
+      await prefs.remove('onboarding_data');
       ref.read(navigationProvider).navigateOffAll(const OnboardingScreenMaterial3());
       return;
     }

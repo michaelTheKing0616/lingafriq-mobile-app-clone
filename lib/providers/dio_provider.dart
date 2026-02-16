@@ -29,8 +29,15 @@ bool _isPinnedDomain(String url) {
 
 final client = Provider<Dio>(
   (ref) {
+    // CRITICAL: baseUrl MUST end with '/' for Dio to correctly resolve
+    // relative paths (e.g. "auth/jwt/create/"). Without a trailing slash,
+    // Dio concatenates directly: "https://host.com" + "auth/..." produces
+    // "https://host.comauth/..." — a broken URL whose DNS lookup fails,
+    // surfacing as a misleading "no Internet connection" error.
+    final rawBase = ApiContract.baseUrl;
+    final normalizedBase = rawBase.endsWith('/') ? rawBase : '$rawBase/';
     final options = BaseOptions(
-      baseUrl: ApiContract.baseUrl,
+      baseUrl: normalizedBase,
       connectTimeout: const Duration(seconds: 15),
       sendTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
