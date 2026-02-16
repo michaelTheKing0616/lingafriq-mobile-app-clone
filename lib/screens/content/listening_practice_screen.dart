@@ -557,6 +557,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
                 ),
               ),
             ),
+          ),
           );
         }),
       ],
@@ -820,6 +821,7 @@ class _ExerciseCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

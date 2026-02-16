@@ -127,9 +127,9 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
             Semantics(
               label: 'Scenario: ${_scenario.toUpperCase()}',
               child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(3.w),
-                child: Row(
+                child: Padding(
+                  padding: EdgeInsets.all(3.w),
+                  child: Row(
                   children: [
                     Icon(Icons.store, size: 32, semanticLabel: 'Scenario'),
                     SizedBox(width: 2.w),
@@ -141,6 +141,7 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
                       ),
                     ),
                   ],
+                  ),
                 ),
               ),
             ),

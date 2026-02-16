@@ -243,17 +243,17 @@ Keep lists practical. Use culturally appropriate examples.
                                   },
                                   borderRadius: BorderRadius.circular(PolieRadius.lg),
                                   child: Row(
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.all(PolieSpacing.sm),
-                                      decoration: BoxDecoration(
-                                        color: (t['icon'] != null) ? PolieColors.royalAmethyst.withOpacity(0.25) : null,
-                                        borderRadius: BorderRadius.circular(PolieRadius.md),
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(PolieSpacing.sm),
+                                        decoration: BoxDecoration(
+                                          color: (t['icon'] != null) ? PolieColors.royalAmethyst.withOpacity(0.25) : null,
+                                          borderRadius: BorderRadius.circular(PolieRadius.md),
+                                        ),
+                                        child: Icon(t['icon'] as IconData, color: PolieColors.royalAmethyst, size: 24.sp),
                                       ),
-                                      child: Icon(t['icon'] as IconData, color: PolieColors.royalAmethyst, size: 24.sp),
-                                    ),
-                                    SizedBox(width: PolieSpacing.md),
-                                    Expanded(
+                                      SizedBox(width: PolieSpacing.md),
+                                      Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
@@ -263,9 +263,9 @@ Keep lists practical. Use culturally appropriate examples.
                                         ],
                                       ),
                                     ),
-                                    if (selected) Icon(Icons.check_circle_rounded, color: PolieColors.electricTeal, semanticLabel: 'Selected'),
-                                  ],
-                                ),
+                                      if (selected) Icon(Icons.check_circle_rounded, color: PolieColors.electricTeal, semanticLabel: 'Selected'),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

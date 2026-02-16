@@ -238,17 +238,17 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
               child: Semantics(
                 label: 'Game complete. Score: $_score out of ${_questions.length * 10}. Correct: $_correctAnswers out of ${_questions.length}.',
                 child: PanAfricanCard(
-                child: Padding(
-                padding: EdgeInsets.all(24.sp),
-                child: Column(
+                  child: Padding(
+                    padding: EdgeInsets.all(24.sp),
+                    child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ExcludeSemantics(
                       child: Icon(
-                      _score >= 70 ? Icons.celebration : Icons.check_circle,
-                      size: 80.sp,
-                      color: _score >= 70 ? PanAfricanColors.secondary : PanAfricanColors.primary,
-                    ),
+                        _score >= 70 ? Icons.celebration : Icons.check_circle,
+                        size: 80.sp,
+                        color: _score >= 70 ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                      ),
                     ),
                     SizedBox(height: 16.h),
                     Text(

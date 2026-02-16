@@ -376,17 +376,17 @@ class FriendProfileScreen extends HookConsumerWidget {
               Expanded(
                 child: Semantics(
                   label: 'Remove friend',
-                  button: true,
                   child: OutlinedButton(
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    _removeFriend(context);
-                  },
-                  style: OutlinedButton.styleFrom(
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      _removeFriend(context);
+                    },
+                    style: OutlinedButton.styleFrom(
                     foregroundColor: PolieColors.error,
                     side: BorderSide(color: PolieColors.error),
+                    ),
+                    child: Text('Remove Friend'),
                   ),
-                  child: Text('Remove Friend'),
                 ),
               ),
               SizedBox(width: PolieSpacing.md),

@@ -342,9 +342,9 @@ class _ChangePasswordButton extends StatelessWidget {
       label: 'Change password',
       button: true,
       child: Material(
-      color: PanAfricanColors.primary,
-      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-      child: InkWell(
+        color: PanAfricanColors.primary,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        child: InkWell(
         onTap: isLoading ? null : onPressed,
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         child: Container(
@@ -361,15 +361,16 @@ class _ChangePasswordButton extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Change Password',
-                    style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: colorScheme.onPrimary,
+                      'Change Password',
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        color: colorScheme.onPrimary,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ),
       ),
-    ),
+      ),
     );
   }
 }

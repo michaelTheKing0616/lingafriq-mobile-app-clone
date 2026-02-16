@@ -392,8 +392,8 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
             button: true,
             enabled: !isLoading.value,
             child: GestureDetector(
-            onTap: isLoading.value ? null : sendMessage,
-            child: Container(
+              onTap: isLoading.value ? null : sendMessage,
+              child: Container(
               width: 48.w,
               height: 48.w,
               decoration: BoxDecoration(
@@ -412,8 +412,8 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                       ),
                     )
                   : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp, semanticLabel: 'Send message'),
+              ),
             ),
-          ),
           ),
         ],
       ),

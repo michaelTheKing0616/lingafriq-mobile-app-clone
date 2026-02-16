@@ -1099,7 +1099,7 @@ class _SettingsTile extends StatelessWidget {
                 size: 24.sp,
                 semanticLabel: title,
               ),
-            SizedBox(width: PanAfricanSpacing.md),
+              SizedBox(width: PanAfricanSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

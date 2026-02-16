@@ -89,7 +89,7 @@ class LessonCompleteWidget extends StatelessWidget {
           Semantics(
             label: 'Lesson complete. XP earned: $totalXP. Accuracy: ${accuracy.toStringAsFixed(0)} percent. Time: ${_formatTime(timeTaken)}.',
             child: Row(
-            children: [
+              children: [
               Expanded(
                 child: _buildStatCard(
                   context,
@@ -110,6 +110,7 @@ class LessonCompleteWidget extends StatelessWidget {
                 ),
               ),
             ],
+            ),
           ),
           SizedBox(height: 12.h),
 

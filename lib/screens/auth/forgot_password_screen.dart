@@ -106,7 +106,6 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                       style: PanAfricanTypography.bodyLarge(context),
                       decoration: InputDecoration(
                         hintText: 'Enter your registered email',
-                        semanticLabel: 'Email address',
                         prefixIcon: Semantics(
                           label: 'Email icon',
                           excludeSemantics: true,

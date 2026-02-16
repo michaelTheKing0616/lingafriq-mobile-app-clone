@@ -392,7 +392,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
         Semantics(
           label: 'Password',
           textField: true,
-          obscureValue: !showPassword.value,
+          obscured: !showPassword.value,
           child: TextFormField(
             controller: controller,
             obscureText: !showPassword.value,
@@ -400,7 +400,6 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             style: PanAfricanTypography.bodyLarge(context),
             decoration: InputDecoration(
               hintText: 'Create a strong password',
-              semanticLabel: 'Password',
               prefixIcon: Semantics(
                 label: 'Password lock icon',
                 excludeSemantics: true,
@@ -554,7 +553,6 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           },
         ),
         ),
-        ),
       ],
     );
   }
@@ -639,7 +637,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
         Semantics(
           label: label,
           textField: true,
-          obscureValue: obscureText,
+          obscured: obscureText,
           child: TextFormField(
             controller: controller,
             keyboardType: keyboardType,
@@ -648,7 +646,6 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             style: PanAfricanTypography.bodyLarge(context),
             decoration: InputDecoration(
               hintText: hint,
-              semanticLabel: label,
               prefixIcon: Semantics(
                 label: '$label icon',
                 excludeSemantics: true,

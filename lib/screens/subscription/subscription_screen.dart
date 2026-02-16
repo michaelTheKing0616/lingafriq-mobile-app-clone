@@ -185,17 +185,17 @@ class SubscriptionScreen extends ConsumerWidget {
     return Semantics(
       label: cardLabel,
       child: Container(
-      decoration: BoxDecoration(
+        decoration: BoxDecoration(
         color: isRecommended
             ? PanAfricanColors.primary.withOpacity(0.05)
             : (isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight),
         borderRadius: PanAfricanRadius.lgBR,
         boxShadow: isRecommended ? PanAfricanShadows.md : PanAfricanShadows.sm,
         border: isRecommended ? Border.all(color: PanAfricanColors.primary.withOpacity(0.3), width: 2) : null,
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(PanAfricanSpacing.md),
-        child: Column(
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (isRecommended)

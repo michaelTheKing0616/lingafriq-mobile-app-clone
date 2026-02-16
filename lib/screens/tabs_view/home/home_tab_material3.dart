@@ -357,13 +357,10 @@ class _LanguageCard extends StatelessWidget {
               ),
               Semantics(
                 excludeSemantics: true,
-                child:               Semantics(
-                excludeSemantics: true,
                 child: Icon(
                   Icons.chevron_right_rounded,
                   color: PanAfricanColors.neutralMedium,
                 ),
-              ),
               ),
             ],
           ),

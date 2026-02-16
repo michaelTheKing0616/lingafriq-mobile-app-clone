@@ -157,7 +157,7 @@ class _EventCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Semantics(
-      label: '${event.title}. ${event.description}. ${isActive ? "Active" : "Upcoming"}. Tap for details.',
+      label: '${event.name}. ${event.description}. ${isActive ? "Active" : "Upcoming"}. Tap for details.',
       button: true,
       child: GestureDetector(
       onTap: () {

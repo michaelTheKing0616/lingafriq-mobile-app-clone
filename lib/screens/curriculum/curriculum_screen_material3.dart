@@ -324,6 +324,7 @@ class _WeekCard extends StatelessWidget {
           ),
         ),
       ),
+      ),
     );
   }
 }

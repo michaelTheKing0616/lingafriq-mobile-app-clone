@@ -434,6 +434,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
           ],
         ],
       ),
+      ),
     );
   }
 }

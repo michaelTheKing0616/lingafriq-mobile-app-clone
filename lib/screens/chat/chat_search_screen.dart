@@ -152,16 +152,16 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                 ? Semantics(
                     label: 'No messages found. Try a different word or phrase.',
                     child: Center(
-                    child: Text(
-                      'No messages found.\nTry a different word or phrase.',
-                      textAlign: TextAlign.center,
-                      style: PanAfricanTypography.bodyMedium(context).copyWith(
-                        color: isDark
-                            ? PanAfricanColors.textSecondaryDark
-                            : PanAfricanColors.textSecondaryLight,
+                      child: Text(
+                        'No messages found.\nTry a different word or phrase.',
+                        textAlign: TextAlign.center,
+                        style: PanAfricanTypography.bodyMedium(context).copyWith(
+                          color: isDark
+                              ? PanAfricanColors.textSecondaryDark
+                              : PanAfricanColors.textSecondaryLight,
+                        ),
                       ),
                     ),
-                  ),
                   )
                 : Semantics(
                     label: 'Search results, ${_results.length} messages',

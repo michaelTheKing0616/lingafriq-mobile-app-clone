@@ -204,23 +204,22 @@ class _ProgressCard extends StatelessWidget {
         color: Colors.transparent,
         child: Semantics(
           label: '${language.name}, ${(progress * 100).toInt()}% complete. Tap to open.',
-          button: true,
           child: InkWell(
-          onTap: onTap,
-          borderRadius: PanAfricanRadius.lgBR,
-          child: Padding(
-            padding: EdgeInsets.all(PanAfricanSpacing.md),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+            onTap: onTap,
+            borderRadius: PanAfricanRadius.lgBR,
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Language Image
-                  Semantics(
-                    excludeSemantics: true,
-                    child: ClipRRect(
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                    child: CachedNetworkImage(
+                  Row(
+                    children: [
+                      // Language Image
+                      Semantics(
+                        excludeSemantics: true,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                          child: CachedNetworkImage(
                       imageUrl: language.background ?? '',
                       width: 60.w,
                       height: 60.w,
@@ -244,7 +243,8 @@ class _ProgressCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                        ),
+                      ),
                   SizedBox(width: PanAfricanSpacing.md),
                   // Language Info
                   Expanded(
@@ -281,41 +281,41 @@ class _ProgressCard extends StatelessWidget {
               Semantics(
                 label: 'Progress ${(progress * 100).toInt()}%',
                 child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Progress',
-                        style: PanAfricanTypography.labelMedium(context).copyWith(
-                          color: PanAfricanColors.neutralMedium,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Progress',
+                          style: PanAfricanTypography.labelMedium(context).copyWith(
+                            color: PanAfricanColors.neutralMedium,
+                          ),
                         ),
-                      ),
-                      Text(
-                        '${(progress * 100).toInt()}%',
-                        style: PanAfricanTypography.labelMedium(context).copyWith(
-                          color: PanAfricanColors.primary,
-                          fontWeight: FontWeight.w600,
+                        Text(
+                          '${(progress * 100).toInt()}%',
+                          style: PanAfricanTypography.labelMedium(context).copyWith(
+                            color: PanAfricanColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: PanAfricanSpacing.xs),
-                  ClipRRect(
-                    borderRadius: PanAfricanRadius.roundBR,
-                    child: LinearProgressIndicator(
-                      value: progress,
-                      backgroundColor: PanAfricanColors.neutralLight,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        PanAfricanColors.primary,
-                      ),
-                      minHeight: 8.h,
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(height: PanAfricanSpacing.xs),
+                    ClipRRect(
+                      borderRadius: PanAfricanRadius.roundBR,
+                      child: LinearProgressIndicator(
+                        value: progress,
+                        backgroundColor: PanAfricanColors.neutralLight,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          PanAfricanColors.primary,
+                        ),
+                        minHeight: 8.h,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
             ],
           ),
         ),

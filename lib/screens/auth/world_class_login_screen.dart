@@ -280,7 +280,6 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             style: PanAfricanTypography.bodyLarge(context),
             decoration: InputDecoration(
               hintText: 'Enter your email',
-              semanticLabel: 'Email address',
               prefixIcon: Semantics(
                 label: 'Email icon',
                 excludeSemantics: true,
@@ -349,7 +348,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         Semantics(
           label: 'Password',
           textField: true,
-          obscureValue: !showPassword.value,
+          obscured: !showPassword.value,
           child: TextFormField(
             controller: controller,
             obscureText: !showPassword.value,
@@ -361,7 +360,6 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             style: PanAfricanTypography.bodyLarge(context),
             decoration: InputDecoration(
               hintText: 'Enter your password',
-              semanticLabel: 'Password',
               prefixIcon: Semantics(
                 label: 'Password lock icon',
                 excludeSemantics: true,

@@ -495,33 +495,34 @@ class _ImagePickerOption extends StatelessWidget {
       label: title,
       button: true,
       child: ListTile(
-      leading: Semantics(
+        leading: Semantics(
         excludeSemantics: true,
         child: Container(
-        padding: EdgeInsets.all(PanAfricanSpacing.sm),
-        decoration: BoxDecoration(
-          color: isDestructive
-              ? PanAfricanColors.error.withOpacity(0.1)
-              : PanAfricanColors.primary.withOpacity(0.1),
-          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-        ),
-        child: Icon(
-          icon,
-          color: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
-          size: 24.sp,
+          padding: EdgeInsets.all(PanAfricanSpacing.sm),
+          decoration: BoxDecoration(
+            color: isDestructive
+                ? PanAfricanColors.error.withOpacity(0.1)
+                : PanAfricanColors.primary.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+          ),
+          child: Icon(
+            icon,
+            color: isDestructive ? PanAfricanColors.error : PanAfricanColors.primary,
+            size: 24.sp,
+          ),
         ),
       ),
-      title: Text(
+        title: Text(
         title,
         style: PanAfricanTypography.bodyLarge(context).copyWith(
           color: isDestructive ? PanAfricanColors.error : null,
         ),
       ),
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
-    ),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+      ),
     );
   }
 }
@@ -542,30 +543,31 @@ class _SaveButton extends StatelessWidget {
       label: 'Save changes',
       button: true,
       child: Material(
-      color: PanAfricanColors.primary,
-      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-      child: InkWell(
-        onTap: isLoading ? null : onPressed,
+        color: PanAfricanColors.primary,
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
-          child: Center(
-            child: isLoading
-                ? SizedBox(
-                    width: 24.sp,
-                    height: 24.sp,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation(colorScheme.onPrimary),
+        child: InkWell(
+          onTap: isLoading ? null : onPressed,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+            child: Center(
+              child: isLoading
+                  ? SizedBox(
+                      width: 24.sp,
+                      height: 24.sp,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(colorScheme.onPrimary),
+                      ),
+                    )
+                  : Text(
+                      'Save Changes',
+                      style: PanAfricanTypography.titleMedium(context).copyWith(
+                        color: colorScheme.onPrimary,
+                      ),
                     ),
-                  )
-                : Text(
-                    'Save Changes',
-                    style: PanAfricanTypography.titleMedium(context).copyWith(
-                      color: colorScheme.onPrimary,
-                    ),
-                  ),
+            ),
           ),
         ),
       ),

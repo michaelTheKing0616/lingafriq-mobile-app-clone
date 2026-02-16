@@ -297,22 +297,22 @@ Quality requirements:
                                     topicInput.value = topic;
                                   },
                                   child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: PolieSpacing.sm,
-                                    vertical: PolieSpacing.xs,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: PolieColors.royalAmethyst.withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(PolieRadius.pill),
-                                    border: Border.all(
-                                      color: PolieColors.royalAmethyst.withOpacity(0.5),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: PolieSpacing.sm,
+                                      vertical: PolieSpacing.xs,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: PolieColors.royalAmethyst.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(PolieRadius.pill),
+                                      border: Border.all(
+                                        color: PolieColors.royalAmethyst.withOpacity(0.5),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      topic,
+                                      style: PolieTypography.bodySmall(context),
                                     ),
                                   ),
-                                  child: Text(
-                                    topic,
-                                    style: PolieTypography.bodySmall(context),
-                                  ),
-                                ),
                                 ),
                               );
                             }).toList(),

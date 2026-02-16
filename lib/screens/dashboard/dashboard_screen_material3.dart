@@ -385,7 +385,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       : 0.0;
                   final progressPercent = (progress * 100).toInt();
                   return Semantics(
-                    label: 'Continue learning ${language.name}. ${progressPercent}% complete. Tap to open.',
+                    label: 'Continue learning ${language.name}. $progressPercent% complete. Tap to open.',
                     button: true,
                     child: GestureDetector(
                       onTap: () {
@@ -654,28 +654,6 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _placeholderContinueLearning(BuildContext context, bool isDark) {
-    return Container(
-      height: 120.h,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: isDark
-            ? PanAfricanColors.cardDark
-            : PanAfricanColors.cardLight,
-        borderRadius: PanAfricanRadius.lgBR,
-        boxShadow: PanAfricanShadows.sm,
-        border: Border.all(
-          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-          width: 1,
-        ),
-      ),
-      child: Text(
-        'Start a course to see progress',
-        style: PanAfricanTypography.bodyMedium(context),
-      ),
     );
   }
 

@@ -685,16 +685,18 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                           HapticFeedback.selectionClick();
                         },
                         child: Chip(
-                        label: Text(word),
-                        backgroundColor: PolieColors.royalAmethyst.withOpacity(0.3),
-                        deleteIcon: isAnswered ? null : Icon(Icons.close, size: 16),
-                        onDeleted: isAnswered ? null : () {
-                          setState(() {
-                            selectedWords.value.remove(word);
-                            availableWords.value.add(word);
-                          });
-                        },
+                          label: Text(word),
+                          backgroundColor: PolieColors.royalAmethyst.withOpacity(0.3),
+                          deleteIcon: isAnswered ? null : Icon(Icons.close, size: 16),
+                          onDeleted: isAnswered ? null : () {
+                            setState(() {
+                              selectedWords.value.remove(word);
+                              availableWords.value.add(word);
+                            });
+                          },
+                        ),
                       ),
+                    ),
                     );
                   }).toList(),
                 ),
@@ -1037,39 +1039,41 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                           _selectAnswer(word);
                         },
                         child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: PolieSpacing.md,
-                          vertical: PolieSpacing.sm,
-                        ),
-                        decoration: BoxDecoration(
-                          color: backgroundColor,
-                          border: Border.all(
-                            color: borderColor ?? Colors.transparent,
-                            width: 2,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: PolieSpacing.md,
+                            vertical: PolieSpacing.sm,
                           ),
-                          borderRadius: BorderRadius.circular(PolieRadius.sm),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              word,
-                              style: PolieTypography.body(context).copyWith(
-                                color: PolieColors.textPrimary,
-                                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              ),
+                          decoration: BoxDecoration(
+                            color: backgroundColor,
+                            border: Border.all(
+                              color: borderColor ?? Colors.transparent,
+                              width: 2,
                             ),
-                            if (showCorrect) ...[
-                              SizedBox(width: PolieSpacing.xs),
-                              Icon(Icons.check_circle, color: PolieColors.success, size: 16),
+                            borderRadius: BorderRadius.circular(PolieRadius.sm),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                word,
+                                style: PolieTypography.body(context).copyWith(
+                                  color: PolieColors.textPrimary,
+                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                ),
+                              ),
+                              if (showCorrect) ...[
+                                SizedBox(width: PolieSpacing.xs),
+                                Icon(Icons.check_circle, color: PolieColors.success, size: 16),
+                              ],
+                              if (showIncorrect) ...[
+                                SizedBox(width: PolieSpacing.xs),
+                                Icon(Icons.cancel, color: PolieColors.error, size: 16),
+                              ],
                             ],
-                            if (showIncorrect) ...[
-                              SizedBox(width: PolieSpacing.xs),
-                              Icon(Icons.cancel, color: PolieColors.error, size: 16),
-                            ],
-                          ],
+                          ),
                         ),
                       ),
+                    ),
                     );
                   }).toList(),
                 ),

@@ -253,7 +253,6 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
                 ),
               ),
             ),
-            ),
             SizedBox(height: 4.h),
             // Options
             Expanded(

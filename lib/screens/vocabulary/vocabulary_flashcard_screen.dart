@@ -9,6 +9,16 @@ import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 
+String _wordMeaningForLabel(WordMastery word) {
+  if (word.metadata != null && word.metadata!['meaning'] != null) {
+    return word.metadata!['meaning'] as String;
+  }
+  if (word.metadata != null && word.metadata!['translation'] != null) {
+    return word.metadata!['translation'] as String;
+  }
+  return 'Meaning not available';
+}
+
 /// Visual Flashcard Screen for Vocabulary
 /// Interactive flashcards with swipe gestures, animations, and progress tracking
 class VocabularyFlashcardScreen extends HookConsumerWidget {
@@ -165,7 +175,7 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
               // Flashcard
               Expanded(
                 child: Semantics(
-                  label: showAnswer.value ? '${currentWord.word}: ${currentWord.translation}. Tap to flip back.' : '${currentWord.word}. Tap to flip and see translation.',
+                  label: showAnswer.value ? '${currentWord.word}: ${_wordMeaningForLabel(currentWord)}. Tap to flip back.' : '${currentWord.word}. Tap to flip and see translation.',
                   button: true,
                   child: GestureDetector(
                     onTap: () {
@@ -174,20 +184,21 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
                       HapticFeedback.lightImpact();
                     },
                     child: Center(
-                    child: AnimatedSwitcher(
-                      duration: Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) {
-                        return ScaleTransition(
-                          scale: animation,
-                          child: child,
-                        );
-                      },
-                      child: _Flashcard(
-                        key: ValueKey('${currentWord.word}_${currentWord.language}'),
-                        word: currentWord,
-                        isFlipped: isFlipped.value,
-                        showAnswer: showAnswer.value,
-                        isDark: isDark,
+                      child: AnimatedSwitcher(
+                        duration: Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          );
+                        },
+                        child: _Flashcard(
+                          key: ValueKey('${currentWord.word}_${currentWord.language}'),
+                          word: currentWord,
+                          isFlipped: isFlipped.value,
+                          showAnswer: showAnswer.value,
+                          isDark: isDark,
+                        ),
                       ),
                     ),
                   ),

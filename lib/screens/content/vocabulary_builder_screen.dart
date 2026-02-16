@@ -824,6 +824,7 @@ class _FamilyCard extends StatelessWidget {
           ),
         ),
       ),
+      ),
     );
   }
 }
@@ -939,6 +940,7 @@ class _VocabularyCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

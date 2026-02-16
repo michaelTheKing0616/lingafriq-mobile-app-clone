@@ -823,6 +823,7 @@ class _ExerciseCard extends StatelessWidget {
           ),
         ),
       ),
+      ),
     );
   }
 }

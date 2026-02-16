@@ -548,6 +548,7 @@ class _DynamicLoadingScreenState
         ),
       ],
     ),
+    ),
     );
   }
 }
