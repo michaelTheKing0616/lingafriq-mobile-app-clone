@@ -104,17 +104,24 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
         appBar: AppBar(
           title: Row(
             children: [
-              CircleAvatar(
-                radius: 18.r,
-                backgroundColor: PanAfricanColors.primary,
-                child: Text(
-                  otherUserName[0].toUpperCase(),
-                  style: PanAfricanTypography.labelSmall(context)
-                      .copyWith(color: colorScheme.onPrimary),
+              Semantics(
+                label: 'Avatar for $otherUserName',
+                excludeSemantics: true,
+                child: CircleAvatar(
+                  radius: 18.r,
+                  backgroundColor: PanAfricanColors.primary,
+                  child: Text(
+                    otherUserName[0].toUpperCase(),
+                    style: PanAfricanTypography.labelSmall(context)
+                        .copyWith(color: colorScheme.onPrimary),
+                  ),
                 ),
               ),
               SizedBox(width: PanAfricanSpacing.sm),
-              Text(otherUserName),
+              Semantics(
+                label: 'Chat with $otherUserName',
+                child: Text(otherUserName),
+              ),
             ],
           ),
           backgroundColor: Colors.transparent,
@@ -144,26 +151,30 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
                   // Messages List
                   Expanded(
               child: messages.value.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.chat_bubble_outline,
-                            size: 64.sp,
-                            color: PanAfricanColors.neutralMedium,
-                          ),
-                          SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'No messages yet',
-                            style: PanAfricanTypography.bodyLarge(context),
-                          ),
-                          SizedBox(height: PanAfricanSpacing.xs),
-                          Text(
-                            'Start a conversation with $otherUserName',
-                            style: PanAfricanTypography.bodySmall(context),
-                          ),
-                        ],
+                  ? Semantics(
+                      label: 'No messages yet. Start a conversation with $otherUserName',
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.chat_bubble_outline,
+                              size: 64.sp,
+                              color: PanAfricanColors.neutralMedium,
+                              semanticLabel: 'Empty chat icon',
+                            ),
+                            SizedBox(height: PanAfricanSpacing.md),
+                            Text(
+                              'No messages yet',
+                              style: PanAfricanTypography.bodyLarge(context),
+                            ),
+                            SizedBox(height: PanAfricanSpacing.xs),
+                            Text(
+                              'Start a conversation with $otherUserName',
+                              style: PanAfricanTypography.bodySmall(context),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   : OptimizedListView.builder(
@@ -198,64 +209,74 @@ class PrivateChatScreenMaterial3 extends HookConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                        hintText: 'Type a message...',
-                        border: OutlineInputBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide(
-                            color: isDark
-                                ? PanAfricanColors.borderDark
-                                : PanAfricanColors.borderLight,
+                    child: Semantics(
+                      label: 'Message input field',
+                      hint: 'Type a message to send',
+                      textField: true,
+                      child: TextField(
+                        controller: messageController,
+                        decoration: InputDecoration(
+                          hintText: 'Type a message...',
+                          border: OutlineInputBorder(
+                            borderRadius: PanAfricanRadius.lgBR,
+                            borderSide: BorderSide(
+                              color: isDark
+                                  ? PanAfricanColors.borderDark
+                                  : PanAfricanColors.borderLight,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: PanAfricanRadius.lgBR,
+                            borderSide: BorderSide(
+                              color: isDark
+                                  ? PanAfricanColors.borderDark
+                                  : PanAfricanColors.borderLight,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: PanAfricanRadius.lgBR,
+                            borderSide: BorderSide(
+                              color: PanAfricanColors.primary,
+                              width: 2,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? PanAfricanColors.surfaceDark
+                              : PanAfricanColors.surfaceLight,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: PanAfricanSpacing.md,
+                            vertical: PanAfricanSpacing.sm,
                           ),
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide(
-                            color: isDark
-                                ? PanAfricanColors.borderDark
-                                : PanAfricanColors.borderLight,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: PanAfricanRadius.lgBR,
-                          borderSide: BorderSide(
-                            color: PanAfricanColors.primary,
-                            width: 2,
-                          ),
-                        ),
-                        filled: true,
-                        fillColor: isDark
-                            ? PanAfricanColors.surfaceDark
-                            : PanAfricanColors.surfaceLight,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: PanAfricanSpacing.md,
-                          vertical: PanAfricanSpacing.sm,
-                        ),
+                        onSubmitted: (_) {
+                          HapticFeedback.lightImpact();
+                          sendMessage();
+                        },
                       ),
-                      onSubmitted: (_) {
-                        HapticFeedback.lightImpact();
-                        sendMessage();
-                      },
                     ),
                   ),
                   SizedBox(width: PanAfricanSpacing.sm),
-                  IconButton(
-                    icon: isLoading.value
-                        ? SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Icon(Icons.send),
-                    onPressed: isLoading.value
-                        ? null
-                        : () {
-                            HapticFeedback.lightImpact();
-                            sendMessage();
-                          },
-                    color: PanAfricanColors.primary,
+                  Semantics(
+                    label: isLoading.value ? 'Sending message' : 'Send message',
+                    button: true,
+                    enabled: !isLoading.value,
+                    child: IconButton(
+                      icon: isLoading.value
+                          ? SizedBox(
+                              width: 20.w,
+                              height: 20.h,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Icon(Icons.send),
+                      onPressed: isLoading.value
+                          ? null
+                          : () {
+                              HapticFeedback.lightImpact();
+                              sendMessage();
+                            },
+                      color: PanAfricanColors.primary,
+                    ),
                   ),
                 ],
               ),
@@ -284,8 +305,11 @@ class _PrivateMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     final timestamp = message['createdAt'] ?? message['timestamp'];
     final colorScheme = Theme.of(context).colorScheme;
+    final messageText = message['message'] ?? '';
 
-    return Align(
+    return Semantics(
+      label: '${isMe ? 'Your message' : 'Received message'}: $messageText',
+      child: Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
@@ -310,7 +334,7 @@ class _PrivateMessageBubble extends StatelessWidget {
               isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Text(
-              message['message'] ?? '',
+              messageText,
               style: PanAfricanTypography.bodyMedium(context).copyWith(
                 color: isMe ? colorScheme.onPrimary : null,
               ),
@@ -329,6 +353,7 @@ class _PrivateMessageBubble extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 

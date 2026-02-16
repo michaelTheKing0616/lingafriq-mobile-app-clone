@@ -234,12 +234,16 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
+          Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -371,21 +375,25 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
                   );
                 }),
                 SizedBox(height: PolieSpacing.lg),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      HapticFeedback.mediumImpact();
-                      _completeExercise();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: PolieColors.success,
-                      padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                    ),
-                    child: Text(
-                      'Submit Answers',
-                      style: PolieTypography.labelLarge(context).copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                Semantics(
+                  label: 'Submit your answers',
+                  button: true,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        HapticFeedback.mediumImpact();
+                        _completeExercise();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: PolieColors.success,
+                        padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                      ),
+                      child: Text(
+                        'Submit Answers',
+                        style: PolieTypography.labelLarge(context).copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                       ),
                     ),
                   ),
@@ -403,15 +411,19 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              setState(() {
-                _currentExercise = null;
-                _answers = {};
-              });
-            },
+          Semantics(
+            label: 'Go back to exercise list',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() {
+                  _currentExercise = null;
+                  _answers = {};
+                });
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -436,13 +448,18 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
       ),
       child: Column(
         children: [
-          IconButton(
-            icon: Icon(
-              _isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
-              size: 64.sp,
-              color: PolieColors.electricTeal,
+          Semantics(
+            label: _isPlaying ? 'Pause audio' : 'Play audio',
+            button: true,
+            child: IconButton(
+              icon: Icon(
+                _isPlaying ? Icons.pause_circle_filled : Icons.play_circle_filled,
+                size: 64.sp,
+                color: PolieColors.electricTeal,
+                semanticLabel: _isPlaying ? 'Pause' : 'Play',
+              ),
+              onPressed: () => _playAudio(_currentExercise?.audioUrl),
             ),
-            onPressed: () => _playAudio(_currentExercise?.audioUrl),
           ),
           SizedBox(height: PolieSpacing.sm),
           Text(
@@ -453,15 +470,18 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
           ),
           if (_currentExercise?.transcript != null) ...[
             SizedBox(height: PolieSpacing.md),
-            Container(
-              padding: EdgeInsets.all(PolieSpacing.md),
-              decoration: BoxDecoration(
-                color: PolieColors.surfaceContainer,
-                borderRadius: BorderRadius.circular(PolieRadius.md),
-              ),
-              child: Text(
-                'Transcript: ${_currentExercise!.transcript}',
-                style: PolieTypography.body(context),
+            Semantics(
+              label: 'Transcript: ${_currentExercise!.transcript}',
+              child: Container(
+                padding: EdgeInsets.all(PolieSpacing.md),
+                decoration: BoxDecoration(
+                  color: PolieColors.surfaceContainer,
+                  borderRadius: BorderRadius.circular(PolieRadius.md),
+                ),
+                child: Text(
+                  'Transcript: ${_currentExercise!.transcript}',
+                  style: PolieTypography.body(context),
+                ),
               ),
             ),
           ],
@@ -496,13 +516,16 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
             margin: EdgeInsets.only(bottom: PolieSpacing.sm),
             child: Material(
               color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  _submitAnswer(question.id, option);
-                },
-                borderRadius: BorderRadius.circular(PolieRadius.md),
-                child: Container(
+                child: Semantics(
+                  label: 'Answer option: $option',
+                  button: true,
+                  child: InkWell(
+                    onTap: () {
+                      HapticFeedback.lightImpact();
+                      _submitAnswer(question.id, option);
+                    },
+                    borderRadius: BorderRadius.circular(PolieRadius.md),
+                    child: Container(
                   padding: EdgeInsets.all(PolieSpacing.md),
                   decoration: BoxDecoration(
                     color: isSelected
@@ -551,12 +574,16 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
           ),
         ),
         SizedBox(height: PolieSpacing.md),
-        TextField(
-          onChanged: (value) => _submitAnswer(question.id, value),
-          decoration: InputDecoration(
-            hintText: 'Type your answer',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(PolieRadius.md),
+        Semantics(
+          label: 'Type your answer for: ${question.question}',
+          textField: true,
+          child: TextField(
+            onChanged: (value) => _submitAnswer(question.id, value),
+            decoration: InputDecoration(
+              hintText: 'Type your answer',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(PolieRadius.md),
+              ),
             ),
           ),
         ),
@@ -621,32 +648,37 @@ class _DifficultyChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: PolieSpacing.md,
-          vertical: PolieSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          color: selected
-              ? PolieColors.electricTeal.withOpacity(0.3)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(PolieRadius.pill),
-          border: Border.all(
-            color: selected ? PolieColors.electricTeal : Colors.transparent,
+    return Semantics(
+      label: 'Difficulty: $label${selected ? ", selected" : ""}',
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: PolieSpacing.md,
+            vertical: PolieSpacing.sm,
           ),
-        ),
-        child: Text(
-          label,
-          style: PolieTypography.label(context).copyWith(
-            color: selected ? PolieColors.electricTeal : PolieColors.textSecondary,
+          decoration: BoxDecoration(
+            color: selected
+                ? PolieColors.electricTeal.withOpacity(0.3)
+                : Colors.transparent,
+            borderRadius: BorderRadius.circular(PolieRadius.pill),
+            border: Border.all(
+              color: selected ? PolieColors.electricTeal : Colors.transparent,
+            ),
+          ),
+          child: Text(
+            label,
+            style: PolieTypography.label(context).copyWith(
+              color: selected ? PolieColors.electricTeal : PolieColors.textSecondary,
+            ),
           ),
         ),
       ),
+    ),
     );
   }
 }
@@ -692,13 +724,16 @@ class _ExerciseCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.mediumImpact();
-            onTap();
-          },
-          borderRadius: BorderRadius.circular(PolieRadius.lg),
-          child: Padding(
+        child: Semantics(
+          label: '${exercise.title}. ${exercise.difficulty} difficulty. ${exercise.questions.length} questions',
+          button: true,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.mediumImpact();
+              onTap();
+            },
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            child: Padding(
             padding: EdgeInsets.all(PolieSpacing.lg),
             child: Row(
               children: [
@@ -730,10 +765,14 @@ class _ExerciseCard extends StatelessWidget {
                             ),
                           ),
                           if (isCompleted)
-                            Icon(
-                              Icons.check_circle,
-                              color: PolieColors.success,
-                              size: 20.sp,
+                            Semantics(
+                              label: 'Completed',
+                              child: Icon(
+                                Icons.check_circle,
+                                color: PolieColors.success,
+                                size: 20.sp,
+                                semanticLabel: 'Completed',
+                              ),
                             ),
                         ],
                       ),
@@ -769,10 +808,13 @@ class _ExerciseCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16.sp,
-                  color: PolieColors.textSecondary,
+                Semantics(
+                  excludeSemantics: true,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16.sp,
+                    color: PolieColors.textSecondary,
+                  ),
                 ),
               ],
             ),

@@ -15,9 +15,12 @@ class CommunityChatScreenMaterial3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommunityChatScreen(
-      villageId: villageId,
-      villageName: villageName,
+    return Semantics(
+      label: 'Community chat. Messages list, message input and send button below.',
+      child: CommunityChatScreen(
+        villageId: villageId,
+        villageName: villageName,
+      ),
     );
   }
 }

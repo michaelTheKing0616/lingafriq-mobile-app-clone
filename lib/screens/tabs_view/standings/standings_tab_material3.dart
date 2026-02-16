@@ -45,16 +45,23 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                 title: 'Leaderboard',
                 showBackButton: false,
                 actions: [
-                  IconButton(
-                    icon: const Icon(Icons.menu_rounded),
-                    onPressed: () {
-                      ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                    },
-                    tooltip: 'Menu',
+                  Semantics(
+                    label: 'Open menu',
+                    button: true,
+                    child: IconButton(
+                      icon: const Icon(Icons.menu_rounded),
+                      onPressed: () {
+                        ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                      },
+                      tooltip: 'Menu',
+                    ),
                   ),
-                  Image.asset(
-                    Images.goldBar,
-                    height: 0.1.sh,
+                  Semantics(
+                    excludeSemantics: true,
+                    child: Image.asset(
+                      Images.goldBar,
+                      height: 0.1.sh,
+                    ),
                   ),
                 ],
               ),
@@ -78,7 +85,9 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                           horizontal: AdaptiveLayout.sideMargin(context),
                           vertical: PanAfricanSpacing.md,
                         ),
-                        child: SegmentedButton<int>(
+                        child: Semantics(
+                          label: 'Leaderboard view: ${index == 0 ? 'Global' : 'Country'}. Switch between Global and Country.',
+                          child: SegmentedButton<int>(
                           segments: const [
                             ButtonSegment<int>(
                               value: 0,
@@ -105,6 +114,7 @@ class StandingsTabMaterial3 extends HookConsumerWidget {
                                 ? PanAfricanColors.textPrimaryDark
                                 : PanAfricanColors.textPrimaryLight,
                           ),
+                        ),
                         ),
                       ),
                       Expanded(

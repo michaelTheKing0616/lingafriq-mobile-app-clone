@@ -71,12 +71,16 @@ class SeasonalEventsScreen extends HookConsumerWidget {
           'Seasonal Events',
           style: PanAfricanTypography.headlineMedium(context),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -152,7 +156,10 @@ class _EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return GestureDetector(
+    return Semantics(
+      label: '${event.title}. ${event.description}. ${isActive ? "Active" : "Upcoming"}. Tap for details.',
+      button: true,
+      child: GestureDetector(
       onTap: () {
         HapticFeedback.lightImpact();
         Navigator.push(
@@ -332,6 +339,7 @@ class _EventCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 

@@ -204,11 +204,15 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
         },
         child: Scaffold(
           appBar: AppBar(
-            leading: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: _handleExitRequest,
+            leading: Semantics(
+              label: 'Back',
+              button: true,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, semanticLabel: 'Back'),
+                  onPressed: _handleExitRequest,
+                ),
               ),
             ),
           title: Text('Speed Challenge - ${widget.language.name}'),
@@ -253,11 +257,15 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                     padding: EdgeInsets.only(
                       bottom: MediaQuery.of(context).viewPadding.bottom,
                     ),
-                    child: PanAfricanButton(
-                      onPressed: _startGame,
-                      label: 'Start Game',
-                      backgroundColor: _accentColor,
-                      foregroundColor: colorScheme.onPrimary,
+                    child: Semantics(
+                      label: 'Start game button',
+                      button: true,
+                      child: PanAfricanButton(
+                        onPressed: _startGame,
+                        label: 'Start Game',
+                        backgroundColor: _accentColor,
+                        foregroundColor: colorScheme.onPrimary,
+                      ),
                     ),
                   ),
                 ),
@@ -278,9 +286,13 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Speed Challenge'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: _handleExitRequest,
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, semanticLabel: 'Back'),
+            onPressed: _handleExitRequest,
+          ),
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -298,9 +310,13 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               // Timer and score
               Row(
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.close, color: context.adaptive),
-                    onPressed: _handleExitRequest,
+                  Semantics(
+                    label: 'Close and exit game',
+                    button: true,
+                    child: IconButton(
+                      icon: Icon(Icons.close, color: context.adaptive, semanticLabel: 'Close'),
+                      onPressed: _handleExitRequest,
+                    ),
                   ),
                   Expanded(
                     child: Container(
@@ -326,16 +342,20 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                                 ? PanAfricanColors.error
                                 : _accentColor,
                             size: 20.sp,
+                            semanticLabel: 'Timer',
                           ),
                           SizedBox(width: 8),
-                          Text(
-                            '$_timeRemaining',
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
-                              color: _timeRemaining <= 10
-                                  ? PanAfricanColors.error
-                                  : _accentColor,
+                          Semantics(
+                            label: 'Time remaining: $_timeRemaining seconds',
+                            child: Text(
+                              '$_timeRemaining',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: _timeRemaining <= 10
+                                    ? PanAfricanColors.error
+                                    : _accentColor,
+                              ),
                             ),
                           ),
                         ],
@@ -352,14 +372,17 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.star, color: PanAfricanColors.secondary, size: 20.sp),
+                        Icon(Icons.star, color: PanAfricanColors.secondary, size: 20.sp, semanticLabel: 'Score'),
                         SizedBox(width: 8),
-                        Text(
-                          '$_correctAnswers',
-                          style: TextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: PanAfricanColors.primary,
+                        Semantics(
+                          label: 'Score: $_correctAnswers correct answers',
+                          child: Text(
+                            '$_correctAnswers',
+                            style: TextStyle(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: PanAfricanColors.primary,
+                            ),
                           ),
                         ),
                       ],
@@ -391,30 +414,35 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                       
                       return Padding(
                         padding: EdgeInsets.only(bottom: 12.sp),
-                        child: PanAfricanCard(
-                          onTap: () => _selectAnswer(option),
-                          child: Container(
-                            padding: EdgeInsets.all(16.sp),
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? _accentColor.withOpacity(0.2)
-                                  : null,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
+                        child: Semantics(
+                          label: 'Answer option: $option',
+                          button: true,
+                          selected: isSelected,
+                          child: PanAfricanCard(
+                            onTap: () => _selectAnswer(option),
+                            child: Container(
+                              padding: EdgeInsets.all(16.sp),
+                              decoration: BoxDecoration(
                                 color: isSelected
-                                    ? _accentColor
-                                    : Colors.transparent,
-                                width: 2,
+                                    ? _accentColor.withOpacity(0.2)
+                                    : null,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? _accentColor
+                                      : Colors.transparent,
+                                  width: 2,
+                                ),
                               ),
-                            ),
-                            child: Text(
-                              option,
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w600,
-                                color: context.adaptive,
+                              child: Text(
+                                option,
+                                style: TextStyle(
+                                  fontSize: 18.sp,
+                                  fontWeight: FontWeight.w600,
+                                  color: context.adaptive,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           ),
                         ),
@@ -458,7 +486,7 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
                   ),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(Icons.celebration, color: colorScheme.onPrimary, size: 64.sp),
+                child: Icon(Icons.celebration, color: colorScheme.onPrimary, size: 64.sp, semanticLabel: 'Celebration'),
               ),
               SizedBox(height: 24.sp),
               Text(
@@ -506,32 +534,40 @@ class _SpeedChallengeGameState extends ConsumerState<SpeedChallengeGame> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  PanAfricanButton(
-                    onPressed: () {
-                      // Restart the game
-                      setState(() {
-                        _gameComplete = false;
-                        _gameStarted = false;
-                        _currentIndex = 0;
-                        _correctAnswers = 0;
-                        _selectedAnswer = null;
-                        _score = 0;
-                        _timeRemaining = 30;
-                      });
-                      _initializeGame();
-                    },
-                    label: 'Play Again',
-                    backgroundColor: _accentColor,
-                    foregroundColor: colorScheme.onPrimary,
+                  Semantics(
+                    label: 'Play again button',
+                    button: true,
+                    child: PanAfricanButton(
+                      onPressed: () {
+                        // Restart the game
+                        setState(() {
+                          _gameComplete = false;
+                          _gameStarted = false;
+                          _currentIndex = 0;
+                          _correctAnswers = 0;
+                          _selectedAnswer = null;
+                          _score = 0;
+                          _timeRemaining = 30;
+                        });
+                        _initializeGame();
+                      },
+                      label: 'Play Again',
+                      backgroundColor: _accentColor,
+                      foregroundColor: colorScheme.onPrimary,
+                    ),
                   ),
                   const SizedBox(height: 12),
-                  PanAfricanButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    label: 'Return to Games',
-                    backgroundColor: _accentColor.withOpacity(0.7),
-                    foregroundColor: colorScheme.onPrimary,
+                  Semantics(
+                    label: 'Return to games',
+                    button: true,
+                    child: PanAfricanButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      label: 'Return to Games',
+                      backgroundColor: _accentColor.withOpacity(0.7),
+                      foregroundColor: colorScheme.onPrimary,
+                    ),
                   ),
                 ],
               ),

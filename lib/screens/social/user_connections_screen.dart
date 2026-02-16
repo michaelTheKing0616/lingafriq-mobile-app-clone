@@ -98,16 +98,23 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
         backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+          icon: Icon(Icons.arrow_back, color: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary, semanticLabel: 'Back'),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
           },
         ),
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.lock_outline),
+          Semantics(
+            label: 'Open private chats list',
+            button: true,
+            child: IconButton(
+            icon: const Icon(Icons.lock_outline, semanticLabel: 'Private chats'),
             tooltip: 'Private chats',
             onPressed: () {
               HapticFeedback.lightImpact();
@@ -118,6 +125,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                 ),
               );
             },
+          ),
           )
         ],
       ),
@@ -127,7 +135,11 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.md),
             color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
-            child: TextField(
+            child: Semantics(
+              label: 'Search users',
+              hint: 'Search by username or name',
+              textField: true,
+              child: TextField(
               onChanged: (value) {
                 _searchDebouncer.run(() {
                   setState(() {
@@ -147,6 +159,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
                 contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.sm),
               ),
               style: PanAfricanTypography.bodyMedium(context),
+            ),
             ),
           ),
           
@@ -320,8 +333,11 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
             color: isOnline ? PanAfricanColors.success : PanAfricanColors.textSecondary,
           ),
         ),
-        trailing: IconButton(
-          icon: Icon(Icons.chat_bubble_outline_rounded, color: PanAfricanColors.primary),
+        trailing: Semantics(
+          label: 'Start private chat with $username',
+          button: true,
+          child: IconButton(
+          icon: Icon(Icons.chat_bubble_outline_rounded, color: PanAfricanColors.primary, semanticLabel: 'Message'),
           onPressed: () {
             HapticFeedback.lightImpact();
             final contact = PrivateChatContact.fromOnlineMap(userData);
@@ -340,6 +356,7 @@ class _UserConnectionsScreenState extends ConsumerState<UserConnectionsScreen> {
               ),
             );
           },
+        ),
         ),
       ),
     );

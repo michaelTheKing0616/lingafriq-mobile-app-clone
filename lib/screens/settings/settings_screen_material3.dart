@@ -58,12 +58,16 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_rounded),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
         title: Text(
           'Settings',
@@ -93,6 +97,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                           : Icons.light_mode_rounded,
                       title: 'Dark Mode',
                       subtitle: 'Switch between light and dark theme',
+                      toggleValue: isDark.value,
                       trailing: Switch.adaptive(
                         value: isDark.value,
                         onChanged: (value) async {
@@ -130,6 +135,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.notifications_rounded,
                       title: 'Push Notifications',
                       subtitle: 'Receive push notifications',
+                      toggleValue: notificationsEnabled.value,
                       trailing: Switch.adaptive(
                         value: notificationsEnabled.value,
                         onChanged: (value) {
@@ -145,6 +151,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.access_alarm_rounded,
                       title: 'Daily Reminders',
                       subtitle: 'Get reminded to practice daily',
+                      toggleValue: dailyRemindersEnabled.value,
                       trailing: Switch.adaptive(
                         value: dailyRemindersEnabled.value,
                         onChanged: (value) {
@@ -170,6 +177,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.volume_up_rounded,
                       title: 'Sound Effects',
                       subtitle: 'Play sound effects during lessons',
+                      toggleValue: soundEffectsEnabled.value,
                       trailing: Switch.adaptive(
                         value: soundEffectsEnabled.value,
                         onChanged: (value) {
@@ -216,6 +224,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                         subtitle: biometricType.value != null
                             ? 'Sign in with ${biometricType.value}'
                             : 'Use biometric to sign in quickly',
+                        toggleValue: biometricEnabled.value ?? false,
                         trailing: Switch.adaptive(
                           value: biometricEnabled.value ?? false,
                           onChanged: (value) async {
@@ -268,6 +277,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                       icon: Icons.lock_rounded,
                       title: 'Encrypt Cached Data',
                       subtitle: 'Encrypt sensitive data stored on device',
+                      toggleValue: cacheEncryptionEnabled.value ?? false,
                       trailing: Switch.adaptive(
                         value: cacheEncryptionEnabled.value ?? false,
                         onChanged: (value) async {
@@ -533,13 +543,16 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
             left: PanAfricanSpacing.sm,
             bottom: PanAfricanSpacing.sm,
           ),
-          child: Text(
-            title,
-            style: PanAfricanTypography.titleMedium(context).copyWith(
-              color: isDark
-                  ? PanAfricanColors.textPrimaryDark
-                  : PanAfricanColors.textPrimaryLight,
-              fontWeight: FontWeight.w600,
+          child: Semantics(
+            header: true,
+            child: Text(
+              title,
+              style: PanAfricanTypography.titleMedium(context).copyWith(
+                color: isDark
+                    ? PanAfricanColors.textPrimaryDark
+                    : PanAfricanColors.textPrimaryLight,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ),
@@ -1044,6 +1057,7 @@ class _SettingsTile extends StatelessWidget {
   final Widget? trailing;
   final VoidCallback? onTap;
   final bool isDark;
+  final bool? toggleValue;
 
   const _SettingsTile({
     required this.icon,
@@ -1052,25 +1066,39 @@ class _SettingsTile extends StatelessWidget {
     this.trailing,
     this.onTap,
     required this.isDark,
+    this.toggleValue,
   });
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: PanAfricanSpacing.sm,
-          vertical: PanAfricanSpacing.md,
-        ),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: PanAfricanColors.primary,
-              size: 24.sp,
-            ),
+    String semanticLabel;
+    if (toggleValue != null) {
+      semanticLabel = '$title, currently ${toggleValue! ? 'on' : 'off'}';
+    } else if (subtitle != null) {
+      semanticLabel = '$title. $subtitle';
+    } else {
+      semanticLabel = title;
+    }
+    final isButton = onTap != null;
+    return Semantics(
+      label: semanticLabel,
+      button: isButton,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: PanAfricanSpacing.sm,
+            vertical: PanAfricanSpacing.md,
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                color: PanAfricanColors.primary,
+                size: 24.sp,
+                semanticLabel: title,
+              ),
             SizedBox(width: PanAfricanSpacing.md),
             Expanded(
               child: Column(
@@ -1089,9 +1117,11 @@ class _SettingsTile extends StatelessWidget {
               ),
             ),
             if (trailing != null) trailing!,
-          ],
+            ],
+          ),
         ),
       ),
+    ),
     );
   }
 }
@@ -1146,14 +1176,17 @@ class _LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: PanAfricanColors.error.withOpacity(0.1),
-      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-      child: InkWell(
-        onTap: () {
-          HapticFeedback.mediumImpact();
-          onTap();
-        },
+    return Semantics(
+      label: 'Log out',
+      button: true,
+      child: Material(
+        color: PanAfricanColors.error.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        child: InkWell(
+          onTap: () {
+            HapticFeedback.mediumImpact();
+            onTap();
+          },
         borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
         child: Container(
           width: double.infinity,
@@ -1177,6 +1210,7 @@ class _LogoutButton extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

@@ -374,13 +374,21 @@ class PlacementTestScreen extends HookConsumerWidget {
           child: Column(
             children: [
               // Progress
-              Container(
+              Semantics(
+                label: 'Question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                value: '${currentQuestionIndex.value + 1} of ${questions.length}',
+                child:               Container(
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
-                child: LinearProgressIndicator(
+                child: Semantics(
+                  label: 'Progress: question ${currentQuestionIndex.value + 1} of ${questions.length}',
+                  value: '${currentQuestionIndex.value + 1} of ${questions.length}',
+                  child: LinearProgressIndicator(
                   value: (currentQuestionIndex.value + 1) / questions.length,
                   backgroundColor: PanAfricanColors.neutralLight,
                   valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
                 ),
+              ),
+              ),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               Text(
@@ -408,7 +416,11 @@ class PlacementTestScreen extends HookConsumerWidget {
                           final option = entry.value;
                           final isSelected = answers.value[currentQuestionIndex.value] == option;
 
-                          return Card(
+                          return Semantics(
+                            label: 'Answer option: $option${isSelected ? ", selected" : ""}',
+                            button: true,
+                            selected: isSelected,
+                            child: Card(
                             margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
                             color: isSelected
                                 ? PanAfricanColors.primary
@@ -423,7 +435,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                                 ),
                               ),
                               trailing: isSelected
-                                  ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary)
+                                  ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary, semanticLabel: 'Selected')
                                   : null,
                               onTap: () {
                                 answers.value = {
@@ -432,6 +444,7 @@ class PlacementTestScreen extends HookConsumerWidget {
                                 };
                                 HapticFeedback.mediumImpact();
                               },
+                            ),
                             ),
                           );
                         }),

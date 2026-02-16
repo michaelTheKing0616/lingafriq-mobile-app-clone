@@ -260,12 +260,16 @@ Rules:
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
                   child: Row(
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-                        onPressed: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.pop(context);
-                        },
+                      Semantics(
+                        label: 'Go back',
+                        button: true,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.pop(context);
+                          },
+                        ),
                       ),
                       Expanded(
                         child: Text(
@@ -273,11 +277,14 @@ Rules:
                           style: PolieTypography.h2(context).copyWith(color: PolieColors.textPrimary),
                         ),
                       ),
-                      PolieLanguagePill(
-                        label: selectedLanguage.value.displayName,
-                        isSelected: true,
-                        accentColor: PolieColors.royalAmethyst,
-                        onTap: () {
+                      Semantics(
+                        label: 'Select language. Current: ${selectedLanguage.value.displayName}',
+                        button: true,
+                        child: PolieLanguagePill(
+                          label: selectedLanguage.value.displayName,
+                          isSelected: true,
+                          accentColor: PolieColors.royalAmethyst,
+                          onTap: () {
                           showModalBottomSheet(
                             context: context,
                             backgroundColor: Colors.transparent,
@@ -304,6 +311,7 @@ Rules:
                             ),
                           );
                         },
+                        ),
                       ),
                       SizedBox(width: PolieSpacing.xs),
                     ],
@@ -319,43 +327,50 @@ Rules:
                       final isSelected = selectedRole.value == id;
                       return Padding(
                         padding: EdgeInsets.only(right: PolieSpacing.sm),
-                        child: FilterChip(
-                          label: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(r['icon'] as IconData, size: 16.sp, color: isSelected ? Theme.of(context).colorScheme.onPrimary : PolieColors.textSecondary),
-                              SizedBox(width: PolieSpacing.xs),
-                              Text(r['label'] as String, style: PolieTypography.label(context)),
-                            ],
-                          ),
-                          selected: isSelected,
-                          onSelected: (v) {
-                            HapticFeedback.selectionClick();
-                            selectedRole.value = id;
-                          },
+                        child: Semantics(
+                          label: 'Role: ${r['label']}. ${isSelected ? 'Selected' : ''}',
+                          button: true,
+                          child: FilterChip(
+                            label: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(r['icon'] as IconData, size: 16.sp, color: isSelected ? Theme.of(context).colorScheme.onPrimary : PolieColors.textSecondary, semanticLabel: r['label'] as String),
+                                SizedBox(width: PolieSpacing.xs),
+                                Text(r['label'] as String, style: PolieTypography.label(context)),
+                              ],
+                            ),
+                            selected: isSelected,
+                            onSelected: (v) {
+                              HapticFeedback.selectionClick();
+                              selectedRole.value = id;
+                            },
                           selectedColor: PolieColors.royalAmethyst,
                           checkmarkColor: Theme.of(context).colorScheme.onPrimary,
                           backgroundColor: PolieColors.surfaceContainer,
+                          ),
                         ),
                       );
                     }).toList(),
                   ),
                 ),
                 // Tone / difficulty slider
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: PolieSpacing.lg),
-                  child: Row(
-                    children: [
-                      Text('Easier', style: PolieTypography.bodySmall(context)),
-                      Expanded(
-                        child: Slider(
-                          value: difficulty.value,
-                          onChanged: (v) => difficulty.value = v,
-                          activeColor: PolieColors.electricTeal,
+                Semantics(
+                  label: 'Difficulty: Easier to Harder. Adjust to change response complexity.',
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: PolieSpacing.lg),
+                    child: Row(
+                      children: [
+                        Text('Easier', style: PolieTypography.bodySmall(context)),
+                        Expanded(
+                          child: Slider(
+                            value: difficulty.value,
+                            onChanged: (v) => difficulty.value = v,
+                            activeColor: PolieColors.electricTeal,
+                          ),
                         ),
-                      ),
-                      Text('Harder', style: PolieTypography.bodySmall(context)),
-                    ],
+                        Text('Harder', style: PolieTypography.bodySmall(context)),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
@@ -391,30 +406,37 @@ Rules:
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextField(
-                          controller: messageController,
-                          decoration: InputDecoration(
-                            hintText: 'Type your message...',
-                            border: InputBorder.none,
-                            filled: false,
+                        child: Semantics(
+                          label: 'Type your message',
+                          child: TextField(
+                            controller: messageController,
+                            decoration: InputDecoration(
+                              hintText: 'Type your message...',
+                              border: InputBorder.none,
+                              filled: false,
+                            ),
+                            style: PolieTypography.body(context),
+                            onSubmitted: (_) => sendMessage(),
                           ),
-                          style: PolieTypography.body(context),
-                          onSubmitted: (_) => sendMessage(),
                         ),
                       ),
                       SizedBox(width: PolieSpacing.sm),
-                      IconButton(
-                        icon: isLoading.value
-                            ? SizedBox(
-                                width: 24.w,
-                                height: 24.h,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(PolieColors.electricTeal),
-                                ),
-                              )
-                            : Icon(Icons.send_rounded, color: PolieColors.electricTeal),
-                        onPressed: isLoading.value ? null : sendMessage,
+                      Semantics(
+                        label: isLoading.value ? 'Sending' : 'Send message',
+                        button: true,
+                        child: IconButton(
+                          icon: isLoading.value
+                              ? SizedBox(
+                                  width: 24.w,
+                                  height: 24.h,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(PolieColors.electricTeal),
+                                  ),
+                                )
+                              : Icon(Icons.send_rounded, color: PolieColors.electricTeal, semanticLabel: 'Send'),
+                          onPressed: isLoading.value ? null : sendMessage,
+                        ),
                       ),
                     ],
                   ),
@@ -502,12 +524,15 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      HapticFeedback.selectionClick();
-                      setState(() => _hintsExpanded = !_hintsExpanded);
-                    },
-                    child: PolieGlassCard(
+                  Semantics(
+                    label: _hintsExpanded ? 'Hide hint' : 'Need a hint? Tap to expand',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        setState(() => _hintsExpanded = !_hintsExpanded);
+                      },
+                      child: PolieGlassCard(
                       padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
                       borderRadius: PolieRadius.sm,
                       child: Row(
@@ -516,6 +541,7 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
                             _hintsExpanded ? Icons.lightbulb_rounded : Icons.lightbulb_outline_rounded,
                             size: 16.sp,
                             color: PolieColors.goldEmber,
+                            semanticLabel: _hintsExpanded ? 'Hint expanded' : 'Hint',
                           ),
                           SizedBox(width: PolieSpacing.xs),
                           Text(
@@ -530,6 +556,7 @@ class _DialogueMessageItemState extends State<_DialogueMessageItem> {
                           ),
                         ],
                       ),
+                    ),
                     ),
                   ),
                   if (_hintsExpanded)

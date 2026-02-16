@@ -206,7 +206,10 @@ class _ModeJourneyCard extends StatelessWidget {
     final color = Color(mode['color'] as int);
     final poem = mode['poem'] as String? ?? mode['description'] as String;
 
-    return PolieGlassCard(
+    return Semantics(
+      label: '${mode['title']}: ${mode['description']}',
+      button: true,
+      child: PolieGlassCard(
       hasGlow: true,
       glowColor: color,
       padding: EdgeInsets.symmetric(
@@ -265,10 +268,11 @@ class _ModeJourneyCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Icons.arrow_forward_ios, size: 14.sp, color: color),
+            Icon(Icons.arrow_forward_ios, size: 14.sp, color: color, semanticLabel: 'Open'),
           ],
         ),
       ),
+    ),
     );
   }
 }
@@ -288,7 +292,10 @@ class _SurpriseMeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PolieGlassCard(
+    return Semantics(
+      label: 'Surprise me: choose a random learning mode',
+      button: true,
+      child: PolieGlassCard(
       hasGlow: true,
       glowColor: PolieColors.goldEmber,
       padding: EdgeInsets.symmetric(
@@ -336,6 +343,7 @@ class _SurpriseMeButton extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

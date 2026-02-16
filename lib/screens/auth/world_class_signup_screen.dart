@@ -219,7 +219,9 @@ class WorldClassSignupScreen extends HookConsumerWidget {
   }
 
   Widget _buildProgressIndicator(int currentStep, int totalSteps, bool isDark) {
-    return Container(
+    return Semantics(
+      label: 'Step ${currentStep + 1} of $totalSteps',
+      child: Container(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
       child: Row(
         children: List.generate(totalSteps, (index) {
@@ -240,6 +242,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           );
         }),
       ),
+    ),
     );
   }
 
@@ -264,10 +267,13 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             ),
           ],
         ),
-        child: Icon(
-          Icons.person_add,
-          size: 50.sp,
-          color: Theme.of(context).colorScheme.onPrimary,
+        child: Semantics(
+          excludeSemantics: true,
+          child: Icon(
+            Icons.person_add,
+            size: 50.sp,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ),
     );
@@ -383,24 +389,37 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
-        TextFormField(
-          controller: controller,
-          obscureText: !showPassword.value,
-          validator: Validators.passwordValidator,
-          style: PanAfricanTypography.bodyLarge(context),
-          decoration: InputDecoration(
-            hintText: 'Create a strong password',
-            prefixIcon: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
-            suffixIcon: IconButton(
-              icon: Icon(
-                showPassword.value ? Icons.visibility_off : Icons.visibility,
-                color: PanAfricanColors.textSecondaryLight,
+        Semantics(
+          label: 'Password',
+          textField: true,
+          obscureValue: !showPassword.value,
+          child: TextFormField(
+            controller: controller,
+            obscureText: !showPassword.value,
+            validator: Validators.passwordValidator,
+            style: PanAfricanTypography.bodyLarge(context),
+            decoration: InputDecoration(
+              hintText: 'Create a strong password',
+              semanticLabel: 'Password',
+              prefixIcon: Semantics(
+                label: 'Password lock icon',
+                excludeSemantics: true,
+                child: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
               ),
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                showPassword.value = !showPassword.value;
-              },
-            ),
+              suffixIcon: Semantics(
+                label: showPassword.value ? 'Hide password' : 'Show password',
+                button: true,
+                child: IconButton(
+                  icon: Icon(
+                    showPassword.value ? Icons.visibility_off : Icons.visibility,
+                    color: PanAfricanColors.textSecondaryLight,
+                  ),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    showPassword.value = !showPassword.value;
+                  },
+                ),
+              ),
             filled: true,
             fillColor: isDark
                 ? PanAfricanColors.surfaceContainerDark
@@ -425,6 +444,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
           ),
         ),
+        ),
         SizedBox(height: PanAfricanSpacing.xs),
         _buildPasswordStrengthIndicator(context, controller.text, isDark),
       ],
@@ -445,12 +465,16 @@ class WorldClassSignupScreen extends HookConsumerWidget {
       hint: 'Re-enter your password',
       icon: Icons.lock_outline,
       obscureText: !showPassword.value,
-      suffixIcon: IconButton(
-        icon: Icon(
-          showPassword.value ? Icons.visibility_off : Icons.visibility,
-          color: Colors.grey[600],
+      suffixIcon: Semantics(
+        label: showPassword.value ? 'Hide password' : 'Show password',
+        button: true,
+        child: IconButton(
+          icon: Icon(
+            showPassword.value ? Icons.visibility_off : Icons.visibility,
+            color: Colors.grey[600],
+          ),
+          onPressed: () => showPassword.value = !showPassword.value,
         ),
-        onPressed: () => showPassword.value = !showPassword.value,
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -481,11 +505,17 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
-        DropdownButtonFormField<String>(
+        Semantics(
+          label: 'Country of residence',
+          button: true,
+          child: DropdownButtonFormField<String>(
           value: selectedCountry.value,
           decoration: InputDecoration(
             hintText: 'Select your country',
-            prefixIcon: Icon(Icons.public, color: PanAfricanColors.primary),
+            prefixIcon: Semantics(
+              excludeSemantics: true,
+              child: Icon(Icons.public, color: PanAfricanColors.primary),
+            ),
             filled: true,
             fillColor: isDark
                 ? PanAfricanColors.surfaceContainerDark
@@ -523,6 +553,8 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             return null;
           },
         ),
+        ),
+        ),
       ],
     );
   }
@@ -547,11 +579,13 @@ class WorldClassSignupScreen extends HookConsumerWidget {
 
     final labels = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: List.generate(5, (index) {
+    return Semantics(
+      label: 'Password strength: ${labels[strength.clamp(0, 4)]}',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: List.generate(5, (index) {
             return Expanded(
               child: Container(
                 height: 4.h,
@@ -574,7 +608,8 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -601,16 +636,25 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
-        TextFormField(
-          controller: controller,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          validator: validator,
-          style: PanAfricanTypography.bodyLarge(context),
-          decoration: InputDecoration(
-            hintText: hint,
-            prefixIcon: Icon(icon, color: PanAfricanColors.primary),
-            suffixIcon: suffixIcon,
+        Semantics(
+          label: label,
+          textField: true,
+          obscureValue: obscureText,
+          child: TextFormField(
+            controller: controller,
+            keyboardType: keyboardType,
+            obscureText: obscureText,
+            validator: validator,
+            style: PanAfricanTypography.bodyLarge(context),
+            decoration: InputDecoration(
+              hintText: hint,
+              semanticLabel: label,
+              prefixIcon: Semantics(
+                label: '$label icon',
+                excludeSemantics: true,
+                child: Icon(icon, color: PanAfricanColors.primary),
+              ),
+              suffixIcon: suffixIcon,
             filled: true,
             fillColor: isDark
                 ? PanAfricanColors.surfaceContainerDark
@@ -639,6 +683,7 @@ class WorldClassSignupScreen extends HookConsumerWidget {
             contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
           ),
         ),
+        ),
       ],
     );
   }
@@ -662,12 +707,15 @@ class WorldClassSignupScreen extends HookConsumerWidget {
       children: [
         if (currentStep.value > 0)
           Expanded(
-            child: ScaleOnTap(
-              onTap: () {
-                HapticFeedback.lightImpact();
-                currentStep.value--;
-              },
-              child: Container(
+            child: Semantics(
+              label: 'Back',
+              button: true,
+              child: ScaleOnTap(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  currentStep.value--;
+                },
+                child: Container(
                 height: 56.h,
                 decoration: BoxDecoration(
                   color: isDark
@@ -694,10 +742,14 @@ class WorldClassSignupScreen extends HookConsumerWidget {
                 ),
               ),
             ),
+            ),
           ),
         if (currentStep.value > 0) SizedBox(width: PanAfricanSpacing.md),
         Expanded(
-          child: ScaleOnTap(
+          child: Semantics(
+            label: currentStep.value < totalSteps - 1 ? 'Continue' : 'Create Account',
+            button: true,
+            child: ScaleOnTap(
             onTap: () async {
               if (formKey.currentState == null || !formKey.currentState!.validate()) {
                 HapticFeedback.mediumImpact();
@@ -802,19 +854,23 @@ class WorldClassSignupScreen extends HookConsumerWidget {
           "Already have an account? ",
           style: PanAfricanTypography.bodyMedium(context),
         ),
-        TextButton(
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.push(
-              context,
-              SmoothPageRoute(child: const WorldClassLoginScreen()),
-            );
-          },
-          child: Text(
-            'Sign In',
-            style: PanAfricanTypography.bodyMedium(context).copyWith(
-              color: PanAfricanColors.primary,
-              fontWeight: FontWeight.bold,
+        Semantics(
+          label: 'Sign in',
+          button: true,
+          child: TextButton(
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.push(
+                context,
+                SmoothPageRoute(child: const WorldClassLoginScreen()),
+              );
+            },
+            child: Text(
+              'Sign In',
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: PanAfricanColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

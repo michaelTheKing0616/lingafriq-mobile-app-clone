@@ -107,12 +107,16 @@ class LanguageVillagesScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                PanAfricanButton(
+                Semantics(
+                  label: 'Create village',
+                  button: true,
+                  child: PanAfricanButton(
                   label: 'Create',
                   icon: Icons.add_rounded,
                   onPressed: () => _showCreateVillageDialog(context, ref),
                   backgroundColor: PanAfricanColors.primary,
                   foregroundColor: colorScheme.onPrimary,
+                ),
                 ),
               ],
             ),

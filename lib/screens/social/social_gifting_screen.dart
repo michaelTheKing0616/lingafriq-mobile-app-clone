@@ -29,12 +29,16 @@ class SocialGiftingScreen extends HookConsumerWidget {
         backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+          icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
           },
+        ),
         ),
       ),
       body: ListView(
@@ -152,7 +156,11 @@ class SocialGiftingScreen extends HookConsumerWidget {
                   ),
                 ),
                 SizedBox(height: PanAfricanSpacing.md),
-                TextField(
+                Semantics(
+                  label: 'Recipient username or email',
+                  hint: 'Enter friend\'s username or email',
+                  textField: true,
+                  child: TextField(
                   controller: receiverController,
                   decoration: InputDecoration(
                     labelText: 'Friend\'s Username or Email',
@@ -163,6 +171,7 @@ class SocialGiftingScreen extends HookConsumerWidget {
                     ),
                     contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
                   ),
+                ),
                 ),
                 SizedBox(height: PanAfricanSpacing.md),
                 DropdownButtonFormField<String>(
@@ -188,7 +197,11 @@ class SocialGiftingScreen extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.lg),
                 SizedBox(
                   width: double.infinity,
-                  child: FilledButton(
+                  child: Semantics(
+                    label: 'Send gift to friend',
+                    button: true,
+                    enabled: gamification.cowries >= 50 && receiverController.text.isNotEmpty && selectedGiftType.value != null,
+                    child: FilledButton(
                     style: FilledButton.styleFrom(
                       backgroundColor: PanAfricanColors.primary,
                       padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
@@ -209,6 +222,7 @@ class SocialGiftingScreen extends HookConsumerWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
+                  ),
                   ),
                 ),
               ],

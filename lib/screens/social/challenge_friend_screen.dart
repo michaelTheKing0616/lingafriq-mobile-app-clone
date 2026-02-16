@@ -328,7 +328,14 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                       SizedBox(height: PolieSpacing.xl),
                       SizedBox(
                         width: double.infinity,
-                        child: FilledButton(
+                        child: Semantics(
+                          label: isSending.value ? 'Sending challenge' : 'Send challenge to friend',
+                          button: true,
+                          enabled: !isSending.value &&
+                              selectedFriend.value != null &&
+                              selectedChallengeType.value != null &&
+                              selectedDuration.value != null,
+                          child: FilledButton(
                           onPressed: isSending.value ||
                                   selectedFriend.value == null ||
                                   selectedChallengeType.value == null ||
@@ -358,6 +365,7 @@ class ChallengeFriendScreen extends HookConsumerWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
+                        ),
                         ),
                       ),
                     ],

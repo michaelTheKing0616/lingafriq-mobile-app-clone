@@ -85,10 +85,14 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       message: 'Opening game...',
       child: Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => Navigator.of(context).pop(),
-          tooltip: 'Back',
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
+            onPressed: () => Navigator.of(context).pop(),
+            tooltip: 'Back',
+          ),
         ),
         title: Text('Language Games (${allGames.length}+)'),
         backgroundColor: Colors.transparent,
@@ -103,27 +107,30 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
             // Language Selector
             Container(
               padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: DropdownButtonFormField<String>(
-                value: selectedLanguage.value,
-                decoration: InputDecoration(
-                  labelText: 'Language',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              child: Semantics(
+                label: 'Select language',
+                child: DropdownButtonFormField<String>(
+                  value: selectedLanguage.value,
+                  decoration: InputDecoration(
+                    labelText: 'Language',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                    ),
+                    filled: true,
+                    fillColor: isDark
+                        ? PanAfricanColors.surfaceContainerDark
+                        : PanAfricanColors.surfaceContainerLight,
                   ),
-                  filled: true,
-                  fillColor: isDark
-                      ? PanAfricanColors.surfaceContainerDark
-                      : PanAfricanColors.surfaceContainerLight,
+                  items: languages.map((lang) {
+                    return DropdownMenuItem(
+                      value: lang,
+                      child: Text(lang.toUpperCase()),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value != null) selectedLanguage.value = value;
+                  },
                 ),
-                items: languages.map((lang) {
-                  return DropdownMenuItem(
-                    value: lang,
-                    child: Text(lang.toUpperCase()),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value != null) selectedLanguage.value = value;
-                },
               ),
             ),
 
@@ -133,32 +140,42 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: ChoiceChip(
-                      label: Text('Core Games (${coreGames.length})'),
+                    child: Semantics(
+                      label: 'Core Games, ${coreGames.length} games',
+                      button: true,
                       selected: selectedSection.value == 'core',
-                      onSelected: (selected) {
-                        if (selected) {
-                          selectedSection.value = 'core';
-                          HapticFeedback.lightImpact();
-                        }
-                      },
-                      selectedColor: PanAfricanColors.primaryContainer,
-                      labelStyle: PanAfricanTypography.labelMedium(context),
+                      child: ChoiceChip(
+                        label: Text('Core Games (${coreGames.length})'),
+                        selected: selectedSection.value == 'core',
+                        onSelected: (selected) {
+                          if (selected) {
+                            selectedSection.value = 'core';
+                            HapticFeedback.lightImpact();
+                          }
+                        },
+                        selectedColor: PanAfricanColors.primaryContainer,
+                        labelStyle: PanAfricanTypography.labelMedium(context),
+                      ),
                     ),
                   ),
                   SizedBox(width: PanAfricanSpacing.sm),
                   Expanded(
-                    child: ChoiceChip(
-                      label: Text('Cultural Games (${culturalGames.length})'),
+                    child: Semantics(
+                      label: 'Cultural Games, ${culturalGames.length} games',
+                      button: true,
                       selected: selectedSection.value == 'cultural',
-                      onSelected: (selected) {
-                        if (selected) {
-                          selectedSection.value = 'cultural';
-                          HapticFeedback.lightImpact();
-                        }
-                      },
-                      selectedColor: PanAfricanColors.primaryContainer,
-                      labelStyle: PanAfricanTypography.labelMedium(context),
+                      child: ChoiceChip(
+                        label: Text('Cultural Games (${culturalGames.length})'),
+                        selected: selectedSection.value == 'cultural',
+                        onSelected: (selected) {
+                          if (selected) {
+                            selectedSection.value = 'cultural';
+                            HapticFeedback.lightImpact();
+                          }
+                        },
+                        selectedColor: PanAfricanColors.primaryContainer,
+                        labelStyle: PanAfricanTypography.labelMedium(context),
+                      ),
                     ),
                   ),
                 ],
@@ -178,15 +195,20 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                           (category == 'All' && selectedCategory.value == null);
                       return Padding(
                         padding: EdgeInsets.only(right: PanAfricanSpacing.sm),
-                        child: FilterChip(
-                          label: Text(category),
+                        child: Semantics(
+                          label: 'Filter by $category category',
+                          button: true,
                           selected: isSelected,
-                          onSelected: (selected) {
-                            selectedCategory.value = selected && category != 'All' ? category : null;
-                            HapticFeedback.lightImpact();
-                          },
-                          selectedColor: PanAfricanColors.primaryContainer,
-                          checkmarkColor: PanAfricanColors.primary,
+                          child: FilterChip(
+                            label: Text(category),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              selectedCategory.value = selected && category != 'All' ? category : null;
+                              HapticFeedback.lightImpact();
+                            },
+                            selectedColor: PanAfricanColors.primaryContainer,
+                            checkmarkColor: PanAfricanColors.primary,
+                          ),
                         ),
                       );
                     }),
@@ -202,15 +224,20 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.sports_esports_outlined,
-                            size: 64.sp,
-                            color: PanAfricanColors.neutralMedium,
+                          ExcludeSemantics(
+                            child: Icon(
+                              Icons.sports_esports_outlined,
+                              size: 64.sp,
+                              color: PanAfricanColors.neutralMedium,
+                            ),
                           ),
                           SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'No games in this category',
-                            style: PanAfricanTypography.bodyLarge(context),
+                          Semantics(
+                            label: 'No games in this category',
+                            child: Text(
+                              'No games in this category',
+                              style: PanAfricanTypography.bodyLarge(context),
+                            ),
                           ),
                         ],
                       ),
@@ -305,70 +332,75 @@ class _GameCard extends StatelessWidget {
     final icon = game['icon'] as IconData? ?? Icons.sports_esports_rounded;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
-      child: PanAfricanCard(
-        hasHoverEffect: true,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              decoration: BoxDecoration(
-                color: PanAfricanColors.primary,
-                shape: BoxShape.circle,
-                boxShadow: PanAfricanShadows.sm,
-              ),
-              child: Icon(
-                icon,
-                size: 24.sp,
-                color: colorScheme.onPrimary,
-              ),
-            ),
-            SizedBox(height: PanAfricanSpacing.sm),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
-              child: Text(
-                game['name'] ?? 'Game',
-                style: PanAfricanTypography.titleSmall(context),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            SizedBox(height: PanAfricanSpacing.xxs),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
-              child: Text(
-                game['description'] ?? '',
-                style: PanAfricanTypography.bodySmall(context),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            SizedBox(height: PanAfricanSpacing.xs),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: PanAfricanSpacing.sm,
-                vertical: PanAfricanSpacing.xxs,
-              ),
-              decoration: BoxDecoration(
-                color: PanAfricanColors.primaryContainer.withOpacity(0.5),
-                borderRadius: PanAfricanRadius.roundBR,
-              ),
-              child: Text(
-                category,
-                style: PanAfricanTypography.labelSmall(
-                  context,
+    return Semantics(
+      label: '${game['name'] ?? 'Game'}, ${game['description'] ?? ''}, $category category',
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        child: PanAfricanCard(
+          hasHoverEffect: true,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                decoration: BoxDecoration(
                   color: PanAfricanColors.primary,
+                  shape: BoxShape.circle,
+                  boxShadow: PanAfricanShadows.sm,
+                ),
+                child: Icon(
+                  icon,
+                  size: 24.sp,
+                  color: colorScheme.onPrimary,
+                  semanticLabel: '${game['name']} game icon',
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: PanAfricanSpacing.sm),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+                child: Text(
+                  game['name'] ?? 'Game',
+                  style: PanAfricanTypography.titleSmall(context),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.xxs),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+                child: Text(
+                  game['description'] ?? '',
+                  style: PanAfricanTypography.bodySmall(context),
+                  textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.xs),
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: PanAfricanSpacing.sm,
+                  vertical: PanAfricanSpacing.xxs,
+                ),
+                decoration: BoxDecoration(
+                  color: PanAfricanColors.primaryContainer.withOpacity(0.5),
+                  borderRadius: PanAfricanRadius.roundBR,
+                ),
+                child: Text(
+                  category,
+                  style: PanAfricanTypography.labelSmall(
+                    context,
+                    color: PanAfricanColors.primary,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

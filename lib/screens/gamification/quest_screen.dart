@@ -40,17 +40,24 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
           'The Great Journey',
           style: PanAfricanTypography.headlineMedium(context),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            onPressed: () {
+          Semantics(
+            label: 'About The Great Journey',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.info_outline, semanticLabel: 'Info'),
+              onPressed: () {
               HapticFeedback.lightImpact();
               showDialog(
                 context: context,
@@ -83,6 +90,7 @@ class _QuestScreenState extends ConsumerState<QuestScreen> {
                 ),
               );
             },
+          ),
           ),
         ],
       ),
@@ -130,7 +138,10 @@ class _ChapterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      label: 'Chapter ${chapter.chapterNumber}: ${chapter.title}. ${chapter.isUnlocked ? (chapter.isCompleted ? "Completed" : "${(progress * 100).toStringAsFixed(0)}% progress") : "Locked"}',
+      button: onTap != null,
+      child: GestureDetector(
       onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
@@ -291,6 +302,7 @@ class _ChapterCard extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

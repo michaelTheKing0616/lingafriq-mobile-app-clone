@@ -22,12 +22,16 @@ class SubscriptionScreen extends ConsumerWidget {
         title: Text('Subscription', style: PanAfricanTypography.titleLarge(context)),
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
-        leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.of(context).pop();
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -35,13 +39,16 @@ class SubscriptionScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Choose Your Plan',
-              style: PanAfricanTypography.headlineMedium(context),
-            )
-                .animate()
-                .fadeIn(duration: 300.ms)
-                .slideX(begin: -0.1),
+            Semantics(
+              header: true,
+              child: Text(
+                'Choose Your Plan',
+                style: PanAfricanTypography.headlineMedium(context),
+              )
+                  .animate()
+                  .fadeIn(duration: 300.ms)
+                  .slideX(begin: -0.1),
+            ),
             SizedBox(height: PanAfricanSpacing.xs),
             Text(
               'Unlock all features and accelerate your learning',
@@ -132,21 +139,25 @@ class SubscriptionScreen extends ConsumerWidget {
             ),
             SizedBox(height: PanAfricanSpacing.lg),
             Center(
-              child: TextButton(
-                onPressed: () async {
-                  HapticFeedback.lightImpact();
-                  final ok = await ref.read(subscriptionProvider.notifier).restorePurchases();
-                  if (!context.mounted) return;
-                  if (ok) {
-                    ErrorHandler.showSuccess(context, 'Purchases restored');
-                  } else {
-                    ErrorHandler.showError(context, 'No purchases found to restore');
-                  }
-                },
-                child: Text(
-                  'Restore purchases',
-                  style: PanAfricanTypography.labelLarge(context).copyWith(
-                    color: PanAfricanColors.primary,
+              child: Semantics(
+                label: 'Restore purchases',
+                button: true,
+                child: TextButton(
+                  onPressed: () async {
+                    HapticFeedback.lightImpact();
+                    final ok = await ref.read(subscriptionProvider.notifier).restorePurchases();
+                    if (!context.mounted) return;
+                    if (ok) {
+                      ErrorHandler.showSuccess(context, 'Purchases restored');
+                    } else {
+                      ErrorHandler.showError(context, 'No purchases found to restore');
+                    }
+                  },
+                  child: Text(
+                    'Restore purchases',
+                    style: PanAfricanTypography.labelLarge(context).copyWith(
+                      color: PanAfricanColors.primary,
+                    ),
                   ),
                 ),
               ),
@@ -169,7 +180,11 @@ class SubscriptionScreen extends ConsumerWidget {
     bool isRecommended = false,
   }) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return Container(
+    final featuresText = features.join(', ');
+    final cardLabel = '$title, $price $period. ${isCurrent ? 'Current plan. ' : ''}${isRecommended ? 'Recommended. ' : ''}Features: $featuresText';
+    return Semantics(
+      label: cardLabel,
+      child: Container(
       decoration: BoxDecoration(
         color: isRecommended
             ? PanAfricanColors.primary.withOpacity(0.05)
@@ -229,6 +244,7 @@ class SubscriptionScreen extends ConsumerWidget {
                         Icons.check_circle_rounded,
                         color: PanAfricanColors.success,
                         size: 20.sp,
+                        semanticLabel: 'Included',
                       ),
                       SizedBox(width: PanAfricanSpacing.sm),
                       Expanded(
@@ -241,26 +257,31 @@ class SubscriptionScreen extends ConsumerWidget {
                   ),
                 )),
             SizedBox(height: PanAfricanSpacing.lg),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: isCurrent ? null : onTap,
-                style: FilledButton.styleFrom(
-                  backgroundColor: isRecommended ? PanAfricanColors.primary : PanAfricanColors.secondary,
-                  foregroundColor: isRecommended ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight,
-                  padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
-                  shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+            Semantics(
+              label: isCurrent ? 'Current plan' : 'Subscribe to $title',
+              button: true,
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: isCurrent ? null : onTap,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: isRecommended ? PanAfricanColors.primary : PanAfricanColors.secondary,
+                    foregroundColor: isRecommended ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight,
+                    padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.sm),
+                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+                  ),
+                  child: Text(isCurrent ? 'Current Plan' : 'Subscribe', style: PanAfricanTypography.labelLarge(context, color: isRecommended ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight)),
                 ),
-                child: Text(isCurrent ? 'Current Plan' : 'Subscribe', style: PanAfricanTypography.labelLarge(context, color: isRecommended ? Theme.of(context).colorScheme.onPrimary : PanAfricanColors.textPrimaryLight)),
               ),
             ),
           ],
         ),
       ),
+      ),
     )
         .animate()
         .fadeIn(duration: 400.ms)
-        .slideY(begin: 0.1, end: 0, duration: 400.ms);
+        .slideY(begin: 0.1, end: 0, duration: 400.ms));
   }
 }
 

@@ -86,11 +86,14 @@ class HomeTab extends HookConsumerWidget {
               SizedBox(height: PanAfricanSpacing.lg),
               _buildProgressHighlights(context, gamification),
               SizedBox(height: PanAfricanSpacing.lg),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
-                child: Text(
-                  'Featured Languages',
-                  style: PanAfricanTypography.titleLarge(context),
+              Semantics(
+                header: true,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
+                  child: Text(
+                    'Featured Languages',
+                    style: PanAfricanTypography.titleLarge(context),
+                  ),
                 ),
               ),
               SizedBox(height: PanAfricanSpacing.md),
@@ -124,36 +127,45 @@ class HomeTab extends HookConsumerWidget {
                           ),
                         ),
                         SizedBox(height: PanAfricanSpacing.lg),
-                        Text(
-                          'Explore More',
-                          style: PanAfricanTypography.titleMedium(context),
+                        Semantics(
+                          header: true,
+                          child: Text(
+                            'Explore More',
+                            style: PanAfricanTypography.titleMedium(context),
+                          ),
                         ),
                         SizedBox(height: PanAfricanSpacing.sm),
-                        PanAfricanCard(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: PanAfricanSpacing.md,
-                            vertical: PanAfricanSpacing.sm,
-                          ),
-                          hasHoverEffect: true,
-                          onTap: () {
-                            showSearch(
-                              context: context,
-                              delegate: SearchLanguageDelegate(languages),
-                            );
-                          },
-                          child: Row(
+                        Semantics(
+                          label: 'Search languages',
+                          button: true,
+                          child: PanAfricanCard(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: PanAfricanSpacing.md,
+                              vertical: PanAfricanSpacing.sm,
+                            ),
+                            hasHoverEffect: true,
+                            onTap: () {
+                              showSearch(
+                                context: context,
+                                delegate: SearchLanguageDelegate(languages),
+                              );
+                            },
+                            child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Search languages',
                                 style: PanAfricanTypography.bodyLarge(context),
                               ),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                color: PanAfricanColors.textSecondary,
+                              ExcludeSemantics(
+                                child: Icon(
+                                  Icons.chevron_right_rounded,
+                                  color: PanAfricanColors.textSecondary,
+                                ),
                               ),
                             ],
                           ),
+                        ),
                         ),
                       ],
                     );
@@ -196,14 +208,18 @@ class HomeTab extends HookConsumerWidget {
           children: [
             Row(
               children: [
-                IconButton(
-                  onPressed: () {
-                    final scaffoldState = ref.read(scaffoldKeyProvider).currentState;
-                    if (scaffoldState != null) {
-                      scaffoldState.openDrawer();
-                    }
-                  },
-                  icon: Icon(Icons.menu_rounded, color: Theme.of(context).colorScheme.onPrimary),
+                Semantics(
+                  label: 'Menu',
+                  button: true,
+                  child: IconButton(
+                    onPressed: () {
+                      final scaffoldState = ref.read(scaffoldKeyProvider).currentState;
+                      if (scaffoldState != null) {
+                        scaffoldState.openDrawer();
+                      }
+                    },
+                    icon: Icon(Icons.menu_rounded, color: Theme.of(context).colorScheme.onPrimary),
+                  ),
                 ),
                 SizedBox(width: PanAfricanSpacing.xs),
                 Expanded(
@@ -234,19 +250,21 @@ class HomeTab extends HookConsumerWidget {
               ],
             ),
             SizedBox(height: PanAfricanSpacing.md),
-            PanAfricanCard(
-              backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
-              hasGlow: true,
-              glowColor: PanAfricanColors.primaryLight,
-              padding: EdgeInsets.all(PanAfricanSpacing.md),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: PanAfricanSpacing.xl * 2.2,
-                        height: PanAfricanSpacing.xl * 2.2,
-                        child: Stack(
+            Semantics(
+              label: 'Level ${gamification.level}. XP ${gamification.xp}. ${_getXPToNextLevel(gamification)} XP to next level. ${gamification.dailyStreak} day streak. ${gamification.unlockedBadges.length} badges. ${gamification.languagesLearned} languages.',
+              child: PanAfricanCard(
+                backgroundColor: Theme.of(context).colorScheme.onPrimary.withOpacity(0.08),
+                hasGlow: true,
+                glowColor: PanAfricanColors.primaryLight,
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: PanAfricanSpacing.xl * 2.2,
+                          height: PanAfricanSpacing.xl * 2.2,
+                          child: Stack(
                           alignment: Alignment.center,
                           children: [
                             CircularProgressIndicator(
@@ -329,6 +347,7 @@ class HomeTab extends HookConsumerWidget {
                 ],
               ),
             ),
+            ),
             SizedBox(height: PanAfricanSpacing.lg),
           ],
         ),
@@ -342,9 +361,12 @@ class HomeTab extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Quick Actions',
-            style: PanAfricanTypography.titleMedium(context),
+          Semantics(
+            header: true,
+            child: Text(
+              'Quick Actions',
+              style: PanAfricanTypography.titleMedium(context),
+            ),
           ),
           SizedBox(height: PanAfricanSpacing.sm),
           Row(
@@ -388,9 +410,12 @@ class HomeTab extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Your Progress',
-            style: PanAfricanTypography.titleMedium(context),
+          Semantics(
+            header: true,
+            child: Text(
+              'Your Progress',
+              style: PanAfricanTypography.titleMedium(context),
+            ),
           ),
           SizedBox(height: PanAfricanSpacing.sm),
           Row(
@@ -491,7 +516,7 @@ class _HeroPill extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, color: color, size: PanAfricanSpacing.sm),
+          Icon(icon, color: color, size: PanAfricanSpacing.sm, semanticLabel: label),
           SizedBox(width: PanAfricanSpacing.xxs),
           Text(
             label,
@@ -522,40 +547,44 @@ class _QuickActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PanAfricanCard(
-      hasHoverEffect: true,
-      onTap: onTap,
-      padding: EdgeInsets.all(PanAfricanSpacing.md),
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(PanAfricanSpacing.sm),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+    return Semantics(
+      label: '$title. $subtitle',
+      button: true,
+      child: PanAfricanCard(
+        hasHoverEffect: true,
+        onTap: onTap,
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              ),
+              child: Icon(icon, color: color, size: PanAfricanSpacing.md, semanticLabel: title),
             ),
-            child: Icon(icon, color: color, size: PanAfricanSpacing.md),
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: PanAfricanTypography.titleSmall(context),
-                ),
-                SizedBox(height: PanAfricanSpacing.xxs),
-                Text(
-                  subtitle,
-                  style: PanAfricanTypography.bodySmall(context).copyWith(
-                    color: PanAfricanColors.textSecondary,
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: PanAfricanTypography.titleSmall(context),
                   ),
-                ),
-              ],
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  Text(
+                    subtitle,
+                    style: PanAfricanTypography.bodySmall(context).copyWith(
+                      color: PanAfricanColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -576,32 +605,35 @@ class _HighlightCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PanAfricanCard(
-      padding: EdgeInsets.all(PanAfricanSpacing.md),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.all(PanAfricanSpacing.sm),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+    return Semantics(
+      label: '$label: $value',
+      child: PanAfricanCard(
+        padding: EdgeInsets.all(PanAfricanSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.sm),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+              ),
+              child: Icon(icon, color: color, size: PanAfricanSpacing.md, semanticLabel: label),
             ),
-            child: Icon(icon, color: color, size: PanAfricanSpacing.md),
-          ),
-          SizedBox(height: PanAfricanSpacing.sm),
-          Text(
-            value,
-            style: PanAfricanTypography.titleLarge(context),
-          ),
-          SizedBox(height: PanAfricanSpacing.xxs),
-          Text(
-            label,
-            style: PanAfricanTypography.bodySmall(context).copyWith(
-              color: PanAfricanColors.textSecondary,
+            SizedBox(height: PanAfricanSpacing.sm),
+            Text(
+              value,
+              style: PanAfricanTypography.titleLarge(context),
             ),
-          ),
-        ],
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Text(
+              label,
+              style: PanAfricanTypography.bodySmall(context).copyWith(
+                color: PanAfricanColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -618,17 +650,20 @@ class LanguageItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return InkWell(
-      onTap: () async {
-        onTap?.call();
-        final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
-        if (result) {
-          ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
-          return;
-        }
-        ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
-      },
-      child: PanAfricanCard(
+    return Semantics(
+      label: '${language.name}. Tap to open.',
+      button: true,
+      child: InkWell(
+        onTap: () async {
+          onTap?.call();
+          final result = ref.read(sharedPreferencesProvider).showLanguageIntro(language.id);
+          if (result) {
+            ref.read(navigationProvider).navigateTo(IntroductionScreen(language: language));
+            return;
+          }
+          ref.read(navigationProvider).navigateTo(LanguageDetailScreen(language: language));
+        },
+        child: PanAfricanCard(
         padding: EdgeInsets.zero,
         hasHoverEffect: true,
         child: ClipRRect(
@@ -670,6 +705,7 @@ class LanguageItem extends ConsumerWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

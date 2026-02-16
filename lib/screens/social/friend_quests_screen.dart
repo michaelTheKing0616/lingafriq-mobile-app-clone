@@ -56,12 +56,16 @@ class FriendQuestsScreen extends HookConsumerWidget {
         backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.of(context).pop();
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
       ),
       body: Column(
@@ -92,18 +96,22 @@ class FriendQuestsScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CreateFriendQuestScreen(),
-            ),
-          ).then((_) => loadQuests());
-        },
-        backgroundColor: PanAfricanColors.primary,
-        icon: const Icon(Icons.add),
-        label: const Text('Create Quest'),
+      floatingActionButton: Semantics(
+        label: 'Create Quest',
+        button: true,
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CreateFriendQuestScreen(),
+              ),
+            ).then((_) => loadQuests());
+          },
+          backgroundColor: PanAfricanColors.primary,
+          icon: const Icon(Icons.add, semanticLabel: 'Add'),
+          label: const Text('Create Quest'),
+        ),
       ),
     );
   }
@@ -154,9 +162,13 @@ class FriendQuestsScreen extends HookConsumerWidget {
     VoidCallback onTap,
   ) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    return InkWell(
-      onTap: onTap,
-      child: Container(
+    return Semantics(
+      label: label,
+      button: true,
+      selected: isSelected,
+      child: InkWell(
+        onTap: onTap,
+        child: Container(
         padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
         decoration: BoxDecoration(
           border: Border(
@@ -177,6 +189,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
           ),
         ),
       ),
+      ),
     );
   }
 
@@ -185,10 +198,12 @@ class FriendQuestsScreen extends HookConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.emoji_events_outlined,
-            size: 80.sp,
-            color: PanAfricanColors.textSecondary,
+          ExcludeSemantics(
+            child: Icon(
+              Icons.emoji_events_outlined,
+              size: 80.sp,
+              color: PanAfricanColors.textSecondary,
+            ),
           ),
           SizedBox(height: PanAfricanSpacing.md),
           Text(
@@ -234,7 +249,16 @@ class FriendQuestsScreen extends HookConsumerWidget {
         ? expiresAt.difference(DateTime.now())
         : const Duration(days: 0);
 
-    return Container(
+    final questTitle = _getQuestTypeLabel(questType);
+    final progressLabel = '${totalProgress.toInt()} of ${target.toInt()}';
+    final participantsLabel = participants.isEmpty
+        ? 'No participants'
+        : '${participants.length} participant${participants.length == 1 ? '' : 's'}';
+    final cardLabel = '$questTitle. Progress: $progressLabel. $participantsLabel.${isCompleted ? ' Completed.' : ''}';
+
+    return Semantics(
+      label: cardLabel,
+      child: Container(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
       decoration: BoxDecoration(
         color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -264,6 +288,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
                         _getQuestTypeIcon(questType),
                         color: PanAfricanColors.primary,
                         size: 24.sp,
+                        semanticLabel: questTitle,
                       ),
                     ),
                     SizedBox(width: PanAfricanSpacing.sm),
@@ -304,24 +329,32 @@ class FriendQuestsScreen extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                    IconButton(
-                      icon: const Icon(Icons.share),
-                      onPressed: () {
-                        final questId = quest['id'] as String? ?? '';
-                        final link = DeepLinkService.questLink(questId);
-                        Share.share('Join my friend quest on LingAfriq! $link');
-                      },
+                    Semantics(
+                      label: 'Share quest',
+                      button: true,
+                      child: IconButton(
+                        icon: const Icon(Icons.share, semanticLabel: 'Share'),
+                        onPressed: () {
+                          final questId = quest['id'] as String? ?? '';
+                          final link = DeepLinkService.questLink(questId);
+                          Share.share('Join my friend quest on LingAfriq! $link');
+                        },
+                      ),
                     ),
                   ],
                 ),
                 SizedBox(height: PanAfricanSpacing.md),
-                LinearProgressIndicator(
-                  value: progressPercent,
-                  backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    isCompleted ? PanAfricanColors.success : PanAfricanColors.primary,
+                Semantics(
+                  label: 'Progress: $progressLabel',
+                  value: '${(progressPercent * 100).round()}%',
+                  child: LinearProgressIndicator(
+                    value: progressPercent,
+                    backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      isCompleted ? PanAfricanColors.success : PanAfricanColors.primary,
+                    ),
+                    minHeight: 8.h,
                   ),
-                  minHeight: 8.h,
                 ),
                 SizedBox(height: PanAfricanSpacing.sm),
                 Row(
@@ -412,6 +445,7 @@ class FriendQuestsScreen extends HookConsumerWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

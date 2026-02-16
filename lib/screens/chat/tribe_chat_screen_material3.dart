@@ -15,9 +15,12 @@ class TribeChatScreenMaterial3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TribeChatScreen(
-      tribeId: tribeId,
-      tribeName: tribeName,
+    return Semantics(
+      label: 'Tribe chat. Messages, tribe info and send button below.',
+      child: TribeChatScreen(
+        tribeId: tribeId,
+        tribeName: tribeName,
+      ),
     );
   }
 }

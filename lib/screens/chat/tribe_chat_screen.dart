@@ -145,13 +145,17 @@ class TribeChatScreen extends HookConsumerWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
-            IconButton(
-              icon: Icon(Icons.people),
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                showMembers.value = !showMembers.value;
-              },
-              tooltip: 'Tribe Members',
+            Semantics(
+              label: showMembers.value ? 'Hide tribe members' : 'Show tribe members',
+              button: true,
+              child: IconButton(
+                icon: Icon(Icons.people),
+                onPressed: () {
+                  HapticFeedback.selectionClick();
+                  showMembers.value = !showMembers.value;
+                },
+                tooltip: 'Tribe Members',
+              ),
             ),
           ],
         ),
@@ -253,26 +257,36 @@ class TribeChatScreen extends HookConsumerWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: PanAfricanTextField(
-                            controller: messageController,
-                            hint: 'Type a message...',
-                            maxLines: 3,
-                            onChanged: (_) {},
+                          child: Semantics(
+                            label: 'Message input field',
+                            hint: 'Type a message to send',
+                            textField: true,
+                            child: PanAfricanTextField(
+                              controller: messageController,
+                              hint: 'Type a message...',
+                              maxLines: 3,
+                              onChanged: (_) {},
+                            ),
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        PanAfricanButton(
-                          label: 'Send',
-                          icon: Icons.send_rounded,
-                          isLoading: isLoading.value,
-                          onPressed: isLoading.value
-                              ? null
-                              : () {
-                                  HapticFeedback.lightImpact();
-                                  sendMessage();
-                                },
-                          backgroundColor: PanAfricanColors.secondary,
-                          foregroundColor: PanAfricanColors.neutralDarkest,
+                        Semantics(
+                          label: isLoading.value ? 'Sending message' : 'Send message',
+                          button: true,
+                          enabled: !isLoading.value,
+                          child: PanAfricanButton(
+                            label: 'Send',
+                            icon: Icons.send_rounded,
+                            isLoading: isLoading.value,
+                            onPressed: isLoading.value
+                                ? null
+                                : () {
+                                    HapticFeedback.lightImpact();
+                                    sendMessage();
+                                  },
+                            backgroundColor: PanAfricanColors.secondary,
+                            foregroundColor: PanAfricanColors.neutralDarkest,
+                          ),
                         ),
                       ],
                     ),
@@ -316,12 +330,20 @@ class TribeChatScreen extends HookConsumerWidget {
                         final name =
                             member['username'] ?? member['first_name'] ?? 'Unknown';
                         final globalId = member['global_id'] ?? member['globalId'];
-                        return PanAfricanListTile(
-                          title: name,
-                          subtitle: globalId != null ? '@${globalId.toString()}' : null,
-                          leading: LingAfriqAvatar.fromInitials(
-                            username: name.toString().isNotEmpty ? name.toString() : 'U',
-                            size: 36.w,
+                        return Semantics(
+                          label: 'Tribe member $name${globalId != null ? ', @${globalId.toString()}' : ''}',
+                          button: true,
+                          child: PanAfricanListTile(
+                            title: name,
+                            subtitle: globalId != null ? '@${globalId.toString()}' : null,
+                            leading: Semantics(
+                              label: 'Avatar for $name',
+                              excludeSemantics: true,
+                              child: LingAfriqAvatar.fromInitials(
+                                username: name.toString().isNotEmpty ? name.toString() : 'U',
+                                size: 36.w,
+                              ),
+                            ),
                           ),
                         );
                       },
@@ -359,65 +381,80 @@ class _TribeMessageBubble extends StatelessWidget {
         ? PanAfricanColors.surfaceContainerDark
         : PanAfricanColors.surfaceContainerLight;
 
-    return Container(
-      margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          LingAfriqAvatar.fromInitials(
-            username: senderName.isNotEmpty ? senderName : '?',
-            size: 40.w,
-          ),
-          SizedBox(width: PanAfricanSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Text(
-                            senderName,
-                            style: PanAfricanTypography.labelMedium(context)
-                                .copyWith(color: PanAfricanColors.secondary),
-                          ),
-                          if (globalId != null) ...[
-                            SizedBox(width: PanAfricanSpacing.xxs),
-                            Text(
-                              '@${globalId.toString()}',
-                              style: PanAfricanTypography.labelSmall(context)
-                                  .copyWith(color: PanAfricanColors.neutralMedium),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                    if (timestamp != null)
-                      Text(
-                        _formatTimestamp(timestamp.toString()),
-                        style: PanAfricanTypography.labelSmall(context)
-                            .copyWith(color: PanAfricanColors.neutralMedium),
-                      ),
-                  ],
-                ),
-                SizedBox(height: PanAfricanSpacing.xxs),
-                PanAfricanCard(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: PanAfricanSpacing.md,
-                    vertical: PanAfricanSpacing.sm,
-                  ),
-                  backgroundColor: bubbleColor,
-                  child: Text(
-                    messageText,
-                    style: PanAfricanTypography.bodyMedium(context),
-                  ),
-                ),
-              ],
+    return Semantics(
+      label: 'Message from $senderName: $messageText',
+      child: Container(
+        margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Semantics(
+              label: 'Avatar for $senderName',
+              excludeSemantics: true,
+              child: LingAfriqAvatar.fromInitials(
+                username: senderName.isNotEmpty ? senderName : '?',
+                size: 40.w,
+              ),
             ),
-          ),
-        ],
+            SizedBox(width: PanAfricanSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Text(
+                              senderName,
+                              style: PanAfricanTypography.labelMedium(context)
+                                  .copyWith(color: PanAfricanColors.secondary),
+                            ),
+                            if (globalId != null) ...[
+                              SizedBox(width: PanAfricanSpacing.xxs),
+                              Semantics(
+                                label: 'Global ID ${globalId.toString()}',
+                                excludeSemantics: true,
+                                child: Text(
+                                  '@${globalId.toString()}',
+                                  style: PanAfricanTypography.labelSmall(context)
+                                      .copyWith(color: PanAfricanColors.neutralMedium),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ),
+                      if (timestamp != null)
+                        Semantics(
+                          label: 'Sent ${_formatTimestamp(timestamp.toString())}',
+                          excludeSemantics: true,
+                          child: Text(
+                            _formatTimestamp(timestamp.toString()),
+                            style: PanAfricanTypography.labelSmall(context)
+                                .copyWith(color: PanAfricanColors.neutralMedium),
+                          ),
+                        ),
+                    ],
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xxs),
+                  PanAfricanCard(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: PanAfricanSpacing.md,
+                      vertical: PanAfricanSpacing.sm,
+                    ),
+                    backgroundColor: bubbleColor,
+                    child: Text(
+                      messageText,
+                      style: PanAfricanTypography.bodyMedium(context),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

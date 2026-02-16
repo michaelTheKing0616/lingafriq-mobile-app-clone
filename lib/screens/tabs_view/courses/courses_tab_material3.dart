@@ -43,13 +43,17 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                 subtitle: user != null ? 'Hi ${user.fullName}' : null,
                 showBackButton: false,
                 actions: [
-                  IconButton(
+                  Semantics(
+                    label: 'Open menu',
+                    button: true,
+                    child: IconButton(
                     icon: const Icon(Icons.menu_rounded),
                     onPressed: () {
                       HapticFeedback.lightImpact();
                       ref.read(scaffoldKeyProvider).currentState?.openDrawer();
                     },
                     tooltip: 'Menu',
+                  ),
                   ),
                 ],
               ),
@@ -75,9 +79,12 @@ class CoursesTabMaterial3 extends HookConsumerWidget {
                           PanAfricanSpacing.md,
                           PanAfricanSpacing.sm,
                         ),
-                        child: Text(
+                        child: Semantics(
+                          header: true,
+                          child: Text(
                           'Your Progress',
                           style: PanAfricanTypography.headlineMedium(context),
+                        ),
                         ),
                       ),
                       Expanded(
@@ -195,7 +202,10 @@ class _ProgressCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
+        child: Semantics(
+          label: '${language.name}, ${(progress * 100).toInt()}% complete. Tap to open.',
+          button: true,
+          child: InkWell(
           onTap: onTap,
           borderRadius: PanAfricanRadius.lgBR,
           child: Padding(
@@ -206,7 +216,9 @@ class _ProgressCard extends StatelessWidget {
               Row(
                 children: [
                   // Language Image
-                  ClipRRect(
+                  Semantics(
+                    excludeSemantics: true,
+                    child: ClipRRect(
                     borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                     child: CachedNetworkImage(
                       imageUrl: language.background ?? '',
@@ -255,15 +267,20 @@ class _ProgressCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.chevron_right_rounded,
-                    color: PanAfricanColors.neutralMedium,
+                  Semantics(
+                    excludeSemantics: true,
+                    child: Icon(
+                      Icons.chevron_right_rounded,
+                      color: PanAfricanColors.neutralMedium,
+                    ),
                   ),
                 ],
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               // Progress Bar
-              Column(
+              Semantics(
+                label: 'Progress ${(progress * 100).toInt()}%',
+                child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -298,6 +315,7 @@ class _ProgressCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
             ],
           ),
         ),

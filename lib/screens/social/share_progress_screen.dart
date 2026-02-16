@@ -104,22 +104,30 @@ class ShareProgressScreen extends HookConsumerWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton.icon(
+                      child: Semantics(
+                        label: 'Save progress image to device',
+                        button: true,
+                        child: OutlinedButton.icon(
                         onPressed: saveToGallery,
-                        icon: Icon(Icons.download_rounded),
+                        icon: Icon(Icons.download_rounded, semanticLabel: 'Save'),
                         label: Text('Save'),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: PolieColors.textPrimary,
                           side: BorderSide(color: PolieColors.textPrimary),
                         ),
                       ),
+                      ),
                     ),
                     SizedBox(width: PolieSpacing.md),
                     Expanded(
-                      child: PoliePrimaryButton(
+                      child: Semantics(
+                        label: 'Share progress on social media',
+                        button: true,
+                        child: PoliePrimaryButton(
                         label: 'Share',
                         icon: Icons.share_rounded,
                         onPressed: shareCard,
+                      ),
                       ),
                     ),
                   ],

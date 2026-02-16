@@ -118,12 +118,15 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
           // Flashcard
           Expanded(
             child: Center(
-              child: GestureDetector(
-                onTap: () {
-                  HapticFeedback.selectionClick();
-                  setState(() => _isFlipped = !_isFlipped);
-                },
-                child: Container(
+              child: Semantics(
+                label: _isFlipped ? '${currentWord.word}: ${currentWord.translation}. Tap to flip back.' : '${currentWord.word}. Tap to reveal translation.',
+                button: true,
+                child: GestureDetector(
+                  onTap: () {
+                    HapticFeedback.selectionClick();
+                    setState(() => _isFlipped = !_isFlipped);
+                  },
+                  child: Container(
                   margin: EdgeInsets.all(PanAfricanSpacing.lg),
                   width: double.infinity,
                   height: 300.h,
@@ -192,6 +195,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
                     ),
                   ),
                 ),
+              ),
               ),
             ),
           ),
@@ -264,8 +268,11 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
     Color color,
     bool isDark,
   ) {
-    return ElevatedButton(
-      onPressed: () async {
+    return Semantics(
+      label: 'Rate as $label and go to next card',
+      button: true,
+      child: ElevatedButton(
+        onPressed: () async {
         HapticFeedback.mediumImpact();
         final currentWord = widget.words[_currentIndex];
         
@@ -324,6 +331,7 @@ class _FlashcardReviewScreenState extends ConsumerState<FlashcardReviewScreen> {
           fontWeight: FontWeight.bold,
         ),
       ),
+    ),
     );
   }
 }

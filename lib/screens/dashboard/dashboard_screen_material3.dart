@@ -145,34 +145,41 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              IconButton(
-                icon: Icon(Icons.menu_rounded, color: onSurface, size: 24.sp),
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                },
-                tooltip: 'Menu',
+              Semantics(
+                label: 'Menu',
+                button: true,
+                child: IconButton(
+                  icon: Icon(Icons.menu_rounded, color: onSurface, size: 24.sp),
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                  },
+                  tooltip: 'Menu',
+                ),
               ).animate().fadeIn(duration: 250.ms),
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        greetingLine,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: PanAfricanTypography.headlineMedium(context)
-                            .copyWith(color: onSurface),
-                      ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
-                      SizedBox(height: PanAfricanSpacing.xs),
-                      Text(
-                        'Ready to learn?',
-                        style: PanAfricanTypography.bodyMedium(context)
-                            .copyWith(color: onSurfaceVariant),
-                      ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
-                    ],
+                  child: Semantics(
+                    label: '$greetingLine. Ready to learn?',
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          greetingLine,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: PanAfricanTypography.headlineMedium(context)
+                              .copyWith(color: onSurface),
+                        ).animate().fadeIn(duration: 300.ms).slideY(begin: -0.2),
+                        SizedBox(height: PanAfricanSpacing.xs),
+                        Text(
+                          'Ready to learn?',
+                          style: PanAfricanTypography.bodyMedium(context)
+                              .copyWith(color: onSurfaceVariant),
+                        ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -202,12 +209,15 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     return Row(
       children: [
         Expanded(
-          child: _StatCard(
-            label: 'Streak',
-            value: '$streak',
-            icon: Icons.local_fire_department,
-            color: PanAfricanColors.tertiary,
-            isDark: isDark,
+          child: Semantics(
+            label: 'Streak: $streak days',
+            child: _StatCard(
+              label: 'Streak',
+              value: '$streak',
+              icon: Icons.local_fire_department,
+              color: PanAfricanColors.tertiary,
+              isDark: isDark,
+            ),
           ).animate(delay: 100.ms).fadeIn(duration: 300.ms).slideX(begin: -0.2),
         ),
         SizedBox(width: PanAfricanSpacing.md),
@@ -217,24 +227,30 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
             duration: const Duration(milliseconds: 1200),
             curve: Curves.easeOutCubic,
             builder: (context, value, child) {
-              return _StatCard(
-                label: 'XP',
-                value: _formatCompactNumber(value),
-                icon: Icons.star,
-                color: PanAfricanColors.secondary,
-                isDark: isDark,
+              return Semantics(
+                label: 'XP: ${_formatCompactNumber(value)}',
+                child: _StatCard(
+                  label: 'XP',
+                  value: _formatCompactNumber(value),
+                  icon: Icons.star,
+                  color: PanAfricanColors.secondary,
+                  isDark: isDark,
+                ),
               );
             },
           ).animate(delay: 200.ms).fadeIn(duration: 300.ms).slideX(begin: 0.2),
         ),
         SizedBox(width: PanAfricanSpacing.md),
         Expanded(
-          child: _StatCard(
-            label: 'Level',
-            value: '$level',
-            icon: Icons.trending_up,
-            color: PanAfricanColors.primary,
-            isDark: isDark,
+          child: Semantics(
+            label: 'Level: $level',
+            child: _StatCard(
+              label: 'Level',
+              value: '$level',
+              icon: Icons.trending_up,
+              color: PanAfricanColors.primary,
+              isDark: isDark,
+            ),
           ).animate(delay: 300.ms).fadeIn(duration: 300.ms).slideX(begin: 0.2),
         ),
       ],
@@ -252,9 +268,12 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Quick Actions',
-          style: PanAfricanTypography.titleLarge(context),
+        Semantics(
+          header: true,
+          child: Text(
+            'Quick Actions',
+            style: PanAfricanTypography.titleLarge(context),
+          ),
         ),
         SizedBox(height: PanAfricanSpacing.md),
         GridView.count(
@@ -327,15 +346,22 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Continue Learning',
-              style: PanAfricanTypography.titleLarge(context),
+            Semantics(
+              header: true,
+              child: Text(
+                'Continue Learning',
+                style: PanAfricanTypography.titleLarge(context),
+              ),
             ),
-            TextButton(
-              onPressed: () {
-                ref.read(tabIndexProvider.notifier).setIndex(1);
-              },
-              child: const Text('See All'),
+            Semantics(
+              label: 'See all languages',
+              button: true,
+              child: TextButton(
+                onPressed: () {
+                  ref.read(tabIndexProvider.notifier).setIndex(1);
+                },
+                child: const Text('See All'),
+              ),
             ),
           ],
         ),
@@ -357,18 +383,22 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       ? (language.completed / language.total_count)
                           .clamp(0.0, 1.0)
                       : 0.0;
-                  return GestureDetector(
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              LanguageDetailScreen(language: language),
-                        ),
-                      );
-                    },
-                    child: Container(
+                  final progressPercent = (progress * 100).toInt();
+                  return Semantics(
+                    label: 'Continue learning ${language.name}. ${progressPercent}% complete. Tap to open.',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                LanguageDetailScreen(language: language),
+                          ),
+                        );
+                      },
+                      child: Container(
                       width: 200.w,
                       margin: EdgeInsets.only(right: PanAfricanSpacing.md),
                       decoration: BoxDecoration(
@@ -441,6 +471,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         ],
                       ),
                     ),
+                  ),
                   )
                       .animate(delay: (index * 80).ms)
                       .fadeIn(duration: 300.ms)
@@ -496,9 +527,12 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Featured Languages',
-          style: PanAfricanTypography.titleLarge(context),
+        Semantics(
+          header: true,
+          child: Text(
+            'Featured Languages',
+            style: PanAfricanTypography.titleLarge(context),
+          ),
         ),
         SizedBox(height: PanAfricanSpacing.md),
         languagesAsync.when(
@@ -521,88 +555,127 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                     ? (language.completed / language.total_count)
                         .clamp(0.0, 1.0)
                     : 0.0;
-                return Container(
-                  margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-                  decoration: BoxDecoration(
-                    color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-                    borderRadius: PanAfricanRadius.lgBR,
-                    boxShadow: PanAfricanShadows.sm,
-                    border: Border.all(
-                      color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
-                      width: 1,
+                final progressPercent = (progress * 100).toInt();
+                final progressDesc = progress > 0
+                    ? '$progressPercent% complete'
+                    : 'Start learning';
+                return Semantics(
+                  label: '${language.name}. $progressDesc. Tap to open language.',
+                  button: true,
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+                    decoration: BoxDecoration(
+                      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                      borderRadius: PanAfricanRadius.lgBR,
+                      boxShadow: PanAfricanShadows.sm,
+                      border: Border.all(
+                        color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+                        width: 1,
+                      ),
                     ),
-                  ),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
-                    leading: ClipRRect(
-                      borderRadius: PanAfricanRadius.mdBR,
-                      child: CachedNetworkImage(
-                        imageUrl: language.background ?? '',
-                        width: 48.w,
-                        height: 48.w,
-                        fit: BoxFit.cover,
-                        placeholder: (_, __) => Container(
-                          color: PanAfricanColors.neutralLight,
-                          child: Icon(
-                            Icons.language,
-                            color: PanAfricanColors.neutralMedium,
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
+                      leading: ClipRRect(
+                        borderRadius: PanAfricanRadius.mdBR,
+                        child: CachedNetworkImage(
+                          imageUrl: language.background ?? '',
+                          width: 48.w,
+                          height: 48.w,
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) => Container(
+                            color: PanAfricanColors.neutralLight,
+                            child: Icon(
+                              Icons.language,
+                              color: PanAfricanColors.neutralMedium,
+                            ),
                           ),
-                        ),
-                        errorWidget: (_, __, ___) => Container(
-                          color: PanAfricanColors.neutralLight,
-                          child: Icon(
-                            Icons.language,
-                            color: PanAfricanColors.neutralMedium,
+                          errorWidget: (_, __, ___) => Container(
+                            color: PanAfricanColors.neutralLight,
+                            child: Icon(
+                              Icons.language,
+                              color: PanAfricanColors.neutralMedium,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    title: Text(language.name),
-                    subtitle: progress > 0
-                        ? LinearProgressIndicator(
-                            value: progress,
-                            backgroundColor: PanAfricanColors.neutralLight,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              PanAfricanColors.primary,
+                      title: Text(language.name),
+                      subtitle: progress > 0
+                          ? LinearProgressIndicator(
+                              value: progress,
+                              backgroundColor: PanAfricanColors.neutralLight,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                PanAfricanColors.primary,
+                              ),
+                              minHeight: 6,
+                            )
+                          : Text(
+                              'Start Learning',
+                              style: PanAfricanTypography.bodySmall(context)
+                                  .copyWith(
+                                      color: PanAfricanColors.neutralMedium),
                             ),
-                            minHeight: 6,
-                          )
-                        : Text(
-                            'Start Learning',
-                            style: PanAfricanTypography.bodySmall(context)
-                                .copyWith(
-                                    color: PanAfricanColors.neutralMedium),
+                      trailing: ExcludeSemantics(
+                        child: Icon(Icons.chevron_right_rounded,
+                            color: PanAfricanColors.neutralMedium, size: 24.sp),
+                      ),
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                LanguageDetailScreen(language: language),
                           ),
-                    trailing: Icon(Icons.chevron_right_rounded,
-                        color: PanAfricanColors.neutralMedium, size: 24.sp),
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              LanguageDetailScreen(language: language),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
                 )
                     .animate(delay: (index * 80).ms)
                     .fadeIn(duration: 300.ms)
                     .slideY(begin: 0.1);
-              }),
+                },
+              ),
             );
           },
-          loading: () => Padding(
-            padding: EdgeInsets.all(PanAfricanSpacing.lg),
-            child: const AdaptiveProgressIndicator(message: 'Loading languages...'),
+          loading: () => SizedBox(
+            height: 120.h,
+            child: const Center(
+                child: AdaptiveProgressIndicator(message: 'Loading...')),
           ),
-          error: (e, _) => StreamErrorWidget(
-            error: e,
-            onTryAgain: () => ref.invalidate(languagesProvider),
+          error: (e, _) => SizedBox(
+            height: 120.h,
+            child: Center(
+              child: StreamErrorWidget(
+                error: e,
+                onTryAgain: () => ref.invalidate(languagesProvider),
+              ),
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _placeholderContinueLearning(BuildContext context, bool isDark) {
+    return Container(
+      height: 120.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: isDark
+            ? PanAfricanColors.cardDark
+            : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.sm,
+        border: Border.all(
+          color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
+          width: 1,
+        ),
+      ),
+      child: Text(
+        'Start a course to see progress',
+        style: PanAfricanTypography.bodyMedium(context),
+      ),
     );
   }
 
@@ -727,9 +800,12 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Daily Goals',
-          style: PanAfricanTypography.titleLarge(context),
+        Semantics(
+          header: true,
+          child: Text(
+            'Daily Goals',
+            style: PanAfricanTypography.titleLarge(context),
+          ),
         ),
         SizedBox(height: PanAfricanSpacing.md),
         Row(
@@ -773,13 +849,15 @@ class _ProgressRing extends StatelessWidget {
     final bgColor = isDark
         ? PanAfricanColors.surfaceContainerDark
         : PanAfricanColors.surfaceContainerLight;
-    return Container(
-      padding: EdgeInsets.all(PanAfricanSpacing.sm),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-      ),
-      child: Stack(
+    return Semantics(
+      label: 'Daily progress: $label today',
+      child: Container(
+        padding: EdgeInsets.all(PanAfricanSpacing.sm),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+        ),
+        child: Stack(
         alignment: Alignment.center,
         children: [
           SizedBox(
@@ -811,6 +889,7 @@ class _ProgressRing extends StatelessWidget {
           ),
         ],
       ),
+      ),
     );
   }
 }
@@ -832,40 +911,43 @@ class _GoalRing extends StatelessWidget {
         ? PanAfricanColors.surfaceContainerDark
         : PanAfricanColors.surfaceContainerLight;
 
-    return PanAfricanCard(
-      padding: EdgeInsets.all(PanAfricanSpacing.sm),
-      child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: 60.w,
-                height: 60.w,
-                child: CircularProgressIndicator(
-                  value: goal.progress,
-                  strokeWidth: 6,
-                  backgroundColor: bgColor,
-                  valueColor: AlwaysStoppedAnimation<Color>(meta.color),
+    return Semantics(
+      label: '${meta.label}: $progressLabel',
+      child: PanAfricanCard(
+        padding: EdgeInsets.all(PanAfricanSpacing.sm),
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 60.w,
+                  height: 60.w,
+                  child: CircularProgressIndicator(
+                    value: goal.progress,
+                    strokeWidth: 6,
+                    backgroundColor: bgColor,
+                    valueColor: AlwaysStoppedAnimation<Color>(meta.color),
+                  ),
                 ),
-              ),
-              Icon(meta.icon, color: meta.color, size: 20.sp),
-            ],
-          ),
-          SizedBox(height: PanAfricanSpacing.xs),
-          Text(
-            meta.label,
-            style: PanAfricanTypography.labelSmall(context),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: PanAfricanSpacing.xxs),
-          Text(
-            progressLabel,
-            style: PanAfricanTypography.bodySmall(context).copyWith(
-              color: PanAfricanColors.neutralMedium,
+                Icon(meta.icon, color: meta.color, size: 20.sp, semanticLabel: meta.label),
+              ],
             ),
-          ),
-        ],
+            SizedBox(height: PanAfricanSpacing.xs),
+            Text(
+              meta.label,
+              style: PanAfricanTypography.labelSmall(context),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Text(
+              progressLabel,
+              style: PanAfricanTypography.bodySmall(context).copyWith(
+                color: PanAfricanColors.neutralMedium,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -988,29 +1070,33 @@ class _QuickActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final bgColor = Theme.of(context).colorScheme.surfaceContainerHighest;
     final textColor = Theme.of(context).colorScheme.onSurface;
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: PanAfricanRadius.lgBR,
-          boxShadow: PanAfricanShadows.sm,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
-            SizedBox(height: PanAfricanSpacing.sm),
-            Text(
-              title,
-              style: PanAfricanTypography.titleMedium(context)
-                  .copyWith(color: textColor),
-              textAlign: TextAlign.center,
-            ),
-          ],
+    return Semantics(
+      label: title,
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: bgColor,
+            borderRadius: PanAfricanRadius.lgBR,
+            boxShadow: PanAfricanShadows.sm,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: PanAfricanColors.primary, size: 24.sp, semanticLabel: title),
+              SizedBox(height: PanAfricanSpacing.sm),
+              Text(
+                title,
+                style: PanAfricanTypography.titleMedium(context)
+                    .copyWith(color: textColor),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );

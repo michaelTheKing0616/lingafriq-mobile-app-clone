@@ -247,26 +247,29 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
   }
 
   Widget _buildScoreItem(IconData icon, String label, String value) {
-    return Column(
-      children: [
-        Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
-        const SizedBox(height: 4),
-        Text(
-          value,
-          style: TextStyle(
-            fontSize: 20.sp,
-            fontWeight: FontWeight.bold,
-            color: context.adaptive,
+    return Semantics(
+      label: '$label: $value',
+      child: Column(
+        children: [
+          Icon(icon, color: PanAfricanColors.primary, size: 24.sp, semanticLabel: label),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+              color: context.adaptive,
+            ),
           ),
-        ),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12.sp,
-            color: context.adaptive54,
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12.sp,
+              color: context.adaptive54,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -281,48 +284,56 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
 
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
-          child: PanAfricanCard(
-            onTap: () => _selectCard(card),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: card.isMatched
-                    ? PanAfricanColors.success.withOpacity(0.2)
-                    : isSelected
-                        ? PanAfricanColors.primary.withOpacity(0.2)
-                        : null,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
+          child: Semantics(
+            label: card.isMatched 
+                ? 'Matched word: ${card.text}' 
+                : 'Word option: ${card.text}',
+            button: true,
+            selected: isSelected,
+            child: PanAfricanCard(
+              onTap: () => _selectCard(card),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
                   color: card.isMatched
-                      ? PanAfricanColors.success
+                      ? PanAfricanColors.success.withOpacity(0.2)
                       : isSelected
-                          ? PanAfricanColors.primary
-                          : Colors.transparent,
-                  width: 2,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (card.isMatched)
-                    Icon(
-                      Icons.check_circle,
-                      color: PanAfricanColors.success,
-                      size: 20.sp,
-                    ),
-                  if (card.isMatched) const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      card.text,
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                        color: context.adaptive,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                          ? PanAfricanColors.primary.withOpacity(0.2)
+                          : null,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: card.isMatched
+                        ? PanAfricanColors.success
+                        : isSelected
+                            ? PanAfricanColors.primary
+                            : Colors.transparent,
+                    width: 2,
                   ),
-                ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (card.isMatched)
+                      Icon(
+                        Icons.check_circle,
+                        color: PanAfricanColors.success,
+                        size: 20.sp,
+                        semanticLabel: 'Matched',
+                      ),
+                    if (card.isMatched) const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        card.text,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: context.adaptive,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -355,6 +366,7 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
                 Icons.celebration,
                 color: colorScheme.onPrimary,
                 size: 64.sp,
+                semanticLabel: 'Celebration',
               ),
             ),
             const SizedBox(height: 24),
@@ -391,12 +403,16 @@ class _WordMatchGameState extends ConsumerState<WordMatchGame> {
               ),
             ),
             const SizedBox(height: 32),
-            PanAfricanButton(
-              onPressed: () {
-                _comboTracker.reset();
-                _initializeGame();
-              },
-              label: 'Play Again',
+            Semantics(
+              label: 'Play again button',
+              button: true,
+              child: PanAfricanButton(
+                onPressed: () {
+                  _comboTracker.reset();
+                  _initializeGame();
+                },
+                label: 'Play Again',
+              ),
             ),
           ],
         ),

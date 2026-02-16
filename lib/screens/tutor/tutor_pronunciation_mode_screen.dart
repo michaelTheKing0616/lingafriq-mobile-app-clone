@@ -151,12 +151,15 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                   // Text Input
                   PolieGlassCard(
                     padding: EdgeInsets.all(PolieSpacing.md),
-                    child: TextField(
-                      controller: textController,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        labelText: 'Text to Practice',
-                        hintText: 'Enter text to practice pronunciation...',
+                    child: Semantics(
+                      label: 'Text to practice pronunciation',
+                      textField: true,
+                      child: TextField(
+                        controller: textController,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          labelText: 'Text to Practice',
+                          hintText: 'Enter text to practice pronunciation...',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(PolieRadius.md),
                         ),
@@ -166,6 +169,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                             : PolieColors.surfaceContainerLight,
                       ),
                       style: PolieTypography.body(context),
+                    ),
                     ),
                   ),
                   SizedBox(height: PolieSpacing.md),
@@ -236,9 +240,13 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
 
                   // Large record orb
                   Center(
-                    child: GestureDetector(
-                      onTap: isLoading.value ? null : recordAndScore,
-                      child: AnimatedContainer(
+                    child: Semantics(
+                      label: isRecording.value ? 'Tap to stop recording and analyze' : 'Tap to start recording',
+                      button: true,
+                      enabled: !isLoading.value,
+                      child: GestureDetector(
+                        onTap: isLoading.value ? null : recordAndScore,
+                        child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
                         width: isRecording.value ? 140.w : 120.w,
                         height: isRecording.value ? 140.w : 120.w,
@@ -273,8 +281,10 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
                           isRecording.value ? Icons.stop_rounded : Icons.mic_rounded,
                           size: 48.sp,
                           color: Theme.of(context).colorScheme.onPrimary,
+                          semanticLabel: isRecording.value ? 'Stop' : 'Record',
                         ),
                       ),
+                    ),
                     ),
                   ),
                   SizedBox(height: PolieSpacing.sm),
@@ -328,11 +338,13 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
     final userBars = List.generate(barCount, (i) => 0.3 + (i % 5) / 10 * (overallScore / 100));
     final refBars = List.generate(barCount, (i) => 0.4 + (i % 4) / 10);
 
-    return PolieGlassCard(
-      hasGlow: true,
-      glowColor: PolieColors.electricTeal,
-      child: Column(
-        children: [
+    return Semantics(
+      label: 'Pronunciation result. Overall score: ${overallScore.toStringAsFixed(0)} percent. ${result['feedback']?.toString() ?? ''}',
+      child: PolieGlassCard(
+        hasGlow: true,
+        glowColor: PolieColors.electricTeal,
+        child: Column(
+          children: [
           _ScoreRing(score: overallScore, size: 150.w),
           SizedBox(height: PolieSpacing.lg),
           Text('Mouth shape', style: PolieTypography.label(context)),
@@ -373,7 +385,7 @@ class TutorPronunciationModeScreen extends HookConsumerWidget {
           if (result['feedback'] != null) ...[
             Divider(color: PolieColors.textSecondary.withOpacity(0.3)),
             SizedBox(height: PolieSpacing.md),
-            Text('Feedback', style: PolieTypography.label(context)),
+            Semantics(label: 'Feedback', child: Text('Feedback', style: PolieTypography.label(context))),
             SizedBox(height: PolieSpacing.sm),
             Text(result['feedback'].toString(), style: PolieTypography.body(context)),
           ],

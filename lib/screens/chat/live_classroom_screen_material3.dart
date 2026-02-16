@@ -54,10 +54,14 @@ class _RoomSelectionScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => Navigator.of(context).pop(),
-          tooltip: 'Back',
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded),
+            onPressed: () => Navigator.of(context).pop(),
+            tooltip: 'Back',
+          ),
         ),
         title: const Text('Live Classroom'),
         backgroundColor: Colors.transparent,
@@ -107,17 +111,22 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     .animate()
                     .fadeIn(delay: 400.ms, duration: 400.ms),
                 SizedBox(height: PanAfricanSpacing.xxl),
-                TextField(
-                  controller: roomNameController,
-                  style: PanAfricanTypography.bodyLarge(context),
-                  decoration: InputDecoration(
-                    labelText: 'Room Name',
-                    hintText: 'Enter classroom name',
-                    prefixIcon: Icon(Icons.school, color: PanAfricanColors.primary),
-                    filled: true,
-                    fillColor: colorScheme.surface,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                Semantics(
+                  label: 'Room name input',
+                  hint: 'Enter classroom name',
+                  textField: true,
+                  child: TextField(
+                    controller: roomNameController,
+                    style: PanAfricanTypography.bodyLarge(context),
+                    decoration: InputDecoration(
+                      labelText: 'Room Name',
+                      hintText: 'Enter classroom name',
+                      prefixIcon: Icon(Icons.school, color: PanAfricanColors.primary),
+                      filled: true,
+                      fillColor: colorScheme.surface,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+                      ),
                     ),
                   ),
                 )
@@ -125,7 +134,9 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                     .fadeIn(delay: 600.ms, duration: 400.ms)
                     .slideY(begin: 0.2, duration: 400.ms),
                 SizedBox(height: PanAfricanSpacing.md),
-                DropdownButtonFormField<String?>(
+                Semantics(
+                  label: 'Language of instruction. Select language for the classroom.',
+                  child: DropdownButtonFormField<String?>(
                   value: selectedLanguage.value,
                   style: PanAfricanTypography.bodyLarge(context),
                   decoration: InputDecoration(
@@ -152,17 +163,22 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                   onChanged: (value) {
                     selectedLanguage.value = value;
                   },
+                ),
                 )
                     .animate()
                     .fadeIn(delay: 650.ms, duration: 400.ms)
                     .slideY(begin: 0.2, duration: 400.ms),
                 SizedBox(height: PanAfricanSpacing.lg),
-                PanAfricanButton(
-                  label: 'Create Classroom',
-                  icon: Icons.add,
-                  onPressed: isCreating.value
-                      ? null
-                      : () async {
+                Semantics(
+                  label: isCreating.value ? 'Creating classroom' : 'Create classroom',
+                  button: true,
+                  enabled: !isCreating.value,
+                  child: PanAfricanButton(
+                    label: 'Create Classroom',
+                    icon: Icons.add,
+                    onPressed: isCreating.value
+                        ? null
+                        : () async {
                           if (roomNameController.text.trim().isEmpty) {
                             showLingAfriqError(context, 'Please enter a room name');
                             return;
@@ -212,6 +228,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                             if (context.mounted) isCreating.value = false;
                           }
                         },
+                  ),
                 )
                     .animate()
                     .fadeIn(delay: 800.ms, duration: 400.ms)
@@ -351,22 +368,31 @@ class _ClassroomView extends HookConsumerWidget {
         subtitle: '${participants.value.length} participants',
         showBackButton: true,
         actions: [
-          IconButton(
-            icon: Icon(
-              isWhiteboardVisible.value ? Icons.edit : Icons.edit_outlined,
+          Semantics(
+            label: isWhiteboardVisible.value ? 'Hide whiteboard' : 'Show whiteboard',
+            button: true,
+            child: IconButton(
+              icon: Icon(
+                isWhiteboardVisible.value ? Icons.edit : Icons.edit_outlined,
+                semanticLabel: isWhiteboardVisible.value ? 'Hide whiteboard' : 'Show whiteboard',
+              ),
+              onPressed: () {
+                isWhiteboardVisible.value = !isWhiteboardVisible.value;
+                HapticFeedback.lightImpact();
+              },
+              tooltip: 'Toggle Whiteboard',
             ),
-            onPressed: () {
-              isWhiteboardVisible.value = !isWhiteboardVisible.value;
-              HapticFeedback.lightImpact();
-            },
-            tooltip: 'Toggle Whiteboard',
           ),
-          IconButton(
-            icon: Icon(Icons.people_outline),
-            onPressed: () {
-              _showParticipantsDialog(context, participants.value, isDark);
-            },
-            tooltip: 'Participants',
+          Semantics(
+            label: 'View participants, ${participants.value.length} in room',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.people_outline, semanticLabel: 'Participants'),
+              onPressed: () {
+                _showParticipantsDialog(context, participants.value, isDark);
+              },
+              tooltip: 'Participants',
+            ),
           ),
         ],
       ),
@@ -496,9 +522,13 @@ class _ClassroomView extends HookConsumerWidget {
           ),
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Close'),
+          Semantics(
+            label: 'Close participants list',
+            button: true,
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
           ),
         ],
       );
@@ -616,31 +646,46 @@ class _ClassroomControls extends StatelessWidget {
             : PanAfricanColors.surfaceContainerLight,
         boxShadow: PanAfricanShadows.lg,
       ),
-      child: Row(
+        child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _ControlButton(
+          Semantics(
+            label: isVideoEnabled ? 'Turn off camera' : 'Turn on camera',
+            button: true,
+            child: _ControlButton(
             icon: isVideoEnabled ? Icons.videocam : Icons.videocam_off,
             label: 'Video',
             isActive: isVideoEnabled,
             onPressed: () => onVideoToggle(!isVideoEnabled),
             isDark: isDark,
           ),
-          _ControlButton(
+          ),
+          Semantics(
+            label: isAudioEnabled ? 'Mute microphone' : 'Unmute microphone',
+            button: true,
+            child: _ControlButton(
             icon: isAudioEnabled ? Icons.mic : Icons.mic_off,
             label: 'Audio',
             isActive: isAudioEnabled,
             onPressed: () => onAudioToggle(!isAudioEnabled),
             isDark: isDark,
           ),
-          _ControlButton(
+          ),
+          Semantics(
+            label: isScreenSharing ? 'Stop sharing screen' : 'Share screen',
+            button: true,
+            child: _ControlButton(
             icon: Icons.screen_share,
             label: 'Share',
             isActive: isScreenSharing,
             onPressed: () => onScreenShareToggle(!isScreenSharing),
             isDark: isDark,
           ),
-          PrimaryButton(
+          ),
+          Semantics(
+            label: 'Leave classroom',
+            button: true,
+            child: PrimaryButton(
             text: 'Leave',
             color: PanAfricanColors.error,
             textColor: colorScheme.onPrimary,
@@ -653,6 +698,7 @@ class _ClassroomControls extends StatelessWidget {
                 Text('Leave', style: TextStyle(color: colorScheme.onPrimary, fontSize: 18.sp)),
               ],
             ),
+          ),
           ),
         ],
       ),

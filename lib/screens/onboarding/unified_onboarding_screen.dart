@@ -238,14 +238,18 @@ class UnifiedOnboardingScreen extends HookConsumerWidget {
             
             // Skip button (only on early steps)
             if (current < 3)
-              TextButton(
-                onPressed: onSkip,
-                child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w600,
+              Semantics(
+                label: 'Skip onboarding',
+                button: true,
+                child: TextButton(
+                  onPressed: onSkip,
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               )

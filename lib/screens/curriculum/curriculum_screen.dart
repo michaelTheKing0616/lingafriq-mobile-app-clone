@@ -13,6 +13,7 @@ import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
+import 'package:lingafriq/services/deep_link_service.dart';
 
 class CurriculumScreen extends ConsumerStatefulWidget {
   const CurriculumScreen({super.key});
@@ -33,6 +34,16 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
   Future<void> _loadCurriculum() async {
     try {
       await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
+      
+      // Check for pending deep link lesson after curriculum loads
+      if (mounted) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final pendingLessonId = DeepLinkService.consumePendingLessonId();
+          if (pendingLessonId != null) {
+            _navigateToDeepLinkedLesson(pendingLessonId);
+          }
+        });
+      }
     } catch (e) {
       if (mounted) {
         ErrorHandler.showError(context, e);
@@ -513,6 +524,75 @@ class _CurriculumScreenState extends ConsumerState<CurriculumScreen> {
         ),
       ),
     );
+  }
+
+  /// Find a lesson by ID across all languages and levels
+  ({CurriculumLesson lesson, String language, String level})? _findLessonById(String lessonId) {
+    final curriculum = ref.read(curriculumProvider.notifier).curriculum;
+    if (curriculum == null) return null;
+
+    for (final languageEntry in curriculum.languages.entries) {
+      final language = languageEntry.key;
+      final levelsMap = languageEntry.value;
+
+      for (final levelEntry in levelsMap.entries) {
+        final level = levelEntry.key;
+        final units = levelEntry.value;
+
+        for (final unit in units) {
+          for (final lesson in unit.lessons) {
+            if (lesson.id == lessonId) {
+              return (
+                lesson: lesson,
+                language: language,
+                level: level,
+              );
+            }
+          }
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /// Navigate to a lesson from deep link
+  void _navigateToDeepLinkedLesson(String lessonId) {
+    final result = _findLessonById(lessonId);
+    
+    if (result == null) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Lesson not found'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+      return;
+    }
+
+    if (mounted) {
+      Navigator.push(
+        context,
+        SmoothPageRoute(
+          child: LessonDetailScreen(
+            lesson: result.lesson,
+            language: result.language,
+            level: result.level,
+          ),
+        ),
+      ).then((completed) {
+        // Mark lesson as complete if user completed it
+        if (completed == true && !result.lesson.isCompleted) {
+          ref.read(curriculumProvider.notifier).markLessonComplete(
+                result.language,
+                result.level,
+                result.lesson.id,
+              );
+        }
+      });
+    }
   }
 }
 

@@ -263,12 +263,16 @@ Provide:
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
+          Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -304,9 +308,9 @@ Provide:
         labelColor: PolieColors.textPrimary,
         unselectedLabelColor: PolieColors.textSecondary,
         tabs: [
-          Tab(text: 'Translation', icon: Icon(Icons.translate_rounded, size: 20.sp)),
-          Tab(text: 'Sentence Building', icon: Icon(Icons.build_rounded, size: 20.sp)),
-          Tab(text: 'Free Writing', icon: Icon(Icons.edit_rounded, size: 20.sp)),
+          Tab(text: 'Translation', icon: Icon(Icons.translate_rounded, size: 20.sp, semanticLabel: 'Translation')),
+          Tab(text: 'Sentence Building', icon: Icon(Icons.build_rounded, size: 20.sp, semanticLabel: 'Sentence Building')),
+          Tab(text: 'Free Writing', icon: Icon(Icons.edit_rounded, size: 20.sp, semanticLabel: 'Free Writing')),
         ],
       ),
     );
@@ -392,16 +396,20 @@ Provide:
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              setState(() {
-                _currentExercise = null;
-                _userAnswer = '';
-                _feedback = null;
-              });
-            },
+          Semantics(
+            label: 'Go back to exercise list',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                setState(() {
+                  _currentExercise = null;
+                  _userAnswer = '';
+                  _feedback = null;
+                });
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -504,16 +512,20 @@ Provide:
           ),
         ),
         SizedBox(height: PolieSpacing.sm),
-        TextField(
-          onChanged: (value) => setState(() => _userAnswer = value),
-          maxLines: _currentExercise?.type == WritingExerciseType.freeWriting ? 10 : 3,
-          decoration: InputDecoration(
-            hintText: 'Type your answer here...',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(PolieRadius.md),
+        Semantics(
+          label: 'Your answer text input',
+          textField: true,
+          child: TextField(
+            onChanged: (value) => setState(() => _userAnswer = value),
+            maxLines: _currentExercise?.type == WritingExerciseType.freeWriting ? 10 : 3,
+            decoration: InputDecoration(
+              hintText: 'Type your answer here...',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(PolieRadius.md),
+              ),
+              filled: true,
+              fillColor: PolieColors.surfaceContainer,
             ),
-            filled: true,
-            fillColor: PolieColors.surfaceContainer,
           ),
         ),
       ],
@@ -523,7 +535,9 @@ Provide:
   Widget _buildFeedback(BuildContext context) {
     if (_feedback == null) return SizedBox.shrink();
 
-    return Container(
+    return Semantics(
+      label: 'Feedback: Score ${_feedback!.score} out of 100. ${_feedback!.feedback}',
+      child: Container(
       padding: EdgeInsets.all(PolieSpacing.lg),
       decoration: BoxDecoration(
         color: _feedback!.isCorrect
@@ -588,51 +602,60 @@ Provide:
           ],
         ],
       ),
+    ),
     );
   }
 
   Widget _buildActionButtons(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: _isEvaluating ? null : _evaluateAnswer,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: PolieColors.electricTeal,
-              padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-            ),
-            child: _isEvaluating
-                ? CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary)
-                : Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary),
-                      SizedBox(width: PolieSpacing.sm),
-                      Text(
-                        'Evaluate',
-                        style: PolieTypography.labelLarge(context).copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+        Semantics(
+          label: 'Evaluate your answer',
+          button: true,
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _isEvaluating ? null : _evaluateAnswer,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: PolieColors.electricTeal,
+                padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+              ),
+              child: _isEvaluating
+                  ? CircularProgressIndicator(color: Theme.of(context).colorScheme.onPrimary)
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.check_circle, color: Theme.of(context).colorScheme.onPrimary, semanticLabel: 'Evaluate'),
+                        SizedBox(width: PolieSpacing.sm),
+                        Text(
+                          'Evaluate',
+                          style: PolieTypography.labelLarge(context).copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+            ),
           ),
         ),
         if (_feedback != null && _feedback!.isCorrect) ...[
           SizedBox(height: PolieSpacing.md),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton(
-              onPressed: () {
-                HapticFeedback.mediumImpact();
-                setState(() {
-                  _currentExercise = null;
-                  _userAnswer = '';
-                  _feedback = null;
-                });
-              },
-              child: Text('Next Exercise'),
+          Semantics(
+            label: 'Next exercise',
+            button: true,
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () {
+                  HapticFeedback.mediumImpact();
+                  setState(() {
+                    _currentExercise = null;
+                    _userAnswer = '';
+                    _feedback = null;
+                  });
+                },
+                child: Text('Next Exercise'),
+              ),
             ),
           ),
         ],
@@ -723,13 +746,16 @@ class _ExerciseCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.mediumImpact();
-            onTap();
-          },
-          borderRadius: BorderRadius.circular(PolieRadius.lg),
-          child: Padding(
+        child: Semantics(
+          label: '${exercise.title}. ${exercise.instruction}',
+          button: true,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.mediumImpact();
+              onTap();
+            },
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            child: Padding(
             padding: EdgeInsets.all(PolieSpacing.lg),
             child: Row(
               children: [
@@ -761,10 +787,14 @@ class _ExerciseCard extends StatelessWidget {
                             ),
                           ),
                           if (isCompleted)
-                            Icon(
-                              Icons.check_circle,
-                              color: PolieColors.success,
-                              size: 20.sp,
+                            Semantics(
+                              label: 'Completed',
+                              child: Icon(
+                                Icons.check_circle,
+                                color: PolieColors.success,
+                                size: 20.sp,
+                                semanticLabel: 'Completed',
+                              ),
                             ),
                         ],
                       ),
@@ -780,10 +810,13 @@ class _ExerciseCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16.sp,
-                  color: PolieColors.textSecondary,
+                Semantics(
+                  excludeSemantics: true,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16.sp,
+                    color: PolieColors.textSecondary,
+                  ),
                 ),
               ],
             ),

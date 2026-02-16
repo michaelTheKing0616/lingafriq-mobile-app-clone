@@ -340,9 +340,13 @@ Quality requirements:
       padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () => Navigator.pop(context),
+          Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () => Navigator.pop(context),
+            ),
           ),
           Expanded(
             child: Text(
@@ -350,21 +354,31 @@ Quality requirements:
               style: PolieTypography.h2(context),
             ),
           ),
-          IconButton(
-            icon: Icon(
-              showTranslation ? Icons.translate_rounded : Icons.translate_outlined,
-              color: showTranslation ? PolieColors.electricTeal : PolieColors.textSecondary,
+          Semantics(
+            label: showTranslation ? 'Translation on. Tap to hide' : 'Translation off. Tap to show',
+            button: true,
+            child: IconButton(
+              icon: Icon(
+                showTranslation ? Icons.translate_rounded : Icons.translate_outlined,
+                color: showTranslation ? PolieColors.electricTeal : PolieColors.textSecondary,
+                semanticLabel: 'Toggle translation',
+              ),
+              onPressed: () => onTranslationToggle(!showTranslation),
+              tooltip: 'Toggle Translation',
             ),
-            onPressed: () => onTranslationToggle(!showTranslation),
-            tooltip: 'Toggle Translation',
           ),
-          IconButton(
-            icon: Icon(
-              showVocabulary ? Icons.menu_book_rounded : Icons.menu_book_outlined,
-              color: showVocabulary ? PolieColors.goldEmber : PolieColors.textSecondary,
+          Semantics(
+            label: showVocabulary ? 'Vocabulary on. Tap to hide' : 'Vocabulary off. Tap to show',
+            button: true,
+            child: IconButton(
+              icon: Icon(
+                showVocabulary ? Icons.menu_book_rounded : Icons.menu_book_outlined,
+                color: showVocabulary ? PolieColors.goldEmber : PolieColors.textSecondary,
+                semanticLabel: 'Vocabulary',
+              ),
+              onPressed: () => onVocabularyToggle(!showVocabulary),
+              tooltip: 'Vocabulary',
             ),
-            onPressed: () => onVocabularyToggle(!showVocabulary),
-            tooltip: 'Vocabulary',
           ),
         ],
       ),
@@ -392,17 +406,20 @@ Quality requirements:
             style: PolieTypography.h2(context),
           ),
           SizedBox(height: PolieSpacing.md),
-          PolieGlassCard(
-            padding: EdgeInsets.all(PolieSpacing.md),
-            child: TextField(
-              controller: themeController,
-              decoration: InputDecoration(
-                labelText: 'Story Theme',
-                hintText: 'e.g., traditional festival, village life, folktale',
-                border: InputBorder.none,
-                filled: false,
+          Semantics(
+            label: 'Story theme',
+            child: PolieGlassCard(
+              padding: EdgeInsets.all(PolieSpacing.md),
+              child: TextField(
+                controller: themeController,
+                decoration: InputDecoration(
+                  labelText: 'Story Theme',
+                  hintText: 'e.g., traditional festival, village life, folktale',
+                  border: InputBorder.none,
+                  filled: false,
+                ),
+                style: PolieTypography.body(context),
               ),
-              style: PolieTypography.body(context),
             ),
           ),
           SizedBox(height: PolieSpacing.md),
@@ -447,11 +464,15 @@ Quality requirements:
             ],
           ),
           SizedBox(height: PolieSpacing.xl),
-          PoliePrimaryButton(
-            label: 'Generate Story',
-            onPressed: isLoading ? null : onGenerate,
-            loading: isLoading,
-            icon: Icons.auto_stories_rounded,
+          Semantics(
+            label: 'Generate story',
+            button: true,
+            child: PoliePrimaryButton(
+              label: 'Generate Story',
+              onPressed: isLoading ? null : onGenerate,
+              loading: isLoading,
+              icon: Icons.auto_stories_rounded,
+            ),
           ),
         ],
       ),
@@ -519,13 +540,17 @@ Quality requirements:
                             ),
                           ),
                           if (onSpeakParagraph != null)
-                            IconButton(
-                              onPressed: () {
-                                HapticFeedback.lightImpact();
-                                onSpeakParagraph(para);
-                              },
-                              icon: Icon(Icons.record_voice_over_rounded, color: PolieColors.goldEmber, size: 22.sp),
-                              tooltip: 'Listen',
+                            Semantics(
+                              label: 'Listen to paragraph',
+                              button: true,
+                              child: IconButton(
+                                onPressed: () {
+                                  HapticFeedback.lightImpact();
+                                  onSpeakParagraph(para);
+                                },
+                                icon: Icon(Icons.record_voice_over_rounded, color: PolieColors.goldEmber, size: 22.sp, semanticLabel: 'Listen'),
+                                tooltip: 'Listen',
+                              ),
                             ),
                         ],
                       ),
@@ -534,10 +559,14 @@ Quality requirements:
                 }),
                 if (hasMore)
                   Center(
-                    child: PoliePrimaryButton(
+                    child: Semantics(
                       label: 'Reveal next paragraph',
-                      icon: Icons.keyboard_arrow_down_rounded,
-                      onPressed: onRevealNext,
+                      button: true,
+                      child: PoliePrimaryButton(
+                        label: 'Reveal next paragraph',
+                        icon: Icons.keyboard_arrow_down_rounded,
+                        onPressed: onRevealNext,
+                      ),
                     ),
                   ),
                 if (moral != null && moral.isNotEmpty) ...[
@@ -565,20 +594,28 @@ Quality requirements:
                 Row(
                   children: [
                     Expanded(
-                      child: PoliePrimaryButton(
-                        label: savedToLibrary ? 'Saved' : 'Save to library',
-                        icon: savedToLibrary ? Icons.check_circle : Icons.bookmark_add_rounded,
-                        onPressed: savedToLibrary ? null : onSaveToLibrary,
-                        enabled: !savedToLibrary,
+                      child: Semantics(
+                        label: savedToLibrary ? 'Saved to library' : 'Save to library',
+                        button: true,
+                        child: PoliePrimaryButton(
+                          label: savedToLibrary ? 'Saved' : 'Save to library',
+                          icon: savedToLibrary ? Icons.check_circle : Icons.bookmark_add_rounded,
+                          onPressed: savedToLibrary ? null : onSaveToLibrary,
+                          enabled: !savedToLibrary,
+                        ),
                       ),
                     ),
                     SizedBox(width: PolieSpacing.sm),
                     Expanded(
-                      child: PoliePrimaryButton(
-                        label: alternateEnding != null ? 'Alternate ending' : 'Alternate ending',
-                        icon: Icons.lightbulb_outline_rounded,
-                        loading: isLoadingAlternate,
-                        onPressed: isLoadingAlternate ? null : onGenerateAlternateEnding,
+                      child: Semantics(
+                        label: 'Generate alternate ending',
+                        button: true,
+                        child: PoliePrimaryButton(
+                          label: alternateEnding != null ? 'Alternate ending' : 'Alternate ending',
+                          icon: Icons.lightbulb_outline_rounded,
+                          loading: isLoadingAlternate,
+                          onPressed: isLoadingAlternate ? null : onGenerateAlternateEnding,
+                        ),
                       ),
                     ),
                   ],
@@ -882,10 +919,14 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
         padding: EdgeInsets.all(PolieSpacing.md),
         child: PolieGlassCard(
           child: Center(
-            child: PoliePrimaryButton(
-              label: 'Start Quiz',
-              onPressed: () => widget.onIndexChanged(0),
-              icon: Icons.quiz_rounded,
+            child: Semantics(
+              label: 'Start quiz',
+              button: true,
+              child: PoliePrimaryButton(
+                label: 'Start Quiz',
+                onPressed: () => widget.onIndexChanged(0),
+                icon: Icons.quiz_rounded,
+              ),
             ),
           ),
         ),
@@ -931,15 +972,19 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
                     : PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.md),
               ),
-              child: ListTile(
-                title: Text(option.toString(), style: PolieTypography.body(context)),
-                trailing: isSelected
-                    ? Icon(
-                        isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
-                        color: isCorrect ? PolieColors.success : PolieColors.error,
-                      )
-                    : null,
-                onTap: () {
+              child: Semantics(
+                label: 'Answer option: $option. ${isSelected ? (isCorrect ? 'Correct' : 'Incorrect') : ''}',
+                button: true,
+                child: ListTile(
+                  title: Text(option.toString(), style: PolieTypography.body(context)),
+                  trailing: isSelected
+                      ? Icon(
+                          isCorrect ? Icons.check_circle_rounded : Icons.cancel_rounded,
+                          color: isCorrect ? PolieColors.success : PolieColors.error,
+                          semanticLabel: isCorrect ? 'Correct' : 'Incorrect',
+                        )
+                      : null,
+                  onTap: () {
                   setState(() {
                     selectedAnswer = index;
                   });
@@ -957,6 +1002,7 @@ class _ComprehensionQuizState extends State<_ComprehensionQuiz> {
                     }
                   });
                 },
+                ),
               ),
             );
           }),

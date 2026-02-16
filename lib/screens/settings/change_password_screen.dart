@@ -61,15 +61,19 @@ class ChangePasswordScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: colorScheme.onPrimary,
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: colorScheme.onPrimary,
+            ),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
           ),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
         ),
         title: Text(
           'Change Password',
@@ -317,6 +321,7 @@ class _PasswordTextField extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
@@ -333,7 +338,10 @@ class _ChangePasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Material(
+    return Semantics(
+      label: 'Change password',
+      button: true,
+      child: Material(
       color: PanAfricanColors.primary,
       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       child: InkWell(
@@ -361,6 +369,7 @@ class _ChangePasswordButton extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }

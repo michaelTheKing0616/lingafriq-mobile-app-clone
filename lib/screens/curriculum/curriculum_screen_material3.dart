@@ -114,52 +114,58 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: selectedLanguage.value,
-                      decoration: InputDecoration(
-                        labelText: 'Language',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                    child: Semantics(
+                      label: 'Select language',
+                      child: DropdownButtonFormField<String>(
+                        value: selectedLanguage.value,
+                        decoration: InputDecoration(
+                          labelText: 'Language',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? PanAfricanColors.surfaceDark
+                              : PanAfricanColors.surfaceLight,
                         ),
-                        filled: true,
-                        fillColor: isDark
-                            ? PanAfricanColors.surfaceDark
-                            : PanAfricanColors.surfaceLight,
+                        items: languages.map((lang) {
+                          return DropdownMenuItem(
+                            value: lang,
+                            child: Text(lang.toUpperCase()),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          if (value != null) selectedLanguage.value = value;
+                        },
                       ),
-                      items: languages.map((lang) {
-                        return DropdownMenuItem(
-                          value: lang,
-                          child: Text(lang.toUpperCase()),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) selectedLanguage.value = value;
-                      },
                     ),
                   ),
                   SizedBox(width: PanAfricanSpacing.md),
                   Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: selectedLevel.value,
-                      decoration: InputDecoration(
-                        labelText: 'Level',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                    child: Semantics(
+                      label: 'Select level',
+                      child: DropdownButtonFormField<String>(
+                        value: selectedLevel.value,
+                        decoration: InputDecoration(
+                          labelText: 'Level',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                          ),
+                          filled: true,
+                          fillColor: isDark
+                              ? PanAfricanColors.surfaceDark
+                              : PanAfricanColors.surfaceLight,
                         ),
-                        filled: true,
-                        fillColor: isDark
-                            ? PanAfricanColors.surfaceDark
-                            : PanAfricanColors.surfaceLight,
+                        items: levels.map((level) {
+                          return DropdownMenuItem(
+                            value: level,
+                            child: Text(level),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          if (value != null) selectedLevel.value = value;
+                        },
                       ),
-                      items: levels.map((level) {
-                        return DropdownMenuItem(
-                          value: level,
-                          child: Text(level),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        if (value != null) selectedLevel.value = value;
-                      },
                     ),
                   ),
                 ],
@@ -259,10 +265,13 @@ class _WeekCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
       color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-        child: Padding(
+      child: Semantics(
+        label: '${week['title'] ?? 'Week ${week['week']}'}. Progress: $completedLessons out of ${lessons.length} lessons',
+        button: true,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+          child: Padding(
           padding: EdgeInsets.all(PanAfricanSpacing.lg),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -286,11 +295,15 @@ class _WeekCard extends StatelessWidget {
                 style: PanAfricanTypography.bodyMedium(context),
               ),
               SizedBox(height: PanAfricanSpacing.md),
-              LinearProgressIndicator(
-                value: progress,
-                backgroundColor: PanAfricanColors.neutralLight,
-                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
-                minHeight: 8.h,
+              Semantics(
+                label: 'Progress',
+                value: '$completedLessons out of ${lessons.length} lessons completed',
+                child: LinearProgressIndicator(
+                  value: progress,
+                  backgroundColor: PanAfricanColors.neutralLight,
+                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  minHeight: 8.h,
+                ),
               ),
               SizedBox(height: PanAfricanSpacing.sm),
               Wrap(

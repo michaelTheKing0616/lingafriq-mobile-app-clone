@@ -172,13 +172,18 @@ class LessonFlowScreen extends HookConsumerWidget {
                     itemCount: lessonState.sections.length,
                     itemBuilder: (context, index) {
                       final section = lessonState.sections[index];
-                      return _buildSectionContent(
-                        context,
-                        ref,
-                        section,
-                        lessonFlow,
-                        lessonState,
-                        pageController,
+                      final sectionLabel = 'Section ${index + 1} of ${lessonState.sections.length}';
+                      return Semantics(
+                        label: sectionLabel,
+                        header: true,
+                        child: _buildSectionContent(
+                          context,
+                          ref,
+                          section,
+                          lessonFlow,
+                          lessonState,
+                          pageController,
+                        ),
                       );
                     },
                   ),

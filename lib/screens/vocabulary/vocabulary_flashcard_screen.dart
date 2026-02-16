@@ -164,13 +164,16 @@ class VocabularyFlashcardScreen extends HookConsumerWidget {
 
               // Flashcard
               Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    isFlipped.value = !isFlipped.value;
-                    showAnswer.value = !showAnswer.value;
-                    HapticFeedback.lightImpact();
-                  },
-                  child: Center(
+                child: Semantics(
+                  label: showAnswer.value ? '${currentWord.word}: ${currentWord.translation}. Tap to flip back.' : '${currentWord.word}. Tap to flip and see translation.',
+                  button: true,
+                  child: GestureDetector(
+                    onTap: () {
+                      isFlipped.value = !isFlipped.value;
+                      showAnswer.value = !showAnswer.value;
+                      HapticFeedback.lightImpact();
+                    },
+                    child: Center(
                     child: AnimatedSwitcher(
                       duration: Duration(milliseconds: 300),
                       transitionBuilder: (child, animation) {

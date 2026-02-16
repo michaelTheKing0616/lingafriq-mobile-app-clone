@@ -64,13 +64,17 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 30.r,
-                        backgroundColor: PanAfricanColors.secondary,
-                        child: Text(
-                          currentUser?.username[0].toUpperCase() ?? 'U',
-                          style: PanAfricanTypography.headlineSmall(context)
-                              .copyWith(color: PanAfricanColors.neutralDarkest),
+                      Semantics(
+                        label: 'User avatar',
+                        excludeSemantics: true,
+                        child: CircleAvatar(
+                          radius: 30.r,
+                          backgroundColor: PanAfricanColors.secondary,
+                          child: Text(
+                            currentUser?.username[0].toUpperCase() ?? 'U',
+                            style: PanAfricanTypography.headlineSmall(context)
+                                .copyWith(color: PanAfricanColors.neutralDarkest),
+                          ),
                         ),
                       ),
                       SizedBox(width: PanAfricanSpacing.md),
@@ -78,18 +82,24 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              currentUser?.username ?? 'User',
-                              style: PanAfricanTypography.titleLarge(context)
-                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                            Semantics(
+                              label: 'Username: ${currentUser?.username ?? 'User'}',
+                              child: Text(
+                                currentUser?.username ?? 'User',
+                                style: PanAfricanTypography.titleLarge(context)
+                                    .copyWith(color: Theme.of(context).colorScheme.onPrimary),
+                              ),
                             ),
                             SizedBox(height: PanAfricanSpacing.xxs),
-                            Text(
-                              currentUser?.email ?? '',
-                              style: PanAfricanTypography.bodySmall(context)
-                                  .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                            Semantics(
+                              label: 'Email: ${currentUser?.email ?? ''}',
+                              child: Text(
+                                currentUser?.email ?? '',
+                                style: PanAfricanTypography.bodySmall(context)
+                                    .copyWith(color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7)),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                           ],
                         ),
@@ -358,16 +368,24 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                         isDark: isDark,
                       ),
                       // Dark Mode Toggle
-                      SwitchListTile(
-                        value: isDark,
-                        onChanged: (_) => toggleDarkMode(),
-                        title: Text('Dark Mode'),
-                        subtitle: Text('Toggle theme'),
-                        secondary: Icon(
-                          isDark ? Icons.dark_mode : Icons.light_mode,
-                          color: PanAfricanColors.primary,
+                      Semantics(
+                        label: 'Dark mode',
+                        value: isDark ? 'enabled' : 'disabled',
+                        toggled: isDark,
+                        child: SwitchListTile(
+                          value: isDark,
+                          onChanged: (_) => toggleDarkMode(),
+                          title: Text('Dark Mode'),
+                          subtitle: Text('Toggle theme'),
+                          secondary: Semantics(
+                            excludeSemantics: true,
+                            child: Icon(
+                              isDark ? Icons.dark_mode : Icons.light_mode,
+                              color: PanAfricanColors.primary,
+                            ),
+                          ),
+                          activeColor: PanAfricanColors.primary,
                         ),
-                        activeColor: PanAfricanColors.primary,
                       ),
                     ],
                   ),
@@ -388,10 +406,13 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                   ),
                 ),
               ),
-              child: PanAfricanButton(
+              child: Semantics(
                 label: 'Logout',
-                icon: Icons.logout,
-                onPressed: () async {
+                button: true,
+                child: PanAfricanButton(
+                  label: 'Logout',
+                  icon: Icons.logout,
+                  onPressed: () async {
                   final shouldLogout = await showDialog<bool>(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -421,6 +442,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                 },
                 backgroundColor: PanAfricanColors.error,
               ),
+            ),
             )
                 .animate()
                 .fadeIn(duration: 300.ms)
@@ -453,13 +475,17 @@ class _DrawerSection extends StatelessWidget {
             horizontal: PanAfricanSpacing.lg,
             vertical: PanAfricanSpacing.sm,
           ),
-          child: Text(
-            title.toUpperCase(),
-            style: PanAfricanTypography.labelSmall(context).copyWith(
-              color: isDark
-                  ? PanAfricanColors.textSecondaryDark
-                  : PanAfricanColors.textSecondaryLight,
-              letterSpacing: 1.2,
+          child: Semantics(
+            label: '$title section',
+            header: true,
+            child: Text(
+              title.toUpperCase(),
+              style: PanAfricanTypography.labelSmall(context).copyWith(
+                color: isDark
+                    ? PanAfricanColors.textSecondaryDark
+                    : PanAfricanColors.textSecondaryLight,
+                letterSpacing: 1.2,
+              ),
             ),
           ),
         ),
@@ -485,21 +511,28 @@ class _DrawerItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(
-        icon,
-        color: PanAfricanColors.primary,
-      ),
-      title: Text(
-        label,
-        style: PanAfricanTypography.bodyLarge(context),
-      ),
-      onTap: () {
-        HapticFeedback.lightImpact();
-        onTap();
-      },
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
+    return Semantics(
+      label: label,
+      button: true,
+      child: ListTile(
+        leading: Semantics(
+          excludeSemantics: true,
+          child: Icon(
+            icon,
+            color: PanAfricanColors.primary,
+          ),
+        ),
+        title: Text(
+          label,
+          style: PanAfricanTypography.bodyLarge(context),
+        ),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
+        ),
       ),
     )
         .animate()

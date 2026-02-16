@@ -373,12 +373,16 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
+          Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -448,9 +452,9 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
         labelColor: PolieColors.textPrimary,
         unselectedLabelColor: PolieColors.textSecondary,
         tabs: [
-          Tab(text: 'Word Families', icon: Icon(Icons.category_rounded, size: 20.sp)),
-          Tab(text: 'Picture Match', icon: Icon(Icons.image_search_rounded, size: 20.sp)),
-          Tab(text: 'Visual Cards', icon: Icon(Icons.style_rounded, size: 20.sp)),
+          Tab(text: 'Word Families', icon: Icon(Icons.category_rounded, size: 20.sp, semanticLabel: 'Word Families')),
+          Tab(text: 'Picture Match', icon: Icon(Icons.image_search_rounded, size: 20.sp, semanticLabel: 'Picture Match')),
+          Tab(text: 'Visual Cards', icon: Icon(Icons.style_rounded, size: 20.sp, semanticLabel: 'Visual Cards')),
         ],
       ),
     );
@@ -564,9 +568,13 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
                   ],
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.volume_up_rounded, color: Colors.white),
-                onPressed: () => _playAudio(_wordOfTheDay!.audioUrl, _wordOfTheDay!.word),
+              Semantics(
+                label: 'Play pronunciation of ${_wordOfTheDay!.word}',
+                button: true,
+                child: IconButton(
+                  icon: Icon(Icons.volume_up_rounded, color: Colors.white, semanticLabel: 'Play audio'),
+                  onPressed: () => _playAudio(_wordOfTheDay!.audioUrl, _wordOfTheDay!.word),
+                ),
               ),
             ],
           ),
@@ -704,12 +712,14 @@ class _StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Icon(icon, color: color, size: 24.sp),
-        SizedBox(height: PolieSpacing.xs),
-        Text(
-          value,
+    return Semantics(
+      label: '$label: $value',
+      child: Column(
+        children: [
+          Icon(icon, color: color, size: 24.sp, semanticLabel: label),
+          SizedBox(height: PolieSpacing.xs),
+          Text(
+            value,
           style: PolieTypography.h3(context).copyWith(
             color: PolieColors.textPrimary,
             fontWeight: FontWeight.bold,
@@ -722,6 +732,7 @@ class _StatItem extends StatelessWidget {
           ),
         ),
       ],
+    ),
     );
   }
 }
@@ -754,13 +765,16 @@ class _FamilyCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.mediumImpact();
-            onTap();
-          },
-          borderRadius: BorderRadius.circular(PolieRadius.lg),
-          child: Padding(
+        child: Semantics(
+          label: '${family.name} word family with ${family.words.length} words',
+          button: true,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.mediumImpact();
+              onTap();
+            },
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            child: Padding(
             padding: EdgeInsets.all(PolieSpacing.lg),
             child: Row(
               children: [
@@ -797,10 +811,13 @@ class _FamilyCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16.sp,
-                  color: PolieColors.textSecondary,
+                Semantics(
+                  excludeSemantics: true,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16.sp,
+                    color: PolieColors.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -840,13 +857,16 @@ class _VocabularyCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.mediumImpact();
-            onTap();
-          },
-          borderRadius: BorderRadius.circular(PolieRadius.lg),
-          child: Column(
+        child: Semantics(
+          label: 'Vocabulary card: ${word.word} means ${word.translation}',
+          button: true,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.mediumImpact();
+              onTap();
+            },
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
@@ -892,14 +912,18 @@ class _VocabularyCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(Icons.volume_up_rounded, size: 18.sp),
-                          onPressed: () {
-                            HapticFeedback.lightImpact();
-                            onPlayAudio();
-                          },
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints(),
+                        Semantics(
+                          label: 'Play pronunciation',
+                          button: true,
+                          child: IconButton(
+                            icon: Icon(Icons.volume_up_rounded, size: 18.sp, semanticLabel: 'Play audio'),
+                            onPressed: () {
+                              HapticFeedback.lightImpact();
+                              onPlayAudio();
+                            },
+                            padding: EdgeInsets.zero,
+                            constraints: BoxConstraints(),
+                          ),
                         ),
                       ],
                     ),
@@ -992,12 +1016,16 @@ class _WordDetailSheet extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.volume_up_rounded, size: 32.sp),
-                onPressed: () {
-                  HapticFeedback.mediumImpact();
-                  onPlayAudio();
-                },
+              Semantics(
+                label: 'Play pronunciation of ${word.word}',
+                button: true,
+                child: IconButton(
+                  icon: Icon(Icons.volume_up_rounded, size: 32.sp, semanticLabel: 'Play audio'),
+                  onPressed: () {
+                    HapticFeedback.mediumImpact();
+                    onPlayAudio();
+                  },
+                ),
               ),
             ],
           ),

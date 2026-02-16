@@ -42,7 +42,10 @@ class ProfileEditScreen extends HookConsumerWidget {
             // Avatar section - uses new Avatar Intelligence System
             Column(
               children: [
-                LingAfriqAvatar(
+                Semantics(
+                  label: 'Profile avatar. Tap to customize.',
+                  button: true,
+                  child: LingAfriqAvatar(
                   size: 100,
                   showBorder: true,
                   onTap: () {
@@ -76,12 +79,16 @@ class ProfileEditScreen extends HookConsumerWidget {
                     );
                   },
                 ),
+                ),
                 const SizedBox(height: 8),
-                Text(
+                Semantics(
+                  label: 'Tap to customize your avatar',
+                  child: Text(
                   'Tap to customize',
                   style: PanAfricanTypography.labelSmall(context).copyWith(
                     color: PanAfricanColors.neutralMedium,
                   ),
+                ),
                 ),
               ],
             ).centered(),
@@ -90,25 +97,36 @@ class ProfileEditScreen extends HookConsumerWidget {
             16.heightBox,
 
             // ✅ Input fields
-            PrimaryTextField(
-              controller: firstnameController,
-              title: "First name",
-              hintText: "Enter your First name",
-              validator: Validators.emptyValidator,
-              textInputAction: TextInputAction.next,
+            Semantics(
+              label: 'First name',
+              textField: true,
+              child: PrimaryTextField(
+                controller: firstnameController,
+                title: "First name",
+                hintText: "Enter your First name",
+                validator: Validators.emptyValidator,
+                textInputAction: TextInputAction.next,
+              ),
             ),
             12.heightBox,
-            PrimaryTextField(
+            Semantics(
+              label: 'Last name',
+              textField: true,
+              child: PrimaryTextField(
               controller: lastNameController,
               title: "Last name",
               hintText: "Enter your Last name",
               validator: Validators.emptyValidator,
               textInputAction: TextInputAction.next,
             ),
+            ),
             12.heightBox,
             
             // Global ID / Handle Editor
-            PanAfricanTextField(
+            Semantics(
+              label: 'Your handle, unique identifier for chat',
+              textField: true,
+              child: PanAfricanTextField(
               controller: globalIdController,
               label: 'Your Handle (global_id)',
               hint: 'e.g., your_handle',
@@ -136,6 +154,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                 }
               },
             ),
+            ),
             12.heightBox,
             IgnorePointer(
               ignoring: true,
@@ -150,7 +169,10 @@ class ProfileEditScreen extends HookConsumerWidget {
             24.heightBox,
 
             // ✅ Save button
-            PanAfricanButton(
+            Semantics(
+              label: 'Save profile',
+              button: true,
+              child: PanAfricanButton(
               width: 0.6.sw,
               onPressed: () async {
                 final user = ref.read(userProvider);
@@ -171,10 +193,14 @@ class ProfileEditScreen extends HookConsumerWidget {
               },
               label: "Save",
             ),
+            ),
             24.heightBox,
 
             // ✅ Delete Account Button
-            PanAfricanButton(
+            Semantics(
+              label: 'Delete account',
+              button: true,
+              child: PanAfricanButton(
               width: 0.6.sw,
               label: "Delete Account",
               backgroundColor: PanAfricanColors.error,
@@ -202,6 +228,7 @@ class ProfileEditScreen extends HookConsumerWidget {
                   }
                 }
               },
+            ),
             ),
           ],
         ).p16().scrollVertical(),

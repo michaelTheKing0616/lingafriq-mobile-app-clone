@@ -179,9 +179,13 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          _GlassIconButton(
-            icon: Icons.arrow_back_rounded,
-            onPressed: () => Navigator.of(context).pop(),
+          Semantics(
+            label: 'Back',
+            button: true,
+            child: _GlassIconButton(
+              icon: Icons.arrow_back_rounded,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -223,7 +227,10 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
             width: 1,
           ),
         ),
-        child: TextField(
+        child: Semantics(
+          label: 'Search scenarios',
+          textField: true,
+          child: TextField(
           onChanged: (value) => searchQuery.value = value,
           style: PolieTypography.body(context).copyWith(
             color: PolieColors.textPrimary,
@@ -243,6 +250,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
               vertical: PolieSpacing.sm,
             ),
           ),
+        ),
         ),
       ),
     ).animate().fadeIn(delay: 100.ms, duration: 300.ms);
@@ -395,7 +403,11 @@ class _CategoryChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return Semantics(
+      label: 'Category: $label',
+      button: true,
+      selected: isSelected,
+      child: GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(
@@ -426,6 +438,7 @@ class _CategoryChip extends StatelessWidget {
               icon,
               size: 18.sp,
               color: isSelected ? color : PolieColors.textSecondary,
+              semanticLabel: label,
             ),
             SizedBox(width: PolieSpacing.xs),
             Text(
@@ -436,6 +449,7 @@ class _CategoryChip extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }
@@ -475,7 +489,10 @@ class _ScenarioCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Material(
+        child: Semantics(
+          label: 'Scenario: ${scenario.scenario}. You say: ${scenario.userUtterance}. Tap to start.',
+          button: true,
+          child: Material(
           color: Colors.transparent,
           child: InkWell(
             onTap: onTap,
@@ -544,6 +561,7 @@ class _ScenarioCard extends StatelessWidget {
                           Icons.play_arrow_rounded,
                           color: Theme.of(context).colorScheme.onPrimary,
                           size: 20.sp,
+                          semanticLabel: 'Start scenario',
                         ),
                       ),
                     ],
@@ -564,6 +582,7 @@ class _ScenarioCard extends StatelessWidget {
                               Icons.person_rounded,
                               size: 14.sp,
                               color: PolieColors.goldEmber,
+                              semanticLabel: 'You',
                             ),
                             SizedBox(width: PolieSpacing.xs),
                             Text(
@@ -614,6 +633,7 @@ class _ScenarioCard extends StatelessWidget {
             ),
           ),
         ),
+      ),
       ),
     );
   }

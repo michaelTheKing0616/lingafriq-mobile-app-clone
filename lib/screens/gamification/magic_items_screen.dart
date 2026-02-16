@@ -100,12 +100,16 @@ class _MagicItemsScreenState extends ConsumerState<MagicItemsScreen> {
           'Magic Items & Boosters',
           style: PanAfricanTypography.headlineMedium(context),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: SingleChildScrollView(

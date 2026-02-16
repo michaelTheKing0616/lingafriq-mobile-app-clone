@@ -263,25 +263,31 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
         message: 'Sending message...',
         child: Scaffold(
           appBar: AppBar(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(modeName),
-                Text(
-                  languageName,
-                  style: PanAfricanTypography.bodySmall(context),
-                ),
-              ],
+            title: Semantics(
+              header: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(modeName),
+                  Text(
+                    languageName,
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ],
+              ),
             ),
             backgroundColor: Colors.transparent,
             elevation: 0,
             actions: [
-              // Progress dashboard button
-              IconButton(
-                icon: Icon(Icons.analytics),
-                onPressed: () {
-                  _navigateToDashboard(context, mode, language, languageName);
-                },
+              Semantics(
+                label: 'Progress dashboard',
+                button: true,
+                child: IconButton(
+                  icon: Icon(Icons.analytics, semanticLabel: 'Analytics'),
+                  onPressed: () {
+                    _navigateToDashboard(context, mode, language, languageName);
+                  },
+                ),
               ),
             ],
           ),
@@ -326,10 +332,16 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                                   itemBuilder: (context, index) {
                                     final message = messages.value[index];
                                     final isUser = message['sender'] == 'user';
-                                    return _MessageBubble(
-                                      message: message,
-                                      isUser: isUser,
-                                      isDark: isDark,
+                                    final senderLabel = isUser ? 'Your message' : 'AI message';
+                                    final text = message['text'] as String? ?? '';
+                                    return Semantics(
+                                      label: '$senderLabel: $text',
+                                      excludeSemantics: true,
+                                      child: _MessageBubble(
+                                        message: message,
+                                        isUser: isUser,
+                                        isDark: isDark,
+                                      ),
                                     )
                                         .animate()
                                         .fadeIn(duration: 300.ms)
@@ -353,35 +365,43 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            controller: messageController,
-                            enabled: !isLoading.value,
-                            maxLength: 2000,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontSize: 15,
-                            ),
-                            decoration: InputDecoration(
-                              hintText: 'Type your message...',
-                              hintStyle: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          child: Semantics(
+                            label: 'Chat message input',
+                            hint: 'Type your message',
+                            child: TextField(
+                              controller: messageController,
+                              enabled: !isLoading.value,
+                              maxLength: 2000,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurface,
+                                fontSize: 15,
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                              decoration: InputDecoration(
+                                hintText: 'Type your message...',
+                                hintStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                                ),
+                                filled: true,
+                                fillColor: Theme.of(context).colorScheme.surfaceContainerLowest,
                               ),
-                              filled: true,
-                              fillColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+                              maxLines: null,
+                              textInputAction: TextInputAction.send,
+                              onSubmitted: (_) => sendMessage(),
                             ),
-                            maxLines: null,
-                            textInputAction: TextInputAction.send,
-                            onSubmitted: (_) => sendMessage(),
                           ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        IconButton(
-                          icon: Icon(Icons.send),
-                          onPressed: isLoading.value ? null : sendMessage,
-                          color: PanAfricanColors.primary,
+                        Semantics(
+                          label: 'Send message',
+                          button: true,
+                          child: IconButton(
+                            icon: Icon(Icons.send, semanticLabel: 'Send'),
+                            onPressed: isLoading.value ? null : sendMessage,
+                            color: PanAfricanColors.primary,
+                          ),
                         ),
                       ],
                     ),
@@ -554,10 +574,12 @@ class _MessageBubble extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
-            CircleAvatar(
-              radius: 16.r,
-              backgroundColor: PanAfricanColors.primary,
-              child: Icon(Icons.smart_toy, size: 16.sp, color: Theme.of(context).colorScheme.onPrimary),
+            ExcludeSemantics(
+              child: CircleAvatar(
+                radius: 16.r,
+                backgroundColor: PanAfricanColors.primary,
+                child: Icon(Icons.smart_toy, size: 16.sp, color: Theme.of(context).colorScheme.onPrimary),
+              ),
             ),
             SizedBox(width: PanAfricanSpacing.sm),
           ],
@@ -595,10 +617,12 @@ class _MessageBubble extends StatelessWidget {
           ),
           if (isUser) ...[
             SizedBox(width: PanAfricanSpacing.sm),
-            CircleAvatar(
-              radius: 16.r,
-              backgroundColor: PanAfricanColors.secondary,
-              child: Icon(Icons.person, size: 16.sp, color: Theme.of(context).colorScheme.onSecondary),
+            ExcludeSemantics(
+              child: CircleAvatar(
+                radius: 16.r,
+                backgroundColor: PanAfricanColors.secondary,
+                child: Icon(Icons.person, size: 16.sp, color: Theme.of(context).colorScheme.onSecondary),
+              ),
             ),
           ],
         ],

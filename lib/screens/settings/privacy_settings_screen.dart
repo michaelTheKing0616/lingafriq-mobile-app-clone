@@ -146,15 +146,19 @@ class PrivacySettingsScreen extends HookConsumerWidget {
     if (isLoading.value) {
       return Scaffold(
         appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back_rounded,
-              color: colorScheme.onPrimary,
+          leading: Semantics(
+            label: 'Back',
+            button: true,
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                color: colorScheme.onPrimary,
+              ),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              },
             ),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.pop(context);
-            },
           ),
           title: Text(
             'Privacy Settings',
@@ -173,15 +177,19 @@ class PrivacySettingsScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_rounded,
-            color: colorScheme.onPrimary,
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back_rounded,
+              color: colorScheme.onPrimary,
+            ),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
           ),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
         ),
         title: Text(
           'Privacy Settings',
@@ -357,9 +365,12 @@ class PrivacySettingsScreen extends HookConsumerWidget {
                       ),
                       SizedBox(width: PanAfricanSpacing.md),
                       Expanded(
-                        child: Text(
-                          'Your privacy is important to us. These settings help you control how your data is used and shared.',
-                          style: PanAfricanTypography.bodyMedium(context),
+                        child: Semantics(
+                          label: 'Your privacy is important to us. These settings help you control how your data is used and shared.',
+                          child: Text(
+                            'Your privacy is important to us. These settings help you control how your data is used and shared.',
+                            style: PanAfricanTypography.bodyMedium(context),
+                          ),
                         ),
                       ),
                     ],
@@ -401,12 +412,15 @@ class _PrivacySection extends StatelessWidget {
             left: PanAfricanSpacing.sm,
             bottom: PanAfricanSpacing.sm,
           ),
-          child: Text(
+          child: Semantics(
+            header: true,
+            child: Text(
             title,
             style: PanAfricanTypography.titleMedium(context).copyWith(
               color: PanAfricanColors.primary,
               fontWeight: FontWeight.w600,
             ),
+          ),
           ),
         ),
         Container(
@@ -481,10 +495,14 @@ class _PrivacySwitchTile extends StatelessWidget {
               ],
             ),
           ),
-          Switch.adaptive(
-            value: value,
-            onChanged: onChanged,
-            activeColor: PanAfricanColors.primary,
+          Semantics(
+            label: '$title. ${value ? 'On' : 'Off'}.',
+            toggled: value,
+            child: Switch.adaptive(
+              value: value,
+              onChanged: onChanged,
+              activeColor: PanAfricanColors.primary,
+            ),
           ),
         ],
       ),
@@ -515,7 +533,10 @@ class _PrivacyRadioTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSelected = value == groupValue;
 
-    return InkWell(
+    return Semantics(
+      label: '$title. ${isSelected ? 'Selected' : 'Not selected'}.',
+      button: true,
+      child: InkWell(
       onTap: () => onChanged(value),
       borderRadius: BorderRadius.circular(PanAfricanRadius.md),
       child: Padding(
@@ -564,6 +585,7 @@ class _PrivacyRadioTile extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

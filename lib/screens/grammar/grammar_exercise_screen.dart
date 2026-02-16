@@ -365,12 +365,16 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
       padding: EdgeInsets.all(PolieSpacing.lg),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
+          Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.sm),
           Expanded(
@@ -422,12 +426,16 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             ],
           ),
           SizedBox(height: PolieSpacing.sm),
-          LinearProgressIndicator(
-            value: (_currentIndex + 1) / _exercises.length,
-            backgroundColor: PolieColors.textSecondary.withOpacity(0.2),
-            valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
-            minHeight: 6.h,
-            borderRadius: BorderRadius.circular(PolieRadius.sm),
+          Semantics(
+            label: 'Exercise progress',
+            value: '${_currentIndex + 1} of ${_exercises.length}',
+            child: LinearProgressIndicator(
+              value: (_currentIndex + 1) / _exercises.length,
+              backgroundColor: PolieColors.textSecondary.withOpacity(0.2),
+              valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
+              minHeight: 6.h,
+              borderRadius: BorderRadius.circular(PolieRadius.sm),
+            ),
           ),
         ],
       ),
@@ -576,22 +584,26 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             ),
           SizedBox(height: PolieSpacing.lg),
           if (!isAnswered)
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _checkAnswer,
-                style: FilledButton.styleFrom(
-                  backgroundColor: PolieColors.goldEmber,
-                  padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(PolieRadius.md),
+            Semantics(
+              label: 'Check your answer',
+              button: true,
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: _checkAnswer,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: PolieColors.goldEmber,
+                    padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(PolieRadius.md),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Check Answer',
-                  style: PolieTypography.button(context).copyWith(
-                    color: PolieColors.obsidian,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    'Check Answer',
+                    style: PolieTypography.button(context).copyWith(
+                      color: PolieColors.obsidian,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -660,15 +672,19 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                   spacing: PolieSpacing.sm,
                   runSpacing: PolieSpacing.sm,
                   children: selectedWords.value.map((word) {
-                    return GestureDetector(
-                      onTap: isAnswered ? null : () {
-                        setState(() {
-                          selectedWords.value.remove(word);
-                          availableWords.value.add(word);
-                        });
-                        HapticFeedback.selectionClick();
-                      },
-                      child: Chip(
+                    return Semantics(
+                      label: 'Remove word: $word',
+                      button: true,
+                      enabled: !isAnswered,
+                      child: GestureDetector(
+                        onTap: isAnswered ? null : () {
+                          setState(() {
+                            selectedWords.value.remove(word);
+                            availableWords.value.add(word);
+                          });
+                          HapticFeedback.selectionClick();
+                        },
+                        child: Chip(
                         label: Text(word),
                         backgroundColor: PolieColors.royalAmethyst.withOpacity(0.3),
                         deleteIcon: isAnswered ? null : Icon(Icons.close, size: 16),
@@ -704,17 +720,22 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             spacing: PolieSpacing.sm,
             runSpacing: PolieSpacing.sm,
             children: availableWords.value.map((word) {
-              return GestureDetector(
-                onTap: isAnswered ? null : () {
-                  setState(() {
-                    availableWords.value.remove(word);
-                    selectedWords.value.add(word);
-                  });
-                  HapticFeedback.selectionClick();
-                },
-                child: Chip(
-                  label: Text(word),
-                  backgroundColor: PolieColors.surfaceContainer,
+              return Semantics(
+                label: 'Add word: $word',
+                button: true,
+                enabled: !isAnswered,
+                child: GestureDetector(
+                  onTap: isAnswered ? null : () {
+                    setState(() {
+                      availableWords.value.remove(word);
+                      selectedWords.value.add(word);
+                    });
+                    HapticFeedback.selectionClick();
+                  },
+                  child: Chip(
+                    label: Text(word),
+                    backgroundColor: PolieColors.surfaceContainer,
+                  ),
                 ),
               );
             }).toList(),
@@ -753,28 +774,33 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             ),
           SizedBox(height: PolieSpacing.lg),
           if (!isAnswered)
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: selectedWords.value.isEmpty ? null : () {
-                  final answer = selectedWords.value.join(' ');
-                  setState(() {
-                    _selectedAnswers[index] = answer;
-                  });
-                  _checkAnswer();
-                },
-                style: FilledButton.styleFrom(
-                  backgroundColor: PolieColors.goldEmber,
-                  padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(PolieRadius.md),
+            Semantics(
+              label: 'Check your answer',
+              button: true,
+              enabled: selectedWords.value.isNotEmpty,
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: selectedWords.value.isEmpty ? null : () {
+                    final answer = selectedWords.value.join(' ');
+                    setState(() {
+                      _selectedAnswers[index] = answer;
+                    });
+                    _checkAnswer();
+                  },
+                  style: FilledButton.styleFrom(
+                    backgroundColor: PolieColors.goldEmber,
+                    padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(PolieRadius.md),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Check Answer',
-                  style: PolieTypography.button(context).copyWith(
-                    color: PolieColors.obsidian,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    'Check Answer',
+                    style: PolieTypography.button(context).copyWith(
+                      color: PolieColors.obsidian,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -845,37 +871,42 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
 
             return Padding(
               padding: EdgeInsets.only(bottom: PolieSpacing.md),
-              child: GestureDetector(
-                onTap: isAnswered ? null : () {
-                  HapticFeedback.selectionClick();
-                  _selectAnswer(option);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(PolieSpacing.lg),
-                  decoration: BoxDecoration(
-                    color: backgroundColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: borderColor ?? Colors.transparent,
-                      width: 2,
+              child: Semantics(
+                label: 'Conjugation option: $option',
+                button: true,
+                enabled: !isAnswered,
+                child: GestureDetector(
+                  onTap: isAnswered ? null : () {
+                    HapticFeedback.selectionClick();
+                    _selectAnswer(option);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(PolieSpacing.lg),
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: borderColor ?? Colors.transparent,
+                        width: 2,
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          option,
-                          style: PolieTypography.body(context).copyWith(
-                            color: PolieColors.textPrimary,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            option,
+                            style: PolieTypography.body(context).copyWith(
+                              color: PolieColors.textPrimary,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
                           ),
                         ),
-                      ),
-                      if (showCorrect)
-                        Icon(Icons.check_circle, color: PolieColors.success),
-                      if (showIncorrect)
-                        Icon(Icons.cancel, color: PolieColors.error),
-                    ],
+                        if (showCorrect)
+                          Icon(Icons.check_circle, color: PolieColors.success, semanticLabel: 'Correct'),
+                        if (showIncorrect)
+                          Icon(Icons.cancel, color: PolieColors.error, semanticLabel: 'Incorrect'),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -907,22 +938,26 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             ),
           SizedBox(height: PolieSpacing.lg),
           if (!isAnswered)
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _checkAnswer,
-                style: FilledButton.styleFrom(
-                  backgroundColor: PolieColors.goldEmber,
-                  padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(PolieRadius.md),
+            Semantics(
+              label: 'Check your answer',
+              button: true,
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: _checkAnswer,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: PolieColors.goldEmber,
+                    padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(PolieRadius.md),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Check Answer',
-                  style: PolieTypography.button(context).copyWith(
-                    color: PolieColors.obsidian,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    'Check Answer',
+                    style: PolieTypography.button(context).copyWith(
+                      color: PolieColors.obsidian,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -992,12 +1027,16 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                       borderColor = PolieColors.royalAmethyst;
                     }
 
-                    return GestureDetector(
-                      onTap: isAnswered ? null : () {
-                        HapticFeedback.selectionClick();
-                        _selectAnswer(word);
-                      },
-                      child: Container(
+                    return Semantics(
+                      label: 'Select word: $word',
+                      button: true,
+                      enabled: !isAnswered,
+                      child: GestureDetector(
+                        onTap: isAnswered ? null : () {
+                          HapticFeedback.selectionClick();
+                          _selectAnswer(word);
+                        },
+                        child: Container(
                         padding: EdgeInsets.symmetric(
                           horizontal: PolieSpacing.md,
                           vertical: PolieSpacing.sm,
@@ -1063,22 +1102,26 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
             ),
           SizedBox(height: PolieSpacing.lg),
           if (!isAnswered)
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _checkAnswer,
-                style: FilledButton.styleFrom(
-                  backgroundColor: PolieColors.goldEmber,
-                  padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(PolieRadius.md),
+            Semantics(
+              label: 'Check your answer',
+              button: true,
+              child: SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: _checkAnswer,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: PolieColors.goldEmber,
+                    padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(PolieRadius.md),
+                    ),
                   ),
-                ),
-                child: Text(
-                  'Check Answer',
-                  style: PolieTypography.button(context).copyWith(
-                    color: PolieColors.obsidian,
-                    fontWeight: FontWeight.bold,
+                  child: Text(
+                    'Check Answer',
+                    style: PolieTypography.button(context).copyWith(
+                      color: PolieColors.obsidian,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -1195,42 +1238,50 @@ class _GrammarExerciseScreenState extends ConsumerState<GrammarExerciseScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          HapticFeedback.lightImpact();
-                          Navigator.of(context).pop();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                          side: BorderSide(color: PolieColors.goldEmber),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(PolieRadius.md),
+                      child: Semantics(
+                        label: 'Finish and return',
+                        button: true,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            Navigator.of(context).pop();
+                          },
+                          style: OutlinedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                            side: BorderSide(color: PolieColors.goldEmber),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(PolieRadius.md),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Done',
-                          style: PolieTypography.button(context).copyWith(
-                            color: PolieColors.goldEmber,
+                          child: Text(
+                            'Done',
+                            style: PolieTypography.button(context).copyWith(
+                              color: PolieColors.goldEmber,
+                            ),
                           ),
                         ),
                       ),
                     ),
                     SizedBox(width: PolieSpacing.md),
                     Expanded(
-                      child: FilledButton(
-                        onPressed: _resetExercise,
-                        style: FilledButton.styleFrom(
-                          backgroundColor: PolieColors.goldEmber,
-                          padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(PolieRadius.md),
+                      child: Semantics(
+                        label: 'Restart exercise',
+                        button: true,
+                        child: FilledButton(
+                          onPressed: _resetExercise,
+                          style: FilledButton.styleFrom(
+                            backgroundColor: PolieColors.goldEmber,
+                            padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(PolieRadius.md),
+                            ),
                           ),
-                        ),
-                        child: Text(
-                          'Try Again',
-                          style: PolieTypography.button(context).copyWith(
-                            color: PolieColors.obsidian,
-                            fontWeight: FontWeight.bold,
+                          child: Text(
+                            'Try Again',
+                            style: PolieTypography.button(context).copyWith(
+                              color: PolieColors.obsidian,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

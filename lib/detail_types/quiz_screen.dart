@@ -17,6 +17,7 @@ import '../widgets/gamification/combo_tracker.dart';
 import '../widgets/gamification/combo_display_widget.dart';
 import '../services/sound_effects_service.dart';
 import '../providers/gamification_provider.dart';
+import '../widgets/gamification/xp_gain_overlay.dart';
 import 'quiz_answers_screen.dart';
 
 class QuizIndexNotifier extends Notifier<int> {
@@ -55,6 +56,24 @@ class QuizScreen extends HookConsumerWidget {
     final pageController = usePageController();
     final soundEffects = ref.read(soundEffectsProvider);
     final comboTracker = useMemoized(() => ComboTracker());
+    
+    // Wire up combo milestone celebration callback
+    useEffect(() {
+      comboTracker.onMilestoneReached = (int combo) {
+        try {
+          showXPGain(
+            ref,
+            amount: combo * 2,
+            source: 'combo_milestone',
+            bonusText: '${combo}x Combo!',
+          );
+        } catch (e) {
+          // Silently handle errors to prevent breaking combo tracking
+        }
+      };
+      return null;
+    }, [comboTracker]);
+    
     final selectedAnswer = quiz.map((e) {
       return useState<Map<String, String?>>({e.question: null});
     }).toList();

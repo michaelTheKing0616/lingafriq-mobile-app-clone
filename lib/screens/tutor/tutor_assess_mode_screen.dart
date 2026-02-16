@@ -233,13 +233,16 @@ Keep lists practical. Use culturally appropriate examples.
                               hasGlow: selected,
                               glowColor: PolieColors.royalAmethyst,
                               padding: EdgeInsets.all(PolieSpacing.md),
-                              child: InkWell(
-                                onTap: () {
-                                  HapticFeedback.selectionClick();
-                                  assessmentType.value = id;
-                                },
-                                borderRadius: BorderRadius.circular(PolieRadius.lg),
-                                child: Row(
+                              child: Semantics(
+                                label: '${t['label']}. ${t['desc'] ?? ''}. ${selected ? 'Selected' : ''}',
+                                button: true,
+                                child: InkWell(
+                                  onTap: () {
+                                    HapticFeedback.selectionClick();
+                                    assessmentType.value = id;
+                                  },
+                                  borderRadius: BorderRadius.circular(PolieRadius.lg),
+                                  child: Row(
                                   children: [
                                     Container(
                                       padding: EdgeInsets.all(PolieSpacing.sm),
@@ -260,19 +263,24 @@ Keep lists practical. Use culturally appropriate examples.
                                         ],
                                       ),
                                     ),
-                                    if (selected) Icon(Icons.check_circle_rounded, color: PolieColors.electricTeal),
+                                    if (selected) Icon(Icons.check_circle_rounded, color: PolieColors.electricTeal, semanticLabel: 'Selected'),
                                   ],
+                                ),
                                 ),
                               ),
                             ),
                           );
                         }),
                         SizedBox(height: PolieSpacing.xl),
-                        PoliePrimaryButton(
-                          label: 'Start Assessment',
-                          icon: Icons.assessment_rounded,
-                          loading: isLoading.value,
-                          onPressed: isLoading.value ? null : assessProficiency,
+                        Semantics(
+                          label: 'Start assessment',
+                          button: true,
+                          child: PoliePrimaryButton(
+                            label: 'Start Assessment',
+                            icon: Icons.assessment_rounded,
+                            loading: isLoading.value,
+                            onPressed: isLoading.value ? null : assessProficiency,
+                          ),
                         ),
                       ],
                     ),
@@ -336,6 +344,8 @@ class _AssessmentResultsView extends StatelessWidget {
                 hasGlow: true,
                 glowColor: PolieColors.goldEmber,
                 padding: EdgeInsets.symmetric(vertical: PolieSpacing.xl, horizontal: PolieSpacing.lg),
+                child: Semantics(
+                label: 'Your proficiency level: $level',
                 child: Column(
                   children: [
                     Text(
@@ -424,10 +434,14 @@ class _AssessmentResultsView extends StatelessWidget {
               );
             }),
             SizedBox(height: PolieSpacing.lg),
-            PoliePrimaryButton(
+            Semantics(
               label: 'View learning path',
-              icon: Icons.school_rounded,
-              onPressed: onLearningPathTap,
+              button: true,
+              child: PoliePrimaryButton(
+                label: 'View learning path',
+                icon: Icons.school_rounded,
+                onPressed: onLearningPathTap,
+              ),
             ),
           ],
         ],

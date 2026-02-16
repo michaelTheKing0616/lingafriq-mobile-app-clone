@@ -11,6 +11,8 @@ import 'gamification_services_provider.dart';
 import '../services/rive_gamification_service.dart';
 import '../utils/api.dart';
 import '../utils/structured_logger.dart';
+import '../widgets/gamification/streak_milestone_overlay.dart';
+import 'notification_provider.dart';
 
 final gamificationProvider =
     NotifierProvider<GamificationProvider, BaseProviderState>(() {
@@ -279,6 +281,16 @@ class GamificationProvider extends Notifier<BaseProviderState>
       logger.warn('Rive service not available', tag: 'gamification', error: e);
     }
 
+    // Trigger streak milestone celebration for milestone streaks
+    const streakMilestones = {7, 14, 30, 60, 100, 365};
+    if (streakMilestones.contains(newStreak)) {
+      try {
+        ref.read(streakMilestoneOverlayProvider.notifier).showMilestone(streakCount: newStreak);
+      } catch (e) {
+        logger.warn('Streak milestone overlay not available', tag: 'gamification', error: e);
+      }
+    }
+
     await _saveGamification();
     await _checkBadges();
     await _syncToBackend();
@@ -328,6 +340,16 @@ class GamificationProvider extends Notifier<BaseProviderState>
       ref.read(riveGamificationServiceProvider).reactToBadgeUnlock();
     } catch (e) {
       logger.warn('Rive service not available', tag: 'gamification', error: e);
+    }
+
+    // Show badge unlock celebration notification
+    try {
+      ref.read(notificationProvider.notifier).showAchievementAlert(
+        'Badge Unlocked! 🏆',
+        'You earned "${badge.name}"!',
+      );
+    } catch (e) {
+      logger.warn('Failed to show badge unlock celebration', tag: 'gamification', error: e);
     }
 
     state = state.copyWith();

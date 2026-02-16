@@ -267,16 +267,20 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
                 spacing: 8.w,
                 runSpacing: 8.h,
                 children: unusedChoices.map((choice) {
-                  return GestureDetector(
-                    onTap: () => _selectChoice(choice),
-                    child: PanAfricanCard(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-                      backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
-                      child: Text(
-                        choice,
-                        style: PanAfricanTypography.bodyMedium(context).copyWith(
-                          color: PanAfricanColors.primary,
-                          fontWeight: FontWeight.w600,
+                  return Semantics(
+                    label: 'Select answer: $choice',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: () => _selectChoice(choice),
+                      child: PanAfricanCard(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        backgroundColor: PanAfricanColors.primary.withOpacity(0.1),
+                        child: Text(
+                          choice,
+                          style: PanAfricanTypography.bodyMedium(context).copyWith(
+                            color: PanAfricanColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
@@ -292,15 +296,19 @@ class _WordQuizSectionWidgetState extends State<WordQuizSectionWidget>
           top: false,
           child: Padding(
             padding: EdgeInsets.all(16.w),
-            child: PanAfricanButton(
-              width: double.infinity,
-              onPressed: _isChecked ? null : _checkAnswers,
-              label: _isChecked ? 'All Correct!' : 'Check',
-              icon: _isChecked ? Icons.check_circle_rounded : Icons.check_rounded,
+            child: Semantics(
+              label: _isChecked ? 'All correct' : 'Check answers',
+              button: true,
+              child: PanAfricanButton(
+                width: double.infinity,
+                onPressed: _isChecked ? null : _checkAnswers,
+                label: _isChecked ? 'All Correct!' : 'Check',
+                icon: _isChecked ? Icons.check_circle_rounded : Icons.check_rounded,
               backgroundColor: _isChecked
                   ? PanAfricanColors.success
                   : PanAfricanColors.primary,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            ),
             ),
           ),
         ),

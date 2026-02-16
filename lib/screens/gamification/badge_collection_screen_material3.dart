@@ -28,12 +28,16 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
           'Badge Collection',
           style: PanAfricanTypography.headlineMedium(context),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
         actions: [
           Container(
@@ -70,18 +74,22 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
                         (category == 'All' && selectedCategory.value == null);
                     return Padding(
                       padding: EdgeInsets.only(right: PanAfricanSpacing.xs),
-                      child: FilterChip(
-                        label: Text(
-                          category,
-                          style: PanAfricanTypography.labelMedium(context),
+                      child: Semantics(
+                        label: 'Filter by $category',
+                        button: true,
+                        child: FilterChip(
+                          label: Text(
+                            category,
+                            style: PanAfricanTypography.labelMedium(context),
+                          ),
+                          selected: isSelected,
+                          onSelected: (selected) {
+                            HapticFeedback.lightImpact();
+                            selectedCategory.value = selected && category != 'All' ? category : null;
+                          },
+                          selectedColor: PanAfricanColors.primaryContainer,
+                          checkmarkColor: PanAfricanColors.primary,
                         ),
-                        selected: isSelected,
-                        onSelected: (selected) {
-                          HapticFeedback.lightImpact();
-                          selectedCategory.value = selected && category != 'All' ? category : null;
-                        },
-                        selectedColor: PanAfricanColors.primaryContainer,
-                        checkmarkColor: PanAfricanColors.primary,
                       ),
                     );
                   }),
@@ -99,17 +107,19 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 80.w,
-                            height: 80.w,
-                            decoration: BoxDecoration(
-                              color: PanAfricanColors.secondary.withOpacity(0.1),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.workspace_premium_outlined,
-                              size: 48.sp,
-                              color: PanAfricanColors.secondary,
+                          ExcludeSemantics(
+                            child: Container(
+                              width: 80.w,
+                              height: 80.w,
+                              decoration: BoxDecoration(
+                                color: PanAfricanColors.secondary.withOpacity(0.1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                Icons.workspace_premium_outlined,
+                                size: 48.sp,
+                                color: PanAfricanColors.secondary,
+                              ),
                             ),
                           ),
                           SizedBox(height: PanAfricanSpacing.md),
@@ -175,12 +185,17 @@ class _BadgeCard extends StatelessWidget {
     final icon = badge['icon'] ?? '🏆';
     final colorScheme = Theme.of(context).colorScheme;
 
-    return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-        // Show badge details
-      },
-      child: Container(
+    final badgeName = badge['name'] ?? 'Badge';
+    final statusLabel = isUnlocked ? 'unlocked' : 'locked';
+    return Semantics(
+      label: '$badgeName, $statusLabel',
+      button: true,
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          // Show badge details
+        },
+        child: Container(
         decoration: BoxDecoration(
           color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           borderRadius: PanAfricanRadius.lgBR,
@@ -194,10 +209,11 @@ class _BadgeCard extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            // Glow effect for legendary badges
+            // Glow effect for legendary badges (decorative)
             if (isUnlocked && rarity.toLowerCase() == 'legendary')
               Positioned.fill(
-                child: Container(
+                child: ExcludeSemantics(
+                  child: Container(
                   decoration: BoxDecoration(
                     borderRadius: PanAfricanRadius.lgBR,
                     gradient: LinearGradient(
@@ -209,6 +225,7 @@ class _BadgeCard extends StatelessWidget {
                       ],
                     ),
                   ),
+                ),
                 ),
               ),
             Padding(
@@ -230,9 +247,11 @@ class _BadgeCard extends StatelessWidget {
                       boxShadow: isUnlocked ? PanAfricanShadows.glow(color) : null,
                     ),
                     child: Center(
-                      child: Text(
-                        icon,
-                        style: TextStyle(fontSize: 32.sp),
+                      child: ExcludeSemantics(
+                        child: Text(
+                          icon,
+                          style: TextStyle(fontSize: 32.sp),
+                        ),
                       ),
                     ),
                   ),
@@ -280,12 +299,14 @@ class _BadgeCard extends StatelessWidget {
                       Icons.lock_rounded,
                       color: PanAfricanColors.neutralMedium,
                       size: 28.sp,
+                      semanticLabel: 'Locked',
                     ),
                   ),
                 ),
               ),
           ],
         ),
+      ),
       ),
     );
   }

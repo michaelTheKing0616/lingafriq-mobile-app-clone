@@ -92,12 +92,16 @@ class _GlobalPeopleSearchScreenState
         backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+          icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
           },
+        ),
         ),
       ),
       body: Column(
@@ -110,7 +114,11 @@ class _GlobalPeopleSearchScreenState
                 borderRadius: PanAfricanRadius.lgBR,
                 boxShadow: PanAfricanShadows.sm,
               ),
-              child: TextField(
+              child: Semantics(
+                label: 'Search people by handle',
+                hint: 'Type @username to find users',
+                textField: true,
+                child: TextField(
                 controller: _searchController,
                 onChanged: (value) {
                   _searchDebouncer.run(() => _runSearch(value));
@@ -128,6 +136,7 @@ class _GlobalPeopleSearchScreenState
                   ),
                 ),
                 style: PanAfricanTypography.bodyMedium(context),
+              ),
               ),
             ),
           ),

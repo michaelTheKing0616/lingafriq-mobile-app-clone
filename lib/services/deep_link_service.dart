@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:app_links/app_links.dart';
+import 'package:lingafriq/providers/navigation_provider.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+
 class DeepLinkService {
   static const String baseUrl = 'https://lingafriq.app';
   static final DeepLinkService _instance = DeepLinkService._internal();
@@ -9,10 +11,20 @@ class DeepLinkService {
 
   final AppLinks _appLinks = AppLinks();
   StreamSubscription<Uri>? _linkSubscription;
-  StreamSubscription<Uri>? _uriLinkSubscription;
+  NavigationProvider? _navigationProvider;
 
-  /// Initialize deep link handling
-  void initialize() {
+  static String? _pendingLessonId;
+
+  /// Returns and clears the pending lesson ID from a lesson deep link, if any.
+  static String? consumePendingLessonId() {
+    final id = _pendingLessonId;
+    _pendingLessonId = null;
+    return id;
+  }
+
+  /// Initialize deep link handling. Pass [navigationProvider] to enable navigation.
+  void initialize({NavigationProvider? navigationProvider}) {
+    _navigationProvider = navigationProvider;
     _handleInitialLink();
     _handleIncomingLinks();
   }
@@ -33,7 +45,6 @@ class DeepLinkService {
   /// Handle incoming links (when app is already running)
   void _handleIncomingLinks() {
     _linkSubscription?.cancel();
-    _uriLinkSubscription?.cancel();
 
     _linkSubscription = _appLinks.uriLinkStream.listen(
       (uri) {
@@ -42,16 +53,6 @@ class DeepLinkService {
       },
       onError: (err) {
         logger.error('Error in deep link stream', error: err);
-      },
-    );
-
-    _uriLinkSubscription = _appLinks.uriLinkStream.listen(
-      (uri) {
-        logger.info('Received URI link', context: {'uri': uri.toString()});
-        _handleDeepLink(uri);
-      },
-      onError: (err) {
-        logger.error('Error in URI link stream', error: err);
       },
     );
   }
@@ -115,32 +116,32 @@ class DeepLinkService {
   /// Navigate to lesson screen
   void _navigateToLesson(String lessonId) {
     logger.info('Deep link: Navigate to lesson', context: {'lessonId': lessonId});
-    // Navigation will be handled by the app's navigation system
-    // Store the deep link data for the app to handle when ready
+    _pendingLessonId = lessonId;
+    _navigationProvider?.navigateToNamed('curriculum');
   }
 
   /// Navigate to achievement/badge screen
   void _navigateToAchievement(String badgeId) {
     logger.info('Deep link: Navigate to achievement', context: {'badgeId': badgeId});
-    // Navigation will be handled by the app's navigation system
+    _navigationProvider?.navigateToNamed('achievements');
   }
 
   /// Handle friend invite
   void _handleInvite(String userId) {
     logger.info('Deep link: Handle friend invite', context: {'userId': userId});
-    // Navigation will be handled by the app's navigation system
+    _navigationProvider?.navigateToNamed('connections');
   }
 
   /// Navigate to user profile
   void _navigateToProfile(String userId) {
     logger.info('Deep link: Navigate to profile', context: {'userId': userId});
-    // Navigation will be handled by the app's navigation system
+    _navigationProvider?.navigateToNamed('/friend-profile', arguments: {'friendId': userId});
   }
 
   /// Navigate to friend quest
   void _navigateToQuest(String questId) {
     logger.info('Deep link: Navigate to quest', context: {'questId': questId});
-    // Navigation will be handled by the app's navigation system
+    _navigationProvider?.navigateToNamed('quest');
   }
 
   /// Generate shareable links
@@ -153,6 +154,5 @@ class DeepLinkService {
   /// Dispose resources
   void dispose() {
     _linkSubscription?.cancel();
-    _uriLinkSubscription?.cancel();
   }
 }

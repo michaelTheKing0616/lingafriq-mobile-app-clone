@@ -73,9 +73,13 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          _GlassIconButton(
-            icon: Icons.arrow_back_rounded,
-            onPressed: () => Navigator.of(context).pop(),
+          Semantics(
+            label: 'Back',
+            button: true,
+            child: _GlassIconButton(
+              icon: Icons.arrow_back_rounded,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -97,12 +101,16 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          _GlassIconButton(
-            icon: Icons.refresh_rounded,
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              _loadProgress(service, progress, isLoading);
-            },
+          Semantics(
+            label: 'Refresh vocabulary progress',
+            button: true,
+            child: _GlassIconButton(
+              icon: Icons.refresh_rounded,
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                _loadProgress(service, progress, isLoading);
+              },
+            ),
           ),
         ],
       ),
@@ -110,16 +118,20 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
   }
 
   Widget _buildLoadingState(BuildContext context) {
-    return Center(
-      child: Column(
+    return Semantics(
+      label: 'Loading vocabulary progress',
+      child: Center(
+        child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
-            width: 48.w,
-            height: 48.w,
-            child: CircularProgressIndicator(
-              strokeWidth: 3,
-              valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
+          ExcludeSemantics(
+            child: SizedBox(
+              width: 48.w,
+              height: 48.w,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
+              ),
             ),
           ),
           SizedBox(height: PolieSpacing.lg),
@@ -130,6 +142,7 @@ class VocabularyDashboardScreen extends HookConsumerWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

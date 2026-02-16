@@ -16,18 +16,28 @@ class AppPolicyScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                  Semantics(
+                    label: 'Back',
+                    button: true,
+                    child: BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                  ),
                   const Spacer(),
-                  "App Policy".text.xl4.medium.white.make().p16(),
+                  Semantics(
+                    header: true,
+                    child: "App Policy".text.xl4.medium.white.make().p16(),
+                  ),
                 ],
               ),
             ),
           ),
-          Column(
+          Semantics(
+            label: appPolicy,
+            child: Column(
             children: [
               appPolicy.text.lg.heightRelaxed.center.make().p32(),
             ],
-          ).expand()
+          ).expand(),
+          ),
         ],
       ),
     );

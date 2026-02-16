@@ -73,16 +73,19 @@ class _ScheduledSessionsScreenState extends ConsumerState<ScheduledSessionsScree
     return Card(
       margin: EdgeInsets.only(bottom: 2.h),
       elevation: 2,
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RoomDetailScreen(roomId: room.id),
-            ),
-          );
-        },
-        child: Padding(
+      child: Semantics(
+        label: 'Scheduled session: ${room.name}. Tap to view or join.',
+        button: true,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RoomDetailScreen(roomId: room.id),
+              ),
+            );
+          },
+          child: Padding(
           padding: EdgeInsets.all(4.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,6 +167,7 @@ class _ScheduledSessionsScreenState extends ConsumerState<ScheduledSessionsScree
               ),
             ],
           ),
+        ),
         ),
       ),
     );

@@ -96,8 +96,11 @@ class _PrivateChatListScreenState
                 padding: EdgeInsets.all(PanAfricanSpacing.md),
                 child: Row(
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary),
+                    Semantics(
+                      label: 'Back',
+                      button: true,
+                      child: IconButton(
+                      icon: Icon(Icons.arrow_back, color: colorScheme.onPrimary, semanticLabel: 'Back'),
                       onPressed: () {
                         HapticFeedback.lightImpact();
                         Navigator.of(context).pop();
@@ -106,6 +109,7 @@ class _PrivateChatListScreenState
                         backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
                         shape: const CircleBorder(),
                       ),
+                    ),
                     ),
                     const Spacer(),
                   ],
@@ -132,7 +136,11 @@ class _PrivateChatListScreenState
                       borderRadius: BorderRadius.circular(PanAfricanRadius.xl),
                       boxShadow: PanAfricanShadows.md,
                     ),
-                    child: TextField(
+                    child: Semantics(
+                      label: 'Search chats',
+                      hint: 'Search by name, email, or language',
+                      textField: true,
+                      child: TextField(
                       controller: _searchController,
                       onChanged: (value) => _searchDebouncer.run(() =>
                           ref.read(privateChatProvider.notifier).search(value)),
@@ -162,6 +170,7 @@ class _PrivateChatListScreenState
                         ),
                       ),
                       style: PanAfricanTypography.bodyMedium(context),
+                    ),
                     ),
                   ),
                 ),
@@ -242,7 +251,10 @@ class _PrivateChatListScreenState
                   isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
             ),
           ),
-          child: ListTile(
+          child: Semantics(
+            label: 'Chat with ${contact.name}. ${contact.lastMessage ?? 'No messages yet'}${unreadCount > 0 ? '. $unreadCount unread' : ''}',
+            button: true,
+            child: ListTile(
             contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
             leading: Stack(
               children: [
@@ -324,6 +336,7 @@ class _PrivateChatListScreenState
                 ),
               );
             },
+          ),
           ),
         );
       },

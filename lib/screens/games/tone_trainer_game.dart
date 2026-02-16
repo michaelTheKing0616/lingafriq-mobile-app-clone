@@ -419,7 +419,9 @@ class _DynamicLoadingScreenState
         ? content.fact 
         : _fallbackFacts[_factIndex];
     
-    return AnimatedSwitcher(
+    return Semantics(
+      label: 'Did you know? $fact',
+      child: AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       child: Container(
         key: ValueKey(fact),
@@ -487,7 +489,10 @@ class _DynamicLoadingScreenState
   }
 
   Widget _buildLoadingIndicator(bool isDark) {
-    return Column(
+    return Semantics(
+      label: 'Loading: ${(_progress * 100).toInt()}%. ${widget.message ?? 'Getting things ready...'}',
+      value: '${(_progress * 100).toInt()}%',
+      child: Column(
       children: [
         Text(
           widget.message ?? 'Getting things ready...',
@@ -542,6 +547,7 @@ class _DynamicLoadingScreenState
           ),
         ),
       ],
+    ),
     );
   }
 }
@@ -618,19 +624,26 @@ class _ToneTrainerPlaceholder extends StatelessWidget {
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF102216) : const Color(0xFF0A0A0A),
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          onPressed: () => onBack?.call(),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back_rounded, semanticLabel: 'Back'),
+            onPressed: () => onBack?.call(),
+          ),
         ),
         title: Text('Tone Trainer', style: PanAfricanTypography.titleMedium(context)),
       ),
       body: Center(
         child: Padding(
           padding: EdgeInsets.all(24.sp),
-          child: Text(
-            'Tone Trainer for $language (level $level)',
-            style: PanAfricanTypography.bodyLarge(context),
-            textAlign: TextAlign.center,
+          child: Semantics(
+            label: 'Tone Trainer for $language, level $level',
+            child: Text(
+              'Tone Trainer for $language (level $level)',
+              style: PanAfricanTypography.bodyLarge(context),
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ),

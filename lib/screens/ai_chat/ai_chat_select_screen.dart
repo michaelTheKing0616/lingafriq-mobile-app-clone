@@ -28,8 +28,11 @@ class AiChatSelectScreen extends HookConsumerWidget {
       backgroundColor: Theme.of(context).brightness == Brightness.dark 
           ? PolieColors.obsidian 
           : PolieColors.surfaceContainerLight,
-      body: const Center(
-        child: CircularProgressIndicator(),
+      body: Semantics(
+        label: 'Loading. Opening chat selection.',
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
       ),
     );
   }

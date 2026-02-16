@@ -92,20 +92,30 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.getGameType().displayName} (${_currentIndex + 1}/${_questions.length})'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          ),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
-            LinearProgressIndicator(
-              value: (_currentIndex + 1) / _questions.length,
+            Semantics(
+              label: 'Progress: question ${_currentIndex + 1} of ${_questions.length}',
+              value: '${_currentIndex + 1} of ${_questions.length}',
+              child: LinearProgressIndicator(
+                value: (_currentIndex + 1) / _questions.length,
+              ),
             ),
             SizedBox(height: 4.h),
-            Card(
+            Semantics(
+              label: 'Sentence to check: ${question.text}',
+              child: Card(
               child: Padding(
                 padding: EdgeInsets.all(4.w),
                 child: Column(
@@ -127,6 +137,7 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                 ),
               ),
             ),
+            ),
             SizedBox(height: 4.h),
             Expanded(
               child: ListView.builder(
@@ -138,39 +149,45 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
 
                   return Padding(
                     padding: EdgeInsets.only(bottom: 2.h),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: _showResult ? null : () => _selectError(error),
-                        borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          padding: EdgeInsets.all(3.w),
-                          decoration: BoxDecoration(
-                            color: _showResult
-                                ? (isCorrect
-                                    ? Colors.green.withOpacity(0.3)
-                                    : isSelected
-                                        ? Colors.red.withOpacity(0.3)
-                                        : Colors.grey[200])
-                                : (isSelected
-                                    ? Theme.of(context).colorScheme.primaryContainer
-                                    : Colors.grey[200]),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Colors.transparent,
-                              width: 2,
+                    child: Semantics(
+                      label: 'Error option: $error',
+                      button: true,
+                      selected: isSelected,
+                      enabled: !_showResult,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: _showResult ? null : () => _selectError(error),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: EdgeInsets.all(3.w),
+                            decoration: BoxDecoration(
+                              color: _showResult
+                                  ? (isCorrect
+                                      ? Colors.green.withOpacity(0.3)
+                                      : isSelected
+                                          ? Colors.red.withOpacity(0.3)
+                                          : Colors.grey[200])
+                                  : (isSelected
+                                      ? Theme.of(context).colorScheme.primaryContainer
+                                      : Colors.grey[200]),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(child: Text(error, style: TextStyle(fontSize: 16.sp))),
-                              if (_showResult && isCorrect)
-                                const Icon(Icons.check_circle, color: Colors.green),
-                              if (_showResult && isSelected && !isCorrect)
-                                const Icon(Icons.cancel, color: Colors.red),
-                            ],
+                            child: Row(
+                              children: [
+                                Expanded(child: Text(error, style: TextStyle(fontSize: 16.sp))),
+                                if (_showResult && isCorrect)
+                                  const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
+                                if (_showResult && isSelected && !isCorrect)
+                                  const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -180,9 +197,14 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
               ),
             ),
             if (!_showResult)
-              FilledButton(
-                onPressed: _selectedError == null ? null : _checkAnswer,
-                child: const Text('Check Answer'),
+              Semantics(
+                label: 'Check answer button',
+                button: true,
+                enabled: _selectedError != null,
+                child: FilledButton(
+                  onPressed: _selectedError == null ? null : _checkAnswer,
+                  child: const Text('Check Answer'),
+                ),
               )
             else
               Column(
@@ -200,11 +222,15 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
                     ),
                   ),
                   SizedBox(height: 2.h),
-                  FilledButton(
-                    onPressed: _nextQuestion,
-                    child: Text(_currentIndex < _questions.length - 1
-                        ? 'Next Question'
-                        : 'Finish'),
+                  Semantics(
+                    label: _currentIndex < _questions.length - 1 ? 'Next question' : 'Finish game',
+                    button: true,
+                    child: FilledButton(
+                      onPressed: _nextQuestion,
+                      child: Text(_currentIndex < _questions.length - 1
+                          ? 'Next Question'
+                          : 'Finish'),
+                    ),
                   ),
                 ],
               ),

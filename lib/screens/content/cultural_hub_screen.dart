@@ -246,12 +246,16 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
+          Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_rounded, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -288,12 +292,12 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
         labelColor: PolieColors.textPrimary,
         unselectedLabelColor: PolieColors.textSecondary,
         tabs: [
-          Tab(text: 'Stories', icon: Icon(Icons.menu_book_rounded, size: 20.sp)),
-          Tab(text: 'Proverbs', icon: Icon(Icons.format_quote_rounded, size: 20.sp)),
-          Tab(text: 'Music', icon: Icon(Icons.music_note_rounded, size: 20.sp)),
-          Tab(text: 'Traditions', icon: Icon(Icons.celebration_rounded, size: 20.sp)),
-          Tab(text: 'Food', icon: Icon(Icons.restaurant_rounded, size: 20.sp)),
-          Tab(text: 'History', icon: Icon(Icons.history_rounded, size: 20.sp)),
+          Tab(text: 'Stories', icon: Icon(Icons.menu_book_rounded, size: 20.sp, semanticLabel: 'Stories')),
+          Tab(text: 'Proverbs', icon: Icon(Icons.format_quote_rounded, size: 20.sp, semanticLabel: 'Proverbs')),
+          Tab(text: 'Music', icon: Icon(Icons.music_note_rounded, size: 20.sp, semanticLabel: 'Music')),
+          Tab(text: 'Traditions', icon: Icon(Icons.celebration_rounded, size: 20.sp, semanticLabel: 'Traditions')),
+          Tab(text: 'Food', icon: Icon(Icons.restaurant_rounded, size: 20.sp, semanticLabel: 'Food')),
+          Tab(text: 'History', icon: Icon(Icons.history_rounded, size: 20.sp, semanticLabel: 'History')),
         ],
       ),
     );
@@ -479,13 +483,16 @@ class _ContentCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: () {
-            HapticFeedback.mediumImpact();
-            onTap();
-          },
-          borderRadius: BorderRadius.circular(PolieRadius.lg),
-          child: Padding(
+        child: Semantics(
+          label: '${content.title}. ${content.description}',
+          button: true,
+          child: InkWell(
+            onTap: () {
+              HapticFeedback.mediumImpact();
+              onTap();
+            },
+            borderRadius: BorderRadius.circular(PolieRadius.lg),
+            child: Padding(
             padding: EdgeInsets.all(PolieSpacing.lg),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -518,10 +525,14 @@ class _ContentCard extends StatelessWidget {
                             ),
                           ),
                           if (isCompleted)
-                            Icon(
-                              Icons.check_circle,
-                              color: PolieColors.success,
-                              size: 20.sp,
+                            Semantics(
+                              label: 'Completed',
+                              child: Icon(
+                                Icons.check_circle,
+                                color: PolieColors.success,
+                                size: 20.sp,
+                                semanticLabel: 'Completed',
+                              ),
                             ),
                         ],
                       ),
@@ -572,10 +583,13 @@ class _ContentCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16.sp,
-                  color: PolieColors.textSecondary,
+                Semantics(
+                  excludeSemantics: true,
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 16.sp,
+                    color: PolieColors.textSecondary,
+                  ),
                 ),
               ],
             ),
@@ -613,13 +627,16 @@ class _ContentDetailSheet extends StatelessWidget {
       child: Column(
         children: [
           // Handle
-          Container(
-            margin: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-            width: 40.w,
-            height: 4.h,
-            decoration: BoxDecoration(
-              color: PolieColors.textSecondary.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(2),
+          Semantics(
+            excludeSemantics: true,
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+              width: 40.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: PolieColors.textSecondary.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(2),
+              ),
             ),
           ),
           // Content
@@ -807,13 +824,16 @@ class _ContentDetailSheet extends StatelessWidget {
                   ),
                   SizedBox(height: PolieSpacing.lg),
                   if (!isCompleted)
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          HapticFeedback.mediumImpact();
-                          onComplete();
-                        },
+                    Semantics(
+                      label: 'Mark as completed and earn ${content.xpReward} XP',
+                      button: true,
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            HapticFeedback.mediumImpact();
+                            onComplete();
+                          },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: PolieColors.success,
                           padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
@@ -833,6 +853,7 @@ class _ContentDetailSheet extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

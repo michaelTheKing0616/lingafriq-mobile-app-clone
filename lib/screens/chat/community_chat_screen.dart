@@ -163,7 +163,9 @@ class CommunityChatScreen extends HookConsumerWidget {
             // Messages List
             Expanded(
               child: messages.value.isEmpty
-                  ? Center(
+                  ? Semantics(
+                      label: 'No messages yet. Be the first to start the conversation.',
+                      child: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -171,6 +173,7 @@ class CommunityChatScreen extends HookConsumerWidget {
                             Icons.chat_bubble_outline,
                             size: 64.sp,
                             color: PanAfricanColors.neutralMedium,
+                            semanticLabel: 'Empty chat',
                           ),
                           SizedBox(height: PanAfricanSpacing.md),
                           Text(
@@ -184,8 +187,11 @@ class CommunityChatScreen extends HookConsumerWidget {
                           ),
                         ],
                       ),
-                    )
-                  : OptimizedListView.builder(
+                    ),
+                  )
+                  : Semantics(
+                      label: 'Messages list, ${messages.value.length} messages',
+                      child: OptimizedListView.builder(
                       controller: scrollController,
                       padding: EdgeInsets.all(PanAfricanSpacing.md),
                       itemCount: messages.value.length,
@@ -207,6 +213,7 @@ class CommunityChatScreen extends HookConsumerWidget {
                             .fadeIn(duration: 200.ms);
                       },
                     ),
+                  ),
             ),
 
             // Input Area

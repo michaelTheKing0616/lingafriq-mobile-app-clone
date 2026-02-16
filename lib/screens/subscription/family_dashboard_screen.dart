@@ -73,12 +73,16 @@ class _FamilyDashboardScreenState
           title: Text('Family Dashboard', style: PanAfricanTypography.titleLarge(context)),
           backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
           foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
-          leading: IconButton(
-            icon: Icon(PanAfricanIcons.back),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
           ),
         ),
         body: Center(
@@ -111,15 +115,19 @@ class _FamilyDashboardScreenState
         title: Text('Family Dashboard', style: PanAfricanTypography.titleLarge(context)),
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
-        leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.of(context).pop();
-          },
+          leading: Semantics(
+            label: 'Go back',
+            button: true,
+            child: IconButton(
+              icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
         ),
-      ),
-      body: _isLoading
+        body: _isLoading
           ? Center(child: CircularProgressIndicator(color: PanAfricanColors.primary))
           : _error != null
               ? Center(
@@ -446,10 +454,13 @@ class _FamilyDashboardScreenState
           SizedBox(height: PanAfricanSpacing.sm),
           Align(
             alignment: Alignment.centerRight,
-            child: FilledButton.icon(
-              onPressed: _isAskingPolie
-                  ? null
-                  : () async {
+            child: Semantics(
+              label: _isAskingPolie ? 'Asking Polie for insights' : 'Ask Polie for family insights',
+              button: true,
+              child: FilledButton.icon(
+                onPressed: _isAskingPolie
+                    ? null
+                    : () async {
                       HapticFeedback.mediumImpact();
                       setState(() {
                         _isAskingPolie = true;
@@ -506,6 +517,7 @@ class _FamilyDashboardScreenState
                 _isAskingPolie ? 'Asking Polie…' : 'Ask Polie for insights',
                 style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary),
               ),
+            ),
             ),
           ),
         ],

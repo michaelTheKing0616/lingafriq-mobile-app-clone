@@ -30,14 +30,18 @@ class ForgotPasswordScreen extends HookConsumerWidget {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.of(context).pop();
-            },
-            icon: Icon(
-              PanAfricanIcons.back,
-              color: Theme.of(context).colorScheme.onSurface,
+          leading: Semantics(
+            label: 'Back',
+            button: true,
+            child: IconButton(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                PanAfricanIcons.back,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
           ),
         ),
@@ -50,11 +54,16 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 0.1.sh),
-                  Center(child: const TitleLogo()),
+                  Semantics(
+                    excludeSemantics: true,
+                    child: const Center(child: TitleLogo()),
+                  ),
                   SizedBox(height: PanAfricanSpacing.xl),
                   
                   // Title
-                  Text(
+                  Semantics(
+                    header: true,
+                    child: Text(
                     'Reset Password',
                     style: PanAfricanTypography.headlineMedium(context).copyWith(
                       fontWeight: FontWeight.bold,
@@ -62,13 +71,17 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
+                  ),
                   SizedBox(height: PanAfricanSpacing.xs),
-                  Text(
+                  Semantics(
+                    label: 'Enter your email address and we\'ll send you instructions to reset your password.',
+                    child: Text(
                     'Enter your email address and we\'ll send you instructions to reset your password.',
                     style: PanAfricanTypography.bodyMedium(context).copyWith(
                       color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight,
                     ),
                     textAlign: TextAlign.center,
+                  ),
                   ),
                   
                   SizedBox(height: PanAfricanSpacing.xl),
@@ -82,15 +95,23 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                     ),
                   ),
                   SizedBox(height: PanAfricanSpacing.xs),
-                  TextFormField(
-                    controller: emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.done,
-                    validator: Validators.emailValidator,
-                    style: PanAfricanTypography.bodyLarge(context),
-                    decoration: InputDecoration(
-                      hintText: 'Enter your registered email',
-                      prefixIcon: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
+                  Semantics(
+                    label: 'Email address',
+                    textField: true,
+                    child: TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.done,
+                      validator: Validators.emailValidator,
+                      style: PanAfricanTypography.bodyLarge(context),
+                      decoration: InputDecoration(
+                        hintText: 'Enter your registered email',
+                        semanticLabel: 'Email address',
+                        prefixIcon: Semantics(
+                          label: 'Email icon',
+                          excludeSemantics: true,
+                          child: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
+                        ),
                       filled: true,
                       fillColor: isDark
                           ? PanAfricanColors.surfaceContainerDark
@@ -122,12 +143,16 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                       ),
                     ),
                   ),
+                  ),
                   
                   SizedBox(height: PanAfricanSpacing.lg),
                   
                   // Reset button
-                  GestureDetector(
-                    onTap: () async {
+                  Semantics(
+                    label: 'Reset password',
+                    button: true,
+                    child: GestureDetector(
+                      onTap: () async {
                       if (!formKey.currentState!.validate()) {
                         HapticFeedback.mediumImpact();
                         return;
@@ -176,6 +201,7 @@ class ForgotPasswordScreen extends HookConsumerWidget {
                         ),
                       ),
                     ),
+                  ),
                   ),
                   SizedBox(height: PanAfricanSpacing.md),
                 ],

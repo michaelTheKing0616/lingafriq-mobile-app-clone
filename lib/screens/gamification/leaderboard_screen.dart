@@ -100,12 +100,16 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
           'Leaderboards',
           style: PanAfricanTypography.headlineMedium(context),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
@@ -357,6 +361,7 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
                           Icons.star_rounded,
                           size: 14.0.sp,
                           color: PanAfricanColors.secondary,
+                          semanticLabel: 'XP',
                         ),
                         SizedBox(width: PanAfricanSpacing.xxs),
                         Text(
@@ -415,6 +420,7 @@ class _LeaderboardCardState extends State<_LeaderboardCard> {
                 expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
                 color: PanAfricanColors.neutralMedium,
                 size: 20.sp,
+                semanticLabel: expanded ? 'Collapse' : 'Expand',
               ),
             ],
           ),

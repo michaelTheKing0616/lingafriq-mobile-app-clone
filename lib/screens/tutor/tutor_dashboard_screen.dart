@@ -204,7 +204,7 @@ class _TutorDashboardScreenState extends State<TutorDashboardScreen>
         unselectedLabelColor: PolieColors.textSecondary,
         tabs: _modes.map((mode) {
           return Tab(
-            icon: Icon(mode.icon),
+            icon: Icon(mode.icon, semanticLabel: mode.title),
             text: mode.title,
           );
         }).toList(),

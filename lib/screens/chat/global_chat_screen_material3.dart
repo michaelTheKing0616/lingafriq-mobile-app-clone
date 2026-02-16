@@ -128,8 +128,11 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           backgroundColor: Colors.transparent,
           elevation: 0,
           actions: [
-          IconButton(
-            icon: Icon(Icons.person_search),
+          Semantics(
+            label: 'Find user',
+            button: true,
+            child: IconButton(
+            icon: Icon(Icons.person_search, semanticLabel: 'Find user'),
             onPressed: () {
               HapticFeedback.selectionClick();
               Navigator.push(
@@ -146,21 +149,30 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
             },
             tooltip: 'Find User',
           ),
-          IconButton(
-            icon: Icon(Icons.tag),
+          ),
+          Semantics(
+            label: showChannels.value ? 'Hide channels' : 'Show channels',
+            button: true,
+            child: IconButton(
+            icon: Icon(Icons.tag, semanticLabel: 'Channels'),
             onPressed: () {
               HapticFeedback.selectionClick();
               showChannels.value = !showChannels.value;
             },
             tooltip: 'Channels',
           ),
-          IconButton(
-            icon: Icon(Icons.more_vert),
+          ),
+          Semantics(
+            label: 'More options',
+            button: true,
+            child: IconButton(
+            icon: Icon(Icons.more_vert, semanticLabel: 'More'),
             onPressed: () {
               HapticFeedback.selectionClick();
               // Moderation tools
             },
             tooltip: 'More',
+          ),
           ),
         ],
       ),
@@ -203,7 +215,10 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                           final channel = channels.value[index];
                           final isSelected = selectedChannel.value == channel;
 
-                          return PanAfricanListTile(
+                          return Semantics(
+                            label: 'Channel $channel${isSelected ? ', selected' : ''}',
+                            button: true,
+                            child: PanAfricanListTile(
                             title: '#$channel',
                             leading: Icon(
                               Icons.tag,
@@ -218,6 +233,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                               selectedChannel.value = channel;
                               HapticFeedback.mediumImpact();
                             },
+                          ),
                           );
                         },
                       ),
@@ -256,7 +272,9 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                       sendMessage();
                                     },
                                   )
-                                : OptimizedListView.builder(
+                                : Semantics(
+                            label: 'Messages list, ${messages.value.length} messages',
+                            child: OptimizedListView.builder(
                             controller: scrollController,
                             padding: EdgeInsets.all(PanAfricanSpacing.md),
                             itemCount: messages.value.length,
@@ -278,6 +296,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                   .fadeIn(duration: 200.ms);
                             },
                           ),
+                          ),
                   ),
 
                   // Input Area
@@ -292,15 +311,24 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                     child: Row(
                       children: [
                         Expanded(
-                          child: PanAfricanTextField(
+                          child: Semantics(
+                            label: 'Message input',
+                            hint: 'Type a message to send',
+                            textField: true,
+                            child: PanAfricanTextField(
                             controller: messageController,
                             hint: 'Type a message...',
                             maxLines: 3,
                             onChanged: (_) {},
                           ),
+                          ),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
-                        PanAfricanButton(
+                        Semantics(
+                          label: isLoading.value ? 'Sending message' : 'Send message',
+                          button: true,
+                          enabled: !isLoading.value,
+                          child: PanAfricanButton(
                           label: 'Send',
                           icon: Icons.send_rounded,
                           isLoading: isLoading.value,
@@ -312,6 +340,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                                 },
                           backgroundColor: PanAfricanColors.primary,
                           foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                        ),
                         ),
                       ],
                     ),
@@ -362,7 +391,10 @@ class _GlobalMessageBubble extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          PanAfricanAvatar(
+          Semantics(
+            label: 'Avatar for $senderName',
+            excludeSemantics: true,
+            child: PanAfricanAvatar(
             imageUrl: avatarUrl is String ? avatarUrl : null,
             initials: senderName.isNotEmpty ? senderName[0].toUpperCase() : '?',
             size: 40.w,
@@ -370,6 +402,7 @@ class _GlobalMessageBubble extends StatelessWidget {
             borderColor: isToxic ? PanAfricanColors.error : PanAfricanColors.primary,
             showBadge: isToxic,
             badgeColor: PanAfricanColors.error,
+          ),
           ),
           SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
@@ -397,20 +430,27 @@ class _GlobalMessageBubble extends StatelessWidget {
                           ],
                           if (isToxic) ...[
                             SizedBox(width: PanAfricanSpacing.xs),
-                            PanAfricanBadge(
-                              label: 'Flagged',
-                              color: PanAfricanColors.error,
-                              icon: Icons.report_problem_rounded,
+                            Semantics(
+                              label: 'Flagged as toxic content',
+                              child: PanAfricanBadge(
+                                label: 'Flagged',
+                                color: PanAfricanColors.error,
+                                icon: Icons.report_problem_rounded,
+                              ),
                             ),
                           ],
                         ],
                       ),
                     ),
                     if (timestamp != null)
-                      Text(
-                        _formatTimestamp(timestamp.toString()),
-                        style: PanAfricanTypography.labelSmall(context)
-                            .copyWith(color: PanAfricanColors.neutralMedium),
+                      Semantics(
+                        label: 'Sent ${_formatTimestamp(timestamp.toString())}',
+                        excludeSemantics: true,
+                        child: Text(
+                          _formatTimestamp(timestamp.toString()),
+                          style: PanAfricanTypography.labelSmall(context)
+                              .copyWith(color: PanAfricanColors.neutralMedium),
+                        ),
                       ),
                   ],
                 ),

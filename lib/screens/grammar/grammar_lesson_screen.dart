@@ -111,12 +111,16 @@ class GrammarLessonScreen extends HookConsumerWidget {
   Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.of(context).pop();
-          },
+        Semantics(
+          label: 'Go back',
+          button: true,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
         SizedBox(width: PolieSpacing.sm),
         Expanded(
@@ -146,14 +150,16 @@ class GrammarLessonScreen extends HookConsumerWidget {
 
   Widget _buildExplanationSection(BuildContext context, Map<String, dynamic> data, bool isDark) {
     final description = data['description']?.toString() ?? '';
-    return PolieGlassCard(
+    return Semantics(
+      label: 'Explanation: $description',
+      child: PolieGlassCard(
       padding: EdgeInsets.all(PolieSpacing.lg),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(Icons.menu_book_rounded, color: PolieColors.goldEmber, size: 24),
+              Icon(Icons.menu_book_rounded, color: PolieColors.goldEmber, size: 24, semanticLabel: 'Explanation'),
               SizedBox(width: PolieSpacing.sm),
               Text(
                 'Explanation',
@@ -170,6 +176,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
           ),
         ],
       ),
+    ),
     );
   }
 
@@ -184,7 +191,7 @@ class GrammarLessonScreen extends HookConsumerWidget {
         children: [
           Row(
             children: [
-              Icon(Icons.lightbulb_outline, color: PolieColors.electricTeal, size: 24),
+              Icon(Icons.lightbulb_outline, color: PolieColors.electricTeal, size: 24, semanticLabel: 'Examples'),
               SizedBox(width: PolieSpacing.sm),
               Text(
                 'Examples',
@@ -375,18 +382,22 @@ class GrammarLessonScreen extends HookConsumerWidget {
   }
 
   Widget _buildPracticeButton(BuildContext context) {
-    return PoliePrimaryButton(
-      label: 'Start Practice',
-      icon: Icons.fitness_center_rounded,
-      onPressed: () {
-        HapticFeedback.mediumImpact();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (ctx) => GrammarExerciseScreen(topicId: topic.id, topicName: topic.name),
-          ),
-        );
-      },
+    return Semantics(
+      label: 'Start practice exercises for ${topic.name}',
+      button: true,
+      child: PoliePrimaryButton(
+        label: 'Start Practice',
+        icon: Icons.fitness_center_rounded,
+        onPressed: () {
+          HapticFeedback.mediumImpact();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => GrammarExerciseScreen(topicId: topic.id, topicName: topic.name),
+            ),
+          );
+        },
+      ),
     );
   }
 }

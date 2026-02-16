@@ -187,6 +187,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
           Icons.lock_rounded,
           color: PanAfricanColors.neutralMedium.withOpacity(0.5),
           size: size * 0.4,
+          semanticLabel: 'Locked',
         );
       case PathNodeState.current:
         return Column(
@@ -204,6 +205,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
               Icons.play_circle_filled_rounded,
               color: Theme.of(context).colorScheme.onPrimary,
               size: size * 0.3,
+              semanticLabel: 'Play',
             ),
           ],
         );
@@ -212,6 +214,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
           Icons.check_circle_rounded,
           color: Theme.of(context).colorScheme.onPrimary,
           size: size * 0.6,
+          semanticLabel: 'Completed',
         );
       case PathNodeState.crowned:
         return Stack(
@@ -221,6 +224,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
               Icons.check_circle_rounded,
               color: Theme.of(context).colorScheme.onPrimary,
               size: size * 0.6,
+              semanticLabel: 'Completed',
             ),
             Positioned(
               top: size * 0.15,
@@ -228,6 +232,7 @@ class _PathNodeWidgetState extends ConsumerState<PathNodeWidget>
                 Icons.workspace_premium_rounded,
                 color: PanAfricanColors.secondaryDark,
                 size: size * 0.35,
+                semanticLabel: 'Perfect score crown',
               ),
             ),
           ],

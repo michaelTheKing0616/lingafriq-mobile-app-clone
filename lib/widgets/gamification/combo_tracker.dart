@@ -5,6 +5,11 @@ class ComboTracker extends ChangeNotifier {
   int _consecutiveCorrect = 0;
   int _maxCombo = 0;
   
+  /// Optional callback for combo milestone celebrations
+  /// Called when combo reaches milestones (5, 10, 15, 20, 25, 50, etc.)
+  /// Parameter: current combo count
+  void Function(int combo)? onMilestoneReached;
+  
   int get consecutiveCorrect => _consecutiveCorrect;
   int get maxCombo => _maxCombo;
   
@@ -26,6 +31,16 @@ class ComboTracker extends ChangeNotifier {
     if (_consecutiveCorrect > _maxCombo) {
       _maxCombo = _consecutiveCorrect;
     }
+    
+    // Check for combo milestones (5, 10, 15, 20, 25, 50, etc.)
+    if (_consecutiveCorrect % 5 == 0 && _consecutiveCorrect > 0) {
+      try {
+        onMilestoneReached?.call(_consecutiveCorrect);
+      } catch (e) {
+        // Silently handle callback errors to prevent breaking combo tracking
+      }
+    }
+    
     notifyListeners();
   }
   

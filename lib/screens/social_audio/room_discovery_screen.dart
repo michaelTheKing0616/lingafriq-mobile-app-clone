@@ -63,21 +63,25 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
           ],
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CreateRoomScreen(),
-                ),
-              );
-              // CRITICAL FIX: Convert .then() to async/await for better error handling
-              if (context.mounted) {
-                _loadRooms();
-              }
-            },
-            tooltip: 'Create Room',
+          Semantics(
+            label: 'Create room',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.add, semanticLabel: 'Create room'),
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CreateRoomScreen(),
+                  ),
+                );
+                // CRITICAL FIX: Convert .then() to async/await for better error handling
+                if (context.mounted) {
+                  _loadRooms();
+                }
+              },
+              tooltip: 'Create Room',
+            ),
           ),
         ],
         bottom: TabBar(
@@ -128,11 +132,13 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
       child: Column(
         children: [
           // Search bar
-          TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search rooms...',
-              prefixIcon: const Icon(Icons.search),
+          Semantics(
+            label: 'Search rooms',
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search rooms...',
+                prefixIcon: const Icon(Icons.search, semanticLabel: 'Search'),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
                       icon: const Icon(Icons.clear),
@@ -154,6 +160,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
             onSubmitted: (value) {
               ref.read(socialAudioProvider.notifier).discoverRooms(searchQuery: value);
             },
+            ),
           ),
           SizedBox(height: 2.h),
           // Filters
@@ -271,20 +278,23 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
     return Card(
       margin: EdgeInsets.only(bottom: 2.h),
       elevation: 2,
-      child: InkWell(
-        onTap: () async {
-          // CRITICAL FIX: Convert .then() to async/await for better error handling
-          await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => RoomDetailScreen(roomId: room.id),
-            ),
-          );
-          if (context.mounted) {
-            _loadRooms();
-          }
-        },
-        child: Padding(
+      child: Semantics(
+        label: 'Room: ${room.name}. ${room.currentParticipants} of ${room.maxParticipants} participants. Tap to view or join.',
+        button: true,
+        child: InkWell(
+          onTap: () async {
+            // CRITICAL FIX: Convert .then() to async/await for better error handling
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RoomDetailScreen(roomId: room.id),
+              ),
+            );
+            if (context.mounted) {
+              _loadRooms();
+            }
+          },
+          child: Padding(
           padding: EdgeInsets.all(4.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -377,6 +387,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
               ],
             ],
           ),
+        ),
         ),
       ),
     );

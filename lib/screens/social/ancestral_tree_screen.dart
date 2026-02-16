@@ -27,12 +27,16 @@ class AncestralTreeScreen extends ConsumerWidget {
               backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.of(context).pop();
-                },
+              leading: Semantics(
+                label: 'Back',
+                button: true,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
             body: ListView(
@@ -49,12 +53,16 @@ class AncestralTreeScreen extends ConsumerWidget {
               backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
               foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
               elevation: 0,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  HapticFeedback.lightImpact();
-                  Navigator.of(context).pop();
-                },
+              leading: Semantics(
+                label: 'Back',
+                button: true,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+                  onPressed: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ),
             body: AppErrorState(
@@ -78,16 +86,23 @@ class AncestralTreeScreen extends ConsumerWidget {
         backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+          icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
           onPressed: () {
             HapticFeedback.lightImpact();
             Navigator.of(context).pop();
           },
         ),
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
+          Semantics(
+            label: 'About Ancestral Tree',
+            button: true,
+            child: IconButton(
+            icon: const Icon(Icons.info_outline, semanticLabel: 'Info'),
             onPressed: () {
               HapticFeedback.lightImpact();
               showDialog(
@@ -118,6 +133,7 @@ class AncestralTreeScreen extends ConsumerWidget {
                 ),
               );
             },
+          ),
           ),
         ],
       ),

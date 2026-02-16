@@ -214,21 +214,26 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             ),
           ],
         ),
-        child: Icon(
-          Icons.language,
-          size: 60.sp,
-          color: Theme.of(context).colorScheme.onPrimary,
+        child: Semantics(
+          excludeSemantics: true,
+          child: Icon(
+            Icons.language,
+            size: 60.sp,
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
         ),
       ),
     );
   }
 
   Widget _buildWelcomeText(BuildContext context, bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Welcome Back!',
+    return Semantics(
+      header: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Welcome Back!',
           style: PanAfricanTypography.headlineLarge(context).copyWith(
             fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.onSurface,
@@ -241,7 +246,8 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             color: isDark ? Colors.grey[300] : Colors.grey[700],
           ),
         ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -262,22 +268,34 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
-        TextFormField(
-          controller: controller,
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          validator: Validators.emailValidator,
-          autofillHints: const [AutofillHints.email, AutofillHints.username],
-          style: PanAfricanTypography.bodyLarge(context),
-          decoration: InputDecoration(
-            hintText: 'Enter your email',
-            prefixIcon: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
-            suffixIcon: controller.text.isNotEmpty
-                ? IconButton(
-                    icon: Icon(Icons.clear, size: 20.sp, color: PanAfricanColors.textSecondaryLight),
-                    onPressed: () => controller.clear(),
-                  )
-                : null,
+        Semantics(
+          label: 'Email address',
+          textField: true,
+          child: TextFormField(
+            controller: controller,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            validator: Validators.emailValidator,
+            autofillHints: const [AutofillHints.email, AutofillHints.username],
+            style: PanAfricanTypography.bodyLarge(context),
+            decoration: InputDecoration(
+              hintText: 'Enter your email',
+              semanticLabel: 'Email address',
+              prefixIcon: Semantics(
+                label: 'Email icon',
+                excludeSemantics: true,
+                child: Icon(Icons.email_outlined, color: PanAfricanColors.primary),
+              ),
+              suffixIcon: controller.text.isNotEmpty
+                  ? Semantics(
+                      label: 'Clear email',
+                      button: true,
+                      child: IconButton(
+                        icon: Icon(Icons.clear, size: 20.sp, color: PanAfricanColors.textSecondaryLight),
+                        onPressed: () => controller.clear(),
+                      ),
+                    )
+                  : null,
             filled: true,
             fillColor: isDark
                 ? PanAfricanColors.surfaceContainerDark
@@ -303,8 +321,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
+            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md            ),
           ),
+        ),
         ),
       ],
     );
@@ -327,28 +346,41 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           ),
         ),
         SizedBox(height: PanAfricanSpacing.xs),
-        TextFormField(
-          controller: controller,
-          obscureText: !showPassword.value,
-          keyboardType: TextInputType.visiblePassword,
-          enableSuggestions: false,
-          textInputAction: TextInputAction.done,
-          validator: Validators.passwordValidator,
-          autofillHints: const [AutofillHints.password],
-          style: PanAfricanTypography.bodyLarge(context),
-          decoration: InputDecoration(
-            hintText: 'Enter your password',
-            prefixIcon: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
-            suffixIcon: IconButton(
-              icon: Icon(
-                showPassword.value ? Icons.visibility_off : Icons.visibility,
-                color: PanAfricanColors.textSecondaryLight,
+        Semantics(
+          label: 'Password',
+          textField: true,
+          obscureValue: !showPassword.value,
+          child: TextFormField(
+            controller: controller,
+            obscureText: !showPassword.value,
+            keyboardType: TextInputType.visiblePassword,
+            enableSuggestions: false,
+            textInputAction: TextInputAction.done,
+            validator: Validators.passwordValidator,
+            autofillHints: const [AutofillHints.password],
+            style: PanAfricanTypography.bodyLarge(context),
+            decoration: InputDecoration(
+              hintText: 'Enter your password',
+              semanticLabel: 'Password',
+              prefixIcon: Semantics(
+                label: 'Password lock icon',
+                excludeSemantics: true,
+                child: Icon(Icons.lock_outline, color: PanAfricanColors.primary),
               ),
-              onPressed: () {
-                HapticFeedback.selectionClick();
-                showPassword.value = !showPassword.value;
-              },
-            ),
+              suffixIcon: Semantics(
+                label: showPassword.value ? 'Hide password' : 'Show password',
+                button: true,
+                child: IconButton(
+                  icon: Icon(
+                    showPassword.value ? Icons.visibility_off : Icons.visibility,
+                    color: PanAfricanColors.textSecondaryLight,
+                  ),
+                  onPressed: () {
+                    HapticFeedback.selectionClick();
+                    showPassword.value = !showPassword.value;
+                  },
+                ),
+              ),
             filled: true,
             fillColor: isDark
                 ? PanAfricanColors.surfaceContainerDark
@@ -374,8 +406,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               borderRadius: PanAfricanRadius.lgBR,
               borderSide: BorderSide(color: PanAfricanColors.error, width: 2),
             ),
-            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md),
+            contentPadding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.md            ),
           ),
+        ),
         ),
       ],
     );
@@ -384,19 +417,23 @@ class WorldClassLoginScreen extends HookConsumerWidget {
   Widget _buildForgotPassword(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: Alignment.centerRight,
-      child: TextButton(
-        onPressed: () {
-          HapticFeedback.lightImpact();
-          Navigator.push(
-            context,
-            SmoothPageRoute(child: const ForgotPasswordScreen()),
-          );
-        },
-        child: Text(
-          'Forgot Password?',
-          style: PanAfricanTypography.bodyMedium(context).copyWith(
-            color: PanAfricanColors.primary,
-            fontWeight: FontWeight.w600,
+      child: Semantics(
+        label: 'Forgot password',
+        button: true,
+        child: TextButton(
+          onPressed: () {
+            HapticFeedback.lightImpact();
+            Navigator.push(
+              context,
+              SmoothPageRoute(child: const ForgotPasswordScreen()),
+            );
+          },
+          child: Text(
+            'Forgot Password?',
+            style: PanAfricanTypography.bodyMedium(context).copyWith(
+              color: PanAfricanColors.primary,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -412,39 +449,42 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     WidgetRef ref,
     bool isDark,
   ) {
-    return ScaleOnTap(
-      onTap: () async {
-        if (!formKey.currentState!.validate()) {
-          HapticFeedback.mediumImpact();
-          return;
-        }
+    return Semantics(
+      label: 'Sign in',
+      button: true,
+      child: ScaleOnTap(
+        onTap: () async {
+          if (!formKey.currentState!.validate()) {
+            HapticFeedback.mediumImpact();
+            return;
+          }
 
-        HapticFeedback.lightImpact();
+          HapticFeedback.lightImpact();
 
-        try {
-          // Login first — only persist credentials after success.
-          // Storing before login meant failed attempts (server down, wrong
-          // password) left stale credentials that auto-login would retry.
-          final user = await ref.read(authProvider.notifier).login(
+          try {
+            // Login first — only persist credentials after success.
+            // Storing before login meant failed attempts (server down, wrong
+            // password) left stale credentials that auto-login would retry.
+            final user = await ref.read(authProvider.notifier).login(
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                  storeCredentials: true,
+                );
+
+            // Persist credentials only on successful login
+            if (user != null) {
+              await storage.storeCredentials(
                 email: emailController.text.trim(),
                 password: passwordController.text.trim(),
-                storeCredentials: true,
               );
-
-          // Persist credentials only on successful login
-          if (user != null) {
-            await storage.storeCredentials(
-              email: emailController.text.trim(),
-              password: passwordController.text.trim(),
-            );
+            }
+          } catch (e) {
+            if (context.mounted) {
+              ErrorHandler.showError(context, e);
+            }
           }
-        } catch (e) {
-          if (context.mounted) {
-            ErrorHandler.showError(context, e);
-          }
-        }
-      },
-      child: Container(
+        },
+        child: Container(
         height: 56.h,
         decoration: BoxDecoration(
           gradient: PanAfricanGradients.forest,
@@ -459,6 +499,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+        ),
         ),
       ),
     );
@@ -485,35 +526,38 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             ? Icons.fingerprint
             : Icons.face;
 
-        return ScaleOnTap(
-          onTap: () async {
-            HapticFeedback.mediumImpact();
-            
-            final authenticated = await biometricAuth.authenticate(
-              localizedReason: 'Use biometric to sign in',
-            );
+        return Semantics(
+          label: 'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
+          button: true,
+          child: ScaleOnTap(
+            onTap: () async {
+              HapticFeedback.mediumImpact();
+              
+              final authenticated = await biometricAuth.authenticate(
+                localizedReason: 'Use biometric to sign in',
+              );
 
-            if (authenticated) {
-              try {
-                final credentials = await storage.getStoredCredentials();
-                if (credentials != null && credentials['password'] != null) {
-                  emailController.text = credentials['email'] ?? '';
-                  passwordController.text = credentials['password'] ?? '';
-                  
-                  await ref.read(authProvider.notifier).login(
-                        email: credentials['email'] ?? '',
-                        password: credentials['password'] ?? '',
-                        storeCredentials: true,
-                      );
-                }
-              } catch (e) {
-                if (context.mounted) {
-                  ErrorHandler.showError(context, e);
+              if (authenticated) {
+                try {
+                  final credentials = await storage.getStoredCredentials();
+                  if (credentials != null && credentials['password'] != null) {
+                    emailController.text = credentials['email'] ?? '';
+                    passwordController.text = credentials['password'] ?? '';
+                    
+                    await ref.read(authProvider.notifier).login(
+                          email: credentials['email'] ?? '',
+                          password: credentials['password'] ?? '',
+                          storeCredentials: true,
+                        );
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    ErrorHandler.showError(context, e);
+                  }
                 }
               }
-            }
-          },
-          child: Container(
+            },
+            child: Container(
             height: 56.h,
             decoration: BoxDecoration(
               color: isDark
@@ -527,7 +571,10 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
+                Semantics(
+                  excludeSemantics: true,
+                  child: Icon(icon, color: PanAfricanColors.primary, size: 24.sp),
+                ),
                 SizedBox(width: PanAfricanSpacing.sm),
                 Text(
                   'Sign in with ${biometricAuth.getBiometricTypeName(biometricType)}',
@@ -539,6 +586,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
               ],
             ),
           ),
+        ),
         );
       },
     );
@@ -550,10 +598,13 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         Expanded(child: Divider(color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md),
-          child: Text(
-            'OR',
-            style: PanAfricanTypography.labelMedium(context).copyWith(
-              color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight,
+          child: Semantics(
+            label: 'Or',
+            child: Text(
+              'OR',
+              style: PanAfricanTypography.labelMedium(context).copyWith(
+                color: isDark ? PanAfricanColors.textSecondaryDark : PanAfricanColors.textSecondaryLight,
+              ),
             ),
           ),
         ),
@@ -570,19 +621,23 @@ class WorldClassLoginScreen extends HookConsumerWidget {
           "Don't have an account? ",
           style: PanAfricanTypography.bodyMedium(context),
         ),
-        TextButton(
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.push(
-              context,
-              SmoothPageRoute(child: const WorldClassSignupScreen()),
-            );
-          },
-          child: Text(
-            'Sign Up',
-            style: PanAfricanTypography.bodyMedium(context).copyWith(
-              color: PanAfricanColors.primary,
-              fontWeight: FontWeight.bold,
+        Semantics(
+          label: 'Sign up',
+          button: true,
+          child: TextButton(
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.push(
+                context,
+                SmoothPageRoute(child: const WorldClassSignupScreen()),
+              );
+            },
+            child: Text(
+              'Sign Up',
+              style: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: PanAfricanColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),

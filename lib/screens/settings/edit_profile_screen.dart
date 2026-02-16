@@ -191,12 +191,16 @@ class EditProfileScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_rounded, color: colorScheme.onPrimary),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_rounded, color: colorScheme.onPrimary),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
         title: Text(
           'Edit Profile',
@@ -260,7 +264,10 @@ class EditProfileScreen extends HookConsumerWidget {
                         Positioned(
                           bottom: 0,
                           right: 0,
-                          child: GestureDetector(
+                          child: Semantics(
+                            label: 'Change profile photo',
+                            button: true,
+                            child: GestureDetector(
                             onTap: showImagePicker,
                             child: Container(
                               padding: EdgeInsets.all(PanAfricanSpacing.sm),
@@ -281,6 +288,7 @@ class EditProfileScreen extends HookConsumerWidget {
                                 size: 20.sp,
                               ),
                             ),
+                          ),
                           ),
                         ),
                       ],
@@ -396,7 +404,10 @@ class _ProfileTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
+    return Semantics(
+      label: label,
+      textField: true,
+      child: TextFormField(
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
@@ -458,6 +469,7 @@ class _ProfileTextField extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
@@ -479,8 +491,13 @@ class _ImagePickerOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Container(
+    return Semantics(
+      label: title,
+      button: true,
+      child: ListTile(
+      leading: Semantics(
+        excludeSemantics: true,
+        child: Container(
         padding: EdgeInsets.all(PanAfricanSpacing.sm),
         decoration: BoxDecoration(
           color: isDestructive
@@ -504,6 +521,7 @@ class _ImagePickerOption extends StatelessWidget {
         HapticFeedback.lightImpact();
         onTap();
       },
+    ),
     );
   }
 }
@@ -520,7 +538,10 @@ class _SaveButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return Material(
+    return Semantics(
+      label: 'Save changes',
+      button: true,
+      child: Material(
       color: PanAfricanColors.primary,
       borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
       child: InkWell(

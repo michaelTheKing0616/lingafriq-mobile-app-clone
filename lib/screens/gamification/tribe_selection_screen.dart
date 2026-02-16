@@ -124,12 +124,16 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
             'Choose Your Tribe',
             style: PanAfricanTypography.headlineMedium(context),
           ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.pop(context);
-            },
+          leading: Semantics(
+            label: 'Back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              },
+            ),
           ),
         ),
         body: ResponsiveSafeArea(
@@ -151,12 +155,16 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                     style: PanAfricanTypography.bodyLarge(context),
                   ),
                   SizedBox(height: PanAfricanSpacing.lg),
-                  PrimaryButton(
-                    text: 'Try again',
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      _loadTribes();
-                    },
+                  Semantics(
+                    label: 'Try again',
+                    button: true,
+                    child: PrimaryButton(
+                      text: 'Try again',
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        _loadTribes();
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -195,12 +203,16 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
           'Choose Your Tribe',
           style: PanAfricanTypography.headlineMedium(context),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.pop(context);
-          },
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(context);
+            },
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -250,7 +262,10 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
             SizedBox(height: PanAfricanSpacing.sm),
             ...tribes.map((tribe) {
               final isSelected = currentTribe == tribe['name'] || _currentTribeId == tribe['id'];
-              return GestureDetector(
+              return Semantics(
+                label: '${tribe['name']} tribe. ${isSelected ? 'Joined' : 'Tap to join'}',
+                button: !_isLoading,
+                child: GestureDetector(
                 onTap: _isLoading
                     ? null
                     : () {
@@ -337,11 +352,13 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
                             Icons.arrow_forward_ios_rounded,
                             size: 16.sp,
                             color: PanAfricanColors.neutralMedium,
+                            semanticLabel: 'Join',
                           ),
                       ],
                     ),
                   ),
                 ),
+              ),
               );
             }),
           ],

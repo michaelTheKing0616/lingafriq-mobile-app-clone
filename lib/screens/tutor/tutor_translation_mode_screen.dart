@@ -234,26 +234,34 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
-                              child: TextField(
-                                controller: textController,
-                                maxLines: 5,
-                                decoration: InputDecoration(
-                                  hintText: 'Type or use voice input...',
+                              child: Semantics(
+                                label: 'Text to translate',
+                                textField: true,
+                                child: TextField(
+                                  controller: textController,
+                                  maxLines: 5,
+                                  decoration: InputDecoration(
+                                    hintText: 'Type or use voice input...',
                                   hintStyle: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.zero,
                                 ),
                                 style: PolieTypography.body(context),
                               ),
+                              ),
                             ),
-                            IconButton(
-                              onPressed: () => toggleVoiceInput(),
-                              icon: Icon(
-                                isListening.value ? Icons.mic_rounded : Icons.mic_none_rounded,
+                            Semantics(
+                              label: isListening.value ? 'Stop voice input' : 'Start voice input',
+                              button: true,
+                              child: IconButton(
+                                onPressed: () => toggleVoiceInput(),
+                                icon: Icon(
+                                  isListening.value ? Icons.mic_rounded : Icons.mic_none_rounded,
                                 color: isListening.value ? PolieColors.error : PolieColors.electricTeal,
                                 size: 28,
                               ),
                               tooltip: isListening.value ? 'Stop listening' : 'Voice input',
+                            ),
                             ),
                           ],
                         ),
@@ -262,12 +270,16 @@ class TutorTranslationModeScreen extends HookConsumerWidget {
                   ),
                   SizedBox(height: PolieSpacing.lg),
                   Center(
-                    child: PoliePrimaryButton(
+                    child: Semantics(
                       label: 'Translate',
-                      loading: isLoading.value,
-                      enabled: !isLoading.value,
-                      icon: Icons.translate_rounded,
-                      onPressed: translate,
+                      button: true,
+                      child: PoliePrimaryButton(
+                        label: 'Translate',
+                        loading: isLoading.value,
+                        enabled: !isLoading.value,
+                        icon: Icons.translate_rounded,
+                        onPressed: translate,
+                      ),
                     ),
                   ),
                   if (translationResult.value != null) ...[

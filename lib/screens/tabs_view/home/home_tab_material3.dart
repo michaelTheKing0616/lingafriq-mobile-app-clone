@@ -93,26 +93,34 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                 title: '$title, ${user?.username ?? "Learner"}',
                 showBackButton: false,
                 actions: [
-                  IconButton(
-                    icon: const Icon(Icons.search_rounded),
-                    onPressed: () {
-                      HapticFeedback.lightImpact();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SearchLanguagesPage(),
-                        ),
-                      );
-                    },
-                    tooltip: 'Search Languages',
+                  Semantics(
+                    label: 'Search languages',
+                    button: true,
+                    child: IconButton(
+                      icon: const Icon(Icons.search_rounded),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SearchLanguagesPage(),
+                          ),
+                        );
+                      },
+                      tooltip: 'Search Languages',
+                    ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.menu_rounded),
-                    onPressed: () {
-                      HapticFeedback.lightImpact();
-                      ref.read(scaffoldKeyProvider).currentState?.openDrawer();
-                    },
-                    tooltip: 'Menu',
+                  Semantics(
+                    label: 'Open menu',
+                    button: true,
+                    child: IconButton(
+                      icon: const Icon(Icons.menu_rounded),
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        ref.read(scaffoldKeyProvider).currentState?.openDrawer();
+                      },
+                      tooltip: 'Menu',
+                    ),
                   ),
                 ],
               ),
@@ -152,9 +160,12 @@ class HomeTabMaterial3 extends HookConsumerWidget {
                           PanAfricanSpacing.md,
                           PanAfricanSpacing.sm,
                         ),
-                        child: Text(
+                        child: Semantics(
+                          header: true,
+                          child: Text(
                           'Featured Languages',
                           style: PanAfricanTypography.headlineMedium(context),
+                        ),
                         ),
                       ),
                       Expanded(
@@ -261,37 +272,44 @@ class _LanguageCard extends StatelessWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: PanAfricanRadius.lgBR,
-          child: Padding(
-            padding: EdgeInsets.all(PanAfricanSpacing.md),
-          child: Row(
+        child: Semantics(
+          label: '${language.name} language card${progress > 0 ? ', ${(progress * 100).toInt()}% complete' : ', start learning'}',
+          button: true,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: PanAfricanRadius.lgBR,
+            child: Padding(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+            child: Row(
             children: [
               // Language Flag/Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                child: CachedNetworkImage(
-                  imageUrl: language.background ?? '',
-                  width: 60.w,
-                  height: 60.w,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
+              Semantics(
+                label: '${language.name} flag',
+                excludeSemantics: true,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                  child: CachedNetworkImage(
+                    imageUrl: language.background ?? '',
                     width: 60.w,
                     height: 60.w,
-                    color: PanAfricanColors.neutralLight,
-                    child: Icon(
-                      Icons.language,
-                      color: PanAfricanColors.neutralMedium,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => Container(
+                      width: 60.w,
+                      height: 60.w,
+                      color: PanAfricanColors.neutralLight,
+                      child: Icon(
+                        Icons.language,
+                        color: PanAfricanColors.neutralMedium,
+                      ),
                     ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    width: 60.w,
-                    height: 60.w,
-                    color: PanAfricanColors.neutralLight,
-                    child: Icon(
-                      Icons.language,
-                      color: PanAfricanColors.neutralMedium,
+                    errorWidget: (context, url, error) => Container(
+                      width: 60.w,
+                      height: 60.w,
+                      color: PanAfricanColors.neutralLight,
+                      child: Icon(
+                        Icons.language,
+                        color: PanAfricanColors.neutralMedium,
+                      ),
                     ),
                   ),
                 ),
@@ -308,14 +326,17 @@ class _LanguageCard extends StatelessWidget {
                     ),
                     SizedBox(height: PanAfricanSpacing.xs),
                     if (progress > 0) ...[
-                      LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: PanAfricanColors.neutralLight,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          PanAfricanColors.primary,
+                      Semantics(
+                        label: 'Progress: ${(progress * 100).toInt()}%',
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          backgroundColor: PanAfricanColors.neutralLight,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            PanAfricanColors.primary,
+                          ),
+                          minHeight: 6.h,
+                          borderRadius: BorderRadius.circular(3),
                         ),
-                        minHeight: 6.h,
-                        borderRadius: BorderRadius.circular(3),
                       ),
                       SizedBox(height: PanAfricanSpacing.xs),
                       Text(
@@ -334,9 +355,15 @@ class _LanguageCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Icon(
-                Icons.chevron_right_rounded,
-                color: PanAfricanColors.neutralMedium,
+              Semantics(
+                excludeSemantics: true,
+                child:               Semantics(
+                excludeSemantics: true,
+                child: Icon(
+                  Icons.chevron_right_rounded,
+                  color: PanAfricanColors.neutralMedium,
+                ),
+              ),
               ),
             ],
           ),
@@ -398,16 +425,22 @@ class _HeroCard extends StatelessWidget {
                   SizedBox(height: PanAfricanSpacing.md),
                   Row(
                     children: [
-                      PanAfricanBadge(
+                      Semantics(
                         label: 'Daily goals',
-                        color: PanAfricanColors.tertiary,
-                        icon: Icons.flag_rounded,
+                        child: PanAfricanBadge(
+                          label: 'Daily goals',
+                          color: PanAfricanColors.tertiary,
+                          icon: Icons.flag_rounded,
+                        ),
                       ),
                       SizedBox(width: PanAfricanSpacing.sm),
-                      PanAfricanBadge(
+                      Semantics(
                         label: '${(progress * 100).toInt()}% complete',
-                        color: PanAfricanColors.primary,
-                        icon: Icons.check_circle_rounded,
+                        child: PanAfricanBadge(
+                          label: '${(progress * 100).toInt()}% complete',
+                          color: PanAfricanColors.primary,
+                          icon: Icons.check_circle_rounded,
+                        ),
                       ),
                     ],
                   ),

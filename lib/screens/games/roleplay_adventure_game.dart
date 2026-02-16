@@ -110,9 +110,13 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          ),
         ),
       ),
       body: Padding(
@@ -120,12 +124,14 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
         child: Column(
           children: [
             // Scenario title
-            Card(
+            Semantics(
+              label: 'Scenario: ${_scenario.toUpperCase()}',
+              child: Card(
               child: Padding(
                 padding: EdgeInsets.all(3.w),
                 child: Row(
                   children: [
-                    const Icon(Icons.store, size: 32),
+                    Icon(Icons.store, size: 32, semanticLabel: 'Scenario'),
                     SizedBox(width: 2.w),
                     Text(
                       'Scenario: ${_scenario.toUpperCase()}',
@@ -177,17 +183,21 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
             // Options
             ..._options.map((option) => Padding(
                   padding: EdgeInsets.only(bottom: 1.h),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: FilledButton(
-                      onPressed: () => _selectOption(option),
-                      style: FilledButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 2.h),
-                      ),
-                      child: Text(
-                        option.text,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16.sp),
+                  child: Semantics(
+                    label: 'Dialogue option: ${option.text}',
+                    button: true,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton(
+                        onPressed: () => _selectOption(option),
+                        style: FilledButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 2.h),
+                        ),
+                        child: Text(
+                          option.text,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16.sp),
+                        ),
                       ),
                     ),
                   ),

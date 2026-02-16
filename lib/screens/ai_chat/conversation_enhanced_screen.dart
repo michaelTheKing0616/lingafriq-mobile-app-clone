@@ -155,9 +155,13 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
       padding: EdgeInsets.all(PolieSpacing.md),
       child: Row(
         children: [
-          _GlassIconButton(
-            icon: Icons.arrow_back_rounded,
-            onPressed: () => Navigator.of(context).pop(),
+          Semantics(
+            label: 'Back',
+            button: true,
+            child: _GlassIconButton(
+              icon: Icons.arrow_back_rounded,
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
           SizedBox(width: PolieSpacing.md),
           Expanded(
@@ -179,15 +183,19 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
               ],
             ),
           ),
-          _GlassIconButton(
-            icon: autoCorrectionEnabled.value
-                ? Icons.auto_fix_high_rounded
-                : Icons.auto_fix_off_rounded,
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              autoCorrectionEnabled.value = !autoCorrectionEnabled.value;
-            },
-            isActive: autoCorrectionEnabled.value,
+          Semantics(
+            label: autoCorrectionEnabled.value ? 'Auto-correction on. Double tap to turn off.' : 'Auto-correction off. Double tap to turn on.',
+            button: true,
+            child: _GlassIconButton(
+              icon: autoCorrectionEnabled.value
+                  ? Icons.auto_fix_high_rounded
+                  : Icons.auto_fix_off_rounded,
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                autoCorrectionEnabled.value = !autoCorrectionEnabled.value;
+              },
+              isActive: autoCorrectionEnabled.value,
+            ),
           ),
         ],
       ),
@@ -210,7 +218,11 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
           final isSelected = topic == currentTopic.value;
           return Padding(
             padding: EdgeInsets.only(right: PolieSpacing.sm),
-            child: GestureDetector(
+            child: Semantics(
+              label: 'Topic suggestion: $topic${isSelected ? ', selected' : ''}',
+              button: true,
+              selected: isSelected,
+              child: GestureDetector(
               onTap: () {
                 HapticFeedback.lightImpact();
                 currentTopic.value = isSelected ? null : topic;
@@ -244,6 +256,7 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                   ),
                 ),
               ),
+            ),
             ),
           );
         }).toList(),
@@ -336,7 +349,11 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
       child: Row(
         children: [
           Expanded(
-            child: Container(
+            child: Semantics(
+              label: 'Message input',
+              hint: 'Type your message',
+              textField: true,
+              child: Container(
               decoration: BoxDecoration(
                 color: PolieColors.surfaceContainer,
                 borderRadius: BorderRadius.circular(PolieRadius.pill),
@@ -370,7 +387,11 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
             ),
           ),
           SizedBox(width: PolieSpacing.sm),
-          GestureDetector(
+          Semantics(
+            label: isLoading.value ? 'Sending' : 'Send message',
+            button: true,
+            enabled: !isLoading.value,
+            child: GestureDetector(
             onTap: isLoading.value ? null : sendMessage,
             child: Container(
               width: 48.w,
@@ -390,8 +411,9 @@ class ConversationEnhancedScreen extends HookConsumerWidget {
                         valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.onPrimary),
                       ),
                     )
-                  : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp),
+                  : Icon(Icons.send_rounded, color: Theme.of(context).colorScheme.onPrimary, size: 22.sp, semanticLabel: 'Send message'),
             ),
+          ),
           ),
         ],
       ),

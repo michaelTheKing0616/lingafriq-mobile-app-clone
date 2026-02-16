@@ -166,24 +166,32 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
         actions: [
           // Moderation button (if user is host/moderator)
           if (_room?.hostId == ref.read(userProvider)?.id.toString())
-            IconButton(
-              icon: const Icon(Icons.admin_panel_settings),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ModerationScreen(roomId: widget.roomId),
-                  ),
-                );
-              },
-              tooltip: 'Moderation',
+            Semantics(
+              label: 'Room moderation',
+              button: true,
+              child: IconButton(
+                icon: const Icon(Icons.admin_panel_settings, semanticLabel: 'Moderation'),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ModerationScreen(roomId: widget.roomId),
+                    ),
+                  );
+                },
+                tooltip: 'Moderation',
+              ),
             ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: () {
-              // Share room functionality
-            },
-            tooltip: 'Share Room',
+          Semantics(
+            label: 'Share room',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.share, semanticLabel: 'Share'),
+              onPressed: () {
+                // Share room functionality
+              },
+              tooltip: 'Share Room',
+            ),
           ),
         ],
       ),
@@ -338,22 +346,26 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
                   SizedBox(height: 4.h),
 
                   // Join button
-                  SizedBox(
-                    width: double.infinity,
-                    child: FilledButton.icon(
-                      onPressed: _room!.isLive || _room!.isScheduled ? _joinRoom : null,
-                      icon: Icon(_room!.isLive ? Icons.radio : Icons.schedule),
-                      label: Text(
-                        _room!.isLive
-                            ? 'Join Room'
-                            : (_room!.isScheduled ? 'Set Reminder' : 'Room Ended'),
-                      ),
+                  Semantics(
+                    label: _room!.isLive ? 'Join room' : (_room!.isScheduled ? 'Set reminder' : 'Room ended'),
+                    button: true,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: FilledButton.icon(
+                        onPressed: _room!.isLive || _room!.isScheduled ? _joinRoom : null,
+                        icon: Icon(_room!.isLive ? Icons.radio : Icons.schedule, semanticLabel: _room!.isLive ? 'Join' : 'Schedule'),
+                        label: Text(
+                          _room!.isLive
+                              ? 'Join Room'
+                              : (_room!.isScheduled ? 'Set Reminder' : 'Room Ended'),
+                        ),
                       style: FilledButton.styleFrom(
                         padding: EdgeInsets.symmetric(vertical: 3.h),
                         backgroundColor: _room!.isLive
                             ? Colors.green
                             : (_room!.isScheduled ? Colors.blue : Colors.grey),
                       ),
+                    ),
                     ),
                   ),
                 ],

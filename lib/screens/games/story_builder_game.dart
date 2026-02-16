@@ -102,18 +102,25 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          ),
         ),
       ),
       body: Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
-            Text(
-              'Continue the story (${_maxTurns - _currentTurn} sentences left)',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            Semantics(
+              label: 'Continue the story, ${_maxTurns - _currentTurn} sentences remaining',
+              child: Text(
+                'Continue the story (${_maxTurns - _currentTurn} sentences left)',
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
             ),
             SizedBox(height: 2.h),
             Expanded(
@@ -136,19 +143,28 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
               ),
             ),
             SizedBox(height: 2.h),
-            TextField(
-              controller: _sentenceController,
-              decoration: const InputDecoration(
-                hintText: 'Type your sentence...',
-                border: OutlineInputBorder(),
+            Semantics(
+              label: 'Type your sentence to add to the story',
+              textField: true,
+              child: TextField(
+                controller: _sentenceController,
+                decoration: const InputDecoration(
+                  hintText: 'Type your sentence...',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 2,
+                onSubmitted: (_) => _addSentence(),
               ),
-              maxLines: 2,
-              onSubmitted: (_) => _addSentence(),
             ),
             SizedBox(height: 2.h),
-            FilledButton(
-              onPressed: _currentTurn >= _maxTurns ? null : _addSentence,
-              child: Text(_currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence'),
+            Semantics(
+              label: _currentTurn >= _maxTurns ? 'Story complete' : 'Add sentence to story',
+              button: true,
+              enabled: _currentTurn < _maxTurns,
+              child: FilledButton(
+                onPressed: _currentTurn >= _maxTurns ? null : _addSentence,
+                child: Text(_currentTurn >= _maxTurns ? 'Story Complete!' : 'Add Sentence'),
+              ),
             ),
           ],
         ),

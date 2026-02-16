@@ -29,9 +29,11 @@ class CurriculumViewerScreen extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             color: isDark ? Colors.grey[800] : Theme.of(context).colorScheme.surface,
-            child: ExpansionTile(
-              title: Text(
-                'Week ${week['week']}',
+            child: Semantics(
+              label: 'Week ${week['week']}. Expand to see lessons',
+              child: ExpansionTile(
+                title: Text(
+                  'Week ${week['week']}',
                 style: TextStyle(
                   fontSize: 18.sp,
                   fontWeight: FontWeight.bold,
@@ -40,9 +42,12 @@ class CurriculumViewerScreen extends StatelessWidget {
               ),
               children: lessons.map<Widget>((lesson) {
                 final lessonMap = lesson as Map<String, dynamic>;
-                return ListTile(
-                  title: Text(
-                    lessonMap['title'] ?? 'Untitled Lesson',
+                return Semantics(
+                  label: 'Lesson: ${lessonMap['title'] ?? 'Untitled Lesson'}. Tap to open',
+                  button: true,
+                  child: ListTile(
+                    title: Text(
+                      lessonMap['title'] ?? 'Untitled Lesson',
                     style: TextStyle(
                       fontSize: 16.sp,
                       color: context.adaptive,
@@ -124,8 +129,10 @@ class CurriculumViewerScreen extends StatelessWidget {
                       );
                     }
                   },
+                  ),
                 );
               }).toList(),
+              ),
             ),
           );
         },

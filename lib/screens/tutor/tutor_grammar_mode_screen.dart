@@ -273,6 +273,7 @@ Quality requirements:
                           ),
                           style: PolieTypography.body(context),
                         ),
+                        ),
                         if (filteredTopics.isNotEmpty) ...[
                           SizedBox(height: PolieSpacing.sm),
                           Text(
@@ -286,13 +287,16 @@ Quality requirements:
                             spacing: PolieSpacing.xs,
                             runSpacing: PolieSpacing.xs,
                             children: filteredTopics.take(8).map((topic) {
-                              return GestureDetector(
-                                onTap: () {
-                                  HapticFeedback.selectionClick();
-                                  topicController.text = topic;
-                                  topicInput.value = topic;
-                                },
-                                child: Container(
+                              return Semantics(
+                                label: 'Select topic: $topic',
+                                button: true,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    HapticFeedback.selectionClick();
+                                    topicController.text = topic;
+                                    topicInput.value = topic;
+                                  },
+                                  child: Container(
                                   padding: EdgeInsets.symmetric(
                                     horizontal: PolieSpacing.sm,
                                     vertical: PolieSpacing.xs,
@@ -308,6 +312,7 @@ Quality requirements:
                                     topic,
                                     style: PolieTypography.bodySmall(context),
                                   ),
+                                ),
                                 ),
                               );
                             }).toList(),
@@ -356,12 +361,16 @@ Quality requirements:
                   ),
                   SizedBox(height: PolieSpacing.lg),
                   Center(
-                    child: PoliePrimaryButton(
-                      label: 'Explain Grammar',
-                      loading: isLoading.value,
-                      enabled: !isLoading.value,
-                      icon: Icons.menu_book_rounded,
-                      onPressed: explainGrammar,
+                    child: Semantics(
+                      label: 'Generate grammar explanation',
+                      button: true,
+                      child: PoliePrimaryButton(
+                        label: 'Explain Grammar',
+                        loading: isLoading.value,
+                        enabled: !isLoading.value,
+                        icon: Icons.menu_book_rounded,
+                        onPressed: explainGrammar,
+                      ),
                     ),
                   ),
                   if (grammarResult.value != null) ...[

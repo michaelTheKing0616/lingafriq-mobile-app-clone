@@ -144,12 +144,16 @@ class _ShadowingExerciseScreenState
                 padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: PolieSpacing.xs),
                 child: Row(
                   children: [
-                    IconButton(
-                      icon: Icon(PanAfricanIcons.back, color: PolieColors.textPrimary),
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        Navigator.pop(context);
-                      },
+                    Semantics(
+                      label: 'Go back',
+                      button: true,
+                      child: IconButton(
+                        icon: Icon(PanAfricanIcons.back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
+                        onPressed: () {
+                          HapticFeedback.lightImpact();
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                     Expanded(
                       child: Text(
@@ -167,18 +171,20 @@ class _ShadowingExerciseScreenState
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       // Reference text card
-                      PolieGlassCard(
-                        padding: EdgeInsets.all(PolieSpacing.md),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Reference Text',
-                              style: PolieTypography.label(context),
-                            ),
-                            SizedBox(height: PolieSpacing.sm),
-                            Text(
-                              widget.referenceText,
+                      Semantics(
+                        label: 'Reference text to shadow',
+                        child: PolieGlassCard(
+                          padding: EdgeInsets.all(PolieSpacing.md),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Reference Text',
+                                style: PolieTypography.label(context),
+                              ),
+                              SizedBox(height: PolieSpacing.sm),
+                              Text(
+                                widget.referenceText,
                               style: PolieTypography.body(context).copyWith(
                                 color: PolieColors.electricTeal,
                                 fontWeight: FontWeight.w500,
@@ -186,16 +192,20 @@ class _ShadowingExerciseScreenState
                             ),
                           ],
                         ),
+                        ),
                       ),
                       SizedBox(height: PolieSpacing.xl),
                       // Record button orb
                       Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            HapticFeedback.mediumImpact();
-                            _isRecording ? _stopRecording() : _startRecording();
-                          },
-                          child: AnimatedContainer(
+                        child: Semantics(
+                          label: _isRecording ? 'Recording. Tap to stop' : 'Tap to start recording',
+                          button: true,
+                          child: GestureDetector(
+                            onTap: () {
+                              HapticFeedback.mediumImpact();
+                              _isRecording ? _stopRecording() : _startRecording();
+                            },
+                            child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),
                             width: _isRecording ? 140.w : 120.w,
                             height: _isRecording ? 140.w : 120.w,
@@ -225,8 +235,10 @@ class _ShadowingExerciseScreenState
                               _isRecording ? Icons.stop_rounded : Icons.mic_rounded,
                               color: Theme.of(context).colorScheme.onPrimary,
                               size: 48.sp,
+                              semanticLabel: _isRecording ? 'Stop recording' : 'Start recording',
                             ),
                           ),
+                        ),
                         ),
                       ),
                       SizedBox(height: PolieSpacing.md),
@@ -255,17 +267,19 @@ class _ShadowingExerciseScreenState
                       ],
                       if (_feedback != null) ...[
                         SizedBox(height: PolieSpacing.xl),
-                        PolieGlassCard(
-                          hasGlow: true,
-                          glowColor: PolieColors.electricTeal,
-                          padding: EdgeInsets.all(PolieSpacing.md),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Results',
-                                style: PolieTypography.h2(context),
-                              ),
+                        Semantics(
+                          label: 'Shadowing results: score and word error rate',
+                          child: PolieGlassCard(
+                            hasGlow: true,
+                            glowColor: PolieColors.electricTeal,
+                            padding: EdgeInsets.all(PolieSpacing.md),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Results',
+                                  style: PolieTypography.h2(context),
+                                ),
                               SizedBox(height: PolieSpacing.lg),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -330,6 +344,7 @@ class _ShadowingExerciseScreenState
                               ],
                             ],
                           ),
+                        ),
                         ),
                       ],
                     ],

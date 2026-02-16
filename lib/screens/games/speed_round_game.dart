@@ -143,19 +143,22 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Time\'s Up!',
-                style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
+              Semantics(
+                label: 'Time\'s up',
+                child: Text(
+                  'Time\'s Up!',
+                  style: TextStyle(fontSize: 32.sp, fontWeight: FontWeight.bold),
+                ),
               ),
               SizedBox(height: 2.h),
-              Text(
+              Semantics(label: 'Score: $_score', child: Text(
                 'Score: $_score',
                 style: TextStyle(fontSize: 24.sp),
-              ),
-              Text(
+              )),
+              Semantics(label: 'Best streak: $_streak', child: Text(
                 'Best Streak: $_streak',
                 style: TextStyle(fontSize: 20.sp),
-              ),
+              )),
             ],
           ),
         ),
@@ -169,9 +172,13 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: widget.onBack ?? () => Navigator.pop(context),
+          ),
         ),
         actions: [
           Padding(
@@ -179,17 +186,23 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  '$_timeLeft',
-                  style: TextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
-                    color: _timeLeft < 10 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
+                Semantics(
+                  label: 'Time remaining: $_timeLeft seconds',
+                  child: Text(
+                    '$_timeLeft',
+                    style: TextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                      color: _timeLeft < 10 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
-                Text(
-                  'Score: $_score',
-                  style: TextStyle(fontSize: 12.sp),
+                Semantics(
+                  label: 'Score: $_score',
+                  child: Text(
+                    'Score: $_score',
+                    style: TextStyle(fontSize: 12.sp),
+                  ),
                 ),
               ],
             ),
@@ -240,6 +253,7 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
                 ),
               ),
             ),
+            ),
             SizedBox(height: 4.h),
             // Options
             Expanded(
@@ -262,39 +276,44 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
 
                   return Padding(
                     padding: EdgeInsets.only(bottom: 2.h),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: () => _selectAnswer(option),
-                        borderRadius: BorderRadius.circular(12),
-                        child: Container(
-                          padding: EdgeInsets.all(4.w),
-                          decoration: BoxDecoration(
-                            color: backgroundColor ?? Colors.grey[200],
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isSelected
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Colors.transparent,
-                              width: 2,
+                    child: Semantics(
+                      label: 'Answer option: $option',
+                      button: true,
+                      selected: isSelected,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () => _selectAnswer(option),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            padding: EdgeInsets.all(4.w),
+                            decoration: BoxDecoration(
+                              color: backgroundColor ?? Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
                             ),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  option,
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.bold,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    option,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              if (showResult && isCorrect)
-                                const Icon(Icons.check_circle, color: Colors.green),
-                              if (showResult && isSelected && !isCorrect)
-                                const Icon(Icons.cancel, color: Colors.red),
-                            ],
+                                if (showResult && isCorrect)
+                                  const Icon(Icons.check_circle, color: Colors.green, semanticLabel: 'Correct'),
+                                if (showResult && isSelected && !isCorrect)
+                                  const Icon(Icons.cancel, color: Colors.red, semanticLabel: 'Incorrect'),
+                              ],
+                            ),
                           ),
                         ),
                       ),

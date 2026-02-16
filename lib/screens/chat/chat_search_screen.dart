@@ -85,6 +85,14 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Search Messages'),
+        leading: Semantics(
+          label: 'Back',
+          button: true,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -99,7 +107,11 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                   color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight,
                 ),
               ),
-              child: TextField(
+              child: Semantics(
+                label: 'Search messages',
+                hint: 'Type to search by text',
+                textField: true,
+                child: TextField(
                 controller: _queryController,
                 onChanged: (value) =>
                     _searchDebouncer.run(() => _search(value)),
@@ -137,7 +149,9 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
             ),
           Expanded(
             child: _results.isEmpty && !_isLoading
-                ? Center(
+                ? Semantics(
+                    label: 'No messages found. Try a different word or phrase.',
+                    child: Center(
                     child: Text(
                       'No messages found.\nTry a different word or phrase.',
                       textAlign: TextAlign.center,
@@ -147,8 +161,11 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                             : PanAfricanColors.textSecondaryLight,
                       ),
                     ),
+                  ),
                   )
-                : ListView.separated(
+                : Semantics(
+                    label: 'Search results, ${_results.length} messages',
+                    child: ListView.separated(
                     padding: EdgeInsets.all(PanAfricanSpacing.md),
                     itemCount: _results.length,
                     separatorBuilder: (_, __) => Divider(
@@ -161,7 +178,10 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                           m['sender_username']?.toString() ?? 'User';
                       final text = m['message']?.toString() ?? '';
                       final ts = m['timestamp']?.toString();
-                      return ListTile(
+                      return Semantics(
+                        label: 'Message from $username: $text. Room $room, ${_formatTime(ts)}',
+                        button: true,
+                        child: ListTile(
                         title: Text(
                           text,
                           maxLines: 2,
@@ -175,8 +195,10 @@ class _ChatSearchScreenState extends ConsumerState<ChatSearchScreen> {
                                 : PanAfricanColors.textSecondaryLight,
                           ),
                         ),
+                      ),
                       );
                     },
+                  ),
                   ),
           ),
         ],

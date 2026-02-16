@@ -17,17 +17,27 @@ class AboutUsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                  Semantics(
+                    label: 'Back',
+                    button: true,
+                    child: BackButton(color: Theme.of(context).colorScheme.onPrimary),
+                  ),
                   const Spacer(),
-                  "About".text.xl4.medium.white.make().p16(),
+                  Semantics(
+                    header: true,
+                    child: "About".text.xl4.medium.white.make().p16(),
+                  ),
                 ],
               ),
             ),
           ),
-          Column(
+          Semantics(
+            label: aboutUs,
+            child: Column(
             children: [
               aboutUs.text.lg.heightRelaxed.center.make().p32(),
             ],
+          ),
           ),
         ],
       ),

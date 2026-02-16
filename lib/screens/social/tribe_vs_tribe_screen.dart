@@ -133,12 +133,16 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
           backgroundColor: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
           foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimary,
           elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.pop(context);
-            },
+          leading: Semantics(
+            label: 'Back',
+            button: true,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                Navigator.pop(context);
+              },
+            ),
           ),
         ),
         body: AppErrorState(

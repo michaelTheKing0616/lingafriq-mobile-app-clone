@@ -86,7 +86,9 @@ class LessonCompleteWidget extends StatelessWidget {
           SizedBox(height: 24.h),
 
           // Stats grid
-          Row(
+          Semantics(
+            label: 'Lesson complete. XP earned: $totalXP. Accuracy: ${accuracy.toStringAsFixed(0)} percent. Time: ${_formatTime(timeTaken)}.',
+            child: Row(
             children: [
               Expanded(
                 child: _buildStatCard(
@@ -134,6 +136,7 @@ class LessonCompleteWidget extends StatelessWidget {
               ),
             ],
           ),
+          ),
 
           if (comboBonus > 0) ...[
             SizedBox(height: 16.h),
@@ -165,12 +168,16 @@ class LessonCompleteWidget extends StatelessWidget {
             children: [
               if (onShare != null) ...[
                 Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: onShare,
-                    icon: Icon(Icons.share_rounded),
-                    label: Text('Share'),
-                    style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                  child: Semantics(
+                    label: 'Share your result',
+                    button: true,
+                    child: OutlinedButton.icon(
+                      onPressed: onShare,
+                      icon: Icon(Icons.share_rounded, semanticLabel: 'Share'),
+                      label: Text('Share'),
+                      style: OutlinedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                      ),
                     ),
                   ),
                 ),
@@ -178,12 +185,16 @@ class LessonCompleteWidget extends StatelessWidget {
               ],
               Expanded(
                 flex: 2,
-                child: PanAfricanButton(
-                  onPressed: onContinue,
-                  label: 'Continue',
-                  icon: Icons.arrow_forward_rounded,
-                  backgroundColor: PanAfricanColors.primary,
-                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                child: Semantics(
+                  label: 'Continue to next lesson',
+                  button: true,
+                  child: PanAfricanButton(
+                    onPressed: onContinue,
+                    label: 'Continue',
+                    icon: Icons.arrow_forward_rounded,
+                    backgroundColor: PanAfricanColors.primary,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
             ],

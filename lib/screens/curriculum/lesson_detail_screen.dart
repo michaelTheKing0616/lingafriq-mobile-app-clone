@@ -141,6 +141,80 @@ class _LessonDetailScreenState extends ConsumerState<LessonDetailScreen>
         foregroundColor:
             isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
         actions: [
+          Builder(
+            builder: (context) {
+              final offlineState = ref.watch(offlineDownloadProvider);
+              final isDownloadingThis = offlineState.currentDownloadingLessonId == lessonIdStr;
+              if (isDownloadingThis) {
+                return IconButton(
+                  icon: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  onPressed: null,
+                  tooltip: 'Downloading...',
+                );
+              }
+              if (isDownloaded) {
+                return IconButton(
+                  icon: Icon(Icons.download_done, color: Theme.of(context).colorScheme.primary),
+                  onPressed: () async {
+                    HapticFeedback.lightImpact();
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text('Remove offline download?'),
+                        content: const Text(
+                          'This lesson will no longer be available offline.',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(ctx).pop(false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.of(ctx).pop(true),
+                            child: const Text('Remove'),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirmed != true || !context.mounted) return;
+                    try {
+                      await ref.read(offlineDownloadProvider.notifier).deleteLesson(lessonIdStr);
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to remove download: $e')),
+                        );
+                      }
+                    }
+                  },
+                  tooltip: 'Remove offline download',
+                );
+              }
+              return IconButton(
+                icon: const Icon(Icons.download_for_offline_outlined),
+                onPressed: () async {
+                  HapticFeedback.lightImpact();
+                  try {
+                    await ref.read(offlineDownloadProvider.notifier).downloadLesson(lessonIdStr);
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Download failed: $e')),
+                      );
+                    }
+                  }
+                },
+                tooltip: 'Download for offline',
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.share),
             onPressed: () {

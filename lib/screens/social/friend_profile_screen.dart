@@ -49,7 +49,9 @@ class FriendProfileScreen extends HookConsumerWidget {
       return null;
     }, []);
 
-    return Scaffold(
+    return Semantics(
+      label: 'Friend profile. Profile info, stats, and action buttons.',
+      child: Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -79,6 +81,7 @@ class FriendProfileScreen extends HookConsumerWidget {
                   : _buildProfileContent(context, friendData.value!, isDark),
         ),
       ),
+    ),
     );
   }
 
@@ -124,12 +127,16 @@ class FriendProfileScreen extends HookConsumerWidget {
       padding: EdgeInsets.all(PolieSpacing.lg),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
+          Semantics(
+            label: 'Back',
+            button: true,
+            child: IconButton(
+            icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary, semanticLabel: 'Back'),
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.of(context).pop();
             },
+          ),
           ),
           Expanded(
             child: Text(
@@ -328,7 +335,10 @@ class FriendProfileScreen extends HookConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: PolieSpacing.lg),
       child: Column(
         children: [
-          PoliePrimaryButton(
+          Semantics(
+            label: 'Challenge this friend',
+            button: true,
+            child: PoliePrimaryButton(
             label: 'Challenge',
             icon: Icons.emoji_events_rounded,
             onPressed: () {
@@ -341,8 +351,12 @@ class FriendProfileScreen extends HookConsumerWidget {
               );
             },
           ),
+          ),
           SizedBox(height: PolieSpacing.md),
-          PoliePrimaryButton(
+          Semantics(
+            label: 'Send a gift to this friend',
+            button: true,
+            child: PoliePrimaryButton(
             label: 'Send Gift',
             icon: Icons.card_giftcard_rounded,
             onPressed: () {
@@ -355,11 +369,15 @@ class FriendProfileScreen extends HookConsumerWidget {
               );
             },
           ),
+          ),
           SizedBox(height: PolieSpacing.md),
           Row(
             children: [
               Expanded(
-                child: OutlinedButton(
+                child: Semantics(
+                  label: 'Remove friend',
+                  button: true,
+                  child: OutlinedButton(
                   onPressed: () {
                     HapticFeedback.lightImpact();
                     _removeFriend(context);
@@ -383,6 +401,7 @@ class FriendProfileScreen extends HookConsumerWidget {
                     side: BorderSide(color: PolieColors.error),
                   ),
                   child: Text('Block'),
+                ),
                 ),
               ),
             ],

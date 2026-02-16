@@ -235,16 +235,20 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   ),
           ),
           child: Center(
-            child: PanAfricanCard(
-              child: Padding(
+              child: Semantics(
+                label: 'Game complete. Score: $_score out of ${_questions.length * 10}. Correct: $_correctAnswers out of ${_questions.length}.',
+                child: PanAfricanCard(
+                child: Padding(
                 padding: EdgeInsets.all(24.sp),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(
+                    ExcludeSemantics(
+                      child: Icon(
                       _score >= 70 ? Icons.celebration : Icons.check_circle,
                       size: 80.sp,
                       color: _score >= 70 ? PanAfricanColors.secondary : PanAfricanColors.primary,
+                    ),
                     ),
                     SizedBox(height: 16.h),
                     Text(
@@ -273,18 +277,26 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                       ),
                     ),
                     SizedBox(height: 24.h),
-                    PanAfricanButton(
-                      label: 'Play Again',
-                      onPressed: _restartGame,
-                      backgroundColor: PanAfricanColors.primary,
-                      foregroundColor: colorScheme.onPrimary,
+                    Semantics(
+                      label: 'Play again button',
+                      button: true,
+                      child: PanAfricanButton(
+                        label: 'Play Again',
+                        onPressed: _restartGame,
+                        backgroundColor: PanAfricanColors.primary,
+                        foregroundColor: colorScheme.onPrimary,
+                      ),
                     ),
                     SizedBox(height: 12.h),
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(
-                        'Back to Games',
-                        style: TextStyle(color: PanAfricanColors.primary),
+                    Semantics(
+                      label: 'Back to games',
+                      button: true,
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          'Back to Games',
+                          style: TextStyle(color: PanAfricanColors.primary),
+                        ),
                       ),
                     ),
                   ],
@@ -354,29 +366,39 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Question ${_currentIndex + 1} / ${_questions.length}',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: context.adaptive,
+                    Semantics(
+                      label: 'Question ${_currentIndex + 1} of ${_questions.length}',
+                      child: Text(
+                        'Question ${_currentIndex + 1} / ${_questions.length}',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: context.adaptive,
+                        ),
                       ),
                     ),
-                    Text(
-                      'Score: $_score',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: PanAfricanColors.primary,
+                    Semantics(
+                      label: 'Score: $_score',
+                      child: Text(
+                        'Score: $_score',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: PanAfricanColors.primary,
+                        ),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 8.h),
-                LinearProgressIndicator(
-                  value: (_currentIndex + 1) / _questions.length,
-                  backgroundColor: Colors.grey[300],
-                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                Semantics(
+                  label: 'Progress: ${((_currentIndex + 1) / _questions.length * 100).toInt()}%',
+                  value: '${_currentIndex + 1} of ${_questions.length}',
+                  child: LinearProgressIndicator(
+                    value: (_currentIndex + 1) / _questions.length,
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                  ),
                 ),
                 SizedBox(height: 32.h),
                 
@@ -462,28 +484,33 @@ class _FillInTheBlankGameState extends ConsumerState<FillInTheBlankGame> {
                   ...question.options.map((option) {
                     return Padding(
                       padding: EdgeInsets.only(bottom: 12.h),
-                      child: PanAfricanCard(
-                        onTap: () => _selectAnswer(option),
-                        child: Padding(
-                          padding: EdgeInsets.all(16.sp),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  option,
-                                  style: TextStyle(
-                                    fontSize: 18.sp,
-                                    fontWeight: FontWeight.w500,
-                                    color: context.adaptive,
+                      child: Semantics(
+                        label: 'Answer option: $option',
+                        button: true,
+                        child: PanAfricanCard(
+                          onTap: () => _selectAnswer(option),
+                          child: Padding(
+                            padding: EdgeInsets.all(16.sp),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    option,
+                                    style: TextStyle(
+                                      fontSize: 18.sp,
+                                      fontWeight: FontWeight.w500,
+                                      color: context.adaptive,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16.sp,
-                                color: context.adaptive54,
-                              ),
-                            ],
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16.sp,
+                                  color: context.adaptive54,
+                                  semanticLabel: 'Select',
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

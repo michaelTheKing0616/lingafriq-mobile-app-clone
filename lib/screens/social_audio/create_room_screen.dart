@@ -155,12 +155,14 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Room name
-                TextFormField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: 'Room Name',
-                    hintText: 'e.g., Yoruba Conversation Practice',
-                    helperText: 'At least 3 characters',
+                Semantics(
+                  label: 'Room name',
+                  child: TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: 'Room Name',
+                      hintText: 'e.g., Yoruba Conversation Practice',
+                      helperText: 'At least 3 characters',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                     ),
@@ -174,11 +176,14 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                     }
                     return null;
                   },
+                  ),
                 ),
                 SizedBox(height: 4.h),
 
                 // Description
-                TextFormField(
+                Semantics(
+                  label: 'Room description',
+                  child: TextFormField(
                   controller: _descriptionController,
                   decoration: InputDecoration(
                     labelText: 'Description',
@@ -194,6 +199,7 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                     }
                     return null;
                   },
+                  ),
                 ),
                 SizedBox(height: 4.h),
 
@@ -366,12 +372,16 @@ class _CreateRoomScreenState extends ConsumerState<CreateRoomScreen> {
                 SizedBox(height: 4.h),
 
                 // Create button
-                SizedBox(
-                  width: double.infinity,
-                  child: PanAfricanButton(
-                    label: 'Create Room',
-                    icon: Icons.add,
-                    onPressed: _createRoom,
+                Semantics(
+                  label: 'Create room',
+                  button: true,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: PanAfricanButton(
+                      label: 'Create Room',
+                      icon: Icons.add,
+                      onPressed: _createRoom,
+                    ),
                   ),
                 ),
               ],

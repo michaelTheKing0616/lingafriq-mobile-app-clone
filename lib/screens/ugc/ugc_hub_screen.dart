@@ -28,12 +28,16 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
         title: Text('Create Content', style: PanAfricanTypography.titleLarge(context)),
         backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
         foregroundColor: isDark ? PanAfricanColors.textPrimaryDark : PanAfricanColors.textPrimaryLight,
-        leading: IconButton(
-          icon: Icon(PanAfricanIcons.back),
-          onPressed: () {
-            HapticFeedback.lightImpact();
-            Navigator.of(context).pop();
-          },
+        leading: Semantics(
+          label: 'Go back',
+          button: true,
+          child: IconButton(
+            icon: Icon(PanAfricanIcons.back, semanticLabel: 'Back'),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.of(context).pop();
+            },
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -53,12 +57,15 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
             SizedBox(height: PanAfricanSpacing.lg),
             
             // Create Lesson Card
-            _ContentTypeCard(
-              title: 'Create Lesson',
-              description: 'Share your knowledge by creating a lesson',
-              icon: PanAfricanIcons.lesson,
-              color: PanAfricanColors.kenteBlue,
-              onTap: () async {
+            Semantics(
+              label: 'Create lesson',
+              button: true,
+              child: _ContentTypeCard(
+                title: 'Create Lesson',
+                description: 'Share your knowledge by creating a lesson',
+                icon: PanAfricanIcons.lesson,
+                color: PanAfricanColors.kenteBlue,
+                onTap: () async {
                 HapticFeedback.lightImpact();
                 final result = await safeNavigate(
                   context: context,
@@ -73,11 +80,15 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   );
                 }
               },
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.md),
             
             // Create Quiz Card
-            _ContentTypeCard(
+            Semantics(
+              label: 'Create quiz',
+              button: true,
+              child: _ContentTypeCard(
               title: 'Create Quiz',
               description: 'Test knowledge with interactive quizzes',
               icon: PanAfricanIcons.quiz,
@@ -97,11 +108,15 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   );
                 }
               },
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.md),
             
             // Create Story Card
-            _ContentTypeCard(
+            Semantics(
+              label: 'Create story',
+              button: true,
+              child: _ContentTypeCard(
               title: 'Create Story',
               description: 'Share cultural stories and narratives',
               icon: PanAfricanIcons.book,
@@ -121,6 +136,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                   );
                 }
               },
+              ),
             ),
             SizedBox(height: PanAfricanSpacing.lg),
             
@@ -175,9 +191,12 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                       child: ListTile(
                         title: Text(item['title'] ?? 'Untitled', style: PanAfricanTypography.titleMedium(context)),
                         subtitle: Text(item['type'] ?? 'content', style: PanAfricanTypography.bodySmall(context)),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.share),
-                          onPressed: () async {
+                        trailing: Semantics(
+                          label: 'Share content',
+                          button: true,
+                          child: IconButton(
+                            icon: const Icon(Icons.share, semanticLabel: 'Share'),
+                            onPressed: () async {
                             HapticFeedback.lightImpact();
                             final ugcService = ref.read(userGeneratedContentServiceProvider);
                             await ugcService.shareContent(
@@ -193,6 +212,7 @@ class _UGCHubScreenState extends ConsumerState<UGCHubScreen> {
                               );
                             }
                           },
+                          ),
                         ),
                       ),
                     );
