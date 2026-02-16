@@ -31,15 +31,14 @@ final client = Provider<Dio>(
   (ref) {
     final options = BaseOptions(
       baseUrl: ApiContract.baseUrl,
-      connectTimeout: const Duration(seconds: 120),
-      sendTimeout: const Duration(seconds: 120),
-      receiveTimeout: const Duration(seconds: 120),
+      connectTimeout: const Duration(seconds: 15),
+      sendTimeout: const Duration(seconds: 30),
+      receiveTimeout: const Duration(seconds: 30),
     );
     final dio = Dio(options);
     
     // SECURITY: Configure SSL/TLS based on environment
     if (ApiContract.baseUrl.startsWith('http://')) {
-      // Development mode: Allow HTTP and self-signed certificates
       (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
         client.badCertificateCallback = (X509Certificate cert, String host, int port) {
           logger.debug('Allowing HTTP/self-signed certificate for local backend', context: {
@@ -47,7 +46,7 @@ final client = Provider<Dio>(
             'port': port,
             'backendUrl': ApiContract.baseUrl,
           });
-          return true; // Allow all certificates for HTTP backends
+          return true;
         };
         return client;
       };
@@ -55,23 +54,58 @@ final client = Provider<Dio>(
         'backendUrl': ApiContract.baseUrl,
       });
     } else if (_isPinnedDomain(ApiContract.baseUrl)) {
-      // PRODUCTION: Enable certificate pinning for production domains
-      // Note: For full certificate pinning, consider using packages like:
-      // - dio_certificate_pinning
-      // - ssl_pinning_plugin
-      // The native Android network_security_config.xml also provides pinning
-      logger.info('Production HTTPS backend detected - certificate pinning active', context: {
+      logger.info('Production HTTPS backend detected', context: {
         'backendUrl': ApiContract.baseUrl,
       });
-      
-      // Strict SSL verification (default behavior - no override needed)
-      // Certificate pinning is handled by native Android network_security_config.xml
     }
     
+    // Retry interceptor for transient DNS / connection failures.
+    // Must be added BEFORE the logger so retries are transparent.
+    dio.interceptors.add(_DnsRetryInterceptor());
     dio.interceptors.add(_DioLogger(ref));
     return dio;
   },
 );
+
+/// Retries requests that fail due to DNS resolution (host lookup) errors.
+/// DNS failures are often transient — a single retry after a short delay
+/// frequently succeeds when the first attempt hit a stale cache or
+/// a momentary resolver hiccup.
+class _DnsRetryInterceptor extends Interceptor {
+  static const _maxRetries = 2;
+  static const _retryDelay = Duration(seconds: 2);
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
+    final isDnsFailure = err.type == DioExceptionType.connectionError &&
+        (err.message ?? err.error?.toString() ?? '')
+            .toLowerCase()
+            .contains('failed host lookup');
+
+    final retryCount = err.requestOptions.extra['_dnsRetry'] as int? ?? 0;
+
+    if (isDnsFailure && retryCount < _maxRetries) {
+      logger.warn('DNS lookup failed — retrying (${retryCount + 1}/$_maxRetries)', context: {
+        'url': err.requestOptions.uri.toString(),
+      });
+      await Future.delayed(_retryDelay);
+      err.requestOptions.extra['_dnsRetry'] = retryCount + 1;
+      try {
+        final dio = Dio(BaseOptions(
+          connectTimeout: err.requestOptions.connectTimeout,
+          sendTimeout: err.requestOptions.sendTimeout,
+          receiveTimeout: err.requestOptions.receiveTimeout,
+        ));
+        final response = await dio.fetch(err.requestOptions);
+        return handler.resolve(response);
+      } on DioException catch (retryErr) {
+        return super.onError(retryErr, handler);
+      }
+    }
+
+    super.onError(err, handler);
+  }
+}
 
 class _DioLogger extends Interceptor {
   final Ref ref;

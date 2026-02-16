@@ -150,12 +150,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     final email = storedCredentials['email']!;
     final password = storedCredentials['password']!;
 
-    // CRITICAL FIX: Handle login errors gracefully - don't block navigation
+    // CRITICAL FIX: Handle login errors gracefully - don't block navigation.
+    // Limit auto-login to 10 seconds so the splash screen doesn't hang.
     try {
-      // Log auto-login attempt
       logger.info('Auto-login attempt', context: {'email': email});
       
-      final user = await login(email: email, password: password, splashlogin: true);
+      final user = await login(email: email, password: password, splashlogin: true)
+          .timeout(const Duration(seconds: 10));
 
       // Login success
       if (user is ProfileModel) {
@@ -211,6 +212,11 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       if (shouldShowLoading) {
         state = state.copyWith(isLoading: true);
+        // Yield to the event loop so Flutter paints the loading overlay
+        // before the API call. Without this, a fast-failing request
+        // (e.g. cached DNS error) clears isLoading before the first
+        // frame renders, making the spinner invisible.
+        await Future.delayed(const Duration(milliseconds: 50));
       }
       final data = {"email": email, "password": password};
       final user = await ref.read(apiProvider.notifier).login(data);

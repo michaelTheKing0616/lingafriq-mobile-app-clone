@@ -1,6 +1,10 @@
 // Centralized URL constants for the LingAfriq app.
 // All external service URLs should be defined here or via EnvConfig/SecretsManager.
-// Verified against official docs (Jan 2025).
+// Verified against official docs (Feb 2026):
+//   - Groq: https://console.groq.com/docs/models (llama-3.3-70b-versatile, whisper-large-v3)
+//   - HuggingFace: https://huggingface.co/docs/api-inference (router.huggingface.co)
+//   - Stability AI: https://platform.stability.ai/docs (SDXL 1024)
+//   - Replicate: https://replicate.com/docs/reference/http (v1/predictions)
 // See APP_URLS_AUDIT.md for full audit and override instructions.
 
 class UrlConstants {

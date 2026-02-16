@@ -80,13 +80,17 @@ class DialogProvider {
       final dioError = e as DioException;
       final String title;
       final String message;
+      final targetUrl = dioError.requestOptions.uri.host;
 
       if (TransportErrorPolicy.isNetworkIssue(dioError)) {
-        title = 'No Internet Connection';
-        message = 'Please check your network settings and try again.';
+        title = 'Connection Failed';
+        message = 'Could not reach the LingAfriq server ($targetUrl). '
+            'Please check your internet connection and try again.\n\n'
+            'If you are connected to the internet, the server domain '
+            'may not be reachable from your current network.';
       } else if (TransportErrorPolicy.isBackendIssue(dioError)) {
         title = 'Server Unavailable';
-        message = 'Cannot connect to the LingAfriq server. '
+        message = 'Cannot connect to the LingAfriq server ($targetUrl). '
             'The server may be temporarily down. '
             'Please try again in a few moments.';
       } else {
@@ -107,9 +111,11 @@ class DialogProvider {
     // Raw SocketException (not wrapped in DioException) — genuine network issue
     if (e is SocketException) {
       await showPlatformDialogue(
-        title: 'No Internet Connection',
-        content: const SelectableText(
-          'Please check your network settings and try again.',
+        title: 'Connection Failed',
+        content: SelectableText(
+          'Could not connect to the server. '
+          'Please check your internet connection and try again.\n\n'
+          'Error: ${(e as SocketException).message}',
         ),
       );
       return;

@@ -27,11 +27,16 @@ class _SplashScreenMaterial3State extends ConsumerState<SplashScreenMaterial3> {
       try {
         await Future.delayed(const Duration(milliseconds: 1200));
         if (!mounted) return;
+        // Use a generous timeout (30s) for the full navigation flow.
+        // navigateBasedOnCondition() may need to read PackageInfo,
+        // SharedPreferences, and attempt auto-login (network call).
+        // The previous 3-second timeout was causing onboarding and
+        // auth checks to be bypassed entirely on slower devices.
         await ref
             .read(authProvider.notifier)
             .navigateBasedOnCondition()
             .timeout(
-              const Duration(seconds: 3),
+              const Duration(seconds: 30),
               onTimeout: () {
                 if (mounted) {
                   ref.read(navigationProvider).navigateOffAll(const WorldClassLoginScreen());

@@ -1,0 +1,10 @@
+fix: resolve all remaining flutter analyze parenthesis errors
+
+Fixed mismatched parentheses across 16 files caused by Semantics
+wrapper additions during accessibility improvements. Fixes include:
+- Removed extra closing parens in 9 files (listening_practice, settings,
+  friend_profile, grammar_exercise, change_password, lesson_complete,
+  subscription, tutor_grammar_mode, tone_trainer)
+- Added missing closing parens in 7 files (conversation_enhanced,
+  world_class_signup, chat_search, fill_in_the_blank, courses_tab,
+  home_tab, tutor_assess_mode)

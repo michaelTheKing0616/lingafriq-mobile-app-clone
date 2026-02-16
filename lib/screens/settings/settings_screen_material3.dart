@@ -29,6 +29,7 @@ import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
+import 'package:lingafriq/providers/auth_provider.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -518,7 +519,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                 SizedBox(height: PanAfricanSpacing.xl),
 
                 // Logout Button
-                _LogoutButton(onTap: () => _showLogoutDialog(context)),
+                _LogoutButton(onTap: () => _showLogoutDialog(context, ref)),
                 SizedBox(height: PanAfricanSpacing.xl),
               ],
             ),
@@ -999,12 +1000,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     }
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (dialogContext) {
         return AlertDialog(
           backgroundColor:
               isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
@@ -1013,32 +1014,32 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
           ),
           title: Text(
             'Log Out',
-            style: PanAfricanTypography.titleLarge(context),
+            style: PanAfricanTypography.titleLarge(dialogContext),
           ),
           content: Text(
             'Are you sure you want to log out?',
-            style: PanAfricanTypography.bodyMedium(context),
+            style: PanAfricanTypography.bodyMedium(dialogContext),
           ),
           actions: [
             TextButton(
               onPressed: () {
                 HapticFeedback.lightImpact();
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
               },
               child: Text(
                 'Cancel',
-                style: PanAfricanTypography.labelLarge(context),
+                style: PanAfricanTypography.labelLarge(dialogContext),
               ),
             ),
             TextButton(
               onPressed: () {
                 HapticFeedback.mediumImpact();
-                Navigator.pop(context);
-                Navigator.pop(context);
+                Navigator.pop(dialogContext);
+                ref.read(authProvider.notifier).signOut();
               },
               child: Text(
                 'Log Out',
-                style: PanAfricanTypography.labelLarge(context).copyWith(
+                style: PanAfricanTypography.labelLarge(dialogContext).copyWith(
                   color: PanAfricanColors.error,
                 ),
               ),

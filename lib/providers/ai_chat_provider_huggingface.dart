@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lingafriq/services/env_config.dart';
+import 'package:lingafriq/config/url_constants.dart';
 import 'base_provider.dart';
 
 /// Alternative AI Chat Provider using Hugging Face Inference API
@@ -20,12 +22,12 @@ class HuggingFaceChatProvider extends BaseProvider {
   final List<ChatMessage> _messages = [];
   final Dio _dio = Dio();
   
-  // Hugging Face Configuration
-  // Get your FREE token at: https://huggingface.co/settings/tokens
-  static const String _apiKey = 'YOUR_HUGGINGFACE_TOKEN_HERE'; // Replace with your token from GitHub Secrets or environment
-  static const String _modelName = 'meta-llama/Llama-2-7b-chat-hf'; // Free model
+  // Hugging Face Configuration — uses centralized EnvConfig.
+  // Set via: --dart-define=HUGGINGFACE_TOKEN=xxx during build.
+  static String get _apiKey => EnvConfig.huggingFaceToken;
+  static const String _modelName = 'meta-llama/Llama-3.1-8B-Instruct';
   
-  String get _apiUrl => 'https://router.huggingface.co/models/$_modelName';
+  String get _apiUrl => UrlConstants.huggingFaceModel(_modelName);
   
   String _selectedLanguage = 'English';
   String? _systemPrompt;

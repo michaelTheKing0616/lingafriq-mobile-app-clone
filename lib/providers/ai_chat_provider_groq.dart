@@ -199,11 +199,11 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   // Groq model names to try in order (favor accuracy for African languages)
   // Note: Aya 8B can be less reliable for some translations (e.g., Yoruba),
   // so we prefer the larger Llama model first for quality, then fall back.
+  // Verified available on Groq (Feb 2026). aya-8b is NOT available on Groq.
+  // See https://console.groq.com/docs/models for the current model list.
   static const List<String> _modelNames = [
     'llama-3.3-70b-versatile',   // Highest quality, multilingual, free on Groq
-    'llama-3.1-8b-instant',      // Faster fallback
-    'aya-8b',                    // Cohere Aya 8B (if available)
-    'cohere/aya-8b',             // Alternate naming
+    'llama-3.1-8b-instant',      // Faster fallback (~560 tok/s)
   ];
   static String _modelName = _modelNames[0];
 
