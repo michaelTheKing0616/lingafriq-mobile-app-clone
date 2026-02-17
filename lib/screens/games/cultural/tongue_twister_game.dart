@@ -313,7 +313,6 @@ class _TongueTwisterGameState extends BaseGameScreenState<TongueTwisterGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('TongueTwisterGame buildGameContent: $e $st');

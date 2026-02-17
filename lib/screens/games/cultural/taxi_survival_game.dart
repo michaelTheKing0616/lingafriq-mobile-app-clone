@@ -328,7 +328,6 @@ class _TaxiSurvivalGameState extends BaseGameScreenState<TaxiSurvivalGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('TaxiSurvivalGame buildGameContent: $e $st');

@@ -7,7 +7,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 // Chat history is managed by Groq provider (local + backend sync); no backend /ai-chat/history call
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
-import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, GroqChatProvider, PolieMode;
 import 'package:lingafriq/utils/roleplay_session_helper.dart';
@@ -362,7 +361,6 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                             controller: messageController,
                             enabled: !isLoading.value,
                             maxLength: 2000,
-                            counterText: '',
                             style: TextStyle(
                               color: Theme.of(context).colorScheme.onSurface,
                               fontSize: 15,
@@ -377,6 +375,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                               ),
                               filled: true,
                               fillColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+                              counterText: '',
                             ),
                             maxLines: null,
                             textInputAction: TextInputAction.send,

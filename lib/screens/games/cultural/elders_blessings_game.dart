@@ -339,7 +339,6 @@ class _EldersBlessingsGameState extends BaseGameScreenState<EldersBlessingsGame>
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('EldersBlessingsGame buildGameContent: $e $st');

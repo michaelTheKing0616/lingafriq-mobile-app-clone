@@ -7,7 +7,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
+import 'package:lingafriq/utils/api_service.dart';
 
 /// Enhanced Features for Cultural Magazine
 /// Polie Translation, Cultural Context, Vocabulary Extraction, Share/Favorite, Progress Tracking, Related Articles
@@ -55,7 +56,7 @@ class MagazineEnhancedFeatures {
       final chatProvider = ref.read(groqChatProvider.notifier);
       
       // Set mode to tutor temporarily for cultural context explanation
-      final originalMode = ref.read(groqChatProvider).mode;
+      final originalMode = chatProvider.mode;
       chatProvider.setModeAndLanguage(
         mode: PolieMode.tutor,
         targetLanguage: language,
@@ -102,7 +103,7 @@ class MagazineEnhancedFeatures {
       final chatProvider = ref.read(groqChatProvider.notifier);
       
       // Set mode to vocab temporarily for vocabulary extraction
-      final originalMode = ref.read(groqChatProvider).mode;
+      final originalMode = chatProvider.mode;
       chatProvider.setModeAndLanguage(
         mode: PolieMode.vocab,
         targetLanguage: language,
@@ -130,7 +131,7 @@ class MagazineEnhancedFeatures {
         // Look for JSON array in the response
         final jsonMatch = RegExp(r'\[.*?\]', dotAll: true).firstMatch(response);
         if (jsonMatch != null) {
-          final jsonStr = jsonMatch.group(0);
+          final jsonStr = jsonMatch.group(0) ?? '';
           final decoded = jsonDecode(jsonStr) as List;
           return decoded.map((item) => {
             'word': item['word'] ?? '',
@@ -146,7 +147,7 @@ class MagazineEnhancedFeatures {
       final lines = response.split('\n');
       for (final line in lines) {
         if (line.contains(':') || line.contains('-')) {
-          final parts = line.split(RegExp(r'[:-\-]')).map((s) => s.trim()).toList();
+          final parts = line.split(RegExp(r'[:\-]')).map((s) => s.trim()).toList();
           if (parts.length >= 2) {
             words.add({
               'word': parts[0],

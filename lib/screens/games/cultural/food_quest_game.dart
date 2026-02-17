@@ -340,7 +340,6 @@ class _FoodQuestGameState extends BaseGameScreenState<FoodQuestGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('FoodQuestGame buildGameContent: $e $st');

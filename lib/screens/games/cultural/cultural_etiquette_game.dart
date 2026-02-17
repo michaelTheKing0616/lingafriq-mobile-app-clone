@@ -318,7 +318,6 @@ class _CulturalEtiquetteGameState extends BaseGameScreenState<CulturalEtiquetteG
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('CulturalEtiquetteGame buildGameContent: $e $st');

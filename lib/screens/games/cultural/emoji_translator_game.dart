@@ -315,7 +315,6 @@ class _EmojiTranslatorGameState extends BaseGameScreenState<EmojiTranslatorGame>
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('EmojiTranslatorGame buildGameContent: $e $st');

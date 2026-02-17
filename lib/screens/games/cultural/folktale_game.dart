@@ -310,7 +310,6 @@ class _FolktaleGameState extends BaseGameScreenState<FolktaleGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('FolktaleGame buildGameContent: $e $st');

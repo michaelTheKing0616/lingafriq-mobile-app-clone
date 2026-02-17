@@ -380,7 +380,7 @@ class DrumRhythmGame extends BaseGameScreen {
 
 class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
   @override
-  Widget build(BuildContext context) {
+  Widget buildGameContent(BuildContext context) {
     // Bypass BaseGameScreen scaffold to avoid nesting; use GameKit screen directly.
     return DrumRhythmScreen(
       language: widget.language,

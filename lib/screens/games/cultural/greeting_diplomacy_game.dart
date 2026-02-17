@@ -338,7 +338,6 @@ class _GreetingDiplomacyGameState extends BaseGameScreenState<GreetingDiplomacyG
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('GreetingDiplomacyGame buildGameContent: $e $st');

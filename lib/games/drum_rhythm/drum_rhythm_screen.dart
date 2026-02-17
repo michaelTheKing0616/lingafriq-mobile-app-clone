@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../screens/games/base_game_screen.dart';
-import '../../models/game/game_session_model.dart' as game_session_model;
 import '../../models/game/game_session_model.dart' show GameType, GameResult;
 import '../../services/polie_game_client.dart';
 import '../../services/rive_gamification_service.dart';

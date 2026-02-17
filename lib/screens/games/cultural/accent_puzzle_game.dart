@@ -335,7 +335,6 @@ class _AccentPuzzleGameState extends BaseGameScreenState<AccentPuzzleGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('AccentPuzzleGame buildGameContent: $e $st');

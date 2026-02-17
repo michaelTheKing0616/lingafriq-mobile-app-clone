@@ -340,7 +340,6 @@ class _PhraseSniperGameState extends BaseGameScreenState<PhraseSniperGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('PhraseSniperGame buildGameContent: $e $st');

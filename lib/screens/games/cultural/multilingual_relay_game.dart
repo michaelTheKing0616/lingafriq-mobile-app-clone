@@ -364,7 +364,6 @@ class _MultilingualRelayGameState extends BaseGameScreenState<MultilingualRelayG
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('MultilingualRelayGame buildGameContent: $e $st');

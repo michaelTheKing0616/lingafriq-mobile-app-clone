@@ -342,7 +342,6 @@ class _CallResponseGameState extends BaseGameScreenState<CallResponseGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('CallResponseGame buildGameContent: $e $st');

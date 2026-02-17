@@ -352,7 +352,6 @@ class _FlashcardSafariGameState extends BaseGameScreenState<FlashcardSafariGame>
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('FlashcardSafariGame buildGameContent: $e $st');

@@ -329,7 +329,6 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('DrumWordGame buildGameContent: $e $st');

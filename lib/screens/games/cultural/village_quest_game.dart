@@ -352,7 +352,6 @@ class _VillageQuestGameState extends BaseGameScreenState<VillageQuestGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('VillageQuestGame buildGameContent: $e $st');

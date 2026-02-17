@@ -348,7 +348,6 @@ class _LiarLiarGameState extends BaseGameScreenState<LiarLiarGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('LiarLiarGame buildGameContent: $e $st');

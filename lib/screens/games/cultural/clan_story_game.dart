@@ -316,7 +316,6 @@ class _ClanStoryGameState extends BaseGameScreenState<ClanStoryGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('ClanStoryGame buildGameContent: $e $st');

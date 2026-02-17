@@ -305,7 +305,6 @@ class _RhythmTypingGameState extends BaseGameScreenState<RhythmTypingGame> {
             ],
           ],
         ),
-      ),
     );
     } catch (e, st) {
       debugPrint('RhythmTypingGame buildGameContent: $e $st');

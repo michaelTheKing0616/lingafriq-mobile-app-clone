@@ -2,8 +2,6 @@
 // mutating chat state (e.g. magazine cultural context, vocabulary extraction).
 // Uses the same Groq pipeline as the main chat; does not call backend /polie/*.
 
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 
 import 'package:lingafriq/config/url_constants.dart';
