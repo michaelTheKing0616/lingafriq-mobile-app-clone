@@ -4,13 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:lingafriq/utils/api_service.dart';
-import 'package:lingafriq/widgets/loading/loading_overlay.dart';
+// Chat history is managed by Groq provider (local + backend sync); no backend /ai-chat/history call
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, PolieMode;
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, GroqChatProvider, PolieMode;
 import 'package:lingafriq/utils/roleplay_session_helper.dart';
 import 'package:lingafriq/utils/ai_chat_navigation_helper.dart';
 import 'package:lingafriq/services/ai_chat_integration_service.dart';
@@ -42,7 +41,9 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final messageController = useTextEditingController();
     final messages = useState<List<Map<String, dynamic>>>([]);
     final isLoading = useState(false);
-    final isLoadingHistory = useState(true);
+    // Chat history is managed by Groq provider (local + backend sync); no backend /ai-chat/history call
+    // isLoadingHistory kept for UI compatibility but always false
+    final isLoadingHistory = useState(false);
     final loadHistoryError = useState<String?>(null);
     final scrollController = useScrollController();
     final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref as Ref));
@@ -91,34 +92,20 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
         );
       }
 
-      return null;
-    }, []);
-
-    // Load chat history
-    Future<void> loadChatHistory() async {
-      isLoadingHistory.value = true;
-      loadHistoryError.value = null;
-      try {
-        final response = await ApiService.get(
-          '/ai-chat/history',
-          queryParameters: {
-            'language': language,
-            'mode': mode,
+      // Add welcome message for all modes (roleplay gets its scene-setting
+      // message from setRoleplayScenario; other modes get a welcome prompt)
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        final welcome = GroqChatProvider.getWelcomeMessage(polieMode, languageName);
+        messages.value = [
+          {
+            'id': 'welcome',
+            'text': welcome,
+            'sender': 'polie',
+            'timestamp': DateTime.now().toIso8601String(),
           },
-        );
+        ];
+      });
 
-        if (response.statusCode == 200 && response.data['data'] != null) {
-          messages.value = List<Map<String, dynamic>>.from(response.data['data']);
-        }
-      } catch (e) {
-        loadHistoryError.value = 'Failed to load chat history.';
-      } finally {
-        isLoadingHistory.value = false;
-      }
-    }
-
-    useEffect(() {
-      loadChatHistory();
       return null;
     }, []);
 
@@ -258,157 +245,169 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
           await handleSessionCompletion();
         }
       },
-      child: LoadingOverlay(
-        isLoading: isLoading.value,
-        message: 'Sending message...',
-        child: Scaffold(
-          appBar: AppBar(
-            title: Semantics(
-              header: true,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(modeName),
-                  Text(
-                    languageName,
-                    style: PanAfricanTypography.bodySmall(context),
-                  ),
-                ],
-              ),
-            ),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            actions: [
-              Semantics(
-                label: 'Progress dashboard',
-                button: true,
-                child: IconButton(
-                  icon: Icon(Icons.analytics, semanticLabel: 'Analytics'),
-                  onPressed: () {
-                    _navigateToDashboard(context, mode, language, languageName);
-                  },
-                ),
-              ),
-            ],
-          ),
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: isDark
-                  ? PanAfricanGradients.darkSurface
-                  : LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        PanAfricanColors.surfaceLight,
-                        PanAfricanColors.surfaceContainerLight,
-                      ],
-                    ),
-            ),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Semantics(
+            header: true,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: isLoadingHistory.value
-                      ? ListView.builder(
-                          padding: EdgeInsets.all(PanAfricanSpacing.md),
-                          itemCount: 4,
-                          itemBuilder: (_, __) => SkeletonListCard(),
-                        )
-                      : loadHistoryError.value != null
-                          ? AppErrorState(
-                              message: loadHistoryError.value!,
-                              onRetry: loadChatHistory,
-                            )
-                          : messages.value.isEmpty
-                              ? AppEmptyState(
-                                  icon: Icons.chat_bubble_outline_rounded,
-                                  title: 'Start a conversation!',
-                                  subtitle:
-                                      'I\'m here to help you learn. Type your message below.',
-                                )
-                              : ListView.builder(
-                                  controller: scrollController,
-                                  padding: EdgeInsets.all(PanAfricanSpacing.md),
-                                  itemCount: messages.value.length,
-                                  itemBuilder: (context, index) {
-                                    final message = messages.value[index];
-                                    final isUser = message['sender'] == 'user';
-                                    final senderLabel = isUser ? 'Your message' : 'AI message';
-                                    final text = message['text'] as String? ?? '';
-                                    return Semantics(
-                                      label: '$senderLabel: $text',
-                                      excludeSemantics: true,
-                                      child: _MessageBubble(
-                                        message: message,
-                                        isUser: isUser,
-                                        isDark: isDark,
-                                      ),
-                                    )
-                                        .animate()
-                                        .fadeIn(duration: 300.ms)
-                                        .slideX(begin: isUser ? 0.1 : -0.1);
-                                  },
-                                ),
-                ),
-                Container(
-                  padding: EdgeInsets.all(PanAfricanSpacing.md),
-                  decoration: BoxDecoration(
-                    color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: Offset(0, -2),
-                      ),
-                    ],
-                  ),
-                  child: SafeArea(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Semantics(
-                            label: 'Chat message input',
-                            hint: 'Type your message',
-                            child: TextField(
-                              controller: messageController,
-                              enabled: !isLoading.value,
-                              maxLength: 2000,
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontSize: 15,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Type your message...',
-                                hintStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
-                                ),
-                                filled: true,
-                                fillColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-                              ),
-                              maxLines: null,
-                              textInputAction: TextInputAction.send,
-                              onSubmitted: (_) => sendMessage(),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: PanAfricanSpacing.sm),
-                        Semantics(
-                          label: 'Send message',
-                          button: true,
-                          child: IconButton(
-                            icon: Icon(Icons.send, semanticLabel: 'Send'),
-                            onPressed: isLoading.value ? null : sendMessage,
-                            color: PanAfricanColors.primary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                Text(modeName),
+                Text(
+                  languageName,
+                  style: PanAfricanTypography.bodySmall(context),
                 ),
               ],
             ),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          actions: [
+            Semantics(
+              label: 'Progress dashboard',
+              button: true,
+              child: IconButton(
+                icon: Icon(Icons.analytics, semanticLabel: 'Analytics'),
+                onPressed: () {
+                  _navigateToDashboard(context, mode, language, languageName);
+                },
+              ),
+            ),
+          ],
+        ),
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: isDark
+                ? PanAfricanGradients.darkSurface
+                : LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      PanAfricanColors.surfaceLight,
+                      PanAfricanColors.surfaceContainerLight,
+                    ],
+                  ),
+          ),
+          child: Column(
+            children: [
+              Expanded(
+                child: isLoadingHistory.value
+                    ? ListView.builder(
+                        padding: EdgeInsets.all(PanAfricanSpacing.md),
+                        itemCount: 4,
+                        itemBuilder: (_, __) => SkeletonListCard(),
+                      )
+                    : loadHistoryError.value != null
+                        ? AppEmptyState(
+                            icon: Icons.chat_bubble_outline_rounded,
+                            title: 'Start a conversation!',
+                            subtitle:
+                                'I\'m here to help you learn. Type your message below.',
+                          )
+                        : messages.value.isEmpty
+                            ? AppEmptyState(
+                                icon: Icons.chat_bubble_outline_rounded,
+                                title: 'Start a conversation!',
+                                subtitle:
+                                    'I\'m here to help you learn. Type your message below.',
+                              )
+                            : ListView.builder(
+                                controller: scrollController,
+                                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                                itemCount: messages.value.length + (isLoading.value ? 1 : 0),
+                                itemBuilder: (context, index) {
+                                  // Show typing indicator as the last item
+                                  if (index >= messages.value.length) {
+                                    return _TypingIndicator(isDark: isDark);
+                                  }
+                                  final message = messages.value[index];
+                                  final isUser = message['sender'] == 'user';
+                                  final senderLabel = isUser ? 'Your message' : 'AI message';
+                                  final text = message['text'] as String? ?? '';
+                                  return Semantics(
+                                    label: '$senderLabel: $text',
+                                    excludeSemantics: true,
+                                    child: _MessageBubble(
+                                      message: message,
+                                      isUser: isUser,
+                                      isDark: isDark,
+                                    ),
+                                  )
+                                      .animate()
+                                      .fadeIn(duration: 300.ms)
+                                      .slideX(begin: isUser ? 0.1 : -0.1);
+                                },
+                              ),
+              ),
+              Container(
+                padding: EdgeInsets.all(PanAfricanSpacing.md),
+                decoration: BoxDecoration(
+                  color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: SafeArea(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Semantics(
+                          label: 'Chat message input',
+                          hint: 'Type your message',
+                          child: TextField(
+                            controller: messageController,
+                            enabled: !isLoading.value,
+                            maxLength: 2000,
+                            counterText: '',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontSize: 15,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: isLoading.value ? 'Polie is thinking...' : 'Type your message...',
+                              hintStyle: TextStyle(
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                              ),
+                              filled: true,
+                              fillColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+                            ),
+                            maxLines: null,
+                            textInputAction: TextInputAction.send,
+                            onSubmitted: (_) => sendMessage(),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      Semantics(
+                        label: 'Send message',
+                        button: true,
+                        child: isLoading.value
+                            ? SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: PanAfricanColors.primary,
+                                ),
+                              )
+                            : IconButton(
+                                icon: Icon(Icons.send, semanticLabel: 'Send'),
+                                onPressed: sendMessage,
+                                color: PanAfricanColors.primary,
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -644,6 +643,72 @@ class _MessageBubble extends StatelessWidget {
     } catch (e) {
       return '';
     }
+  }
+}
+
+/// Inline typing indicator shown in the message list while Polie is thinking.
+class _TypingIndicator extends StatelessWidget {
+  final bool isDark;
+  const _TypingIndicator({required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 16.r,
+            backgroundColor: PanAfricanColors.primary,
+            child: Icon(Icons.smart_toy, size: 16.sp, color: Theme.of(context).colorScheme.onPrimary),
+          ),
+          SizedBox(width: PanAfricanSpacing.sm),
+          Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.md,
+              vertical: PanAfricanSpacing.sm + 4,
+            ),
+            decoration: BoxDecoration(
+              color: isDark ? PanAfricanColors.surfaceContainerDark : PanAfricanColors.surfaceContainerLight,
+              borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildDot(0),
+                SizedBox(width: 4),
+                _buildDot(1),
+                SizedBox(width: 4),
+                _buildDot(2),
+              ],
+            ),
+          ),
+        ],
+      ),
+    ).animate().fadeIn(duration: 200.ms);
+  }
+
+  Widget _buildDot(int index) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.3, end: 1.0),
+      duration: Duration(milliseconds: 600),
+      curve: Curves.easeInOut,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: PanAfricanColors.primary,
+              shape: BoxShape.circle,
+            ),
+          ),
+        );
+      },
+    );
   }
 }
 

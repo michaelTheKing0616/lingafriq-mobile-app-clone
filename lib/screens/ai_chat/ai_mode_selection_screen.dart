@@ -8,7 +8,7 @@ import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/sound_effects_service.dart';
-import 'ai_chat_screen_new.dart';
+import 'ai_chat_screen_with_tracking.dart';
 
 /// AI Chat — Screen 2: How would you like to learn?
 /// Radial-style mode selector; modes as journeys with poetic descriptions. "Surprise Me" path.
@@ -222,7 +222,7 @@ class _ModeJourneyCard extends StatelessWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: AIChatScreen(
+              child: AIChatScreenWithTracking(
                 language: language,
                 languageName: languageName,
                 mode: mode['id'] as String,
@@ -314,7 +314,7 @@ class _SurpriseMeButton extends StatelessWidget {
           Navigator.push(
             context,
             SmoothPageRoute(
-              child: AIChatScreen(
+              child: AIChatScreenWithTracking(
                 language: language,
                 languageName: languageName,
                 mode: mode['id'] as String,

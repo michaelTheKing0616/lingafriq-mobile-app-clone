@@ -99,19 +99,8 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
 
   @override
   Widget buildGameContent(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: Semantics(
-          label: 'Back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-      ),
-      body: Padding(
+    try {
+      return Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
@@ -168,8 +157,11 @@ class _StoryBuilderGameState extends BaseGameScreenState<StoryBuilderGame> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('StoryBuilderGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 

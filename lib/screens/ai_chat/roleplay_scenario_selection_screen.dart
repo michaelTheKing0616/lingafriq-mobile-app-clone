@@ -86,47 +86,31 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
     final selectedCategory = useState<String?>(null);
     final searchQuery = useState('');
 
-    final scenarios = useMemoized(() {
-      var allScenarios = RoleplayDataset.getByLanguage(languageName);
-      
-      if (allScenarios.isEmpty) {
-        allScenarios = RoleplayDataset.getByLanguage(language);
-      }
-      
-      if (allScenarios.isEmpty) {
-        allScenarios = RoleplayDataset.getAll();
-      }
-      
+    final filteredScenarios = useMemoized(() {
+      var list = List<CuratedScenario>.from(curatedScenarios);
       if (selectedCategory.value != null) {
-        allScenarios = allScenarios.where((s) {
-          return s.scenario.toLowerCase().contains(selectedCategory.value!.toLowerCase()) ||
-                 _getCategoryForScenario(s.scenario) == selectedCategory.value;
-        }).toList();
+        list = list.where((s) => s.categoryId == selectedCategory.value).toList();
       }
-      
       if (searchQuery.value.isNotEmpty) {
-        final query = searchQuery.value.toLowerCase();
-        allScenarios = allScenarios.where((s) {
-          return s.scenario.toLowerCase().contains(query) ||
-                 s.userUtterance.toLowerCase().contains(query) ||
-                 s.notes.toLowerCase().contains(query);
+        final q = searchQuery.value.toLowerCase();
+        list = list.where((s) {
+          return s.title.toLowerCase().contains(q) ||
+              s.shortDescription.toLowerCase().contains(q) ||
+              s.categoryId.toLowerCase().contains(q);
         }).toList();
       }
-      
-      return allScenarios;
-    }, [selectedCategory.value, searchQuery.value, languageName, language]);
+      return list;
+    }, [selectedCategory.value, searchQuery.value]);
 
-    Future<void> startScenario(RoleplayEntry scenario) async {
+    Future<void> startScenario(CuratedScenario curated) async {
       HapticFeedback.mediumImpact();
-      
+      final entry = _resolveRoleplayEntry(curated);
       final chat = ref.read(groqChatProvider.notifier);
-      // Atomic mode+language switch to avoid history key mismatch
       await chat.setModeAndLanguage(
         mode: PolieMode.roleplay,
         targetLanguage: languageName,
       );
-      await chat.setRoleplayScenario(scenario);
-      
+      await chat.setRoleplayScenario(entry);
       if (context.mounted) {
         Navigator.push(
           context,
@@ -136,7 +120,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
               languageName: languageName,
               mode: 'roleplay',
               modeName: 'Roleplay',
-              initialScenario: scenario,
+              initialScenario: entry,
             ),
           ),
         );
@@ -163,9 +147,9 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
               _buildSearchBar(context, searchQuery),
               _buildCategoryChips(context, selectedCategory),
               Expanded(
-                child: scenarios.isEmpty
+                child: filteredScenarios.isEmpty
                     ? _buildEmptyState(context)
-                    : _buildScenariosList(context, scenarios, startScenario),
+                    : _buildScenariosList(context, filteredScenarios, startScenario),
               ),
             ],
           ),
@@ -261,7 +245,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
     ValueNotifier<String?> selectedCategory,
   ) {
     return SizedBox(
-      height: 80.h,
+      height: 44.h,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
@@ -323,7 +307,7 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
           ),
           SizedBox(height: PolieSpacing.sm),
           Text(
-            'Try selecting a different category',
+            'Try a different category or search term',
             style: PolieTypography.body(context).copyWith(
               color: PolieColors.textSecondary,
             ),
@@ -334,19 +318,87 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
     );
   }
 
+  RoleplayEntry _resolveRoleplayEntry(CuratedScenario curated) {
+    var byLang = RoleplayDataset.getByLanguage(languageName);
+    if (byLang.isEmpty) {
+      byLang = RoleplayDataset.getByLanguage(language);
+    }
+    if (byLang.isEmpty) {
+      byLang = RoleplayDataset.getAll();
+    }
+    final match = _findMatchingEntry(byLang, curated);
+    return match ?? _syntheticEntry(curated);
+  }
+
+  RoleplayEntry? _findMatchingEntry(List<RoleplayEntry> entries, CuratedScenario curated) {
+    final keywords = _keywordsForCurated(curated);
+    for (final e in entries) {
+      final s = e.scenario.toLowerCase();
+      if (keywords.any((k) => s.contains(k))) return e;
+    }
+    return null;
+  }
+
+  List<String> _keywordsForCurated(CuratedScenario curated) {
+    switch (curated.id) {
+      case 'market':
+        return ['market', 'fruit', 'vegetable', 'buy', 'vendor', 'pineapple', 'tomato'];
+      case 'restaurant':
+        return ['restaurant', 'order', 'food', 'buka', 'café', 'cafe', 'menu', 'eat'];
+      case 'directions':
+        return ['direction', 'way', 'bus stop', 'where'];
+      case 'meeting':
+        return ['meet', 'greeting', 'introduce', 'friend', 'first time'];
+      case 'airport':
+        return ['airport', 'check in', 'flight', 'terminal'];
+      case 'phone':
+        return ['phone', 'call', 'appointment', 'schedule'];
+      case 'job_interview':
+        return ['job', 'interview', 'work'];
+      case 'doctor':
+        return ['doctor', 'hospital', 'symptom', 'medicine', 'sick', 'pharmacy'];
+      case 'haggling':
+        return ['haggl', 'negotiat', 'price', 'market'];
+      case 'family':
+        return ['family', 'gathering', 'sister', 'home'];
+      case 'festival':
+        return ['festival', 'cultural', 'tradition'];
+      case 'emergency':
+        return ['emergency', 'help', 'urgent'];
+      default:
+        return [curated.title.toLowerCase()];
+    }
+  }
+
+  RoleplayEntry _syntheticEntry(CuratedScenario curated) {
+    return RoleplayEntry(
+      id: 0,
+      language: languageName,
+      mode: 'roleplay',
+      scenario: curated.title,
+      userUtterance: '',
+      assistantResponse: '',
+      notes: curated.shortDescription,
+    );
+  }
+
   Widget _buildScenariosList(
     BuildContext context,
-    List<RoleplayEntry> scenarios,
-    Future<void> Function(RoleplayEntry) onTap,
+    List<CuratedScenario> scenarios,
+    Future<void> Function(CuratedScenario) onTap,
   ) {
     return ListView.builder(
       padding: EdgeInsets.all(PolieSpacing.md),
       itemCount: scenarios.length,
       itemBuilder: (context, index) {
         final scenario = scenarios[index];
+        final category = categories.firstWhere(
+          (c) => c.id == scenario.categoryId,
+          orElse: () => categories.first,
+        );
         return _ScenarioCard(
-          scenario: scenario,
-          language: languageName,
+          curated: scenario,
+          category: category,
           onTap: () => onTap(scenario),
         )
             .animate(delay: (index * 50).ms)
@@ -354,19 +406,6 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
             .slideX(begin: 0.1);
       },
     );
-  }
-
-  String? _getCategoryForScenario(String scenario) {
-    final lower = scenario.toLowerCase();
-    if (lower.contains('greet') || lower.contains('meet')) return 'greetings';
-    if (lower.contains('shop') || lower.contains('buy') || lower.contains('market')) return 'shopping';
-    if (lower.contains('food') || lower.contains('restaurant') || lower.contains('order') || lower.contains('eat')) return 'food';
-    if (lower.contains('travel') || lower.contains('airport') || lower.contains('hotel') || lower.contains('taxi')) return 'travel';
-    if (lower.contains('doctor') || lower.contains('hospital') || lower.contains('medicine') || lower.contains('sick')) return 'health';
-    if (lower.contains('friend') || lower.contains('social') || lower.contains('party')) return 'social';
-    if (lower.contains('business') || lower.contains('work') || lower.contains('office')) return 'business';
-    if (lower.contains('emergency') || lower.contains('help') || lower.contains('police')) return 'emergency';
-    return null;
   }
 }
 
@@ -385,6 +424,137 @@ class ScenarioCategory {
     required this.description,
   });
 }
+
+class CuratedScenario {
+  final String id;
+  final String title;
+  final String difficulty;
+  final String shortDescription;
+  final String categoryId;
+  final String estimatedTime;
+  final IconData icon;
+
+  const CuratedScenario({
+    required this.id,
+    required this.title,
+    required this.difficulty,
+    required this.shortDescription,
+    required this.categoryId,
+    required this.estimatedTime,
+    required this.icon,
+  });
+}
+
+const List<CuratedScenario> curatedScenarios = [
+  CuratedScenario(
+    id: 'market',
+    title: 'At the Market',
+    difficulty: 'A1',
+    shortDescription: 'Buy fruits and vegetables from a friendly vendor.',
+    categoryId: 'shopping',
+    estimatedTime: '~5 min',
+    icon: Icons.shopping_basket_rounded,
+  ),
+  CuratedScenario(
+    id: 'restaurant',
+    title: 'At a Restaurant',
+    difficulty: 'A1',
+    shortDescription: 'Order food and drinks at a local restaurant.',
+    categoryId: 'food',
+    estimatedTime: '~5 min',
+    icon: Icons.restaurant_rounded,
+  ),
+  CuratedScenario(
+    id: 'directions',
+    title: 'Asking for Directions',
+    difficulty: 'A1',
+    shortDescription: 'Find your way around town with help from locals.',
+    categoryId: 'travel',
+    estimatedTime: '~5 min',
+    icon: Icons.directions_rounded,
+  ),
+  CuratedScenario(
+    id: 'meeting',
+    title: 'Meeting New People',
+    difficulty: 'A1',
+    shortDescription: 'Introduce yourself at a social gathering.',
+    categoryId: 'social',
+    estimatedTime: '~5 min',
+    icon: Icons.people_rounded,
+  ),
+  CuratedScenario(
+    id: 'airport',
+    title: 'At the Airport',
+    difficulty: 'A2',
+    shortDescription: 'Check in and navigate the terminal confidently.',
+    categoryId: 'travel',
+    estimatedTime: '~7 min',
+    icon: Icons.flight_rounded,
+  ),
+  CuratedScenario(
+    id: 'phone',
+    title: 'Phone Call',
+    difficulty: 'A2',
+    shortDescription: 'Make a phone call to schedule an appointment.',
+    categoryId: 'business',
+    estimatedTime: '~5 min',
+    icon: Icons.phone_rounded,
+  ),
+  CuratedScenario(
+    id: 'job_interview',
+    title: 'Job Interview',
+    difficulty: 'B1',
+    shortDescription: 'Interview for a position at a local company.',
+    categoryId: 'business',
+    estimatedTime: '~10 min',
+    icon: Icons.work_rounded,
+  ),
+  CuratedScenario(
+    id: 'doctor',
+    title: "Doctor's Visit",
+    difficulty: 'A2',
+    shortDescription: 'Describe symptoms and understand medical advice.',
+    categoryId: 'health',
+    estimatedTime: '~7 min',
+    icon: Icons.local_hospital_rounded,
+  ),
+  CuratedScenario(
+    id: 'haggling',
+    title: 'Haggling / Negotiation',
+    difficulty: 'B1',
+    shortDescription: 'Negotiate prices with a savvy market trader.',
+    categoryId: 'shopping',
+    estimatedTime: '~7 min',
+    icon: Icons.handshake_rounded,
+  ),
+  CuratedScenario(
+    id: 'family',
+    title: 'Family Gathering',
+    difficulty: 'A2',
+    shortDescription: 'Participate in warm family conversations.',
+    categoryId: 'social',
+    estimatedTime: '~7 min',
+    icon: Icons.family_restroom_rounded,
+  ),
+  CuratedScenario(
+    id: 'festival',
+    title: 'Cultural Festival',
+    difficulty: 'B1',
+    shortDescription: 'Discuss traditions and join in the celebration.',
+    categoryId: 'social',
+    estimatedTime: '~10 min',
+    icon: Icons.celebration_rounded,
+  ),
+  CuratedScenario(
+    id: 'emergency',
+    title: 'Emergency Situation',
+    difficulty: 'B2',
+    shortDescription: 'Handle an urgent situation with clarity.',
+    categoryId: 'emergency',
+    estimatedTime: '~7 min',
+    icon: Icons.emergency_rounded,
+  ),
+];
 
 class _CategoryChip extends StatelessWidget {
   final String label;
@@ -456,20 +626,34 @@ class _CategoryChip extends StatelessWidget {
 }
 
 class _ScenarioCard extends StatelessWidget {
-  final RoleplayEntry scenario;
-  final String language;
+  final CuratedScenario curated;
+  final ScenarioCategory category;
   final VoidCallback onTap;
 
   const _ScenarioCard({
-    required this.scenario,
-    required this.language,
+    required this.curated,
+    required this.category,
     required this.onTap,
   });
 
+  static Color _difficultyColor(String difficulty) {
+    switch (difficulty.toUpperCase()) {
+      case 'A1':
+        return PolieColors.success;
+      case 'A2':
+        return PolieColors.electricTeal;
+      case 'B1':
+        return PolieColors.goldEmber;
+      case 'B2':
+        return PolieColors.error;
+      default:
+        return PolieColors.textSecondary;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final category = _getCategory(scenario.scenario);
-    final categoryColor = _getCategoryColor(category);
+    final diffColor = _difficultyColor(curated.difficulty);
 
     return Padding(
       padding: EdgeInsets.only(bottom: PolieSpacing.md),
@@ -478,223 +662,133 @@ class _ScenarioCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(PolieRadius.lg),
           color: Theme.of(context).colorScheme.surfaceContainerHighest,
           border: Border.all(
-            color: categoryColor.withOpacity(0.3),
+            color: category.color.withOpacity(0.3),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: categoryColor.withOpacity(0.15),
+              color: category.color.withOpacity(0.15),
               blurRadius: 16,
               spreadRadius: 0,
             ),
           ],
         ),
         child: Semantics(
-          label: 'Scenario: ${scenario.scenario}. You say: ${scenario.userUtterance}. Tap to start.',
+          label: 'Scenario: ${curated.title}. ${curated.shortDescription}. Tap to start.',
           button: true,
           child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(PolieRadius.lg),
-            child: Padding(
-              padding: EdgeInsets.all(PolieSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(PolieSpacing.sm),
-                        decoration: BoxDecoration(
-                          color: categoryColor.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(PolieRadius.md),
-                        ),
-                        child: Icon(
-                          _getCategoryIcon(category),
-                          color: categoryColor,
-                          size: 24.sp,
-                        ),
-                      ),
-                      SizedBox(width: PolieSpacing.md),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              scenario.scenario,
-                              style: PolieTypography.h2(context).copyWith(
-                                color: PolieColors.textPrimary,
-                                fontSize: 16.sp,
-                              ),
-                            ),
-                            SizedBox(height: PolieSpacing.xs),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: PolieSpacing.sm,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: categoryColor.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(PolieRadius.sm),
-                              ),
-                              child: Text(
-                                category,
-                                style: PolieTypography.bodySmall(context).copyWith(
-                                  color: categoryColor,
-                                  fontSize: 11.sp,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(PolieSpacing.sm),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
-                          ),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.play_arrow_rounded,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          size: 20.sp,
-                          semanticLabel: 'Start scenario',
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: PolieSpacing.md),
-                  Container(
-                    padding: EdgeInsets.all(PolieSpacing.md),
-                    decoration: BoxDecoration(
-                      color: PolieColors.surfaceContainer,
-                      borderRadius: BorderRadius.circular(PolieRadius.md),
-                    ),
-                    child: Column(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(PolieRadius.lg),
+              child: Padding(
+                padding: EdgeInsets.all(PolieSpacing.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.person_rounded,
-                              size: 14.sp,
-                              color: PolieColors.goldEmber,
-                              semanticLabel: 'You',
-                            ),
-                            SizedBox(width: PolieSpacing.xs),
-                            Text(
-                              'You:',
-                              style: PolieTypography.label(context).copyWith(
-                                color: PolieColors.goldEmber,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Container(
+                          padding: EdgeInsets.all(PolieSpacing.sm),
+                          decoration: BoxDecoration(
+                            color: category.color.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(PolieRadius.md),
+                          ),
+                          child: Icon(
+                            curated.icon,
+                            color: category.color,
+                            size: 24.sp,
+                          ),
                         ),
-                        SizedBox(height: PolieSpacing.xs),
-                        Text(
-                          scenario.userUtterance,
-                          style: PolieTypography.body(context).copyWith(
-                            color: PolieColors.textSecondary,
+                        SizedBox(width: PolieSpacing.md),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                curated.title,
+                                style: PolieTypography.h2(context).copyWith(
+                                  color: PolieColors.textPrimary,
+                                  fontSize: 17.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(height: PolieSpacing.xs),
+                              Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: PolieSpacing.sm,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: diffColor.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(PolieRadius.sm),
+                                    ),
+                                    child: Text(
+                                      curated.difficulty,
+                                      style: PolieTypography.label(context).copyWith(
+                                        color: diffColor,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: PolieSpacing.sm),
+                                  Icon(
+                                    Icons.schedule_rounded,
+                                    size: 14.sp,
+                                    color: PolieColors.textSecondary,
+                                  ),
+                                  SizedBox(width: PolieSpacing.xs),
+                                  Text(
+                                    curated.estimatedTime,
+                                    style: PolieTypography.bodySmall(context).copyWith(
+                                      color: PolieColors.textSecondary,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(PolieSpacing.sm),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [PolieColors.royalAmethyst, PolieColors.electricTeal],
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.play_arrow_rounded,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                            size: 20.sp,
+                            semanticLabel: 'Start scenario',
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  if (scenario.notes.isNotEmpty) ...[
-                    SizedBox(height: PolieSpacing.sm),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline_rounded,
-                          size: 14.sp,
-                          color: PolieColors.textSecondary,
-                        ),
-                        SizedBox(width: PolieSpacing.xs),
-                        Expanded(
-                          child: Text(
-                            scenario.notes,
-                            style: PolieTypography.bodySmall(context).copyWith(
-                              color: PolieColors.textSecondary,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: PolieSpacing.md),
+                    Text(
+                      curated.shortDescription,
+                      style: PolieTypography.body(context).copyWith(
+                        color: PolieColors.textSecondary,
+                        fontSize: 14.sp,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
-                ],
+                ),
               ),
             ),
           ),
         ),
       ),
-      ),
     );
-  }
-
-  String _getCategory(String scenario) {
-    final lower = scenario.toLowerCase();
-    if (lower.contains('greet') || lower.contains('meet')) return 'Greetings';
-    if (lower.contains('shop') || lower.contains('buy') || lower.contains('market')) return 'Shopping';
-    if (lower.contains('food') || lower.contains('restaurant') || lower.contains('order')) return 'Food';
-    if (lower.contains('travel') || lower.contains('airport') || lower.contains('hotel')) return 'Travel';
-    if (lower.contains('doctor') || lower.contains('hospital') || lower.contains('medicine')) return 'Health';
-    if (lower.contains('friend') || lower.contains('social')) return 'Social';
-    if (lower.contains('business') || lower.contains('work')) return 'Business';
-    if (lower.contains('emergency') || lower.contains('help')) return 'Emergency';
-    return 'General';
-  }
-
-  Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Greetings':
-        return PolieColors.electricTeal;
-      case 'Shopping':
-        return PolieColors.goldEmber;
-      case 'Food':
-        return PolieColors.error;
-      case 'Travel':
-        return PolieColors.electricTealLight;
-      case 'Health':
-        return PolieColors.royalAmethyst;
-      case 'Social':
-        return PolieColors.success;
-      case 'Business':
-        return PolieColors.textSecondary;
-      case 'Emergency':
-        return PolieColors.errorMuted;
-      default:
-        return PolieColors.royalAmethyst;
-    }
-  }
-
-  IconData _getCategoryIcon(String category) {
-    switch (category) {
-      case 'Greetings':
-        return Icons.waving_hand_rounded;
-      case 'Shopping':
-        return Icons.shopping_bag_rounded;
-      case 'Food':
-        return Icons.restaurant_rounded;
-      case 'Travel':
-        return Icons.flight_rounded;
-      case 'Health':
-        return Icons.local_hospital_rounded;
-      case 'Social':
-        return Icons.people_rounded;
-      case 'Business':
-        return Icons.business_rounded;
-      case 'Emergency':
-        return Icons.emergency_rounded;
-      default:
-        return Icons.chat_bubble_rounded;
-    }
   }
 }
 

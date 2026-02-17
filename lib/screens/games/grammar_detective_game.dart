@@ -82,26 +82,19 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
   }
 
   @override
+  String? get appBarTitle =>
+      _questions.isEmpty ? null : '${widget.getGameType().displayName} (${_currentIndex + 1}/${_questions.length})';
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (_questions.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    try {
+      if (_questions.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final question = _questions[_currentIndex];
+      final question = _questions[_currentIndex];
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} (${_currentIndex + 1}/${_questions.length})'),
-        leading: Semantics(
-          label: 'Back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-      ),
-      body: Padding(
+      return Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
@@ -116,27 +109,27 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
             Semantics(
               label: 'Sentence to check: ${question.text}',
               child: Card(
-              child: Padding(
-                padding: EdgeInsets.all(4.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Find the grammar error:',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: EdgeInsets.all(4.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Find the grammar error:',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      question.text,
-                      style: TextStyle(fontSize: 24.sp),
-                    ),
-                  ],
+                      SizedBox(height: 2.h),
+                      Text(
+                        question.text,
+                        style: TextStyle(fontSize: 24.sp),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
             ),
             SizedBox(height: 4.h),
             Expanded(
@@ -236,8 +229,11 @@ class _GrammarDetectiveGameState extends BaseGameScreenState<GrammarDetectiveGam
               ),
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('GrammarDetectiveGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 

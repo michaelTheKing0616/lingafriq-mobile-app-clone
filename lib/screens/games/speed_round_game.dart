@@ -133,13 +133,43 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
   }
 
   @override
-  Widget buildGameContent(BuildContext context) {
-    if (_gameOver) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
+  List<Widget>? get appBarActions {
+    if (_gameOver || _currentCard == null) return null;
+    return [
+      Padding(
+        padding: EdgeInsets.all(2.w),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Semantics(
+              label: 'Time remaining: $_timeLeft seconds',
+              child: Text(
+                '$_timeLeft',
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold,
+                  color: _timeLeft < 10 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ),
+            Semantics(
+              label: 'Score: $_score',
+              child: Text(
+                'Score: $_score',
+                style: TextStyle(fontSize: 12.sp),
+              ),
+            ),
+          ],
         ),
-        body: Center(
+      ),
+    ];
+  }
+
+  @override
+  Widget buildGameContent(BuildContext context) {
+    try {
+      if (_gameOver) {
+        return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -161,59 +191,17 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
               )),
             ],
           ),
-        ),
-      );
-    }
+        );
+      }
 
-    if (_currentCard == null) {
-      return const Center(child: CircularProgressIndicator());
-    }
+      if (_currentCard == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: Semantics(
-          label: 'Back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(2.w),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Semantics(
-                  label: 'Time remaining: $_timeLeft seconds',
-                  child: Text(
-                    '$_timeLeft',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
-                      color: _timeLeft < 10 ? Colors.red : Theme.of(context).colorScheme.onPrimary,
-                    ),
-                  ),
-                ),
-                Semantics(
-                  label: 'Score: $_score',
-                  child: Text(
-                    'Score: $_score',
-                    style: TextStyle(fontSize: 12.sp),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: Padding(
+      return Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
-            // Streak indicator
             if (_streak > 0)
               Container(
                 padding: EdgeInsets.all(2.w),
@@ -231,7 +219,6 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
                 ),
               ),
             SizedBox(height: 4.h),
-            // Question
             Card(
               child: Padding(
                 padding: EdgeInsets.all(4.w),
@@ -254,7 +241,6 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
               ),
             ),
             SizedBox(height: 4.h),
-            // Options
             Expanded(
               child: ListView.builder(
                 itemCount: _options.length,
@@ -323,8 +309,11 @@ class _SpeedRoundGameState extends BaseGameScreenState<SpeedRoundGame> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('SpeedRoundGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 

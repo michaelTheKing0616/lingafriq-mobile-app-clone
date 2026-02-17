@@ -46,6 +46,20 @@ class _DrumRhythmScreenState extends BaseGameScreenState<DrumRhythmScreen> {
   final int _maxRounds = 5;
 
   @override
+  List<Widget>? get appBarActions => [
+    Padding(
+      padding: EdgeInsets.all(8.sp),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
+          Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
+        ],
+      ),
+    ),
+  ];
+
+  @override
   void initState() {
     super.initState();
     _guideController = RiveGameGuideController();
@@ -201,131 +215,106 @@ class _DrumRhythmScreenState extends BaseGameScreenState<DrumRhythmScreen> {
       return const Center(child: Text('Game Complete!'));
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.sp),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-                Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-              ],
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(4.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: 4.h),
+          Center(
+            child: RiveGameGuide(
+              controller: _guideController,
+              width: 120.w,
+              height: 120.h,
             ),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(4.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 4.h),
-            // Rive Guide Character
-            Center(
-              child: RiveGameGuide(
-                controller: _guideController,
-                width: 120.w,
-                height: 120.h,
+          SizedBox(height: 4.h),
+          ProgressMeter(
+            progress: _round / _maxRounds,
+            label: 'Progress',
+          ),
+          SizedBox(height: 4.h),
+          Card(
+            elevation: 4,
+            child: Padding(
+              padding: EdgeInsets.all(4.w),
+              child: Column(
+                children: [
+                  Icon(Icons.music_note, size: 48.sp, color: Colors.orange),
+                  SizedBox(height: 2.h),
+                  Text(
+                    'Drum Rhythm Pattern',
+                    style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 1.h),
+                  Text(
+                    _currentContent!.pattern,
+                    style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600, letterSpacing: 2),
+                    textAlign: TextAlign.center,
+                  ),
+                  if (_currentContent!.context.isNotEmpty) ...[
+                    SizedBox(height: 1.h),
+                    Text(
+                      _currentContent!.context,
+                      style: TextStyle(fontSize: 12.sp),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ],
               ),
             ),
-            SizedBox(height: 4.h),
-            // Progress Meter
-            ProgressMeter(
-              progress: _round / _maxRounds,
-              label: 'Progress',
-            ),
-            SizedBox(height: 4.h),
-            // Rhythm Pattern Display
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            'Which word matches this rhythm?',
+            style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 2.h),
+          ..._currentContent!.options.map((word) {
+            final isSelected = _selectedWord == word;
+            final isCorrectOption = word == _currentContent!.correctWord;
+
+            return GameAnswerTile(
+              text: word.toUpperCase(),
+              isCorrect: isCorrectOption,
+              isSelected: isSelected,
+              showResult: _showResult,
+              icon: Icons.volume_up,
+              onTap: () => _selectWord(word),
+            );
+          }),
+          if (_showResult && _lastResult != null) ...[
+            SizedBox(height: 2.h),
             Card(
-              elevation: 4,
+              color: _lastResult!.score.isCorrect
+                  ? Colors.green.withOpacity(0.2)
+                  : Colors.red.withOpacity(0.2),
               child: Padding(
                 padding: EdgeInsets.all(4.w),
                 child: Column(
                   children: [
-                    Icon(Icons.music_note, size: 48.sp, color: Colors.orange),
-                    SizedBox(height: 2.h),
-                    Text(
-                      'Drum Rhythm Pattern',
-                      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                    Icon(
+                      _lastResult!.score.isCorrect ? Icons.check_circle : Icons.cancel,
+                      color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
+                      size: 32.sp,
                     ),
                     SizedBox(height: 1.h),
                     Text(
-                      _currentContent!.pattern,
-                      style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.w600, letterSpacing: 2),
+                      _lastResult!.feedback.message,
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
+                        color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
+                      ),
                       textAlign: TextAlign.center,
                     ),
-                    if (_currentContent!.context.isNotEmpty) ...[
-                      SizedBox(height: 1.h),
-                      Text(
-                        _currentContent!.context,
-                        style: TextStyle(fontSize: 12.sp),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 4.h),
-            Text(
-              'Which word matches this rhythm?',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 2.h),
-            // Word Options using GameAnswerTile
-            ..._currentContent!.options.map((word) {
-              final isSelected = _selectedWord == word;
-              final isCorrectOption = word == _currentContent!.correctWord;
-
-              return GameAnswerTile(
-                text: word.toUpperCase(),
-                isCorrect: isCorrectOption,
-                isSelected: isSelected,
-                showResult: _showResult,
-                icon: Icons.volume_up,
-                onTap: () => _selectWord(word),
-              );
-            }),
-            if (_showResult && _lastResult != null) ...[
-              SizedBox(height: 2.h),
-              Card(
-                color: _lastResult!.score.isCorrect
-                    ? Colors.green.withOpacity(0.2)
-                    : Colors.red.withOpacity(0.2),
-                child: Padding(
-                  padding: EdgeInsets.all(4.w),
-                  child: Column(
-                    children: [
-                      Icon(
-                        _lastResult!.score.isCorrect ? Icons.check_circle : Icons.cancel,
-                        color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
-                        size: 32.sp,
-                      ),
-                      SizedBox(height: 1.h),
-                      Text(
-                        _lastResult!.feedback.message,
-                        style: TextStyle(
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: _lastResult!.score.isCorrect ? Colors.green : Colors.red,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
           ],
-        ),
+        ],
       ),
     );
   }

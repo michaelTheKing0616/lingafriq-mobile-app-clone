@@ -571,36 +571,123 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       );
     }
 
-    return Stack(
-      children: [
-        buildGameContent(context),
-        Positioned(
-          top: PanAfricanSpacing.md,
-          left: PanAfricanSpacing.md,
-          child: _GameHud(
-            isDark: isDark,
-            level: gamification.level,
-            xp: gamification.xp,
-            streak: gamification.dailyStreak,
-            showHearts: heartsState.challengeModeEnabled,
+    Widget bodyContent;
+    try {
+      bodyContent = buildGameContent(context);
+    } catch (e, st) {
+      debugPrint('buildGameContent error: $e $st');
+      bodyContent = _buildGameLoadError(context, e);
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          appBarTitle ?? widget.getGameType().displayName,
+          style: PanAfricanTypography.titleMedium(context, color: Theme.of(context).colorScheme.onPrimary),
+        ),
+        leading: Semantics(
+          label: 'Go back',
+          button: true,
+          child: IconButton(
+            icon: Icon(Icons.arrow_back_rounded, size: 24.sp),
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              (widget.onBack ?? () => Navigator.pop(context))();
+            },
           ),
         ),
-        Positioned(
-          top: PanAfricanSpacing.md,
-          right: PanAfricanSpacing.md,
-          child: RiveGlobalGuide(
-            width: 80.w,
-            height: 80.h,
-            showInCorner: true,
-          ),
+        actions: appBarActions ?? const [],
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(gradient: PanAfricanGradients.forest),
         ),
-        // Combo display widget
-        ComboDisplayWidget(comboTracker: _comboTracker),
-      ],
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: isDark ? PanAfricanGradients.darkSurface : null,
+          color: isDark ? null : PanAfricanColors.surfaceLight,
+        ),
+        child: Stack(
+          children: [
+            bodyContent,
+            Positioned(
+              top: PanAfricanSpacing.md,
+              left: PanAfricanSpacing.md,
+              child: _GameHud(
+                isDark: isDark,
+                level: gamification.level,
+                xp: gamification.xp,
+                streak: gamification.dailyStreak,
+                showHearts: heartsState.challengeModeEnabled,
+              ),
+            ),
+            Positioned(
+              top: PanAfricanSpacing.md,
+              right: PanAfricanSpacing.md,
+              child: RiveGlobalGuide(
+                width: 80.w,
+                height: 80.h,
+                showInCorner: true,
+              ),
+            ),
+            ComboDisplayWidget(comboTracker: _comboTracker),
+          ],
+        ),
+      ),
     );
   }
 
-  /// Override to build the actual game UI
+  /// Optional custom AppBar title (e.g. "Grammar Detective (1/5)").
+  /// If null, [getGameType].displayName is used.
+  String? get appBarTitle => null;
+
+  /// Optional AppBar actions. Override in subclasses to add custom actions (e.g. timer, score).
+  List<Widget>? get appBarActions => null;
+
+  /// Builds fallback UI when [buildGameContent] throws.
+  Widget _buildGameLoadError(BuildContext context, Object error) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.error_outline_rounded, size: 48.sp, color: PanAfricanColors.kenteRed),
+            SizedBox(height: PanAfricanSpacing.md),
+            Text(
+              'Game failed to load',
+              style: PanAfricanTypography.titleMedium(context),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            Text(
+              'Something went wrong. Please try again.',
+              style: PanAfricanTypography.bodySmall(context),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: PanAfricanSpacing.lg),
+            FilledButton.icon(
+              onPressed: () {
+                HapticFeedback.lightImpact();
+                _initializeGame();
+              },
+              icon: Icon(Icons.refresh_rounded, size: 20.sp),
+              label: Text('Retry', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
+              style: FilledButton.styleFrom(
+                backgroundColor: PanAfricanColors.primary,
+                shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Override to build the game body content only.
+  ///
+  /// Return the body widget (e.g. [Padding], [Column], [ListView]).
+  /// Do NOT return a [Scaffold]; [BaseGameScreen] provides the Scaffold, AppBar, and overlays.
   Widget buildGameContent(BuildContext context);
 }
 

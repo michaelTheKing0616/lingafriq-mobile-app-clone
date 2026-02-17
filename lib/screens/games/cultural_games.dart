@@ -192,65 +192,62 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
   }
 
   @override
+  List<Widget>? get appBarActions {
+    if (isLoading || _isLoadingProverb || _round > _maxRounds) return null;
+    return [
+      Padding(
+        padding: EdgeInsets.all(8.sp),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
+            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoadingProverb) {
-      return const DynamicLoadingScreen();
-    }
+    try {
+      if (isLoading || _isLoadingProverb) {
+        return const DynamicLoadingScreen();
+      }
 
-    if (error != null) {
-      return ErrorBoundary(
-        errorMessage: error!,
-        onRetry: () => _initializeGame(),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(error!),
-              SizedBox(height: 2.h),
-              FilledButton(
-                onPressed: () => _initializeGame(),
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_round > _maxRounds) {
-      return const Center(child: Text('Game Complete!'));
-    }
-
-    final proverb = _currentProverb?['proverb'] ?? 'Loading...';
-    final translation = _currentProverb?['translation'] ?? '';
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.sp),
+      if (error != null) {
+        return ErrorBoundary(
+          errorMessage: error!,
+          onRetry: () => _initializeGame(),
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-                Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
+                Text(error!),
+                SizedBox(height: 2.h),
+                FilledButton(
+                  onPressed: () => _initializeGame(),
+                  child: const Text('Retry'),
+                ),
               ],
             ),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
+        );
+      }
+
+      if (_round > _maxRounds) {
+        return const Center(child: Text('Game Complete!'));
+      }
+
+      final proverb = _currentProverb?['proverb'] ?? 'Loading...';
+      final translation = _currentProverb?['translation'] ?? '';
+
+      return SingleChildScrollView(
         padding: EdgeInsets.all(4.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 4.h),
-            // Proverb Display
             Card(
               elevation: 4,
               child: Padding(
@@ -288,12 +285,10 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 2.h),
-            // Multiple Choice Options
             ..._shuffledOptions.map((option) {
               final isSelected = _selectedAnswer == option;
-              final isCorrectOption = option == (_currentProverb?['meaning']?.toString() ?? 
+              final isCorrectOption = option == (_currentProverb?['meaning']?.toString() ??
                                                    _currentProverb?['context']?.toString() ?? '');
-              
               Color? backgroundColor;
               if (_showResult) {
                 if (isCorrectOption) {
@@ -304,7 +299,6 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
               } else if (isSelected) {
                 backgroundColor = Colors.blue.withOpacity(0.3);
               }
-
               return Padding(
                 padding: EdgeInsets.only(bottom: 2.h),
                 child: Card(
@@ -358,8 +352,11 @@ class _ProverbUnlockerGameState extends BaseGameScreenState<ProverbUnlockerGame>
             ],
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('ProverbUnlockerGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -383,8 +380,8 @@ class DrumRhythmGame extends BaseGameScreen {
 
 class _DrumRhythmGameState extends BaseGameScreenState<DrumRhythmGame> {
   @override
-  Widget buildGameContent(BuildContext context) {
-    // Redirect to new GameKit implementation
+  Widget build(BuildContext context) {
+    // Bypass BaseGameScreen scaffold to avoid nesting; use GameKit screen directly.
     return DrumRhythmScreen(
       language: widget.language,
       level: widget.level,
@@ -537,62 +534,60 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
   }
 
   @override
+  List<Widget>? get appBarActions {
+    if (isLoading || _isLoadingScenario || _round > _maxRounds) return null;
+    return [
+      Padding(
+        padding: EdgeInsets.all(8.sp),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
+            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
+          ],
+        ),
+      ),
+    ];
+  }
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _isLoadingScenario) {
-      return const DynamicLoadingScreen();
-    }
+    try {
+      if (isLoading || _isLoadingScenario) {
+        return const DynamicLoadingScreen();
+      }
 
-    if (error != null) {
-      return ErrorBoundary(
-        errorMessage: error!,
-        onRetry: () {
-          _initializeGame();
-        },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(error!),
-              SizedBox(height: 2.h),
-              FilledButton(
-                onPressed: () {
-                  _initializeGame();
-                },
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    if (_round > _maxRounds) {
-      return const Center(child: Text('Game Complete!'));
-    }
-
-    final scenario = _currentScenario?['scenario']?.toString() ?? 'Market scenario';
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.sp),
+      if (error != null) {
+        return ErrorBoundary(
+          errorMessage: error!,
+          onRetry: () {
+            _initializeGame();
+          },
+          child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-                Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
+                Text(error!),
+                SizedBox(height: 2.h),
+                FilledButton(
+                  onPressed: () {
+                    _initializeGame();
+                  },
+                  child: const Text('Retry'),
+                ),
               ],
             ),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
+        );
+      }
+
+      if (_round > _maxRounds) {
+        return const Center(child: Text('Game Complete!'));
+      }
+
+      final scenario = _currentScenario?['scenario']?.toString() ?? 'Market scenario';
+
+      return SingleChildScrollView(
         padding: EdgeInsets.all(4.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -702,8 +697,11 @@ class _MarketBargainingGameState extends BaseGameScreenState<MarketBargainingGam
             ],
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('MarketBargainingGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 

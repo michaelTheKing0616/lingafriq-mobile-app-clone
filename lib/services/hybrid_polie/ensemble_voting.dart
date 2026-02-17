@@ -18,9 +18,10 @@ class EnsembleVoting {
     debugPrint('🗳️ Ensemble voting: Getting translations from multiple models...');
 
     // Get translations from multiple sources
+    final translationService = TranslationService();
     final results = await Future.wait([
       // NLLB-200
-      TranslationService().translate(
+      translationService.translate(
         text: text,
         sourceLang: sourceLang,
         targetLang: targetLang,
@@ -34,6 +35,9 @@ class EnsembleVoting {
         targetLang: targetLang,
         groqProvider: groqProvider,
       ).catchError((e) => ''),
+
+      // MyMemory (free API, ISO 639-1)
+      translationService.translateWithMyMemory(text, sourceLang, targetLang).then((r) => r ?? '').catchError((e) => ''),
 
       // AfriTeVa (if available)
       CanonicalPhraseService().generateCanonical(

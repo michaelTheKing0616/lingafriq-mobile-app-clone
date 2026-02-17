@@ -1,87 +1,165 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/services/hybrid_polie/translation_service.dart';
+import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 
 /// Enhanced Features for Cultural Magazine
 /// Polie Translation, Cultural Context, Vocabulary Extraction, Share/Favorite, Progress Tracking, Related Articles
 
 class MagazineEnhancedFeatures {
   /// Get Polie translation for article
+  /// Uses TranslationService (Groq-based pipeline) instead of old /polie/tutor/translate endpoint
   static Future<Map<String, dynamic>?> getPolieTranslation(
     String articleId,
-    String language,
-  ) async {
+    String language, {
+    String? articleContent,
+  }) async {
+    if (articleContent == null || articleContent.isEmpty) {
+      return null;
+    }
+    
     try {
-      final response = await ApiService.post(
-        '/polie/tutor/translate',
-        data: {
-          'text': '', // Article content would be passed
-          'sourceLang': 'english',
-          'targetLang': language,
-        },
+      final translationService = TranslationService();
+      final result = await translationService.translate(
+        text: articleContent,
+        sourceLang: 'english',
+        targetLang: language,
       );
 
-      if (response.statusCode == 200) {
-        return response.data['data'];
-      }
+      return {
+        'translation': result.translation,
+        'model': result.model,
+        'confidence': result.confidence,
+      };
     } catch (e) {
       return null;
     }
-    return null;
   }
 
-  /// Get cultural context via Polie Tutor Mode
+  /// Get cultural context via GroqChatProvider (Groq-based pipeline)
+  /// Uses GroqChatProvider instead of old /polie/tutor/explain endpoint
   static Future<Map<String, dynamic>?> getCulturalContext(
     String articleId,
-    String topic,
-  ) async {
+    String topic, {
+    required WidgetRef ref,
+    String language = 'yoruba',
+    String userLevel = 'A1',
+  }) async {
     try {
-      final response = await ApiService.post(
-        '/polie/tutor/explain',
-        data: {
-          'topic': topic,
-          'language': 'yoruba', // Default, should be dynamic
-          'userLevel': 'A1',
-        },
+      final chatProvider = ref.read(groqChatProvider.notifier);
+      
+      // Set mode to tutor temporarily for cultural context explanation
+      final originalMode = ref.read(groqChatProvider).mode;
+      chatProvider.setModeAndLanguage(
+        mode: PolieMode.tutor,
+        targetLanguage: language,
+        sourceLanguage: 'english',
       );
 
-      if (response.statusCode == 200) {
-        return response.data['data'];
+      final prompt = 'Explain the cultural context of "$topic" in $language culture. '
+          'Provide a clear, beginner-friendly explanation suitable for $userLevel level learners.';
+      
+      final response = await chatProvider.sendMessage(prompt);
+      
+      // Restore original mode
+      if (originalMode != null) {
+        chatProvider.setModeAndLanguage(
+          mode: originalMode,
+          targetLanguage: language,
+          sourceLanguage: 'english',
+        );
       }
+
+      return {
+        'explanation': response,
+        'topic': topic,
+        'language': language,
+      };
     } catch (e) {
       return null;
     }
-    return null;
   }
 
-  /// Extract vocabulary from article
+  /// Extract vocabulary from article using GroqChatProvider (Groq-based pipeline)
+  /// Uses GroqChatProvider instead of old /polie/tutor/story endpoint
   static Future<List<Map<String, dynamic>>> extractVocabulary(
     String articleId,
-    String content,
-  ) async {
+    String content, {
+    required WidgetRef ref,
+    String language = 'yoruba',
+  }) async {
+    if (content.isEmpty) {
+      return [];
+    }
+    
     try {
-      final response = await ApiService.post(
-        '/polie/tutor/story',
-        data: {
-          'theme': 'vocabulary_extraction',
-          'language': 'yoruba',
-          'content': content,
-        },
+      final chatProvider = ref.read(groqChatProvider.notifier);
+      
+      // Set mode to vocab temporarily for vocabulary extraction
+      final originalMode = ref.read(groqChatProvider).mode;
+      chatProvider.setModeAndLanguage(
+        mode: PolieMode.vocab,
+        targetLanguage: language,
+        sourceLanguage: 'english',
       );
 
-      if (response.statusCode == 200 && response.data['data']?['vocabulary'] != null) {
-        return List<Map<String, dynamic>>.from(response.data['data']['vocabulary']);
+      final prompt = 'Extract key vocabulary words from this article content and provide their meanings:\n\n'
+          '$content\n\n'
+          'Format your response as a JSON array of objects with "word" and "meaning" fields. '
+          'Focus on important $language words that would help a language learner.';
+      
+      final response = await chatProvider.sendMessage(prompt);
+      
+      // Restore original mode
+      if (originalMode != null) {
+        chatProvider.setModeAndLanguage(
+          mode: originalMode,
+          targetLanguage: language,
+          sourceLanguage: 'english',
+        );
       }
+
+      // Try to parse JSON from response, or return simple word list
+      try {
+        // Look for JSON array in the response
+        final jsonMatch = RegExp(r'\[.*?\]', dotAll: true).firstMatch(response);
+        if (jsonMatch != null) {
+          final jsonStr = jsonMatch.group(0);
+          final decoded = jsonDecode(jsonStr) as List;
+          return decoded.map((item) => {
+            'word': item['word'] ?? '',
+            'meaning': item['meaning'] ?? '',
+          }).toList();
+        }
+      } catch (e) {
+        // If JSON parsing fails, extract words manually
+      }
+
+      // Fallback: extract words from response text
+      final words = <Map<String, dynamic>>[];
+      final lines = response.split('\n');
+      for (final line in lines) {
+        if (line.contains(':') || line.contains('-')) {
+          final parts = line.split(RegExp(r'[:-\-]')).map((s) => s.trim()).toList();
+          if (parts.length >= 2) {
+            words.add({
+              'word': parts[0],
+              'meaning': parts.sublist(1).join(' '),
+            });
+          }
+        }
+      }
+
+      return words;
     } catch (e) {
       return [];
     }
-    return [];
   }
 
   /// Toggle favorite article
@@ -186,10 +264,12 @@ class ArticleDetailEnhanced extends HookConsumerWidget {
         relatedArticles.value = articles;
       });
 
-      // Extract vocabulary
+      // Extract vocabulary using Groq provider
       MagazineEnhancedFeatures.extractVocabulary(
         article['_id'] ?? '',
         article['content'] ?? '',
+        ref: ref,
+        language: userLanguage,
       ).then((vocab) {
         vocabulary.value = vocab;
       });

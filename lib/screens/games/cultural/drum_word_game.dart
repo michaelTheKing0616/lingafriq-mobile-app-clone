@@ -171,12 +171,30 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
   }
 
   @override
-  Widget buildGameContent(BuildContext context) {
-    if (isLoading) {
-      return DynamicLoadingScreen();
-    }
+  List<Widget>? get appBarActions {
+    if (isLoading || _round > _maxRounds) return null;
+    return [
+      Padding(
+        padding: EdgeInsets.all(8.sp),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
+            Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
+          ],
+        ),
+      ),
+    ];
+  }
 
-    if (error != null) {
+  @override
+  Widget buildGameContent(BuildContext context) {
+    try {
+      if (isLoading) {
+        return DynamicLoadingScreen();
+      }
+
+      if (error != null) {
       return ErrorBoundary(
         errorMessage: error!,
         onRetry: () => _initializeGame(),
@@ -200,27 +218,7 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
       return const Center(child: Text('Game Complete!'));
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-        actions: [
-          Padding(
-            padding: EdgeInsets.all(8.sp),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Score: $_score/$_maxRounds', style: TextStyle(fontSize: 12.sp)),
-                Text('Round: $_round/$_maxRounds', style: TextStyle(fontSize: 10.sp)),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
+    return SingleChildScrollView(
         padding: EdgeInsets.all(4.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -333,6 +331,10 @@ class _DrumWordGameState extends BaseGameScreenState<DrumWordGame> {
         ),
       ),
     );
+    } catch (e, st) {
+      debugPrint('DrumWordGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 

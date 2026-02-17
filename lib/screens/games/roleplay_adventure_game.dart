@@ -107,46 +107,33 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
 
   @override
   Widget buildGameContent(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.getGameType().displayName),
-        leading: Semantics(
-          label: 'Back',
-          button: true,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, semanticLabel: 'Back'),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-      ),
-      body: Padding(
+    try {
+      return Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
-            // Scenario title
             Semantics(
               label: 'Scenario: ${_scenario.toUpperCase()}',
               child: Card(
                 child: Padding(
                   padding: EdgeInsets.all(3.w),
                   child: Row(
-                  children: [
-                    Icon(Icons.store, size: 32, semanticLabel: 'Scenario'),
-                    SizedBox(width: 2.w),
-                    Text(
-                      'Scenario: ${_scenario.toUpperCase()}',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.bold,
+                    children: [
+                      Icon(Icons.store, size: 32, semanticLabel: 'Scenario'),
+                      SizedBox(width: 2.w),
+                      Text(
+                        'Scenario: ${_scenario.toUpperCase()}',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
                   ),
                 ),
               ),
             ),
             SizedBox(height: 2.h),
-            // Dialogue history
             Expanded(
               child: Card(
                 child: Padding(
@@ -181,7 +168,6 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
               ),
             ),
             SizedBox(height: 2.h),
-            // Options
             ..._options.map((option) => Padding(
                   padding: EdgeInsets.only(bottom: 1.h),
                   child: Semantics(
@@ -205,8 +191,11 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
                 )),
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('RoleplayAdventureGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 

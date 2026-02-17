@@ -135,6 +135,31 @@ class TranslationService {
       return hfResult.data!;
     }
     
+    // Try MyMemory API (free, no key; ISO 639-1 codes)
+    final myMemoryTranslation = await translateWithMyMemory(
+      truncatedText,
+      sourceLang,
+      targetLang,
+    );
+    if (myMemoryTranslation != null && myMemoryTranslation.isNotEmpty) {
+      if (useCache) {
+        await HybridPolieCache.cacheTranslation(
+          text: truncatedText,
+          sourceLang: sourceLang,
+          targetLang: targetLang,
+          result: myMemoryTranslation,
+        );
+      }
+      return TranslationResult(
+        translation: myMemoryTranslation,
+        sourceText: truncatedText,
+        sourceLang: sourceLang,
+        targetLang: targetLang,
+        model: 'MyMemory',
+        confidence: 0.75,
+      );
+    }
+    
     // Try offline translation as last resort
     if (allowOffline) {
       try {
@@ -218,6 +243,69 @@ class TranslationService {
     }
     
     return _fallbackResult(text, sourceLang, targetLang);
+  }
+  
+  /// Translate using MyMemory API (free, no key).
+  /// Uses ISO 639-1 codes (e.g. en, yo, ig, ha, sw). Returns null on failure or timeout (10s).
+  Future<String?> translateWithMyMemory(
+    String text,
+    String sourceLang,
+    String targetLang,
+  ) async {
+    if (text.trim().isEmpty) return null;
+    final src = _getMyMemoryLangCode(sourceLang);
+    final tgt = _getMyMemoryLangCode(targetLang);
+    if (src == null || tgt == null) return null;
+    final uri = Uri.parse(
+      'https://api.mymemory.translated.net/get',
+    ).replace(queryParameters: {
+      'q': text,
+      'langpair': '$src|$tgt',
+    });
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        uri.toString(),
+        options: Options(
+          receiveTimeout: const Duration(seconds: 10),
+          sendTimeout: const Duration(seconds: 10),
+        ),
+      );
+      if (response.statusCode != 200 || response.data == null) return null;
+      final data = response.data!;
+      final responseData = data['responseData'];
+      if (responseData is! Map<String, dynamic>) return null;
+      final translated = responseData['translatedText'];
+      if (translated is String && translated.trim().isNotEmpty) return translated.trim();
+      return null;
+    } catch (e) {
+      logger.warn('MyMemory translation failed', tag: 'translation', error: e);
+      return null;
+    }
+  }
+  
+  /// Map language name to MyMemory ISO 639-1 code. Returns null if unsupported.
+  String? _getMyMemoryLangCode(String language) {
+    final lower = language.toLowerCase().trim();
+    const codeMap = {
+      'en': 'en', 'english': 'en',
+      'yo': 'yo', 'yoruba': 'yo',
+      'ig': 'ig', 'igbo': 'ig',
+      'ha': 'ha', 'hausa': 'ha',
+      'sw': 'sw', 'swahili': 'sw',
+      'zu': 'zu', 'zulu': 'zu',
+      'xh': 'xh', 'xhosa': 'xh',
+      'am': 'am', 'amharic': 'am',
+      'tw': 'tw', 'twi': 'tw',
+      'af': 'af', 'afrikaans': 'af',
+      'so': 'so', 'somali': 'so',
+      'wo': 'wo', 'wolof': 'wo',
+      'fr': 'fr', 'french': 'fr',
+      'pt': 'pt', 'portuguese': 'pt',
+      'ar': 'ar', 'arabic': 'ar',
+    };
+    if (codeMap.containsKey(lower)) return codeMap[lower];
+    if (lower.length == 2) return lower;
+    return null;
   }
   
   /// Batch translate multiple texts efficiently

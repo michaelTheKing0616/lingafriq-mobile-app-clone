@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:lingafriq/providers/base_provider.dart';
 import 'package:lingafriq/providers/dialog_provider.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -79,6 +80,11 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // CRITICAL: watch() triggers rebuilds when loading state or messages change.
+    // The previous ref.read() captured a snapshot that never updated, so the
+    // spinner kept spinning and new messages were invisible until the widget
+    // was rebuilt externally (e.g. screen off/on).
+    final chatState = ref.watch(groqChatProvider);
     final chatNotifier = ref.read(groqChatProvider.notifier);
 
     return Scaffold(
@@ -101,9 +107,9 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
             Expanded(
               child: chatNotifier.messages.isEmpty
                   ? _buildEmptyState(context)
-                  : _buildChatMessages(context, chatNotifier),
+                  : _buildChatMessages(context, chatNotifier, chatState),
             ),
-            _buildMessageInput(context, chatNotifier),
+            _buildMessageInput(context, chatNotifier, chatState),
           ],
         ),
       ),
@@ -375,8 +381,8 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider) {
-    final isTyping = chatProvider.isBusy;
+  Widget _buildChatMessages(BuildContext context, GroqChatProvider chatProvider, BaseProviderState chatState) {
+    final isTyping = chatState.isLoading;
     return ListView.builder(
       controller: _scrollController,
       padding: EdgeInsets.symmetric(
@@ -535,8 +541,8 @@ class _AiChatScreenState extends ConsumerState<AiChatScreen> {
     );
   }
 
-  Widget _buildMessageInput(BuildContext context, GroqChatProvider chatProvider) {
-    final isLoading = chatProvider.isBusy;
+  Widget _buildMessageInput(BuildContext context, GroqChatProvider chatProvider, BaseProviderState chatState) {
+    final isLoading = chatState.isLoading;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(

@@ -11,8 +11,7 @@ import 'package:lingafriq/providers/daily_goals_provider.dart';
 import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
-import 'package:lingafriq/screens/tutor/tutor_dashboard_screen.dart';
-import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
+import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/language_games_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
@@ -290,8 +289,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  SmoothPageRoute(child: TutorDashboardScreen(),
-                  ),
+                  SmoothPageRoute(child: const PolieModeSelectionScreen()),
                 );
               },
               isDark: isDark,
@@ -302,7 +300,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  SmoothPageRoute(child: AILanguageSelectionScreen()),
+                  SmoothPageRoute(child: const PolieModeSelectionScreen()),
                 );
               },
               isDark: isDark,
@@ -729,7 +727,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const TutorDashboardScreen()),
+                          SmoothPageRoute(child: const PolieModeSelectionScreen()),
                         );
                       },
                       backgroundColor: PanAfricanColors.primary,

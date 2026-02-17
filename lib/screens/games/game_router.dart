@@ -11,6 +11,7 @@ import 'roleplay_adventure_game.dart';
 import 'grammar_detective_game.dart';
 import 'game_templates.dart';
 import 'cultural_games.dart';
+import '../../games/drum_rhythm/drum_rhythm_screen.dart';
 
 /// Game Router - Routes to appropriate game screen based on GameType
 Widget buildGameScreen({
@@ -83,7 +84,7 @@ Widget buildGameScreen({
     case GameType.proverbUnlocker:
       return ProverbUnlockerGame(language: language, level: userLevel, onBack: onBack);
     case GameType.drumRhythmShadowing:
-      return DrumRhythmGame(language: language, level: userLevel, onBack: onBack);
+      return DrumRhythmScreen(language: language, level: userLevel, onBack: onBack);
     case GameType.clanLineageStoryBuilder:
       return ClanStoryGame(language: language, level: userLevel, onBack: onBack);
     case GameType.marketBargainingSimulator:

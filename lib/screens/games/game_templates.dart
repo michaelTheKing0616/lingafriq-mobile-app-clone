@@ -114,22 +114,17 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   }
 
   @override
-  Widget buildGameContent(BuildContext context) {
-    if (_currentCard == null) {
-      return const Scaffold(
-        body: Center(child: Text('No cards available')),
-      );
-    }
+  String? get appBarTitle =>
+      _currentCard == null ? null : '${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})';
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Padding(
+  @override
+  Widget buildGameContent(BuildContext context) {
+    try {
+      if (_currentCard == null) {
+        return const Center(child: Text('No cards available'));
+      }
+
+      return Padding(
         padding: EdgeInsets.all(4.w),
         child: Column(
           children: [
@@ -176,7 +171,7 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
-                        itemCount: 4, // Show 4 picture options
+                        itemCount: 4,
                         itemBuilder: (context, index) {
                           return Card(
                             child: InkWell(
@@ -201,8 +196,11 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
               ),
           ],
         ),
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('ListenSketchGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -310,32 +308,20 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
   }
 
   @override
+  String? get appBarTitle =>
+      (isLoading || _currentCard == null) ? null : '${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})';
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _currentCard == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    try {
+      if (isLoading || _currentCard == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final progress = (_currentIndex + 1) / _cards.length;
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      final progress = (_currentIndex + 1) / _cards.length;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} (${_currentIndex + 1}/${_cards.length})'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      return Column(
         children: [
           LinearProgressIndicator(value: progress),
           Expanded(
@@ -344,7 +330,6 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Image display
                   Container(
                     width: double.infinity,
                     height: 300.h,
@@ -374,7 +359,6 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
                     style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 2.h),
-                  // Word options
                   ..._wordOptions.map((word) => Padding(
                         padding: EdgeInsets.symmetric(vertical: 1.h),
                         child: SizedBox(
@@ -417,8 +401,11 @@ class _PictureWordGameState extends BaseGameScreenState<PictureWordGame> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('PictureWordGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -526,33 +513,20 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
   }
 
   @override
+  String? get appBarTitle =>
+      (isLoading || _wordPositions.isEmpty) ? null : '${widget.getGameType().displayName} (Round $_currentRound/$_maxRounds)';
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _wordPositions.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    try {
+      if (isLoading || _wordPositions.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      final colorScheme = Theme.of(context).colorScheme;
 
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} (Round $_currentRound/$_maxRounds)'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      return Column(
         children: [
           Padding(
             padding: EdgeInsets.all(4.w),
@@ -580,7 +554,6 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
           Expanded(
             child: Stack(
               children: [
-                // Map background
                 Container(
                   margin: EdgeInsets.all(4.w),
                   decoration: BoxDecoration(
@@ -598,7 +571,6 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
                     ),
                   ),
                 ),
-                // Word buttons at bottom
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -636,8 +608,11 @@ class _MemoryMapGameState extends BaseGameScreenState<MemoryMapGame> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('MemoryMapGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -829,31 +804,19 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
   }
 
   @override
+  String? get appBarTitle =>
+      isLoading ? null : '${widget.getGameType().displayName} (Turn $_turnCount/$_maxTurns)';
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    try {
+      if (isLoading) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+      final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} (Turn $_turnCount/$_maxTurns)'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      return Column(
         children: [
           if (_currentPrompt != null)
             Container(
@@ -942,8 +905,11 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
             ),
           ),
         ],
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('ConversationRelayGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -1121,32 +1087,23 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
   }
 
   @override
+  String? get appBarTitle {
+    if (isLoading || _sentences.isEmpty) return null;
+    if (!_gameActive) return null;
+    return '${widget.getGameType().displayName} - Score: $_score';
+  }
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _sentences.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    try {
+      if (isLoading || _sentences.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+      final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    if (!_gameActive) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: Center(
+      if (!_gameActive) {
+        return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -1168,21 +1125,11 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
               ),
             ],
           ),
-        ),
-      );
-    }
+        );
+      }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} - Score: $_score'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      return Column(
         children: [
-          // Timer
           Semantics(
             label: 'Time remaining: $_timeRemaining seconds',
             child: Container(
@@ -1195,18 +1142,17 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
                   SizedBox(width: 2.w),
                   Text(
                     '$_timeRemaining',
-                  style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
-                ),
-              ],
+                    style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
-          ),
           ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(4.w),
               child: Column(
                 children: [
-                  // Selected words
                   Container(
                     padding: EdgeInsets.all(4.w),
                     decoration: BoxDecoration(
@@ -1224,7 +1170,6 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  // Word options
                   Expanded(
                     child: GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -1253,8 +1198,11 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('GrammarJamGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -1436,34 +1384,21 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
   }
 
   @override
+  String? get appBarTitle =>
+      (isLoading || _currentSong == null) ? null : '${widget.getGameType().displayName} - ${_currentSong!['title']}';
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _currentSong == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    try {
+      if (isLoading || _currentSong == null) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final colorScheme = Theme.of(context).colorScheme;
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+      final colorScheme = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} - ${_currentSong!['title']}'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      return Column(
         children: [
-          // Lyrics display
           Expanded(
             child: Center(
               child: Column(
@@ -1506,7 +1441,6 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
               ),
             ),
           ),
-          // Controls
           Container(
             padding: EdgeInsets.all(4.w),
             decoration: BoxDecoration(
@@ -1557,8 +1491,11 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
             ),
           ),
         ],
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('PronunciationKaraokeGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
@@ -1714,31 +1651,21 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
   }
 
   @override
+  String? get appBarTitle =>
+      (isLoading || _currentRecipe == null || _recipeSteps.isEmpty)
+          ? null
+          : '${widget.getGameType().displayName} - Step ${_currentStepIndex + 1}/${_recipeSteps.length}';
+
+  @override
   Widget buildGameContent(BuildContext context) {
-    if (isLoading || _currentRecipe == null || _recipeSteps.isEmpty) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.getGameType().displayName),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: widget.onBack ?? () => Navigator.pop(context),
-          ),
-        ),
-        body: const Center(child: CircularProgressIndicator()),
-      );
-    }
+    try {
+      if (isLoading || _currentRecipe == null || _recipeSteps.isEmpty) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    final progress = (_currentStepIndex + 1) / _recipeSteps.length;
+      final progress = (_currentStepIndex + 1) / _recipeSteps.length;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${widget.getGameType().displayName} - Step ${_currentStepIndex + 1}/${_recipeSteps.length}'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-        ),
-      ),
-      body: Column(
+      return Column(
         children: [
           LinearProgressIndicator(value: progress),
           Expanded(
@@ -1747,7 +1674,6 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Recipe title
                   Container(
                     padding: EdgeInsets.all(4.w),
                     decoration: BoxDecoration(
@@ -1764,7 +1690,6 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
                     ),
                   ),
                   SizedBox(height: 4.h),
-                  // Cooking icon
                   Icon(
                     Icons.restaurant_menu,
                     size: 64.sp,
@@ -1776,7 +1701,6 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
                     style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 4.h),
-                  // Step options
                   ..._stepOptions.map((step) => Padding(
                         padding: EdgeInsets.symmetric(vertical: 1.h),
                         child: SizedBox(
@@ -1819,8 +1743,11 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
             ),
           ),
         ],
-      ),
-    );
+      );
+    } catch (e, st) {
+      debugPrint('QuizChefGame buildGameContent: $e $st');
+      rethrow;
+    }
   }
 }
 
