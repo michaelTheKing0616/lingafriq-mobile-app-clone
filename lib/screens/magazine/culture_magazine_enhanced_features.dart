@@ -69,13 +69,11 @@ class MagazineEnhancedFeatures {
       final response = await chatProvider.sendMessage(prompt);
       
       // Restore original mode
-      if (originalMode != null) {
-        chatProvider.setModeAndLanguage(
-          mode: originalMode,
-          targetLanguage: language,
-          sourceLanguage: 'english',
-        );
-      }
+      chatProvider.setModeAndLanguage(
+        mode: originalMode,
+        targetLanguage: language,
+        sourceLanguage: 'english',
+      );
 
       return {
         'explanation': response,
@@ -118,13 +116,11 @@ class MagazineEnhancedFeatures {
       final response = await chatProvider.sendMessage(prompt);
       
       // Restore original mode
-      if (originalMode != null) {
-        chatProvider.setModeAndLanguage(
-          mode: originalMode,
-          targetLanguage: language,
-          sourceLanguage: 'english',
-        );
-      }
+      chatProvider.setModeAndLanguage(
+        mode: originalMode,
+        targetLanguage: language,
+        sourceLanguage: 'english',
+      );
 
       // Try to parse JSON from response, or return simple word list
       try {
