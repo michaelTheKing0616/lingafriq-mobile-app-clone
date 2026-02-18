@@ -31,31 +31,31 @@ class EmotionVoiceParams {
 class EmotionVoiceModulator {
   EmotionVoiceModulator._();
 
-  static const _struggle = RegExp(
+  static final _struggle = RegExp(
     r'\b(struggle|fight|resist|resist|defy|rebel)\b',
     caseSensitive: false,
   );
-  static const _reflect = RegExp(
+  static final _reflect = RegExp(
     r'\b(remember|reflect|once|long ago|back then)\b',
     caseSensitive: false,
   );
-  static const _peace = RegExp(
+  static final _peace = RegExp(
     r'\b(peace|hope|together|unity|ubuntu)\b',
     caseSensitive: false,
   );
-  static const _demand = RegExp(
+  static final _demand = RegExp(
     r'\b(must|demand|never|always|justice)\b',
     caseSensitive: false,
   );
-  static const _sorrow = RegExp(
+  static final _sorrow = RegExp(
     r'\b(lost|sacrifice|fallen|mourn|honor)\b',
     caseSensitive: false,
   );
-  static const _urgent = RegExp(
+  static final _urgent = RegExp(
     r'\b(now|urgent|quick|immediately|hurry)\b',
     caseSensitive: false,
   );
-  static const _joy = RegExp(
+  static final _joy = RegExp(
     r'\b(joy|celebrate|freedom|victory|proud)\b',
     caseSensitive: false,
   );

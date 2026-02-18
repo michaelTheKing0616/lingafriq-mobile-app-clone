@@ -1,4 +1,4 @@
-/// LingAfriq Learning Engine
+// LingAfriq Learning Engine
 ///
 /// The cognitive core of the language learning system.
 /// All features (UI, games, AI, social) read from and write to

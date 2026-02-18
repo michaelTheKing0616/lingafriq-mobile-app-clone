@@ -1,4 +1,4 @@
-/// Persona Cognition Engine — GPT-4-level orchestration so personas "think" rather than just roleplay.
+// Persona Cognition Engine — GPT-4-level orchestration so personas "think" rather than just roleplay.
 ///
 /// Exports: intent classification, epistemic classification, two-pass Groq orchestration,
 /// self-critique, and the main [PersonaCognitionEngine].

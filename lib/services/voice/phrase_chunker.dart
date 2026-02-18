@@ -107,7 +107,7 @@ class PhraseChunker {
         if (_wordCount(remaining) >= minChunkTokens) {
           chunks.add(PhraseChunk(
             text: remaining.trim(),
-            isSentenceEnd: remaining.trim().endsWith(RegExp(r'[.!?]')),
+            isSentenceEnd: RegExp(r'[.!?]$').hasMatch(remaining.trim()),
             estimatedDurationMs: _wordCount(remaining) * _msPerWord,
           ));
           remaining = '';
@@ -151,7 +151,7 @@ class PhraseChunker {
     if (rest.isEmpty) return null;
     return PhraseChunk(
       text: rest,
-      isSentenceEnd: rest.endsWith(RegExp(r'[.!?]')),
+      isSentenceEnd: RegExp(r'[.!?]$').hasMatch(rest),
       estimatedDurationMs: _wordCount(rest) * _msPerWord,
     );
   }

@@ -49,7 +49,7 @@ class PersonaTtsController {
     final profile = _activeProfile;
     final config = profile?.toTTSConfig() ?? TTSConfig(speed: 1.0, pitch: 1.0);
     try {
-      await _enhancedTts!.speak(trimmed, config);
+      await _enhancedTts.speak(trimmed, config);
     } catch (e) {
       logger.error('Persona TTS speak failed', error: e);
     }
@@ -83,7 +83,7 @@ class PersonaTtsController {
           final phrase = c.text.trim();
           if (phrase.isEmpty) continue;
           try {
-            await _enhancedTts!.speak(phrase, config);
+            await _enhancedTts.speak(phrase, config);
             if (_isInterrupted || _isDisposed) break;
             if (c.isSentenceEnd && pauseAfterSentenceMs > 0) {
               await Future<void>.delayed(Duration(milliseconds: pauseAfterSentenceMs));
@@ -98,7 +98,7 @@ class PersonaTtsController {
         final remaining = chunker.flush();
         if (remaining != null && remaining.text.trim().isNotEmpty && !_isInterrupted && !_isDisposed) {
           try {
-            await _enhancedTts!.speak(remaining.text.trim(), baseConfig);
+            await _enhancedTts.speak(remaining.text.trim(), baseConfig);
           } catch (e) {
             logger.error('Persona TTS flush speak failed', error: e);
           }

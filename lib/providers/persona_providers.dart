@@ -1,11 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:dio/dio.dart';
 
 import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/providers/dio_provider.dart';
 
 import 'package:lingafriq/ai/persona_cognition/persona_cognition_engine.dart';
-import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
 import 'package:lingafriq/ai/personas/roleplay_assessment_engine.dart';

@@ -11,7 +11,6 @@ import '../../services/ai/historical_personality_service.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../utils/error_handler.dart';
 import '../../services/monitoring/sentry_service.dart';
-import '../../utils/performance_utils.dart';
 import '../../widgets/performance/lazy_image.dart';
 import '../../widgets/performance/optimized_list_view.dart';
 import 'personality_chat_screen.dart';

@@ -161,11 +161,11 @@ enum CefrLevel {
   c1,
   c2;
 
-  /// Numeric index for comparison (A1=0, C2=5).
-  int get index => CefrLevel.values.indexOf(this);
+  /// Numeric rank for comparison (A1=0, C2=5).
+  int get rank => CefrLevel.values.indexOf(this);
 
   /// Whether this level is at or above [other].
-  bool isAtLeast(CefrLevel other) => index >= other.index;
+  bool isAtLeast(CefrLevel other) => rank >= other.rank;
 
   String get displayName {
     switch (this) {

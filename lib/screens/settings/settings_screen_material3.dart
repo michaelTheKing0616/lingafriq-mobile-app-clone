@@ -997,6 +997,12 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         return 'Content';
       case SyncCategory.settings:
         return 'Settings';
+      case SyncCategory.learnerState:
+        return 'Learner State';
+      case SyncCategory.competenceAchievements:
+        return 'Competence Achievements';
+      case SyncCategory.peerCorrections:
+        return 'Peer Corrections';
     }
   }
 

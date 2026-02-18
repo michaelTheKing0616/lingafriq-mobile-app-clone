@@ -135,24 +135,19 @@ class PhonemeAlignment {
   ) {
     return alignment.alignedPairs.map((pair) {
       double score;
-      String label;
 
       switch (pair.type) {
         case AlignmentType.match:
           score = pair.actual?.confidence ?? 1.0;
-          label = pair.expected?.phoneme ?? '';
           break;
         case AlignmentType.substitution:
           score = 0.3;
-          label = pair.expected?.phoneme ?? '';
           break;
         case AlignmentType.deletion:
           score = 0.0;
-          label = pair.expected?.phoneme ?? '';
           break;
         case AlignmentType.insertion:
           score = 0.0;
-          label = pair.actual?.phoneme ?? '';
           break;
       }
 

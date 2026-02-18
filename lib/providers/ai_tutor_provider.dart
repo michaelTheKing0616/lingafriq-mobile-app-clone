@@ -5,8 +5,6 @@ import 'package:lingafriq/ai/pedagogy/ai_tutor_controller.dart';
 import 'package:lingafriq/ai/pedagogy/tutor_turn.dart';
 import 'package:lingafriq/config/url_constants.dart';
 import 'package:lingafriq/services/env_config.dart';
-import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
-import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 
 /// Provides the AI Tutor Controller via Riverpod.
 ///

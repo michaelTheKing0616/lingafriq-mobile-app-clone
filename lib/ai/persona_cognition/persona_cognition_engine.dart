@@ -1,4 +1,4 @@
-/// Core reasoning engine that applies persona as a cognition lens.
+// Core reasoning engine that applies persona as a cognition lens.
 /// Orchestrates intent → epistemic → Pass 1 → Pass 2 → self-critique → learner update.
 
 import 'package:dio/dio.dart';
@@ -8,7 +8,6 @@ import 'package:lingafriq/ai/persona_cognition/groq_two_pass_orchestrator.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';
 import 'package:lingafriq/ai/persona_cognition/self_critique.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
-import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 
 class TeachingPoint {
   final String type; // grammar, vocabulary, pragmatics

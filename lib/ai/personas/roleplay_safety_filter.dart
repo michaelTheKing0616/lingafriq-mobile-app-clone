@@ -150,11 +150,6 @@ class RoleplaySafetyFilter {
     return false;
   }
 
-  int? _parseYear(String dateStr) {
-    final year = _extractYear(dateStr.toLowerCase());
-    return year;
-  }
-
   int? _extractYear(String s) {
     final match = RegExp(r'\b(1\d{3}|20\d{2})\b').firstMatch(s);
     return match != null ? int.tryParse(match.group(1)!) : null;

@@ -7,9 +7,9 @@ import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 
 /// Engagement type for historical roleplay sessions.
 enum HistoricalEngagementType {
-  story_mode,
-  free_conversation,
-  opinion_debate,
+  storyMode,
+  freeConversation,
+  opinionDebate,
 }
 
 /// Teaching point in a historical roleplay turn.
@@ -385,7 +385,7 @@ RULES:
   "closure_options": ["string"]
 }''';
 
-    if (session.engagementType == HistoricalEngagementType.opinion_debate &&
+    if (session.engagementType == HistoricalEngagementType.opinionDebate &&
         persona.opinionInferenceMatrix.isNotEmpty) {
       final matrixStr = persona.opinionInferenceMatrix.entries
           .map((e) =>

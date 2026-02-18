@@ -174,16 +174,16 @@ void main() {
 
     test('greeting_classified_correctly', () {
       final result = IntentClassifier.classify(
-        userInput: 'Hello! How are you?',
-        persona: persona,
+        'Hello! How are you?',
+        persona.id,
       );
       expect(result.type, UserIntentType.greeting);
     });
 
     test('factual_question_classified_correctly', () {
       final result = IntentClassifier.classify(
-        userInput: 'When were you imprisoned on Robben Island?',
-        persona: persona,
+        'When were you imprisoned on Robben Island?',
+        persona.id,
       );
       expect(result.domain, UserIntentDomain.historical);
       expect(result.type, UserIntentType.factual);
@@ -191,8 +191,8 @@ void main() {
 
     test('language_learning_classified_correctly', () {
       final result = IntentClassifier.classify(
-        userInput: 'Can you teach me how to say thank you in Xhosa?',
-        persona: persona,
+        'Can you teach me how to say thank you in Xhosa?',
+        persona.id,
       );
       expect(
         result.domain,

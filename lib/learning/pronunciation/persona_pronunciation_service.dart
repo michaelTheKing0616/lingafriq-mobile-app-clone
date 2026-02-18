@@ -175,7 +175,7 @@ class PersonaPronunciationService {
     PronunciationEvaluationResult result,
     HistoricalPersona? persona,
   ) {
-    if (persona == null) return result.feedback.summary;
+    if (persona == null) return result.feedback.correction ?? 'Good pronunciation!';
 
     final prefix = _feedbackPrefix(persona);
     if (result.isCorrect) {
@@ -183,7 +183,7 @@ class PersonaPronunciationService {
     }
 
     final errorSummary = result.errors.isNotEmpty
-        ? result.errors.first.description
+        ? '${result.errors.first.expected} (not ${result.errors.first.actual})'
         : 'some sounds need attention';
 
     return '$prefix $errorSummary. In ${persona.region}, '

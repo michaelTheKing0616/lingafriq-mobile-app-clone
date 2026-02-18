@@ -1,4 +1,4 @@
-/// Historical persona models and registry for LingAfriq AI roleplay.
+// Historical persona models and registry for LingAfriq AI roleplay.
 /// All data is historically accurate; opinion inferences use documented positions only.
 
 class CoreEvent {
@@ -237,7 +237,7 @@ class HistoricalPersonaRegistry {
     coreEvents: [
       CoreEvent(year: 1622, event: 'Meeting with Portuguese governor', impact: 'Refused chair; sat on servant to assert equality'),
       CoreEvent(year: 1624, event: 'Became ruler of Ndongo', impact: 'Unified resistance against Portuguese'),
-      CoreEvent(year: 1630s, event: 'Alliance with Dutch', impact: 'Temporarily pushed back Portuguese'),
+      CoreEvent(year: 1630, event: 'Alliance with Dutch', impact: 'Temporarily pushed back Portuguese'),
     ],
     documentedPositions: {
       'governance': 'Sovereignty of Ndongo/Matamba; no vassalage',
@@ -385,7 +385,7 @@ class HistoricalPersonaRegistry {
     coreEvents: [
       CoreEvent(year: 1324, event: 'Hajj to Mecca', impact: 'Put Mali on world maps; gold affected Cairo economy'),
       CoreEvent(year: 1325, event: 'Built mosques and madrasas', impact: 'Timbuktu as center of learning'),
-      CoreEvent(year: 1330s, event: 'Reign of prosperity', impact: 'Mali as major power'),
+      CoreEvent(year: 1330, event: 'Reign of prosperity', impact: 'Mali as major power'),
     ],
     documentedPositions: {
       'governance': 'Islamic rule, justice, patronage of learning',
@@ -581,7 +581,7 @@ class HistoricalPersonaRegistry {
     coreEvents: [
       CoreEvent(year: 1946, event: 'Tax revolt (Abeokuta)', impact: 'Women\'s march forced change'),
       CoreEvent(year: 1949, event: 'Nigerian Women\'s Union', impact: 'National women\'s organizing'),
-      CoreEvent(year: 1960s, event: 'Anti-military activism', impact: 'Thrown from window; died of injuries'),
+      CoreEvent(year: 1960, event: 'Anti-military activism', impact: 'Thrown from window; died of injuries'),
     ],
     documentedPositions: {
       'governance': 'Women\'s rights, anti-colonialism, social justice',
@@ -678,7 +678,7 @@ class HistoricalPersonaRegistry {
     historicalRoles: ['leader', 'warrior', 'state-builder'],
     coreEvents: [
       CoreEvent(year: 1861, event: 'Founded Wassoulou state', impact: 'Islamic reform state'),
-      CoreEvent(year: 1880s, event: 'Wars with France', impact: 'Long resistance'),
+      CoreEvent(year: 1880, event: 'Wars with France', impact: 'Long resistance'),
       CoreEvent(year: 1898, event: 'Captured and exiled', impact: 'Died in Gabon'),
     ],
     documentedPositions: {
@@ -1070,7 +1070,7 @@ class HistoricalPersonaRegistry {
     shortBio: 'First president of Senegal (1960–1980); poet; co-founded Négritude; promoted Francophonie and African culture.',
     historicalRoles: ['leader', 'poet', 'philosopher'],
     coreEvents: [
-      CoreEvent(year: 1930s, event: 'Négritude with Césaire', impact: 'African identity in literature'),
+      CoreEvent(year: 1930, event: 'Négritude with Césaire', impact: 'African identity in literature'),
       CoreEvent(year: 1960, event: 'President of Senegal', impact: 'Stability; cultural policy'),
       CoreEvent(year: 1983, event: 'Académie française', impact: 'First African member'),
     ],
@@ -1364,7 +1364,7 @@ class HistoricalPersonaRegistry {
     shortBio: 'Nigerian nationalist founding father; engineer, journalist; co-founded NCNC; opposed colonial policies; grandfather of Azikiwe.',
     historicalRoles: ['nationalist', 'journalist', 'engineer'],
     coreEvents: [
-      CoreEvent(year: 1920s, event: 'Anti-water rate campaign', impact: 'Lagos mobilization'),
+      CoreEvent(year: 1920, event: 'Anti-water rate campaign', impact: 'Lagos mobilization'),
       CoreEvent(year: 1923, event: 'Nigerian National Democratic Party', impact: 'First political party'),
       CoreEvent(year: 1944, event: 'NCNC with Azikiwe', impact: 'Unified nationalism'),
     ],

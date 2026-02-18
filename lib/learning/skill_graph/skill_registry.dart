@@ -136,10 +136,7 @@ class SkillRegistry {
   /// Clears all registered skills.
   void clear() {
     _languageGraphs.clear();
-    _topoOrder = null;
   }
-
-  List<String>? _topoOrder;
 
   void _loadFromJson(Map<String, dynamic> data) {
     final languages = data['languages'] as Map<String, dynamic>? ?? {};

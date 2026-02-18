@@ -252,7 +252,7 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
       learnerId: learnerId,
       languageCode: result.language,
       personaId: personaId,
-      engagementType: HistoricalEngagementType.free_conversation,
+      engagementType: HistoricalEngagementType.freeConversation,
       turns: const [],
       contextMemory: const [],
     );

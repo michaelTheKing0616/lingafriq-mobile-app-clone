@@ -1,5 +1,4 @@
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
-import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 
 /// Social learning layer that transforms tribes from decorative leaderboards
 /// into collaborative learning engines.
@@ -60,7 +59,7 @@ class PeerLearningService {
     );
 
     // Reward the corrector with a small mastery boost (teaching reinforces learning)
-    final correctorUpdated = correctorState.copyWith(
+    final _correctorUpdated = correctorState.copyWith(
       mastery: (correctorState.mastery + 0.02).clamp(0.0, 1.0),
     );
 

@@ -1,4 +1,4 @@
-/// LingAfriq AI Pedagogy System
+// LingAfriq AI Pedagogy System
 ///
 /// The AI tutor is a deterministic pedagogue, not a chatbot.
 /// It operates through structured tutor turns with strict JSON output.

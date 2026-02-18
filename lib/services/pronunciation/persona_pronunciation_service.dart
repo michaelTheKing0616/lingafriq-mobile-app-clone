@@ -49,7 +49,7 @@ class PersonaPronunciationService {
     required List<Map<String, dynamic>> phonemeResults,
     required String languageCode,
   }) async {
-    final persona = HistoricalPersonaRegistry.findById(personaId);
+    final _ = HistoricalPersonaRegistry.findById(personaId);
 
     final expectedPhonemes = _textToPhonemeApproximation(expectedText);
     final actualPhonemes = phonemeResults

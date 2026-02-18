@@ -1,6 +1,3 @@
-import '../../learning/learner_model/error_taxonomy.dart';
-import '../../learning/skill_graph/skill_node.dart';
-
 /// Represents a single structured turn in the AI tutor interaction.
 ///
 /// The AI tutor NEVER free-chats. Every interaction is a structured turn

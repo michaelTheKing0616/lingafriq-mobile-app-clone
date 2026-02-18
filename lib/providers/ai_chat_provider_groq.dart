@@ -823,7 +823,7 @@ Use structured format: Rule → Example → Practice.''';
   }
 
   Stream<String> sendMessageStream(String userMessage, {String? systemPromptOverride}) async* {
-    final _messageStartTime = DateTime.now();
+    final messageStartTime = DateTime.now();
 
     // Enhanced input validation and sanitization
     final sanitizedMessage = _sanitizeInput(userMessage);
@@ -1343,7 +1343,7 @@ Use structured format: Rule → Example → Practice.''';
         }
 
         // Evaluate user performance and feed learning engine
-        _lastResponseTime = DateTime.now().difference(_messageStartTime).inMilliseconds / 1000.0;
+        _lastResponseTime = DateTime.now().difference(messageStartTime).inMilliseconds / 1000.0;
         if (_messages.length >= 2) {
           final lastUser = _messages[_messages.length - 2].content;
           _evaluateUser(lastUser, output);

@@ -181,6 +181,10 @@ class HybridPolieOrchestrator {
         return TaskType.vocab;
       case PolieMode.review:
         return TaskType.review;
+      case PolieMode.pronunciation:
+        return TaskType.tutor;
+      case PolieMode.grammar:
+        return TaskType.tutor;
     }
   }
   

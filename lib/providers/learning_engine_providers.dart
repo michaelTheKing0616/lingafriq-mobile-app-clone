@@ -10,7 +10,6 @@ import 'package:lingafriq/ai/modes/mode_prompts.dart';
 import 'package:lingafriq/ai/modes/roleplay_engine.dart';
 import 'package:lingafriq/ai/pedagogy/error_classifier.dart' show PhonemeResult;
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
-import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
 import 'package:lingafriq/learning/scheduling/review_scheduler.dart';
 import 'package:lingafriq/content/import_media/media_learning_pipeline.dart';
 import 'package:lingafriq/services/social/peer_learning_service.dart';

@@ -6,7 +6,6 @@ import 'gamekit/game_animation_bridge.dart';
 import 'gamekit/game_turn_context.dart';
 import '../learning/game_integration/learning_game.dart';
 import '../learning/learner_model/learner_model_service.dart';
-import '../learning/learner_model/learner_skill_state.dart';
 import '../learning/learner_model/error_taxonomy.dart';
 
 /// Difficulty engine that uses the learner model for adaptive difficulty.

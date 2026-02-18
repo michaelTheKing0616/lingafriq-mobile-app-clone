@@ -1,5 +1,4 @@
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
-import 'package:lingafriq/learning/skill_graph/skill_node.dart';
 
 /// Transforms imported user media into actionable learning items.
 ///

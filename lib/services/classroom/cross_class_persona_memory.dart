@@ -114,8 +114,7 @@ class CrossClassPersonaMemory {
     final memories =
         recall(personaId: personaId, learnerId: learnerId, maxResults: 5);
     if (memories.isEmpty) return '';
-    return 'Previous interactions:\n' +
-        memories.map((m) => '- ${m.summary}').join('\n');
+    return 'Previous interactions:\n${memories.map((m) => '- ${m.summary}').join('\n')}';
   }
 
   /// Persist to SharedPreferences (one key per persona).

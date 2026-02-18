@@ -1,4 +1,4 @@
-/// Two-pass LLM orchestration: Pass 1 = hidden reasoning, Pass 2 = user-facing response.
+// Two-pass LLM orchestration: Pass 1 = hidden reasoning, Pass 2 = user-facing response.
 
 import 'dart:convert';
 

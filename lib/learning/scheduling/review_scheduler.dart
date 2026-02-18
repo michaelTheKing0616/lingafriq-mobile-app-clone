@@ -1,7 +1,5 @@
 import '../core/hlr_forgetting_curve.dart';
 import '../learner_model/learner_model_service.dart';
-import '../learner_model/learner_skill_state.dart';
-import '../learner_model/error_taxonomy.dart';
 
 /// Spaced review scheduler driven by the learner model.
 ///

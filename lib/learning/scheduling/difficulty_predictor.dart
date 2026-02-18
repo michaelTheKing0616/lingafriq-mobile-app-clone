@@ -1,7 +1,5 @@
 import '../learner_model/learner_model_service.dart';
-import '../learner_model/learner_skill_state.dart';
 import '../learner_model/error_taxonomy.dart';
-import '../skill_graph/skill_registry.dart';
 
 /// Predicted difficulty for a single skill.
 class PredictedDifficulty {

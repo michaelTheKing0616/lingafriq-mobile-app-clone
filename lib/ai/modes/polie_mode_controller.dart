@@ -4,7 +4,6 @@ import 'package:lingafriq/ai/pedagogy/error_classifier.dart' show PhonemeResult;
 import 'package:lingafriq/ai/validation/response_validator.dart';
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
-import 'package:lingafriq/learning/scheduling/review_scheduler.dart';
 import 'mode_prompts.dart';
 import 'roleplay_engine.dart';
 
@@ -29,7 +28,6 @@ class PolieModeController {
   final String _model;
   final LearnerModelService _learnerModel;
   final RoleplayEngine _roleplayEngine;
-  final ReviewScheduler _reviewScheduler;
 
   PolieModeController({
     required Dio dio,
@@ -48,8 +46,7 @@ class PolieModeController {
           apiUrl: apiUrl,
           model: model,
           learnerModel: learnerModel,
-        ),
-        _reviewScheduler = ReviewScheduler(learnerModel: learnerModel);
+        );
 
   /// Processes a message in the given mode.
   ///

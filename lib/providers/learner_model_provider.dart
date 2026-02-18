@@ -2,7 +2,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
 import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
-import 'package:lingafriq/learning/learner_model/error_taxonomy.dart';
 import 'package:lingafriq/learning/skill_graph/skill_registry.dart';
 
 /// Provides the LearnerModelService as a singleton via Riverpod.

@@ -1,14 +1,9 @@
 import 'dart:convert';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
-import 'package:lingafriq/learning/learner_model/learner_skill_state.dart';
-import 'package:lingafriq/learning/learner_model/error_taxonomy.dart';
 import 'package:lingafriq/learning/scheduling/review_scheduler.dart';
 import 'package:lingafriq/services/gamification/competence_gamification.dart';
-import 'package:lingafriq/ai/modes/mode_prompts.dart';
-import 'package:lingafriq/providers/learning_engine_providers.dart';
 
 /// The bridge that connects the learning engine to existing UI providers.
 ///
@@ -262,7 +257,7 @@ class LearningEngineBridge {
       return 'Start your first lesson to begin learning!';
     }
 
-    return 'Continue building your ${languageCode} skills.';
+    return 'Continue building your $languageCode skills.';
   }
 
   // ─── Private helpers ───────────────────────────────────────────────
