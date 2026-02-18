@@ -52,6 +52,7 @@ class ApiContract {
   static const leaderboards = _Leaderboards();
   static const competitions = _Competitions();
   static const pronunciation = _Pronunciation();
+  static const learning = _Learning();
   static const misc = _Misc();
 }
 
@@ -428,6 +429,22 @@ class _Pronunciation {
       '/api/voice/pronunciation/difficulty/$userId/$language';
   String profile(String userId, String language) =>
       '/api/voice/pronunciation/profile/$userId/$language';
+}
+
+// =============================================================================
+// Learning Engine
+// =============================================================================
+class _Learning {
+  const _Learning();
+  String get syncState => '/api/learning/state/skill';
+  String get syncFullState => '/api/learning/state/sync';
+  String state(String languageCode) => '/api/learning/state/$languageCode';
+  String metrics(String languageCode) => '/api/learning/metrics/$languageCode';
+  String get corrections => '/api/learning/corrections';
+  String correctionVote(String id) => '/api/learning/corrections/$id/vote';
+  String get syncAchievement => '/api/learning/achievements/sync';
+  String get achievements => '/api/learning/achievements';
+  String get syncCorrection => '/api/learning/corrections';
 }
 
 // =============================================================================

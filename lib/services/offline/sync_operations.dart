@@ -24,6 +24,9 @@ enum SyncOperationType {
   roleplayProgress,
   tutorProgress,
   reviewProgress,
+  learnerState,
+  competenceAchievements,
+  peerCorrections,
 }
 
 /// Sync operation result
@@ -531,6 +534,142 @@ class SyncOperations {
     }
   }
 
+  /// Sync learner model state (skill mastery, half-life, error distributions)
+  Future<SyncOperationResult> syncLearnerState() async {
+    try {
+      logger.info('Starting learner state sync');
+      final prefs = await SharedPreferences.getInstance();
+      final keys = prefs.getKeys().where((k) => k.startsWith('learner_state_'));
+      int synced = 0;
+      final errors = <String>[];
+
+      for (final key in keys) {
+        try {
+          final data = prefs.getString(key);
+          if (data == null) continue;
+
+          await ApiService.initialize();
+          final response = await ApiService.post(
+            '/api/learning/state/skill',
+            data: jsonDecode(data),
+          );
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            synced++;
+          }
+        } catch (e) {
+          errors.add('Failed to sync learner state $key: $e');
+        }
+      }
+
+      logger.info('Learner state sync completed: $synced items synced');
+      return SyncOperationResult(
+        success: errors.isEmpty,
+        itemsSynced: synced,
+        errors: errors,
+        completedAt: DateTime.now(),
+      );
+    } catch (e) {
+      logger.error('Learner state sync failed', error: e);
+      return SyncOperationResult(
+        success: false, itemsSynced: 0,
+        errors: [e.toString()], completedAt: DateTime.now(),
+      );
+    }
+  }
+
+  /// Sync competence achievements to backend
+  Future<SyncOperationResult> syncCompetenceAchievements() async {
+    try {
+      logger.info('Starting competence achievements sync');
+      final prefs = await SharedPreferences.getInstance();
+      final pending = prefs.getStringList('pending_achievements') ?? [];
+      int synced = 0;
+      final errors = <String>[];
+
+      for (final item in pending) {
+        try {
+          await ApiService.initialize();
+          final response = await ApiService.post(
+            '/api/learning/achievements/sync',
+            data: jsonDecode(item),
+          );
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            synced++;
+          }
+        } catch (e) {
+          errors.add('Failed to sync achievement: $e');
+        }
+      }
+
+      if (synced > 0) {
+        final remaining = pending.skip(synced).toList();
+        await prefs.setStringList('pending_achievements', remaining);
+      }
+
+      logger.info('Achievements sync completed: $synced items synced');
+      return SyncOperationResult(
+        success: errors.isEmpty,
+        itemsSynced: synced,
+        errors: errors,
+        completedAt: DateTime.now(),
+      );
+    } catch (e) {
+      logger.error('Achievements sync failed', error: e);
+      return SyncOperationResult(
+        success: false, itemsSynced: 0,
+        errors: [e.toString()], completedAt: DateTime.now(),
+      );
+    }
+  }
+
+  /// Sync peer corrections to backend
+  Future<SyncOperationResult> syncPeerCorrections() async {
+    try {
+      logger.info('Starting peer corrections sync');
+      final prefs = await SharedPreferences.getInstance();
+      final pending = prefs.getStringList('pending_peer_corrections') ?? [];
+      int synced = 0;
+      final errors = <String>[];
+
+      for (final item in pending) {
+        try {
+          await ApiService.initialize();
+          final response = await ApiService.post(
+            '/api/learning/corrections',
+            data: jsonDecode(item),
+          );
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            synced++;
+          }
+        } catch (e) {
+          errors.add('Failed to sync peer correction: $e');
+        }
+      }
+
+      if (synced > 0) {
+        final remaining = pending.skip(synced).toList();
+        await prefs.setStringList('pending_peer_corrections', remaining);
+      }
+
+      logger.info('Peer corrections sync completed: $synced items synced');
+      return SyncOperationResult(
+        success: errors.isEmpty,
+        itemsSynced: synced,
+        errors: errors,
+        completedAt: DateTime.now(),
+      );
+    } catch (e) {
+      logger.error('Peer corrections sync failed', error: e);
+      return SyncOperationResult(
+        success: false, itemsSynced: 0,
+        errors: [e.toString()], completedAt: DateTime.now(),
+      );
+    }
+  }
+
   /// Sync all operations
   Future<Map<SyncOperationType, SyncOperationResult>> syncAll() async {
     logger.info('Starting full background sync');
@@ -545,6 +684,9 @@ class SyncOperations {
     results[SyncOperationType.roleplayProgress] = await syncRoleplayProgress();
     results[SyncOperationType.tutorProgress] = await syncTutorProgress();
     results[SyncOperationType.reviewProgress] = await syncReviewProgress();
+    results[SyncOperationType.learnerState] = await syncLearnerState();
+    results[SyncOperationType.competenceAchievements] = await syncCompetenceAchievements();
+    results[SyncOperationType.peerCorrections] = await syncPeerCorrections();
 
     // Update last sync time
     final prefs = await SharedPreferences.getInstance();

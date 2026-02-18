@@ -4,8 +4,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lingafriq/utils/polie_design_tokens.dart';
-import 'package:lingafriq/widgets/polie/polie_components.dart';
+import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/social_feed_provider.dart';
 import 'package:lingafriq/screens/social/friend_profile_screen.dart';
 import 'package:lingafriq/screens/social/challenge_friend_screen.dart';
@@ -29,15 +29,17 @@ class SocialHubScreen extends HookConsumerWidget {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              PolieColors.primary,
-              PolieColors.primaryDark,
-              PolieColors.obsidian,
-            ],
-          ),
+          gradient: isDark
+              ? PanAfricanGradients.darkSurface
+              : LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    PanAfricanColors.primary,
+                    PanAfricanColors.primaryDark,
+                    PanAfricanColors.surfaceLight,
+                  ],
+                ),
         ),
         child: SafeArea(
           child: Column(
@@ -51,9 +53,9 @@ class SocialHubScreen extends HookConsumerWidget {
                   Tab(text: 'Challenges'),
                   Tab(text: 'Tribes'),
                 ],
-                labelColor: PolieColors.goldEmber,
-                unselectedLabelColor: PolieColors.textSecondary,
-                indicatorColor: PolieColors.goldEmber,
+                labelColor: PanAfricanColors.accent,
+                unselectedLabelColor: PanAfricanColors.textSecondary,
+                indicatorColor: PanAfricanColors.accent,
               ),
               Expanded(
                 child: TabBarView(
@@ -75,37 +77,37 @@ class SocialHubScreen extends HookConsumerWidget {
 
   Widget _buildHeader(BuildContext context, bool isDark) {
     return Padding(
-      padding: EdgeInsets.all(PolieSpacing.lg),
+      padding: EdgeInsets.all(PanAfricanSpacing.lg),
       child: Row(
         children: [
           Semantics(
             label: 'Back',
             button: true,
             child: IconButton(
-              icon: Icon(Icons.arrow_back, color: PolieColors.textPrimary),
+              icon: Icon(Icons.arrow_back, color: PanAfricanColors.textPrimary),
               onPressed: () {
                 HapticFeedback.lightImpact();
                 Navigator.of(context).pop();
               },
             ),
           ),
-          SizedBox(width: PolieSpacing.sm),
+          SizedBox(width: PanAfricanSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   'Social Hub',
-                  style: PolieTypography.h1(context).copyWith(
-                    color: PolieColors.textPrimary,
+                  style: PanAfricanTypography.headlineLarge(context).copyWith(
+                    color: PanAfricanColors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: PolieSpacing.xs),
+                SizedBox(height: PanAfricanSpacing.xs),
                 Text(
                   'Connect and compete with friends',
-                  style: PolieTypography.bodySmall(context).copyWith(
-                    color: PolieColors.textSecondary,
+                  style: PanAfricanTypography.bodySmall(context).copyWith(
+                    color: PanAfricanColors.textSecondary,
                   ),
                 ),
               ],
@@ -136,7 +138,7 @@ class _FeedTab extends HookConsumerWidget {
     if (feedItems.isEmpty && !isLoading.value) {
       return RefreshIndicator(
         onRefresh: refreshFeed,
-        color: PolieColors.goldEmber,
+        color: PanAfricanColors.accent,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: SizedBox(
@@ -148,20 +150,20 @@ class _FeedTab extends HookConsumerWidget {
                   Icon(
                     Icons.rss_feed_outlined,
                     size: 64.sp,
-                    color: PolieColors.textSecondary,
+                    color: PanAfricanColors.textSecondary,
                   ),
-                  SizedBox(height: PolieSpacing.lg),
+                  SizedBox(height: PanAfricanSpacing.lg),
                   Text(
                     'No activity yet',
-                    style: PolieTypography.h3(context).copyWith(
-                      color: PolieColors.textSecondary,
+                    style: PanAfricanTypography.titleSmall(context).copyWith(
+                      color: PanAfricanColors.textSecondary,
                     ),
                   ),
-                  SizedBox(height: PolieSpacing.sm),
+                  SizedBox(height: PanAfricanSpacing.sm),
                   Text(
                     'Your feed will show friend activities here',
-                    style: PolieTypography.body(context).copyWith(
-                      color: PolieColors.textSecondary,
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      color: PanAfricanColors.textSecondary,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -175,9 +177,9 @@ class _FeedTab extends HookConsumerWidget {
 
     return RefreshIndicator(
       onRefresh: refreshFeed,
-      color: PolieColors.goldEmber,
+      color: PanAfricanColors.accent,
       child: ListView.builder(
-        padding: EdgeInsets.all(PolieSpacing.lg),
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         itemCount: feedItems.length,
         itemBuilder: (context, index) {
           final item = feedItems[index];
@@ -199,31 +201,31 @@ class _FeedTab extends HookConsumerWidget {
     switch (item.type) {
       case 'lesson_complete':
         icon = Icons.school;
-        iconColor = PolieColors.electricTeal;
+        iconColor = PanAfricanColors.kenteBlue;
         title = '${item.userName} completed a lesson';
         subtitle = item.details ?? 'Great progress!';
         break;
       case 'badge_earned':
         icon = Icons.emoji_events;
-        iconColor = PolieColors.goldEmber;
+        iconColor = PanAfricanColors.accent;
         title = '${item.userName} earned a badge';
         subtitle = item.details ?? 'Achievement unlocked!';
         break;
       case 'streak_milestone':
         icon = Icons.local_fire_department;
-        iconColor = PolieColors.error;
+        iconColor = PanAfricanColors.error;
         title = '${item.userName} reached a streak milestone';
         subtitle = item.details ?? 'Keep it up!';
         break;
       case 'quest_progress':
         icon = Icons.flag;
-        iconColor = PolieColors.royalAmethyst;
+        iconColor = PanAfricanColors.ankaraPurple;
         title = '${item.userName} made quest progress';
         subtitle = item.details ?? 'Quest update';
         break;
       default:
         icon = Icons.notifications;
-        iconColor = PolieColors.textSecondary;
+        iconColor = PanAfricanColors.textSecondary;
         title = '${item.userName} has an update';
         subtitle = item.details ?? '';
     }
@@ -231,9 +233,9 @@ class _FeedTab extends HookConsumerWidget {
     final timeAgo = _formatTimeAgo(item.timestamp);
 
     return Padding(
-      padding: EdgeInsets.only(bottom: PolieSpacing.md),
-      child: PolieGlassCard(
-        padding: EdgeInsets.all(PolieSpacing.lg),
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+      child: PanAfricanCard(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -242,32 +244,32 @@ class _FeedTab extends HookConsumerWidget {
               backgroundColor: iconColor.withOpacity(0.2),
               child: Icon(icon, color: iconColor, size: 24.sp),
             ),
-            SizedBox(width: PolieSpacing.md),
+            SizedBox(width: PanAfricanSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     title,
-                    style: PolieTypography.body(context).copyWith(
-                      color: PolieColors.textPrimary,
+                    style: PanAfricanTypography.bodyMedium(context).copyWith(
+                      color: PanAfricanColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   if (subtitle.isNotEmpty) ...[
-                    SizedBox(height: PolieSpacing.xs),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Text(
                       subtitle,
-                      style: PolieTypography.bodySmall(context).copyWith(
-                        color: PolieColors.textSecondary,
+                      style: PanAfricanTypography.bodySmall(context).copyWith(
+                        color: PanAfricanColors.textSecondary,
                       ),
                     ),
                   ],
-                  SizedBox(height: PolieSpacing.xs),
+                  SizedBox(height: PanAfricanSpacing.xs),
                   Text(
                     timeAgo,
-                    style: PolieTypography.bodySmall(context).copyWith(
-                      color: PolieColors.textSecondary,
+                    style: PanAfricanTypography.bodySmall(context).copyWith(
+                      color: PanAfricanColors.textSecondary,
                       fontSize: 11.sp,
                     ),
                   ),
@@ -341,31 +343,31 @@ class _FriendsTab extends HookConsumerWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(PolieSpacing.lg),
+          padding: EdgeInsets.all(PanAfricanSpacing.lg),
           child: TextField(
             onChanged: (value) => searchQuery.value = value,
             decoration: InputDecoration(
               hintText: 'Search friends...',
-              prefixIcon: Icon(Icons.search, color: PolieColors.textSecondary),
+              prefixIcon: Icon(Icons.search, color: PanAfricanColors.textSecondary),
               filled: true,
-              fillColor: PolieColors.surfaceContainer.withOpacity(0.5),
+              fillColor: PanAfricanColors.surfaceContainerLight.withOpacity(0.5),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(PolieRadius.md),
+                borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                 borderSide: BorderSide.none,
               ),
-              hintStyle: PolieTypography.body(context).copyWith(
-                color: PolieColors.textSecondary,
+              hintStyle: PanAfricanTypography.bodyMedium(context).copyWith(
+                color: PanAfricanColors.textSecondary,
               ),
             ),
-            style: PolieTypography.body(context).copyWith(
-              color: PolieColors.textPrimary,
+            style: PanAfricanTypography.bodyMedium(context).copyWith(
+              color: PanAfricanColors.textPrimary,
             ),
           ),
         ),
         Expanded(
           child: isLoading.value
               ? Center(
-                  child: CircularProgressIndicator(color: PolieColors.goldEmber),
+                  child: CircularProgressIndicator(color: PanAfricanColors.accent),
                 )
               : filteredFriends.isEmpty
                   ? Center(
@@ -375,31 +377,31 @@ class _FriendsTab extends HookConsumerWidget {
                           Icon(
                             Icons.people_outline,
                             size: 64.sp,
-                            color: PolieColors.textSecondary,
+                            color: PanAfricanColors.textSecondary,
                           ),
-                          SizedBox(height: PolieSpacing.lg),
+                          SizedBox(height: PanAfricanSpacing.lg),
                           Text(
                             searchQuery.value.isEmpty
                                 ? 'No friends yet'
                                 : 'No friends found',
-                            style: PolieTypography.h3(context).copyWith(
-                              color: PolieColors.textSecondary,
+                            style: PanAfricanTypography.titleSmall(context).copyWith(
+                              color: PanAfricanColors.textSecondary,
                             ),
                           ),
-                          SizedBox(height: PolieSpacing.sm),
+                          SizedBox(height: PanAfricanSpacing.sm),
                           Text(
                             searchQuery.value.isEmpty
                                 ? 'Add friends to see them here'
                                 : 'Try a different search',
-                            style: PolieTypography.body(context).copyWith(
-                              color: PolieColors.textSecondary,
+                            style: PanAfricanTypography.bodyMedium(context).copyWith(
+                              color: PanAfricanColors.textSecondary,
                             ),
                           ),
                         ],
                       ),
                     )
                   : ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: PolieSpacing.lg),
+                      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
                       itemCount: filteredFriends.length,
                       itemBuilder: (context, index) {
                         final friend = filteredFriends[index];
@@ -421,7 +423,7 @@ class _FriendsTab extends HookConsumerWidget {
     final avatar = friend['avatar']?.toString();
 
     return Padding(
-      padding: EdgeInsets.only(bottom: PolieSpacing.md),
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
       child: GestureDetector(
         onTap: () {
           HapticFeedback.mediumImpact();
@@ -432,21 +434,21 @@ class _FriendsTab extends HookConsumerWidget {
             ),
           );
         },
-        child: PolieGlassCard(
-          padding: EdgeInsets.all(PolieSpacing.md),
+        child: PanAfricanCard(
+          padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Row(
             children: [
               Stack(
                 children: [
                   CircleAvatar(
                     radius: 28.r,
-                    backgroundColor: PolieColors.royalAmethyst.withOpacity(0.2),
+                    backgroundColor: PanAfricanColors.ankaraPurple.withOpacity(0.2),
                     backgroundImage: avatar != null ? NetworkImage(avatar) : null,
                     child: avatar == null
                         ? Text(
                             username[0].toUpperCase(),
-                            style: PolieTypography.h3(context).copyWith(
-                              color: PolieColors.royalAmethyst,
+                            style: PanAfricanTypography.titleSmall(context).copyWith(
+                              color: PanAfricanColors.ankaraPurple,
                             ),
                           )
                         : null,
@@ -459,10 +461,10 @@ class _FriendsTab extends HookConsumerWidget {
                         width: 14.w,
                         height: 14.w,
                         decoration: BoxDecoration(
-                          color: PolieColors.success,
+                          color: PanAfricanColors.success,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: PolieColors.obsidian,
+                            color: PanAfricanColors.surfaceDark,
                             width: 2,
                           ),
                         ),
@@ -470,45 +472,45 @@ class _FriendsTab extends HookConsumerWidget {
                     ),
                 ],
               ),
-              SizedBox(width: PolieSpacing.md),
+              SizedBox(width: PanAfricanSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       username,
-                      style: PolieTypography.body(context).copyWith(
-                        color: PolieColors.textPrimary,
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
+                        color: PanAfricanColors.textPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: PolieSpacing.xs),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Row(
                       children: [
-                        Icon(Icons.local_fire_department, size: 14.sp, color: PolieColors.error),
-                        SizedBox(width: PolieSpacing.xs),
+                        Icon(Icons.local_fire_department, size: 14.sp, color: PanAfricanColors.error),
+                        SizedBox(width: PanAfricanSpacing.xs),
                         Text(
                           '$streak',
-                          style: PolieTypography.bodySmall(context).copyWith(
-                            color: PolieColors.textSecondary,
+                          style: PanAfricanTypography.bodySmall(context).copyWith(
+                            color: PanAfricanColors.textSecondary,
                           ),
                         ),
-                        SizedBox(width: PolieSpacing.sm),
-                        Icon(Icons.star, size: 14.sp, color: PolieColors.goldEmber),
-                        SizedBox(width: PolieSpacing.xs),
+                        SizedBox(width: PanAfricanSpacing.sm),
+                        Icon(Icons.star, size: 14.sp, color: PanAfricanColors.accent),
+                        SizedBox(width: PanAfricanSpacing.xs),
                         Text(
                           '$xp XP',
-                          style: PolieTypography.bodySmall(context).copyWith(
-                            color: PolieColors.textSecondary,
+                          style: PanAfricanTypography.bodySmall(context).copyWith(
+                            color: PanAfricanColors.textSecondary,
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: PolieSpacing.xs),
+                    SizedBox(height: PanAfricanSpacing.xs),
                     Text(
                       'Learning $learningLanguage',
-                      style: PolieTypography.bodySmall(context).copyWith(
-                        color: PolieColors.textSecondary,
+                      style: PanAfricanTypography.bodySmall(context).copyWith(
+                        color: PanAfricanColors.textSecondary,
                         fontSize: 11.sp,
                       ),
                     ),
@@ -517,7 +519,7 @@ class _FriendsTab extends HookConsumerWidget {
               ),
               Icon(
                 Icons.chevron_right,
-                color: PolieColors.textSecondary,
+                color: PanAfricanColors.textSecondary,
               ),
             ],
           ),
@@ -562,10 +564,10 @@ class _ChallengesTab extends HookConsumerWidget {
 
     return isLoading.value
         ? Center(
-            child: CircularProgressIndicator(color: PolieColors.goldEmber),
+            child: CircularProgressIndicator(color: PanAfricanColors.accent),
           )
         : SingleChildScrollView(
-            padding: EdgeInsets.all(PolieSpacing.lg),
+            padding: EdgeInsets.all(PanAfricanSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -584,36 +586,36 @@ class _ChallengesTab extends HookConsumerWidget {
                     icon: Icon(Icons.add),
                     label: Text('Challenge a Friend'),
                     style: FilledButton.styleFrom(
-                      backgroundColor: PolieColors.goldEmber,
-                      padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
+                      backgroundColor: PanAfricanColors.accent,
+                      padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(PolieRadius.md),
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: PolieSpacing.xl),
+                SizedBox(height: PanAfricanSpacing.xl),
                 if (activeChallenges.value.isNotEmpty) ...[
                   Text(
                     'Active Challenges',
-                    style: PolieTypography.h3(context).copyWith(
-                      color: PolieColors.textPrimary,
+                    style: PanAfricanTypography.titleSmall(context).copyWith(
+                      color: PanAfricanColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: PolieSpacing.md),
+                  SizedBox(height: PanAfricanSpacing.md),
                   ...activeChallenges.value.map((challenge) => _buildChallengeCard(context, challenge, isDark, isActive: true)),
-                  SizedBox(height: PolieSpacing.xl),
+                  SizedBox(height: PanAfricanSpacing.xl),
                 ],
                 if (challengeResults.value.isNotEmpty) ...[
                   Text(
                     'Recent Results',
-                    style: PolieTypography.h3(context).copyWith(
-                      color: PolieColors.textPrimary,
+                    style: PanAfricanTypography.titleSmall(context).copyWith(
+                      color: PanAfricanColors.textPrimary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: PolieSpacing.md),
+                  SizedBox(height: PanAfricanSpacing.md),
                   ...challengeResults.value.map((challenge) => _buildChallengeCard(context, challenge, isDark, isActive: false)),
                 ],
                 if (activeChallenges.value.isEmpty && challengeResults.value.isEmpty)
@@ -624,20 +626,20 @@ class _ChallengesTab extends HookConsumerWidget {
                         Icon(
                           Icons.emoji_events_outlined,
                           size: 64.sp,
-                          color: PolieColors.textSecondary,
+                          color: PanAfricanColors.textSecondary,
                         ),
-                        SizedBox(height: PolieSpacing.lg),
+                        SizedBox(height: PanAfricanSpacing.lg),
                         Text(
                           'No challenges yet',
-                          style: PolieTypography.h3(context).copyWith(
-                            color: PolieColors.textSecondary,
+                          style: PanAfricanTypography.titleSmall(context).copyWith(
+                            color: PanAfricanColors.textSecondary,
                           ),
                         ),
-                        SizedBox(height: PolieSpacing.sm),
+                        SizedBox(height: PanAfricanSpacing.sm),
                         Text(
                           'Challenge a friend to compete!',
-                          style: PolieTypography.body(context).copyWith(
-                            color: PolieColors.textSecondary,
+                          style: PanAfricanTypography.bodyMedium(context).copyWith(
+                            color: PanAfricanColors.textSecondary,
                           ),
                         ),
                       ],
@@ -657,9 +659,9 @@ class _ChallengesTab extends HookConsumerWidget {
     final ended = challenge['ended'] ?? false;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: PolieSpacing.md),
-      child: PolieGlassCard(
-        padding: EdgeInsets.all(PolieSpacing.lg),
+      padding: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+      child: PanAfricanCard(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -668,55 +670,55 @@ class _ChallengesTab extends HookConsumerWidget {
               children: [
                 Text(
                   challengeType,
-                  style: PolieTypography.body(context).copyWith(
-                    color: PolieColors.textPrimary,
+                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                    color: PanAfricanColors.textPrimary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 if (!isActive && ended)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: PolieSpacing.sm, vertical: 4),
+                    padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.sm, vertical: 4),
                     decoration: BoxDecoration(
-                      color: won ? PolieColors.success.withOpacity(0.2) : PolieColors.error.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(PolieRadius.sm),
+                      color: won ? PanAfricanColors.success.withOpacity(0.2) : PanAfricanColors.error.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
                     ),
                     child: Text(
                       won ? 'Won' : 'Lost',
-                      style: PolieTypography.label(context).copyWith(
-                        color: won ? PolieColors.success : PolieColors.error,
+                      style: PanAfricanTypography.labelMedium(context).copyWith(
+                        color: won ? PanAfricanColors.success : PanAfricanColors.error,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
               ],
             ),
-            SizedBox(height: PolieSpacing.sm),
+            SizedBox(height: PanAfricanSpacing.sm),
             Text(
               'vs $friendName',
-              style: PolieTypography.bodySmall(context).copyWith(
-                color: PolieColors.textSecondary,
+              style: PanAfricanTypography.bodySmall(context).copyWith(
+                color: PanAfricanColors.textSecondary,
               ),
             ),
             if (isActive) ...[
-              SizedBox(height: PolieSpacing.md),
+              SizedBox(height: PanAfricanSpacing.md),
               Text(
                 'You: ${progress.toStringAsFixed(0)}',
-                style: PolieTypography.bodySmall(context).copyWith(
-                  color: PolieColors.textPrimary,
+                style: PanAfricanTypography.bodySmall(context).copyWith(
+                  color: PanAfricanColors.textPrimary,
                 ),
               ),
-              SizedBox(height: PolieSpacing.xs),
+              SizedBox(height: PanAfricanSpacing.xs),
               LinearProgressIndicator(
                 value: progress / (progress + friendProgress).clamp(0.0, 1.0),
-                backgroundColor: PolieColors.textSecondary.withOpacity(0.2),
-                valueColor: AlwaysStoppedAnimation<Color>(PolieColors.goldEmber),
+                backgroundColor: PanAfricanColors.textSecondary.withOpacity(0.2),
+                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.accent),
                 minHeight: 6.h,
               ),
-              SizedBox(height: PolieSpacing.xs),
+              SizedBox(height: PanAfricanSpacing.xs),
               Text(
                 '$friendName: ${friendProgress.toStringAsFixed(0)}',
-                style: PolieTypography.bodySmall(context).copyWith(
-                  color: PolieColors.textSecondary,
+                style: PanAfricanTypography.bodySmall(context).copyWith(
+                  color: PanAfricanColors.textSecondary,
                 ),
               ),
             ],
@@ -757,7 +759,7 @@ class _TribesTab extends HookConsumerWidget {
 
     return isLoading.value
         ? Center(
-            child: CircularProgressIndicator(color: PolieColors.goldEmber),
+            child: CircularProgressIndicator(color: PanAfricanColors.accent),
           )
         : tribeData.value == null
             ? Center(
@@ -767,24 +769,24 @@ class _TribesTab extends HookConsumerWidget {
                     Icon(
                       Icons.group_outlined,
                       size: 64.sp,
-                      color: PolieColors.textSecondary,
+                      color: PanAfricanColors.textSecondary,
                     ),
-                    SizedBox(height: PolieSpacing.lg),
+                    SizedBox(height: PanAfricanSpacing.lg),
                     Text(
                       'Not in a tribe yet',
-                      style: PolieTypography.h3(context).copyWith(
-                        color: PolieColors.textSecondary,
+                      style: PanAfricanTypography.titleSmall(context).copyWith(
+                        color: PanAfricanColors.textSecondary,
                       ),
                     ),
-                    SizedBox(height: PolieSpacing.sm),
+                    SizedBox(height: PanAfricanSpacing.sm),
                     Text(
                       'Join or create a tribe to compete together',
-                      style: PolieTypography.body(context).copyWith(
-                        color: PolieColors.textSecondary,
+                      style: PanAfricanTypography.bodyMedium(context).copyWith(
+                        color: PanAfricanColors.textSecondary,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: PolieSpacing.xl),
+                    SizedBox(height: PanAfricanSpacing.xl),
                     FilledButton(
                       onPressed: () {
                         // Navigate to find/create tribe screen
@@ -793,10 +795,10 @@ class _TribesTab extends HookConsumerWidget {
                         );
                       },
                       style: FilledButton.styleFrom(
-                        backgroundColor: PolieColors.goldEmber,
+                        backgroundColor: PanAfricanColors.accent,
                         padding: EdgeInsets.symmetric(
-                          horizontal: PolieSpacing.xl,
-                          vertical: PolieSpacing.md,
+                          horizontal: PanAfricanSpacing.xl,
+                          vertical: PanAfricanSpacing.md,
                         ),
                       ),
                       child: Text('Find a Tribe'),
@@ -805,40 +807,40 @@ class _TribesTab extends HookConsumerWidget {
                 ),
               )
             : SingleChildScrollView(
-                padding: EdgeInsets.all(PolieSpacing.lg),
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    PolieGlassCard(
-                      padding: EdgeInsets.all(PolieSpacing.xl),
+                    PanAfricanCard(
+                      padding: EdgeInsets.all(PanAfricanSpacing.xl),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             tribeData.value!['name']?.toString() ?? 'My Tribe',
-                            style: PolieTypography.h2(context).copyWith(
-                              color: PolieColors.textPrimary,
+                            style: PanAfricanTypography.titleMedium(context).copyWith(
+                              color: PanAfricanColors.textPrimary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: PolieSpacing.md),
+                          SizedBox(height: PanAfricanSpacing.md),
                           Row(
                             children: [
-                              Icon(Icons.people, size: 16.sp, color: PolieColors.textSecondary),
-                              SizedBox(width: PolieSpacing.xs),
+                              Icon(Icons.people, size: 16.sp, color: PanAfricanColors.textSecondary),
+                              SizedBox(width: PanAfricanSpacing.xs),
                               Text(
                                 '${tribeData.value!['memberCount'] ?? 0} members',
-                                style: PolieTypography.body(context).copyWith(
-                                  color: PolieColors.textSecondary,
+                                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                  color: PanAfricanColors.textSecondary,
                                 ),
                               ),
-                              SizedBox(width: PolieSpacing.lg),
-                              Icon(Icons.emoji_events, size: 16.sp, color: PolieColors.goldEmber),
-                              SizedBox(width: PolieSpacing.xs),
+                              SizedBox(width: PanAfricanSpacing.lg),
+                              Icon(Icons.emoji_events, size: 16.sp, color: PanAfricanColors.accent),
+                              SizedBox(width: PanAfricanSpacing.xs),
                               Text(
                                 'Rank #${tribeData.value!['rank'] ?? 'N/A'}',
-                                style: PolieTypography.body(context).copyWith(
-                                  color: PolieColors.goldEmber,
+                                style: PanAfricanTypography.bodyMedium(context).copyWith(
+                                  color: PanAfricanColors.accent,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -847,7 +849,7 @@ class _TribesTab extends HookConsumerWidget {
                         ],
                       ),
                     ),
-                    SizedBox(height: PolieSpacing.lg),
+                    SizedBox(height: PanAfricanSpacing.lg),
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton.icon(
@@ -860,35 +862,35 @@ class _TribesTab extends HookConsumerWidget {
                         icon: Icon(Icons.chat),
                         label: Text('Tribe Chat'),
                         style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: PolieSpacing.md),
-                          side: BorderSide(color: PolieColors.goldEmber),
+                          padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.md),
+                          side: BorderSide(color: PanAfricanColors.accent),
                         ),
                       ),
                     ),
-                    SizedBox(height: PolieSpacing.lg),
+                    SizedBox(height: PanAfricanSpacing.lg),
                     Text(
                       'Tribe Leaderboard',
-                      style: PolieTypography.h3(context).copyWith(
-                        color: PolieColors.textPrimary,
+                      style: PanAfricanTypography.titleSmall(context).copyWith(
+                        color: PanAfricanColors.textPrimary,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: PolieSpacing.md),
-                    PolieGlassCard(
-                      padding: EdgeInsets.all(PolieSpacing.lg),
+                    SizedBox(height: PanAfricanSpacing.md),
+                    PanAfricanCard(
+                      padding: EdgeInsets.all(PanAfricanSpacing.lg),
                       child: Column(
                         children: [
                           Text(
                             'Top 3 Members',
-                            style: PolieTypography.body(context).copyWith(
-                              color: PolieColors.textSecondary,
+                            style: PanAfricanTypography.bodyMedium(context).copyWith(
+                              color: PanAfricanColors.textSecondary,
                             ),
                           ),
-                          SizedBox(height: PolieSpacing.md),
+                          SizedBox(height: PanAfricanSpacing.md),
                           Text(
                             'Leaderboard data will appear here',
-                            style: PolieTypography.bodySmall(context).copyWith(
-                              color: PolieColors.textSecondary,
+                            style: PanAfricanTypography.bodySmall(context).copyWith(
+                              color: PanAfricanColors.textSecondary,
                             ),
                           ),
                         ],

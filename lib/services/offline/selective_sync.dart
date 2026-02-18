@@ -14,8 +14,11 @@ enum SyncCategory {
   profile, // Added for settings screen compatibility
   chat, // Added for settings screen compatibility
   achievements, // Added for settings screen compatibility
-  content, // Added for settings screen compatibility
-  settings, // Added for settings screen compatibility
+  content,
+  settings,
+  learnerState,
+  competenceAchievements,
+  peerCorrections,
 }
 
 /// Sync preference model

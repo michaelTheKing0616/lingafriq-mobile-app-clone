@@ -10,6 +10,7 @@ import 'base_provider.dart';
 import 'api_provider.dart';
 import 'backend_sync_provider.dart';
 import 'user_provider.dart';
+import 'package:lingafriq/services/learning_engine_bridge.dart';
 import '../config/url_constants.dart';
 import '../utils/diacritics_enforcer.dart';
 import '../data/roleplay_dataset.dart';
@@ -186,7 +187,7 @@ class GrammarFeedback {
 enum ConversationTurn { user, ai }
 
 // Polie chat modes - Premium version with all modes
-enum PolieMode { translation, tutor, roleplay, conversation, vocab, review }
+enum PolieMode { translation, tutor, roleplay, conversation, vocab, review, pronunciation, grammar }
 
 class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   final List<ChatMessage> _messages = [];
@@ -552,6 +553,38 @@ Keep reviews efficient and motivating.''';
       return;
     }
 
+    if (_mode == PolieMode.pronunciation) {
+      _systemPrompt = '''You are Polie Premium: a pronunciation coach for $_targetLanguage.
+
+Your mission:
+1. Guide the learner through sounds, tones, and phonetic patterns of $_targetLanguage
+2. Provide IPA transcriptions when helpful
+3. Explain mouth/tongue positions for difficult sounds
+4. Give minimal pairs to distinguish similar sounds
+5. Encourage practice with common words and phrases
+6. Be culturally sensitive about regional pronunciation variants
+
+Always respond in English with $_targetLanguage examples. Use encouraging, patient tone.
+Mark pronunciation-critical words in **bold**.''';
+      return;
+    }
+
+    if (_mode == PolieMode.grammar) {
+      _systemPrompt = '''You are Polie Premium: a grammar tutor for $_targetLanguage.
+
+Your mission:
+1. Teach grammar rules of $_targetLanguage with clear, simple explanations
+2. Provide sentence pattern templates with fill-in exercises
+3. Compare grammar structures to English when helpful
+4. Focus on one grammar concept at a time
+5. Give 2-3 practice sentences after each explanation
+6. Correct grammar errors gently with explanations
+
+Always respond in English with $_targetLanguage examples.
+Use structured format: Rule → Example → Practice.''';
+      return;
+    }
+
     // Default: Tutor mode (already set above)
   }
 
@@ -625,6 +658,8 @@ Keep reviews efficient and motivating.''';
         : _mode == PolieMode.roleplay ? "Roleplay"
         : _mode == PolieMode.conversation ? "Conversation"
         : _mode == PolieMode.vocab ? "Vocab"
+        : _mode == PolieMode.pronunciation ? "Pronunciation"
+        : _mode == PolieMode.grammar ? "Grammar"
             : "Review";
     logger.info('Switched mode', tag: 'ai-chat', context: {'mode': modeName, 'messagesCount': _messages.length});
   }
@@ -719,6 +754,10 @@ Keep reviews efficient and motivating.''';
         return "Let's build your $lang vocabulary! I'll teach you new words with pronunciation, meaning, and examples. Ready? Let's start with 5 essential words.";
       case PolieMode.review:
         return "Time to review what you've learned! I'll quiz you on your vocabulary and grammar. Let's see how much you remember!";
+      case PolieMode.pronunciation:
+        return "Let's work on your pronunciation! I'll guide you through sounds, tones, and phonetics for $lang. Practice with me.";
+      case PolieMode.grammar:
+        return "Grammar time! I'll teach you rules and patterns for $lang with clear examples and practice. What would you like to learn?";
     }
   }
 
@@ -784,6 +823,8 @@ Keep reviews efficient and motivating.''';
   }
 
   Stream<String> sendMessageStream(String userMessage, {String? systemPromptOverride}) async* {
+    final _messageStartTime = DateTime.now();
+
     // Enhanced input validation and sanitization
     final sanitizedMessage = _sanitizeInput(userMessage);
     if (sanitizedMessage.trim().isEmpty) {
@@ -1301,8 +1342,9 @@ Keep reviews efficient and motivating.''';
           output += buffer;
         }
 
-        // Evaluate user performance if tutor mode
-        if (_tutorMode && _messages.length >= 2) {
+        // Evaluate user performance and feed learning engine
+        _lastResponseTime = DateTime.now().difference(_messageStartTime).inMilliseconds / 1000.0;
+        if (_messages.length >= 2) {
           final lastUser = _messages[_messages.length - 2].content;
           _evaluateUser(lastUser, output);
         }
@@ -1495,7 +1537,53 @@ Keep reviews efficient and motivating.''';
       _difficulty--;
       _failureStreak = 0;
     }
+
+    // Feed the learning engine with this interaction
+    _updateLearningEngine(user, assistant, correct);
   }
+
+  /// Bridges every Polie interaction into the cognitive learning engine.
+  ///
+  /// This ensures: mastery updates, error tracking, XP calibration,
+  /// achievement detection, and review scheduling all happen in real-time.
+  Future<void> _updateLearningEngine(
+    String userMessage,
+    String assistantResponse,
+    bool wasCorrect,
+  ) async {
+    try {
+      final bridge = LearningEngineBridge.instance;
+      final learnerId = 'default_user';
+      final modeName = _mode.toString().split('.').last;
+
+      _lastLearningUpdate = await bridge.onChatInteraction(
+        learnerId: learnerId,
+        languageCode: _targetLanguage.toLowerCase(),
+        mode: modeName,
+        userMessage: userMessage,
+        aiResponse: assistantResponse,
+        responseTimeSeconds: _lastResponseTime,
+        wasCorrect: wasCorrect,
+      );
+
+      if (_lastLearningUpdate != null) {
+        _lastXpEarned = _lastLearningUpdate!.xpEarned;
+        _lastMasteryDelta = _lastLearningUpdate!.masteryDelta;
+      }
+    } catch (_) {
+      // Learning engine updates are best-effort — never block chat
+    }
+  }
+
+  LearningEngineUpdate? _lastLearningUpdate;
+  int _lastXpEarned = 0;
+  double _lastMasteryDelta = 0;
+  double _lastResponseTime = 0;
+
+  /// Exposes the latest learning engine update for UI consumption.
+  LearningEngineUpdate? get lastLearningUpdate => _lastLearningUpdate;
+  int get lastXpEarned => _lastXpEarned;
+  double get lastMasteryDelta => _lastMasteryDelta;
 
   String? _dueReview() {
     final now = DateTime.now();
@@ -1908,6 +1996,8 @@ Return only JSON.
             : _mode == PolieMode.roleplay ? "Roleplay"
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
+            : _mode == PolieMode.pronunciation ? "Pronunciation"
+            : _mode == PolieMode.grammar ? "Grammar"
             : "Review";
         logger.info('Cleared chat history', tag: 'ai-chat', context: {'mode': modeName});
   }
@@ -1944,6 +2034,8 @@ Return only JSON.
         : _mode == PolieMode.roleplay ? 'roleplay'
         : _mode == PolieMode.conversation ? 'conversation'
         : _mode == PolieMode.vocab ? 'vocab'
+        : _mode == PolieMode.pronunciation ? 'pronunciation'
+        : _mode == PolieMode.grammar ? 'grammar'
         : 'review';
   }
 
@@ -2026,6 +2118,8 @@ Return only JSON.
                 : _mode == PolieMode.roleplay ? "Roleplay"
                 : _mode == PolieMode.conversation ? "Conversation"
                 : _mode == PolieMode.vocab ? "Vocab"
+                : _mode == PolieMode.pronunciation ? "Pronunciation"
+                : _mode == PolieMode.grammar ? "Grammar"
                 : "Review";
             logger.info('Loaded messages from backend', tag: 'ai-chat', context: {'count': _messages.length, 'mode': modeName, 'language': _languageCodeForBackend});
             state = state.copyWith();
@@ -2055,6 +2149,8 @@ Return only JSON.
             : _mode == PolieMode.roleplay ? "Roleplay"
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
+            : _mode == PolieMode.pronunciation ? "Pronunciation"
+            : _mode == PolieMode.grammar ? "Grammar"
             : "Review";
         logger.info('Loaded messages from local storage', tag: 'ai-chat', context: {'count': _messages.length, 'mode': modeName});
         state = state.copyWith();
@@ -2066,6 +2162,8 @@ Return only JSON.
             : _mode == PolieMode.roleplay ? "Roleplay"
             : _mode == PolieMode.conversation ? "Conversation"
             : _mode == PolieMode.vocab ? "Vocab"
+            : _mode == PolieMode.pronunciation ? "Pronunciation"
+            : _mode == PolieMode.grammar ? "Grammar"
             : "Review";
         logger.info('No chat history found', tag: 'ai-chat', context: {'mode': modeName, 'language': _languageCodeForBackend});
         state = state.copyWith();

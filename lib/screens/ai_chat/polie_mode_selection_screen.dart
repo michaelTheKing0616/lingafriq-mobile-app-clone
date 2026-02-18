@@ -76,6 +76,20 @@ class PolieModeSelectionScreen extends ConsumerWidget {
         accentColor: PolieColors.success,
         mode: PolieMode.review,
       ),
+      _ModeData(
+        title: 'Pronunciation',
+        description: 'Master sounds, tones, and phonetics. Practice speaking clearly.',
+        icon: Icons.record_voice_over_rounded,
+        accentColor: PolieColors.electricTeal,
+        mode: PolieMode.pronunciation,
+      ),
+      _ModeData(
+        title: 'Grammar',
+        description: 'Sentence patterns, rules, and practice exercises.',
+        icon: Icons.account_tree_rounded,
+        accentColor: PolieColors.royalAmethyst,
+        mode: PolieMode.grammar,
+      ),
     ];
 
     return Scaffold(

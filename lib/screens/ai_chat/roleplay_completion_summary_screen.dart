@@ -7,6 +7,9 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/models/roleplay_progress_model.dart';
 import 'package:lingafriq/services/roleplay_progress_service.dart';
 import 'package:lingafriq/providers/gamification_provider.dart';
+import 'package:lingafriq/providers/persona_providers.dart';
+import 'package:lingafriq/ai/personas/roleplay_assessment_engine.dart';
+import 'package:lingafriq/ai/personas/historical_roleplay_controller.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
@@ -34,10 +37,19 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final xpEarned = useState<int>(0);
     final isLoading = useState(false);
+    final assessmentReport = useState<RoleplayAssessmentReport?>(null);
 
-    // Calculate XP based on performance
     useEffect(() {
-      _calculateAndAwardXP(context, ref, progressService, gamification, xpEarned, isLoading);
+      void run() async {
+        await _calculateAndAwardXP(context, ref, progressService, gamification, xpEarned, isLoading);
+        try {
+          final engine = ref.read(roleplayAssessmentEngineProvider);
+          final sessionReport = _buildSessionReport(result);
+          final report = await engine.generateReport(sessionReport);
+          assessmentReport.value = report;
+        } catch (_) {}
+      }
+      run();
       return null;
     }, []);
 
@@ -122,7 +134,13 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
                       .scale(begin: Offset(0.8, 0.8)),
                 SizedBox(height: PanAfricanSpacing.lg),
 
-                // Performance Metrics
+                if (assessmentReport.value != null)
+                  _DetailedAssessmentSection(
+                    report: assessmentReport.value!,
+                    isDark: isDark,
+                  ),
+                if (assessmentReport.value != null) SizedBox(height: PanAfricanSpacing.lg),
+
                 _PerformanceMetrics(
                   result: result,
                   isDark: isDark,
@@ -223,6 +241,20 @@ class RoleplayCompletionSummaryScreen extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  static HistoricalRoleplayReport _buildSessionReport(RoleplaySessionResult result) {
+    final learnerId = result.metadata['learner_id'] as String? ?? 'anonymous';
+    final personaId = result.metadata['persona_id'] as String? ?? result.scenarioId;
+    return HistoricalRoleplayReport(
+      sessionId: 'summary_${result.scenarioId}_${result.completedAt.millisecondsSinceEpoch}',
+      learnerId: learnerId,
+      languageCode: result.language,
+      personaId: personaId,
+      engagementType: HistoricalEngagementType.free_conversation,
+      turns: const [],
+      contextMemory: const [],
     );
   }
 
@@ -558,6 +590,196 @@ class _GrammarSection extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class _DetailedAssessmentSection extends StatelessWidget {
+  final RoleplayAssessmentReport report;
+  final bool isDark;
+
+  const _DetailedAssessmentSection({
+    required this.report,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Card(
+      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.insights, color: PanAfricanColors.primary),
+                SizedBox(width: PanAfricanSpacing.sm),
+                Text(
+                  'Detailed Assessment',
+                  style: PanAfricanTypography.titleMedium(context).copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: PanAfricanSpacing.md),
+
+            Text(
+              'Overall: ${(report.finalScore * 100).toStringAsFixed(0)}%',
+              style: PanAfricanTypography.titleSmall(context).copyWith(
+                color: PanAfricanColors.primary,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+
+            if (report.dimensionScores.isNotEmpty) ...[
+              ...report.dimensionScores.entries.map((entry) {
+                final label = _humanize(entry.key);
+                final pct = (entry.value * 100).toStringAsFixed(0);
+                return Padding(
+                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Text(
+                          label,
+                          style: PanAfricanTypography.bodySmall(context),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 5,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
+                          child: LinearProgressIndicator(
+                            value: entry.value.clamp(0.0, 1.0),
+                            minHeight: 8,
+                            backgroundColor: colorScheme.surfaceContainerHighest,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              _colorForScore(entry.value),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: PanAfricanSpacing.sm),
+                      SizedBox(
+                        width: 36,
+                        child: Text(
+                          '$pct%',
+                          style: PanAfricanTypography.labelSmall(context).copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              SizedBox(height: PanAfricanSpacing.md),
+            ],
+
+            if (report.strengths.isNotEmpty) ...[
+              Text(
+                'Strengths',
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: PanAfricanColors.success,
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.xs),
+              ...report.strengths.map(
+                (s) => Padding(
+                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxs),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.check_circle, size: 16, color: PanAfricanColors.success),
+                      SizedBox(width: PanAfricanSpacing.xs),
+                      Expanded(
+                        child: Text(s, style: PanAfricanTypography.bodySmall(context)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+            ],
+
+            if (report.improvementAreas.isNotEmpty) ...[
+              Text(
+                'Areas to Improve',
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: PanAfricanColors.accent,
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.xs),
+              ...report.improvementAreas.map(
+                (a) => Padding(
+                  padding: EdgeInsets.only(bottom: PanAfricanSpacing.xxs),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.arrow_forward, size: 16, color: PanAfricanColors.accent),
+                      SizedBox(width: PanAfricanSpacing.xs),
+                      Expanded(
+                        child: Text(a, style: PanAfricanTypography.bodySmall(context)),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+            ],
+
+            if (report.suggestedNextPersona != null)
+              Container(
+                padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                decoration: BoxDecoration(
+                  color: colorScheme.primaryContainer.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.lightbulb, size: 20, color: colorScheme.primary),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Expanded(
+                      child: Text(
+                        'Try chatting with ${report.suggestedNextPersona} next!',
+                        style: PanAfricanTypography.bodySmall(context).copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  static String _humanize(String camelCase) {
+    return camelCase
+        .replaceAllMapped(
+          RegExp(r'([a-z])([A-Z])'),
+          (m) => '${m.group(1)} ${m.group(2)}',
+        )
+        .replaceFirst(camelCase[0], camelCase[0].toUpperCase());
+  }
+
+  static Color _colorForScore(double score) {
+    if (score >= 0.8) return PanAfricanColors.success;
+    if (score >= 0.5) return PanAfricanColors.accent;
+    return PanAfricanColors.error;
   }
 }
 
