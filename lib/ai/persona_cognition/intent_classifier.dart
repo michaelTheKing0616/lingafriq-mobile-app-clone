@@ -1,5 +1,5 @@
 // Classifies user input domain and intent for persona cognition.
-/// Uses keyword detection and heuristics only (no LLM) for speed.
+// Uses keyword detection and heuristics only (no LLM) for speed.
 
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 

@@ -1,5 +1,5 @@
 // Determines what a historical persona can plausibly know.
-/// Uses persona's documented positions, inference matrix, and era bounds.
+// Uses persona's documented positions, inference matrix, and era bounds.
 
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import 'package:lingafriq/ai/persona_cognition/intent_classifier.dart';

@@ -1,5 +1,5 @@
 // Self-critique loop for persona response quality assurance.
-/// Single LLM call: evaluate and optionally rewrite in one pass.
+// Single LLM call: evaluate and optionally rewrite in one pass.
 
 import 'dart:convert';
 

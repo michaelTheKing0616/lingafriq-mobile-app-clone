@@ -58,11 +58,6 @@ class PeerLearningService {
       errorTypeIds: errorTypeIds,
     );
 
-    // Reward the corrector with a small mastery boost (teaching reinforces learning)
-    final _correctorUpdated = correctorState.copyWith(
-      mastery: (correctorState.mastery + 0.02).clamp(0.0, 1.0),
-    );
-
     return PeerCorrectionResult(
       accepted: true,
       reason: 'Correction accepted and applied.',

@@ -1,5 +1,5 @@
 // Core reasoning engine that applies persona as a cognition lens.
-/// Orchestrates intent → epistemic → Pass 1 → Pass 2 → self-critique → learner update.
+// Orchestrates intent → epistemic → Pass 1 → Pass 2 → self-critique → learner update.
 
 import 'package:dio/dio.dart';
 import 'package:lingafriq/ai/personas/historical_persona_registry.dart';

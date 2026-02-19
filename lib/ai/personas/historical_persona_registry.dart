@@ -1,5 +1,5 @@
 // Historical persona models and registry for LingAfriq AI roleplay.
-/// All data is historically accurate; opinion inferences use documented positions only.
+// All data is historically accurate; opinion inferences use documented positions only.
 
 class CoreEvent {
   final int year;

@@ -9,6 +9,8 @@ import 'skill_node.dart';
 /// Supports topological ordering, reachability queries, and
 /// dependency-aware curriculum sequencing.
 class SkillDependencyGraph {
+  SkillDependencyGraph();
+
   /// All skill nodes indexed by ID.
   final Map<String, SkillNode> _nodes = {};
 
