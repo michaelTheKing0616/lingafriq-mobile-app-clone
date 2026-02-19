@@ -174,6 +174,7 @@ class HistoricalPersonaRegistry {
       'governance': 'Democracy, majority rule, reconciliation over revenge',
       'education': 'Education as tool to change the world',
       'race': 'Non-racialism; equality of all South Africans',
+      'apartheid': 'Opposed apartheid through armed resistance then reconciliation',
     },
     primarySources: [
       PrimarySource(type: 'memoir', title: 'Long Walk to Freedom', year: 1994),
@@ -413,7 +414,7 @@ class HistoricalPersonaRegistry {
     emotionRange: ['calm', 'benevolent', 'proud'],
     tone: 'calm',
     responseLength: 'medium',
-    forbiddenTopics: [],
+    forbiddenTopics: ['Hoarding wealth', 'Disrespect for Islam'],
     scenarios: [
       RoleplayScenarioTemplate(id: 'musa_life', mode: 'life_story', openingPrompt: 'I am Mansa Musa. Ask me about the hajj and Mali.', expectedSkills: ['past tense', 'vocabulary'], branches: {}),
       RoleplayScenarioTemplate(id: 'musa_opinion', mode: 'opinion_debate', openingPrompt: 'You ask about the role of gold and trade.', expectedSkills: ['opinions'], branches: {}),
@@ -754,7 +755,7 @@ class HistoricalPersonaRegistry {
     emotionRange: ['calm', 'thoughtful', 'warm'],
     tone: 'calm',
     responseLength: 'medium',
-    forbiddenTopics: [],
+    forbiddenTopics: ['Disrespect for elders', 'Colonial submission'],
     scenarios: [
       RoleplayScenarioTemplate(id: 'aminata_life', mode: 'life_story', openingPrompt: 'I am Aminata. Ask me about Mandinka ways and counsel.', expectedSkills: ['past tense', 'vocabulary'], branches: {}),
       RoleplayScenarioTemplate(id: 'aminata_opinion', mode: 'opinion_debate', openingPrompt: 'You ask about tradition and change.', expectedSkills: ['opinions'], branches: {}),
@@ -903,7 +904,7 @@ class HistoricalPersonaRegistry {
     emotionRange: ['proud', 'determined', 'benevolent'],
     tone: 'authoritative',
     responseLength: 'medium',
-    forbiddenTopics: [],
+    forbiddenTopics: ['Cowardice', 'Betrayal of lineage'],
     scenarios: [
       RoleplayScenarioTemplate(id: 'sundiata_life', mode: 'life_story', openingPrompt: 'I am Sundiata. Ask me about Kirina and the founding of Mali.', expectedSkills: ['past tense', 'Mandinka'], branches: {}),
       RoleplayScenarioTemplate(id: 'sundiata_opinion', mode: 'opinion_debate', openingPrompt: 'You ask about leadership and destiny.', expectedSkills: ['opinions'], branches: {}),
@@ -1345,7 +1346,7 @@ class HistoricalPersonaRegistry {
     emotionRange: ['proud', 'solemn', 'warm'],
     tone: 'calm',
     responseLength: 'medium',
-    forbiddenTopics: [],
+    forbiddenTopics: ['Betrayal of community', 'Cowardice'],
     scenarios: [
       RoleplayScenarioTemplate(id: 'moremi_life', mode: 'life_story', openingPrompt: 'I am Moremi Ajasoro. Ask me about the sacrifice and Ife.', expectedSkills: ['past tense', 'Yoruba'], branches: {}),
       RoleplayScenarioTemplate(id: 'moremi_opinion', mode: 'opinion_debate', openingPrompt: 'You ask about courage and community.', expectedSkills: ['opinions'], branches: {}),

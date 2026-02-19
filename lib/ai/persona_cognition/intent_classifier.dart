@@ -75,6 +75,13 @@ class IntentClassifier {
     'racist', 'sexist', 'nazi', 'extremist',
   ];
 
+  static const _languageLearningPatterns = [
+    'teach me', 'how to say', 'how do you say', 'translate',
+    'word for', 'phrase for', 'mean in', 'say in',
+    'learn to say', 'pronounce', 'pronunciation', 'grammar',
+    'vocabulary', 'spelling', 'conjugat',
+  ];
+
   /// Classifies [userInput] for persona [personaId].
   /// Uses keyword detection and heuristics only (no LLM).
   static IntentClassification classify(String userInput, String personaId) {
@@ -159,6 +166,17 @@ class IntentClassifier {
           domain: UserIntentDomain.historical,
           type: UserIntentType.debate,
           confidence: 0.7,
+        );
+      }
+    }
+
+    // Language learning
+    for (final l in _languageLearningPatterns) {
+      if (lower.contains(l)) {
+        return const IntentClassification(
+          domain: UserIntentDomain.language,
+          type: UserIntentType.learning,
+          confidence: 0.85,
         );
       }
     }

@@ -23,7 +23,7 @@ void main() {
         expect(persona.id, isNotEmpty, reason: '${persona.displayName} missing id');
         expect(persona.displayName, isNotEmpty, reason: '${persona.id} missing displayName');
         expect(persona.region, isNotEmpty, reason: '${persona.id} missing region');
-        expect(persona.startYear, greaterThan(0), reason: '${persona.id} invalid startYear');
+        expect(persona.startYear, isNonZero, reason: '${persona.id} invalid startYear');
         expect(persona.endYear, greaterThanOrEqualTo(persona.startYear),
             reason: '${persona.id} endYear before startYear');
         expect(persona.primaryLanguages, isNotEmpty,
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('findById_returns_correct_persona', () {
-      final mandela = HistoricalPersonaRegistry.findById('nelson_mandela');
+      final mandela = HistoricalPersonaRegistry.findById('mandela_nelson');
       expect(mandela, isNotNull);
       expect(mandela!.displayName, contains('Mandela'));
     });
@@ -83,7 +83,7 @@ void main() {
     late HistoricalPersona mandela;
 
     setUp(() {
-      mandela = HistoricalPersonaRegistry.findById('nelson_mandela')!;
+      mandela = HistoricalPersonaRegistry.findById('mandela_nelson')!;
     });
 
     test('documented_topic_returns_documented_status', () {
@@ -169,7 +169,7 @@ void main() {
     late HistoricalPersona persona;
 
     setUp(() {
-      persona = HistoricalPersonaRegistry.findById('nelson_mandela')!;
+      persona = HistoricalPersonaRegistry.findById('mandela_nelson')!;
     });
 
     test('greeting_classified_correctly', () {
@@ -240,7 +240,7 @@ void main() {
     test('anachronistic_content_is_blocked', () {
       final result = filter.checkInput(
         'What do you think about the internet and computers?',
-        'queen_nzinga',
+        'nzinga_queen',
       );
       expect(result.isAllowed, isFalse);
       expect(result.reason, contains('lifetime'));
@@ -282,7 +282,7 @@ void main() {
   // -------------------------------------------------------------------------
   group('Persona data regression stability', () {
     test('mandela_has_expected_core_data', () {
-      final p = HistoricalPersonaRegistry.findById('nelson_mandela')!;
+      final p = HistoricalPersonaRegistry.findById('mandela_nelson')!;
       expect(p.region, isNotEmpty);
       expect(p.startYear, lessThanOrEqualTo(1918));
       expect(p.endYear, greaterThanOrEqualTo(2013));
@@ -290,7 +290,7 @@ void main() {
     });
 
     test('queen_nzinga_has_expected_core_data', () {
-      final p = HistoricalPersonaRegistry.findById('queen_nzinga')!;
+      final p = HistoricalPersonaRegistry.findById('nzinga_queen')!;
       expect(p.region, isNotEmpty);
       expect(p.startYear, lessThanOrEqualTo(1583));
       expect(p.endYear, greaterThanOrEqualTo(1663));
