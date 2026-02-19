@@ -14,6 +14,7 @@ import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/language_games_screen.dart';
+import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
@@ -284,8 +285,8 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
           childAspectRatio: 1.5,
           children: [
             _QuickActionCard(
-              title: 'Polie Tutor',
-              icon: Icons.school,
+              title: 'Polie AI',
+              icon: Icons.auto_awesome,
               onTap: () {
                 Navigator.push(
                   context,
@@ -295,12 +296,12 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               isDark: isDark,
             ).animate(delay: 100.ms).fadeIn(duration: 300.ms).scale(begin: Offset(0.9, 0.9)),
             _QuickActionCard(
-              title: 'AI Chat',
-              icon: Icons.chat_bubble,
+              title: 'Personas',
+              icon: Icons.people_alt_rounded,
               onTap: () {
                 Navigator.push(
                   context,
-                  SmoothPageRoute(child: const PolieModeSelectionScreen()),
+                  SmoothPageRoute(child: const PersonalitySelectionScreen()),
                 );
               },
               isDark: isDark,

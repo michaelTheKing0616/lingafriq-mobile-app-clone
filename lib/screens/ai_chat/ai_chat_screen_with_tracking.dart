@@ -80,15 +80,26 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
       // Start roleplay session if applicable
       if (mode == 'roleplay' && initialScenario != null) {
-        sessionHelper.startSession(
-          scenarioId: initialScenario.id ?? initialScenario.scenario ?? 'unknown',
-          language: languageName,
-          metadata: {
-            'scenario': initialScenario.scenario ?? '',
-            'category': initialScenario.category ?? 'general',
-            'difficulty': initialScenario.difficulty ?? 'A1',
-          },
-        );
+        try {
+          final scenarioObj = initialScenario;
+          final scenarioId = scenarioObj is Map
+              ? (scenarioObj['id']?.toString() ?? 'unknown')
+              : (scenarioObj.id?.toString() ?? scenarioObj.scenario?.toString() ?? 'unknown');
+          final scenarioName = scenarioObj is Map
+              ? (scenarioObj['scenario'] ?? '')
+              : (scenarioObj.scenario ?? '');
+          sessionHelper.startSession(
+            scenarioId: scenarioId,
+            language: languageName,
+            metadata: {
+              'scenario': scenarioName,
+              'category': 'general',
+              'difficulty': 'A1',
+            },
+          );
+        } catch (_) {
+          // Gracefully handle missing properties on dynamic scenario objects
+        }
       }
 
       // Add welcome message for all modes (roleplay gets its scene-setting
