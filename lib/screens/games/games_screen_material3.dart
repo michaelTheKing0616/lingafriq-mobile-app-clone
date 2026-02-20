@@ -401,7 +401,6 @@ class _GameCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }

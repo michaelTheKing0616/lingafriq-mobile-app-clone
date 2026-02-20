@@ -91,13 +91,6 @@ class PolieModeSelectionScreen extends ConsumerWidget {
         accentColor: PolieColors.royalAmethyst,
         mode: PolieMode.grammar,
       ),
-      _ModeData(
-        title: 'Historical Personas',
-        description: 'Chat with African historical figures. Learn through their eyes.',
-        icon: Icons.people_alt_rounded,
-        accentColor: PolieColors.goldEmber,
-        mode: PolieMode.personas,
-      ),
     ];
 
     return Scaffold(
