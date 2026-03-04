@@ -115,6 +115,12 @@ Quality requirements:
             'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
             'temperature': 0.35,
             'max_tokens': 1400,
+            'language': language,
+            'languageCode': selectedLanguage.value.code,
+            'sourceLanguage': 'en',
+            'targetLanguage': selectedLanguage.value.code,
+            'cefr': userLevel,
+            'mode': 'story',
           },
         );
         if (resp.statusCode != 200 || resp.data == null) {
@@ -298,6 +304,12 @@ Quality requirements:
                                 'messages': [{'role': 'user', 'content': 'Write a short alternate ending (2-4 sentences) for this story. Story title: $theme. Story text (end): ${storyText.length > 200 ? storyText.substring(storyText.length - 200) : storyText}. Return only the alternate ending text, no JSON.'}],
                                 'temperature': 0.4,
                                 'max_tokens': 200,
+                                'language': selectedLanguage.value.name,
+                                'languageCode': selectedLanguage.value.code,
+                                'sourceLanguage': 'en',
+                                'targetLanguage': selectedLanguage.value.code,
+                                'cefr': userLevel.value,
+                                'mode': 'story',
                               });
                               if (resp.statusCode == 200 && resp.data != null) {
                                 final content = (resp.data is Map) ? (resp.data['content']?.toString() ?? '') : resp.data.toString();

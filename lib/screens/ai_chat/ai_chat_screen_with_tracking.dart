@@ -7,8 +7,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 // Chat history is managed by Groq provider (local + backend sync); no backend /ai-chat/history call
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
+import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart' show groqChatProvider, GroqChatProvider, PolieMode;
+import 'package:lingafriq/data/roleplay_dataset.dart';
 import 'package:lingafriq/utils/roleplay_session_helper.dart';
 import 'package:lingafriq/utils/ai_chat_navigation_helper.dart';
 import 'package:lingafriq/services/ai_chat_integration_service.dart';
@@ -25,6 +27,9 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
   final String mode;
   final String modeName;
   final dynamic initialScenario; // RoleplayEntry for roleplay mode
+  final String? scenarioType;
+  final String? practiceType;
+  final Map<String, dynamic>? scenarioContext;
 
   const AIChatScreenWithTracking({
     super.key,
@@ -33,6 +38,9 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     required this.mode,
     required this.modeName,
     this.initialScenario,
+    this.scenarioType,
+    this.practiceType,
+    this.scenarioContext,
   });
 
   @override
@@ -50,6 +58,22 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final tutorService = ref.read(tutorProgressServiceProvider);
     final vocabService = ref.read(vocabularyProgressServiceProvider);
     final chatProvider = ref.read(groqChatProvider.notifier);
+    final routeArgsRaw = ModalRoute.of(context)?.settings.arguments;
+    final routeArgs = routeArgsRaw is Map ? Map<String, dynamic>.from(routeArgsRaw) : const <String, dynamic>{};
+
+    final resolvedMode = _resolveStringArg(routeArgs, 'mode') ?? mode;
+    final resolvedScenarioType = _resolveStringArg(routeArgs, 'scenarioType') ?? scenarioType;
+    final resolvedPracticeType = _resolveStringArg(routeArgs, 'practiceType') ?? practiceType;
+    final routeScenarioContext = routeArgs['scenarioContext'];
+    final resolvedScenarioContext = routeScenarioContext is Map
+        ? Map<String, dynamic>.from(routeScenarioContext)
+        : (scenarioContext ?? const <String, dynamic>{});
+    final resolvedPolieMode = _mapModeToPolieMode(resolvedMode);
+    final resolvedModeName = modeName.trim().isNotEmpty
+        ? modeName
+        : resolvedMode.substring(0, 1).toUpperCase() + resolvedMode.substring(1);
+    final hasScenarioImage = (resolvedScenarioContext['scenarioImage']?.toString().trim().isNotEmpty ?? false);
+    final requiresPhotoDescription = resolvedPracticeType == 'photo' && !hasScenarioImage;
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final sessionStartTime = useRef<DateTime?>(null);
@@ -59,6 +83,39 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final vocabularyUsed = useRef<Map<String, int>>({});
     final errors = useRef<int>(0);
     final corrections = useRef<List<String>>([]);
+
+    Future<void> initializeRoleplaySession() async {
+      isLoadingHistory.value = true;
+      loadHistoryError.value = null;
+      try {
+        await chatProvider
+            .setModeAndLanguage(
+              mode: resolvedPolieMode,
+              targetLanguage: languageName,
+              sourceLanguage: language,
+            )
+            .timeout(const Duration(seconds: 12));
+
+        if (initialScenario is RoleplayEntry) {
+          await chatProvider
+              .setRoleplayScenario(initialScenario as RoleplayEntry)
+              .timeout(const Duration(seconds: 12));
+        }
+      } catch (e) {
+        loadHistoryError.value = 'Roleplay setup had issues. You can retry or continue chatting.';
+      } finally {
+        _initRoleplay(
+          chatProvider,
+          sessionHelper,
+          resolvedPolieMode,
+          languageName,
+          language,
+          initialScenario,
+          messages,
+        );
+        isLoadingHistory.value = false;
+      }
+    }
 
     // Initialize session tracking and set mode+language atomically ONCE
     useEffect(() {
@@ -70,51 +127,41 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
       errors.value = 0;
       corrections.value = [];
 
-      // Atomically set mode+language for correct history scoping
-      final polieMode = _mapModeToPolieMode(mode);
-      chatProvider.setModeAndLanguage(
-        mode: polieMode,
-        targetLanguage: languageName,
-        sourceLanguage: language,
+      chatProvider.setScenarioContextHints(
+        practiceType: resolvedPracticeType,
+        scenarioType: resolvedScenarioType,
+        scenarioContext: resolvedScenarioContext,
       );
 
-      // Start roleplay session if applicable
-      if (mode == 'roleplay' && initialScenario != null) {
-        try {
-          final scenarioObj = initialScenario;
-          final scenarioId = scenarioObj is Map
-              ? (scenarioObj['id']?.toString() ?? 'unknown')
-              : (scenarioObj.id?.toString() ?? scenarioObj.scenario?.toString() ?? 'unknown');
-          final scenarioName = scenarioObj is Map
-              ? (scenarioObj['scenario'] ?? '')
-              : (scenarioObj.scenario ?? '');
-          sessionHelper.startSession(
-            scenarioId: scenarioId,
-            language: languageName,
-            metadata: {
-              'scenario': scenarioName,
-              'category': 'general',
-              'difficulty': 'A1',
-            },
+      // For roleplay, RoleplayScenarioSelectionScreen already set mode+language
+      // and injected the scenario intro. Calling setModeAndLanguage again would
+      // clear that intro. Instead, just ensure the scenario is applied.
+      if (resolvedMode == 'roleplay' && initialScenario != null) {
+        initializeRoleplaySession();
+      } else {
+        chatProvider.setModeAndLanguage(
+          mode: resolvedPolieMode,
+          targetLanguage: languageName,
+          sourceLanguage: language,
+        );
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          final welcome = _buildScenarioAwareWelcome(
+            mode: resolvedPolieMode,
+            languageName: languageName,
+            scenarioType: resolvedScenarioType,
+            practiceType: resolvedPracticeType,
+            scenarioContext: resolvedScenarioContext,
           );
-        } catch (_) {
-          // Gracefully handle missing properties on dynamic scenario objects
-        }
+          messages.value = [
+            {
+              'id': 'welcome',
+              'text': welcome,
+              'sender': 'polie',
+              'timestamp': DateTime.now().toIso8601String(),
+            },
+          ];
+        });
       }
-
-      // Add welcome message for all modes (roleplay gets its scene-setting
-      // message from setRoleplayScenario; other modes get a welcome prompt)
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final welcome = GroqChatProvider.getWelcomeMessage(polieMode, languageName);
-        messages.value = [
-          {
-            'id': 'welcome',
-            'text': welcome,
-            'sender': 'polie',
-            'timestamp': DateTime.now().toIso8601String(),
-          },
-        ];
-      });
 
       return null;
     }, []);
@@ -171,7 +218,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
         messages.value = [...messages.value, polieMessage];
 
         // Track roleplay turn
-        if (mode == 'roleplay') {
+        if (resolvedMode == 'roleplay') {
           sessionHelper.recordTurn(
             vocabulary: words,
             grammar: _extractGrammarPoints(response),
@@ -180,7 +227,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
         }
 
         // Track tutor interaction
-        if (mode == 'tutor') {
+        if (resolvedMode == 'tutor') {
           await _trackTutorInteraction(
             tutorService,
             userMessageText,
@@ -190,7 +237,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
         }
 
         // Track vocabulary
-        if (mode == 'vocab') {
+        if (resolvedMode == 'vocab') {
           await _trackVocabulary(vocabService, words, languageName);
         }
 
@@ -209,7 +256,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
       if (sessionStartTime.value == null) return;
 
       // Record conversation session
-      if (mode == 'conversation') {
+      if (resolvedMode == 'conversation') {
         final fluencyScore = integrationService.calculateConversationFluency(
           messageCount: messageCount.value,
           wordCount: wordCount.value,
@@ -233,7 +280,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
       }
 
       // Handle roleplay completion
-      if (mode == 'roleplay') {
+      if (resolvedMode == 'roleplay') {
         final result = await sessionHelper.completeSession();
         if (result != null && context.mounted) {
           navigateToRoleplayCompletionSummary(
@@ -262,7 +309,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(modeName),
+                Text(resolvedModeName),
                 Text(
                   languageName,
                   style: PanAfricanTypography.bodySmall(context),
@@ -279,7 +326,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
               child: IconButton(
                 icon: Icon(Icons.analytics, semanticLabel: 'Analytics'),
                 onPressed: () {
-                  _navigateToDashboard(context, mode, language, languageName);
+                  _navigateToDashboard(context, resolvedMode, language, languageName);
                 },
               ),
             ),
@@ -300,6 +347,37 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
           ),
           child: Column(
             children: [
+              _ModeBanner(mode: resolvedMode, languageName: languageName, isDark: isDark),
+              if (requiresPhotoDescription)
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.fromLTRB(
+                    PanAfricanSpacing.md,
+                    PanAfricanSpacing.sm,
+                    PanAfricanSpacing.md,
+                    0,
+                  ),
+                  padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: PanAfricanColors.warning.withOpacity(isDark ? 0.18 : 0.10),
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                    border: Border.all(
+                      color: PanAfricanColors.warning.withOpacity(0.35),
+                    ),
+                  ),
+                  child: Text(
+                    'Photo practice works best with visual details. Start by describing the scene in 1-2 sentences (people, place, and action), then ask a follow-up question.',
+                    style: PanAfricanTypography.bodySmall(context),
+                  ),
+                ),
+              if (messages.value.isEmpty)
+                _ModeSuggestionChips(
+                  mode: resolvedMode,
+                  languageName: languageName,
+                  onSuggestionTap: (text) {
+                    messageController.text = text;
+                  },
+                ),
               Expanded(
                 child: isLoadingHistory.value
                     ? ListView.builder(
@@ -307,19 +385,28 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
                         itemCount: 4,
                         itemBuilder: (_, __) => SkeletonListCard(),
                       )
-                    : loadHistoryError.value != null
-                        ? AppEmptyState(
-                            icon: Icons.chat_bubble_outline_rounded,
-                            title: 'Start a conversation!',
-                            subtitle:
-                                'I\'m here to help you learn. Type your message below.',
+                    : (loadHistoryError.value != null && messages.value.isEmpty)
+                        ? AppErrorState(
+                            message: loadHistoryError.value!,
+                            onRetry: resolvedMode == 'roleplay' ? initializeRoleplaySession : null,
                           )
+                        : loadHistoryError.value != null
+                            ? AppEmptyState(
+                                icon: Icons.warning_amber_rounded,
+                                title: 'Recovery mode',
+                                subtitle:
+                                    'Setup had issues, but you can continue chatting normally.',
+                              )
                         : messages.value.isEmpty
                             ? AppEmptyState(
-                                icon: Icons.chat_bubble_outline_rounded,
-                                title: 'Start a conversation!',
-                                subtitle:
-                                    'I\'m here to help you learn. Type your message below.',
+                                icon: _getModeIcon(resolvedMode),
+                                title: _getModeEmptyTitle(resolvedMode),
+                                subtitle: _getModeEmptySubtitle(
+                                  resolvedMode,
+                                  languageName,
+                                  practiceType: resolvedPracticeType,
+                                  scenarioContext: resolvedScenarioContext,
+                                ),
                               )
                             : ListView.builder(
                                 controller: scrollController,
@@ -424,6 +511,86 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     );
   }
 
+  void _initRoleplay(
+    GroqChatProvider chatProvider,
+    RoleplaySessionHelper sessionHelper,
+    PolieMode polieMode,
+    String languageName,
+    String language,
+    dynamic scenario,
+    ValueNotifier<List<Map<String, dynamic>>> messages,
+  ) {
+    try {
+      final scenarioObj = scenario;
+      final scenarioId = scenarioObj is Map
+          ? (scenarioObj['id']?.toString() ?? 'unknown')
+          : (scenarioObj.id?.toString() ?? scenarioObj.scenario?.toString() ?? 'unknown');
+      final scenarioName = scenarioObj is Map
+          ? (scenarioObj['scenario'] ?? '')
+          : (scenarioObj.scenario ?? '');
+      sessionHelper.startSession(
+        scenarioId: scenarioId,
+        language: languageName,
+        metadata: {
+          'scenario': scenarioName,
+          'category': 'general',
+          'difficulty': 'A1',
+        },
+      );
+    } catch (_) {}
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final scenarioText = scenario is Map
+          ? (scenario['scenario'] ?? '')
+          : (scenario.scenario ?? '');
+      final intro = scenarioText.toString().isNotEmpty
+          ? 'Welcome! You\'ve just entered the "$scenarioText" scenario in $languageName. Let\'s begin!'
+          : GroqChatProvider.getWelcomeMessage(polieMode, languageName);
+      messages.value = [
+        {
+          'id': 'welcome',
+          'text': intro,
+          'sender': 'polie',
+          'timestamp': DateTime.now().toIso8601String(),
+        },
+      ];
+    });
+  }
+
+  String? _resolveStringArg(Map<String, dynamic> args, String key) {
+    final value = args[key];
+    if (value == null) return null;
+    final text = value.toString().trim();
+    return text.isEmpty ? null : text;
+  }
+
+  String _buildScenarioAwareWelcome({
+    required PolieMode mode,
+    required String languageName,
+    String? scenarioType,
+    String? practiceType,
+    Map<String, dynamic>? scenarioContext,
+  }) {
+    final base = GroqChatProvider.getWelcomeMessage(mode, languageName);
+    if (practiceType == 'debate') {
+      final topic = scenarioContext?['scenarioTitle']?.toString();
+      final debateTopic = (topic != null && topic.trim().isNotEmpty)
+          ? topic.trim()
+          : 'today\'s topic';
+      return '$base\n\nDebate setup: take a clear position on "$debateTopic", defend it with reasons, and challenge weak arguments politely.';
+    }
+    if (practiceType == 'photo') {
+      final hasImage = scenarioContext?['scenarioImage']?.toString().trim().isNotEmpty ?? false;
+      if (!hasImage) {
+        return '$base\n\nPhoto practice tip: first describe the scene in 1-2 sentences (people, place, action), then ask a question so I can respond with context.';
+      }
+    }
+    if (scenarioType != null && scenarioType.isNotEmpty) {
+      return '$base\n\nScenario context is active, so I will keep responses aligned to this practice flow.';
+    }
+    return base;
+  }
+
   PolieMode _mapModeToPolieMode(String mode) {
     switch (mode.toLowerCase()) {
       case 'translation':
@@ -439,6 +606,10 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
         return PolieMode.vocab;
       case 'review':
         return PolieMode.review;
+      case 'pronunciation':
+        return PolieMode.pronunciation;
+      case 'grammar':
+        return PolieMode.grammar;
       default:
         return PolieMode.tutor;
     }
@@ -482,44 +653,97 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     String response,
     String language,
   ) async {
-    // Extract skill scores from interaction
-    final skillScores = <String, double>{
-      'grammar': 0.8,
-      'pronunciation': 0.7,
-      'vocabulary': 0.85,
-      'comprehension': 0.75,
-    };
+    try {
+      final userText = userInput.trim();
+      final tutorText = response.trim();
+      if (userText.isEmpty && tutorText.isEmpty) {
+        return;
+      }
 
-    // Calculate overall score
-    final overallScore = skillScores.values.reduce((a, b) => a + b) / skillScores.length;
+      final userWords = userText
+          .split(RegExp(r'\s+'))
+          .map((word) => word.trim())
+          .where((word) => word.isNotEmpty)
+          .toList();
+      final responseWords = tutorText
+          .split(RegExp(r'\s+'))
+          .map((word) => word.trim())
+          .where((word) => word.isNotEmpty)
+          .toList();
 
-    // Extract topics and vocabulary
-    final topics = <String>[];
-    final vocabulary = <String>[];
-    final grammar = <String>[];
+      final lowerUser = userText.toLowerCase();
+      final lowerResponse = tutorText.toLowerCase();
+      const hasBackendEvaluator = bool.fromEnvironment(
+        'ENABLE_BACKEND_TUTOR_EVALUATOR',
+        defaultValue: false,
+      );
+      final skillScores = <String, double>{};
+      final overallScore = hasBackendEvaluator ? 50.0 : 0.0;
 
-    // Simple extraction - in production, use AI to analyze
-    if (response.toLowerCase().contains('grammar')) {
-      topics.add('Grammar');
-      grammar.add('Basic grammar');
+      final vocabulary = userWords
+          .map((word) => word.replaceAll(RegExp(r"[^\w']"), '').toLowerCase())
+          .where((word) => word.length > 2)
+          .toSet()
+          .take(8)
+          .toList();
+
+      final topicKeywords = <String, List<String>>{
+        'Grammar': ['grammar', 'tense', 'sentence', 'verb', 'noun'],
+        'Vocabulary': ['word', 'vocab', 'phrase', 'meaning', 'translate'],
+        'Pronunciation': ['pronounce', 'pronunciation', 'sound', 'accent', 'tone'],
+        'Conversation': ['conversation', 'chat', 'dialogue', 'talk'],
+      };
+      final topics = <String>[];
+      for (final entry in topicKeywords.entries) {
+        if (entry.value.any((keyword) => lowerUser.contains(keyword) || lowerResponse.contains(keyword))) {
+          topics.add(entry.key);
+        }
+      }
+      if (topics.isEmpty) {
+        topics.add('Tutor Practice');
+      }
+
+      final grammar = <String>[
+        if (lowerResponse.contains('tense')) 'Tense',
+        if (lowerResponse.contains('verb')) 'Verb usage',
+        if (lowerResponse.contains('agreement')) 'Agreement',
+        if (lowerResponse.contains('word order')) 'Word order',
+      ];
+
+      final interaction = TutorInteraction(
+        type: userText.contains('?') ? 'question' : 'exercise',
+        content: tutorText,
+        userResponse: userText,
+        score: hasBackendEvaluator ? overallScore : null,
+        feedback: tutorText,
+        timestamp: DateTime.now(),
+      );
+
+      await service.recordSession(
+        TutorSessionResult(
+          sessionId: 'tutor_${DateTime.now().millisecondsSinceEpoch}',
+          language: language,
+          cefrLevel: 'A1',
+          interactions: [interaction],
+          overallScore: overallScore,
+          skillScores: skillScores,
+          topicsCovered: topics,
+          vocabularyLearned: vocabulary,
+          grammarPoints: grammar,
+          timeSpent: 1,
+          completedAt: DateTime.now(),
+          metadata: {
+            'source': 'ai_chat_tutor_turn',
+            'user_words': userWords.length,
+            'response_words': responseWords.length,
+            'is_scored': hasBackendEvaluator,
+            'scoring_mode': hasBackendEvaluator ? 'backend' : 'neutral',
+          },
+        ),
+      );
+    } catch (e) {
+      debugPrint('Non-blocking tutor tracking error: $e');
     }
-    if (response.toLowerCase().contains('vocab')) {
-      topics.add('Vocabulary');
-      vocabulary.addAll(userInput.split(' ').where((w) => w.length > 3).take(5));
-    }
-
-    // Create interaction (would batch and record in production)
-    TutorInteraction(
-      type: 'question',
-      content: userInput,
-      userResponse: userInput,
-      score: overallScore,
-      feedback: response,
-      timestamp: DateTime.now(),
-    );
-
-    // Record session (simplified - would batch interactions)
-    // In production, batch interactions and record at session end
   }
 
   Future<void> _trackVocabulary(
@@ -719,6 +943,158 @@ class _TypingIndicator extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+IconData _getModeIcon(String mode) {
+  switch (mode.toLowerCase()) {
+    case 'translation': return Icons.translate_rounded;
+    case 'tutor': return Icons.school_rounded;
+    case 'roleplay': return Icons.theater_comedy_rounded;
+    case 'conversation': return Icons.chat_bubble_outline_rounded;
+    case 'vocab': case 'vocabulary': return Icons.book_rounded;
+    case 'review': return Icons.refresh_rounded;
+    case 'pronunciation': return Icons.record_voice_over_rounded;
+    case 'grammar': return Icons.account_tree_rounded;
+    default: return Icons.chat_bubble_outline_rounded;
+  }
+}
+
+String _getModeEmptyTitle(String mode) {
+  switch (mode.toLowerCase()) {
+    case 'translation': return 'Ready to translate!';
+    case 'tutor': return 'Lesson time!';
+    case 'roleplay': return 'Enter the scene!';
+    case 'conversation': return 'Let\'s chat!';
+    case 'vocab': case 'vocabulary': return 'Build your vocabulary!';
+    case 'review': return 'Time to review!';
+    case 'pronunciation': return 'Practice your pronunciation!';
+    case 'grammar': return 'Grammar workshop!';
+    default: return 'Start a conversation!';
+  }
+}
+
+String _getModeEmptySubtitle(
+  String mode,
+  String lang, {
+  String? practiceType,
+  Map<String, dynamic>? scenarioContext,
+}) {
+  if (practiceType == 'debate') {
+    final topic = scenarioContext?['scenarioTitle']?.toString();
+    final debateTopic = (topic != null && topic.trim().isNotEmpty) ? topic.trim() : 'the scenario topic';
+    return 'Debate mode is active for "$debateTopic". State your position first, then support it with two reasons.';
+  }
+  if (practiceType == 'photo') {
+    final hasImage = scenarioContext?['scenarioImage']?.toString().trim().isNotEmpty ?? false;
+    if (!hasImage) {
+      return 'No image attached yet. Start by describing what you imagine in the scene, then ask a follow-up question in $lang.';
+    }
+  }
+  switch (mode.toLowerCase()) {
+    case 'translation': return 'Type any word or phrase to translate to $lang.';
+    case 'tutor': return 'Ask me to teach you about verbs, greetings, numbers, or any topic in $lang.';
+    case 'roleplay': return 'You\'re in a real-world scenario. Respond naturally in $lang!';
+    case 'conversation': return 'Chat freely in $lang. I\'ll gently correct mistakes as we go.';
+    case 'vocab': case 'vocabulary': return 'I\'ll teach you new $lang words with examples and quizzes.';
+    case 'review': return 'I\'ll quiz you on words and grammar you\'ve learned in $lang.';
+    case 'pronunciation': return 'Let\'s work on sounds, tones, and phonetics for $lang.';
+    case 'grammar': return 'I\'ll teach you sentence patterns and rules for $lang with practice.';
+    default: return 'I\'m here to help you learn. Type your message below.';
+  }
+}
+
+class _ModeBanner extends StatelessWidget {
+  final String mode;
+  final String languageName;
+  final bool isDark;
+  const _ModeBanner({required this.mode, required this.languageName, required this.isDark});
+
+  @override
+  Widget build(BuildContext context) {
+    final config = _getModeConfig(mode);
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.sm),
+      decoration: BoxDecoration(
+        color: config.color.withOpacity(isDark ? 0.15 : 0.08),
+        border: Border(bottom: BorderSide(color: config.color.withOpacity(0.3), width: 1)),
+      ),
+      child: Row(
+        children: [
+          Icon(config.icon, color: config.color, size: 20),
+          SizedBox(width: PanAfricanSpacing.sm),
+          Expanded(
+            child: Text(
+              config.label,
+              style: PanAfricanTypography.bodySmall(context).copyWith(
+                color: config.color,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static _ModeConfig _getModeConfig(String mode) {
+    switch (mode.toLowerCase()) {
+      case 'translation': return _ModeConfig(Icons.translate_rounded, Color(0xFF2196F3), 'Translation Mode');
+      case 'tutor': return _ModeConfig(Icons.school_rounded, Color(0xFFFF9800), 'Tutor Mode — structured lessons');
+      case 'roleplay': return _ModeConfig(Icons.theater_comedy_rounded, Color(0xFF9C27B0), 'Roleplay Mode — immersive scenario');
+      case 'conversation': return _ModeConfig(Icons.chat_bubble_outline_rounded, Color(0xFF4CAF50), 'Conversation Mode — free-flowing chat');
+      case 'vocab': case 'vocabulary': return _ModeConfig(Icons.book_rounded, Color(0xFFFF5722), 'Vocabulary Mode — learn new words');
+      case 'review': return _ModeConfig(Icons.refresh_rounded, Color(0xFF009688), 'Review Mode — test your memory');
+      case 'pronunciation': return _ModeConfig(Icons.record_voice_over_rounded, Color(0xFF3F51B5), 'Pronunciation Mode — master sounds');
+      case 'grammar': return _ModeConfig(Icons.account_tree_rounded, Color(0xFF795548), 'Grammar Mode — patterns & rules');
+      default: return _ModeConfig(Icons.chat_bubble_outline_rounded, Color(0xFF607D8B), 'Chat');
+    }
+  }
+}
+
+class _ModeConfig {
+  final IconData icon;
+  final Color color;
+  final String label;
+  const _ModeConfig(this.icon, this.color, this.label);
+}
+
+class _ModeSuggestionChips extends StatelessWidget {
+  final String mode;
+  final String languageName;
+  final ValueChanged<String> onSuggestionTap;
+  const _ModeSuggestionChips({required this.mode, required this.languageName, required this.onSuggestionTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final suggestions = _getSuggestions();
+    if (suggestions.isEmpty) return SizedBox.shrink();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.md, vertical: PanAfricanSpacing.sm),
+      child: Wrap(
+        spacing: PanAfricanSpacing.sm,
+        runSpacing: PanAfricanSpacing.xs,
+        children: suggestions.map((s) => ActionChip(
+          label: Text(s, style: TextStyle(fontSize: 12)),
+          onPressed: () => onSuggestionTap(s),
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+        )).toList(),
+      ),
+    );
+  }
+
+  List<String> _getSuggestions() {
+    switch (mode.toLowerCase()) {
+      case 'translation': return ['How do you say hello?', 'Translate: thank you', 'What does this mean?'];
+      case 'tutor': return ['Teach me verbs', 'Teach me greetings', 'Teach me numbers', 'How do sentences work?'];
+      case 'conversation': return ['Hello!', 'How are you?', 'Tell me about yourself', 'What\'s the weather like?'];
+      case 'vocab': case 'vocabulary': return ['Start with basics', 'Food words', 'Family words', 'Action words'];
+      case 'review': return ['Quiz me!', 'Review recent words', 'Test my grammar'];
+      case 'pronunciation': return ['Help me with vowels', 'Tone practice', 'Common greetings'];
+      case 'grammar': return ['Sentence structure', 'Past tense', 'Questions', 'Negation'];
+      default: return [];
+    }
   }
 }
 

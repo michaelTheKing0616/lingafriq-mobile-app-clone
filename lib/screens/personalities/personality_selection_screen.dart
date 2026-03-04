@@ -6,44 +6,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
 import '../../services/ai/historical_personality_service.dart';
 import '../../utils/pan_african_design_system.dart';
 import '../../utils/error_handler.dart';
 import '../../services/monitoring/sentry_service.dart';
-import '../../utils/debouncer.dart';
-import '../../widgets/performance/lazy_image.dart';
-import '../../widgets/performance/optimized_list_view.dart';
+import '../../utils/performance_utils.dart';
 import 'personality_chat_screen.dart';
-
-class EnrichedPersonality {
-  final HistoricalPersonality backend;
-  final HistoricalPersona? registry;
-
-  const EnrichedPersonality({required this.backend, this.registry});
-}
-
-List<EnrichedPersonality> _mergeWithRegistry(List<HistoricalPersonality> fromBackend) {
-  return fromBackend.map((p) {
-    HistoricalPersona? reg = HistoricalPersonaRegistry.findById(p.id);
-    if (reg == null) {
-      final nameLower = p.name.trim().toLowerCase();
-      final match = HistoricalPersonaRegistry.all
-          .where((x) => x.displayName.trim().toLowerCase() == nameLower)
-          .toList();
-      reg = match.isNotEmpty ? match.first : null;
-    }
-    return EnrichedPersonality(backend: p, registry: reg);
-  }).toList();
-}
-
-const List<Color> _roleChipColors = [
-  PanAfricanColors.primary,
-  PanAfricanColors.secondary,
-  PanAfricanColors.tertiary,
-  PanAfricanColors.kenteBlue,
-  PanAfricanColors.ankaraPurple,
-];
 
 class PersonalitySelectionScreen extends HookConsumerWidget {
   const PersonalitySelectionScreen({super.key});
@@ -58,38 +26,35 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
     final selectedLanguage = useState<String?>(null);
     final searchDebouncer = useMemoized(() => Debouncer(delay: Duration(milliseconds: 500)));
 
+    // Load personalities
     useEffect(() {
       _loadPersonalities(context, personalityService, personalities, isLoading);
       return null;
     }, []);
 
-    final enriched = useMemoized(
-        () => _mergeWithRegistry(personalities.value),
-        [personalities.value]);
-
+    // Filter personalities based on search
     final filteredPersonalities = useMemoized(() {
-      var filtered = enriched;
-
+      var filtered = personalities.value;
+      
       if (searchQuery.value.isNotEmpty) {
         final query = searchQuery.value.toLowerCase();
-        filtered = filtered.where((e) {
-          final p = e.backend;
+        filtered = filtered.where((p) {
           return p.name.toLowerCase().contains(query) ||
-              p.biography.toLowerCase().contains(query) ||
-              p.achievements.any((a) => a.toLowerCase().contains(query));
+                 p.biography.toLowerCase().contains(query) ||
+                 p.achievements.any((a) => a.toLowerCase().contains(query));
         }).toList();
       }
-
+      
       if (selectedCountry.value != null) {
-        filtered = filtered.where((e) => e.backend.country == selectedCountry.value).toList();
+        filtered = filtered.where((p) => p.country == selectedCountry.value).toList();
       }
-
+      
       if (selectedLanguage.value != null) {
-        filtered = filtered.where((e) => e.backend.language == selectedLanguage.value).toList();
+        filtered = filtered.where((p) => p.language == selectedLanguage.value).toList();
       }
-
+      
       return filtered;
-    }, [enriched, searchQuery.value, selectedCountry.value, selectedLanguage.value]);
+    }, [personalities.value, searchQuery.value, selectedCountry.value, selectedLanguage.value]);
 
     return Scaffold(
       appBar: AppBar(
@@ -139,7 +104,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                                 ...personalities.value
                                     .map((p) => p.country)
                                     .toSet()
-                                    .map((country) => DropdownMenuItem<String>(
+                                    .map((country) => DropdownMenuItem(
                                           value: country,
                                           child: Text(country),
                                         )),
@@ -164,7 +129,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                                 ...personalities.value
                                     .map((p) => p.language)
                                     .toSet()
-                                    .map((lang) => DropdownMenuItem<String>(
+                                    .map((lang) => DropdownMenuItem(
                                           value: lang,
                                           child: Text(lang),
                                         )),
@@ -193,15 +158,15 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                           itemExtent: 120.0,
                           padding: EdgeInsets.all(PanAfricanSpacing.md),
                           itemBuilder: (context, index) {
-                            final enriched = filteredPersonalities[index];
+                            final personality = filteredPersonalities[index];
                             return _PersonalityCard(
-                              enriched: enriched,
+                              personality: personality,
                               onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => PersonalityChatScreen(
-                                      personality: enriched.backend,
+                                      personality: personality,
                                     ),
                                   ),
                                 );
@@ -242,19 +207,18 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
   }
 }
 
+/// Personality Card Widget
 class _PersonalityCard extends StatelessWidget {
-  final EnrichedPersonality enriched;
+  final HistoricalPersonality personality;
   final VoidCallback onTap;
 
   const _PersonalityCard({
-    required this.enriched,
+    required this.personality,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final p = enriched.backend;
-    final reg = enriched.registry;
     return Card(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
       child: InkWell(
@@ -263,26 +227,28 @@ class _PersonalityCard extends StatelessWidget {
           padding: EdgeInsets.all(PanAfricanSpacing.md),
           child: Row(
             children: [
+              // Avatar
               CircleAvatar(
                 radius: 30,
                 backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-                child: p.imageUrl != null
+                child: personality.imageUrl != null
                     ? LazyImage(
-                        imageUrl: p.imageUrl!,
+                        imageUrl: personality.imageUrl!,
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
-                        errorWidgetWidget: Icon(Icons.person, size: 30),
+                        errorWidget: Icon(Icons.person, size: 30),
                       )
                     : Icon(Icons.person, size: 30),
               ),
               SizedBox(width: PanAfricanSpacing.md),
+              // Info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      p.name,
+                      personality.name,
                       style: PanAfricanTypography.titleMedium(context).copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -293,73 +259,23 @@ class _PersonalityCard extends StatelessWidget {
                         Icon(Icons.location_on, size: 14),
                         SizedBox(width: 4),
                         Text(
-                          p.country,
+                          personality.country,
                           style: PanAfricanTypography.bodySmall(context),
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
                         Icon(Icons.language, size: 14),
                         SizedBox(width: 4),
                         Text(
-                          p.language,
+                          personality.language,
                           style: PanAfricanTypography.bodySmall(context),
                         ),
                       ],
                     ),
-                    if (reg != null) ...[
-                      SizedBox(height: PanAfricanSpacing.xs),
-                      Wrap(
-                        spacing: PanAfricanSpacing.xs,
-                        runSpacing: PanAfricanSpacing.xxs,
-                        children: [
-                          ..._roleChipColors.asMap().entries.where((e) => e.key < reg.historicalRoles.length).take(3).map((e) {
-                            final role = reg.historicalRoles[e.key];
-                            final color = e.value;
-                            return Chip(
-                              label: Text(
-                                role,
-                                style: PanAfricanTypography.labelSmall(context).copyWith(color: color),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                horizontal: PanAfricanSpacing.xs,
-                                vertical: 2,
-                              ),
-                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
-                              backgroundColor: color.withOpacity(0.18),
-                            );
-                          }),
-                          Text(
-                            'Era: ${reg.startYear}–${reg.endYear}',
-                            style: PanAfricanTypography.labelSmall(context).copyWith(
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                          if (reg.primaryLanguages.isNotEmpty) ...[
-                            SizedBox(width: PanAfricanSpacing.xs),
-                            Text(
-                              reg.primaryLanguages.take(2).join(', '),
-                              style: PanAfricanTypography.labelSmall(context).copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                          if (reg.scenarios.isNotEmpty) ...[
-                            SizedBox(width: PanAfricanSpacing.xs),
-                            Text(
-                              '${reg.scenarios.length} scenarios',
-                              style: PanAfricanTypography.labelSmall(context).copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ],
                     SizedBox(height: PanAfricanSpacing.xs),
                     Text(
-                      p.biography.length > 100
-                          ? '${p.biography.substring(0, 100)}...'
-                          : p.biography,
+                      personality.biography.length > 100
+                          ? '${personality.biography.substring(0, 100)}...'
+                          : personality.biography,
                       style: PanAfricanTypography.bodySmall(context),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

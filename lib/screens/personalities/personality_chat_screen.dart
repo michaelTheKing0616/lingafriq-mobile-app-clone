@@ -1,30 +1,16 @@
+// Historical Personality Chat Screen
+// Chat with historical African personalities
+// 
+// Production-ready implementation (December 2025)
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import 'package:lingafriq/providers/persona_providers.dart';
-import 'package:lingafriq/ai/personas/historical_persona_registry.dart';
-import 'package:lingafriq/ai/persona_cognition/persona_cognition_engine.dart';
-import 'package:lingafriq/ai/persona_cognition/epistemic_classifier.dart';
-import 'package:lingafriq/services/ai/historical_personality_service.dart';
-import 'package:lingafriq/utils/pan_african_design_system.dart';
-import 'package:lingafriq/utils/error_handler.dart';
-import 'package:lingafriq/services/monitoring/sentry_service.dart';
-import 'package:lingafriq/providers/user_provider.dart';
-
-class CognitionChatMessage {
-  final String role;
-  final String displayText;
-  final PersonaCognitionResult? cognitionResult;
-  final DateTime timestamp;
-
-  const CognitionChatMessage({
-    required this.role,
-    required this.displayText,
-    this.cognitionResult,
-    required this.timestamp,
-  });
-}
+import '../../services/ai/historical_personality_service.dart';
+import '../../utils/pan_african_design_system.dart';
+import '../../utils/error_handler.dart';
+import '../../services/monitoring/sentry_service.dart';
+import '../../providers/user_provider.dart';
 
 class PersonalityChatScreen extends HookConsumerWidget {
   final HistoricalPersonality personality;
@@ -39,12 +25,11 @@ class PersonalityChatScreen extends HookConsumerWidget {
     final personalityService = ref.read(historicalPersonalityServiceProvider);
     final user = ref.watch(userProvider);
     final messageController = useTextEditingController();
-    final messages = useState<List<CognitionChatMessage>>([]);
+    final messages = useState<List<PersonalityMessage>>([]);
     final isLoading = useState(false);
     final session = useState<PersonalityChatSession?>(null);
-    final personaChat = ref.read(personaChatProvider.notifier);
-    final tts = ref.read(personaTtsControllerProvider);
 
+    // Initialize chat session
     useEffect(() {
       if (user?.id != null && session.value == null) {
         _initializeSession(
@@ -54,7 +39,6 @@ class PersonalityChatScreen extends HookConsumerWidget {
           session,
         );
       }
-      personaChat.setPersona(personality.id);
       return null;
     }, [user?.id]);
 
@@ -64,56 +48,28 @@ class PersonalityChatScreen extends HookConsumerWidget {
       final userMessage = messageController.text.trim();
       messageController.clear();
 
+      // Add user message to UI
       messages.value = [
         ...messages.value,
-        CognitionChatMessage(
+        PersonalityMessage(
           role: 'user',
-          displayText: userMessage,
+          content: userMessage,
           timestamp: DateTime.now(),
         ),
       ];
 
       try {
         isLoading.value = true;
-        final enhancedPersona = HistoricalPersonaRegistry.findById(personality.id);
+        final response = await personalityService.sendMessage(
+          sessionId: session.value!.sessionId,
+          message: userMessage,
+        );
 
-        if (enhancedPersona != null) {
-          final result = await personaChat.sendMessage(
-            userMessage,
-            learnerId: user?.id.toString(),
-            languageCode: 'en',
-          );
-          if (result != null && context.mounted) {
-            messages.value = [
-              ...messages.value,
-              CognitionChatMessage(
-                role: 'persona',
-                displayText: result.personaReply,
-                cognitionResult: result,
-                timestamp: DateTime.now(),
-              ),
-            ];
-          } else if (context.mounted) {
-            final err = ref.read(personaChatProvider).error;
-            if (err != null) ErrorHandler.showError(context, Exception(err));
-          }
-        } else {
-          final response = await personalityService.sendMessage(
-            sessionId: session.value!.sessionId,
-            message: userMessage,
-          );
-          messages.value = [
-            ...messages.value,
-            CognitionChatMessage(
-              role: 'persona',
-              displayText: response.content,
-              timestamp: DateTime.now(),
-            ),
-          ];
-          if (response.content.trim().isNotEmpty) {
-            tts.speak(response.content);
-          }
-        }
+        // Add personality response
+        messages.value = [
+          ...messages.value,
+          response,
+        ];
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
@@ -139,15 +95,11 @@ class PersonalityChatScreen extends HookConsumerWidget {
             Text(personality.name),
             Text(
               personality.country,
-              style: PanAfricanTypography.labelMedium(context),
+              style: TextStyle(fontSize: 12),
             ),
           ],
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.stop_circle_outlined),
-            onPressed: isLoading.value ? null : () => personaChat.interrupt(),
-          ),
           IconButton(
             icon: Icon(Icons.info_outline),
             onPressed: () {
@@ -158,6 +110,7 @@ class PersonalityChatScreen extends HookConsumerWidget {
       ),
       body: Column(
         children: [
+          // Messages
           Expanded(
             child: messages.value.isEmpty
                 ? Center(
@@ -191,13 +144,11 @@ class PersonalityChatScreen extends HookConsumerWidget {
                         message: message,
                         isUser: message.role == 'user',
                         personalityName: personality.name,
-                        onReplay: message.role == 'persona'
-                            ? () => tts.speak(message.displayText)
-                            : null,
                       );
                     },
                   ),
           ),
+          // Input
           Container(
             padding: EdgeInsets.all(PanAfricanSpacing.md),
             decoration: BoxDecoration(
@@ -272,12 +223,7 @@ class PersonalityChatScreen extends HookConsumerWidget {
     }
   }
 
-  void _showPersonalityInfo(
-    BuildContext context,
-    HistoricalPersonality personality,
-  ) {
-    final enhanced = HistoricalPersonaRegistry.findById(personality.id);
-
+  void _showPersonalityInfo(BuildContext context, HistoricalPersonality personality) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -287,66 +233,25 @@ class PersonalityChatScreen extends HookConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (enhanced != null) ...[
-                Text(
-                  '${enhanced.region} • ${enhanced.primaryLanguages.join(", ")}',
-                  style: PanAfricanTypography.labelMedium(context),
+              Text('${personality.country} • ${personality.language}'),
+              if (personality.birthDate != null || personality.deathDate != null)
+                Text('${personality.birthDate ?? ''} - ${personality.deathDate ?? ''}'),
+              SizedBox(height: PanAfricanSpacing.md),
+              Text(
+                personality.biography,
+                style: PanAfricanTypography.bodyMedium(context),
+              ),
+              SizedBox(height: PanAfricanSpacing.md),
+              Text(
+                'Key Achievements:',
+                style: PanAfricanTypography.labelLarge(context).copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: PanAfricanSpacing.xs),
-                Text(
-                  enhanced.shortBio,
-                  style: PanAfricanTypography.bodyMedium(context),
-                ),
-                if (enhanced.coreEvents.isNotEmpty) ...[
-                  SizedBox(height: PanAfricanSpacing.sm),
-                  Text(
-                    'Key events',
-                    style: PanAfricanTypography.labelLarge(context).copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  ...enhanced.coreEvents.take(3).map(
-                        (e) => Padding(
-                          padding: EdgeInsets.only(
-                            left: PanAfricanSpacing.md,
-                            top: PanAfricanSpacing.xs,
-                          ),
-                          child: Text(
-                            '${e.year}: ${e.event}',
-                            style: PanAfricanTypography.bodySmall(context),
-                          ),
-                        ),
-                      ),
-                ],
-              ] else ...[
-                Text('${personality.country} • ${personality.language}'),
-                if (personality.birthDate != null || personality.deathDate != null)
-                  Text('${personality.birthDate ?? ''} - ${personality.deathDate ?? ''}'),
-                SizedBox(height: PanAfricanSpacing.md),
-                Text(
-                  personality.biography,
-                  style: PanAfricanTypography.bodyMedium(context),
-                ),
-                SizedBox(height: PanAfricanSpacing.md),
-                Text(
-                  'Key Achievements:',
-                  style: PanAfricanTypography.labelLarge(context).copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                ...personality.achievements.map(
-                  (a) => Padding(
-                    padding: EdgeInsets.only(
-                      left: PanAfricanSpacing.md,
-                      top: 4,
-                    ),
-                    child: Text(
-                      '• $a',
-                      style: PanAfricanTypography.bodySmall(context),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              ...personality.achievements.map((a) => Padding(
+                    padding: EdgeInsets.only(left: PanAfricanSpacing.md, top: 4),
+                    child: Text('• $a', style: PanAfricanTypography.bodySmall(context)),
+                  )),
             ],
           ),
         ),
@@ -361,188 +266,52 @@ class PersonalityChatScreen extends HookConsumerWidget {
   }
 }
 
-class _MessageBubble extends StatefulWidget {
-  final CognitionChatMessage message;
+/// Message Bubble Widget
+class _MessageBubble extends StatelessWidget {
+  final PersonalityMessage message;
   final bool isUser;
   final String personalityName;
-  final VoidCallback? onReplay;
 
   const _MessageBubble({
     required this.message,
     required this.isUser,
     required this.personalityName,
-    this.onReplay,
   });
 
   @override
-  State<_MessageBubble> createState() => _MessageBubbleState();
-}
-
-class _MessageBubbleState extends State<_MessageBubble> {
-  bool _citationsExpanded = false;
-
-  @override
   Widget build(BuildContext context) {
-    final result = widget.message.cognitionResult;
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Align(
-      alignment: widget.isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         margin: EdgeInsets.only(bottom: PanAfricanSpacing.sm),
         padding: EdgeInsets.all(PanAfricanSpacing.md),
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.85,
+          maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
-          color: widget.isUser
-              ? colorScheme.primaryContainer
-              : colorScheme.surfaceContainerHighest,
+          color: isUser
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(PanAfricanRadius.md),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (!widget.isUser) ...[
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.personalityName,
-                      style: PanAfricanTypography.labelSmall(context).copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  if (result != null) ...[
-                    _EpistemicBadge(status: result.epistemicStatus),
-                    SizedBox(width: PanAfricanSpacing.xs),
-                    Opacity(
-                      opacity: 0.5 + result.confidence * 0.5,
-                      child: Icon(Icons.circle, size: 8, color: colorScheme.primary),
-                    ),
-                  ],
-                  if (widget.onReplay != null)
-                    IconButton(
-                      icon: Icon(Icons.volume_up, size: 20),
-                      onPressed: widget.onReplay,
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(minWidth: 32, minHeight: 32),
-                    ),
-                ],
+            if (!isUser)
+              Text(
+                personalityName,
+                style: PanAfricanTypography.labelSmall(context).copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              SizedBox(height: PanAfricanSpacing.xs),
-            ],
-            Text(
-              widget.message.displayText,
-              style: PanAfricanTypography.bodyMedium(context),
-            ),
-            if (result != null) ...[
-              if (result.languageFeedback.isNotEmpty) ...[
-                SizedBox(height: PanAfricanSpacing.sm),
-                Wrap(
-                  spacing: PanAfricanSpacing.xs,
-                  runSpacing: PanAfricanSpacing.xs,
-                  children: result.languageFeedback
-                      .map(
-                        (tp) => Chip(
-                          label: Text(
-                            '${tp.type}: ${tp.note}',
-                            style: PanAfricanTypography.labelSmall(context),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: PanAfricanSpacing.xs,
-                            vertical: 2,
-                          ),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          visualDensity: VisualDensity.compact,
-                        ),
-                      )
-                      .toList(),
-                ),
-              ],
-              if (result.culturalNote != null &&
-                  result.culturalNote!.isNotEmpty) ...[
-                SizedBox(height: PanAfricanSpacing.sm),
-                Container(
-                  padding: EdgeInsets.all(PanAfricanSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainerLow.withOpacity(0.7),
-                    borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.lightbulb_outline,
-                        size: 16,
-                        color: colorScheme.tertiary,
-                      ),
-                      SizedBox(width: PanAfricanSpacing.xs),
-                      Expanded(
-                        child: Text(
-                          result.culturalNote!,
-                          style: PanAfricanTypography.bodySmall(context),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-              if (result.citations.isNotEmpty) ...[
-                SizedBox(height: PanAfricanSpacing.sm),
-                InkWell(
-                  onTap: () =>
-                      setState(() => _citationsExpanded = !_citationsExpanded),
-                  borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: PanAfricanSpacing.xs),
-                    child: Row(
-                      children: [
-                        Icon(
-                          _citationsExpanded
-                              ? Icons.expand_less
-                              : Icons.expand_more,
-                          size: 20,
-                        ),
-                        SizedBox(width: PanAfricanSpacing.xs),
-                        Text(
-                          'Sources (${result.citations.length})',
-                          style: PanAfricanTypography.labelSmall(context),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                if (_citationsExpanded)
-                  ...result.citations.map(
-                    (c) => Padding(
-                      padding: EdgeInsets.only(
-                        left: PanAfricanSpacing.md,
-                        top: PanAfricanSpacing.xs,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            c.source,
-                            style: PanAfricanTypography.labelSmall(context)
-                                .copyWith(fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            c.relevance,
-                            style: PanAfricanTypography.bodySmall(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-              ],
-            ],
             SizedBox(height: PanAfricanSpacing.xs),
             Text(
-              _formatTime(widget.message.timestamp),
+              message.content,
+              style: PanAfricanTypography.bodyMedium(context),
+            ),
+            SizedBox(height: PanAfricanSpacing.xs),
+            Text(
+              _formatTime(message.timestamp),
               style: PanAfricanTypography.bodySmall(context).copyWith(
                 color: Colors.grey,
               ),
@@ -569,38 +338,3 @@ class _MessageBubbleState extends State<_MessageBubble> {
   }
 }
 
-class _EpistemicBadge extends StatelessWidget {
-  final EpistemicStatus status;
-
-  const _EpistemicBadge({required this.status});
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final (label, color) = switch (status) {
-      EpistemicStatus.documented => ('Documented', Colors.green),
-      EpistemicStatus.inferred => ('Inferred', Colors.amber),
-      EpistemicStatus.uncertain => ('Uncertain', Colors.red),
-      EpistemicStatus.anachronistic => ('Anachronistic', colorScheme.error),
-      EpistemicStatus.outOfScope => ('Out of scope', colorScheme.outline),
-    };
-
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: PanAfricanSpacing.xs,
-        vertical: 2,
-      ),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
-      ),
-      child: Text(
-        label,
-        style: PanAfricanTypography.labelSmall(context).copyWith(
-          color: color,
-          fontSize: 10,
-        ),
-      ),
-    );
-  }
-}

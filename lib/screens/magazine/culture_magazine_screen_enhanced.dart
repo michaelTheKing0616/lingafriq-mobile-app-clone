@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/error_handler.dart';
@@ -33,16 +34,6 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    List<Map<String, dynamic>> placeholderArticles() {
-      return [
-        {'_id': '1', 'title': 'Greetings Across Africa', 'slug': 'greetings-across-africa', 'excerpt': 'Learn how to say hello in Yoruba, Swahili, Zulu, and more.', 'category': 'language', 'published': true},
-        {'_id': '2', 'title': 'Proverbs and Wisdom', 'slug': 'proverbs-and-wisdom', 'excerpt': 'African proverbs that teach life lessons and cultural values.', 'category': 'culture', 'published': true},
-        {'_id': '3', 'title': 'Music and Rhythm', 'slug': 'music-and-rhythm', 'excerpt': 'The role of drumming and music in African languages and communication.', 'category': 'culture', 'published': true},
-        {'_id': '4', 'title': 'Family and Respect', 'slug': 'family-and-respect', 'excerpt': 'Terms for family members and showing respect in different African cultures.', 'category': 'language', 'published': true},
-        {'_id': '5', 'title': 'Markets and Bargaining', 'slug': 'markets-and-bargaining', 'excerpt': 'Essential phrases for shopping and bargaining in local markets.', 'category': 'language', 'published': true},
-      ];
-    }
-
     Future<void> loadArticles() async {
       isLoading.value = true;
       try {
@@ -61,18 +52,18 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
 
           if (listCandidate is List) {
             final list = List<Map<String, dynamic>>.from(listCandidate.whereType<Map>());
-            articles.value = list.isNotEmpty ? list : placeholderArticles();
+            articles.value = list;
           } else {
-            articles.value = placeholderArticles();
+            articles.value = [];
           }
         } else {
-          articles.value = placeholderArticles();
+          articles.value = [];
         }
       } catch (e) {
         if (context.mounted) {
           ErrorHandler.showError(context, e);
         }
-        articles.value = placeholderArticles();
+        articles.value = [];
       } finally {
         isLoading.value = false;
       }
@@ -138,7 +129,13 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     }
 
     Future<void> shareArticle(Map<String, dynamic> article) async {
-      // Share functionality - use share_plus package in production
+      final title = article['title']?.toString().trim() ?? 'Cultural article';
+      final slug = article['slug']?.toString().trim();
+      final base = Api.baseUrl.replaceAll(RegExp(r'/$'), '');
+      final articleUrl = (slug != null && slug.isNotEmpty)
+          ? '$base/culture-magazine/$slug'
+          : '$base/culture-magazine';
+      await Share.share('$title\n\n$articleUrl');
     }
 
     useEffect(() {
@@ -405,7 +402,7 @@ class _ArticleCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image placeholder
+            // Image header
             Expanded(
               flex: 3,
               child: Container(

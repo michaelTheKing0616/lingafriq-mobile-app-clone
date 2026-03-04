@@ -1,7 +1,8 @@
-// This file contains template implementations for all games
-// Each game follows the BaseGameScreen pattern
+// This file contains advanced game implementations.
+// Each game follows the BaseGameScreen pattern.
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,15 +13,221 @@ import 'dart:io';
 import '../../models/game/game_session_model.dart';
 import '../../models/game/phrase_card_model.dart';
 import '../../providers/game_provider.dart';
+import '../../providers/dio_provider.dart';
 import '../../services/polie_content_generator.dart';
+import '../../services/voice/pronunciation_analysis_service.dart';
+import '../../models/lesson_item_model.dart';
 import '../../utils/pan_african_design_system.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
 
-/// Template for creating game screens - copy and customize
+const bool _allowSyntheticGameContent = bool.fromEnvironment(
+  'ALLOW_SYNTHETIC_GAME_CONTENT',
+  defaultValue: false,
+);
+
+/// Shared helpers used by advanced game screens.
 mixin GameTemplateMixin<T extends BaseGameScreen> on BaseGameScreenState<T> {
   // Common game logic can go here
+}
+
+String _normalizedLanguageKey(String language) {
+  return language.trim().toLowerCase();
+}
+
+List<PhraseCard> _cardsForLanguage(WidgetRef ref, String language) {
+  final allCards = ref.read(gameProvider.notifier).availableCards;
+  final normalizedLanguage = _normalizedLanguageKey(language);
+  final matching = allCards
+      .where((card) => _normalizedLanguageKey(card.language) == normalizedLanguage)
+      .toList();
+  return matching.isNotEmpty ? matching : allCards.toList();
+}
+
+List<String> _staticGrammarSentenceBank(String language) {
+  switch (_normalizedLanguageKey(language)) {
+    case 'yoruba':
+      return const [
+        'Mo n ko Yoruba lojoojumo.',
+        'E kaaro, bawo ni o se wa?',
+        'A o lo si oja ni ale.',
+      ];
+    case 'swahili':
+      return const [
+        'Ninajifunza Kiswahili kila siku.',
+        'Habari yako rafiki yangu?',
+        'Tutakwenda sokoni jioni.',
+      ];
+    case 'hausa':
+      return const [
+        'Ina koyon Hausa kowace rana.',
+        'Sannu, yaya kake yau?',
+        'Za mu je kasuwa da yamma.',
+      ];
+    default:
+      return [
+        'I am practicing $language every day.',
+        'Today we greet and ask simple questions in $language.',
+        'We can describe food, places, and daily routines in $language.',
+      ];
+  }
+}
+
+List<Map<String, dynamic>> _buildGrammarFallbackSentences({
+  required WidgetRef ref,
+  required String language,
+}) {
+  final cards = _cardsForLanguage(ref, language);
+  final cardSentences = cards
+      .expand((card) => card.contextExamples)
+      .map((line) => line.trim())
+      .where((line) => line.isNotEmpty)
+      .take(8)
+      .toList();
+
+  final sourceSentences = cardSentences.isNotEmpty ? cardSentences : _staticGrammarSentenceBank(language);
+  return sourceSentences.map((line) {
+    final words = line
+        .split(RegExp(r'[ ,.!?;:]+'))
+        .map((word) => word.trim())
+        .where((word) => word.isNotEmpty)
+        .toList();
+    return {
+      'sentence': line,
+      'words': words,
+    };
+  }).toList();
+}
+
+List<String> _staticKaraokeLyricsBank(String language) {
+  switch (_normalizedLanguageKey(language)) {
+    case 'yoruba':
+      return const [
+        'E kaabo si kilasi wa',
+        'A n ko ede wa pelu ayo',
+        'So oro naa ni kedere',
+        'A tun so o, a si mo o',
+      ];
+    case 'swahili':
+      return const [
+        'Karibu kwenye darasa letu',
+        'Tunajifunza kwa furaha',
+        'Sema maneno kwa uwazi',
+        'Rudia tena kwa kujiamini',
+      ];
+    case 'hausa':
+      return const [
+        'Barka da zuwa ajinmu',
+        'Muna koyo cikin farin ciki',
+        'Faɗi kalmomi a sarari',
+        'Maimaita su da kwarin gwiwa',
+      ];
+    default:
+      return [
+        'Welcome to this $language practice song',
+        'We repeat each phrase with steady rhythm',
+        'Speak clearly and keep your flow',
+        'Finish strong with confident pronunciation',
+      ];
+  }
+}
+
+Map<String, dynamic> _buildKaraokeFallbackSong({
+  required WidgetRef ref,
+  required String language,
+  String? preferredTitle,
+  List<String>? seedLyrics,
+}) {
+  final cards = _cardsForLanguage(ref, language);
+  final cardLines = cards
+      .expand((card) => <String>[card.text, ...card.contextExamples])
+      .map((line) => line.trim())
+      .where((line) => line.isNotEmpty)
+      .take(6)
+      .toList();
+  final lyrics = (seedLyrics != null && seedLyrics.isNotEmpty)
+      ? seedLyrics.take(6).toList()
+      : (cardLines.isNotEmpty ? cardLines : _staticKaraokeLyricsBank(language));
+
+  return {
+    'title': (preferredTitle != null && preferredTitle.trim().isNotEmpty)
+        ? preferredTitle.trim()
+        : '$language Pronunciation Flow',
+    'lyrics': lyrics,
+  };
+}
+
+List<String> _staticRecipeStepsBank(String language) {
+  switch (_normalizedLanguageKey(language)) {
+    case 'yoruba':
+      return const [
+        'Gba eroja pataki jọ sinu ago.',
+        'Ge eroja naa si kekere ki won le se yarayara.',
+        'Dá epo sinu ikoko, fi ata ati alubosa kun un.',
+        'Jẹ ki o jo die, fi obe naa sin pelu ounje gbigbona.',
+      ];
+    case 'swahili':
+      return const [
+        'Kusanya viungo vikuu kwenye meza.',
+        'Kata viungo vipande vidogo kwa kupika haraka.',
+        'Weka mafuta, kisha ongeza vitunguu na viungo.',
+        'Pika kwa moto wa wastani hadi chakula kiwe tayari.',
+      ];
+    case 'hausa':
+      return const [
+        'Tattara manyan kayan hadi a wuri guda.',
+        'Yanka kayan kaɗan-kaɗan domin su dahu da sauri.',
+        'Zuba mai a tukunya, ƙara albasa da kayan ƙamshi.',
+        'Dafa a wuta matsakaici har sai ya yi kyau a ci.',
+      ];
+    default:
+      return [
+        'Gather your core ingredients for this $language dish.',
+        'Prepare and cut ingredients into even pieces.',
+        'Cook aromatics first, then add the main ingredients.',
+        'Finish gently and serve while warm.',
+      ];
+  }
+}
+
+Map<String, dynamic> _buildQuizChefFallbackRecipe({
+  required WidgetRef ref,
+  required String language,
+  String? preferredTitle,
+}) {
+  final cards = _cardsForLanguage(ref, language);
+  final ingredients = cards
+      .map((card) => card.gloss.trim().isNotEmpty ? card.gloss.trim() : card.text.trim())
+      .where((item) => item.isNotEmpty)
+      .toSet()
+      .take(4)
+      .toList();
+
+  final steps = ingredients.length >= 3
+      ? <String>[
+          'Gather ${ingredients.take(3).join(', ')}.',
+          'Prepare the ingredients and repeat each key word in $language.',
+          'Cook everything together and adjust seasoning.',
+          'Serve the dish and describe the flavor in $language.',
+        ]
+      : _staticRecipeStepsBank(language);
+
+  final title = (preferredTitle != null && preferredTitle.trim().isNotEmpty)
+      ? preferredTitle.trim()
+      : '$language Home Kitchen Challenge';
+
+  return {
+    'title': title,
+    'steps': steps
+        .asMap()
+        .entries
+        .map((entry) => {
+              'step': entry.value,
+              'order': entry.key + 1,
+            })
+        .toList(),
+  };
 }
 
 // ========== GAME IMPLEMENTATIONS ==========
@@ -49,6 +256,8 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   bool _showDrawingInterface = false;
   PhraseCard? _currentCard;
   final List<PhraseCard> _cards = [];
+  List<PhraseCard> _optionCards = [];
+  int _correctOptionIndex = 0;
 
   @override
   int getCardCount() => 5;
@@ -58,9 +267,19 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
     final gameProv = ref.read(gameProvider.notifier);
     _cards.addAll(gameProv.availableCards);
     if (_cards.isNotEmpty) {
-      _currentCard = _cards[0];
-      _audioText = _currentCard!.gloss;
+      _prepareRound();
     }
+  }
+
+  void _prepareRound() {
+    _currentCard = _cards[_currentIndex];
+    _audioText = _currentCard!.gloss;
+    final distractors = _cards.where((card) => card.cardId != _currentCard!.cardId).toList();
+    distractors.shuffle(Random());
+    _optionCards = [_currentCard!, ...distractors.take(3)];
+    _optionCards.shuffle(Random());
+    _correctOptionIndex =
+        _optionCards.indexWhere((card) => card.cardId == _currentCard!.cardId);
   }
 
   Future<void> _playAudio() async {
@@ -84,22 +303,26 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
   }
 
   void _selectPicture(int index) {
+    final isCorrect = index == _correctOptionIndex;
     final duration = startTime != null
         ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
     
     completeTurn(
       cardId: _currentCard!.cardId,
-      result: GameResult.correct, // Assume correct for now - can add validation
+      result: isCorrect ? GameResult.correct : GameResult.incorrect,
       durationMs: duration,
-      feedback: {'selected_picture': index, 'audio_text': _audioText},
+      feedback: {
+        'selected_option_index': index,
+        'correct_option_index': _correctOptionIndex,
+        'audio_text': _audioText,
+      },
     );
 
     if (_currentIndex < _cards.length - 1) {
       setState(() {
         _currentIndex++;
-        _currentCard = _cards[_currentIndex];
-        _audioText = _currentCard!.gloss;
+        _prepareRound();
         _showDrawingInterface = false;
       });
     } else {
@@ -171,8 +394,9 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
                           crossAxisSpacing: 16,
                           mainAxisSpacing: 16,
                         ),
-                        itemCount: 4,
+                        itemCount: _optionCards.length,
                         itemBuilder: (context, index) {
+                          final option = _optionCards[index];
                           return Card(
                             child: InkWell(
                               onTap: () => _selectPicture(index),
@@ -180,9 +404,27 @@ class _ListenSketchGameState extends BaseGameScreenState<ListenSketchGame> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.image, size: 48),
+                                    if ((option.imageUrl ?? '').isNotEmpty)
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          option.imageUrl!,
+                                          height: 56,
+                                          width: 56,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) =>
+                                              const Icon(Icons.image, size: 48),
+                                        ),
+                                      )
+                                    else
+                                      const Icon(Icons.image, size: 48),
                                     SizedBox(height: 8),
-                                    Text('Option ${index + 1}'),
+                                    Text(
+                                      option.gloss,
+                                      textAlign: TextAlign.center,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -758,43 +1000,114 @@ class _ConversationRelayGameState extends BaseGameScreenState<ConversationRelayG
 
     HapticFeedback.lightImpact();
 
-    // Simulate AI response (in production, this would call Polie or backend)
-    await Future.delayed(const Duration(seconds: 1));
+    String aiReply;
+    try {
+      aiReply = await _generateAIResponse(userMessage);
+    } catch (_) {
+      aiReply = 'I understand. Can you continue in ${widget.language}?';
+    }
     
     final duration = startTime != null
         ? DateTime.now().difference(startTime!).inMilliseconds
         : 0;
+    final qualityResult = _evaluateUserMessageQuality(userMessage);
+    final confidence = qualityResult == GameResult.correct
+        ? 1.0
+        : (qualityResult == GameResult.partial ? 0.6 : 0.25);
 
     completeTurn(
       cardId: 'conv_$_turnCount',
-      result: GameResult.correct, // Conversation practice is always correct
+      result: qualityResult,
       durationMs: duration,
-      confidence: 1.0,
+      confidence: confidence,
       feedback: {
         'message': userMessage,
         'turn': _turnCount,
+        'quality_result': qualityResult.name,
       },
     );
 
     setState(() {
       _conversationHistory.add({
         'type': 'ai',
-        'text': _generateAIResponse(userMessage),
+        'text': aiReply,
         'timestamp': DateTime.now(),
       });
       _isWaitingResponse = false;
     });
   }
 
-  String _generateAIResponse(String userMessage) {
-    // Generate contextual response based on user message
-    final responses = [
-      'That\'s great! Can you tell me more?',
-      'Interesting! How do you say that in ${widget.language}?',
-      'I understand. What else would you like to discuss?',
-      'Good point! Let\'s continue the conversation.',
-    ];
-    return responses[Random().nextInt(responses.length)];
+  Future<String> _generateAIResponse(String userMessage) async {
+    final polieGenerator = ref.read(polieContentGeneratorProvider);
+    final history = _conversationHistory
+        .map((entry) => '${entry['type']}: ${entry['text']}')
+        .join('\n');
+    final generated = await polieGenerator.generateGameContent(
+      gameType: 'conversation_relay_response',
+      language: widget.language,
+      difficulty: widget.level,
+      additionalContext: '''
+You are playing as a conversational partner in a language-learning relay game.
+Reply with ONE concise, encouraging response in ${widget.language} (or bilingual if needed for clarity).
+Keep it under 25 words and ask a follow-up question when possible.
+
+Conversation so far:
+$history
+
+Latest user message:
+$userMessage
+''',
+    );
+    final content = (generated['content']?.toString() ?? '').trim();
+    if (content.isEmpty) {
+      return 'Great. Can you say that again with more detail?';
+    }
+    final firstLine = content
+        .split('\n')
+        .map((line) => line.trim())
+        .firstWhere((line) => line.isNotEmpty, orElse: () => content);
+    return firstLine;
+  }
+
+  GameResult _evaluateUserMessageQuality(String userMessage) {
+    final trimmed = userMessage.trim();
+    if (trimmed.isEmpty) return GameResult.incorrect;
+
+    final words = trimmed
+        .split(RegExp(r'\s+'))
+        .where((word) => word.trim().isNotEmpty)
+        .toList();
+
+    final promptWords = (_currentPrompt ?? '')
+        .toLowerCase()
+        .split(RegExp(r'[^a-zA-Z]+'))
+        .where((word) => word.length >= 4)
+        .toSet();
+    final messageWords = trimmed
+        .toLowerCase()
+        .split(RegExp(r'[^a-zA-Z]+'))
+        .where((word) => word.length >= 4)
+        .toSet();
+    final overlapCount = messageWords.intersection(promptWords).length;
+    final hasPromptAlignment = overlapCount > 0;
+
+    final nonAsciiCount = trimmed.runes.where((r) => r > 127).length;
+    final looksEnglishOnly = RegExp(r'^[A-Za-z0-9\s,.!?"()-]+$').hasMatch(trimmed);
+    final targetLanguage = widget.language.toLowerCase();
+    final expectsNonEnglishSignals = targetLanguage != 'english' && targetLanguage != 'en';
+    final languageSignalGood =
+        !expectsNonEnglishSignals || nonAsciiCount > 0 || !looksEnglishOnly;
+
+    var score = 0;
+    if (words.length >= 2) score++;
+    if (words.length >= 5) score++;
+    if (hasPromptAlignment) score++;
+    if (languageSignalGood) score++;
+    if (trimmed.endsWith('?') || trimmed.endsWith('!')) score++;
+
+    if (score >= 4) return GameResult.correct;
+    if (score >= 2) return GameResult.partial;
+    return GameResult.incorrect;
   }
 
   @override
@@ -939,6 +1252,7 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
   int _timeRemaining = 60; // seconds
   bool _gameActive = false;
   Timer? _timer;
+  String? _loadError;
 
   @override
   int getCardCount() => 10;
@@ -958,8 +1272,17 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
       );
       
       // Parse sentences from content
-      final sentences = _parseSentences(content['content']?.toString() ?? '');
+      final parsedSentences = _parseSentences(content['content']?.toString() ?? '');
+      final sentences = parsedSentences.isNotEmpty
+          ? parsedSentences
+          : (_allowSyntheticGameContent
+              ? _buildGrammarFallbackSentences(ref: ref, language: widget.language)
+              : <Map<String, dynamic>>[]);
+      if (sentences.isEmpty) {
+        throw Exception('No grammar content available');
+      }
       setState(() {
+        _loadError = null;
         _sentences.addAll(sentences);
         if (_sentences.isNotEmpty) {
           _loadCurrentSentence();
@@ -967,13 +1290,8 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
       });
     } catch (e) {
       debugPrint('Error loading sentences: $e');
-      // Fallback sentences
       setState(() {
-        _sentences.addAll([
-          {'sentence': 'Hello, how are you?', 'words': ['Hello', 'how', 'are', 'you']},
-          {'sentence': 'I am learning ${widget.language}', 'words': ['I', 'am', 'learning', widget.language]},
-        ]);
-        _loadCurrentSentence();
+        _loadError = 'Grammar content is unavailable right now. Please retry.';
       });
     }
   }
@@ -1096,6 +1414,37 @@ class _GrammarJamGameState extends BaseGameScreenState<GrammarJamGame> {
   @override
   Widget buildGameContent(BuildContext context) {
     try {
+      if (_loadError != null) {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.all(6.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48),
+                SizedBox(height: 2.h),
+                Text(
+                  _loadError!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                SizedBox(height: 2.h),
+                FilledButton(
+                  onPressed: () {
+                    setState(() {
+                      _loadError = null;
+                      _sentences.clear();
+                      _currentIndex = 0;
+                    });
+                    _loadSentences();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
       if (isLoading || _sentences.isEmpty) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -1231,9 +1580,11 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
   bool _isRecording = false;
   bool _isPlaying = false;
   int? _pronunciationScore;
+  String? _pronunciationError;
   String? _recordingPath;
   int _currentLineIndex = 0;
   List<String> _lyrics = [];
+  String? _loadError;
 
   @override
   int getCardCount() => 3;
@@ -1253,8 +1604,22 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
       
       // Parse songs from content
       final songs = _parseSongs(content['content']?.toString() ?? '');
+      final resolvedSongs = songs.isNotEmpty
+          ? songs
+          : (_allowSyntheticGameContent
+              ? [
+                  _buildKaraokeFallbackSong(
+                    ref: ref,
+                    language: widget.language,
+                  ),
+                ]
+              : <Map<String, dynamic>>[]);
+      if (resolvedSongs.isEmpty) {
+        throw Exception('No karaoke content available');
+      }
       setState(() {
-        _songs.addAll(songs);
+        _loadError = null;
+        _songs.addAll(resolvedSongs);
         if (_songs.isNotEmpty) {
           _currentSong = _songs[0];
           _lyrics = List<String>.from(_currentSong!['lyrics'] as List? ?? []);
@@ -1262,36 +1627,119 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
       });
     } catch (e) {
       debugPrint('Error loading songs: $e');
-      // Fallback songs
       setState(() {
-        _songs.addAll([
-          {
-            'title': 'Traditional ${widget.language} Song',
-            'lyrics': ['Line 1', 'Line 2', 'Line 3', 'Line 4'],
-          },
-        ]);
-        _currentSong = _songs[0];
-        _lyrics = List<String>.from(_currentSong!['lyrics'] as List);
+        _loadError = 'Karaoke content is unavailable right now. Please retry.';
       });
     }
   }
 
   List<Map<String, dynamic>> _parseSongs(String content) {
-    // Parse songs from Polie content
-    final lines = content.split('\n').where((l) => l.trim().isNotEmpty).toList();
-    return [
-      {
-        'title': 'Song 1',
-        'lyrics': lines.take(4).toList(),
-      },
-    ];
+    final trimmed = content.trim();
+    if (trimmed.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(trimmed);
+        final candidates = (decoded is List)
+            ? decoded
+            : (decoded is Map<String, dynamic> ? decoded['songs'] : null);
+        if (candidates is List) {
+          final parsedSongs = candidates
+              .map<Map<String, dynamic>?>((item) {
+                if (item is! Map) return null;
+                final map = Map<String, dynamic>.from(item as Map);
+                final title = map['title']?.toString();
+                final lyricsValue = map['lyrics'];
+                final lyrics = (lyricsValue is List)
+                    ? lyricsValue
+                        .map((line) => line.toString().trim())
+                        .where((line) => line.isNotEmpty)
+                        .toList()
+                    : <String>[];
+                final audioUrl = map['audioUrl']?.toString();
+                if (title == null || title.isEmpty || lyrics.isEmpty) {
+                  return null;
+                }
+                return {
+                  'title': title,
+                  'lyrics': lyrics,
+                  if (audioUrl != null && audioUrl.isNotEmpty) 'audioUrl': audioUrl,
+                };
+              })
+              .whereType<Map<String, dynamic>>()
+              .toList();
+          if (parsedSongs.isNotEmpty) {
+            return parsedSongs;
+          }
+        }
+      } catch (_) {}
+    }
+
+    final lines = content
+        .split('\n')
+        .map((line) => line.trim())
+        .where((line) => line.isNotEmpty)
+        .toList();
+    String? title;
+    String? audioUrl;
+    final lyrics = <String>[];
+    for (final line in lines) {
+      final lower = line.toLowerCase();
+      if (lower.startsWith('title:')) {
+        title = line.split(':').skip(1).join(':').trim();
+        continue;
+      }
+      if (lower.startsWith('audio:') || lower.startsWith('audio_url:') || lower.startsWith('audiourl:')) {
+        audioUrl = line.split(':').skip(1).join(':').trim();
+        continue;
+      }
+      if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith(RegExp(r'^\d+\.\s'))) {
+        final lyric = line.replaceFirst(RegExp(r'^(- |\* |\d+\.\s)'), '').trim();
+        if (lyric.isNotEmpty) {
+          lyrics.add(lyric);
+        }
+      }
+    }
+
+    if (_allowSyntheticGameContent) {
+      final fallbackSong = _buildKaraokeFallbackSong(
+        ref: ref,
+        language: widget.language,
+        preferredTitle: title,
+        seedLyrics: lyrics.isNotEmpty ? lyrics : null,
+      );
+      if (audioUrl != null && audioUrl.isNotEmpty) {
+        fallbackSong['audioUrl'] = audioUrl;
+      }
+      return [fallbackSong];
+    }
+    return <Map<String, dynamic>>[];
   }
 
   Future<void> _playSong() async {
+    final audioUrl = _currentSong?['audioUrl']?.toString();
+    if (audioUrl == null || audioUrl.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Reference audio is not available for this track yet.'),
+          ),
+        );
+      }
+      return;
+    }
     setState(() => _isPlaying = true);
-    // In production, this would play actual audio
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() => _isPlaying = false);
+    try {
+      await _audioPlayer.setUrl(audioUrl);
+      await _audioPlayer.play();
+      await _audioPlayer.playerStateStream.firstWhere(
+        (state) => state.processingState == ProcessingState.completed,
+      );
+    } catch (e) {
+      debugPrint('Error playing karaoke audio: $e');
+    } finally {
+      if (mounted) {
+        setState(() => _isPlaying = false);
+      }
+    }
   }
 
   Future<void> _startRecording() async {
@@ -1318,14 +1766,33 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
       final audioFile = File(audioPath);
       if (!await audioFile.exists()) return;
 
-      // Create a lesson item from current lyrics line
       final currentLine = _lyrics[_currentLineIndex];
-      // This would use actual lesson item - simplified for now
-      
-      final score = Random().nextInt(30) + 70; // Simulated score 70-100
+      final audioData = await audioFile.readAsBytes();
+      final lessonItem = LessonItem(
+        id: 'karaoke_${_currentSongIndex}_$_currentLineIndex',
+        language: widget.language,
+        languageCode: widget.language,
+        level: widget.level ?? 'A1',
+        category: 'pronunciation',
+        type: 'karaoke_line',
+        text: currentLine,
+        translation: _currentSong?['title']?.toString(),
+        difficulty: 0.5,
+        qualityScore: 0.0,
+      );
+      final pronunciationService = PronunciationAnalysisService(ref.read(client));
+      final result = await pronunciationService.analyzePronunciation(
+        audioData: audioData,
+        sampleRate: 16000,
+        lessonItem: lessonItem,
+        enableToneAnalysis: true,
+        enablePhonemeAnalysis: true,
+      );
+      final score = (result.overallScore * 100).round();
       
       setState(() {
         _pronunciationScore = score;
+        _pronunciationError = null;
       });
 
       final duration = startTime != null
@@ -1336,11 +1803,14 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
         cardId: 'karaoke_${_currentSongIndex}_$_currentLineIndex',
         result: score >= 85 ? GameResult.correct : GameResult.partial,
         durationMs: duration,
-        confidence: score / 100.0,
+        confidence: result.overallScore,
         feedback: {
           'score': score,
           'line': currentLine,
           'song': _currentSong!['title'],
+          'phoneme_accuracy': result.phonemeAccuracy,
+          'tone_accuracy': result.toneAccuracy,
+          'fluency': result.fluencyScore,
         },
       );
 
@@ -1350,6 +1820,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
             setState(() {
               _currentLineIndex++;
               _pronunciationScore = null;
+              _pronunciationError = null;
             });
           }
         });
@@ -1364,6 +1835,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
                 _lyrics = List<String>.from(_currentSong!['lyrics'] as List);
                 _currentLineIndex = 0;
                 _pronunciationScore = null;
+                _pronunciationError = null;
               });
             } else {
               finishGame();
@@ -1373,6 +1845,26 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
       }
     } catch (e) {
       debugPrint('Error scoring pronunciation: $e');
+      setState(() {
+        _pronunciationScore = null;
+        _pronunciationError =
+            'We could not grade this attempt. Please record this line again.';
+      });
+      final duration = startTime != null
+          ? DateTime.now().difference(startTime!).inMilliseconds
+          : 0;
+      completeTurn(
+        cardId: 'karaoke_${_currentSongIndex}_$_currentLineIndex',
+        result: GameResult.partial,
+        durationMs: duration,
+        confidence: 0.0,
+        feedback: {
+          'graded': false,
+          'line': _lyrics[_currentLineIndex],
+          'song': _currentSong?['title'],
+          'error': e.toString(),
+        },
+      );
     }
   }
 
@@ -1390,6 +1882,40 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
   @override
   Widget buildGameContent(BuildContext context) {
     try {
+      if (_loadError != null) {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.all(6.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48),
+                SizedBox(height: 2.h),
+                Text(
+                  _loadError!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                SizedBox(height: 2.h),
+                FilledButton(
+                  onPressed: () {
+                    setState(() {
+                      _loadError = null;
+                      _songs.clear();
+                      _currentSong = null;
+                      _lyrics = [];
+                      _currentSongIndex = 0;
+                      _currentLineIndex = 0;
+                    });
+                    _loadSongs();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
       if (isLoading || _currentSong == null) {
         return const Center(child: CircularProgressIndicator());
       }
@@ -1421,6 +1947,24 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
                           fontWeight: FontWeight.bold,
                           color: _pronunciationScore! >= 85 ? Colors.green : Colors.orange,
                         ),
+                      ),
+                    ),
+                  if (_pronunciationError != null)
+                    Container(
+                      padding: EdgeInsets.all(3.w),
+                      margin: EdgeInsets.only(bottom: 2.h),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade100,
+                        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                      ),
+                      child: Text(
+                        _pronunciationError!,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.orange.shade900,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   Text(
@@ -1482,6 +2026,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
                       setState(() {
                         _currentLineIndex++;
                         _pronunciationScore = null;
+                        _pronunciationError = null;
                       });
                     }
                   },
@@ -1525,6 +2070,7 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
   int _score = 0;
   bool _showResult = false;
   bool _isCorrect = false;
+  String? _loadError;
 
   @override
   int getCardCount() => 5;
@@ -1545,7 +2091,12 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
       
       // Parse recipe from content
       final recipe = _parseRecipe(content['content']?.toString() ?? '');
+      final hasSteps = (recipe['steps'] is List) && (recipe['steps'] as List).isNotEmpty;
+      if (!hasSteps) {
+        throw Exception('No recipe content available');
+      }
       setState(() {
+        _loadError = null;
         _currentRecipe = recipe;
         _recipeSteps = List<Map<String, dynamic>>.from(recipe['steps'] as List? ?? []);
         if (_recipeSteps.isNotEmpty) {
@@ -1554,32 +2105,93 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
       });
     } catch (e) {
       debugPrint('Error loading recipe: $e');
-      // Fallback recipe
       setState(() {
-        _currentRecipe = {
-          'title': 'Traditional ${widget.language} Dish',
-          'steps': [
-            {'step': 'Prepare ingredients', 'order': 1},
-            {'step': 'Heat the pan', 'order': 2},
-            {'step': 'Add spices', 'order': 3},
-            {'step': 'Cook until done', 'order': 4},
-          ],
-        };
-        _recipeSteps = List<Map<String, dynamic>>.from(_currentRecipe!['steps'] as List);
-        _loadCurrentStep();
+        _loadError = 'Recipe content is unavailable right now. Please retry.';
       });
     }
   }
 
   Map<String, dynamic> _parseRecipe(String content) {
-    // Parse recipe from Polie content
-    final lines = content.split('\n').where((l) => l.trim().isNotEmpty).take(5).toList();
+    final trimmed = content.trim();
+    if (trimmed.isNotEmpty) {
+      try {
+        final decoded = jsonDecode(trimmed);
+        if (decoded is Map<String, dynamic>) {
+          final title = decoded['title']?.toString();
+          final rawSteps = decoded['steps'];
+          if (title != null && title.isNotEmpty && rawSteps is List && rawSteps.isNotEmpty) {
+            final parsedSteps = rawSteps
+                .map<Map<String, dynamic>?>((step) {
+                  if (step is String) {
+                    final text = step.trim();
+                    if (text.isEmpty) return null;
+                    return {'step': text};
+                  }
+                  if (step is Map) {
+                    final map = Map<String, dynamic>.from(step as Map);
+                    final text = map['step']?.toString().trim();
+                    if (text == null || text.isEmpty) return null;
+                    return {'step': text};
+                  }
+                  return null;
+                })
+                .whereType<Map<String, dynamic>>()
+                .toList();
+            if (parsedSteps.isNotEmpty) {
+              return {
+                'title': title,
+                'steps': parsedSteps.asMap().entries.map((e) => {
+                      'step': e.value['step'],
+                      'order': e.key + 1,
+                    }).toList(),
+              };
+            }
+          }
+        }
+      } catch (_) {}
+    }
+
+    final lines = content
+        .split('\n')
+        .map((line) => line.trim())
+        .where((line) => line.isNotEmpty)
+        .toList();
+    String? title;
+    final steps = <String>[];
+    for (final line in lines) {
+      final lower = line.toLowerCase();
+      if (title == null && lower.startsWith('title:')) {
+        title = line.split(':').skip(1).join(':').trim();
+        continue;
+      }
+      if (line.startsWith('- ') || line.startsWith('* ') || line.startsWith(RegExp(r'^\d+\.\s'))) {
+        final step = line.replaceFirst(RegExp(r'^(- |\* |\d+\.\s)'), '').trim();
+        if (step.isNotEmpty) {
+          steps.add(step);
+        }
+      }
+    }
+    if (steps.isNotEmpty) {
+      final finalTitle = (title != null && title.isNotEmpty) ? title : '${widget.language} Home Recipe';
+      return {
+        'title': finalTitle,
+        'steps': steps.take(6).toList().asMap().entries.map((e) => {
+              'step': e.value.trim(),
+              'order': e.key + 1,
+            }).toList(),
+      };
+    }
+
+    if (_allowSyntheticGameContent) {
+      return _buildQuizChefFallbackRecipe(
+        ref: ref,
+        language: widget.language,
+        preferredTitle: title,
+      );
+    }
     return {
-      'title': 'Traditional Recipe',
-      'steps': lines.asMap().entries.map((e) => {
-        'step': e.value.trim(),
-        'order': e.key + 1,
-      }).toList(),
+      'title': (title != null && title.isNotEmpty) ? title : '${widget.language} Recipe',
+      'steps': <Map<String, dynamic>>[],
     };
   }
 
@@ -1659,6 +2271,39 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
   @override
   Widget buildGameContent(BuildContext context) {
     try {
+      if (_loadError != null) {
+        return Center(
+          child: Padding(
+            padding: EdgeInsets.all(6.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.error_outline, size: 48),
+                SizedBox(height: 2.h),
+                Text(
+                  _loadError!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16.sp),
+                ),
+                SizedBox(height: 2.h),
+                FilledButton(
+                  onPressed: () {
+                    setState(() {
+                      _loadError = null;
+                      _currentRecipe = null;
+                      _recipeSteps = [];
+                      _currentStepIndex = 0;
+                      _stepOptions = [];
+                    });
+                    _loadRecipe();
+                  },
+                  child: const Text('Retry'),
+                ),
+              ],
+            ),
+          ),
+        );
+      }
       if (isLoading || _currentRecipe == null || _recipeSteps.isEmpty) {
         return const Center(child: CircularProgressIndicator());
       }

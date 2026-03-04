@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:convert';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
+import 'package:dio/dio.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 /// Writing Practice Screen
@@ -50,8 +53,8 @@ class _WritingPracticeScreenState extends ConsumerState<WritingPracticeScreen>
     setState(() => _isLoading = true);
     
     try {
-      // TODO: Replace with actual API call
-      _exercises = _getDefaultExercises();
+      final fromApi = await _fetchExercisesFromApi();
+      _exercises = fromApi.isNotEmpty ? fromApi : _getDefaultExercises();
     } catch (e) {
       debugPrint('Error loading exercises: $e');
       _exercises = _getDefaultExercises();
@@ -100,6 +103,51 @@ class _WritingPracticeScreenState extends ConsumerState<WritingPracticeScreen>
     ];
   }
 
+  Future<List<WritingExercise>> _fetchExercisesFromApi() async {
+    final language = widget.language ?? 'sw';
+    final response = await Dio().get(
+      '${ApiContract.baseUrl}/api/content/phrase-cards',
+      queryParameters: {
+        'language': language,
+        'limit': 30,
+      },
+      options: Options(receiveTimeout: const Duration(seconds: 20)),
+    );
+
+    final payload = response.data;
+    if (payload is! Map || payload['cards'] is! List) return const [];
+    final cards = (payload['cards'] as List)
+        .whereType<Map>()
+        .map((raw) => Map<String, dynamic>.from(raw))
+        .toList();
+
+    final translationExercises = cards.take(12).map((card) {
+      final id = card['card_id']?.toString() ?? 'phrase_${DateTime.now().microsecondsSinceEpoch}';
+      final source = card['gloss']?.toString() ?? '';
+      final answer = card['text']?.toString() ?? '';
+      return WritingExercise(
+        id: 'translate_$id',
+        type: WritingExerciseType.translation,
+        title: 'Translate: "$source"',
+        instruction: 'Translate this sentence into your target language.',
+        sourceText: source,
+        correctAnswer: answer,
+        language: language,
+      );
+    });
+
+    final freeWritingPrompt = WritingExercise(
+      id: 'free_dynamic_${DateTime.now().millisecondsSinceEpoch}',
+      type: WritingExerciseType.freeWriting,
+      title: 'Describe Your Day',
+      instruction: 'Write 3-5 sentences about your day.',
+      prompt: 'Use natural phrases and at least one greeting.',
+      language: language,
+    );
+
+    return [...translationExercises, freeWritingPrompt];
+  }
+
   Future<void> _evaluateAnswer() async {
     if (_userAnswer.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -145,28 +193,71 @@ Evaluate this writing exercise in ${_currentExercise!.language}:
 Exercise: ${_currentExercise!.instruction}
 User's answer: $_userAnswer
 
-Provide:
-1. Overall score (0-100)
-2. Grammar feedback
-3. Vocabulary feedback
-4. Suggestions for improvement
+Return STRICT JSON ONLY with this exact shape:
+{
+  "score": <integer 0-100>,
+  "isCorrect": <boolean>,
+  "feedback": "<short sentence>",
+  "suggestions": ["<suggestion 1>", "<suggestion 2>"]
+}
 ''';
 
-      // Use AI chat to evaluate
-      await chatProvider.sendMessage(prompt);
-      
-      // For now, provide basic feedback
+      final response = await chatProvider.sendMessage(prompt);
+      final parsed = _tryParseAiFeedbackJson(response);
+      if (parsed == null) {
+        _evaluateSimple();
+        return;
+      }
+
       setState(() {
-        _feedback = WritingFeedback(
-          score: 75,
-          isCorrect: true,
-          feedback: 'Good effort! Your writing shows understanding of basic grammar.',
-          suggestions: ['Try using more varied vocabulary', 'Pay attention to word order'],
-        );
+        _feedback = parsed;
       });
+      if (parsed.isCorrect) {
+        _markAsCompleted();
+      }
     } catch (e) {
       debugPrint('AI evaluation error: $e');
       _evaluateSimple();
+    }
+  }
+
+  WritingFeedback? _tryParseAiFeedbackJson(String raw) {
+    String candidate = raw.trim();
+    final fenced = RegExp(r'```(?:json)?\s*([\s\S]*?)\s*```', caseSensitive: false)
+        .firstMatch(candidate);
+    if (fenced != null) {
+      candidate = fenced.group(1)?.trim() ?? candidate;
+    }
+
+    final objectMatch = RegExp(r'\{[\s\S]*\}').firstMatch(candidate);
+    if (objectMatch != null) {
+      candidate = objectMatch.group(0) ?? candidate;
+    }
+
+    try {
+      final decoded = jsonDecode(candidate);
+      if (decoded is! Map) return null;
+
+      final scoreValue = decoded['score'];
+      final score = scoreValue is num
+          ? scoreValue.round().clamp(0, 100)
+          : int.tryParse('$scoreValue')?.clamp(0, 100);
+      final feedback = decoded['feedback']?.toString().trim() ?? '';
+      final isCorrect = decoded['isCorrect'] == true;
+      final suggestionsRaw = decoded['suggestions'];
+      final suggestions = suggestionsRaw is List
+          ? suggestionsRaw.map((e) => e.toString()).where((s) => s.trim().isNotEmpty).toList()
+          : <String>[];
+
+      if (score == null || feedback.isEmpty) return null;
+      return WritingFeedback(
+        score: score,
+        isCorrect: isCorrect,
+        feedback: feedback,
+        suggestions: suggestions,
+      );
+    } catch (_) {
+      return null;
     }
   }
 

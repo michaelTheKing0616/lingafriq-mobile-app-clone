@@ -95,6 +95,12 @@ Rules:
             'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
             'temperature': 0.3,
             'max_tokens': 700,
+            'language': language,
+            'languageCode': selectedLanguage.value.code,
+            'sourceLanguage': 'en',
+            'targetLanguage': selectedLanguage.value.code,
+            'cefr': 'A1',
+            'mode': 'dialogue',
           },
         );
         if (resp.statusCode != 200 || resp.data == null) {

@@ -1,0 +1,121 @@
+{
+  "releaseTrain": "WS1-WS12",
+  "schemaVersion": 1,
+  "requiredEvidenceFields": [
+    "owner",
+    "evidence",
+    "notes",
+    "verifiedAt",
+    "status"
+  ],
+  "gates": {
+    "WS1": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS1 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS2": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS2 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS3": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS3 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS4": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS4 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS5": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS5 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS6": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS6 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS7": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS7 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS8": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS8 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS9": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS9 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS10": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS10 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS11": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS11 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    },
+    "WS12": {
+      "status": "pending",
+      "owner": "mobile-team",
+      "evidence": [
+        "TBD: attach WS12 evidence link or artifact"
+      ],
+      "notes": "Pending QA verification.",
+      "verifiedAt": "TBD"
+    }
+  }
+}

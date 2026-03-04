@@ -25,13 +25,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Completer<GameSession>? _startGameLock;
   final List<PhraseCard> _availableCards = [];
   final Map<String, SRSState> _userSRS = {}; // user_id + card_id -> SRSState
+  final Map<String, GameModeCertification> _modeCertifications = {};
 
   GameSession? get currentSession => _currentSession;
   List<PhraseCard> get availableCards => List.unmodifiable(_availableCards);
+  Map<String, GameModeCertification> get modeCertifications =>
+      Map.unmodifiable(_modeCertifications);
 
   @override
   BaseProviderState build() {
     _loadUserSRS();
+    _loadModeCertifications();
     return BaseProviderState();
   }
 
@@ -50,15 +54,23 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     _startGameLock = completer;
     state = state.copyWith(isLoading: true);
     try {
+      final sessionId = 'sess_${DateTime.now().millisecondsSinceEpoch}';
+
       // Load cards for the game
-      final cards = await _loadCardsForGame(language: language, level: level, count: cardCount ?? 10);
+      final cards = await _loadCardsForGame(
+        language: language,
+        level: level,
+        count: cardCount ?? 10,
+        userId: userId,
+        sessionId: sessionId,
+        gameId: gameType.name,
+      );
 
       // Expose loaded cards to game screens (they read gameProv.availableCards)
       _availableCards.clear();
       _availableCards.addAll(cards);
 
       // Create session
-      final sessionId = 'sess_${DateTime.now().millisecondsSinceEpoch}';
       _currentSession = GameSession(
         sessionId: sessionId,
         userId: userId,
@@ -80,6 +92,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           'language': language,
           'level': level,
         });
+        _currentSession = _currentSession!.copyWith(
+          metadata: {
+            ..._currentSession!.metadata,
+            'launch_telemetry_sent': true,
+          },
+        );
         
         final telemetry = ref.read(telemetryServiceProvider);
         await telemetry.trackFeatureUsage(
@@ -151,6 +169,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'confidence': confidence,
         'quality': quality,
       });
+      _currentSession = _currentSession!.copyWith(
+        metadata: {
+          ..._currentSession!.metadata,
+          'turn_telemetry_sent': true,
+        },
+      );
 
       // Award XP based on result
       final gamification = ref.read(gamificationProvider.notifier);
@@ -184,16 +208,22 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'correct_count': endedSession.correctCount,
         'total_turns': endedSession.totalTurns,
       });
+      final withCompletionMetadata = endedSession.copyWith(
+        metadata: {
+          ...endedSession.metadata,
+          'completion_telemetry_sent': true,
+        },
+      );
       
       // Enhanced telemetry tracking
       final telemetry = ref.read(telemetryServiceProvider);
       await telemetry.trackGameSession(
-        gameType: endedSession.gameType,
-        language: endedSession.language,
-        durationMs: endedSession.durationMs,
-        accuracy: endedSession.accuracy,
-        score: endedSession.correctCount,
-        turns: endedSession.totalTurns,
+        gameType: withCompletionMetadata.gameType,
+        language: withCompletionMetadata.language,
+        durationMs: withCompletionMetadata.durationMs,
+        accuracy: withCompletionMetadata.accuracy,
+        score: withCompletionMetadata.correctCount,
+        turns: withCompletionMetadata.totalTurns,
       );
 
       // Award XP for completion
@@ -203,20 +233,21 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Integrate with progress tracking
       await ProgressIntegration.onGameCompleted(
         ref,
-        wordsLearned: endedSession.correctCount,
-        pointsEarned: (endedSession.accuracy * 100).round(),
-        perfect: endedSession.accuracy >= 0.9,
+        wordsLearned: withCompletionMetadata.correctCount,
+        pointsEarned: (withCompletionMetadata.accuracy * 100).round(),
+        perfect: withCompletionMetadata.accuracy >= 0.9,
       );
 
       // Save session
-      await _saveSession(endedSession);
+      await _saveSession(withCompletionMetadata);
 
       // Sync to backend
-      await _syncSessionToBackend(endedSession);
+      await _syncSessionToBackend(withCompletionMetadata);
+      await _recordGameCertification(withCompletionMetadata);
 
       _currentSession = null;
       state = state.copyWith();
-      return endedSession;
+      return withCompletionMetadata;
     } catch (e) {
       logger.error('Error ending game', tag: 'game-provider', error: e);
       rethrow;
@@ -229,21 +260,32 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     required String language,
     String? level,
     int count = 10,
+    String? userId,
+    String? sessionId,
+    String? gameId,
   }) async {
     final cards = <PhraseCard>[];
+    final resolvedUserId = userId ?? _currentSession?.userId;
+    final resolvedSessionId = sessionId ?? _currentSession?.sessionId;
 
     // 1) Canonical route: POST /api/games/game-content
     // Backend mounts Polie game content under /api/games/*.
     try {
+      final requestData = <String, dynamic>{
+        'game_id': gameId ?? _currentSession?.gameType ?? 'phrase_cards',
+        'language': language,
+        'difficulty': level ?? 'A1',
+      };
+      if (resolvedUserId != null && resolvedUserId.trim().isNotEmpty) {
+        requestData['user_id'] = resolvedUserId;
+      }
+      if (resolvedSessionId != null && resolvedSessionId.trim().isNotEmpty) {
+        requestData['session_id'] = resolvedSessionId;
+      }
+
       final response = await ref.read(client).post(
         ApiContract.url(ApiContract.ai.polieGameContent),
-        data: {
-          'game_id': _currentSession?.gameType ?? 'phrase_cards',
-          'language': language,
-          'difficulty': level ?? 'A1',
-          'user_id': _currentSession?.userId ?? 'guest',
-          'session_id': _currentSession?.sessionId ?? 'local_session',
-        },
+        data: requestData,
       );
 
       if (response.statusCode == 200 && response.data != null) {
@@ -256,6 +298,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
                 item: item,
                 language: language,
                 level: level,
+                userId: resolvedUserId,
               );
             }
           }
@@ -265,15 +308,12 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             item: payload,
             language: language,
             level: level,
+            userId: resolvedUserId,
           );
         }
 
         if (cards.isNotEmpty) {
-          // Pad to requested count with curated fallback cards.
-          if (cards.length < count) {
-            final needed = count - cards.length;
-            cards.addAll(_generateFallbackCards(language, level, needed));
-          } else if (cards.length > count) {
+          if (cards.length > count) {
             cards.removeRange(count, cards.length);
           }
 
@@ -337,7 +377,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
                 gloss: item['gloss'] ?? item['translation'] ?? item['meaning'] ?? '',
                 level: item['level'] ?? level ?? 'A0',
                 tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
-                srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cId}_$lang'] ?? SRSState(),
+                srs: _userSRS['${resolvedUserId ?? 'user'}_${cId}_$lang'] ?? SRSState(),
               ));
             } catch (e) {
               logger.error('Error parsing card from API', tag: 'game-provider', error: e);
@@ -348,6 +388,9 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
 
         // If we got cards from API, apply diacritics enforcement and return
         if (cards.isNotEmpty) {
+          if (cards.length > count) {
+            cards.removeRange(count, cards.length);
+          }
           try {
             for (var i = 0; i < cards.length; i++) {
               final card = cards[i];
@@ -374,7 +417,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
 
     // Fallback to curated local data
-    final fallbackCards = _generateFallbackCards(language, level, count);
+    final fallbackCards = _generateFallbackCards(language, level, count, resolvedUserId);
     cards.addAll(fallbackCards);
 
     // Apply diacritics enforcement to all cards (non-fatal — cards work without it)
@@ -404,6 +447,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     required Map<String, dynamic> item,
     required String language,
     required String? level,
+    String? userId,
   }) {
     final cardId = (item['id'] ?? item['card_id'] ?? item['content_id'] ?? 'card_${cards.length}').toString();
     final lang = (item['language'] ?? language).toString();
@@ -421,12 +465,17 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       gloss: gloss,
       level: parsedLevel,
       tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['ai-generated'],
-      srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
+      srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
     ));
   }
 
   /// Generate curated fallback cards (used only when API is unavailable and no cached data exists)
-  List<PhraseCard> _generateFallbackCards(String language, String? level, int count) {
+  List<PhraseCard> _generateFallbackCards(
+    String language,
+    String? level,
+    int count,
+    String? userId,
+  ) {
     final cards = <PhraseCard>[];
     final lang = language.toLowerCase();
 
@@ -566,7 +615,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         gloss: item['gloss'] as String,
         level: level ?? 'A0',
         tags: (item['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
-        srs: _userSRS['${_currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
+        srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
       ));
     }
 
@@ -740,6 +789,69 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  Future<void> _recordGameCertification(GameSession session) async {
+    try {
+      final report = GameModeCertification(
+        gameType: session.gameType,
+        sessionId: session.sessionId,
+        launchTelemetrySent: session.metadata['launch_telemetry_sent'] == true,
+        turnTelemetrySent: session.metadata['turn_telemetry_sent'] == true,
+        completionTelemetrySent: session.metadata['completion_telemetry_sent'] == true,
+        hasTurns: session.totalTurns > 0,
+        completed: session.endTime != null,
+        updatedAt: DateTime.now(),
+      );
+      _modeCertifications[session.gameType] = report;
+      await _saveModeCertifications();
+    } catch (e) {
+      logger.error('Error recording game certification', tag: 'game-provider', error: e);
+    }
+  }
+
+  Future<void> _loadModeCertifications() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('game_mode_certifications');
+      if (raw == null || raw.trim().isEmpty) return;
+
+      final parsed = jsonDecode(raw);
+      if (parsed is! Map<String, dynamic>) return;
+
+      _modeCertifications.clear();
+      parsed.forEach((gameType, value) {
+        if (value is! Map<String, dynamic>) return;
+        final updatedAtRaw = value['updated_at']?.toString();
+        final updatedAt = DateTime.tryParse(updatedAtRaw ?? '') ?? DateTime.fromMillisecondsSinceEpoch(0);
+
+        _modeCertifications[gameType] = GameModeCertification(
+          gameType: (value['game_type'] ?? gameType).toString(),
+          sessionId: (value['session_id'] ?? '').toString(),
+          launchTelemetrySent: value['launch_telemetry_sent'] == true,
+          turnTelemetrySent: value['turn_telemetry_sent'] == true,
+          completionTelemetrySent: value['completion_telemetry_sent'] == true,
+          hasTurns: value['has_turns'] == true,
+          completed: value['completed'] == true,
+          updatedAt: updatedAt,
+        );
+      });
+    } catch (e) {
+      logger.error('Error loading game certifications', tag: 'game-provider', error: e);
+    }
+  }
+
+  Future<void> _saveModeCertifications() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final json = <String, dynamic>{};
+      _modeCertifications.forEach((gameType, report) {
+        json[gameType] = report.toJson();
+      });
+      await prefs.setString('game_mode_certifications', jsonEncode(json));
+    } catch (e) {
+      logger.error('Error saving game certifications', tag: 'game-provider', error: e);
+    }
+  }
+
   /// Load user SRS state
   Future<void> _loadUserSRS() async {
     try {
@@ -803,5 +915,46 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       // Don't throw - warmup is optional
     }
   }
+}
+
+class GameModeCertification {
+  final String gameType;
+  final String sessionId;
+  final bool launchTelemetrySent;
+  final bool turnTelemetrySent;
+  final bool completionTelemetrySent;
+  final bool hasTurns;
+  final bool completed;
+  final DateTime updatedAt;
+
+  const GameModeCertification({
+    required this.gameType,
+    required this.sessionId,
+    required this.launchTelemetrySent,
+    required this.turnTelemetrySent,
+    required this.completionTelemetrySent,
+    required this.hasTurns,
+    required this.completed,
+    required this.updatedAt,
+  });
+
+  bool get passed =>
+      launchTelemetrySent &&
+      turnTelemetrySent &&
+      completionTelemetrySent &&
+      hasTurns &&
+      completed;
+
+  Map<String, dynamic> toJson() => {
+        'game_type': gameType,
+        'session_id': sessionId,
+        'launch_telemetry_sent': launchTelemetrySent,
+        'turn_telemetry_sent': turnTelemetrySent,
+        'completion_telemetry_sent': completionTelemetrySent,
+        'has_turns': hasTurns,
+        'completed': completed,
+        'passed': passed,
+        'updated_at': updatedAt.toIso8601String(),
+      };
 }
 

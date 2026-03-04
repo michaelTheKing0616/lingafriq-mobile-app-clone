@@ -335,12 +335,13 @@ class _GameCard extends StatelessWidget {
     return Semantics(
       label: '${game['name'] ?? 'Game'}, ${game['description'] ?? ''}, $category category',
       button: true,
-      child: PanAfricanCard(
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.lightImpact();
+          onTap();
+        },
+        child: PanAfricanCard(
           hasHoverEffect: true,
-          onTap: () {
-            HapticFeedback.lightImpact();
-            onTap();
-          },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -401,6 +402,7 @@ class _GameCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
     );
   }
 }

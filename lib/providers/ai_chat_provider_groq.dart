@@ -269,6 +269,9 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int _roleplayTurnCount = 0;
   final List<String> _roleplayBranches = [];
   final Map<String, dynamic> _roleplayProgress = {};
+  String? _practiceTypeHint;
+  String? _scenarioTypeHint;
+  Map<String, dynamic>? _scenarioContextHint;
 
   // Getters
   List<ChatMessage> get messages => List.unmodifiable(_messages);
@@ -287,6 +290,56 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   int get difficulty => _difficulty;
   PolieMode get mode => _mode;
   bool get isTranslationMode => _mode == PolieMode.translation;
+
+  double _temperatureForMode() {
+    switch (_mode) {
+      case PolieMode.translation:
+        return 0.1;
+      case PolieMode.roleplay:
+        return 0.85;
+      case PolieMode.conversation:
+        return 0.75;
+      case PolieMode.tutor:
+        return 0.45;
+      case PolieMode.vocab:
+      case PolieMode.review:
+        return 0.35;
+      case PolieMode.pronunciation:
+      case PolieMode.grammar:
+        return 0.4;
+    }
+  }
+
+  int _maxTokensForMode() {
+    switch (_mode) {
+      case PolieMode.translation:
+        return 350;
+      case PolieMode.roleplay:
+        return 700;
+      case PolieMode.tutor:
+        return 700;
+      case PolieMode.conversation:
+        return 550;
+      case PolieMode.vocab:
+      case PolieMode.review:
+      case PolieMode.pronunciation:
+      case PolieMode.grammar:
+        return 500;
+    }
+  }
+
+  String _applyModeOutputContract(String rawOutput) {
+    final trimmed = rawOutput.trim();
+    if (trimmed.isEmpty) return trimmed;
+
+    if (_mode == PolieMode.translation) {
+      final lower = trimmed.toLowerCase();
+      if (!lower.startsWith('translation:')) {
+        return 'Translation: $trimmed';
+      }
+    }
+    return trimmed;
+  }
 
   bool _historyLoaded = false;
 
@@ -358,6 +411,51 @@ class GroqChatProvider extends Notifier<BaseProviderState> with BaseProviderMixi
   String _languageFocusBlock() =>
       "LANGUAGE FOCUS: The user's selected focus language is $_targetLanguage. Default all examples, translations, and exercises to this language. If the user asks about a different language, answer briefly but remind them: \"By the way, you're currently learning $_targetLanguage. Would you like to switch, or keep $_targetLanguage as your focus?\"";
 
+  String _scenarioHintsBlock() {
+    final practice = _practiceTypeHint?.trim();
+    final scenarioType = _scenarioTypeHint?.trim();
+    final context = _scenarioContextHint;
+    if ((practice == null || practice.isEmpty) &&
+        (scenarioType == null || scenarioType.isEmpty) &&
+        (context == null || context.isEmpty)) {
+      return '';
+    }
+
+    final buffer = StringBuffer('\n\nSCENARIO HINTS:\n');
+    if (practice != null && practice.isNotEmpty) {
+      buffer.writeln('- Practice type: $practice.');
+      if (practice == 'debate') {
+        buffer.writeln(
+          '- Debate framing: present balanced viewpoints, ask for evidence, and challenge weak claims politely.',
+        );
+      } else if (practice == 'photo') {
+        buffer.writeln(
+          '- Photo framing: anchor replies to visual details from the scene description and ask clarifying follow-up questions.',
+        );
+      } else if (practice == 'conversation') {
+        buffer.writeln('- Conversation framing: keep interaction natural and practical for real-world dialogue.');
+      }
+    }
+    if (scenarioType != null && scenarioType.isNotEmpty) {
+      buffer.writeln('- Scenario type: $scenarioType.');
+    }
+    if (context != null && context.isNotEmpty) {
+      final title = context['scenarioTitle']?.toString();
+      final description = context['scenarioDescription']?.toString();
+      final scene = context['scenarioText']?.toString();
+      if (title != null && title.trim().isNotEmpty) {
+        buffer.writeln('- Scenario title: ${title.trim()}.');
+      }
+      if (description != null && description.trim().isNotEmpty) {
+        buffer.writeln('- Scenario description: ${description.trim()}.');
+      }
+      if (scene != null && scene.trim().isNotEmpty) {
+        buffer.writeln('- Scenario context: ${scene.trim()}.');
+      }
+    }
+    return buffer.toString().trimRight();
+  }
+
   void _initializeSystemPrompt() {
     // Polie Premium: Enhanced system prompts for all modes
     if (_mode == PolieMode.translation) {
@@ -389,6 +487,7 @@ ${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 
 ${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Be accurate, culturally appropriate, and instant.''';
       return;
@@ -426,6 +525,7 @@ ${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 
 ${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Be encouraging, patient, and culturally sensitive. No storytelling unless asked.''';
       return;
@@ -478,6 +578,7 @@ Current CEFR: ${_cefrInfo.level}. Difficulty: $_difficulty (1=Beginner, 5=Advanc
 $examplesText
 
 ${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Be encouraging, stay in character, and teach through natural dialogue.''';
       return;
@@ -496,10 +597,17 @@ BEHAVIOUR:
 - Note interesting or new vocabulary as you go. After every 5 exchanges, briefly summarize new words learned (e.g. "Words we used: [list with short meanings]").
 - Provide translations on demand: "Translation: [text]". Use topic suggestions when flow stalls: ${defaultTopicSuggestions.join(', ')}.
 
+DIACRITICS (MANDATORY):
+- ALWAYS use correct diacritics and tone marks for $_targetLanguage. This is non-negotiable.
+- For Yoruba: use ẹ, ọ, ṣ, and tone marks (à, á, è, é, ì, í, ò, ó, ù, ú, ǹ, ń). Example: "Ẹ káàrọ̀" not "E kaaro", "Báwo ni" not "Bawo ni".
+- For Igbo: use ụ, ọ, ị and proper marks. For Hausa: use ɓ, ɗ, ƙ where applicable.
+- Never omit diacritics even in casual conversation. Learners must see correct orthography at all times.
+
 ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 ${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 
 ${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Be warm, encouraging, and culturally sensitive.''';
       return;
@@ -526,6 +634,7 @@ ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 ${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 
 ${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Keep sessions engaging and reinforce retention.''';
       return;
@@ -548,6 +657,7 @@ ${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
 ${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
 
 ${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Keep reviews efficient and motivating.''';
       return;
@@ -556,32 +666,61 @@ Keep reviews efficient and motivating.''';
     if (_mode == PolieMode.pronunciation) {
       _systemPrompt = '''You are Polie Premium: a pronunciation coach for $_targetLanguage.
 
-Your mission:
-1. Guide the learner through sounds, tones, and phonetic patterns of $_targetLanguage
-2. Provide IPA transcriptions when helpful
-3. Explain mouth/tongue positions for difficult sounds
-4. Give minimal pairs to distinguish similar sounds
-5. Encourage practice with common words and phrases
-6. Be culturally sensitive about regional pronunciation variants
+MODE: PRONUNCIATION
 
-Always respond in English with $_targetLanguage examples. Use encouraging, patient tone.
-Mark pronunciation-critical words in **bold**.''';
+RESPONSE FORMAT (required):
+1. Target phrase
+2. IPA / phonetic guide
+3. Mouth-position tip
+4. Minimal pair practice
+5. 1 short speaking drill
+
+RULES:
+1. Guide the learner through sounds, tones, and phonetic patterns of $_targetLanguage.
+2. Provide IPA transcriptions when helpful.
+3. Explain mouth/tongue positions for difficult sounds.
+4. Give minimal pairs to distinguish similar sounds.
+5. Encourage short, repeatable speaking drills.
+6. Be culturally sensitive about regional pronunciation variants.
+7. Keep each response practical and speaking-focused (no long grammar lectures).
+
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
+${_languageFocusBlock()}
+${_scenarioHintsBlock()}
+
+Always respond in English with $_targetLanguage examples. Mark pronunciation-critical words in **bold**.''';
       return;
     }
 
     if (_mode == PolieMode.grammar) {
       _systemPrompt = '''You are Polie Premium: a grammar tutor for $_targetLanguage.
 
-Your mission:
-1. Teach grammar rules of $_targetLanguage with clear, simple explanations
-2. Provide sentence pattern templates with fill-in exercises
-3. Compare grammar structures to English when helpful
-4. Focus on one grammar concept at a time
-5. Give 2-3 practice sentences after each explanation
-6. Correct grammar errors gently with explanations
+MODE: GRAMMAR
+
+RESPONSE FORMAT (required):
+1. Rule
+2. Pattern template
+3. Examples (target language + translation)
+4. Practice questions (2-3)
+5. Corrections rubric
+
+RULES:
+1. Teach grammar rules of $_targetLanguage with clear, simple explanations.
+2. Provide sentence pattern templates with fill-in exercises.
+3. Compare grammar structures to English when helpful.
+4. Focus on one grammar concept at a time.
+5. Give 2-3 practice sentences after each explanation.
+6. Correct grammar errors gently with short explanations.
+7. Keep explanations precise and avoid free-form conversation drift.
+
+${SupportedLanguages.targetLanguagePromptLine(_targetLanguage)}
+${SupportedLanguages.sourceLanguagePromptLine(_sourceLanguage)}
+${_languageFocusBlock()}
+${_scenarioHintsBlock()}
 
 Always respond in English with $_targetLanguage examples.
-Use structured format: Rule → Example → Practice.''';
+Use structured format: Rule -> Example -> Practice.''';
       return;
     }
 
@@ -641,6 +780,9 @@ Use structured format: Rule → Example → Practice.''';
       _roleplayTurnCount = 0;
       _roleplayBranches.clear();
     }
+    _practiceTypeHint = null;
+    _scenarioTypeHint = null;
+    _scenarioContextHint = null;
     
     // Save mode preference for persistence
     await _saveModeAndLanguage();
@@ -688,6 +830,9 @@ Use structured format: Rule → Example → Practice.''';
       _roleplayTurnCount = 0;
       _roleplayBranches.clear();
     }
+    _practiceTypeHint = null;
+    _scenarioTypeHint = null;
+    _scenarioContextHint = null;
 
     // 3. Persist preferences
     await _saveModeAndLanguage();
@@ -705,6 +850,18 @@ Use structured format: Rule → Example → Practice.''';
       'language': targetLanguage,
       'messagesCount': _messages.length,
     });
+  }
+
+  Future<void> setScenarioContextHints({
+    String? practiceType,
+    String? scenarioType,
+    Map<String, dynamic>? scenarioContext,
+  }) async {
+    _practiceTypeHint = practiceType?.trim().isEmpty ?? true ? null : practiceType!.trim().toLowerCase();
+    _scenarioTypeHint = scenarioType?.trim().isEmpty ?? true ? null : scenarioType!.trim();
+    _scenarioContextHint = scenarioContext == null ? null : Map<String, dynamic>.from(scenarioContext);
+    _initializeSystemPrompt();
+    state = state.copyWith();
   }
 
   /// Set the current roleplay scenario and add an initial AI message that sets the scene.
@@ -760,6 +917,18 @@ Use structured format: Rule → Example → Practice.''';
         return "Grammar time! I'll teach you rules and patterns for $lang with clear examples and practice. What would you like to learn?";
     }
   }
+
+  /// Stable mode identity tags used to validate mode differentiation in tests.
+  static const Map<PolieMode, String> modeIdentityTags = {
+    PolieMode.translation: 'translation-first',
+    PolieMode.tutor: 'structured-teaching',
+    PolieMode.roleplay: 'immersive-scenario',
+    PolieMode.conversation: 'free-dialogue',
+    PolieMode.vocab: 'lexical-growth',
+    PolieMode.review: 'memory-recall',
+    PolieMode.pronunciation: 'speech-coaching',
+    PolieMode.grammar: 'rule-patterns',
+  };
 
   Future<void> setTutorMode(bool enabled) async {
     await setMode(enabled ? PolieMode.tutor : PolieMode.translation);
@@ -1109,10 +1278,12 @@ Use structured format: Rule → Example → Practice.''';
               data: {
                 'messages': apiMessages,
                 'systemPrompt': effectiveSystemPrompt ?? systemPrompt,
-                'temperature': _mode == PolieMode.translation ? 0.1 : 0.7,
-                'max_tokens': 500,
+                'temperature': _temperatureForMode(),
+                'max_tokens': _maxTokensForMode(),
                 'language': _targetLanguage,
                 'languageCode': SupportedLanguages.getLanguageCode(_targetLanguage),
+                'sourceLanguage': SupportedLanguages.getLanguageCode(_sourceLanguage),
+                'targetLanguage': SupportedLanguages.getLanguageCode(_targetLanguage),
                 'cefr': _cefrInfo.level,
                 'mode': _mode.name,
               },
@@ -1120,9 +1291,17 @@ Use structured format: Rule → Example → Practice.''';
             if (resp.statusCode == 200 && resp.data != null) {
               final content = (resp.data is Map) ? (resp.data['content']?.toString() ?? '').trim() : '';
               if (content.isNotEmpty) {
+                final modeConstrained = _applyModeOutputContract(content);
+                final enforced = DiacriticsEnforcer.enforceWithMetadata(
+                  modeConstrained,
+                  _selectedLanguage,
+                  enableFuzzy: true,
+                  fuzzyThreshold: 0.75,
+                );
+                final correctedOutput = enforced['text'] as String;
                 final assistantMessage = ChatMessage(
                   role: 'assistant',
-                  content: content,
+                  content: correctedOutput,
                   timestamp: DateTime.now(),
                 );
                 _messages.add(assistantMessage);
@@ -1208,8 +1387,8 @@ Use structured format: Rule → Example → Practice.''';
               // Add conversation messages
               ...messagesList,
             ],
-            "temperature": _mode == PolieMode.translation ? 0.1 : 0.7,
-            "max_tokens": 500,
+            "temperature": _temperatureForMode(),
+            "max_tokens": _maxTokensForMode(),
             "stream": true,
           },
         ).timeout(
@@ -1371,8 +1550,9 @@ Use structured format: Rule → Example → Practice.''';
         state = state.copyWith(isLoading: false);
 
         // Enhanced diacritics enforcement with metadata and audit logging
+        final modeConstrainedOutput = _applyModeOutputContract(output);
         final diacriticsResult = DiacriticsEnforcer.enforceWithMetadata(
-          output.trim(),
+          modeConstrainedOutput,
           _selectedLanguage,
           enableFuzzy: true,
           fuzzyThreshold: 0.75,
@@ -1485,7 +1665,13 @@ Use structured format: Rule → Example → Practice.''';
     await for (final chunk in sendMessageStream(userMessage, systemPromptOverride: systemPromptOverride)) {
       fullResponse += chunk;
     }
-    return fullResponse;
+    final corrected = DiacriticsEnforcer.enforceWithMetadata(
+      fullResponse.trim(),
+      _selectedLanguage,
+      enableFuzzy: true,
+      fuzzyThreshold: 0.75,
+    );
+    return corrected['text'] as String;
   }
 
   // Random number generator for roleplay scenarios

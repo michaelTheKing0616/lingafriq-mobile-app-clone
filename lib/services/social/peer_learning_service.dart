@@ -1,4 +1,6 @@
 import 'package:lingafriq/learning/learner_model/learner_model_service.dart';
+import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/utils/api_service.dart';
 
 /// Social learning layer that transforms tribes from decorative leaderboards
 /// into collaborative learning engines.
@@ -16,6 +18,13 @@ class PeerLearningService {
     LearnerModelService? learnerModel,
   }) : _learnerModel = learnerModel ?? LearnerModelService.instance;
 
+  String _languageFromSkillId(String skillId) {
+    final parts = skillId.split('_');
+    if (parts.isEmpty) return 'unknown';
+    final language = parts.first.trim().toLowerCase();
+    return language.isEmpty ? 'unknown' : language;
+  }
+
   /// Submits a peer correction for another learner's response.
   ///
   /// Corrections from peers with higher mastery carry more weight.
@@ -29,6 +38,46 @@ class PeerLearningService {
     required List<String> errorTypeIds,
     String? explanation,
   }) async {
+    // Prefer server-authoritative correction workflow when backend is available.
+    try {
+      await ApiService.initialize();
+      final response = await ApiService.post(
+        '/api/learning/corrections',
+        data: {
+          'learnerId': targetLearnerId,
+          'language': _languageFromSkillId(skillId),
+          'originalText': originalResponse,
+          'correctedText': correctedResponse,
+          'correctionType': errorTypeIds.isNotEmpty ? errorTypeIds.first : 'grammar',
+          'explanation': explanation ?? 'Peer correction',
+          'skillId': skillId,
+        },
+      );
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final payload = response.data;
+        final correctionData = payload is Map && payload['id'] != null ? payload : payload;
+        return PeerCorrectionResult(
+          accepted: true,
+          reason: 'Correction synced to community review queue.',
+          correctorMasteryDelta: 0.02,
+          targetMasteryDelta: -0.05,
+          correction: PeerCorrection(
+            correctionId: correctionData is Map ? correctionData['_id']?.toString() ?? correctionData['id']?.toString() : null,
+            correctorId: correctorId,
+            targetLearnerId: targetLearnerId,
+            skillId: skillId,
+            originalResponse: originalResponse,
+            correctedResponse: correctedResponse,
+            errorTypeIds: errorTypeIds,
+            explanation: explanation,
+            timestamp: DateTime.now(),
+          ),
+        );
+      }
+    } catch (_) {
+      // Fall back to local learner-model logic when offline/unavailable.
+    }
+
     final correctorState = _learnerModel.getState(
       learnerId: correctorId,
       skillId: skillId,
@@ -74,6 +123,81 @@ class PeerLearningService {
         timestamp: DateTime.now(),
       ),
     );
+  }
+
+  /// Fetches community correction tasks for moderation/review.
+  Future<CommunityCorrectionsPage> fetchCommunityCorrections({
+    String? language,
+    int limit = 20,
+    int page = 1,
+  }) async {
+    await ApiService.initialize();
+    final normalizedLimit = limit < 1 ? 1 : (limit > 100 ? 100 : limit);
+    final normalizedPage = page < 1 ? 1 : page;
+    final normalizedLanguage = language?.trim();
+
+    final response = await ApiService.get(
+      ApiContract.url(ApiContract.learning.corrections),
+      queryParameters: {
+        'scope': 'community',
+        if (normalizedLanguage != null && normalizedLanguage.isNotEmpty)
+          'language': normalizedLanguage,
+        'limit': normalizedLimit,
+        'page': normalizedPage,
+      },
+    );
+
+    if (response.statusCode != 200 || response.data == null) {
+      throw Exception('Failed to fetch community corrections');
+    }
+
+    final payload = response.data;
+    if (payload is! Map) {
+      throw Exception('Unexpected community corrections payload');
+    }
+
+    final rawCorrections = payload['corrections'];
+    final correctionList = rawCorrections is List ? rawCorrections : const [];
+    final items = correctionList
+        .whereType<Map>()
+        .map((item) => CommunityCorrectionFeedItem.fromJson(
+              Map<String, dynamic>.from(item),
+            ))
+        .toList();
+
+    return CommunityCorrectionsPage(
+      corrections: items,
+      total: (payload['total'] as num?)?.toInt() ?? items.length,
+      page: (payload['page'] as num?)?.toInt() ?? normalizedPage,
+      limit: (payload['limit'] as num?)?.toInt() ?? normalizedLimit,
+    );
+  }
+
+  /// Votes on a correction in the backend community queue.
+  Future<CommunityCorrectionFeedItem> voteOnCorrection({
+    required String correctionId,
+    required bool isUpvote,
+  }) async {
+    if (correctionId.trim().isEmpty) {
+      throw Exception('correctionId is required');
+    }
+
+    await ApiService.initialize();
+    final response = await ApiService.post(
+      ApiContract.url(ApiContract.learning.correctionVote(correctionId)),
+      data: {'vote': isUpvote ? 'up' : 'down'},
+    );
+
+    if ((response.statusCode != 200 && response.statusCode != 201) ||
+        response.data == null) {
+      throw Exception('Failed to submit correction vote');
+    }
+
+    final payload = response.data;
+    if (payload is! Map) {
+      throw Exception('Unexpected correction vote payload');
+    }
+    return CommunityCorrectionFeedItem.fromJson(Map<String, dynamic>.from(payload));
   }
 
   /// Generates a cooperative recall challenge for a tribe.
@@ -229,6 +353,7 @@ class PeerCorrectionResult {
 }
 
 class PeerCorrection {
+  final String? correctionId;
   final String correctorId;
   final String targetLearnerId;
   final String skillId;
@@ -239,6 +364,7 @@ class PeerCorrection {
   final DateTime timestamp;
 
   const PeerCorrection({
+    this.correctionId,
     required this.correctorId,
     required this.targetLearnerId,
     required this.skillId,
@@ -346,4 +472,70 @@ class CommunityCorrection {
     required this.suggestion,
     required this.timestamp,
   });
+}
+
+class CommunityCorrectionsPage {
+  final List<CommunityCorrectionFeedItem> corrections;
+  final int total;
+  final int page;
+  final int limit;
+
+  const CommunityCorrectionsPage({
+    required this.corrections,
+    required this.total,
+    required this.page,
+    required this.limit,
+  });
+}
+
+class CommunityCorrectionFeedItem {
+  final String id;
+  final String language;
+  final String originalText;
+  final String correctedText;
+  final String status;
+  final int upvotes;
+  final int downvotes;
+
+  const CommunityCorrectionFeedItem({
+    required this.id,
+    required this.language,
+    required this.originalText,
+    required this.correctedText,
+    required this.status,
+    required this.upvotes,
+    required this.downvotes,
+  });
+
+  CommunityCorrectionFeedItem copyWith({
+    String? id,
+    String? language,
+    String? originalText,
+    String? correctedText,
+    String? status,
+    int? upvotes,
+    int? downvotes,
+  }) {
+    return CommunityCorrectionFeedItem(
+      id: id ?? this.id,
+      language: language ?? this.language,
+      originalText: originalText ?? this.originalText,
+      correctedText: correctedText ?? this.correctedText,
+      status: status ?? this.status,
+      upvotes: upvotes ?? this.upvotes,
+      downvotes: downvotes ?? this.downvotes,
+    );
+  }
+
+  factory CommunityCorrectionFeedItem.fromJson(Map<String, dynamic> json) {
+    return CommunityCorrectionFeedItem(
+      id: (json['_id'] ?? json['id'] ?? '').toString(),
+      language: (json['language'] ?? '').toString(),
+      originalText: (json['originalText'] ?? '').toString(),
+      correctedText: (json['correctedText'] ?? '').toString(),
+      status: (json['status'] ?? 'pending').toString(),
+      upvotes: (json['upvotes'] as num?)?.toInt() ?? 0,
+      downvotes: (json['downvotes'] as num?)?.toInt() ?? 0,
+    );
+  }
 }

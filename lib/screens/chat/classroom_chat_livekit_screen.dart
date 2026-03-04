@@ -74,6 +74,8 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
 
           // Listen for remote participants via room events
           room.addListener(() {
+            final remotePartsMap =
+                Map<String, RemoteParticipant>.from(room.remoteParticipants);
             final participantList = <Map<String, dynamic>>[
               {
                 'name': localP?.name ?? 'You',
@@ -81,19 +83,16 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
                 'isLocal': true,
               },
             ];
-
-            // Access remote participants - use room's participant tracking
-            // LiveKit tracks participants through the room object
-            final remotePartsMap = <String, RemoteParticipant>{};
-            
-            // Get remote participants from room
-            // Note: In livekit_client 1.2.0, we need to track participants manually via events
-            // For now, we'll initialize with empty and update via room events
+            for (final entry in remotePartsMap.entries) {
+              final remote = entry.value;
+              participantList.add({
+                'name': remote.name.isNotEmpty ? remote.name : 'Participant',
+                'id': entry.key,
+                'isLocal': false,
+              });
+            }
             remoteParticipants.value = remotePartsMap;
             participants.value = participantList;
-            
-            // Set up event listeners for participant changes
-            // These will be handled by the room's event system
           });
 
           isLoading.value = false;
@@ -260,17 +259,7 @@ class ClassroomChatLiveKitScreen extends HookConsumerWidget {
       margin: EdgeInsets.all(PanAfricanSpacing.md),
       child: InteractiveWhiteboard(
         roomId: roomId,
-        onDrawingUpdate: (points) {
-          // Sync whiteboard state with backend/other participants
-          // This would typically send updates via WebSocket or LiveKit data channel
-          if (room != null) {
-            // Send drawing updates through LiveKit data channel
-            // room.localParticipant?.publishData(
-            //   jsonEncode(data).codeUnits,
-            //   reliable: true,
-            // );
-          }
-        },
+        onDrawingUpdate: (_) {},
       ),
     );
   }
@@ -422,25 +411,9 @@ class _VideoTile extends StatelessWidget {
     }
 
     if (videoTrack != null) {
-      // Render actual LiveKit video track
-      // Use platform-specific rendering (will be handled by LiveKit internally)
-      // For now, show a placeholder that indicates video is active
-      final colorScheme = Theme.of(context).colorScheme;
-      return Container(
-        color: Theme.of(context).colorScheme.surface,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.videocam, size: 48.sp, color: colorScheme.onSurface),
-              SizedBox(height: 2.h),
-              Text(
-                'Video Active',
-                style: TextStyle(color: colorScheme.onSurface, fontSize: 14.sp),
-              ),
-            ],
-          ),
-        ),
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+        child: VideoTrackRenderer(videoTrack),
       );
     }
 

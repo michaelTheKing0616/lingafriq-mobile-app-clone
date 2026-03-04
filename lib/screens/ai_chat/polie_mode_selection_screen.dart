@@ -6,7 +6,6 @@ import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
 import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
-import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -77,20 +76,6 @@ class PolieModeSelectionScreen extends ConsumerWidget {
         accentColor: PolieColors.success,
         mode: PolieMode.review,
       ),
-      _ModeData(
-        title: 'Pronunciation',
-        description: 'Master sounds, tones, and phonetics. Practice speaking clearly.',
-        icon: Icons.record_voice_over_rounded,
-        accentColor: PolieColors.electricTeal,
-        mode: PolieMode.pronunciation,
-      ),
-      _ModeData(
-        title: 'Grammar',
-        description: 'Sentence patterns, rules, and practice exercises.',
-        icon: Icons.account_tree_rounded,
-        accentColor: PolieColors.royalAmethyst,
-        mode: PolieMode.grammar,
-      ),
     ];
 
     return Scaffold(
@@ -115,7 +100,7 @@ class PolieModeSelectionScreen extends ConsumerWidget {
                     ),
                     Expanded(
                       child: Text(
-                        'Polie AI',
+                        'Polie Tutor',
                         style: PolieTypography.h2(context).copyWith(color: textPrimary),
                         textAlign: TextAlign.center,
                       ),
@@ -169,61 +154,8 @@ class PolieModeSelectionScreen extends ConsumerWidget {
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: PolieSpacing.md),
-                  itemCount: modes.length + 1,
+                  itemCount: modes.length,
                   itemBuilder: (context, index) {
-                    if (index == modes.length) {
-                      return Padding(
-                        padding: EdgeInsets.only(bottom: PolieSpacing.md),
-                        child: PolieGlassCard(
-                          padding: EdgeInsets.zero,
-                          child: InkWell(
-                            onTap: () {
-                              HapticFeedback.mediumImpact();
-                              Navigator.push(
-                                context,
-                                SmoothPageRoute(child: const PersonalitySelectionScreen()),
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(PolieRadius.lg),
-                            child: Padding(
-                              padding: EdgeInsets.all(PolieSpacing.lg),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(PolieSpacing.md),
-                                    decoration: BoxDecoration(
-                                      color: PolieColors.goldEmber.withOpacity(0.25),
-                                      borderRadius: BorderRadius.circular(PolieRadius.md),
-                                    ),
-                                    child: Icon(Icons.people_alt_rounded, color: PolieColors.goldEmber, size: 28),
-                                  ),
-                                  SizedBox(width: PolieSpacing.md),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Historical Personas',
-                                          style: PolieTypography.h2(context).copyWith(color: textPrimary),
-                                        ),
-                                        SizedBox(height: PolieSpacing.xs),
-                                        Text(
-                                          'Chat with African historical figures. Learn through their eyes.',
-                                          style: PolieTypography.bodySmall(context).copyWith(color: textSecondary),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Icon(Icons.arrow_forward_ios_rounded, size: 16, color: textSecondary),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ).animate().fadeIn(delay: (50 * index).ms).slideX(begin: 0.05, end: 0, duration: 300.ms);
-                    }
                     final data = modes[index];
                     return Padding(
                       padding: EdgeInsets.only(bottom: PolieSpacing.md),

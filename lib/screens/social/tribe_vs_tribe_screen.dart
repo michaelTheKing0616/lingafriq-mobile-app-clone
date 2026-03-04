@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../providers/gamification_services_provider.dart';
@@ -152,12 +153,19 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
       );
     }
 
-    // Use API data if available, otherwise fallback to local provider
-    final displayEvent = _currentCompetition ?? (currentEvent != null ? {
-            'name': currentEvent.name,
-            'description': currentEvent.description,
-            'isActive': currentEvent.isActive,
-          } : null);
+    const allowLocalFallback = bool.fromEnvironment(
+      'ALLOW_LOCAL_COMPETITION_FALLBACK',
+      defaultValue: false,
+    );
+    final canUseLocalFallback = allowLocalFallback && kDebugMode;
+    final displayEvent = _currentCompetition ??
+        (canUseLocalFallback && currentEvent != null
+            ? {
+                'name': currentEvent.name,
+                'description': currentEvent.description,
+                'isActive': currentEvent.isActive,
+              }
+            : null);
 
     if (displayEvent == null) {
       return Scaffold(
@@ -320,7 +328,8 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                     isUserTribe: isUserTribe,
                   );
                 })
-              : leaderboard.asMap().entries.map((entry) {
+              : (canUseLocalFallback
+                  ? leaderboard.asMap().entries.map((entry) {
                   final index = entry.key;
                   final tribeEntry = entry.value;
                   final isUserTribe = tribeEntry.key == gamification.tribe;
@@ -332,7 +341,20 @@ class _TribeVsTribeScreenState extends ConsumerState<TribeVsTribeScreen> {
                     points: tribeEntry.value,
                     isUserTribe: isUserTribe,
                   );
-                })),
+                })
+                  : <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(PanAfricanSpacing.md),
+                        decoration: BoxDecoration(
+                          color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                          borderRadius: PanAfricanRadius.lgBR,
+                        ),
+                        child: Text(
+                          'Competition leaderboard is not available yet. Pull to refresh when results are published.',
+                          style: PanAfricanTypography.bodyMedium(context),
+                        ),
+                      ),
+                    ])),
           SizedBox(height: PanAfricanSpacing.md),
           // Your contribution
           Container(

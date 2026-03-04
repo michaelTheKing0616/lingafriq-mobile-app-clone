@@ -8,6 +8,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 /// Enhanced Vocabulary Builder Screen
@@ -55,8 +57,8 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
     setState(() => _isLoading = true);
     
     try {
-      // TODO: Replace with actual API call
-      _allWords = _getDefaultWords();
+      final fromApi = await _fetchVocabularyFromApi();
+      _allWords = fromApi.isNotEmpty ? fromApi : _getDefaultWords();
       _wordFamilies = _organizeIntoFamilies(_allWords);
     } catch (e) {
       debugPrint('Error loading vocabulary: $e');
@@ -68,6 +70,13 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
   }
 
   Future<void> _loadWordOfTheDay() async {
+    final fromApi = await _fetchWordOfTheDay();
+    if (fromApi != null) {
+      _wordOfTheDay = fromApi;
+      setState(() {});
+      return;
+    }
+
     final prefs = await SharedPreferences.getInstance();
     final today = DateFormat('yyyy-MM-dd').format(DateTime.now());
     final savedDate = prefs.getString('word_of_day_date');
@@ -88,6 +97,75 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
     }
     
     setState(() {});
+  }
+
+  Future<List<VocabularyWord>> _fetchVocabularyFromApi() async {
+    final language = widget.language ?? 'sw';
+    final response = await Dio().get(
+      '${ApiContract.baseUrl}/api/content/phrase-cards',
+      queryParameters: {
+        'language': language,
+        'limit': 200,
+      },
+      options: Options(receiveTimeout: const Duration(seconds: 20)),
+    );
+
+    final payload = response.data;
+    if (payload is! Map || payload['cards'] is! List) return const [];
+    final cards = (payload['cards'] as List)
+        .whereType<Map>()
+        .map((raw) => Map<String, dynamic>.from(raw))
+        .toList();
+
+    return cards
+        .map((card) {
+          final id = card['card_id']?.toString();
+          final word = card['text']?.toString();
+          final gloss = card['gloss']?.toString();
+          if (id == null || word == null || gloss == null) return null;
+          final tags = card['tags'] is List ? List<String>.from(card['tags']) : const <String>[];
+          return VocabularyWord(
+            id: id,
+            word: word,
+            translation: gloss,
+            pronunciation: card['ipa']?.toString() ?? '',
+            imageUrl: null,
+            audioUrl: card['audio_native_url']?.toString(),
+            family: tags.isNotEmpty ? tags.first : 'general',
+            language: language,
+          );
+        })
+        .whereType<VocabularyWord>()
+        .toList();
+  }
+
+  Future<VocabularyWord?> _fetchWordOfTheDay() async {
+    try {
+      final language = widget.language ?? 'sw';
+      final response = await Dio().get(
+        '${ApiContract.baseUrl}/api/content/vocabulary/word-of-day',
+        queryParameters: {'language': language},
+        options: Options(receiveTimeout: const Duration(seconds: 20)),
+      );
+      if (response.data is! Map) return null;
+      final data = Map<String, dynamic>.from(response.data as Map);
+      final id = data['id']?.toString();
+      final word = data['word']?.toString();
+      final translation = data['translation']?.toString();
+      if (id == null || word == null || translation == null) return null;
+      return VocabularyWord(
+        id: id,
+        word: word,
+        translation: translation,
+        pronunciation: data['pronunciation']?.toString() ?? '',
+        imageUrl: null,
+        audioUrl: data['audioUrl']?.toString(),
+        family: data['category']?.toString() ?? 'general',
+        language: language,
+      );
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<void> _loadStats() async {
@@ -584,24 +662,98 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
   }
 
   Widget _buildPictureMatchTab() {
-    // Picture matching game - tap the image that matches the word
-    return Center(
+    final words = _allWords.length >= 4 ? _allWords.take(4).toList() : _allWords;
+    if (words.length < 2) {
+      return Center(
+        child: Text(
+          'Add more vocabulary to unlock picture matching.',
+          style: PolieTypography.body(context).copyWith(color: PolieColors.textSecondary),
+        ),
+      );
+    }
+    final target = words.first;
+    final options = [...words]..shuffle();
+
+    return Padding(
+      padding: EdgeInsets.all(PolieSpacing.md),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.image_search_rounded, size: 64.sp, color: PolieColors.textSecondary),
-          SizedBox(height: PolieSpacing.md),
           Text(
-            'Picture Matching',
-            style: PolieTypography.h3(context).copyWith(
-              color: PolieColors.textSecondary,
-            ),
+            'Tap the image for "${target.word}"',
+            style: PolieTypography.titleMedium(context).copyWith(color: PolieColors.textPrimary),
           ),
-          SizedBox(height: PolieSpacing.sm),
-          Text(
-            'Coming soon',
-            style: PolieTypography.body(context).copyWith(
-              color: PolieColors.textSecondary,
+          SizedBox(height: PolieSpacing.md),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: PolieSpacing.md,
+                mainAxisSpacing: PolieSpacing.md,
+                childAspectRatio: 1,
+              ),
+              itemCount: options.length,
+              itemBuilder: (context, index) {
+                final option = options[index];
+                return Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(PolieRadius.lg),
+                    onTap: () {
+                      final isCorrect = option.id == target.id;
+                      HapticFeedback.mediumImpact();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            isCorrect
+                                ? 'Correct! "${target.word}" means ${target.translation}.'
+                                : 'Not quite. Correct answer: ${target.word}.',
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: PolieColors.surfaceContainer,
+                        borderRadius: BorderRadius.circular(PolieRadius.lg),
+                        border: Border.all(color: PolieColors.borderLight),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (option.imageUrl != null && option.imageUrl!.isNotEmpty)
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(PolieRadius.lg)),
+                                child: CachedNetworkImage(
+                                  imageUrl: option.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                                  errorWidget: (context, url, error) => Icon(Icons.image_not_supported_outlined, size: 36.sp),
+                                ),
+                              ),
+                            )
+                          else
+                            Expanded(
+                              child: Icon(Icons.image_outlined, size: 48.sp, color: PolieColors.textSecondary),
+                            ),
+                          Padding(
+                            padding: EdgeInsets.all(PolieSpacing.sm),
+                            child: Text(
+                              option.translation,
+                              style: PolieTypography.bodySmall(context),
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],

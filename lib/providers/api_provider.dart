@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -24,6 +23,7 @@ import 'package:lingafriq/utils/api.dart';
 import 'package:lingafriq/utils/extensions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/config/api_contract.dart';
+import 'package:meta/meta.dart';
 
 import '../history_quiz/models/history_quiz_response.dart';
 import '../language_quiz/models/language_quiz_lesson_model.dart';
@@ -269,7 +269,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       if (userId == null) return false;
       state = state.copyWith(isLoading: true);
       final res = await ref.read(client).put(Api.userInfo, data: data);
-      res.statusCode.toString().log();
+      logger.debug('Profile update status received', context: {'statusCode': res.statusCode});
       if (res.statusCode != 200) throw res.data;
       state = state.copyWith(isLoading: false);
       return true;
@@ -283,11 +283,11 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<bool> accountUpdate() async {
     try {
       final res = await ref.read(client).get(Api.accountUpdate);
-      res.statusCode.toString().log();
+      logger.debug('Account update status received', context: {'statusCode': res.statusCode});
       if (res.statusCode != 200) throw res.data;
       return true;
     } catch (e) {
-      "Error Account update $e".log("accountUpdate");
+      logger.warn('Account update failed', tag: 'accountUpdate', error: e);
       return false;
     }
   }
@@ -301,7 +301,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             Api.deleteUser(userId),
             data: data,
           );
-      res.statusCode.toString().log("statusCode");
+      logger.debug('Delete user status received', context: {'statusCode': res.statusCode});
       if (res.statusCode != 204) throw res.data;
       setIdle();
       ref.read(authProvider.notifier).signOut();
@@ -318,7 +318,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).get(Api.userProfile(id));
 
       if (res.statusCode != 200) throw res.data;
-      res.data.toString().log('getProfileUser');
       return ProfileModel.fromMap(res.data.first);
     } catch (e) {
       rethrow;
@@ -326,7 +325,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   }
 
   Future<User> getUserInfo() async {
-    "getUserInfo".log('getUserInfo');
+    logger.debug('Fetching current user info');
     try {
       final res = await ref.read(client).get(Api.userInfo);
       if (res.statusCode != 200) throw res.data;
@@ -447,6 +446,121 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     }
   }
 
+  /// Fetch learning path by language and path type.
+  Future<Map<String, dynamic>?> getLearningPath({
+    required String language,
+    required String pathType,
+  }) async {
+    try {
+      final res = await ref.read(client).get(
+        ApiContract.url(
+          ApiContract.learningPath.byContext(
+            language: language,
+            type: pathType,
+          ),
+        ),
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data as Map);
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error fetching learning path', error: e, context: {
+        'language': language,
+        'pathType': pathType,
+      });
+      return null;
+    }
+  }
+
+  /// Create a learning path for the current user.
+  Future<Map<String, dynamic>?> createLearningPath({
+    required String language,
+    required String pathType,
+    required String currentLevel,
+    required List<Map<String, dynamic>> modules,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        ApiContract.url(ApiContract.learningPath.create),
+        data: {
+          'language': language,
+          'type': pathType,
+          'currentLevel': currentLevel,
+          'modules': modules,
+        },
+      );
+      if ((res.statusCode == 200 || res.statusCode == 201) && res.data is Map) {
+        return Map<String, dynamic>.from(res.data as Map);
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error creating learning path', error: e, context: {
+        'language': language,
+        'pathType': pathType,
+      });
+      return null;
+    }
+  }
+
+  /// Update learning path fields for language and path type.
+  Future<Map<String, dynamic>?> updateLearningPath({
+    required String language,
+    required String pathType,
+    required Map<String, dynamic> updates,
+  }) async {
+    try {
+      final res = await ref.read(client).put(
+        ApiContract.url(
+          ApiContract.learningPath.updateByContext(
+            language: language,
+            type: pathType,
+          ),
+        ),
+        data: updates,
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data as Map);
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error updating learning path', error: e, context: {
+        'language': language,
+        'pathType': pathType,
+      });
+      return null;
+    }
+  }
+
+  /// Mark a learning path module as completed.
+  Future<Map<String, dynamic>?> completeLearningPathModule({
+    required String language,
+    required String pathType,
+    required String moduleId,
+  }) async {
+    try {
+      final res = await ref.read(client).post(
+        ApiContract.url(ApiContract.learningPath.completeModule),
+        data: {
+          'language': language,
+          'type': pathType,
+          'moduleId': moduleId,
+        },
+      );
+      if (res.statusCode == 200 && res.data is Map) {
+        return Map<String, dynamic>.from(res.data as Map);
+      }
+      return null;
+    } catch (e) {
+      logger.error('Error completing learning path module', error: e, context: {
+        'language': language,
+        'pathType': pathType,
+        'moduleId': moduleId,
+      });
+      return null;
+    }
+  }
+
   Future<LanguageResponse> getLanguages() async {
     try {
       final res = await ref.read(client).get(Api.language);
@@ -478,7 +592,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   Future<ProfilesResponse> getProfilesResponse([String? url]) async {
     try {
       final res = await ref.read(client).get(url ?? Api.profiles);
-      jsonEncode(res.data).log();
       if (res.statusCode != 200) throw res.data;
       return ProfilesResponse.fromMap(res.data);
     } catch (e) {
@@ -496,6 +609,46 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   static const _lessonReceiveTimeout = Duration(seconds: 30);
   static const _userContentBase = '/api/user-content';
 
+  @visibleForTesting
+  static Map<String, dynamic>? coerceMap(dynamic value) {
+    if (value is Map<String, dynamic>) return value;
+    if (value is Map) return Map<String, dynamic>.from(value);
+    return null;
+  }
+
+  @visibleForTesting
+  static List<dynamic> extractListPayload(dynamic payload) {
+    if (payload is List) return payload;
+    final map = coerceMap(payload);
+    if (map == null) return const [];
+    final candidates = [
+      map['result'],
+      map['results'],
+      map['data'],
+      map['items'],
+    ];
+    for (final candidate in candidates) {
+      if (candidate is List) return candidate;
+    }
+    return const [];
+  }
+
+  static int _coerceInt(dynamic value, {int fallback = 0}) {
+    if (value is num) return value.toInt();
+    return fallback;
+  }
+
+  static bool? _coerceNullableBool(dynamic value) {
+    if (value is bool) return value;
+    if (value is num) return value != 0;
+    if (value is String) {
+      final normalized = value.trim().toLowerCase();
+      if (normalized == 'true' || normalized == '1') return true;
+      if (normalized == 'false' || normalized == '0') return false;
+    }
+    return null;
+  }
+
   Future<LessonResponse> getLessons(int? id) async {
     try {
       final params = {"lessons_language": id};
@@ -505,8 +658,9 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             options: Options(receiveTimeout: _lessonReceiveTimeout),
           );
       if (res.statusCode != 200) throw res.data;
-      final data = res.data as Map<String, dynamic>?;
-      final result = data?['result'] as Map<String, dynamic>?;
+      final data = coerceMap(res.data);
+      final result =
+          coerceMap(data?['result']) ?? (data != null && data['results'] != null ? data : null);
       final totalScore = data?['total_score'];
       if (result == null) throw Exception('Lessons API returned no result');
       return LessonResponse.fromMap(result, totalScore);
@@ -525,47 +679,56 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             options: Options(receiveTimeout: _lessonReceiveTimeout),
           );
       if (res.statusCode != 200) throw res.data;
-      final resList = res.data as List;
+      final resList = extractListPayload(res.data);
       final dataList = <Map<String, dynamic>>[];
       //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
-            dataList.add(element);
+            final map = coerceMap(element);
+            if (map != null) dataList.add(map);
           }
-        } else if (result is Map) {
-          dataList.add(result as Map<String, dynamic>);
+        } else {
+          final map = coerceMap(result);
+          if (map != null) dataList.add(map);
         }
       }
 
       //LessonType Cast Loop
-      final mappedLessonsList = dataList.map((lesson) {
-        if (lesson.containsKey("types")) {
-          return SectionLessonModel(
-            id: lesson['id'],
-            title: lesson.containsKey("title") ? lesson['title'] : lesson['text'],
-            score: lesson['score'],
-            types: lesson['types'],
-            dateTime: lesson['date_time'],
-            completed: lesson['completed'],
-            completed_by: lesson['completed_by'],
-            otherData: lesson,
-          );
-        }
-        // if (lesson.containsKey("quiz")) {
-        final quiz = lesson['quiz'].first;
-        return SectionLessonModel(
-          id: quiz['id'],
-          title: quiz['quiz'],
-          score: quiz['score'],
-          types: quiz['quiz_type'],
-          dateTime: quiz['date_time'],
-          completed: quiz['completed'],
-          completed_by: quiz['completed_by'],
-          otherData: lesson,
-        );
-        // }
-      }).toList();
+      final mappedLessonsList = dataList
+          .map((lesson) {
+            if (lesson.containsKey("types")) {
+              return SectionLessonModel(
+                id: (lesson['id'] as num?)?.toInt() ?? 0,
+                title: (lesson['title'] ?? lesson['text'] ?? 'Untitled lesson').toString(),
+                score: _coerceInt(lesson['score']),
+                types: lesson['types']?.toString() ?? '',
+                dateTime: lesson['date_time']?.toString() ?? DateTime.now().toIso8601String(),
+                completed: _coerceNullableBool(lesson['completed']),
+                completed_by: lesson['completed_by'],
+                otherData: lesson,
+              );
+            }
+            final quizList = lesson['quiz'];
+            if (quizList is! List || quizList.isEmpty) return null;
+            final quiz = coerceMap(quizList.first);
+            if (quiz == null) return null;
+            return SectionLessonModel(
+              id: (quiz['id'] as num?)?.toInt() ?? 0,
+              title: (quiz['quiz'] ?? lesson['title'] ?? 'Untitled quiz').toString(),
+              score: _coerceInt(quiz['score']),
+              types: (quiz['quiz_type'] ?? 'quiz').toString(),
+              dateTime: quiz['date_time']?.toString() ?? DateTime.now().toIso8601String(),
+              completed: _coerceNullableBool(quiz['completed']),
+              completed_by: quiz['completed_by'],
+              otherData: lesson,
+            );
+          })
+          .whereType<SectionLessonModel>()
+          .toList();
+      if (mappedLessonsList.isEmpty) {
+        throw Exception('No valid section lessons found');
+      }
       // final date = DateTime.parse("2022-06-21T02:59:57.623583Z");
       mappedLessonsList.sort((a, b) {
         return a.date.compareTo(b.date);
@@ -722,7 +885,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   */
 
   Future<bool> markAsComplete(String endpointToHit) async {
-    "Marking as complete $endpointToHit".log("endpointToHit");
+    logger.debug('Marking content as complete', context: {'endpoint': endpointToHit});
     try {
       state = state.copyWith(isLoading: true);
       final res = await ref.read(client).patch(endpointToHit);
@@ -732,7 +895,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       try {
         final updateSuccess = await accountUpdate();
         if (updateSuccess) {
-          "Account updated".log("accountUpdate");
+          logger.debug('Account update completed after markAsComplete');
           final userId = ref.read(userProvider)?.id;
           if (userId != null) {
             try {
@@ -740,14 +903,14 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
               ref.read(userProvider.notifier).overrideUser(user);
             } catch (e) {
               // Handle getProfileUser error gracefully - log but don't fail the whole operation
-              "Error getting updated profile $e".log("getProfileUser");
+              logger.warn('Failed to fetch updated profile after markAsComplete', error: e);
               // User data might still be valid from previous state
             }
           }
         }
       } catch (e) {
         // Handle accountUpdate error gracefully - log but don't fail the whole operation
-        "Error Account update $e".log("accountUpdate");
+        logger.warn('Account update failed after markAsComplete', error: e);
         // Mark as complete succeeded, account update is secondary
       }
 
@@ -774,16 +937,18 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         options: Options(receiveTimeout: _lessonReceiveTimeout),
       );
       if (res.statusCode != 200) throw res.data;
-      final resList = res.data as List;
+      final resList = extractListPayload(res.data);
       final dataList = <Map<String, dynamic>>[];
       //Flat List Loop
       for (var result in resList) {
         if (result is List) {
           for (var element in result) {
-            dataList.add(element);
+            final map = coerceMap(element);
+            if (map != null) dataList.add(map);
           }
-        } else if (result is Map) {
-          dataList.add(result as Map<String, dynamic>);
+        } else {
+          final map = coerceMap(result);
+          if (map != null) dataList.add(map);
         }
       }
 
@@ -795,30 +960,34 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             final wordQuestions =
                 randomQuiz.containsKey("word_question") ? randomQuiz["word_question"] as List : [];
             final mappedInstantQuestions = instantQuestions.map((e) {
-              final question = e["question"];
+              final question = coerceMap(coerceMap(e)?['question']);
+              if (question == null) return null;
               return RandomQuizLessonModel(
-                id: question['id'],
-                title: question['title'],
-                score: question['score'],
-                types: question['types'],
-                dateTime: question['date_time'],
-                completed: question['completed'],
+                id: (question['id'] as num?)?.toInt() ?? 0,
+                title: (question['title'] ?? 'Untitled question').toString(),
+                score: _coerceInt(question['score']),
+                types: (question['types'] ?? '').toString(),
+                dateTime: question['date_time']?.toString() ?? DateTime.now().toIso8601String(),
+                completed: _coerceNullableBool(question['completed']),
                 completed_by: question['completed_by'],
-                otherData: e,
+                otherData: coerceMap(e) ?? <String, dynamic>{},
               );
-            }).toList();
+            }).whereType<RandomQuizLessonModel>().toList();
             final mappedWordQuestions = wordQuestions.map((e) {
+              final wordQuestion = coerceMap(e);
+              if (wordQuestion == null) return null;
               return RandomQuizLessonModel(
-                id: e['id'],
-                title: e['title'],
-                score: e['score'] ?? 0,
-                types: e['types'],
-                dateTime: e['date_time'],
-                completed: e['completed'],
-                completed_by: e['completed_by'],
-                otherData: e,
+                id: (wordQuestion['id'] as num?)?.toInt() ?? 0,
+                title: (wordQuestion['title'] ?? 'Untitled question').toString(),
+                score: _coerceInt(wordQuestion['score']),
+                types: (wordQuestion['types'] ?? '').toString(),
+                dateTime:
+                    wordQuestion['date_time']?.toString() ?? DateTime.now().toIso8601String(),
+                completed: _coerceNullableBool(wordQuestion['completed']),
+                completed_by: wordQuestion['completed_by'],
+                otherData: wordQuestion,
               );
-            }).toList();
+            }).whereType<RandomQuizLessonModel>().toList();
             final merged = [...mappedInstantQuestions, ...mappedWordQuestions];
             return merged;
           })
@@ -849,7 +1018,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       final res = await ref.read(client).get(Api.languageQuiz);
       if (res.statusCode != 200) throw res.data;
-      res.data.toString().log('getLanguageQuiz');
       return LanguageQuizResponse.fromMap(res.data['result'], res.data['total_score']);
     } catch (e) {
       rethrow;
@@ -890,7 +1058,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           );
         }
         // if (lesson.containsKey("quiz")) {
-        lesson.toString().log('language quiz');
         final quiz = lesson['quiz'].first;
         return LanguageQuizLessonModel(
           id: quiz['id'],
@@ -967,7 +1134,6 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             otherData: lesson,
           );
         }
-        lesson.toString().log('history quiz');
         // if (lesson.containsKey("quiz")) {
         final quiz = lesson['quiz'].first;
         return HistoryQuizLessonModel(
@@ -1005,15 +1171,14 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         'type': kIsWeb ? 'web' : (Platform.isAndroid ? 'android' : 'ios'),
       };
       final res = await ref.read(client).post(Api.registerFcmDevice, data: data);
-      res.statusCode.log();
-      res.data.toString().log();
+      logger.debug('Register device completed', context: {'statusCode': res.statusCode});
 
       if (res.statusCode == 201 || res.statusCode == 200) {
         return true;
       }
       throw res.data;
     } catch (e) {
-      "Error Registering Device".log();
+      logger.warn('Error registering device');
       return false;
     }
   }
@@ -1024,8 +1189,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       final res = await ref.read(client).delete(
             Api.unRegisterFcmDevice(token!),
           );
-      res.statusCode.log();
-      res.data.toString().log();
+      logger.debug('Unregister device completed', context: {'statusCode': res.statusCode});
       if (res.statusCode != 204) throw res.data;
     } catch (e) {
       rethrow;
@@ -1035,8 +1199,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
   getDevices() async {
     try {
       final res = await ref.read(client).get(Api.registerFcmDevice);
-      res.statusCode.log();
-      res.data.toString().log();
+      logger.debug('Get devices completed', context: {'statusCode': res.statusCode});
       if (res.statusCode != 200) throw res.data;
     } catch (e) {
       rethrow;

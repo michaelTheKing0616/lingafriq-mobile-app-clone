@@ -9,6 +9,9 @@ import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/social_feed_provider.dart';
 import 'package:lingafriq/screens/social/friend_profile_screen.dart';
 import 'package:lingafriq/screens/social/challenge_friend_screen.dart';
+import 'package:lingafriq/screens/social/community_corrections_screen.dart';
+import 'package:lingafriq/screens/gamification/tribe_selection_screen.dart';
+import 'package:lingafriq/screens/chat/tribe_chat_screen.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 
@@ -108,6 +111,26 @@ class SocialHubScreen extends HookConsumerWidget {
                   'Connect and compete with friends',
                   style: PanAfricanTypography.bodySmall(context).copyWith(
                     color: PanAfricanColors.textSecondary,
+                  ),
+                ),
+                SizedBox(height: PanAfricanSpacing.sm),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const CommunityCorrectionsScreen(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.rule_folder_outlined),
+                    label: const Text('Community Corrections'),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: PanAfricanColors.accent),
+                    ),
                   ),
                 ),
               ],
@@ -739,11 +762,39 @@ class _TribesTab extends HookConsumerWidget {
       isLoading.value = true;
       try {
         final response = await ApiService.get(
-          ApiContract.url('/api/gamification/tribe'),
+          ApiContract.url(ApiContract.tribes.me),
         );
 
         if (response.statusCode == 200 && response.data != null) {
-          tribeData.value = response.data as Map<String, dynamic>;
+          final payload = response.data as Map<String, dynamic>;
+          final memberships = payload['data'];
+          if (memberships is List && memberships.isNotEmpty) {
+            final first = memberships.first as Map<String, dynamic>;
+            final tribe = (first['tribe'] is Map<String, dynamic>)
+                ? first['tribe'] as Map<String, dynamic>
+                : <String, dynamic>{};
+            final tribeId = tribe['id']?.toString() ?? first['tribe_id']?.toString() ?? '';
+            final leaderboardResponse = tribeId.isNotEmpty
+                ? await ApiService.get(ApiContract.url('/api/leaderboards/tribe/$tribeId'))
+                : null;
+            final leaderboardEntries =
+                leaderboardResponse?.data is Map<String, dynamic> &&
+                        (leaderboardResponse!.data['entries'] is List)
+                    ? List<Map<String, dynamic>>.from(leaderboardResponse.data['entries'])
+                    : <Map<String, dynamic>>[];
+
+            tribeData.value = {
+              'id': tribeId,
+              'name': tribe['name']?.toString() ?? 'My Tribe',
+              'memberCount': tribe['members_count'] ?? 0,
+              'rank': leaderboardEntries.isNotEmpty
+                  ? leaderboardEntries.first['rank'] ?? 'N/A'
+                  : 'N/A',
+              'leaderboardEntries': leaderboardEntries.take(3).toList(),
+            };
+          } else {
+            tribeData.value = null;
+          }
         }
       } catch (e) {
         tribeData.value = null;
@@ -789,9 +840,11 @@ class _TribesTab extends HookConsumerWidget {
                     SizedBox(height: PanAfricanSpacing.xl),
                     FilledButton(
                       onPressed: () {
-                        // Navigate to find/create tribe screen
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Tribe feature coming soon!')),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const TribeSelectionScreen(),
+                          ),
                         );
                       },
                       style: FilledButton.styleFrom(
@@ -854,9 +907,31 @@ class _TribesTab extends HookConsumerWidget {
                       width: double.infinity,
                       child: OutlinedButton.icon(
                         onPressed: () {
-                          // Navigate to tribe chat
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Tribe chat coming soon!')),
+                          final tribeId =
+                              tribeData.value!['id']?.toString() ??
+                              tribeData.value!['tribeId']?.toString() ??
+                              '';
+                          final tribeName =
+                              tribeData.value!['name']?.toString() ??
+                              'My Tribe';
+                          if (tribeId.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(
+                                  'Tribe data is unavailable. Please refresh and try again.',
+                                ),
+                              ),
+                            );
+                            return;
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => TribeChatScreen(
+                                tribeId: tribeId,
+                                tribeName: tribeName,
+                              ),
+                            ),
                           );
                         },
                         icon: Icon(Icons.chat),
@@ -879,6 +954,7 @@ class _TribesTab extends HookConsumerWidget {
                     PanAfricanCard(
                       padding: EdgeInsets.all(PanAfricanSpacing.lg),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Top 3 Members',
@@ -887,12 +963,27 @@ class _TribesTab extends HookConsumerWidget {
                             ),
                           ),
                           SizedBox(height: PanAfricanSpacing.md),
-                          Text(
-                            'Leaderboard data will appear here',
-                            style: PanAfricanTypography.bodySmall(context).copyWith(
-                              color: PanAfricanColors.textSecondary,
-                            ),
-                          ),
+                          if ((tribeData.value!['leaderboardEntries'] as List?)?.isEmpty ?? true)
+                            Text(
+                              'No leaderboard entries yet',
+                              style: PanAfricanTypography.bodySmall(context).copyWith(
+                                color: PanAfricanColors.textSecondary,
+                              ),
+                            )
+                          else
+                            ...((tribeData.value!['leaderboardEntries'] as List)
+                                .cast<Map<String, dynamic>>()
+                                .map(
+                                  (entry) => Padding(
+                                    padding: EdgeInsets.only(bottom: PanAfricanSpacing.xs),
+                                    child: Text(
+                                      '#${entry['rank'] ?? '-'}  ${entry['username'] ?? 'Learner'}  •  ${entry['score'] ?? 0} XP',
+                                      style: PanAfricanTypography.bodySmall(context).copyWith(
+                                        color: PanAfricanColors.textSecondary,
+                                      ),
+                                    ),
+                                  ),
+                                )),
                         ],
                       ),
                     ),

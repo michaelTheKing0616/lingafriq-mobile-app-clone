@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:dio/dio.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -53,8 +55,8 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
     setState(() => _isLoading = true);
     
     try {
-      // TODO: Replace with actual API call
-      _exercises = _getDefaultExercises();
+      final fromApi = await _fetchExercisesFromApi();
+      _exercises = fromApi.isNotEmpty ? fromApi : _getDefaultExercises();
     } catch (e) {
       debugPrint('Error loading exercises: $e');
       _exercises = _getDefaultExercises();
@@ -68,7 +70,7 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
       ListeningExercise(
         id: 'listen_1',
         title: 'Greeting Conversation',
-        audioUrl: null, // TODO: Add actual audio URL
+        audioUrl: null,
         difficulty: 'beginner',
         transcript: 'Jambo! Habari gani? Nzuri sana, asante.',
         questions: [
@@ -106,6 +108,60 @@ class _ListeningPracticeScreenState extends ConsumerState<ListeningPracticeScree
         language: widget.language ?? 'sw',
       ),
     ];
+  }
+
+  Future<List<ListeningExercise>> _fetchExercisesFromApi() async {
+    final language = widget.language ?? 'sw';
+    final response = await Dio().get(
+      '${ApiContract.baseUrl}/api/content/listening',
+      queryParameters: {
+        'language': language,
+        'limit': 20,
+      },
+      options: Options(
+        receiveTimeout: const Duration(seconds: 20),
+      ),
+    );
+
+    final payload = response.data;
+    if (payload is! Map || payload['exercises'] is! List) return const [];
+    final list = (payload['exercises'] as List)
+        .whereType<Map>()
+        .map((raw) => Map<String, dynamic>.from(raw))
+        .toList();
+
+    return list
+        .map((item) {
+          final id = item['id']?.toString();
+          final text = item['text']?.toString();
+          final translation = item['translation']?.toString();
+          if (id == null || text == null || text.trim().isEmpty) return null;
+          return ListeningExercise(
+            id: id,
+            title: translation?.isNotEmpty == true ? translation! : text,
+            audioUrl: item['audio_url']?.toString(),
+            difficulty: _difficultyFromScore(item['difficulty']),
+            transcript: text,
+            questions: [
+              ComprehensionQuestion(
+                id: '${id}_q1',
+                type: QuestionType.fillInBlank,
+                question: 'Type the main phrase you heard.',
+                correctAnswer: text,
+              ),
+            ],
+            language: language,
+          );
+        })
+        .whereType<ListeningExercise>()
+        .toList();
+  }
+
+  String _difficultyFromScore(dynamic value) {
+    final score = value is num ? value.toDouble() : 0.5;
+    if (score < 0.35) return 'beginner';
+    if (score < 0.7) return 'intermediate';
+    return 'advanced';
   }
 
   Future<void> _playAudio(String? audioUrl) async {

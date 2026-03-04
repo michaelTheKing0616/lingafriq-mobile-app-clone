@@ -1,0 +1,46 @@
+{
+  "scorecardName": "mobile-release-certification",
+  "schemaVersion": 1,
+  "releaseTrain": "WS1-WS12",
+  "overallStatus": "pending",
+  "readinessScorePercent": 45,
+  "statusCounts": {
+    "pass": 26,
+    "pending": 32,
+    "fail": 0,
+    "invalid": 0,
+    "total": 58
+  },
+  "sections": {
+    "wsGates": {
+      "pass": 0,
+      "pending": 12,
+      "fail": 0,
+      "invalid": 0,
+      "total": 12
+    },
+    "criticalJourneys": {
+      "pass": 14,
+      "pending": 14,
+      "fail": 0,
+      "invalid": 0,
+      "total": 28
+    },
+    "deviceMatrix": {
+      "pass": 12,
+      "pending": 6,
+      "fail": 0,
+      "invalid": 0,
+      "total": 18
+    }
+  },
+  "sourceArtifacts": {
+    "wsGatesPath": "release-gates/ws1-ws12-gates.json",
+    "criticalJourneysPath": "release-gates/mobile-critical-journey-checklist.json",
+    "deviceMatrixPath": "release-gates/mobile-device-matrix-checklist.json"
+  },
+  "scoringPolicy": {
+    "scoreDefinition": "readinessScorePercent = round(pass / total * 100)",
+    "overallStatusRule": "fail if any fail/invalid status exists, otherwise pending until explicit release sign-off"
+  }
+}

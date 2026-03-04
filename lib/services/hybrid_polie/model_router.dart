@@ -16,6 +16,7 @@ enum TaskType {
 
 enum ModelType {
   llama70b,      // LLaMA-3.1-70B-Versatile - for dialogue, roleplay, tutoring
+  gemini,        // Gemini via backend orchestration for long-context dialogue
   nllb200,       // NLLB-200 - for translation
   afriteva,      // AfriTeVa/AfriT5 - for canonical phrase generation
   asrMfa,        // ASR + MFA - for pronunciation scoring
@@ -45,11 +46,31 @@ class ModelRouter {
       return ModelType.asrMfa;
     }
     
-    // Dialogue, roleplay, tutoring, conversation → LLaMA-3.1-70B
+    const geminiPreferredLanguages = <String>{
+      'yoruba', 'yo',
+      'hausa', 'ha',
+      'igbo', 'ig',
+      'swahili', 'sw',
+      'amharic', 'am',
+      'zulu', 'zu',
+      'xhosa', 'xh',
+      'kinyarwanda', 'rw',
+      'somali', 'so',
+    };
+    final normalizedLanguage = language.trim().toLowerCase();
+
+    // Dialogue, roleplay, tutoring, conversation -> Gemini for high-context
+    // African-language coaching, then fallback to LLaMA in orchestrator.
     if (taskType == TaskType.roleplay ||
         taskType == TaskType.tutor ||
-        taskType == TaskType.conversation ||
-        taskType == TaskType.vocab ||
+        taskType == TaskType.conversation) {
+      if (geminiPreferredLanguages.contains(normalizedLanguage)) {
+        return ModelType.gemini;
+      }
+      return ModelType.llama70b;
+    }
+
+    if (taskType == TaskType.vocab ||
         taskType == TaskType.review ||
         taskType == TaskType.generalChat) {
       return ModelType.llama70b;

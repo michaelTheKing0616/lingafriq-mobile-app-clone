@@ -10,6 +10,7 @@ import 'model_router.dart';
 import 'translation_service.dart';
 import 'canonical_phrase_service.dart';
 import '../../config/url_constants.dart';
+import '../../config/api_contract.dart';
 import '../../utils/diacritics_enforcer.dart';
 import '../../utils/supported_languages.dart';
 import '../env_config.dart';
@@ -121,6 +122,20 @@ class HybridPolieOrchestrator {
         );
         modelUsed = 'llama-3.3-70b-versatile';
         metadata['canonical_phrase'] = canonicalPhrase;
+        break;
+
+      case ModelType.gemini:
+        final geminiOutput = await _callBackendGemini(
+          userMessage: userMessage,
+          mode: mode,
+          targetLanguage: targetLanguage,
+          sourceLanguage: sourceLanguage ?? 'english',
+          systemPrompt: groqProvider.currentSystemPrompt,
+        );
+        rawOutput = geminiOutput['content']?.toString() ?? userMessage;
+        modelUsed = geminiOutput['model']?.toString() ?? 'gemini-via-backend';
+        metadata['provider'] = 'gemini';
+        metadata['routed_by'] = 'hybrid_model_router';
         break;
         
       case ModelType.asrMfa:
@@ -273,6 +288,57 @@ Respond in $langName, incorporating the canonical phrase above where appropriate
     } finally {
       _isProcessingLlamaCall = false;
     }
+  }
+
+  Future<Map<String, dynamic>> _callBackendGemini({
+    required String userMessage,
+    required PolieMode mode,
+    required String targetLanguage,
+    required String sourceLanguage,
+    String? systemPrompt,
+  }) async {
+    try {
+      final response = await _dio.post(
+        ApiContract.url(ApiContract.ai.chatCompletion),
+        data: {
+          'messages': [
+            {'role': 'user', 'content': userMessage},
+          ],
+          'systemPrompt': systemPrompt,
+          'temperature': 0.6,
+          'max_tokens': 900,
+          'language': targetLanguage,
+          'mode': mode.name,
+          'sourceLanguage': sourceLanguage,
+        },
+        options: Options(
+          receiveTimeout: const Duration(seconds: 45),
+          contentType: Headers.jsonContentType,
+        ),
+      );
+
+      final data = response.data;
+      if (response.statusCode == 200 && data is Map<String, dynamic>) {
+        final content = data['content']?.toString().trim();
+        if (content != null && content.isNotEmpty) {
+          return {
+            'content': content,
+            'model': data['model']?.toString() ?? 'gemini-via-backend',
+          };
+        }
+      }
+    } catch (e) {
+      debugPrint('Gemini backend routing failed: $e');
+    }
+
+    final fallback = await _callLlamaDirectly(
+      prompt: userMessage,
+      systemPrompt: systemPrompt,
+    );
+    return {
+      'content': fallback,
+      'model': 'llama-fallback',
+    };
   }
   
   bool _validateOrthography(String text, String language) {

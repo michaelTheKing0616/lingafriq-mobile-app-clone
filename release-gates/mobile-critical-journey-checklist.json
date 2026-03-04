@@ -1,0 +1,175 @@
+{
+  "checklistName": "mobile-critical-journey-readiness",
+  "schemaVersion": 1,
+  "journeyControlRequirements": {
+    "performanceBudgets": [
+      "startupMsP95",
+      "screenTransitionMsP95",
+      "networkCallMsP95",
+      "memoryMbP95",
+      "jankPercentP95"
+    ],
+    "readinessControls": [
+      "offlineReadiness",
+      "errorStateReadiness"
+    ]
+  },
+  "criticalJourneys": {
+    "app-launch-to-home": {
+      "owner": "mobile-platform",
+      "notes": "Cold start and initial frame readiness for first session impression.",
+      "performanceBudgets": {
+        "startupMsP95": {
+          "target": 2400,
+          "status": "planned",
+          "evidence": "Integrate startup metric collection in QA build pipeline."
+        },
+        "screenTransitionMsP95": {
+          "target": 300,
+          "status": "enabled",
+          "evidence": "Home transition profiling captured in dev performance runs."
+        },
+        "networkCallMsP95": {
+          "target": 1200,
+          "status": "enabled",
+          "evidence": "Startup config fetch timeout budget and fallback enforced."
+        },
+        "memoryMbP95": {
+          "target": 220,
+          "status": "planned",
+          "evidence": "Add memory tracking to release smoke tests."
+        },
+        "jankPercentP95": {
+          "target": 2,
+          "status": "planned",
+          "evidence": "Frame timing capture planned for production candidate builds."
+        }
+      },
+      "offlineReadiness": {
+        "status": "enabled",
+        "evidence": "Home renders cached content and retry CTA when network unavailable."
+      },
+      "errorStateReadiness": {
+        "status": "enabled",
+        "evidence": "Dedicated startup error screen with safe retry and recovery path."
+      }
+    },
+    "auth-signin-session-restore": {
+      "owner": "mobile-auth",
+      "notes": "User must recover seamlessly from transient failures and reconnects.",
+      "performanceBudgets": {
+        "startupMsP95": {
+          "target": 2600,
+          "status": "planned",
+          "evidence": "Track auth bootstrap time in field telemetry."
+        },
+        "screenTransitionMsP95": {
+          "target": 350,
+          "status": "enabled",
+          "evidence": "Auth-to-home transition currently measured in local test harness."
+        },
+        "networkCallMsP95": {
+          "target": 1500,
+          "status": "enabled",
+          "evidence": "Sign-in endpoint timeout and retry UX supported."
+        },
+        "memoryMbP95": {
+          "target": 230,
+          "status": "planned",
+          "evidence": "Session restore memory baseline to be recorded per release."
+        },
+        "jankPercentP95": {
+          "target": 3,
+          "status": "planned",
+          "evidence": "Auth animation frame-drop budget to be monitored in CI devices."
+        }
+      },
+      "offlineReadiness": {
+        "status": "planned",
+        "evidence": "Offline-safe auth cache strategy planned for token refresh edge cases."
+      },
+      "errorStateReadiness": {
+        "status": "enabled",
+        "evidence": "Inline auth errors with actionable recovery and locked-account messaging."
+      }
+    },
+    "lesson-open-study-complete": {
+      "owner": "mobile-learning",
+      "notes": "Core learning journey must remain smooth with sync-safe fallbacks.",
+      "performanceBudgets": {
+        "startupMsP95": {
+          "target": 2500,
+          "status": "planned",
+          "evidence": "Lesson bootstrap timing to be tracked by journey analytics."
+        },
+        "screenTransitionMsP95": {
+          "target": 300,
+          "status": "enabled",
+          "evidence": "Lesson navigation transitions profiled below budget on QA devices."
+        },
+        "networkCallMsP95": {
+          "target": 1400,
+          "status": "enabled",
+          "evidence": "Lesson content fetch timeout and retry controls implemented."
+        },
+        "memoryMbP95": {
+          "target": 240,
+          "status": "planned",
+          "evidence": "Memory profiling to include multimedia lesson runs."
+        },
+        "jankPercentP95": {
+          "target": 3,
+          "status": "planned",
+          "evidence": "Frame pacing budget will be tracked in lesson stress tests."
+        }
+      },
+      "offlineReadiness": {
+        "status": "enabled",
+        "evidence": "Lesson progress queued offline and synced on reconnect."
+      },
+      "errorStateReadiness": {
+        "status": "enabled",
+        "evidence": "Inline recoverable errors for submit/sync with retry and continue options."
+      }
+    },
+    "purchase-subscription-activation": {
+      "owner": "mobile-growth",
+      "notes": "Revenue-critical path requires stable feedback and robust failure states.",
+      "performanceBudgets": {
+        "startupMsP95": {
+          "target": 2800,
+          "status": "planned",
+          "evidence": "Activation flow startup benchmark planned for release gating."
+        },
+        "screenTransitionMsP95": {
+          "target": 350,
+          "status": "enabled",
+          "evidence": "Paywall-to-confirmation transition optimized and measured."
+        },
+        "networkCallMsP95": {
+          "target": 1800,
+          "status": "enabled",
+          "evidence": "Purchase verification timeout policy and retry hinting implemented."
+        },
+        "memoryMbP95": {
+          "target": 230,
+          "status": "planned",
+          "evidence": "Capture billing flow memory profile in regression suite."
+        },
+        "jankPercentP95": {
+          "target": 2,
+          "status": "planned",
+          "evidence": "Paywall rendering smoothness budget to be tracked on low-end devices."
+        }
+      },
+      "offlineReadiness": {
+        "status": "planned",
+        "evidence": "Queue activation confirmation and resume purchase reconciliation on reconnect."
+      },
+      "errorStateReadiness": {
+        "status": "enabled",
+        "evidence": "Billing failure states include restore purchase and support fallback actions."
+      }
+    }
+  }
+}

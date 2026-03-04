@@ -16,8 +16,8 @@ import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
 import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/gamification/badge_collection_screen_material3.dart';
+import 'package:lingafriq/screens/ai_chat/ai_language_selection_screen.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
-import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/media/import_media_screen_enhanced.dart';
 import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
@@ -145,7 +145,7 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.lesson,
-                        label: 'Polie AI',
+                        label: 'Polie Tutor',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
@@ -157,12 +157,12 @@ class AppDrawerMaterial3 extends HookConsumerWidget {
                       ),
                       _DrawerItem(
                         icon: PanAfricanIcons.chat,
-                        label: 'Historical Personas',
+                        label: 'AI Chat',
                         onTap: () {
                           Navigator.pop(context);
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const PersonalitySelectionScreen()),
+                            SmoothPageRoute(child: AILanguageSelectionScreen()),
                           );
                         },
                         isDark: isDark,

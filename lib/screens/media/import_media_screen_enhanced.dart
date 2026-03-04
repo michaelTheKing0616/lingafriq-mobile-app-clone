@@ -361,6 +361,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                     (show) => showLessonPreview.value = show,
                     selectedLanguage.value,
                     transcriptionResult,
+                    lessonResult,
                     isDark,
                   ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.2),
               ],
@@ -499,7 +500,12 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           builder: (context) => CustomizeTranscriptionDialog(
                             transcription: result['transcription'] ?? '',
                             onCustomize: (customized) {
-                              // Apply customizations
+                              final original = result['transcription']?.toString() ?? '';
+                              final transformed = _applyTextCustomizations(original, customized);
+                              onUpdateResult({
+                                ...result,
+                                'transcription': transformed,
+                              });
                             },
                           ),
                         );
@@ -525,6 +531,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     Function(bool) onToggle,
     String language,
     ValueNotifier<Map<String, dynamic>?> transcriptionResult,
+    ValueNotifier<Map<String, dynamic>?> lessonResultNotifier,
     bool isDark,
   ) {
     return Card(
@@ -565,18 +572,13 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                   children: [
                     TextButton.icon(
                       onPressed: () {
-                        // Show edit dialog
                         showDialog(
                           context: context,
-                          builder: (context) => AlertDialog(
-                            title: Text('Edit Lesson'),
-                            content: Text('Lesson editing will be available in a future update.'),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text('OK'),
-                              ),
-                            ],
+                          builder: (context) => EditLessonDialog(
+                            initialLesson: lesson,
+                            onSave: (editedLesson) {
+                              lessonResultNotifier.value = editedLesson;
+                            },
                           ),
                         );
                       },
@@ -661,6 +663,53 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       default:
         return Icons.description;
     }
+  }
+
+  String _applyTextCustomizations(
+    String input,
+    Map<String, dynamic> options,
+  ) {
+    var output = input;
+
+    if (options['normalizeWhitespace'] == true) {
+      output = output.replaceAll(RegExp(r'\s+'), ' ').trim();
+    }
+    if (options['removeExtraSpaces'] == true) {
+      output = output.replaceAll(RegExp(r' {2,}'), ' ');
+    }
+    if (options['removePunctuation'] == true) {
+      output = output.replaceAll(RegExp(r'[^\w\s]'), '');
+    }
+    if (options['capitalizeSentences'] == true) {
+      final sentencePattern = RegExp(r'(^\s*[a-z])|([.!?]\s+[a-z])');
+      output = output.replaceAllMapped(sentencePattern, (match) {
+        final value = match.group(0) ?? '';
+        return value.toUpperCase();
+      });
+    }
+    if (options['addLineBreaks'] == true) {
+      output = output.replaceAll(RegExp(r'([.!?])\s+'), r'$1\n');
+    }
+    if (options['formatNumbers'] == true) {
+      output = output.replaceAllMapped(RegExp(r'\b(\d{4,})\b'), (match) {
+        final value = match.group(1) ?? '';
+        return value.replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m.group(1)},');
+      });
+    }
+    if (options['fixCommonErrors'] == true) {
+      output = _fixCommonTranscriptionErrors(output);
+    }
+
+    return output.trim();
+  }
+
+  String _fixCommonTranscriptionErrors(String input) {
+    return input
+        .replaceAll(RegExp(r"\bi\s"), 'I ')
+        .replaceAll(RegExp(r"\bdont\b", caseSensitive: false), "don't")
+        .replaceAll(RegExp(r"\bcant\b", caseSensitive: false), "can't")
+        .replaceAll(RegExp(r"\bwont\b", caseSensitive: false), "won't")
+        .replaceAll(RegExp(r"\bim\b", caseSensitive: false), "I'm");
   }
 }
 

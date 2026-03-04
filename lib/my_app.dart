@@ -12,6 +12,7 @@ import 'screens/splash/splash_screen.dart';
 
 // Route screen imports
 import 'screens/ai_chat/ai_mode_selection_screen.dart';
+import 'screens/ai_chat/polie_mode_selection_screen.dart';
 import 'screens/curriculum/curriculum_screen.dart';
 import 'screens/games/games_screen.dart';
 import 'screens/goals/daily_goals_screen.dart';
@@ -19,6 +20,7 @@ import 'screens/progress/progress_dashboard_screen.dart';
 import 'screens/achievements/achievements_screen.dart';
 import 'screens/gamification/leaderboard_screen.dart';
 import 'screens/social/tribe_vs_tribe_screen.dart';
+import 'screens/gamification/tribe_selection_screen.dart';
 import 'screens/social/language_villages_screen.dart';
 import 'screens/chat/global_chat_screen.dart';
 import 'screens/social/user_connections_screen.dart';
@@ -138,8 +140,10 @@ class _MyAppState extends ConsumerState<MyApp> {
 
 /// Route name -> Screen widget mapping for drawer navigation.
 Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+  final normalizedRoute = _normalizeRouteName(settings.name);
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
+    'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
     'curriculum': (_) => const CurriculumScreen(),
     'games': (_) => const GamesScreen(),
     'daily_goals': (_) => const DailyGoalsScreen(),
@@ -149,6 +153,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'leaderboard': (_) => const LeaderboardScreen(),
     'tribe': (_) => const TribeVsTribeScreen(), // No separate TribeScreen; reuse
     'tribe_vs_tribe': (_) => const TribeVsTribeScreen(),
+    'tribe-selection': (_) => const TribeSelectionScreen(),
+    'tribe_selection': (_) => const TribeSelectionScreen(),
     'villages': (_) => const LanguageVillagesScreen(),
     'global_chat': (_) => const GlobalChatScreen(),
     'connections': (_) => const UserConnectionsScreen(),
@@ -164,7 +170,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'features_guide': (_) => const FeaturesGuideScreen(),
     'policy': (_) => const AppPolicyScreen(),
     // Lesson Flow
-    '/lesson-flow': (_) {
+    'lesson-flow': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['lessonId'] == null || args['sectionLessons'] == null || args['lessonTitle'] == null) {
         return const Scaffold(
@@ -178,8 +184,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       );
     },
     // Grammar
-    '/grammar-hub': (_) => const GrammarHubScreen(),
-    '/grammar-lesson': (_) {
+    'grammar-hub': (_) => const GrammarHubScreen(),
+    'grammar-lesson': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['topic'] == null) {
         return const Scaffold(
@@ -188,7 +194,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       }
       return GrammarLessonScreen(topic: args['topic'] as GrammarTopic);
     },
-    '/grammar-exercise': (_) {
+    'grammar-exercise': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['topicId'] == null || args['topicName'] == null) {
         return const Scaffold(
@@ -201,8 +207,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       );
     },
     // Social
-    '/social-hub': (_) => const SocialHubScreen(),
-    '/friend-profile': (_) {
+    'social-hub': (_) => const SocialHubScreen(),
+    'friend-profile': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['friendId'] == null) {
         return const Scaffold(
@@ -211,22 +217,22 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       }
       return FriendProfileScreen(friendId: args['friendId'] as String);
     },
-    '/challenge-friend': (_) {
+    'challenge-friend': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       return ChallengeFriendScreen(friendId: args?['friendId'] as String?);
     },
-    '/share-progress': (_) {
+    'share-progress': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       return ShareProgressScreen(cardType: args?['cardType'] as String? ?? 'daily_streak');
     },
     // Content
-    '/conversation-scenarios': (_) => const ConversationScenariosScreen(),
-    '/cultural-hub': (_) => const CulturalHubScreen(),
-    '/vocabulary-builder': (_) => const VocabularyBuilderScreen(),
-    '/listening-practice': (_) => const ListeningPracticeScreen(),
-    '/writing-practice': (_) => const WritingPracticeScreen(),
+    'conversation-scenarios': (_) => const ConversationScenariosScreen(),
+    'cultural-hub': (_) => const CulturalHubScreen(),
+    'vocabulary-builder': (_) => const VocabularyBuilderScreen(),
+    'listening-practice': (_) => const ListeningPracticeScreen(),
+    'writing-practice': (_) => const WritingPracticeScreen(),
     // Learning Path
-    '/learning-path': (_) {
+    'learning-path': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['language'] == null) {
         return const Scaffold(
@@ -236,10 +242,10 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       return LearningPathScreen(language: args['language'] as Language);
     },
     // Friend Quests
-    '/friend-quests': (_) => const FriendQuestsScreen(),
-    '/create-friend-quest': (_) => const CreateFriendQuestScreen(),
+    'friend-quests': (_) => const FriendQuestsScreen(),
+    'create-friend-quest': (_) => const CreateFriendQuestScreen(),
     // Auth
-    '/email-verification': (_) {
+    'email-verification': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['email'] == null) {
         return const Scaffold(
@@ -252,7 +258,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       );
     },
     // Vocabulary
-    '/flashcard-review': (_) {
+    'flashcard-review': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['words'] == null || args['language'] == null) {
         return const Scaffold(
@@ -266,23 +272,28 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     },
   };
 
-  final builder = routes[settings.name];
+  final builder = routes[normalizedRoute];
   if (builder != null) {
     return MaterialPageRoute(builder: builder, settings: settings);
   }
 
-  // Fallback: "Coming Soon" placeholder for unknown routes
+  // Fallback screen for unknown routes
   return MaterialPageRoute(
     settings: settings,
     builder: (_) => Scaffold(
-      appBar: AppBar(title: Text(settings.name ?? 'Coming Soon')),
+      appBar: AppBar(title: Text(settings.name ?? 'Feature Unavailable')),
       body: const AppEmptyState(
         icon: Icons.construction_rounded,
-        title: 'Coming Soon',
-        subtitle: 'This feature is being built. We\'ll notify you when it\'s ready!',
+        title: 'Feature Unavailable',
+        subtitle: 'This route is not available in this build.',
       ),
     ),
   );
+}
+
+String _normalizeRouteName(String? routeName) {
+  if (routeName == null || routeName.isEmpty) return '';
+  return routeName.startsWith('/') ? routeName.substring(1) : routeName;
 }
 
 class _Unfocus extends StatelessWidget {

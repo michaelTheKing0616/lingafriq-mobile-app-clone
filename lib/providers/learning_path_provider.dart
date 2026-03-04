@@ -1,24 +1,62 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/onboarding_data_model.dart';
+import 'package:lingafriq/providers/api_provider.dart';
 import 'package:lingafriq/providers/onboarding_provider.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 
 /// Provider for structured learning paths
 class LearningPathNotifier extends Notifier<LearningPath> {
+  String? _lastHydrationKey;
+
   @override
   LearningPath build() {
     final onboarding = ref.watch(onboardingProvider);
-    return _buildPathFromOnboarding(onboarding);
+    final localPath = _buildPathFromOnboarding(onboarding);
+    _scheduleBackendHydration(onboarding, localPath);
+    return localPath;
+  }
+
+  void _scheduleBackendHydration(OnboardingData onboarding, LearningPath localPath) {
+    final language = onboarding.selectedLanguage?.trim();
+    if (language == null || language.isEmpty) return;
+
+    final pathType = _resolvePathType(onboarding.selectedPath);
+    final hydrationKey = '$language|$pathType';
+    if (_lastHydrationKey == hydrationKey) return;
+
+    _lastHydrationKey = hydrationKey;
+    Future.microtask(() async {
+      final api = ref.read(apiProvider.notifier);
+      final backendPath = await api.getLearningPath(
+        language: language,
+        pathType: pathType,
+      );
+
+      if (backendPath != null) {
+        state = _pathFromBackend(backendPath, fallback: localPath);
+        return;
+      }
+
+      final created = await api.createLearningPath(
+        language: language,
+        pathType: pathType,
+        currentLevel: localPath.currentLevel,
+        modules: _modulesToBackend(localPath.modules),
+      );
+      if (created != null) {
+        state = _pathFromBackend(created, fallback: localPath);
+      }
+    });
+  }
+
+  String _resolvePathType(String? selectedPath) {
+    if (selectedPath == 'career') return 'career';
+    if (selectedPath == 'academic') return 'academic';
+    return 'explore';
   }
 
   LearningPath _buildPathFromOnboarding(OnboardingData data) {
-    // Determine path based on onboarding
-    String pathType = 'explore'; // default
-    if (data.selectedPath == 'career') {
-      pathType = 'career';
-    } else if (data.selectedPath == 'academic') {
-      pathType = 'academic';
-    }
+    final pathType = _resolvePathType(data.selectedPath);
 
     // Build structured path
     final path = LearningPath(
@@ -30,6 +68,88 @@ class LearningPathNotifier extends Notifier<LearningPath> {
     );
 
     return path;
+  }
+
+  LearningPath _pathFromBackend(
+    Map<String, dynamic> backend, {
+    required LearningPath fallback,
+  }) {
+    final backendModules = _modulesFromBackend(backend['modules']);
+    final effectiveModules = backendModules.isNotEmpty ? backendModules : fallback.modules;
+    final maxModuleIndex = effectiveModules.isEmpty ? 0 : effectiveModules.length - 1;
+    final currentIndex =
+        _coerceInt(backend['currentModuleIndex']) ?? fallback.currentModuleIndex;
+    final progress =
+        _coerceDouble(backend['progress']) ?? _calculateProgress(effectiveModules);
+
+    return LearningPath(
+      type: (backend['type'] as String?) ?? fallback.type,
+      currentLevel: (backend['currentLevel'] as String?) ?? fallback.currentLevel,
+      modules: effectiveModules,
+      currentModuleIndex: currentIndex.clamp(0, maxModuleIndex).toInt(),
+      progress: progress.clamp(0.0, 1.0).toDouble(),
+    );
+  }
+
+  List<LearningModule> _modulesFromBackend(dynamic payload) {
+    if (payload is! List) return const [];
+    final modules = <LearningModule>[];
+
+    for (final raw in payload) {
+      if (raw is! Map) continue;
+      final map = Map<String, dynamic>.from(raw);
+      final moduleId = (map['moduleId'] ?? map['id'])?.toString();
+      if (moduleId == null || moduleId.isEmpty) continue;
+
+      modules.add(
+        LearningModule(
+          id: moduleId,
+          title: (map['title'] as String?) ?? 'Untitled Module',
+          description: (map['description'] as String?) ?? '',
+          lessons: _stringList(map['lessons']),
+          estimatedTime: _coerceInt(map['estimatedTime']) ?? 0,
+          isCompleted: map['isCompleted'] == true,
+          isLocked: map['isLocked'] == true,
+        ),
+      );
+    }
+
+    return modules;
+  }
+
+  List<String> _stringList(dynamic payload) {
+    if (payload is! List) return const [];
+    return payload.map((item) => item.toString()).toList();
+  }
+
+  int? _coerceInt(dynamic value) {
+    if (value is int) return value;
+    if (value is num) return value.toInt();
+    if (value is String) return int.tryParse(value);
+    return null;
+  }
+
+  double? _coerceDouble(dynamic value) {
+    if (value is double) return value;
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value);
+    return null;
+  }
+
+  List<Map<String, dynamic>> _modulesToBackend(List<LearningModule> modules) {
+    return modules
+        .map(
+          (module) => <String, dynamic>{
+            'moduleId': module.id,
+            'title': module.title,
+            'description': module.description,
+            'lessons': module.lessons,
+            'estimatedTime': module.estimatedTime,
+            'isCompleted': module.isCompleted,
+            'isLocked': module.isLocked,
+          },
+        )
+        .toList();
   }
 
   List<LearningModule> _getModulesForPath(String pathType, String proficiency) {
@@ -135,16 +255,50 @@ class LearningPathNotifier extends Notifier<LearningPath> {
     ];
   }
 
-  void completeModule(String moduleId) {
+  Future<void> completeModule(String moduleId) async {
     final modules = List<LearningModule>.from(state.modules);
     final index = modules.indexWhere((m) => m.id == moduleId);
-    if (index != -1) {
-      modules[index] = modules[index].copyWith(isCompleted: true);
-      state = state.copyWith(
-        modules: modules,
-        currentModuleIndex: index + 1 < modules.length ? index + 1 : index,
-        progress: _calculateProgress(modules),
-      );
+    if (index == -1) return;
+
+    modules[index] = modules[index].copyWith(isCompleted: true);
+    final localState = state.copyWith(
+      modules: modules,
+      currentModuleIndex: index + 1 < modules.length ? index + 1 : index,
+      progress: _calculateProgress(modules),
+    );
+    state = localState;
+
+    final onboarding = ref.read(onboardingProvider);
+    final language = onboarding.selectedLanguage?.trim();
+    if (language == null || language.isEmpty) {
+      return;
+    }
+
+    final pathType = _resolvePathType(onboarding.selectedPath);
+    final api = ref.read(apiProvider.notifier);
+
+    final completed = await api.completeLearningPathModule(
+      language: language,
+      pathType: pathType,
+      moduleId: moduleId,
+    );
+    if (completed != null) {
+      state = _pathFromBackend(completed, fallback: localState);
+      return;
+    }
+
+    final synced = await api.updateLearningPath(
+      language: language,
+      pathType: pathType,
+      updates: {
+        'currentLevel': localState.currentLevel,
+        'currentModuleIndex': localState.currentModuleIndex,
+        'progress': localState.progress,
+        'modules': _modulesToBackend(localState.modules),
+      },
+    );
+    if (synced != null) {
+      state = _pathFromBackend(synced, fallback: localState);
     }
   }
 

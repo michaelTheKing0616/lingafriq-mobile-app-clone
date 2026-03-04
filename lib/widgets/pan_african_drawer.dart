@@ -50,9 +50,9 @@ class PanAfricanDrawer extends ConsumerWidget {
                         ),
                         _DrawerItem(
                           icon: Icons.smart_toy_rounded,
-                          title: 'Polie AI',
+                          title: 'AI Chat (Polie)',
                           subtitle: 'Your AI language tutor',
-                          onTap: () => _navigateTo(context, ref, 'polie_mode_selection'),
+                          onTap: () => _navigateTo(context, ref, 'ai_chat_select'),
                         ),
                         _DrawerItem(
                           icon: Icons.school_rounded,

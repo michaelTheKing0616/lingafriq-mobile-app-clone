@@ -72,6 +72,12 @@ Keep lists practical. Use culturally appropriate examples.
             'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
             'temperature': 0.2,
             'max_tokens': 800,
+            'language': language,
+            'languageCode': selectedLanguage.value.code,
+            'sourceLanguage': 'en',
+            'targetLanguage': selectedLanguage.value.code,
+            'cefr': knownCefrLevel ?? 'A1',
+            'mode': 'assess',
           },
         );
         if (resp.statusCode != 200 || resp.data == null) {

@@ -114,6 +114,12 @@ Quality requirements:
             'systemPrompt': 'You output only valid JSON. Never include markdown or commentary.',
             'temperature': 0.2,
             'max_tokens': 900,
+            'language': language,
+            'languageCode': selectedLanguage.value.code,
+            'sourceLanguage': 'en',
+            'targetLanguage': selectedLanguage.value.code,
+            'cefr': userLevel,
+            'mode': 'grammar',
           },
         );
         if (resp.statusCode != 200 || resp.data == null) {

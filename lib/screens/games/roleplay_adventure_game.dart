@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
+import '../../services/polie_content_generator.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:math';
 
 /// Roleplay Adventure - Branching dialogue scenarios
 class RoleplayAdventureGame extends BaseGameScreen {
@@ -21,7 +23,7 @@ class RoleplayAdventureGame extends BaseGameScreen {
 }
 
 class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureGame> {
-  final String _scenario = 'market';
+  String _scenario = 'market';
   String _npcMessage = '';
   final List<String> _dialogueHistory = [];
   final List<_DialogueOption> _options = [];
@@ -32,37 +34,67 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
 
   @override
   Future<void> onGameInitialized() async {
-    _loadScenario();
+    await _loadScenario();
   }
 
-  void _loadScenario() {
-    // Mock scenarios
-    final scenarios = {
-      'market': {
-        'npc': 'Vendor: "Báwo ní? Kí ni ẹ fẹ́ ra?" (How are you? What do you want to buy?)',
-        'options': [
-          _DialogueOption('Báwo ni? Mo fẹ́ ra ẹwà.', 'correct'),
-          _DialogueOption('Hello, I want beans.', 'wrong_language'),
-          _DialogueOption('Mo dúpé.', 'wrong_context'),
-        ],
-      },
-      'doctor': {
-        'npc': 'Doctor: "Kí ni o nílò?" (What do you need?)',
-        'options': [
-          _DialogueOption('Mo ní orí ń dun mi.', 'correct'),
-          _DialogueOption('I have a headache.', 'wrong_language'),
-          _DialogueOption('Mo dúpé.', 'wrong_context'),
-        ],
-      },
-    };
+  Future<void> _loadScenario() async {
+    final scenarios = ['market', 'clinic', 'transport', 'family'];
+    _scenario = scenarios[Random().nextInt(scenarios.length)];
+    try {
+      final generator = ref.read(polieContentGeneratorProvider);
+      final generated = await generator.generateGameContent(
+        gameType: 'roleplay_adventure',
+        language: widget.language,
+        difficulty: widget.level,
+        additionalContext:
+            'Return exactly one NPC message and three learner reply options. '
+            'Format:\nNPC: <message>\nCORRECT: <text>\nWRONG_LANGUAGE: <text>\nWRONG_CONTEXT: <text>',
+      );
+      final content = (generated['content']?.toString() ?? '').trim();
+      final npc = _extractLabeledLine(content, 'NPC') ??
+          'NPC: "Kí ni o fẹ́ ṣe lónìí?" (What would you like to do today?)';
+      final correct =
+          _extractLabeledLine(content, 'CORRECT') ?? 'Mo fẹ́ bá ọ sọ̀rọ̀ ní èdè wa.';
+      final wrongLanguage =
+          _extractLabeledLine(content, 'WRONG_LANGUAGE') ?? 'Hello, can we speak in English?';
+      final wrongContext =
+          _extractLabeledLine(content, 'WRONG_CONTEXT') ?? 'Mo dúpé gan-an.';
 
-    final scenario = scenarios[_scenario] ?? scenarios['market']!;
-    setState(() {
-      _npcMessage = scenario['npc'] as String;
-      _options.clear();
-      _options.addAll(scenario['options'] as List<_DialogueOption>);
-      _dialogueHistory.add(_npcMessage);
-    });
+      if (!mounted) return;
+      setState(() {
+        _npcMessage = npc;
+        _options
+          ..clear()
+          ..addAll([
+            _DialogueOption(correct, 'correct'),
+            _DialogueOption(wrongLanguage, 'wrong_language'),
+            _DialogueOption(wrongContext, 'wrong_context'),
+          ]);
+        _options.shuffle(Random());
+        _dialogueHistory.add(_npcMessage);
+      });
+    } catch (_) {
+      if (!mounted) return;
+      setState(() {
+        _npcMessage = 'Vendor: "Báwo ní? Kí ni ẹ fẹ́ ra?"';
+        _options
+          ..clear()
+          ..addAll([
+            _DialogueOption('Báwo ni? Mo fẹ́ ra ẹwà.', 'correct'),
+            _DialogueOption('Hello, I want beans.', 'wrong_language'),
+            _DialogueOption('Mo dúpé.', 'wrong_context'),
+          ]);
+        _options.shuffle(Random());
+        _dialogueHistory.add(_npcMessage);
+      });
+    }
+  }
+
+  String? _extractLabeledLine(String source, String label) {
+    final match =
+        RegExp('^\\s*$label\\s*:\\s*(.+)\$', multiLine: true, caseSensitive: false)
+            .firstMatch(source);
+    return match?.group(1)?.trim();
   }
 
   void _selectOption(_DialogueOption option) {
@@ -87,22 +119,60 @@ class _RoleplayAdventureGameState extends BaseGameScreenState<RoleplayAdventureG
     );
 
     // NPC response
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () async {
       if (mounted) {
+        final npcFollowUp = await _generateNpcFollowUp(option, result);
         setState(() {
-          if (result == GameResult.correct) {
-            _dialogueHistory.add('NPC: "Ó dáa! Ẹ ṣéun." (Good! Thank you.)');
-          } else {
-            _dialogueHistory.add('NPC: "Ṣé ẹ lè sọ ọ́ tún?" (Can you say it again?)');
-          }
-          _loadScenario(); // Next scenario
+          _dialogueHistory.add(npcFollowUp);
         });
+        await _loadScenario();
 
         if (_turnCount >= 5) {
           finishGame();
         }
       }
     });
+  }
+
+  Future<String> _generateNpcFollowUp(_DialogueOption option, GameResult result) async {
+    try {
+      final generator = ref.read(polieContentGeneratorProvider);
+      final generated = await generator.generateGameContent(
+        gameType: 'roleplay_adventure_followup',
+        language: widget.language,
+        difficulty: widget.level,
+        additionalContext:
+            'Return exactly one concise NPC follow-up line for this roleplay turn. '
+            'Prefix with NPC:. Keep it under 20 words.\n'
+            'Scenario: $_scenario\n'
+            'Learner option: ${option.text}\n'
+            'Result: ${result.name}',
+      );
+
+      final content = (generated['content']?.toString() ?? '').trim();
+      if (content.isEmpty) {
+        return _fallbackNpcFollowUp(result);
+      }
+
+      final firstLine = content
+          .split('\n')
+          .map((line) => line.trim())
+          .firstWhere((line) => line.isNotEmpty, orElse: () => content);
+
+      if (firstLine.startsWith('NPC:')) {
+        return firstLine;
+      }
+      return 'NPC: $firstLine';
+    } catch (_) {
+      return _fallbackNpcFollowUp(result);
+    }
+  }
+
+  String _fallbackNpcFollowUp(GameResult result) {
+    if (result == GameResult.correct) {
+      return 'NPC: Good response. Let us continue.';
+    }
+    return 'NPC: Try again with a better fit.';
   }
 
   @override

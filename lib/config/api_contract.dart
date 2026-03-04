@@ -53,6 +53,7 @@ class ApiContract {
   static const competitions = _Competitions();
   static const pronunciation = _Pronunciation();
   static const learning = _Learning();
+  static const learningPath = _LearningPath();
   static const misc = _Misc();
 }
 
@@ -445,6 +446,29 @@ class _Learning {
   String get syncAchievement => '/api/learning/achievements/sync';
   String get achievements => '/api/learning/achievements';
   String get syncCorrection => '/api/learning/corrections';
+}
+
+// =============================================================================
+// Learning Path
+// =============================================================================
+class _LearningPath {
+  const _LearningPath();
+
+  String byContext({
+    required String language,
+    required String type,
+  }) =>
+      '/api/learning-path?language=$language&type=$type';
+
+  String get create => '/api/learning-path';
+
+  String updateByContext({
+    required String language,
+    required String type,
+  }) =>
+      '/api/learning-path?language=$language&type=$type';
+
+  String get completeModule => '/api/learning-path/complete-module';
 }
 
 // =============================================================================

@@ -5,6 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:dio/dio.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 /// Cultural Content Hub Screen
@@ -48,15 +50,77 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
     setState(() => _isLoading = true);
     
     try {
-      // TODO: Replace with actual API call
-      // final content = await contentService.getCulturalContent(widget.language);
-      _allContent = _getDefaultContent();
+      final fromApi = await _fetchCulturalContent();
+      _allContent = fromApi.isNotEmpty ? fromApi : _getDefaultContent();
     } catch (e) {
       debugPrint('Error loading cultural content: $e');
       _allContent = _getDefaultContent();
     }
     
     setState(() => _isLoading = false);
+  }
+
+  Future<List<CulturalContent>> _fetchCulturalContent() async {
+    final language = widget.language ?? 'sw';
+    final response = await Dio().get(
+      '${ApiContract.baseUrl}/api/content/cultural',
+      queryParameters: {
+        'language': language,
+        'limit': 60,
+      },
+      options: Options(receiveTimeout: const Duration(seconds: 20)),
+    );
+
+    final payload = response.data;
+    if (payload is! Map || payload['content'] is! List) return const [];
+    final list = (payload['content'] as List)
+        .whereType<Map>()
+        .map((raw) => Map<String, dynamic>.from(raw))
+        .toList();
+
+    return list
+        .map((item) {
+          final id = (item['_id'] ?? item['id'])?.toString();
+          final title = item['title']?.toString();
+          final body = item['content']?.toString();
+          if (id == null || title == null || body == null) return null;
+          final tags = item['tags'] is List ? List<String>.from(item['tags']) : const <String>[];
+          return CulturalContent(
+            id: id,
+            type: _typeFromCategory(item['category']?.toString()),
+            title: title,
+            description: item['excerpt']?.toString() ?? '',
+            content: body,
+            vocabulary: tags,
+            xpReward: 40,
+            language: item['language']?.toString() ?? language,
+            translation: null,
+            culturalContext: item['country']?.toString(),
+            lyrics: null,
+          );
+        })
+        .whereType<CulturalContent>()
+        .toList();
+  }
+
+  CulturalContentType _typeFromCategory(String? category) {
+    switch (category?.toLowerCase()) {
+      case 'music':
+        return CulturalContentType.music;
+      case 'history':
+        return CulturalContentType.history;
+      case 'cuisine':
+        return CulturalContentType.food;
+      case 'tradition':
+      case 'festivals':
+        return CulturalContentType.tradition;
+      case 'literature':
+      case 'art':
+      case 'language':
+        return CulturalContentType.story;
+      default:
+        return CulturalContentType.story;
+    }
   }
 
   Future<void> _loadCompletedItems() async {
