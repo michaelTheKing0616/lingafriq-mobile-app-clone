@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint, visibleForTesting;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/history/models/history_response.dart';
 import 'package:lingafriq/history/models/section_history_model.dart';
@@ -20,10 +20,8 @@ import 'package:lingafriq/providers/shared_preferences_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/random_quiz/models/random_quiz_lesson_model.dart';
 import 'package:lingafriq/utils/api.dart';
-import 'package:lingafriq/utils/extensions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/config/api_contract.dart';
-import 'package:meta/meta.dart';
 
 import '../history_quiz/models/history_quiz_response.dart';
 import '../language_quiz/models/language_quiz_lesson_model.dart';

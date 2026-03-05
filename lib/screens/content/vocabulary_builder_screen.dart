@@ -716,7 +716,9 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
                       decoration: BoxDecoration(
                         color: PolieColors.surfaceContainer,
                         borderRadius: BorderRadius.circular(PolieRadius.lg),
-                        border: Border.all(color: PolieColors.borderLight),
+                        border: Border.all(
+                          color: PolieColors.textSecondary.withOpacity(0.35),
+                        ),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

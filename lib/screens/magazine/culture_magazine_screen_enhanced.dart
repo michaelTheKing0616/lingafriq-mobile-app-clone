@@ -131,7 +131,7 @@ class CultureMagazineScreenEnhanced extends HookConsumerWidget {
     Future<void> shareArticle(Map<String, dynamic> article) async {
       final title = article['title']?.toString().trim() ?? 'Cultural article';
       final slug = article['slug']?.toString().trim();
-      final base = Api.baseUrl.replaceAll(RegExp(r'/$'), '');
+      final base = Api.baseurl.replaceAll(RegExp(r'/$'), '');
       final articleUrl = (slug != null && slug.isNotEmpty)
           ? '$base/culture-magazine/$slug'
           : '$base/culture-magazine';

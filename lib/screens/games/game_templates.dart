@@ -1645,7 +1645,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
           final parsedSongs = candidates
               .map<Map<String, dynamic>?>((item) {
                 if (item is! Map) return null;
-                final map = Map<String, dynamic>.from(item as Map);
+                final map = Map<String, dynamic>.from(item);
                 final title = map['title']?.toString();
                 final lyricsValue = map['lyrics'];
                 final lyrics = (lyricsValue is List)
@@ -1776,7 +1776,7 @@ class _PronunciationKaraokeGameState extends BaseGameScreenState<PronunciationKa
         category: 'pronunciation',
         type: 'karaoke_line',
         text: currentLine,
-        translation: _currentSong?['title']?.toString(),
+        translation: _currentSong?['title']?.toString() ?? 'Karaoke track',
         difficulty: 0.5,
         qualityScore: 0.0,
       );
@@ -2128,7 +2128,7 @@ class _QuizChefGameState extends BaseGameScreenState<QuizChefGame> {
                     return {'step': text};
                   }
                   if (step is Map) {
-                    final map = Map<String, dynamic>.from(step as Map);
+                    final map = Map<String, dynamic>.from(step);
                     final text = map['step']?.toString().trim();
                     if (text == null || text.isEmpty) return null;
                     return {'step': text};
