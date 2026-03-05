@@ -258,6 +258,8 @@ class _AiChatLanguageSetupScreenState
         return Icons.refresh_rounded;
       case PolieMode.pronunciation:
         return Icons.record_voice_over_rounded;
+      case PolieMode.grammar:
+        return Icons.rule_folder_outlined;
     }
   }
 
@@ -277,6 +279,8 @@ class _AiChatLanguageSetupScreenState
         return 'Review';
       case PolieMode.pronunciation:
         return 'Pronunciation';
+      case PolieMode.grammar:
+        return 'Grammar';
     }
   }
 
@@ -296,6 +300,8 @@ class _AiChatLanguageSetupScreenState
         return 'Review $language';
       case PolieMode.pronunciation:
         return 'Practice $language pronunciation';
+      case PolieMode.grammar:
+        return 'Practice $language grammar';
     }
   }
 }
