@@ -374,7 +374,7 @@ jobs:
 
   create-release:
     name: Create GitHub Release
-    needs: [build-android, build-ios]
+    needs: [increment-version, build-android, build-ios]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -388,22 +388,22 @@ jobs:
         continue-on-error: true
         uses: actions/download-artifact@v4
         with:
-          name: android-aab-${{ needs.build-android.outputs.version }}
+          name: android-aab-${{ needs.increment-version.outputs.version }}
           path: build/release/android
 
       - name: 📥 Download iOS IPA/Archive
         continue-on-error: true
         uses: actions/download-artifact@v4
         with:
-          name: ios-build-${{ needs.build-ios.outputs.version }}
+          name: ios-build-${{ needs.increment-version.outputs.version }}
           path: build/release/ios
 
       - name: 🏷️ Extract version info
         id: version
         run: |
-          version="${{ needs.build-android.outputs.version }}"
-          version_name="${{ needs.build-android.outputs.version_name }}"
-          build_number="${{ needs.build-android.outputs.build_number }}"
+          version="${{ needs.increment-version.outputs.version }}"
+          version_name="${{ needs.increment-version.outputs.version_name }}"
+          build_number="${{ needs.increment-version.outputs.build_number }}"
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "version_name=$version_name" >> $GITHUB_OUTPUT
           echo "build_number=$build_number" >> $GITHUB_OUTPUT
@@ -413,9 +413,19 @@ jobs:
         run: |
           mkdir -p build/release/android build/release/ios
           ls build/release/android/*.aab 2>/dev/null && echo "android_exists=true" >> $GITHUB_OUTPUT || echo "android_exists=false" >> $GITHUB_OUTPUT
-          ls build/release/ios/*.ipa build/release/ios/*.zip 2>/dev/null && echo "ios_exists=true" >> $GITHUB_OUTPUT || echo "ios_exists=false" >> $GITHUB_OUTPUT
+          ls build/release/ios/*.ipa build/release/ios/*.zip build/release/ios/*.xcarchive.zip 2>/dev/null && echo "ios_exists=true" >> $GITHUB_OUTPUT || echo "ios_exists=false" >> $GITHUB_OUTPUT
+          if ls build/release/android/*.aab build/release/ios/*.ipa build/release/ios/*.zip build/release/ios/*.xcarchive.zip >/dev/null 2>&1; then
+            echo "has_artifacts=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_artifacts=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ℹ️ Skip empty release
+        if: steps.check-artifacts.outputs.has_artifacts != 'true'
+        run: echo "No Android/iOS artifacts found. Skipping release creation."
 
       - name: 🏁 Create GitHub Release
+        if: steps.check-artifacts.outputs.has_artifacts == 'true'
         continue-on-error: true
         uses: softprops/action-gh-release@v2
         with:
