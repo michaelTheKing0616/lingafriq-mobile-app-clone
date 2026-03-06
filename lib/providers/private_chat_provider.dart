@@ -21,9 +21,12 @@ class PrivateChatState {
     final needle = query.trim().toLowerCase();
     return contacts.where((contact) {
       final username = contact.username.toLowerCase();
+      final globalId = contact.globalId?.toLowerCase() ?? '';
       final email = contact.email?.toLowerCase() ?? '';
       final language = contact.language?.toLowerCase() ?? '';
       return username.contains(needle) ||
+          globalId.contains(needle) ||
+          '@$globalId'.contains(needle) ||
           email.contains(needle) ||
           language.contains(needle);
     }).toList();

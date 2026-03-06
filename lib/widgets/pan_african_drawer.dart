@@ -6,6 +6,7 @@ import '../utils/pan_african_design_system.dart';
 import '../providers/user_provider.dart';
 import '../providers/gamification_provider.dart';
 import '../providers/navigation_provider.dart';
+import '../providers/auth_provider.dart';
 import '../screens/tabs_view/tabs_view.dart';
 
 /// Beautiful Pan-African themed navigation drawer
@@ -538,7 +539,8 @@ class PanAfricanDrawer extends ConsumerWidget {
     );
 
     if (confirmed == true) {
-      // Handle logout
+      Navigator.of(context).pop();
+      ref.read(authProvider.notifier).signOut();
     }
   }
 }

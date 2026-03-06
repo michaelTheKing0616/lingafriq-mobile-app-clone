@@ -54,6 +54,9 @@ class ApiContract {
   static const pronunciation = _Pronunciation();
   static const learning = _Learning();
   static const learningPath = _LearningPath();
+  static const wa = _Wa();
+  static const snap = _Snap();
+  static const feed = _Feed();
   static const misc = _Misc();
 }
 
@@ -129,6 +132,79 @@ class _Chat {
   String get private_ => '/chat/private';
   String get search => '/api/chat/search';
   String get report => '/chat/report';
+}
+
+// =============================================================================
+// WhatsApp-style chat upgrades
+// =============================================================================
+class _Wa {
+  const _Wa();
+  String get base => '/api/wa';
+  String get conversations => '/api/wa/conversations';
+  String get messages => '/api/wa/messages';
+  String editMessage(String messageId) => '/api/wa/messages/$messageId';
+  String forwardMessage(String messageId) => '/api/wa/messages/$messageId/forward';
+  String deleteMessage(String messageId) => '/api/wa/messages/$messageId';
+  String get starred => '/api/wa/messages/starred';
+  String get markDelivered => '/api/wa/messages/delivered';
+  String get markRead => '/api/wa/messages/read';
+  String reaction(String messageId) => '/api/wa/messages/$messageId/reaction';
+  String star(String messageId) => '/api/wa/messages/$messageId/star';
+  String get typing => '/api/wa/typing';
+  String typingRoom(String roomId) => '/api/wa/typing/$roomId';
+  String get presence => '/api/wa/presence';
+  String get statusFeed => '/api/wa/status/feed';
+  String get statusMine => '/api/wa/status/mine';
+  String statusView(String statusId) => '/api/wa/status/$statusId/view';
+  String statusViewers(String statusId) => '/api/wa/status/$statusId/viewers';
+  String statusDelete(String statusId) => '/api/wa/status/$statusId';
+}
+
+// =============================================================================
+// Snapchat-style module
+// =============================================================================
+class _Snap {
+  const _Snap();
+  String get base => '/api/snap';
+  String get messages => '/api/snap/messages';
+  String openMessage(String id) => '/api/snap/messages/$id/open';
+  String replayMessage(String id) => '/api/snap/messages/$id/replay';
+  String screenshotMessage(String id) => '/api/snap/messages/$id/screenshot';
+  String deleteMessage(String id) => '/api/snap/messages/$id';
+  String get stories => '/api/snap/stories';
+  String viewStory(String id) => '/api/snap/stories/$id/view';
+  String storyViewers(String id) => '/api/snap/stories/$id/viewers';
+  String replyStory(String id) => '/api/snap/stories/$id/reply';
+  String deleteStory(String id) => '/api/snap/stories/$id';
+  String get streaks => '/api/snap/streaks';
+  String get streaksSync => '/api/snap/streaks/sync';
+  String get stickers => '/api/snap/stickers';
+  String stickerPack(String id) => '/api/snap/stickers/$id';
+  String get stickerSearch => '/api/snap/stickers/search';
+}
+
+// =============================================================================
+// X-style feed module
+// =============================================================================
+class _Feed {
+  const _Feed();
+  String get base => '/api/feed';
+  String get posts => '/api/feed/posts';
+  String post(String postId) => '/api/feed/posts/$postId';
+  String postReplies(String postId) => '/api/feed/posts/$postId/replies';
+  String postLike(String postId) => '/api/feed/posts/$postId/like';
+  String postRepost(String postId) => '/api/feed/posts/$postId/repost';
+  String postBookmark(String postId) => '/api/feed/posts/$postId/bookmark';
+  String postView(String postId) => '/api/feed/posts/$postId/view';
+  String get notifications => '/api/feed/notifications';
+  String notificationRead(String id) => '/api/feed/notifications/$id/read';
+  String get notificationsReadAll => '/api/feed/notifications/read-all';
+  String get notificationsUnreadCount => '/api/feed/notifications/unread-count';
+  String get trending => '/api/feed/explore/trending';
+  String get search => '/api/feed/explore/search';
+  String get lists => '/api/feed/lists';
+  String get profile => '/api/feed/profile';
+  String profileByUser(String userId) => '/api/feed/profile/$userId';
 }
 
 // =============================================================================

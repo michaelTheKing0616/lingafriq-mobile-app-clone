@@ -6,7 +6,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/user_provider.dart';
-import 'package:lingafriq/config/app_config.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -49,7 +49,7 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
       isUpdating.value = true;
       try {
         final response = await ApiService.put(
-          '${AppConfig.apiBaseUrl}/accounts/auth/users/me',
+          ApiContract.auth.userInfo,
           data: {
             'handle': newHandle,
           },
@@ -97,8 +97,11 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
       }
     }
 
-    final currentHandle = user?.global_id ?? 'Not set';
-    final displayHandle = currentHandle.startsWith('@') ? currentHandle : '@$currentHandle';
+    final currentHandle = user?.global_id?.trim();
+    final hasHandle = currentHandle != null && currentHandle.isNotEmpty;
+    final displayHandle = hasHandle
+        ? (currentHandle.startsWith('@') ? currentHandle : '@$currentHandle')
+        : 'Not set';
 
     return PanAfricanCard(
       margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),

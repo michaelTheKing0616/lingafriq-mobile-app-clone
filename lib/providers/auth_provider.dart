@@ -373,6 +373,15 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       final prefs = ref.read(sharedPreferencesProvider);
       await prefs.removeEmailAndPassword();
+      await prefs.clearAuthTokens();
+      ref.read(apiProvider.notifier).clearToken();
+      // Clear secure credentials to prevent immediate silent re-login
+      // after explicit logout.
+      try {
+        await CredentialStorageService().clearCredentials();
+      } catch (_) {
+        // Ignore secure storage clear errors
+      }
       "Delete Account $deleteAccount".log('signout');
       
       // Try to unregister device, but don't block if it fails
@@ -404,6 +413,13 @@ class AuthProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       ref.read(userProvider.notifier).overrideUser(null);
       final prefs = ref.read(sharedPreferencesProvider);
       await prefs.removeEmailAndPassword();
+      await prefs.clearAuthTokens();
+      ref.read(apiProvider.notifier).clearToken();
+      try {
+        await CredentialStorageService().clearCredentials();
+      } catch (_) {
+        // Ignore secure storage clear errors
+      }
       navigateBasedOnCondition();
     }
   }

@@ -53,6 +53,23 @@ import 'screens/social/friend_quests_screen.dart';
 import 'screens/social/create_friend_quest_screen.dart';
 import 'screens/auth/email_verification_screen.dart';
 import 'screens/vocabulary/flashcard_review_screen.dart';
+import 'screens/wa/wa_status_list_screen.dart';
+import 'screens/wa/wa_status_create_screen.dart';
+import 'screens/wa/wa_status_view_screen.dart';
+import 'screens/wa/wa_starred_messages_screen.dart';
+import 'screens/wa/wa_media_gallery_screen.dart';
+import 'screens/snap/snap_inbox_screen.dart';
+import 'screens/snap/snap_story_feed_screen.dart';
+import 'screens/snap/snap_camera_screen.dart';
+import 'screens/snap/snap_streaks_screen.dart';
+import 'screens/snap/snap_viewer_screen.dart';
+import 'screens/feed/x_feed_home_screen.dart';
+import 'screens/feed/x_compose_screen.dart';
+import 'screens/feed/x_post_detail_screen.dart';
+import 'screens/feed/x_notifications_screen.dart';
+import 'screens/feed/x_explore_screen.dart';
+import 'screens/feed/x_lists_screen.dart';
+import 'screens/feed/x_profile_screen.dart';
 import 'lessons/models/section_lesson_model.dart';
 import 'models/language_response.dart';
 import 'models/offline/local_vocabulary.dart';
@@ -270,6 +287,57 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
         language: args['language'] as String,
       );
     },
+    // WhatsApp upgrade screens
+    'wa-status': (_) => const WaStatusListScreen(),
+    'wa-status-create': (_) => const WaStatusCreateScreen(),
+    'wa-status-view': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final statusId = args?['statusId']?.toString();
+      if (statusId == null || statusId.isEmpty) {
+        return const Scaffold(
+          body: Center(child: Text('Missing required arguments for WaStatusViewScreen')),
+        );
+      }
+      return WaStatusViewScreen(statusId: statusId);
+    },
+    'wa-starred': (_) => const WaStarredMessagesScreen(),
+    'wa-media-gallery': (_) => const WaMediaGalleryScreen(),
+    // Snapchat upgrade screens
+    'snap-inbox': (_) => const SnapInboxScreen(),
+    'snap-story-feed': (_) => const SnapStoryFeedScreen(),
+    'snap-camera': (_) => const SnapCameraScreen(),
+    'snap-streaks': (_) => const SnapStreaksScreen(),
+    'snap-viewer': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final snapId = args?['snapId']?.toString();
+      final storyId = args?['storyId']?.toString();
+      if ((snapId == null || snapId.isEmpty) && (storyId == null || storyId.isEmpty)) {
+        return const Scaffold(
+          body: Center(child: Text('Missing required arguments for SnapViewerScreen')),
+        );
+      }
+      return SnapViewerScreen(
+        snapId: (snapId != null && snapId.isNotEmpty) ? snapId : null,
+        storyId: (storyId != null && storyId.isNotEmpty) ? storyId : null,
+      );
+    },
+    // X feed upgrade screens
+    'x-feed-home': (_) => const XFeedHomeScreen(),
+    'x-compose': (_) => const XComposeScreen(),
+    'x-post-detail': (_) {
+      final args = settings.arguments as Map<String, dynamic>?;
+      final postId = args?['postId']?.toString();
+      if (postId == null || postId.isEmpty) {
+        return const Scaffold(
+          body: Center(child: Text('Missing required arguments for XPostDetailScreen')),
+        );
+      }
+      return XPostDetailScreen(postId: postId);
+    },
+    'x-notifications': (_) => const XNotificationsScreen(),
+    'x-explore': (_) => const XExploreScreen(),
+    'x-lists': (_) => const XListsScreen(),
+    'x-profile': (_) => const XProfileScreen(),
   };
 
   final builder = routes[normalizedRoute];

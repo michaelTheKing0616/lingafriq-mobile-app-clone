@@ -58,7 +58,11 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
     if (currentUser == null) return;
     final socket = ref.read(socketProvider.notifier);
     if (!socket.isConnected) {
-      socket.connect(currentUser.id.toString(), currentUser.username);
+      socket.connect(
+        currentUser.id.toString(),
+        currentUser.username,
+        globalId: currentUser.global_id,
+      );
     }
     socket.joinRoom(_roomId);
     socket.setActiveRoom(_roomId);
@@ -415,6 +419,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
         text,
         currentUser.id.toString(),
         currentUser.username,
+        null,
+        currentUser.global_id,
       );
       _messageController.clear();
       _scrollToBottom();
@@ -431,6 +437,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           '🤖 Polie is thinking...',
           'polie_bot',
           'Polie',
+            null,
+            'polie_bot',
         );
         
         // Process the mention
@@ -447,6 +455,8 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
             formattedResponse,
             'polie_bot',
             'Polie',
+            null,
+            'polie_bot',
           );
         }
         _scrollToBottom();

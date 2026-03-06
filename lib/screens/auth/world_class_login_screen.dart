@@ -11,6 +11,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
 import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/services/auth/biometric_auth_service.dart';
+import 'package:lingafriq/services/auth/biometric_preference_service.dart';
+import 'package:lingafriq/services/auth/biometric_enrollment_service.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
@@ -33,8 +35,11 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     final isLoading = ref.watch(authProvider.select((value) => value.isLoading));
     final showPassword = useState<bool>(false);
     final isBiometricAvailable = useState<bool?>(null);
+    final biometricEnabledForAccount = useState<bool>(false);
     final credentialStorage = CredentialStorageService();
     final biometricAuth = BiometricAuthService();
+    final biometricPreferenceService = BiometricPreferenceService();
+    final biometricEnrollmentService = BiometricEnrollmentService();
 
     // Load stored credentials on init
     useEffect(() {
@@ -43,7 +48,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
         passwordController,
         credentialStorage,
         isBiometricAvailable,
+        biometricEnabledForAccount,
         biometricAuth,
+        biometricPreferenceService,
       );
       return null;
     }, []);
@@ -154,13 +161,15 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     SizedBox(height: PanAfricanSpacing.lg),
                     
                     // Biometric login
-                    if (isBiometricAvailable.value == true)
+                    if (isBiometricAvailable.value == true &&
+                        biometricEnabledForAccount.value)
                       _buildBiometricButton(
                         context,
                         emailController,
                         passwordController,
                         credentialStorage,
                         biometricAuth,
+                        biometricPreferenceService,
                         ref,
                         isDark,
                       )
@@ -475,6 +484,14 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                 email: emailController.text.trim(),
                 password: passwordController.text.trim(),
               );
+              if (context.mounted) {
+                await biometricEnrollmentService.maybeOfferEnrollment(
+                  context: context,
+                  email: emailController.text.trim(),
+                  biometricAuth: biometricAuth,
+                  biometricPreferenceService: biometricPreferenceService,
+                );
+              }
             }
           } catch (e) {
             if (context.mounted) {
@@ -509,6 +526,7 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     TextEditingController passwordController,
     CredentialStorageService storage,
     BiometricAuthService biometricAuth,
+    BiometricPreferenceService biometricPreferenceService,
     WidgetRef ref,
     bool isDark,
   ) {
@@ -531,14 +549,31 @@ class WorldClassLoginScreen extends HookConsumerWidget {
             onTap: () async {
               HapticFeedback.mediumImpact();
               
-              final authenticated = await biometricAuth.authenticate(
+              final authenticated = await biometricAuth.authenticateWithResult(
                 localizedReason: 'Use biometric to sign in',
               );
 
-              if (authenticated) {
+              if (authenticated.success) {
                 try {
                   final credentials = await storage.getStoredCredentials();
                   if (credentials != null && credentials['password'] != null) {
+                    final email = (credentials['email'] ?? '').trim();
+                    if (email.isEmpty) {
+                      if (context.mounted) {
+                        ErrorHandler.showError(context, 'No account is linked for biometric sign-in.');
+                      }
+                      return;
+                    }
+                    final biometricEnabled = await biometricPreferenceService.isEnabledForEmail(email);
+                    if (!biometricEnabled) {
+                      if (context.mounted) {
+                        ErrorHandler.showError(
+                          context,
+                          'Biometric sign-in is not enabled for this account yet.',
+                        );
+                      }
+                      return;
+                    }
                     emailController.text = credentials['email'] ?? '';
                     passwordController.text = credentials['password'] ?? '';
                     
@@ -553,6 +588,11 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                     ErrorHandler.showError(context, e);
                   }
                 }
+              } else if (context.mounted) {
+                ErrorHandler.showError(
+                  context,
+                  authenticated.errorMessage ?? 'Biometric authentication failed.',
+                );
               }
             },
             child: Container(
@@ -648,7 +688,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     TextEditingController passwordController,
     CredentialStorageService storage,
     ValueNotifier<bool?> isBiometricAvailable,
+    ValueNotifier<bool> biometricEnabledForAccount,
     BiometricAuthService biometricAuth,
+    BiometricPreferenceService biometricPreferenceService,
   ) async {
     await storage.initialize();
     await biometricAuth.isAvailable().then((available) {
@@ -660,9 +702,12 @@ class WorldClassLoginScreen extends HookConsumerWidget {
       
       if (email != null) {
         emailController.text = email;
+        biometricEnabledForAccount.value =
+            await biometricPreferenceService.isEnabledForEmail(email);
       }
       // Don't auto-fill password for security, but enable biometric
     }
   }
+
 }
 

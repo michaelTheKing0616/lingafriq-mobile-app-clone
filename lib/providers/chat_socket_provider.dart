@@ -20,6 +20,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
   io.Socket? _socket;
   String? _pendingUserId;
   String? _pendingUsername;
+  String? _pendingGlobalId;
   static const int _maxSendAttempts = 3;
   static const Duration _ackTimeout = Duration(seconds: 4);
   static const Duration _retryDelay = Duration(seconds: 2);
@@ -76,6 +77,8 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
         _socket!.emit('user_connected', {
           'userId': _pendingUserId,
           'username': _pendingUsername ?? 'Learner',
+          if (_pendingGlobalId != null && _pendingGlobalId!.isNotEmpty)
+            'global_id': _pendingGlobalId,
         });
       }
       _flushQueuedMessages();
@@ -447,10 +450,11 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
     }
   }
 
-  void connect(String userId, String username) {
+  void connect(String userId, String username, {String? globalId}) {
     try {
       _pendingUserId = userId;
       _pendingUsername = username;
+      _pendingGlobalId = globalId;
       if (!_isConnected && _socket != null) {
         _socket!.connect();
         logger.info('Attempting to connect chat socket', tag: 'chat-socket', context: {'userId': userId});
@@ -488,6 +492,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
     String userId,
     String username, [
     String? messageId,
+    String? userGlobalId,
   ]) {
     try {
       final clientMessageId = (messageId != null && messageId.isNotEmpty)
@@ -500,6 +505,7 @@ class ChatSocketNotifier extends Notifier<ChatSocketState> {
         'username': username,
         'timestamp': DateTime.now().toIso8601String(),
         'chatType': room.startsWith('private_') ? 'private' : 'global',
+        if (userGlobalId != null && userGlobalId.isNotEmpty) 'global_id': userGlobalId,
         'clientMessageId': clientMessageId,
         'messageId': clientMessageId,
         'lifecycleState': _isConnected ? 'sent' : 'queued',

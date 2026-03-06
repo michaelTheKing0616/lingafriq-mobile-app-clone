@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/services/auth/biometric_enrollment_service.dart';
+import 'package:lingafriq/services/auth/credential_storage_service.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/widgets/loading/loading_overlay.dart';
@@ -446,8 +448,25 @@ class EmailVerificationScreen extends HookConsumerWidget {
             backgroundColor: PanAfricanColors.success,
           ),
         );
-        
-        // Navigate back or to home
+
+        // If this verification came from a fresh signup and credentials are
+        // already stored, offer biometric enrollment before returning.
+        final credentialStorage = CredentialStorageService();
+        await credentialStorage.initialize();
+        final hasStoredCredentials = await credentialStorage.hasStoredCredentials();
+        final storedEmail = await credentialStorage.getStoredEmail();
+        final canOfferBiometricEnrollment =
+            hasStoredCredentials &&
+            storedEmail != null &&
+            storedEmail.trim().toLowerCase() == email.trim().toLowerCase();
+        if (canOfferBiometricEnrollment && context.mounted) {
+          await BiometricEnrollmentService().maybeOfferEnrollment(
+            context: context,
+            email: email,
+          );
+        }
+
+        // Navigate back or to home.
         Navigator.of(context).popUntil((route) => route.isFirst);
       }
     } catch (e) {

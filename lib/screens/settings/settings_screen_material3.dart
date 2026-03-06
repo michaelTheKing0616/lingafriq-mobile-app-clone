@@ -30,6 +30,8 @@ import 'package:lingafriq/services/env_config.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:lingafriq/providers/auth_provider.dart';
+import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/services/auth/biometric_preference_service.dart';
 
 /// Beautiful Material 3 Settings Screen with Pan-African Design
 class SettingsScreenMaterial3 extends HookConsumerWidget {
@@ -47,11 +49,18 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     final biometricType = useState<String?>(null);
     final cacheEncryptionEnabled = useState<bool?>(null);
     final polieSerifLanguageText = useState(false);
+    final currentUser = ref.watch(userProvider);
+    final biometricPreferenceService = useMemoized(() => BiometricPreferenceService());
 
     // Check biometric availability and load Polie serif preference
     useEffect(() {
       _checkBiometricAvailability(
-          biometricAvailable, biometricType, biometricEnabled);
+        biometricAvailable,
+        biometricType,
+        biometricEnabled,
+        currentUser?.email,
+        biometricPreferenceService,
+      );
       _loadCacheEncryptionSetting(cacheEncryptionEnabled);
       _loadPolieSerifPreference(polieSerifLanguageText);
       return null;
@@ -232,12 +241,21 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                             HapticFeedback.mediumImpact();
                             if (value) {
                               try {
-                                final authenticated = await BiometricAuth.authenticate(
+                                final result = await BiometricAuth.authenticateWithResult(
                                   localizedReason: 'Enable biometric authentication',
                                 );
-                                if (authenticated) {
-                                  final prefs = await SharedPreferences.getInstance();
-                                  await prefs.setBool('biometric_enabled', true);
+                                if (result.success) {
+                                  if (currentUser?.email == null ||
+                                      currentUser!.email.trim().isEmpty) {
+                                    if (context.mounted) {
+                                      showLingAfriqError(
+                                        context,
+                                        'Unable to enable biometrics: missing account identity.',
+                                      );
+                                    }
+                                    return;
+                                  }
+                                  await biometricPreferenceService.enableForEmail(currentUser.email);
                                   biometricEnabled.value = true;
                                   if (context.mounted) {
                                     showLingAfriqSuccess(
@@ -245,7 +263,10 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                                   }
                                 } else if (context.mounted) {
                                   showLingAfriqError(
-                                      context, 'Biometric authentication failed. Please try again or check your device settings.');
+                                    context,
+                                    result.errorMessage ??
+                                        'Biometric authentication failed. Please try again or check your device settings.',
+                                  );
                                 }
                               } catch (e) {
                                 logger.error(
@@ -264,8 +285,7 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
                                 }
                               }
                             } else {
-                              final prefs = await SharedPreferences.getInstance();
-                              await prefs.setBool('biometric_enabled', false);
+                              await biometricPreferenceService.disable();
                               biometricEnabled.value = false;
                             }
                           },
@@ -657,6 +677,8 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
     ValueNotifier<bool> available,
     ValueNotifier<String?> type,
     ValueNotifier<bool?> enabled,
+    String? email,
+    BiometricPreferenceService biometricPreferenceService,
   ) async {
     final isAvailable = await BiometricAuth.isAvailable();
     available.value = isAvailable;
@@ -667,8 +689,11 @@ class SettingsScreenMaterial3 extends HookConsumerWidget {
         type.value = BiometricAuth.getBiometricTypeName(biometrics.first);
       }
 
-      final prefs = await SharedPreferences.getInstance();
-      enabled.value = prefs.getBool('biometric_enabled') ?? false;
+      if (email != null && email.trim().isNotEmpty) {
+        enabled.value = await biometricPreferenceService.isEnabledForEmail(email);
+      } else {
+        enabled.value = false;
+      }
     }
   }
 

@@ -230,6 +230,13 @@ class _PrivateChatListScreenState
       itemBuilder: (context, index) {
         final contact = contacts[index];
         final isOnline = onlineIds.contains(contact.id.toString());
+        final contactName = (contact.username as String?)?.trim().isNotEmpty == true
+            ? contact.username
+            : 'Learner';
+        final contactHandle = (contact.globalId as String?)?.trim();
+        final contactSubtitle = contactHandle != null && contactHandle.isNotEmpty
+            ? '@$contactHandle'
+            : (contact.email ?? 'No messages yet');
         // Get unread count from chat socket provider for this contact's room
         final chatSocketNotifier = ref.read(socketProvider.notifier);
         final roomId = _buildRoomId(ref.read(userProvider)?.id ?? 0, contact.id);
@@ -252,7 +259,7 @@ class _PrivateChatListScreenState
             ),
           ),
           child: Semantics(
-            label: 'Chat with ${contact.name}. ${contact.lastMessage ?? 'No messages yet'}${unreadCount > 0 ? '. $unreadCount unread' : ''}',
+            label: 'Chat with $contactName. ${contactSubtitle.isNotEmpty ? contactSubtitle : 'No messages yet'}${unreadCount > 0 ? '. $unreadCount unread' : ''}',
             button: true,
             child: ListTile(
             contentPadding: EdgeInsets.all(PanAfricanSpacing.md),
@@ -262,7 +269,7 @@ class _PrivateChatListScreenState
                   radius: 24.w,
                   backgroundColor: PanAfricanColors.primary,
                   child: Text(
-                    contact.name.isNotEmpty ? contact.name[0].toUpperCase() : '?',
+                    contactName.isNotEmpty ? contactName[0].toUpperCase() : '?',
                     style: PanAfricanTypography.labelMedium(context)
                         .copyWith(color: colorScheme.onPrimary),
                   ),
@@ -289,11 +296,11 @@ class _PrivateChatListScreenState
               ],
             ),
             title: Text(
-              contact.name,
+              contactName,
               style: PanAfricanTypography.titleSmall(context),
             ),
             subtitle: Text(
-              contact.lastMessage ?? 'No messages yet',
+              contactSubtitle,
               style: PanAfricanTypography.bodySmall(context)
                   .copyWith(color: PanAfricanColors.neutralMedium),
               maxLines: 1,

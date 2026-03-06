@@ -52,6 +52,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
           socket.connect(
             user.id.toString(),
             user.username,
+            globalId: user.global_id,
           );
           socket.joinRoom(_selectedRoom);
           socket.setActiveRoom(_selectedRoom);
@@ -430,6 +431,8 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                                         text,
                                         user.id.toString(),
                                         user.username,
+                                        null,
+                                        user.global_id,
                                       );
                                       _messageController.clear();
                                       _scrollToBottom();
@@ -445,6 +448,8 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                                           '🤖 Polie is thinking...',
                                           'polie_bot',
                                           'Polie',
+                                          null,
+                                          'polie_bot',
                                         );
                                         _scrollToBottom();
                                         
@@ -462,6 +467,8 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                                             formattedResponse,
                                             'polie_bot',
                                             'Polie',
+                                            null,
+                                            'polie_bot',
                                           );
                                         }
                                         _scrollToBottom();

@@ -89,7 +89,11 @@ class CommunityChatScreen extends HookConsumerWidget {
 
       // Connect socket and join room
       if (currentUser != null) {
-        socketNotifier.connect(currentUser.id.toString(), currentUser.username);
+        socketNotifier.connect(
+          currentUser.id.toString(),
+          currentUser.username,
+          globalId: currentUser.global_id,
+        );
         socketNotifier.joinRoom(roomId);
       }
 
