@@ -49,7 +49,6 @@ class _SnapCameraScreenState extends ConsumerState<SnapCameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(

@@ -151,6 +151,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
                       emailController,
                       passwordController,
                       credentialStorage,
+                      biometricEnrollmentService,
+                      biometricAuth,
+                      biometricPreferenceService,
                       ref,
                       isDark,
                     )
@@ -453,6 +456,9 @@ class WorldClassLoginScreen extends HookConsumerWidget {
     TextEditingController emailController,
     TextEditingController passwordController,
     CredentialStorageService storage,
+    BiometricEnrollmentService biometricEnrollmentService,
+    BiometricAuthService biometricAuth,
+    BiometricPreferenceService biometricPreferenceService,
     WidgetRef ref,
     bool isDark,
   ) {

@@ -129,7 +129,10 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                 TextButton.icon(
                   onPressed: () {
                     isEditing.value = true;
-                    handleController.text = currentHandle.replaceFirst('@', '').replaceFirst('u_', '');
+                    final editableHandle = (currentHandle ?? '')
+                        .replaceFirst('@', '')
+                        .replaceFirst('u_', '');
+                    handleController.text = editableHandle;
                     HapticFeedback.lightImpact();
                   },
                   icon: Icon(Icons.edit, size: 16.sp),
@@ -198,7 +201,10 @@ class ProfileGlobalIdSection extends HookConsumerWidget {
                       child: OutlinedButton(
                         onPressed: isUpdating.value ? null : () {
                           isEditing.value = false;
-                          handleController.text = currentHandle.replaceFirst('@', '').replaceFirst('u_', '');
+                          final editableHandle = (currentHandle ?? '')
+                              .replaceFirst('@', '')
+                              .replaceFirst('u_', '');
+                          handleController.text = editableHandle;
                         },
                         child: Text('Cancel'),
                       ),

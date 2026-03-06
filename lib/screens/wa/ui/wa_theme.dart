@@ -7,7 +7,7 @@ class WaUi {
   static Color cardBg(bool isDark) =>
       isDark ? const Color(0xFF1B2A33) : Colors.white;
   static Color ringSeen(bool isDark) =>
-      isDark ? PanAfricanColors.neutralMediumDark : PanAfricanColors.neutralMedium;
+      isDark ? PanAfricanColors.neutralDark : PanAfricanColors.neutralMedium;
   static Color ringUnseenA() => const Color(0xFF16A34A);
   static Color ringUnseenB() => const Color(0xFF059669);
   static Color primary() => const Color(0xFF16A34A);
