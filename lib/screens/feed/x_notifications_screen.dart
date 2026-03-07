@@ -107,7 +107,7 @@ class _NotifList extends StatelessWidget {
                 backgroundColor: _notifColor(type).withValues(alpha: 0.18),
                 child: Icon(_notifIcon(type), color: _notifColor(type), size: 18),
               ),
-              title: Text('$actor • $type'),
+              title: Text('$actor - $type'),
               subtitle: Text('Tap to mark as read', style: TextStyle(color: XUi.secondaryText(isDark))),
               trailing: unread
                   ? Container(
@@ -149,3 +149,4 @@ IconData _notifIcon(String type) {
       return Icons.chat_bubble_rounded;
   }
 }
+
