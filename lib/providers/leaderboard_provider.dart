@@ -52,7 +52,7 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       return; // Use cached data
     }
 
-    state = state.copyWith(isLoading: true);
+    state = state.copyWith(isLoading: true, clearError: true);
 
     try {
       final leaderboardsService = ref.read(leaderboardsServiceProvider);
@@ -102,6 +102,10 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
       // Fail closed: keep last known cached data (if any). Never fabricate leaderboard entries.
       _cache.putIfAbsent(type, () => []);
+      state = state.copyWith(
+        errorMessage: 'Unable to load leaderboard right now. Pull to retry.',
+        errorTimestamp: DateTime.now(),
+      );
     } finally {
       state = state.copyWith(isLoading: false);
     }

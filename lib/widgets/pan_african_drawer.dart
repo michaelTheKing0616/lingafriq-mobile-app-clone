@@ -66,6 +66,12 @@ class PanAfricanDrawer extends ConsumerWidget {
                           subtitle: '35+ educational games',
                           onTap: () => _navigateTo(context, ref, 'games'),
                         ),
+                        _DrawerItem(
+                          icon: Icons.bookmarks_rounded,
+                          title: 'My Vocabulary',
+                          subtitle: 'Saved words across the app',
+                          onTap: () => _navigateTo(context, ref, 'my-vocabulary'),
+                        ),
                       ],
                     ),
                     

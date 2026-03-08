@@ -380,7 +380,6 @@ class _PanAfricanCardState extends State<PanAfricanCard>
             ? (_) {
                 setState(() => _isHovered = false);
                 _controller.reverse();
-                if (widget.onTap != null) widget.onTap!();
               }
             : null,
         onTapCancel: widget.hasHoverEffect
@@ -392,7 +391,7 @@ class _PanAfricanCardState extends State<PanAfricanCard>
         child: ScaleTransition(
           scale: widget.hasHoverEffect ? _scaleAnimation : AlwaysStoppedAnimation(1.0),
           child: InkWell(
-            onTap: widget.hasHoverEffect ? null : widget.onTap,
+            onTap: widget.onTap,
             borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
             child: card,
           ),

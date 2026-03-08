@@ -10,9 +10,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
-import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
-import 'package:lingafriq/models/curriculum_model.dart';
+import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/screens/lesson/lesson_flow_screen.dart';
 
 /// Beautiful Material 3 Curriculum Screen
 class CurriculumScreenMaterial3 extends HookConsumerWidget {
@@ -209,26 +209,47 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                                 return _WeekCard(
                                   week: week,
                                   isDark: isDark,
-                                  onTap: () {
+                                  onTap: () async {
                                     // Navigate to week details
                                     if (week['lessons'] != null && (week['lessons'] as List).isNotEmpty) {
                                       final lessonData = (week['lessons'] as List)[0];
-                                      final lesson = CurriculumLesson(
-                                        id: lessonData['id']?.toString() ?? '',
-                                        title: lessonData['title'] ?? 'Lesson',
-                                        vocab: lessonData['vocab'] ?? [],
-                                        exercises: (lessonData['exercises'] as List?)?.map((e) => CurriculumExercise.fromMap(e)).toList() ?? [],
+                                      final lessonId = int.tryParse(
+                                        lessonData['id']?.toString() ?? '',
                                       );
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => LessonDetailScreen(
-                                            lesson: lesson,
-                                            language: selectedLanguage.value,
-                                            level: selectedLevel.value,
+                                      if (lessonId == null) return;
+                                      try {
+                                        final sections = await ref
+                                            .read(apiProvider.notifier)
+                                            .getSectionLessons(lessonId);
+                                        if (!context.mounted) return;
+                                        if (sections.isEmpty) {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('No lesson sections available yet.'),
+                                            ),
+                                          );
+                                          return;
+                                        }
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => LessonFlowScreen(
+                                              lessonId: lessonId,
+                                              sectionLessons: sections,
+                                              lessonTitle: lessonData['title']?.toString() ?? 'Lesson',
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
+                                      } catch (e) {
+                                        if (!context.mounted) return;
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              'Failed to load lesson content. Please try again.',
+                                            ),
+                                          ),
+                                        );
+                                      }
                                     }
                                   },
                                 )

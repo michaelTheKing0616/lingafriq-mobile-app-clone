@@ -23,7 +23,7 @@ import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:lingafriq/config/secrets_manager.dart';
-import 'package:lingafriq/config/url_constants.dart';
+import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -174,36 +174,15 @@ class EnhancedTTSService {
   /// Speak with Meta MMS-TTS (REAL African language support - 1000+ languages)
   Future<void> _speakWithMMSTTS(String text, TTSConfig config, String language) async {
     try {
-      final serviceUrl = _secrets.voiceServiceUrl;
-      if (serviceUrl == null || serviceUrl.isEmpty) {
-        throw Exception('Voice service URL not configured');
-      }
-
-      // Use HuggingFace Inference API for MMS-TTS (FREE)
-      final response = await _dio.post(
-        UrlConstants.huggingFaceModel('facebook/mms-tts-${language.toLowerCase()}'),
-        data: {'inputs': text},
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer ${_secrets.huggingfaceToken}',
-          },
-          responseType: ResponseType.bytes,
-          receiveTimeout: const Duration(seconds: 30),
-        ),
+      await _speakViaBackendRouting(
+        text: text,
+        language: language,
+        speed: config.speed,
+        pitch: config.pitch,
+        providerPriority: const ['mms_tts', 'xtts_v2', 'piper'],
+        modelTier: 'free_best',
+        enableCache: config.enableCache,
       );
-
-      // Save to temp file and play
-      final tempDir = await getTemporaryDirectory();
-      final audioPath = '${tempDir.path}/tts_${DateTime.now().millisecondsSinceEpoch}.wav';
-      await File(audioPath).writeAsBytes(response.data as List<int>);
-
-      // Cache if enabled
-      final cacheKey = '${text}_$language';
-      if (config.enableCache) {
-        _audioCache[cacheKey] = audioPath;
-      }
-
-      await _playAudioFile(audioPath);
     } catch (e) {
       logger.error('MMS-TTS failed, falling back', error: e);
       // Fallback to XTTS
@@ -214,36 +193,15 @@ class EnhancedTTSService {
   /// Speak with XTTS v2 (High-quality, zero-shot voice cloning)
   Future<void> _speakWithXTTS(String text, TTSConfig config, String language) async {
     try {
-      final serviceUrl = _secrets.voiceServiceUrl;
-      if (serviceUrl == null || serviceUrl.isEmpty) {
-        throw Exception('Voice service URL not configured');
-      }
-
-      // Call backend XTTS service
-      final response = await _dio.post(
-        '$serviceUrl/tts/xtts',
-        data: {
-          'text': text,
-          'language': language,
-          'speed': config.speed,
-          'quality': config.quality.toString().split('.').last,
-        },
-        options: Options(
-          responseType: ResponseType.bytes,
-          receiveTimeout: const Duration(seconds: 30),
-        ),
+      await _speakViaBackendRouting(
+        text: text,
+        language: language,
+        speed: config.speed,
+        pitch: config.pitch,
+        providerPriority: const ['xtts_v2', 'mms_tts', 'piper'],
+        modelTier: 'free_best',
+        enableCache: config.enableCache,
       );
-
-      final tempDir = await getTemporaryDirectory();
-      final audioPath = '${tempDir.path}/tts_${DateTime.now().millisecondsSinceEpoch}.wav';
-      await File(audioPath).writeAsBytes(response.data as List<int>);
-
-      final cacheKey = '${text}_$language';
-      if (config.enableCache) {
-        _audioCache[cacheKey] = audioPath;
-      }
-
-      await _playAudioFile(audioPath);
     } catch (e) {
       logger.error('XTTS failed, falling back', error: e);
       await _speakWithBackendTTS(text, config, language);
@@ -253,39 +211,73 @@ class EnhancedTTSService {
   /// Speak with backend TTS service (fallback)
   Future<void> _speakWithBackendTTS(String text, TTSConfig config, String language) async {
     try {
-      final serviceUrl = _secrets.voiceServiceUrl;
-      if (serviceUrl == null || serviceUrl.isEmpty) {
-        throw Exception('Voice service URL not configured');
-      }
-
-      final response = await _dio.post(
-        '$serviceUrl/tts/synthesize',
-        data: {
-          'text': text,
-          'language': language,
-          'speed': config.speed,
-          'pitch': config.pitch,
-        },
-        options: Options(
-          responseType: ResponseType.bytes,
-          receiveTimeout: const Duration(seconds: 30),
-        ),
+      await _speakViaBackendRouting(
+        text: text,
+        language: language,
+        speed: config.speed,
+        pitch: config.pitch,
+        providerPriority: const ['xtts_v2', 'mms_tts', 'piper'],
+        modelTier: 'free_best',
+        enableCache: config.enableCache,
       );
-
-      final tempDir = await getTemporaryDirectory();
-      final audioPath = '${tempDir.path}/tts_${DateTime.now().millisecondsSinceEpoch}.mp3';
-      await File(audioPath).writeAsBytes(response.data as List<int>);
-
-      final cacheKey = '${text}_$language';
-      if (config.enableCache) {
-        _audioCache[cacheKey] = audioPath;
-      }
-
-      await _playAudioFile(audioPath);
     } catch (e) {
       logger.error('Backend TTS failed, falling back to system', error: e);
       await _speakWithSystemTTS(text, config, language);
     }
+  }
+
+  Future<void> _speakViaBackendRouting({
+    required String text,
+    required String language,
+    required double speed,
+    required double pitch,
+    required List<String> providerPriority,
+    required String modelTier,
+    bool enableCache = true,
+  }) async {
+    final response = await _dio.post(
+      ApiContract.url(ApiContract.voice.ttsSynthesize),
+      data: {
+        'text': text,
+        'language': language,
+        'speed': speed,
+        'pitch': pitch,
+        'provider_priority': providerPriority,
+        'accent_profile': _defaultAccentProfile(language),
+        'model_tier': modelTier,
+      },
+      options: Options(
+        responseType: ResponseType.bytes,
+        receiveTimeout: const Duration(seconds: 30),
+      ),
+    );
+
+    final tempDir = await getTemporaryDirectory();
+    final audioPath = '${tempDir.path}/tts_${DateTime.now().millisecondsSinceEpoch}.wav';
+    await File(audioPath).writeAsBytes(response.data as List<int>);
+    if (enableCache) {
+      _audioCache['${text}_$language'] = audioPath;
+    }
+    await _playAudioFile(audioPath);
+  }
+
+  String _defaultAccentProfile(String language) {
+    const accents = {
+      'yoruba': 'yo-NG',
+      'hausa': 'ha-NG',
+      'igbo': 'ig-NG',
+      'swahili': 'sw-KE',
+      'zulu': 'zu-ZA',
+      'xhosa': 'xh-ZA',
+      'amharic': 'am-ET',
+      'somali': 'so-SO',
+      'afrikaans': 'af-ZA',
+      'wolof': 'wo-SN',
+      'twi': 'tw-GH',
+      'pidgin': 'pcm-NG',
+      'english': 'en-AF',
+    };
+    return accents[language.toLowerCase()] ?? language;
   }
 
   /// Speak with system TTS (last resort fallback)

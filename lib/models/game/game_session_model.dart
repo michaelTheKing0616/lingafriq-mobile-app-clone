@@ -175,6 +175,8 @@ enum GameType {
   multilingualRelayRace,
   culturalEtiquetteScenarios,
   drumToWordMatching,
+  marketMonopolyChallenge,
+  scrabbleSprintArena,
 }
 
 extension GameTypeExtension on GameType {
@@ -250,6 +252,10 @@ extension GameTypeExtension on GameType {
         return 'cultural_etiquette_scenarios';
       case GameType.drumToWordMatching:
         return 'drum_to_word_matching';
+      case GameType.marketMonopolyChallenge:
+        return 'market_monopoly_challenge';
+      case GameType.scrabbleSprintArena:
+        return 'scrabble_sprint_arena';
     }
   }
 
@@ -325,6 +331,10 @@ extension GameTypeExtension on GameType {
         return 'Cultural Etiquette Scenarios';
       case GameType.drumToWordMatching:
         return 'Drum-to-Word Matching';
+      case GameType.marketMonopolyChallenge:
+        return 'Market Monopoly Challenge';
+      case GameType.scrabbleSprintArena:
+        return 'Scrabble Sprint Arena';
     }
   }
 

@@ -102,6 +102,8 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
             builder: (context) => LiveClassroomScreenMaterial3(
               roomId: room.id,
               roomName: room.name,
+              livekitToken: result['livekit_token']?.toString(),
+              livekitUrl: result['livekit_url']?.toString(),
             ),
           ),
         );

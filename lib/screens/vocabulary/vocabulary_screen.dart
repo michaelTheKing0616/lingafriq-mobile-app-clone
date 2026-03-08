@@ -6,10 +6,12 @@ import 'package:just_audio/just_audio.dart';
 import '../../services/vocabulary/vocabulary_service.dart';
 import '../../services/offline/vocabulary_store.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../utils/media_url_resolver.dart';
 import '../../widgets/empty_state_widget.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
 import 'flashcard_review_screen.dart';
+import '../../providers/tts_provider.dart';
 
 /// Vocabulary Screen - View and manage learned words
 class VocabularyScreen extends ConsumerStatefulWidget {
@@ -111,13 +113,32 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
     return filtered;
   }
 
-  Future<void> _playAudio(String? audioUrl) async {
-    if (audioUrl == null || audioUrl.isEmpty) return;
+  Future<void> _playAudio(
+    String? audioUrl, {
+    String? fallbackText,
+    String? language,
+  }) async {
+    final resolvedUrl = resolveMediaUrl(audioUrl);
+    if (resolvedUrl == null || resolvedUrl.isEmpty) {
+      if (fallbackText != null && fallbackText.trim().isNotEmpty) {
+        await ref.read(ttsProvider.notifier).speak(
+          fallbackText,
+          languageName: language ?? widget.language ?? 'english',
+        );
+      }
+      return;
+    }
     try {
-      await _audioPlayer.setUrl(audioUrl);
+      await _audioPlayer.setUrl(resolvedUrl);
       await _audioPlayer.play();
     } catch (e) {
       debugPrint('Error playing audio: $e');
+      if (fallbackText != null && fallbackText.trim().isNotEmpty) {
+        await ref.read(ttsProvider.notifier).speak(
+          fallbackText,
+          languageName: language ?? widget.language ?? 'english',
+        );
+      }
     }
   }
 
@@ -333,7 +354,11 @@ class _VocabularyScreenState extends ConsumerState<VocabularyScreen> {
                                         icon: const Icon(Icons.volume_up),
                                         onPressed: () {
                                           HapticFeedback.lightImpact();
-                                          _playAudio(word.audioUrl);
+                                          _playAudio(
+                                            word.audioUrl,
+                                            fallbackText: word.word,
+                                            language: word.language,
+                                          );
                                         },
                                       ),
                                     )

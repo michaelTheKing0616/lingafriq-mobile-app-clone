@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:lingafriq/utils/media_url_resolver.dart';
 
 /// Enum for lesson section types - replaces string-based type checking
 enum LessonSectionType {
@@ -97,9 +98,35 @@ class LessonContent {
 
     // Parse tutorial fields
     String? text = otherDataMap['text']?.toString() ?? otherDataMap['title']?.toString();
-    final audioUrl = otherDataMap['audio']?.toString();
-    final videoUrl = otherDataMap['video']?.toString();
-    final imageUrl = otherDataMap['image']?.toString();
+    final audioUrl = _resolveMediaFromMap(otherDataMap, const [
+      'audio_url',
+      'audioUrl',
+      'audio',
+      'lesson_audio_url',
+      'lessonAudioUrl',
+      'media_audio_url',
+      'mediaAudioUrl',
+      'file_url',
+      'url',
+    ]);
+    final videoUrl = _resolveMediaFromMap(otherDataMap, const [
+      'video_url',
+      'videoUrl',
+      'video',
+      'lesson_video_url',
+      'lessonVideoUrl',
+      'media_video_url',
+      'mediaVideoUrl',
+    ]);
+    final imageUrl = _resolveMediaFromMap(otherDataMap, const [
+      'image_url',
+      'imageUrl',
+      'image',
+      'thumbnail_url',
+      'thumbnailUrl',
+      'poster_url',
+      'posterUrl',
+    ]);
 
     // Parse quiz fields
     List<QuizQuestion>? questions;
@@ -141,9 +168,31 @@ class LessonContent {
               text: questionMap['text']?.toString(),
               hint: questionMap['hint']?.toString(),
               funFact: questionMap['fun_fact']?.toString(),
-              imageUrl: questionMap['image']?.toString(),
-              audioUrl: questionMap['audio']?.toString(),
-              videoUrl: questionMap['video']?.toString(),
+              imageUrl: _resolveMediaFromMap(questionMap, const [
+                'image_url',
+                'imageUrl',
+                'image',
+                'thumbnail_url',
+                'thumbnailUrl',
+                'poster_url',
+                'posterUrl',
+              ]),
+              audioUrl: _resolveMediaFromMap(questionMap, const [
+                'audio_url',
+                'audioUrl',
+                'audio',
+                'media_audio_url',
+                'mediaAudioUrl',
+                'file_url',
+                'url',
+              ]),
+              videoUrl: _resolveMediaFromMap(questionMap, const [
+                'video_url',
+                'videoUrl',
+                'video',
+                'media_video_url',
+                'mediaVideoUrl',
+              ]),
               options: choices.asMap().entries.map((e) {
                 return QuizOption(
                   id: e.key,
@@ -211,6 +260,34 @@ class LessonContent {
       wordQuestions: wordQuestions?.isNotEmpty == true ? wordQuestions : null,
       quizType: quizType,
     );
+  }
+
+  static String? _resolveMediaFromMap(
+    Map<dynamic, dynamic>? source,
+    List<String> keys,
+  ) {
+    if (source == null) return null;
+
+    for (final key in keys) {
+      final value = source[key];
+      final resolved = resolveMediaUrl(value?.toString());
+      if (resolved != null && resolved.isNotEmpty) {
+        return resolved;
+      }
+    }
+
+    final media = source['media'];
+    if (media is Map) {
+      for (final key in keys) {
+        final value = media[key];
+        final resolved = resolveMediaUrl(value?.toString());
+        if (resolved != null && resolved.isNotEmpty) {
+          return resolved;
+        }
+      }
+    }
+
+    return null;
   }
 
   LessonContent copyWith({

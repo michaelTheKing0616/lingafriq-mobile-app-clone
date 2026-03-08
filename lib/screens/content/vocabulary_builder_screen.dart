@@ -11,6 +11,8 @@ import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:lingafriq/providers/tts_provider.dart';
+import 'package:lingafriq/utils/media_url_resolver.dart';
 
 /// Enhanced Vocabulary Builder Screen
 /// Visual vocabulary cards, word families, picture matching, daily word
@@ -397,17 +399,22 @@ class _VocabularyBuilderScreenState extends ConsumerState<VocabularyBuilderScree
   }
 
   Future<void> _playAudio(String? audioUrl, String word) async {
-    if (audioUrl != null && audioUrl.isNotEmpty) {
+    final resolvedUrl = resolveMediaUrl(audioUrl);
+    if (resolvedUrl != null && resolvedUrl.isNotEmpty) {
       try {
-        await _audioPlayer.setUrl(audioUrl);
+        await _audioPlayer.setUrl(resolvedUrl);
         await _audioPlayer.play();
+        return;
       } catch (e) {
         debugPrint('Error playing audio: $e');
       }
-    } else {
-      // Use TTS fallback
-      HapticFeedback.lightImpact();
     }
+    // Use TTS fallback for missing/broken audio.
+    await ref.read(ttsProvider.notifier).speak(
+      word,
+      languageName: widget.language ?? 'english',
+    );
+    HapticFeedback.lightImpact();
   }
 
   @override

@@ -86,6 +86,17 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
     widget.onCheckAnswer(questionId, answer);
   }
 
+  void _goToNextQuestion(List<QuizQuestion> questions) {
+    if (_currentQuestionIndex >= questions.length - 1) return;
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+    setState(() {
+      _currentQuestionIndex++;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final questions = widget.content.questions ?? [];
@@ -182,11 +193,13 @@ class _QuizSectionWidgetState extends State<QuizSectionWidget>
                             : 'Next question')
                         : 'Check answer',
                     button: true,
-                    enabled: selectedAnswer != null,
+                    enabled: isChecked || selectedAnswer != null,
                     child: PanAfricanButton(
-                      onPressed: selectedAnswer != null
-                          ? () => _checkAnswer(questionId, selectedAnswer)
-                          : null,
+                      onPressed: isChecked
+                          ? () => _goToNextQuestion(questions)
+                          : (selectedAnswer != null
+                              ? () => _checkAnswer(questionId, selectedAnswer)
+                              : null),
                       label: isChecked
                           ? (_currentQuestionIndex == questions.length - 1
                               ? 'Finish'

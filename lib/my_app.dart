@@ -13,8 +13,8 @@ import 'screens/splash/splash_screen.dart';
 // Route screen imports
 import 'screens/ai_chat/ai_mode_selection_screen.dart';
 import 'screens/ai_chat/polie_mode_selection_screen.dart';
-import 'screens/curriculum/curriculum_screen.dart';
-import 'screens/games/games_screen.dart';
+import 'screens/curriculum/curriculum_screen_material3.dart';
+import 'screens/games/games_screen_material3.dart';
 import 'screens/goals/daily_goals_screen.dart';
 import 'screens/progress/progress_dashboard_screen.dart';
 import 'screens/achievements/achievements_screen.dart';
@@ -53,6 +53,7 @@ import 'screens/social/friend_quests_screen.dart';
 import 'screens/social/create_friend_quest_screen.dart';
 import 'screens/auth/email_verification_screen.dart';
 import 'screens/vocabulary/flashcard_review_screen.dart';
+import 'screens/vocabulary/vocabulary_screen.dart';
 import 'screens/wa/wa_status_list_screen.dart';
 import 'screens/wa/wa_status_create_screen.dart';
 import 'screens/wa/wa_status_view_screen.dart';
@@ -161,8 +162,8 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
   final routes = <String, WidgetBuilder>{
     'ai_chat_select': (_) => const AIModeSelectionScreen(),
     'polie_mode_selection': (_) => const PolieModeSelectionScreen(),
-    'curriculum': (_) => const CurriculumScreen(),
-    'games': (_) => const GamesScreen(),
+    'curriculum': (_) => const CurriculumScreenMaterial3(),
+    'games': (_) => const GamesScreenMaterial3(),
     'daily_goals': (_) => const DailyGoalsScreen(),
     'progress': (_) => const ProgressDashboardScreen(),
     'achievements': (_) => const AchievementsScreen(),
@@ -275,6 +276,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
       );
     },
     // Vocabulary
+    'my-vocabulary': (_) => const VocabularyScreen(),
     'flashcard-review': (_) {
       final args = settings.arguments as Map<String, dynamic>?;
       if (args == null || args['words'] == null || args['language'] == null) {

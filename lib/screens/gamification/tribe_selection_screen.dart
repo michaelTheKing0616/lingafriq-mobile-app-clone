@@ -174,9 +174,7 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
       );
     }
     
-    final tribes = _availableTribes.isNotEmpty 
-        ? _availableTribes 
-        : Tribes.allTribes.map((name) => {'name': name, 'id': name.toLowerCase()}).toList();
+    final tribes = _availableTribes;
 
     // Map tribe names to emojis
     final Map<String, String> tribeEmojis = {
@@ -260,6 +258,39 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
               style: PanAfricanTypography.titleMedium(context),
             ),
             SizedBox(height: PanAfricanSpacing.sm),
+            if (tribes.isEmpty)
+              Container(
+                padding: EdgeInsets.all(PanAfricanSpacing.lg),
+                decoration: BoxDecoration(
+                  color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+                  borderRadius: PanAfricanRadius.lgBR,
+                  border: Border.all(
+                    color: isDark
+                        ? PanAfricanColors.borderDark
+                        : PanAfricanColors.borderLight,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.groups_outlined,
+                      color: PanAfricanColors.neutralMedium,
+                      size: 28.sp,
+                    ),
+                    SizedBox(height: PanAfricanSpacing.sm),
+                    Text(
+                      'No tribes available yet',
+                      style: PanAfricanTypography.titleSmall(context),
+                    ),
+                    SizedBox(height: PanAfricanSpacing.xxs),
+                    Text(
+                      'Please refresh once the server is reachable.',
+                      textAlign: TextAlign.center,
+                      style: PanAfricanTypography.bodySmall(context),
+                    ),
+                  ],
+                ),
+              ),
             ...tribes.map((tribe) {
               final isSelected = currentTribe == tribe['name'] || _currentTribeId == tribe['id'];
               return Semantics(

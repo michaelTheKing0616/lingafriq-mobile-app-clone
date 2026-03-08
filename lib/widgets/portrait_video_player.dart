@@ -2,10 +2,12 @@ import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/utils/media_url_resolver.dart';
 
 final betterPlayerController = Provider.family.autoDispose((ref, String url) {
+  final resolvedUrl = resolveMediaUrl(url) ?? url;
   BetterPlayerDataSource betterPlayerDataSource =
-      BetterPlayerDataSource(BetterPlayerDataSourceType.network, url);
+      BetterPlayerDataSource(BetterPlayerDataSourceType.network, resolvedUrl);
   final controller = BetterPlayerController(
     const BetterPlayerConfiguration(
       autoPlay: true,

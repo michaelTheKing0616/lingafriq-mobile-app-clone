@@ -591,7 +591,48 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     try {
       final res = await ref.read(client).get(url ?? Api.profiles);
       if (res.statusCode != 200) throw res.data;
-      return ProfilesResponse.fromMap(res.data);
+      final payload = res.data;
+      if (payload is Map<String, dynamic> &&
+          payload['result'] is Map<String, dynamic>) {
+        return ProfilesResponse.fromMap(payload);
+      }
+
+      List<dynamic> results = const [];
+      String? next;
+      String? previous;
+      int count = 0;
+
+      if (payload is List) {
+        results = payload;
+        count = payload.length;
+      } else if (payload is Map) {
+        final map = Map<String, dynamic>.from(payload as Map);
+        if (map['results'] is List) {
+          results = map['results'] as List;
+          next = map['next']?.toString();
+          previous = map['previous']?.toString();
+          count = (map['count'] as num?)?.toInt() ?? results.length;
+        } else if (map['data'] is List) {
+          results = map['data'] as List;
+          count = (map['count'] as num?)?.toInt() ?? results.length;
+        } else if (map['data'] is Map &&
+            (map['data'] as Map)['results'] is List) {
+          final inner = Map<String, dynamic>.from(map['data'] as Map);
+          results = inner['results'] as List;
+          next = inner['next']?.toString();
+          previous = inner['previous']?.toString();
+          count = (inner['count'] as num?)?.toInt() ?? results.length;
+        }
+      }
+
+      return ProfilesResponse.fromMap({
+        'result': {
+          'count': count,
+          'next': next,
+          'previous': previous,
+          'results': results,
+        },
+      });
     } catch (e) {
       rethrow;
     }

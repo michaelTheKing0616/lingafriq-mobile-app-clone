@@ -46,6 +46,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       {'name': 'Grammar Jam', 'description': 'Grammar rhythm game', 'category': 'Grammar', 'icon': Icons.music_note, 'type': GameType.grammarJam},
       {'name': 'Pronunciation Karaoke', 'description': 'Sing and pronounce', 'category': 'Pronunciation', 'icon': Icons.mic, 'type': GameType.pronunciationKaraoke},
       {'name': 'Quiz Chef', 'description': 'Cook up answers', 'category': 'Vocabulary', 'icon': Icons.restaurant, 'type': GameType.quizChef},
+      {'name': 'Scrabble Sprint', 'description': 'Build words under pressure', 'category': 'Vocabulary', 'icon': Icons.spellcheck, 'type': GameType.scrabbleSprintArena},
     ];
 
     final culturalGames = [
@@ -70,6 +71,7 @@ class GamesScreenMaterial3 extends HookConsumerWidget {
       {'name': 'Multilingual Relay', 'description': 'Language relay', 'category': 'Cultural', 'icon': Icons.swap_horiz, 'type': GameType.multilingualRelayRace},
       {'name': 'Cultural Etiquette', 'description': 'Learn etiquette', 'category': 'Cultural', 'icon': Icons.groups, 'type': GameType.culturalEtiquetteScenarios},
       {'name': 'Drum Word Match', 'description': 'Match drum patterns', 'category': 'Cultural', 'icon': Icons.music_note, 'type': GameType.drumToWordMatching},
+      {'name': 'Market Monopoly', 'description': 'Strategic market negotiations', 'category': 'Cultural', 'icon': Icons.storefront, 'type': GameType.marketMonopolyChallenge},
     ];
 
     final allGames = [...coreGames, ...culturalGames];
@@ -335,72 +337,70 @@ class _GameCard extends StatelessWidget {
     return Semantics(
       label: '${game['name'] ?? 'Game'}, ${game['description'] ?? ''}, $category category',
       button: true,
-      child: GestureDetector(
+      child: PanAfricanCard(
+        hasHoverEffect: true,
         onTap: () {
           HapticFeedback.lightImpact();
           onTap();
         },
-        child: PanAfricanCard(
-          hasHoverEffect: true,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(PanAfricanSpacing.md),
-                decoration: BoxDecoration(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(PanAfricanSpacing.md),
+              decoration: BoxDecoration(
+                color: PanAfricanColors.primary,
+                shape: BoxShape.circle,
+                boxShadow: PanAfricanShadows.sm,
+              ),
+              child: Icon(
+                icon,
+                size: 24.sp,
+                color: colorScheme.onPrimary,
+                semanticLabel: '${game['name']} game icon',
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['name'] ?? 'Game',
+                style: PanAfricanTypography.titleSmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xxs),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+              child: Text(
+                game['description'] ?? '',
+                style: PanAfricanTypography.bodySmall(context),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.xs),
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: PanAfricanSpacing.sm,
+                vertical: PanAfricanSpacing.xxs,
+              ),
+              decoration: BoxDecoration(
+                color: PanAfricanColors.primaryContainer.withOpacity(0.5),
+                borderRadius: PanAfricanRadius.roundBR,
+              ),
+              child: Text(
+                category,
+                style: PanAfricanTypography.labelSmall(
+                  context,
                   color: PanAfricanColors.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: PanAfricanShadows.sm,
-                ),
-                child: Icon(
-                  icon,
-                  size: 24.sp,
-                  color: colorScheme.onPrimary,
-                  semanticLabel: '${game['name']} game icon',
                 ),
               ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
-                child: Text(
-                  game['name'] ?? 'Game',
-                  style: PanAfricanTypography.titleSmall(context),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              SizedBox(height: PanAfricanSpacing.xxs),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
-                child: Text(
-                  game['description'] ?? '',
-                  style: PanAfricanTypography.bodySmall(context),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              SizedBox(height: PanAfricanSpacing.xs),
-              Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: PanAfricanSpacing.sm,
-                  vertical: PanAfricanSpacing.xxs,
-                ),
-                decoration: BoxDecoration(
-                  color: PanAfricanColors.primaryContainer.withOpacity(0.5),
-                  borderRadius: PanAfricanRadius.roundBR,
-                ),
-                child: Text(
-                  category,
-                  style: PanAfricanTypography.labelSmall(
-                    context,
-                    color: PanAfricanColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

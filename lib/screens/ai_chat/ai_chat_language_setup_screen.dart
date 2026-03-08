@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/error_handler.dart' hide ErrorBoundary;
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
-import 'package:lingafriq/screens/ai_chat/ai_chat_screen.dart';
+import 'package:lingafriq/screens/ai_chat/polie_workspace_screen.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -59,10 +59,16 @@ class _AiChatLanguageSetupScreenState
         return;
       }
       
-      // Otherwise, navigate to chat screen with scoped history loaded
+      // Otherwise, navigate to the unified Polie workspace
       Navigator.push(
         context,
-        SmoothPageRoute(child: const AiChatScreen()),
+        SmoothPageRoute(
+          child: PolieWorkspaceScreen(
+            sourceLanguage: 'English',
+            targetLanguage: language,
+            initialMode: _mode,
+          ),
+        ),
       );
     } catch (e) {
       if (!mounted) return;

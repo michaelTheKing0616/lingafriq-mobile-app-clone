@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/private_chat_provider.dart';
 import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
@@ -74,9 +75,15 @@ class _PrivateChatListScreenState
       });
     }
 
-    final contacts = state.filteredContacts
+    var contacts = state.filteredContacts
         .where((contact) => contact.id != currentUser?.id)
         .toList();
+    if (contacts.isEmpty && socket.onlineUsers.isNotEmpty) {
+      contacts = socket.onlineUsers
+          .map((user) => PrivateChatContact.fromOnlineMap(user))
+          .where((contact) => contact.id > 0 && contact.id != currentUser?.id)
+          .toList();
+    }
 
     return Scaffold(
       backgroundColor:
@@ -111,7 +118,26 @@ class _PrivateChatListScreenState
                       ),
                     ),
                     ),
-                    const Spacer(),
+                    SizedBox(width: PanAfricanSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Private Chats',
+                            style: PanAfricanTypography.titleMedium(context)
+                                .copyWith(color: colorScheme.onPrimary),
+                          ),
+                          Text(
+                            '${contacts.length} contacts',
+                            style: PanAfricanTypography.labelSmall(context)
+                                .copyWith(
+                                  color: colorScheme.onPrimary.withOpacity(0.8),
+                                ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

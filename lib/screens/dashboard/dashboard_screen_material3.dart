@@ -12,8 +12,9 @@ import 'package:lingafriq/providers/tab_scaffold_provider.dart';
 import 'package:lingafriq/providers/user_provider.dart';
 import 'package:lingafriq/models/daily_goal_model.dart';
 import 'package:lingafriq/screens/ai_chat/polie_mode_selection_screen.dart';
+import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
-import 'package:lingafriq/screens/games/language_games_screen.dart';
+import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
 import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
@@ -323,7 +324,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  SmoothPageRoute(child: LanguageGamesScreen(),
+                  SmoothPageRoute(child: const GamesScreenMaterial3(),
                   ),
                 );
               },
@@ -727,7 +728,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          SmoothPageRoute(child: const PolieModeSelectionScreen()),
+                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
                         );
                       },
                       backgroundColor: PanAfricanColors.primary,

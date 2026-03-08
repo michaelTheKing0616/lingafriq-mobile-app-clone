@@ -6,7 +6,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/data/roleplay_dataset.dart';
-import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_screen_with_tracking.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
@@ -105,12 +104,6 @@ class RoleplayScenarioSelectionScreen extends HookConsumerWidget {
     Future<void> startScenario(CuratedScenario curated) async {
       HapticFeedback.mediumImpact();
       final entry = _resolveRoleplayEntry(curated);
-      final chat = ref.read(groqChatProvider.notifier);
-      await chat.setModeAndLanguage(
-        mode: PolieMode.roleplay,
-        targetLanguage: languageName,
-      );
-      await chat.setRoleplayScenario(entry);
       if (context.mounted) {
         Navigator.push(
           context,

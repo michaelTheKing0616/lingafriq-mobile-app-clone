@@ -367,6 +367,7 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                         Expanded(
                           child: TextField(
                             controller: _messageController,
+                            onChanged: (_) => setState(() {}),
                             decoration: InputDecoration(
                               hintText: 'Type a message...',
                               border: OutlineInputBorder(
@@ -415,7 +416,9 @@ class _GlobalChatScreenState extends ConsumerState<GlobalChatScreen> {
                             boxShadow: PanAfricanShadows.sm,
                           ),
                           child: IconButton(
-                            onPressed: user != null && isConnected && _messageController.text.isNotEmpty
+                            onPressed: user != null &&
+                                    isConnected &&
+                                    _messageController.text.trim().isNotEmpty
                                 ? () async {
                                     HapticFeedback.lightImpact();
                                     final text = _messageController.text.trim();

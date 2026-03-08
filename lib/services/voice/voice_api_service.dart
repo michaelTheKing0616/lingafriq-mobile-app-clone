@@ -251,13 +251,17 @@ class VoiceApiService {
     double speed = 1.0,
   }) async {
     try {
+      final normalizedLanguage = _normalizeLanguage(language);
       final response = await _dio.post(
         ApiContract.url(ApiContract.voice.ttsSynthesize),
         data: {
           'text': text,
-          'language': language,
+          'language': normalizedLanguage,
           if (voice != null) 'voice': voice,
           'speed': speed,
+          'provider_priority': _providerPriorityFor(normalizedLanguage),
+          'accent_profile': _accentProfileFor(normalizedLanguage),
+          'model_tier': 'free_best',
         },
         options: Options(
           responseType: ResponseType.bytes,
@@ -581,6 +585,54 @@ class VoiceApiService {
       debugPrint('Voice service health check failed: $e');
     }
     return false;
+  }
+
+  String _normalizeLanguage(String language) {
+    final key = language.trim().toLowerCase().replaceAll('-', '_');
+    const aliases = {
+      'yo': 'yoruba',
+      'ha': 'hausa',
+      'ig': 'igbo',
+      'sw': 'swahili',
+      'zu': 'zulu',
+      'xh': 'xhosa',
+      'am': 'amharic',
+      'so': 'somali',
+      'af': 'afrikaans',
+      'wo': 'wolof',
+      'tw': 'twi',
+      'pcm': 'pidgin',
+      'en': 'english',
+      'en_us': 'english',
+      'en_gb': 'english',
+    };
+    return aliases[key] ?? key;
+  }
+
+  List<String> _providerPriorityFor(String language) {
+    if (language == 'english') {
+      return const ['xtts_v2', 'piper', 'mms_tts'];
+    }
+    return const ['xtts_v2', 'mms_tts', 'piper'];
+  }
+
+  String _accentProfileFor(String language) {
+    const accents = {
+      'yoruba': 'yo-NG',
+      'hausa': 'ha-NG',
+      'igbo': 'ig-NG',
+      'swahili': 'sw-KE',
+      'zulu': 'zu-ZA',
+      'xhosa': 'xh-ZA',
+      'amharic': 'am-ET',
+      'somali': 'so-SO',
+      'afrikaans': 'af-ZA',
+      'wolof': 'wo-SN',
+      'twi': 'tw-GH',
+      'pidgin': 'pcm-NG',
+      'english': 'en-AF',
+    };
+    return accents[language] ?? language;
   }
 }
 

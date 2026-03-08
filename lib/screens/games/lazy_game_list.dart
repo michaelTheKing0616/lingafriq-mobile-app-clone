@@ -41,6 +41,7 @@ class LazyGameList extends HookConsumerWidget {
       GameType.grammarJam,
       GameType.pronunciationKaraoke,
       GameType.quizChef,
+      GameType.scrabbleSprintArena,
     ];
     
     final allCulturalGames = [
@@ -65,6 +66,7 @@ class LazyGameList extends HookConsumerWidget {
       GameType.multilingualRelayRace,
       GameType.culturalEtiquetteScenarios,
       GameType.drumToWordMatching,
+      GameType.marketMonopolyChallenge,
     ];
     
     final visibleCoreGames = allCoreGames.take((coreGamesPage.value + 1) * gamesPerPage).toList();

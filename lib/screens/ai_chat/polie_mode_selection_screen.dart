@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:lingafriq/widgets/polie/polie_components.dart';
 import 'package:lingafriq/screens/ai_chat/ai_chat_language_setup_screen.dart';
-import 'package:lingafriq/screens/ai_chat/roleplay_scenario_selection_screen.dart';
 import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/widgets/error_boundary.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -228,34 +227,12 @@ class PolieModeSelectionScreen extends ConsumerWidget {
     // Calling setMode() prematurely triggers save/load with (new mode × old language),
     // which is the wrong history key and causes unnecessary state churn.
 
-    if (mode == PolieMode.roleplay) {
-      Navigator.push(
-        context,
-        SmoothPageRoute(
-          child: AiChatLanguageSetupScreen(
-            initialMode: mode,
-            onLanguageSelected: (language, languageName) {
-              Navigator.pushReplacement(
-                context,
-                SmoothPageRoute(
-                  child: RoleplayScenarioSelectionScreen(
-                    language: language,
-                    languageName: languageName,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        SmoothPageRoute(
-          child: AiChatLanguageSetupScreen(initialMode: mode),
-        ),
-      );
-    }
+    Navigator.push(
+      context,
+      SmoothPageRoute(
+        child: AiChatLanguageSetupScreen(initialMode: mode),
+      ),
+    );
   }
 }
 

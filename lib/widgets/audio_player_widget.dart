@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lingafriq/utils/utils.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
+import 'package:lingafriq/utils/media_url_resolver.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   final String audioUrl;
@@ -18,14 +19,14 @@ class AudioPlayerWidget extends StatefulWidget {
 
 class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindingObserver {
   final _player = AudioPlayer();
-
-  late final LockCachingAudioSource audioSource;
+  String? _resolvedAudioUrl;
+  String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
     ambiguate(WidgetsBinding.instance)!.addObserver(this);
-    audioSource = LockCachingAudioSource(Uri.parse(widget.audioUrl));
+    _resolvedAudioUrl = resolveMediaUrl(widget.audioUrl);
     widget.audioUrl.log("AUDIOSOURCE");
     _init();
   }
@@ -35,9 +36,26 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
       print('A stream error occurred: $e');
     });
     try {
-      await _player.setAudioSource(audioSource);
+      final url = _resolvedAudioUrl;
+      if (url == null || url.isEmpty) {
+        setState(() {
+          _errorMessage = 'Audio source is unavailable.';
+        });
+        return;
+      }
+      await _player.setAudioSource(LockCachingAudioSource(Uri.parse(url)));
+      if (mounted) {
+        setState(() {
+          _errorMessage = null;
+        });
+      }
     } catch (e) {
       print("Error loading audio source: $e");
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Unable to load audio.';
+        });
+      }
     }
   }
 
@@ -70,24 +88,53 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> with WidgetsBindi
   //     });
   @override
   Widget build(BuildContext context) {
+    if (_errorMessage != null) {
+      return Text(
+        _errorMessage!,
+        style: PanAfricanTypography.bodySmall(context).copyWith(
+          color: PanAfricanColors.error,
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         double.infinity.widthBox,
-        IconButton(
-          onPressed: () {
-            if (_player.playing) {
-              _player.pause();
-            } else {
-              _player.play();
-            }
+        StreamBuilder<PlayerState>(
+          stream: _player.playerStateStream,
+          builder: (context, snapshot) {
+            final state = snapshot.data;
+            final playing = state?.playing ?? false;
+            final buffering = state?.processingState == ProcessingState.loading ||
+                state?.processingState == ProcessingState.buffering;
+            return IconButton(
+              onPressed: buffering
+                  ? null
+                  : () async {
+                      if (playing) {
+                        await _player.pause();
+                      } else {
+                        await _player.play();
+                      }
+                    },
+              icon: buffering
+                  ? SizedBox(
+                      width: 24,
+                      height: 24,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: PanAfricanColors.primary,
+                      ),
+                    )
+                  : Icon(
+                      playing ? Icons.pause_circle_rounded : Icons.play_circle_rounded,
+                      color: PanAfricanColors.primary,
+                      size: 32,
+                    ),
+            ).px16();
           },
-          icon: Icon(
-            Icons.volume_up_rounded,
-            color: PanAfricanColors.error,
-            size: 32.sp,
-          ),
-        ).px16(),
+        ),
         12.heightBox,
         // Center(
         //   child: ControlButtons(_player),

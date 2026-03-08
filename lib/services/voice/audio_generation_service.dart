@@ -79,6 +79,9 @@ class AudioGenerationService {
               'language': _getLanguageName(languageCode),
               'voice': voice ?? _getDefaultVoice(languageCode),
               'speed': speed,
+              'provider_priority': _providerPriorityFor(languageCode),
+              'accent_profile': _accentProfileFor(languageCode),
+              'model_tier': 'free_best',
             },
             options: Options(
               responseType: ResponseType.bytes,
@@ -204,6 +207,33 @@ class AudioGenerationService {
 
   String _getDefaultVoice(String languageCode) {
     return '${languageCode}_female_1';
+  }
+
+  List<String> _providerPriorityFor(String languageCode) {
+    final code = languageCode.toLowerCase();
+    if (code == 'en' || code == 'english') {
+      return const ['xtts_v2', 'piper', 'mms_tts'];
+    }
+    return const ['xtts_v2', 'mms_tts', 'piper'];
+  }
+
+  String _accentProfileFor(String languageCode) {
+    const accents = {
+      'yo': 'yo-NG',
+      'ha': 'ha-NG',
+      'ig': 'ig-NG',
+      'sw': 'sw-KE',
+      'zu': 'zu-ZA',
+      'xh': 'xh-ZA',
+      'am': 'am-ET',
+      'so': 'so-SO',
+      'af': 'af-ZA',
+      'wo': 'wo-SN',
+      'tw': 'tw-GH',
+      'pcm': 'pcm-NG',
+      'en': 'en-AF',
+    };
+    return accents[languageCode.toLowerCase()] ?? languageCode;
   }
 
   void clearCache() {

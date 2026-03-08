@@ -190,6 +190,16 @@ class AllGamesRegistry {
       displayName: 'Grammar Detective',
       learningGoals: ['grammar', 'detection'],
     ),
+    'market_monopoly_challenge': GameDefinition(
+      gameId: 'market_monopoly_challenge',
+      displayName: 'Market Monopoly Challenge',
+      learningGoals: ['strategy', 'market_language', 'negotiation'],
+    ),
+    'scrabble_sprint_arena': GameDefinition(
+      gameId: 'scrabble_sprint_arena',
+      displayName: 'Scrabble Sprint Arena',
+      learningGoals: ['spelling', 'vocabulary_speed', 'word_building'],
+    ),
   };
 
   /// Get game definition by ID

@@ -11,6 +11,7 @@ import 'roleplay_adventure_game.dart';
 import 'grammar_detective_game.dart';
 import 'game_templates.dart';
 import 'cultural_games.dart';
+import 'board_word_games.dart';
 import '../../games/drum_rhythm/drum_rhythm_screen.dart';
 
 /// Game Router - Routes to appropriate game screen based on GameType
@@ -123,6 +124,18 @@ Widget buildGameScreen({
       return CulturalEtiquetteGame(language: language, level: userLevel, onBack: onBack);
     case GameType.drumToWordMatching:
       return DrumWordGame(language: language, level: userLevel, onBack: onBack);
+    case GameType.marketMonopolyChallenge:
+      return MarketMonopolyChallengeGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
+    case GameType.scrabbleSprintArena:
+      return ScrabbleSprintArenaGame(
+        language: language,
+        level: userLevel,
+        onBack: onBack,
+      );
   }
 }
 

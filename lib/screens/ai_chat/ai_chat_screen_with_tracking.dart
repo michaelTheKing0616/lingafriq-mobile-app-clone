@@ -15,6 +15,7 @@ import 'package:lingafriq/utils/roleplay_session_helper.dart';
 import 'package:lingafriq/utils/ai_chat_navigation_helper.dart';
 import 'package:lingafriq/services/ai_chat_integration_service.dart';
 import 'package:lingafriq/services/tutor_progress_service.dart';
+import 'package:lingafriq/services/vocabulary/vocabulary_service.dart';
 import 'package:lingafriq/services/vocabulary_progress_service.dart';
 import 'package:lingafriq/models/vocabulary_progress_model.dart';
 import 'package:lingafriq/models/tutor_progress_model.dart';
@@ -53,10 +54,11 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final isLoadingHistory = useState(false);
     final loadHistoryError = useState<String?>(null);
     final scrollController = useScrollController();
-    final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref as Ref));
+    final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref.read));
     final integrationService = ref.read(aiChatIntegrationServiceProvider);
     final tutorService = ref.read(tutorProgressServiceProvider);
     final vocabService = ref.read(vocabularyProgressServiceProvider);
+    final vocabularyBankService = ref.read(vocabularyServiceProvider);
     final chatProvider = ref.read(groqChatProvider.notifier);
     final routeArgsRaw = ModalRoute.of(context)?.settings.arguments;
     final routeArgs = routeArgsRaw is Map ? Map<String, dynamic>.from(routeArgsRaw) : const <String, dynamic>{};
@@ -238,7 +240,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
         // Track vocabulary
         if (resolvedMode == 'vocab') {
-          await _trackVocabulary(vocabService, words, languageName);
+          await _trackVocabulary(vocabService, vocabularyBankService, words, languageName);
         }
 
       } catch (e) {
@@ -748,6 +750,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
   Future<void> _trackVocabulary(
     VocabularyProgressService service,
+    VocabularyService vocabularyService,
     List<String> words,
     String language,
   ) async {
@@ -760,6 +763,13 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
             language: language,
           ),
           category: 'conversation',
+        );
+        await vocabularyService.addWord(
+          word: word,
+          language: language,
+          translation: '',
+          tags: const ['ai_chat', 'conversation'],
+          enrichWithAI: false,
         );
       }
     }

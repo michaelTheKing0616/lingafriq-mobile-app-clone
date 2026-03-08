@@ -161,6 +161,9 @@ flutter:
     - assets/alphabets/
     - assets/fonts/
     - assets/rive/
+    - curriculum_bundle/
+    - lingafriq_FINAL_curriculum/
+    - lingafriq_full_curriculum_bundle/
 
 
 

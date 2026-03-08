@@ -183,6 +183,10 @@ class GameSection extends StatelessWidget {
         return 'Interactive cultural situations';
       case GameType.drumToWordMatching:
         return 'Decode drum patterns to words';
+      case GameType.marketMonopolyChallenge:
+        return 'Trade smart in a language-rich market simulation';
+      case GameType.scrabbleSprintArena:
+        return 'Build words fast from a live letter board';
     }
   }
 
@@ -258,6 +262,10 @@ class GameSection extends StatelessWidget {
         return Icons.people_rounded;
       case GameType.drumToWordMatching:
         return Icons.music_note_rounded;
+      case GameType.marketMonopolyChallenge:
+        return Icons.storefront_rounded;
+      case GameType.scrabbleSprintArena:
+        return Icons.spellcheck_rounded;
     }
   }
 

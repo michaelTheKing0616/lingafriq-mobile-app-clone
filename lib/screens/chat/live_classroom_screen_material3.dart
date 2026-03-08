@@ -24,11 +24,15 @@ import '../../widgets/whiteboard/interactive_whiteboard.dart';
 class LiveClassroomScreenMaterial3 extends HookConsumerWidget {
   final String? roomId;
   final String? roomName;
+  final String? livekitToken;
+  final String? livekitUrl;
 
   const LiveClassroomScreenMaterial3({
     super.key,
     this.roomId,
     this.roomName,
+    this.livekitToken,
+    this.livekitUrl,
   });
 
   @override
@@ -38,7 +42,12 @@ class LiveClassroomScreenMaterial3 extends HookConsumerWidget {
       return _RoomSelectionScreen();
     }
 
-    return _ClassroomView(roomId: roomId!, roomName: roomName!);
+    return _ClassroomView(
+      roomId: roomId!,
+      roomName: roomName!,
+      initialLivekitToken: livekitToken,
+      initialLivekitUrl: livekitUrl,
+    );
   }
 }
 
@@ -246,10 +255,14 @@ class _RoomSelectionScreen extends HookConsumerWidget {
 class _ClassroomView extends HookConsumerWidget {
   final String roomId;
   final String roomName;
+  final String? initialLivekitToken;
+  final String? initialLivekitUrl;
 
   const _ClassroomView({
     required this.roomId,
     required this.roomName,
+    this.initialLivekitToken,
+    this.initialLivekitUrl,
   });
 
   @override
@@ -269,14 +282,21 @@ class _ClassroomView extends HookConsumerWidget {
       await safeAsync(
         context: context,
         operation: () async {
-          // Get LiveKit token from backend
-          final response = await ApiService.get(
-            AppConfig.chatClassroomToken(roomId),
-          );
-
-          if (response.statusCode == 200) {
-            final token = response.data['data']['token'] as String;
-            final url = response.data['data']['url'] as String? ?? AppConfig.liveKitUrl;
+          String token = initialLivekitToken ?? '';
+          String url = initialLivekitUrl ?? AppConfig.liveKitUrl;
+          if (token.isEmpty) {
+            // Backward-compatible fallback for older entry points.
+            final response = await ApiService.get(
+              AppConfig.chatClassroomToken(roomId),
+            );
+            if (response.statusCode == 200) {
+              token = response.data['data']['token'] as String? ?? '';
+              url = response.data['data']['url'] as String? ?? AppConfig.liveKitUrl;
+            }
+          }
+          if (token.isEmpty) {
+            throw Exception('Unable to join classroom: missing LiveKit token.');
+          }
 
             // Initialize LiveKit Room
             final room = Room();
@@ -335,7 +355,6 @@ class _ClassroomView extends HookConsumerWidget {
             }
 
             isLoading.value = false;
-          }
         },
         onError: (e) {
           ErrorHandler.showError(context, e);

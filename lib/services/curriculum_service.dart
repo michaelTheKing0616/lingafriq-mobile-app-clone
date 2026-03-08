@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle, FlutterError;
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../services/polie_content_generator.dart';
 import '../services/polie_cache_service.dart';
@@ -13,19 +13,36 @@ class CurriculumService {
 
   CurriculumService(this._ref);
 
+  Future<Map<String, dynamic>?> _loadJsonAsset(List<String> candidates) async {
+    for (final path in candidates) {
+      try {
+        final jsonString = await rootBundle.loadString(path);
+        return jsonDecode(jsonString) as Map<String, dynamic>;
+      } on FlutterError {
+        continue;
+      } catch (e) {
+        debugPrint('Error loading curriculum asset at $path: $e');
+      }
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> _loadCompactAllLanguages() async {
+    return _loadJsonAsset(const [
+      'curriculum_bundle/curriculum/curriculum_compact_A1_B1_all_languages.json',
+      'lingafriq_full_curriculum_bundle/curriculum_bundle/curriculum/curriculum_compact_A1_B1_all_languages.json',
+    ]);
+  }
+
   /// Load curriculum from FINAL_curriculum folder
   Future<Map<String, dynamic>?> loadFinalCurriculum(String language) async {
     try {
-      final path = 'lingafriq_FINAL_curriculum/languages/$language.json';
-      final file = File(path);
-      
-      if (!await file.exists()) {
-        debugPrint('Final curriculum file not found: $path');
-        return null;
+      final compact = await _loadCompactAllLanguages();
+      final languages = compact?['languages'];
+      if (languages is Map && languages[language] is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(languages[language] as Map);
       }
-
-      final jsonString = await file.readAsString();
-      return jsonDecode(jsonString) as Map<String, dynamic>;
+      return null;
     } catch (e) {
       debugPrint('Error loading final curriculum: $e');
       return null;
@@ -35,16 +52,9 @@ class CurriculumService {
   /// Load curriculum from expanded bundle
   Future<Map<String, dynamic>?> loadExpandedCurriculum(String language, String level) async {
     try {
-      final path = 'lingafriq_full_curriculum_bundle/curriculum_expanded_bundle/curriculum_expanded/$language/${language}_${level}_expanded.json';
-      final file = File(path);
-      
-      if (!await file.exists()) {
-        debugPrint('Expanded curriculum file not found: $path');
-        return null;
-      }
-
-      final jsonString = await file.readAsString();
-      return jsonDecode(jsonString) as Map<String, dynamic>;
+      // Expanded per-language bundle is optional in current app package.
+      // Fallback to compact curriculum when expanded assets are unavailable.
+      return loadCompactCurriculum(language, level);
     } catch (e) {
       debugPrint('Error loading expanded curriculum: $e');
       return null;
@@ -54,16 +64,21 @@ class CurriculumService {
   /// Load curriculum from compact bundle
   Future<Map<String, dynamic>?> loadCompactCurriculum(String language, String level) async {
     try {
-      final path = 'lingafriq_full_curriculum_bundle/curriculum_bundle/curriculum/$language/${language}_$level.json';
-      final file = File(path);
-      
-      if (!await file.exists()) {
-        debugPrint('Compact curriculum file not found: $path');
-        return null;
-      }
+      final compact = await _loadCompactAllLanguages();
+      if (compact == null) return null;
+      final languages = compact['languages'];
+      if (languages is! Map) return null;
+      final languageMap = languages[language];
+      if (languageMap is! Map) return null;
+      final units = languageMap[level];
+      if (units is! List) return null;
 
-      final jsonString = await file.readAsString();
-      return jsonDecode(jsonString) as Map<String, dynamic>;
+      return {
+        'meta': compact['meta'],
+        'language': language,
+        'level': level,
+        'units': units,
+      };
     } catch (e) {
       debugPrint('Error loading compact curriculum: $e');
       return null;
@@ -73,16 +88,27 @@ class CurriculumService {
   /// Load master index
   Future<Map<String, dynamic>?> loadMasterIndex() async {
     try {
-      final path = 'lingafriq_FINAL_curriculum/master_index.json';
-      final file = File(path);
-      
-      if (!await file.exists()) {
-        debugPrint('Master index not found: $path');
-        return null;
-      }
+      final masterIndex = await _loadJsonAsset(const [
+        'lingafriq_FINAL_curriculum/master_index.json',
+      ]);
+      if (masterIndex != null) return masterIndex;
 
-      final jsonString = await file.readAsString();
-      return jsonDecode(jsonString) as Map<String, dynamic>;
+      final compact = await _loadCompactAllLanguages();
+      if (compact == null) return null;
+      final meta = compact['meta'] as Map<String, dynamic>? ?? const {};
+      final languages = (meta['languages'] is List)
+          ? List<String>.from(meta['languages'] as List)
+          : const <String>[];
+      final levels = (meta['levels'] is List)
+          ? List<String>.from(meta['levels'] as List)
+          : const <String>[];
+      return {
+        'app': 'Lingafriq',
+        'schema_version': '1.0',
+        'generated_at': meta['generated_at']?.toString(),
+        'languages': languages,
+        'levels': levels,
+      };
     } catch (e) {
       debugPrint('Error loading master index: $e');
       return null;
