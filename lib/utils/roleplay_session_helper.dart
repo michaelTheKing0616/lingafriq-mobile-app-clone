@@ -6,7 +6,7 @@ import '../services/ai_chat_integration_service.dart';
 
 /// Track a roleplay session
 class RoleplaySessionHelper {
-  final Ref _ref;
+  final WidgetRef _ref;
   DateTime? _startTime;
   String? _scenarioId;
   String? _language;
