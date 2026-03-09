@@ -1,6 +1,6 @@
 // Roleplay Session Helper
 // Utility functions for tracking roleplay sessions
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/roleplay_progress_model.dart';
 import '../services/ai_chat_integration_service.dart';
 

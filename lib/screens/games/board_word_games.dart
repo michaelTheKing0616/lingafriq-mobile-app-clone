@@ -3,8 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../models/game/game_session_model.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../widgets/pan_african_components.dart';
 import 'base_game_screen.dart';
 
 class MarketMonopolyChallengeGame extends BaseGameScreen {
@@ -19,7 +22,7 @@ class MarketMonopolyChallengeGame extends BaseGameScreen {
   GameType getGameType() => GameType.marketMonopolyChallenge;
 
   @override
-  State<MarketMonopolyChallengeGame> createState() =>
+  ConsumerState<MarketMonopolyChallengeGame> createState() =>
       _MarketMonopolyChallengeGameState();
 }
 
@@ -193,7 +196,7 @@ class ScrabbleSprintArenaGame extends BaseGameScreen {
   GameType getGameType() => GameType.scrabbleSprintArena;
 
   @override
-  State<ScrabbleSprintArenaGame> createState() => _ScrabbleSprintArenaGameState();
+  ConsumerState<ScrabbleSprintArenaGame> createState() => _ScrabbleSprintArenaGameState();
 }
 
 class _ScrabbleSprintArenaGameState

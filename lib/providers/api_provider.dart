@@ -606,7 +606,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
         results = payload;
         count = payload.length;
       } else if (payload is Map) {
-        final map = Map<String, dynamic>.from(payload as Map);
+        final map = Map<String, dynamic>.from(payload);
         if (map['results'] is List) {
           results = map['results'] as List;
           next = map['next']?.toString();

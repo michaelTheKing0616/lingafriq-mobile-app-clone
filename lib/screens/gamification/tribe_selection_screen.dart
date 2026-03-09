@@ -9,7 +9,6 @@ import '../../utils/error_handler.dart';
 import '../../providers/gamification_provider.dart';
 import '../../providers/gamification_services_provider.dart';
 import '../../providers/user_provider.dart';
-import '../../models/user_gamification_model.dart';
 import '../../widgets/lingafriq_ui_helpers.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/responsive_safe_area.dart';
