@@ -533,14 +533,16 @@ Current streak: ${stats.currentStreak}
   }) {
     final bodyStyle = GoogleFonts.nunito(color: theme.body, fontSize: 14);
     final monoStyle = GoogleFonts.jetBrainsMono(color: theme.title, fontSize: 13.5);
-    final card = (Widget child, {Color? color}) => Container(
-          decoration: BoxDecoration(
-            color: color ?? theme.card,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: theme.border),
-          ),
-          child: child,
-        );
+    Widget card(Widget child, {Color? color}) {
+      return Container(
+        decoration: BoxDecoration(
+          color: color ?? theme.card,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: theme.border),
+        ),
+        child: child,
+      );
+    }
 
     final error = modeError == null
         ? const SizedBox.shrink()

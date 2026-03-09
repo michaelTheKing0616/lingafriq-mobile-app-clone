@@ -6,7 +6,7 @@ import '../services/ai_chat_integration_service.dart';
 
 /// Track a roleplay session
 class RoleplaySessionHelper {
-  final T Function<T>(ProviderListenable<T> provider) _read;
+  final T Function<T>(dynamic provider) _read;
   DateTime? _startTime;
   String? _scenarioId;
   String? _language;
