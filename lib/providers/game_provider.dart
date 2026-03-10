@@ -14,6 +14,7 @@ import '../utils/progress_integration.dart';
 import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 import '../utils/structured_logger.dart';
+import '../utils/media_url_resolver.dart';
 
 final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
   return GameProvider();
@@ -463,8 +464,22 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       text: text,
       ascii: (item['ascii'] ?? text).toString(),
       gloss: gloss,
+      ipa: (item['ipa'] ?? item['pronunciation'])?.toString(),
       level: parsedLevel,
       tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['ai-generated'],
+      audioNativeUrl: resolveMediaUrl(
+        (item['audio_native_url'] ??
+                item['audioNativeUrl'] ??
+                item['audio_url'] ??
+                item['audioUrl'] ??
+                item['audio'])?.toString(),
+      ),
+      imageUrl: resolveMediaUrl(
+        (item['image_url'] ?? item['imageUrl'] ?? item['image'])?.toString(),
+      ),
+      contextExamples: (item['context_examples'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+          (item['examples'] as List<dynamic>?)?.map((e) => e.toString()).toList() ??
+          const [],
       srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$lang'] ?? SRSState(),
     ));
   }

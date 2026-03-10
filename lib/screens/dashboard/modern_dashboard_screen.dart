@@ -11,9 +11,10 @@ import 'package:lingafriq/providers/ai_chat_provider_groq.dart';
 import 'package:lingafriq/screens/global/global_progress_screen.dart';
 import 'package:lingafriq/screens/progress/progress_dashboard_screen.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen.dart';
-import 'package:lingafriq/screens/chat/global_chat_screen.dart';
+import 'package:lingafriq/screens/chat/global_chat_screen_material3.dart';
 import 'package:lingafriq/screens/tabs_view/app_drawer/app_drawer.dart';
 import 'package:lingafriq/screens/settings/settings_screen_material3.dart';
+import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
@@ -301,7 +302,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute(
-                              child: const GamesScreenMaterial3(),
+                              child: const CurriculumScreenMaterial3(),
                             ),
                           );
                         },
@@ -371,7 +372,7 @@ class ModernDashboardScreen extends HookConsumerWidget {
                           HapticFeedback.lightImpact();
                           Navigator.push(
                             context,
-                            SmoothPageRoute(child: const GlobalChatScreen()),
+                            SmoothPageRoute(child: const GlobalChatScreenMaterial3()),
                           );
                         },
                       ),

@@ -32,7 +32,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
       'color': 0xFF1B7340,
     },
     {
-      'id': 'translate',
+      'id': 'translation',
       'title': 'Translation',
       'description': 'Translate text with grammar notes',
       'poem': 'Meaning first, then the words.',
@@ -48,7 +48,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
       'color': 0xFF9B59B6,
     },
     {
-      'id': 'explain',
+      'id': 'grammar',
       'title': 'Grammar',
       'description': 'Learn grammar rules and examples',
       'poem': 'See the bones of the sentence.',
@@ -64,7 +64,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
       'color': 0xFFEB8937,
     },
     {
-      'id': 'story',
+      'id': 'roleplay',
       'title': 'Stories',
       'description': 'Cultural stories with vocabulary',
       'poem': 'Stories that carry the culture.',
@@ -72,7 +72,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
       'color': 0xFFC4413A,
     },
     {
-      'id': 'dialogue',
+      'id': 'conversation',
       'title': 'Dialogue',
       'description': 'Practice conversations',
       'poem': 'Speak as you would in the world.',
@@ -80,7 +80,7 @@ class AIModeSelectionScreen extends ConsumerWidget {
       'color': 0xFF3498DB,
     },
     {
-      'id': 'assess',
+      'id': 'review',
       'title': 'Assessment',
       'description': 'Test your proficiency',
       'poem': 'Know where you stand; then rise.',

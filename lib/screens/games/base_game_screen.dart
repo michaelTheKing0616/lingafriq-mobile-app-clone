@@ -396,11 +396,29 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
           ],
         ),
         actions: [
+          OutlinedButton.icon(
+            onPressed: () {
+              HapticFeedback.lightImpact();
+              Navigator.pop(ctx);
+              Navigator.of(context).pushReplacement(
+                PageRouteBuilder<void>(
+                  pageBuilder: (_, __, ___) => widget,
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
+                ),
+              );
+            },
+            icon: Icon(Icons.refresh_rounded, size: 20.sp),
+            label: Text('Play Again', style: PanAfricanTypography.labelLarge(context)),
+            style: OutlinedButton.styleFrom(
+              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+            ),
+          ),
           FilledButton.icon(
             onPressed: () {
               HapticFeedback.lightImpact();
               Navigator.pop(ctx);
-              Navigator.pop(context);
+              (widget.onBack ?? () => Navigator.pop(context))();
             },
             icon: Icon(Icons.check_rounded, size: 20.sp),
             label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),

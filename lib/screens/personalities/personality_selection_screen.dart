@@ -59,12 +59,41 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Talk with History'),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(24),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Text(
+              '${personalities.value.length} personalities available',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ),
+        ),
         elevation: 0,
       ),
       body: isLoading.value
           ? Center(child: CircularProgressIndicator())
           : Column(
               children: [
+                if (personalities.value.length < 26)
+                  Container(
+                    width: double.infinity,
+                    margin: EdgeInsets.fromLTRB(
+                      PanAfricanSpacing.md,
+                      PanAfricanSpacing.md,
+                      PanAfricanSpacing.md,
+                      0,
+                    ),
+                    padding: EdgeInsets.all(PanAfricanSpacing.sm),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.errorContainer,
+                      borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                    ),
+                    child: Text(
+                      'Catalog incomplete: expected at least 26 personalities. Please sync backend seeds.',
+                      style: PanAfricanTypography.bodySmall(context),
+                    ),
+                  ),
                 // Search and Filters
                 Padding(
                   padding: EdgeInsets.all(PanAfricanSpacing.md),

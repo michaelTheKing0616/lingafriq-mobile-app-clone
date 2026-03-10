@@ -595,21 +595,26 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
 
   PolieMode _mapModeToPolieMode(String mode) {
     switch (mode.toLowerCase()) {
+      case 'translate':
       case 'translation':
         return PolieMode.translation;
       case 'tutor':
         return PolieMode.tutor;
+      case 'story':
       case 'roleplay':
         return PolieMode.roleplay;
+      case 'dialogue':
       case 'conversation':
         return PolieMode.conversation;
       case 'vocab':
       case 'vocabulary':
         return PolieMode.vocab;
+      case 'assess':
       case 'review':
         return PolieMode.review;
       case 'pronunciation':
         return PolieMode.pronunciation;
+      case 'explain':
       case 'grammar':
         return PolieMode.grammar;
       default:

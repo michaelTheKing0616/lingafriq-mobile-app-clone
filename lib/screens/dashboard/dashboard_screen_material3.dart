@@ -16,7 +16,6 @@ import 'package:lingafriq/screens/curriculum/curriculum_screen_material3.dart';
 import 'package:lingafriq/screens/magazine/culture_magazine_screen_enhanced.dart';
 import 'package:lingafriq/screens/games/games_screen_material3.dart';
 import 'package:lingafriq/screens/tabs_view/home/home_tab_material3.dart' show languagesProvider;
-import 'package:lingafriq/screens/tabs_view/home/language_detail_screen.dart';
 import 'package:lingafriq/widgets/offline/offline_indicator.dart';
 import 'package:lingafriq/widgets/responsive_safe_area.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
@@ -391,10 +390,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                LanguageDetailScreen(language: language),
-                          ),
+                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
                         );
                       },
                       child: Container(
@@ -621,10 +617,7 @@ class DashboardScreenMaterial3 extends HookConsumerWidget {
                         HapticFeedback.lightImpact();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                LanguageDetailScreen(language: language),
-                          ),
+                          SmoothPageRoute(child: const CurriculumScreenMaterial3()),
                         );
                       },
                     ),

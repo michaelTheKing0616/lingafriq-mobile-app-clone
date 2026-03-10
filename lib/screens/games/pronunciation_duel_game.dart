@@ -12,6 +12,7 @@ import '../../services/voice/pronunciation_analysis_service.dart';
 import '../../models/lesson_item_model.dart';
 import 'base_game_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../utils/media_url_resolver.dart';
 
 /// Pronunciation Duel - Head-to-head pronunciation scoring
 class PronunciationDuelGame extends BaseGameScreen {
@@ -53,16 +54,29 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   }
 
   Future<void> _playNativeAudio() async {
-    if (_currentCard?.audioNativeUrl == null) return;
+    final audioUrl = resolveMediaUrl(_currentCard?.audioNativeUrl);
+    if (audioUrl == null || audioUrl.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Reference audio is not available for this card.')),
+        );
+      }
+      return;
+    }
     setState(() => _isPlaying = true);
     try {
-      await _audioPlayer.setUrl(_currentCard!.audioNativeUrl!);
+      await _audioPlayer.setUrl(audioUrl);
       await _audioPlayer.play();
       await _audioPlayer.playerStateStream.firstWhere(
         (state) => state.processingState == ProcessingState.completed,
       );
     } catch (e) {
       debugPrint('Error playing audio: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not play reference audio.')),
+        );
+      }
     } finally {
       setState(() => _isPlaying = false);
     }
@@ -72,7 +86,20 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     if (await _recorder.hasPermission()) {
       setState(() => _isRecording = true);
       final path = await _getRecordingPath();
-      await _recorder.start(const RecordConfig(), path: path);
+      await _recorder.start(
+        const RecordConfig(
+          encoder: AudioEncoder.wav,
+          sampleRate: 16000,
+          numChannels: 1,
+        ),
+        path: path,
+      );
+      return;
+    }
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Microphone permission is required to record pronunciation.')),
+      );
     }
   }
 
@@ -88,7 +115,7 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
   Future<String> _getRecordingPath() async {
     final tempDir = await getTemporaryDirectory();
     final timestamp = DateTime.now().millisecondsSinceEpoch;
-    return '${tempDir.path}/recording_$timestamp.m4a';
+    return '${tempDir.path}/recording_$timestamp.wav';
   }
 
   Future<void> _scorePronunciation(String audioPath) async {
@@ -155,11 +182,9 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       );
     } catch (e) {
       debugPrint('Pronunciation scoring error: $e');
-      // Fallback to basic scoring
-      final fallbackScore = 75;
       setState(() {
-        _pronunciationScore = fallbackScore;
-        _mistakes = ['Unable to analyze - please try again'];
+        _pronunciationScore = null;
+        _mistakes = ['Unable to analyze pronunciation. Please record and try again.'];
       });
       
       final duration = startTime != null
@@ -168,10 +193,10 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
       
       await completeTurn(
         cardId: _currentCard!.cardId,
-        result: GameResult.partial,
+        result: GameResult.incorrect,
         durationMs: duration,
-        confidence: 0.75,
-        feedback: {'score': fallbackScore, 'error': e.toString()},
+        confidence: 0.0,
+        feedback: {'error': e.toString()},
         userAction: 'pronounced',
       );
     }

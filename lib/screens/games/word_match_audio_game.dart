@@ -16,6 +16,7 @@ import '../../widgets/gamification/combo_display_widget.dart';
 import '../../services/sound_effects_service.dart';
 import '../../providers/gamification_provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../utils/media_url_resolver.dart';
 
 /// WordMatch+Audio Game - Upgraded version with TTS, pronunciation, diacritics
 class WordMatchAudioGame extends ConsumerStatefulWidget {
@@ -122,12 +123,25 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
   }
 
   Future<void> _playAudio(String? url) async {
-    if (url == null || url.isEmpty) return;
+    final resolved = resolveMediaUrl(url);
+    if (resolved == null || resolved.isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Audio is unavailable for this word right now.')),
+        );
+      }
+      return;
+    }
     try {
-      await _audioPlayer.setUrl(url);
+      await _audioPlayer.setUrl(resolved);
       await _audioPlayer.play();
     } catch (e) {
       debugPrint('Error playing audio: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not play audio. Please try again.')),
+        );
+      }
     }
   }
 
@@ -217,18 +231,52 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
       _comboTracker.reset();
 
       if (mounted) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Game Complete! Accuracy: ${(session.accuracy * 100).toStringAsFixed(0)}%',
-            ),
-          ),
-        );
+        _showCompletionDialog(session);
       }
     } catch (e) {
       debugPrint('Error finishing game: $e');
     }
+  }
+
+  void _showCompletionDialog(GameSession session) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text('Game Complete'),
+          content: Text(
+            'Accuracy: ${(session.accuracy * 100).toStringAsFixed(0)}%\n'
+            'Correct: ${session.correctCount}/${session.totalTurns}',
+          ),
+          actions: [
+            OutlinedButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                setState(() {
+                  _results.clear();
+                  _selectedLeft = null;
+                  _selectedRight = null;
+                  _leftTiles.clear();
+                  _rightTiles.clear();
+                  _isLoading = true;
+                  _loadError = null;
+                });
+                _initializeGame();
+              },
+              child: const Text('Play Again'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+                (widget.onBack ?? () => Navigator.pop(context))();
+              },
+              child: const Text('Exit'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
 

@@ -1,7 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/models/private_chat_contact.dart';
 import 'package:lingafriq/providers/api_provider.dart';
+import 'package:lingafriq/providers/dio_provider.dart';
 import 'package:lingafriq/utils/structured_logger.dart';
+import 'package:lingafriq/utils/api.dart';
 
 class PrivateChatState {
   final List<PrivateChatContact> contacts;
@@ -67,9 +69,10 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
       final contacts = response.result.results
           .map(PrivateChatContact.fromProfile)
           .toList();
+      final merged = _mergeContacts(contacts, await _loadRecentChatContacts());
       _lastFetched = DateTime.now();
       state = state.copyWith(
-        contacts: contacts,
+        contacts: merged,
         isLoading: false,
         error: null,
       );
@@ -84,6 +87,72 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
 
   void search(String query) {
     state = state.copyWith(query: query);
+  }
+
+  Future<List<PrivateChatContact>> _loadRecentChatContacts() async {
+    try {
+      final res = await ref.read(client).get(Api.chatPrivate);
+      if (res.statusCode != 200) return const [];
+      final payload = res.data;
+      final dynamicList = _extractMessageList(payload);
+      final contacts = <PrivateChatContact>[];
+      for (final item in dynamicList) {
+        if (item is! Map) continue;
+        final map = Map<String, dynamic>.from(item);
+        final userMap = map['otherUser'] ?? map['other_user'] ?? map['sender'] ?? map['recipient'] ?? map['user'];
+        if (userMap is Map) {
+          final normalized = Map<String, dynamic>.from(userMap);
+          final id = int.tryParse('${normalized['id'] ?? normalized['_id'] ?? ''}') ?? -1;
+          if (id <= 0) continue;
+          contacts.add(
+            PrivateChatContact(
+              id: id,
+              username: (normalized['username'] ?? normalized['name'] ?? 'Learner').toString(),
+              globalId: normalized['global_id']?.toString() ?? normalized['globalId']?.toString(),
+              email: normalized['email']?.toString(),
+              avatarUrl: normalized['avatar']?.toString(),
+              language: normalized['language']?.toString(),
+            ),
+          );
+        }
+      }
+      return contacts;
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  List<dynamic> _extractMessageList(dynamic payload) {
+    if (payload is List) return payload;
+    if (payload is! Map) return const [];
+    final map = Map<String, dynamic>.from(payload);
+    final candidates = [
+      map['data'],
+      map['messages'],
+      map['results'],
+      map['items'],
+    ];
+    for (final candidate in candidates) {
+      if (candidate is List) return candidate;
+      if (candidate is Map && candidate['docs'] is List) {
+        return candidate['docs'] as List;
+      }
+    }
+    return const [];
+  }
+
+  List<PrivateChatContact> _mergeContacts(
+    List<PrivateChatContact> profiles,
+    List<PrivateChatContact> recents,
+  ) {
+    final byId = <int, PrivateChatContact>{};
+    for (final c in recents) {
+      byId[c.id] = c;
+    }
+    for (final c in profiles) {
+      byId[c.id] = c;
+    }
+    return byId.values.toList();
   }
 }
 

@@ -101,6 +101,10 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
         final raw = await chat.sendMessage(prompt);
         modeResponse.value = raw;
         final parsed = _tryParseJson(raw);
+        if (parsed == null) {
+          modeError.value = 'Polie returned an unreadable response. Please try again.';
+          return null;
+        }
         return parsed;
       } catch (e) {
         modeError.value = e.toString();
@@ -592,78 +596,86 @@ Current streak: ${stats.currentStreak}
             LayoutBuilder(
               builder: (context, constraints) {
                 final split = constraints.maxWidth > 820;
-                final inputPanel = Expanded(
-                  child: card(
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Source ($sourceLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                          const SizedBox(height: 8),
-                          TextField(
-                            controller: translationInput,
-                            maxLines: 8,
-                            decoration: _inputDecoration(theme, 'Type text to translate'),
-                          ),
-                          const SizedBox(height: 8),
-                          Row(
-                            children: [
-                              Text('${translationInput.text.length} chars', style: bodyStyle),
-                              const SizedBox(width: 10),
-                              Text('${translationInput.text.trim().split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length} words',
-                                  style: bodyStyle),
-                              const Spacer(),
-                              FilledButton(
-                                onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
-                                style: FilledButton.styleFrom(backgroundColor: theme.accent),
-                                child: Text(isBusy ? 'Translating...' : 'Translate'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                final inputPanel = card(
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Source ($sourceLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 8),
+                        TextField(
+                          controller: translationInput,
+                          maxLines: 8,
+                          decoration: _inputDecoration(theme, 'Type text to translate'),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text('${translationInput.text.length} chars', style: bodyStyle),
+                            const SizedBox(width: 10),
+                            Text('${translationInput.text.trim().split(RegExp(r'\s+')).where((e) => e.isNotEmpty).length} words',
+                                style: bodyStyle),
+                            const Spacer(),
+                            FilledButton(
+                              onPressed: isBusy ? null : () => onRunTranslation(translationInput.text),
+                              style: FilledButton.styleFrom(backgroundColor: theme.accent),
+                              child: Text(isBusy ? 'Translating...' : 'Translate'),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 );
-                final outputPanel = Expanded(
-                  child: card(
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Output ($targetLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
-                          const SizedBox(height: 10),
-                          Text(
-                            translationOutput?.primary ?? 'Translation appears here...',
-                            style: GoogleFonts.jetBrainsMono(
-                              color: theme.title,
-                              fontSize: 18,
-                              height: 1.4,
-                            ),
+                final outputPanel = card(
+                  Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Output ($targetLanguage)', style: bodyStyle.copyWith(fontWeight: FontWeight.w700)),
+                        const SizedBox(height: 10),
+                        Text(
+                          translationOutput?.primary ?? 'Translation appears here...',
+                          style: GoogleFonts.jetBrainsMono(
+                            color: theme.title,
+                            fontSize: 18,
+                            height: 1.4,
                           ),
-                          const SizedBox(height: 8),
-                          if ((translationOutput?.culturalNote ?? '').isNotEmpty)
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFD4822A).withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Text('Cultural Context • ${translationOutput!.culturalNote}', style: bodyStyle),
+                        ),
+                        const SizedBox(height: 8),
+                        if ((translationOutput?.culturalNote ?? '').isNotEmpty)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFD4822A).withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          const SizedBox(height: 10),
-                          Text('Tone achieved: ${translationOutput?.toneAchieved ?? '-'}', style: bodyStyle),
-                        ],
-                      ),
+                            child: Text('Cultural Context • ${translationOutput!.culturalNote}', style: bodyStyle),
+                          ),
+                        const SizedBox(height: 10),
+                        Text('Tone achieved: ${translationOutput?.toneAchieved ?? '-'}', style: bodyStyle),
+                      ],
                     ),
                   ),
                 );
                 if (split) {
-                  return Row(children: [inputPanel, const SizedBox(width: 10), outputPanel]);
+                  return Row(
+                    children: [
+                      Expanded(child: inputPanel),
+                      const SizedBox(width: 10),
+                      Expanded(child: outputPanel),
+                    ],
+                  );
                 }
-                return Column(children: [SizedBox(height: 260, child: inputPanel), const SizedBox(height: 10), outputPanel]);
+                return Column(
+                  children: [
+                    SizedBox(height: 260, child: inputPanel),
+                    const SizedBox(height: 10),
+                    outputPanel,
+                  ],
+                );
               },
             ),
             const SizedBox(height: 10),
@@ -1517,7 +1529,10 @@ class _ModeSwitcher extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         item.label,
-                        style: GoogleFonts.nunito(fontWeight: FontWeight.w800),
+                        style: GoogleFonts.nunito(
+                          fontWeight: FontWeight.w800,
+                          color: const Color(0xFFF7E5CD),
+                        ),
                       ),
                     ],
                   ],

@@ -22,7 +22,7 @@ import 'screens/gamification/leaderboard_screen.dart';
 import 'screens/social/tribe_vs_tribe_screen.dart';
 import 'screens/gamification/tribe_selection_screen.dart';
 import 'screens/social/language_villages_screen.dart';
-import 'screens/chat/global_chat_screen.dart';
+import 'screens/chat/global_chat_screen_material3.dart';
 import 'screens/social/user_connections_screen.dart';
 import 'screens/gamification/quest_screen.dart';
 import 'screens/gamification/seasonal_events_screen.dart';
@@ -71,6 +71,7 @@ import 'screens/feed/x_notifications_screen.dart';
 import 'screens/feed/x_explore_screen.dart';
 import 'screens/feed/x_lists_screen.dart';
 import 'screens/feed/x_profile_screen.dart';
+import 'screens/personalities/personality_selection_screen.dart';
 import 'lessons/models/section_lesson_model.dart';
 import 'models/language_response.dart';
 import 'models/offline/local_vocabulary.dart';
@@ -174,7 +175,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'tribe-selection': (_) => const TribeSelectionScreen(),
     'tribe_selection': (_) => const TribeSelectionScreen(),
     'villages': (_) => const LanguageVillagesScreen(),
-    'global_chat': (_) => const GlobalChatScreen(),
+    'global_chat': (_) => const GlobalChatScreenMaterial3(),
     'connections': (_) => const UserConnectionsScreen(),
     'quest': (_) => const QuestScreen(),
     'events': (_) => const SeasonalEventsScreen(),
@@ -340,6 +341,7 @@ Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
     'x-explore': (_) => const XExploreScreen(),
     'x-lists': (_) => const XListsScreen(),
     'x-profile': (_) => const XProfileScreen(),
+    'historical-personas': (_) => const PersonalitySelectionScreen(),
   };
 
   final builder = routes[normalizedRoute];

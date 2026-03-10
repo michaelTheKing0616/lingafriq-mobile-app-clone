@@ -37,6 +37,7 @@ import 'package:lingafriq/screens/content/writing_practice_screen.dart';
 import 'package:lingafriq/screens/content/cultural_hub_screen.dart';
 import 'package:lingafriq/screens/social/social_hub_screen.dart';
 import 'package:lingafriq/screens/social/friend_quests_screen.dart';
+import 'package:lingafriq/screens/personalities/personality_selection_screen.dart';
 import 'package:lingafriq/models/offline/local_vocabulary.dart';
 
 /// Enhanced Modern Pan-African App Drawer with Future-Forward Styling
@@ -431,6 +432,18 @@ class AppDrawer extends HookConsumerWidget {
                           Navigator.push(
                             context,
                             SmoothPageRoute(child: const TribeSelectionScreen()),
+                          );
+                        },
+                        isDark: isDark.value,
+                      ),
+                      _DrawerItem(
+                        icon: Icons.history_edu,
+                        label: 'Historical Personas',
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            SmoothPageRoute(child: const PersonalitySelectionScreen()),
                           );
                         },
                         isDark: isDark.value,
