@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:lingafriq/config/app_config.dart';
-import 'package:livekit_client/livekit_client.dart';
+import 'package:livekit_client/livekit_client.dart' hide logger;
 import '../models/language_village_model.dart';
 import 'base_provider.dart';
 import 'dio_provider.dart' show client;

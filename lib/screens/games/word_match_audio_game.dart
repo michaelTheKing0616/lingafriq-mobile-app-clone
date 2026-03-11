@@ -153,7 +153,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         _selectedLeft = _selectedLeft == id ? null : id;
         if (_selectedLeft != null) {
           final tile = _leftTiles.firstWhere((t) => t.id == _selectedLeft);
-          _playAudio(tile.audioUrl, fallbackText: tile.text);
+          _playAudio(tile.audioUrl, fallbackText: tile.label);
         }
       } else {
         _selectedRight = _selectedRight == id ? null : id;

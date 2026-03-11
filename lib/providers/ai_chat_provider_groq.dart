@@ -1733,7 +1733,8 @@ Use structured format: Rule -> Example -> Practice.''';
     if (response.statusCode == 200 && response.data != null) {
       final choices = response.data['choices'] as List?;
       if (choices != null && choices.isNotEmpty) {
-        final content = choices[0]['message']?['content']?.toString()?.trim() ?? '';
+        final content =
+            choices[0]['message']?['content']?.toString().trim() ?? '';
         if (content.isNotEmpty) return content;
       }
     }

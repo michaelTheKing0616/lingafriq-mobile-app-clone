@@ -168,7 +168,7 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
           Row(
             children: [
               Expanded(
-                child: DropdownButtonFormField<String>(
+                child: DropdownButtonFormField<String?>(
                   value: _selectedLanguage,
                   decoration: InputDecoration(
                     labelText: 'Language',

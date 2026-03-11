@@ -360,7 +360,6 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
       barrierDismissible: false,
       barrierColor: Colors.black54,
       transitionDuration: const Duration(milliseconds: 300),
-      reverseTransitionDuration: const Duration(milliseconds: 300),
       pageBuilder: (ctx, _, __) => Material(
         color: Colors.transparent,
         child: GestureDetector(

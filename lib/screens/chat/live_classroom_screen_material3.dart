@@ -368,7 +368,7 @@ class _ClassroomView extends HookConsumerWidget {
             });
 
             // Listen for whiteboard data from remote participants
-            final eventsListener = room.events.createListener();
+            final eventsListener = room.createListener();
             eventsListener.on<DataReceivedEvent>((event) {
               if (event.topic != 'whiteboard') return;
               try {
@@ -504,7 +504,7 @@ class _ClassroomView extends HookConsumerWidget {
                             });
                             room.localParticipant?.publishData(
                               utf8.encode(jsonStr),
-                              reliability: Reliability.reliable,
+                              reliable: true,
                               topic: 'whiteboard',
                             );
                           } catch (_) {}
@@ -519,7 +519,7 @@ class _ClassroomView extends HookConsumerWidget {
                             });
                             room.localParticipant?.publishData(
                               utf8.encode(jsonStr),
-                              reliability: Reliability.reliable,
+                              reliable: true,
                               topic: 'whiteboard',
                             );
                           } catch (_) {}
