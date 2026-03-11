@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/config/api_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +16,7 @@ import '../services/telemetry_service.dart';
 import 'base_provider.dart';
 import '../utils/structured_logger.dart';
 import '../utils/media_url_resolver.dart';
+import '../data/language_words.dart';
 
 final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
   return GameProvider();
@@ -22,6 +24,8 @@ final gameProvider = NotifierProvider<GameProvider, BaseProviderState>(() {
 
 /// Game Provider - Manages all game sessions, SRS integration, and telemetry
 class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
+  static final Map<String, List<PhraseCard>> _cardCache = {};
+
   GameSession? _currentSession;
   Completer<GameSession>? _startGameLock;
   final List<PhraseCard> _availableCards = [];
@@ -265,6 +269,13 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
     String? sessionId,
     String? gameId,
   }) async {
+    final cacheKey = '${gameId ?? 'default'}_${language}_${level ?? 'A0'}';
+    if (_cardCache.containsKey(cacheKey)) {
+      final cached = List<PhraseCard>.from(_cardCache[cacheKey]!);
+      cached.shuffle(Random());
+      return cached.take(count).toList();
+    }
+
     final cards = <PhraseCard>[];
     final resolvedUserId = userId ?? _currentSession?.userId;
     final resolvedSessionId = sessionId ?? _currentSession?.sessionId;
@@ -339,6 +350,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
             );
           }
 
+          _cardCache[cacheKey] = List.from(cards);
           return cards;
         }
       }
@@ -409,6 +421,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           } catch (e) {
             logger.error('Diacritics enforcement failed for API cards (cards still usable)', tag: 'game-provider', error: e);
           }
+          _cardCache[cacheKey] = List.from(cards);
           return cards;
         }
       }
@@ -440,6 +453,7 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       logger.error('Diacritics enforcement failed (cards still usable)', tag: 'game-provider', error: e);
     }
 
+    _cardCache[cacheKey] = List.from(cards);
     return cards;
   }
 
@@ -618,21 +632,48 @@ class GameProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
       ],
     };
 
-      final data = fallbackData[lang] ?? fallbackData['yoruba']!;
-    for (var i = 0; i < count; i++) {
-      final item = data[i % data.length];
-      final cardId = '${lang}_card_$i';
-      cards.add(PhraseCard(
-        cardId: cardId,
-        language: language,
-        text: item['text'] as String,
-        ascii: item['text'] as String, // Simplified
-        gloss: item['gloss'] as String,
-        level: level ?? 'A0',
-        tags: (item['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ?? [],
-        srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
-      ));
-    }
+      // Merge LanguageWords (richer, 30-90 per language) with inline fallback
+      final langWordsAll = LanguageWords.getWordsByLanguage();
+      final capitalizedLang = lang.isNotEmpty ? lang[0].toUpperCase() + lang.substring(1) : lang;
+      final richWords = langWordsAll[capitalizedLang] ?? langWordsAll['Yoruba'] ?? [];
+
+      // Build a combined list: LanguageWords first (richer), then inline fallback
+      final combined = <Map<String, dynamic>>[];
+      for (final w in richWords) {
+        combined.add({
+          'text': w['translation'] ?? '',
+          'gloss': w['english'] ?? '',
+          'tags': <String>['language-words'],
+        });
+      }
+
+      final inlineData = fallbackData[lang] ?? fallbackData['yoruba']!;
+      for (final item in inlineData) {
+        final text = item['text'] as String;
+        if (!combined.any((c) => c['text'] == text)) {
+          combined.add(item);
+        }
+      }
+
+      // Shuffle and take unique subset
+      final rng = Random();
+      combined.shuffle(rng);
+      final take = min(count, combined.length);
+
+      for (var i = 0; i < take; i++) {
+        final item = combined[i];
+        final cardId = '${lang}_card_$i';
+        cards.add(PhraseCard(
+          cardId: cardId,
+          language: language,
+          text: (item['text'] as String?) ?? '',
+          ascii: (item['text'] as String?) ?? '',
+          gloss: (item['gloss'] as String?) ?? '',
+          level: level ?? 'A0',
+          tags: (item['tags'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+          srs: _userSRS['${userId ?? _currentSession?.userId ?? 'user'}_${cardId}_$language'] ?? SRSState(),
+        ));
+      }
 
     return cards;
   }

@@ -13,6 +13,8 @@ import '../../widgets/lingafriq_ui_helpers.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/responsive_safe_area.dart';
 import '../../screens/loading/dynamic_loading_screen.dart';
+import '../../screens/chat/tribe_chat_screen_material3.dart';
+import '../../screens/gamification/leaderboard_screen.dart';
 
 /// Tribe Selection Screen
 class TribeSelectionScreen extends ConsumerStatefulWidget {
@@ -101,6 +103,127 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
       return TransportErrorPolicy.toUserMessage(e);
     }
     return null;
+  }
+
+  Widget _buildMyTribeCard(
+    BuildContext context,
+    String tribeName,
+    bool isDark,
+    ColorScheme colorScheme,
+  ) {
+    final matchingTribe = _availableTribes.cast<Map<String, dynamic>?>().firstWhere(
+      (t) => t?['name'] == tribeName,
+      orElse: () => null,
+    );
+    final memberCount = matchingTribe?['members_count'] as int?;
+    final tribeId = matchingTribe?['id']?.toString() ?? '';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        border: Border.all(color: PanAfricanColors.primary, width: 2),
+        boxShadow: PanAfricanShadows.md,
+      ),
+      padding: EdgeInsets.all(PanAfricanSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.shield_rounded, color: PanAfricanColors.primary, size: 28.sp),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('My Tribe', style: PanAfricanTypography.labelSmall(context)),
+                    Text(tribeName, style: PanAfricanTypography.titleMedium(context)),
+                  ],
+                ),
+              ),
+              if (memberCount != null)
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: PanAfricanSpacing.sm,
+                    vertical: PanAfricanSpacing.xxs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: PanAfricanColors.primaryContainer,
+                    borderRadius: PanAfricanRadius.roundBR,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.people_rounded, size: 14.sp, color: PanAfricanColors.onPrimaryContainer),
+                      SizedBox(width: PanAfricanSpacing.xxs),
+                      Text(
+                        '$memberCount',
+                        style: PanAfricanTypography.labelSmall(context, color: PanAfricanColors.onPrimaryContainer),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+          SizedBox(height: PanAfricanSpacing.md),
+          Row(
+            children: [
+              Expanded(
+                child: Semantics(
+                  label: 'Tribe Chat',
+                  button: true,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TribeChatScreenMaterial3(
+                            tribeId: tribeId,
+                            tribeName: tribeName,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.chat_bubble_outline_rounded, size: 18.sp),
+                    label: const Text('Tribe Chat'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: PanAfricanColors.primary,
+                      side: BorderSide(color: PanAfricanColors.primary),
+                      shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Semantics(
+                  label: 'Tribe Leaderboard',
+                  button: true,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      HapticFeedback.lightImpact();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const LeaderboardScreen()),
+                      );
+                    },
+                    icon: Icon(Icons.leaderboard_rounded, size: 18.sp),
+                    label: const Text('Leaderboard'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: PanAfricanColors.secondary,
+                      side: BorderSide(color: PanAfricanColors.secondary),
+                      shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -252,8 +375,15 @@ class _TribeSelectionScreenState extends ConsumerState<TribeSelectionScreen> {
               ),
             ),
             SizedBox(height: PanAfricanSpacing.lg),
+            // My Tribe section — shown when user already belongs to a tribe
+            if (currentTribe != null && currentTribe.isNotEmpty)
+              _buildMyTribeCard(context, currentTribe, isDark, colorScheme),
+            if (currentTribe != null && currentTribe.isNotEmpty)
+              SizedBox(height: PanAfricanSpacing.lg),
             Text(
-              'Available Tribes',
+              currentTribe != null && currentTribe.isNotEmpty
+                  ? 'Switch Tribe'
+                  : 'Available Tribes',
               style: PanAfricanTypography.titleMedium(context),
             ),
             SizedBox(height: PanAfricanSpacing.sm),

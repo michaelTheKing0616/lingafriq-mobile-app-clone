@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:record/record.dart';
 import 'package:just_audio/just_audio.dart';
@@ -53,33 +54,38 @@ class _PronunciationDuelGameState extends BaseGameScreenState<PronunciationDuelG
     }
   }
 
+  final FlutterTts _tts = FlutterTts();
+
   Future<void> _playNativeAudio() async {
     final audioUrl = resolveMediaUrl(_currentCard?.audioNativeUrl);
-    if (audioUrl == null || audioUrl.isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Reference audio is not available for this card.')),
-        );
-      }
-      return;
-    }
     setState(() => _isPlaying = true);
-    try {
-      await _audioPlayer.setUrl(audioUrl);
-      await _audioPlayer.play();
-      await _audioPlayer.playerStateStream.firstWhere(
-        (state) => state.processingState == ProcessingState.completed,
-      );
-    } catch (e) {
-      debugPrint('Error playing audio: $e');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not play reference audio.')),
+
+    // Try URL-based playback first
+    if (audioUrl != null && audioUrl.isNotEmpty) {
+      try {
+        await _audioPlayer.setUrl(audioUrl);
+        await _audioPlayer.play();
+        await _audioPlayer.playerStateStream.firstWhere(
+          (state) => state.processingState == ProcessingState.completed,
         );
+        setState(() => _isPlaying = false);
+        return;
+      } catch (e) {
+        debugPrint('Audio URL playback failed, trying TTS: $e');
       }
-    } finally {
-      setState(() => _isPlaying = false);
     }
+
+    // TTS fallback
+    final text = _currentCard?.text;
+    if (text != null && text.isNotEmpty) {
+      try {
+        await _tts.speak(text);
+        await Future.delayed(const Duration(seconds: 2));
+      } catch (e) {
+        debugPrint('TTS fallback failed: $e');
+      }
+    }
+    if (mounted) setState(() => _isPlaying = false);
   }
 
   Future<void> _startRecording() async {

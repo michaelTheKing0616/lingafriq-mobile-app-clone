@@ -140,10 +140,12 @@ class Api {
   // Media API endpoints
   static const String media = 'media/';
   static String mediaGenerateLesson(String mediaId) => 'media/$mediaId/generate-lesson';
+  static String mediaLinkLesson(String mediaId) => 'media/$mediaId/link-lesson';
   
   // Chat API endpoints
   static const String chatGlobal = 'chat/global';
   static const String chatPrivate = 'chat/private';
+  static const String chatConversations = 'chat/conversations';
   
   // Media API endpoints  
   static String mediaUpload() => 'media/upload';

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../models/game/game_session_model.dart';
@@ -353,82 +354,69 @@ abstract class BaseGameScreenState<T extends BaseGameScreen> extends ConsumerSta
     final isPerfect = session.accuracy >= 1.0;
     final isDark = Theme.of(context).brightness == Brightness.dark;
     HapticFeedback.mediumImpact();
-    
-    showDialog(
+
+    showGeneralDialog<void>(
       context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.lgBR),
-        backgroundColor: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-        title: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.all(PanAfricanSpacing.xs),
-              decoration: BoxDecoration(
-                color: isPerfect 
-                    ? PanAfricanColors.secondary.withOpacity(0.2)
-                    : PanAfricanColors.primary.withOpacity(0.1),
-                borderRadius: PanAfricanRadius.roundBR,
-              ),
-              child: Icon(
-                isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
-                color: isPerfect ? PanAfricanColors.secondary : PanAfricanColors.primary,
-                size: 24.sp,
-              ),
-            ),
-            SizedBox(width: PanAfricanSpacing.sm),
-            Expanded(
-              child: Text(
-                isPerfect ? 'Perfect Score!' : 'Game Complete!',
-                style: PanAfricanTypography.titleLarge(context),
-              ),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildStatRow(Icons.track_changes_rounded, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
-            _buildStatRow(Icons.done_all_rounded, 'Correct', '${session.correctCount}/${session.totalTurns}'),
-            _buildStatRow(Icons.timer_rounded, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
-            Divider(height: PanAfricanSpacing.lg, color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
-            _buildStatRow(Icons.star_rounded, 'XP Earned', '+$xpEarned', isHighlight: true),
-          ],
-        ),
-        actions: [
-          OutlinedButton.icon(
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.pop(ctx);
-              Navigator.of(context).pushReplacement(
-                PageRouteBuilder<void>(
-                  pageBuilder: (_, __, ___) => widget,
-                  transitionDuration: Duration.zero,
-                  reverseTransitionDuration: Duration.zero,
+      barrierDismissible: false,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 300),
+      reverseTransitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (ctx, _, __) => Material(
+        color: Colors.transparent,
+        child: GestureDetector(
+          onTap: () {},
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              // Confetti-style decorative elements for perfect scores
+              if (isPerfect) _ConfettiLayer(duration: 300),
+              // Main content card
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.lg),
+                child: _CompletionOverlayContent(
+                  session: session,
+                  xpEarned: xpEarned,
+                  isPerfect: isPerfect,
+                  isDark: isDark,
+                  onPlayAgain: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.pop(ctx);
+                    Navigator.of(context).pushReplacement(
+                      PageRouteBuilder<void>(
+                        pageBuilder: (_, __, ___) => widget,
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                    );
+                  },
+                  onDone: () {
+                    HapticFeedback.lightImpact();
+                    Navigator.pop(ctx);
+                    (widget.onBack ?? () => Navigator.pop(context))();
+                  },
+                  buildStatRow: _buildStatRow,
                 ),
-              );
-            },
-            icon: Icon(Icons.refresh_rounded, size: 20.sp),
-            label: Text('Play Again', style: PanAfricanTypography.labelLarge(context)),
-            style: OutlinedButton.styleFrom(
-              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
-            ),
+              ),
+            ],
           ),
-          FilledButton.icon(
-            onPressed: () {
-              HapticFeedback.lightImpact();
-              Navigator.pop(ctx);
-              (widget.onBack ?? () => Navigator.pop(context))();
-            },
-            icon: Icon(Icons.check_rounded, size: 20.sp),
-            label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
-            style: FilledButton.styleFrom(
-              backgroundColor: PanAfricanColors.primary,
-              shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
-            ),
-          ),
-        ],
+        ),
       ),
+      transitionBuilder: (ctx, animation, secondaryAnimation, child) {
+        return ScaleTransition(
+          scale: CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutBack,
+          ),
+          child: FadeTransition(
+            opacity: CurvedAnimation(
+              parent: animation,
+              curve: Curves.easeOut,
+            ),
+            child: child,
+          ),
+        );
+      },
     );
   }
 
@@ -771,6 +759,166 @@ class _GameHud extends StatelessWidget {
     if (value >= 10000) return '${(value / 1000).toStringAsFixed(1)}K';
     if (value >= 1000) return '${(value / 1000).toStringAsFixed(2)}K';
     return value.toString();
+  }
+}
+
+/// Decorative confetti-style layer for perfect score celebration.
+class _ConfettiLayer extends StatelessWidget {
+  final int duration;
+
+  const _ConfettiLayer({required this.duration});
+
+  static const List<Color> _confettiColors = [
+    PanAfricanColors.primary,
+    PanAfricanColors.secondary,
+    PanAfricanColors.tertiary,
+    PanAfricanColors.kenteRed,
+    PanAfricanColors.kenteBlue,
+    PanAfricanColors.ankaraPurple,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    return IgnorePointer(
+      child: SizedBox.expand(
+        child: Stack(
+          children: List.generate(24, (i) {
+            final colors = _confettiColors;
+            final color = colors[i % colors.length];
+            final left = ((i * 37) % 100) / 100.0 * size.width - 8;
+            final top = ((i * 29) % 100) / 100.0 * size.height - 8;
+            final dotSize = 4.0 + (i % 3) * 2.0;
+            return Positioned(
+              left: left.clamp(0.0, size.width - 16),
+              top: top.clamp(0.0, size.height - 16),
+              child: Container(
+                width: dotSize.sp,
+                height: dotSize.sp,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: i % 3 == 0 ? BoxShape.circle : BoxShape.rectangle,
+                  borderRadius: i % 3 != 0 ? BorderRadius.circular(1.r) : null,
+                ),
+              )
+                  .animate(delay: Duration(milliseconds: (i * 15).clamp(0, 150)))
+                  .fadeIn(duration: 250.ms)
+                  .scale(begin: const Offset(0.3, 0.3), end: const Offset(1, 1), duration: 250.ms)
+                  .then()
+                  .shimmer(duration: 600.ms, color: color.withOpacity(0.5)),
+            );
+          }),
+        ),
+      ),
+    );
+  }
+}
+
+/// Animated completion overlay content card.
+class _CompletionOverlayContent extends StatelessWidget {
+  final GameSession session;
+  final int xpEarned;
+  final bool isPerfect;
+  final bool isDark;
+  final VoidCallback onPlayAgain;
+  final VoidCallback onDone;
+  final Widget Function(IconData, String, String, {bool isHighlight}) buildStatRow;
+
+  const _CompletionOverlayContent({
+    required this.session,
+    required this.xpEarned,
+    required this.isPerfect,
+    required this.isDark,
+    required this.onPlayAgain,
+    required this.onDone,
+    required this.buildStatRow,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final titleIcon = Container(
+      padding: EdgeInsets.all(PanAfricanSpacing.xs),
+      decoration: BoxDecoration(
+        color: isPerfect
+            ? PanAfricanColors.secondary.withOpacity(0.2)
+            : PanAfricanColors.primary.withOpacity(0.1),
+        borderRadius: PanAfricanRadius.roundBR,
+      ),
+      child: Icon(
+        isPerfect ? Icons.star_rounded : Icons.check_circle_rounded,
+        color: isPerfect ? PanAfricanColors.secondary : PanAfricanColors.primary,
+        size: 24.sp,
+      ),
+    );
+
+    final titleWidget = Row(
+      children: [
+        isPerfect
+            ? titleIcon
+                .animate()
+                .scale(begin: const Offset(0.8, 0.8), end: const Offset(1, 1), duration: 400.ms)
+                .then()
+                .shimmer(duration: 1200.ms, color: PanAfricanColors.secondary.withOpacity(0.4))
+            : titleIcon,
+        SizedBox(width: PanAfricanSpacing.sm),
+        Expanded(
+          child: Text(
+            isPerfect ? 'Perfect Score!' : 'Game Complete!',
+            style: PanAfricanTypography.titleLarge(context),
+          ),
+        ),
+      ],
+    );
+
+    return Container(
+      constraints: BoxConstraints(maxWidth: 360.w),
+      padding: EdgeInsets.all(PanAfricanSpacing.xl),
+      decoration: BoxDecoration(
+        color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+        borderRadius: PanAfricanRadius.lgBR,
+        boxShadow: PanAfricanShadows.xl,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          titleWidget,
+          SizedBox(height: PanAfricanSpacing.lg),
+          buildStatRow(Icons.track_changes_rounded, 'Accuracy', '${(session.accuracy * 100).toStringAsFixed(0)}%'),
+          buildStatRow(Icons.done_all_rounded, 'Correct', '${session.correctCount}/${session.totalTurns}'),
+          buildStatRow(Icons.timer_rounded, 'Time', '${(session.durationMs / 1000).toStringAsFixed(0)}s'),
+          Divider(height: PanAfricanSpacing.lg, color: isDark ? PanAfricanColors.borderDark : PanAfricanColors.borderLight),
+          buildStatRow(Icons.star_rounded, 'XP Earned', '+$xpEarned', isHighlight: true),
+          SizedBox(height: PanAfricanSpacing.lg),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: onPlayAgain,
+                  icon: Icon(Icons.refresh_rounded, size: 20.sp),
+                  label: Text('Play Again', style: PanAfricanTypography.labelLarge(context)),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                  ),
+                ),
+              ),
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: FilledButton.icon(
+                  onPressed: onDone,
+                  icon: Icon(Icons.check_rounded, size: 20.sp),
+                  label: Text('Done', style: PanAfricanTypography.labelLarge(context, color: Theme.of(context).colorScheme.onPrimary)),
+                  style: FilledButton.styleFrom(
+                    backgroundColor: PanAfricanColors.primary,
+                    shape: RoundedRectangleBorder(borderRadius: PanAfricanRadius.mdBR),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
 

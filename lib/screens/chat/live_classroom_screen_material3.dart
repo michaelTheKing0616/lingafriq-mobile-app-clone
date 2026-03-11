@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +19,24 @@ import 'package:lingafriq/widgets/pan_african_app_bar.dart';
 import 'package:lingafriq/utils/integration_helpers.dart';
 import 'package:livekit_client/livekit_client.dart';
 import '../../widgets/whiteboard/interactive_whiteboard.dart';
+
+/// Extracts a room ID from a backend response map, tolerating multiple response shapes.
+String _extractRoomId(Map<String, dynamic> data) {
+  for (final key in ['tribe', 'classroom', 'room', 'data']) {
+    final nested = data[key];
+    if (nested is Map) {
+      final nestedMap = Map<String, dynamic>.from(nested);
+      final id = nestedMap['_id'] ??
+          nestedMap['id'] ??
+          nestedMap['roomId'] ??
+          nestedMap['room_id'];
+      if (id != null) return id.toString();
+    }
+  }
+  final id = data['_id'] ?? data['id'] ?? data['roomId'] ?? data['room_id'];
+  if (id != null) return id.toString();
+  return DateTime.now().millisecondsSinceEpoch.toString();
+}
 
 /// Material 3 Live Classroom Screen with LiveKit Integration
 /// Features: Video/Audio, Interactive Whiteboard, Screen Sharing
@@ -210,10 +230,7 @@ class _RoomSelectionScreen extends HookConsumerWidget {
                                 );
                                 String roomId;
                                 if (resp.statusCode == 201 && resp.data != null && resp.data is Map) {
-                                  final data = resp.data as Map<String, dynamic>;
-                                  final tribe = data['tribe'] ?? data;
-                                  final tribeMap = tribe is Map ? tribe as Map<String, dynamic> : data;
-                                  roomId = (tribeMap['_id'] ?? tribeMap['id'] ?? data['_id'] ?? data['id'])?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString();
+                                  roomId = _extractRoomId(Map<String, dynamic>.from(resp.data as Map));
                                 } else {
                                   roomId = DateTime.now().millisecondsSinceEpoch.toString();
                                 }
@@ -277,6 +294,8 @@ class _ClassroomView extends HookConsumerWidget {
     final localParticipant = useState<LocalParticipant?>(null);
     final remoteParticipants = useState<Map<String, RemoteParticipant>>({});
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final whiteboardController = useMemoized(() => WhiteboardController());
+    final dataListenerCleanup = useRef<VoidCallback?>(null);
 
     Future<void> joinClassroom() async {
       await safeAsync(
@@ -348,6 +367,29 @@ class _ClassroomView extends HookConsumerWidget {
               participants.value = participantList;
             });
 
+            // Listen for whiteboard data from remote participants
+            final eventsListener = room.events.createListener();
+            eventsListener.on<DataReceivedEvent>((event) {
+              if (event.topic != 'whiteboard') return;
+              try {
+                final json = jsonDecode(utf8.decode(event.data))
+                    as Map<String, dynamic>;
+                final action = json['action'] as String?;
+                if (action == 'clear') {
+                  whiteboardController.remoteClear();
+                } else if (action == 'draw') {
+                  final points = (json['points'] as List)
+                      .map((p) => DrawingPoint.fromJson(
+                          Map<String, dynamic>.from(p as Map)))
+                      .toList();
+                  whiteboardController.addRemotePoints(points);
+                }
+              } catch (_) {
+                // Ignore malformed whiteboard data
+              }
+            });
+            dataListenerCleanup.value = () => eventsListener.dispose();
+
             // Enable camera and microphone
             if (localP != null) {
               await localP.setCameraEnabled(isVideoEnabled.value);
@@ -364,6 +406,8 @@ class _ClassroomView extends HookConsumerWidget {
     }
 
     Future<void> leaveClassroom() async {
+      dataListenerCleanup.value?.call();
+      dataListenerCleanup.value = null;
       final room = roomState.value;
       if (room != null) {
         await room.disconnect();
@@ -376,8 +420,8 @@ class _ClassroomView extends HookConsumerWidget {
     useEffect(() {
       joinClassroom();
       return () {
-        // Cleanup: disconnect from room when widget is disposed
         leaveClassroom();
+        whiteboardController.dispose();
       };
     }, []);
 
@@ -447,15 +491,38 @@ class _ClassroomView extends HookConsumerWidget {
                       flex: 1,
                       child: InteractiveWhiteboard(
                         roomId: roomId,
-                        onDrawingUpdate: (points) {
-                          // Sync whiteboard state with backend/other participants
-                          if (roomState.value != null) {
-                            // Send drawing updates through LiveKit data channel
-                            // roomState.value?.localParticipant?.publishData(
-                            //   jsonEncode(data).codeUnits,
-                            //   reliable: true,
-                            // );
-                          }
+                        controller: whiteboardController,
+                        onStrokeComplete: (newPoints) {
+                          final room = roomState.value;
+                          if (room == null) return;
+                          try {
+                            final jsonStr = jsonEncode({
+                              'type': 'whiteboard',
+                              'action': 'draw',
+                              'points':
+                                  newPoints.map((p) => p.toJson()).toList(),
+                            });
+                            room.localParticipant?.publishData(
+                              utf8.encode(jsonStr),
+                              reliability: Reliability.reliable,
+                              topic: 'whiteboard',
+                            );
+                          } catch (_) {}
+                        },
+                        onBoardCleared: () {
+                          final room = roomState.value;
+                          if (room == null) return;
+                          try {
+                            final jsonStr = jsonEncode({
+                              'type': 'whiteboard',
+                              'action': 'clear',
+                            });
+                            room.localParticipant?.publishData(
+                              utf8.encode(jsonStr),
+                              reliability: Reliability.reliable,
+                              topic: 'whiteboard',
+                            );
+                          } catch (_) {}
                         },
                       ),
                     ),
@@ -477,9 +544,41 @@ class _ClassroomView extends HookConsumerWidget {
                       await localP?.setMicrophoneEnabled(value);
                       HapticFeedback.mediumImpact();
                     },
-                    onScreenShareToggle: (value) {
-                      isScreenSharing.value = value;
-                      HapticFeedback.mediumImpact();
+                    onScreenShareToggle: (value) async {
+                      final localP = localParticipant.value;
+                      if (localP == null) {
+                        if (context.mounted) {
+                          showLingAfriqError(
+                              context, 'Not connected to classroom');
+                        }
+                        return;
+                      }
+                      try {
+                        await localP.setScreenShareEnabled(value);
+                        isScreenSharing.value = value;
+                        HapticFeedback.mediumImpact();
+                      } catch (e) {
+                        if (context.mounted) {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title:
+                                  const Text('Screen Sharing Unavailable'),
+                              content: const Text(
+                                'Screen sharing could not be started. '
+                                'On mobile devices this feature may require '
+                                'additional platform setup.',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      }
                     },
                     onLeave: () async {
                       await leaveClassroom();

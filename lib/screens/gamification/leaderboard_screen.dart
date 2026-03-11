@@ -13,7 +13,7 @@ import '../../widgets/empty_state_widget.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/skeleton_loader.dart';
 
-/// Leaderboard screen with tribe, country, and global rankings
+/// Leaderboard screen with tribe, regional, and global rankings
 class LeaderboardScreen extends ConsumerStatefulWidget {
   const LeaderboardScreen({super.key});
 
@@ -32,6 +32,10 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
     _tabController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(leaderboardProvider.notifier).fetchLeaderboards(type: LeaderboardType.global);
+      final user = ref.read(userProvider);
+      if (user != null) {
+        ref.read(leaderboardProvider.notifier).fetchUserRanks(user.id.toString());
+      }
     });
     _tabController.addListener(() {
       setState(() {
@@ -114,7 +118,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: Semantics(
-            label: 'Leaderboard tabs: Global, Tribe, Country',
+            label: 'Leaderboard tabs: Global, Tribe, Regional',
             child: TabBar(
               controller: _tabController,
               onTap: (_) => HapticFeedback.lightImpact(),
@@ -123,7 +127,7 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
               tabs: const [
                 Tab(text: 'Global'),
                 Tab(text: 'Tribe'),
-                Tab(text: 'Country'),
+                Tab(text: 'Regional'),
               ],
             ),
           ),
@@ -201,10 +205,13 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
       );
     }
 
-    // Use ListView.builder directly with proper iOS physics to prevent scroll errors
+    final user = ref.read(userProvider);
+    final userRanks = ref.read(leaderboardProvider.notifier).userRanks;
+    final userInList = user != null && entries.any((e) => e.userId == user.id.toString());
+
     return ListView.builder(
       padding: EdgeInsets.all(PanAfricanSpacing.md),
-      itemCount: entries.length,
+      itemCount: entries.length + (userInList || user == null ? 0 : 1),
       // Use BouncingScrollPhysics for iOS-native feel and ClampingScrollPhysics fallback
       physics: const AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
@@ -214,22 +221,69 @@ class _LeaderboardScreenState extends ConsumerState<LeaderboardScreen>
       // Add key for proper widget recycling
       key: ValueKey('leaderboard_${type.name}'),
       itemBuilder: (context, index) {
-        // Bounds check to prevent RangeError on rapid scrolling
-        if (index < 0 || index >= entries.length) {
+        // Show "Your Rank" card at top if user is not in the visible list
+        if (!userInList && user != null && index == 0) {
+          final periodKey = type == LeaderboardType.global
+              ? 'global:weekly'
+              : type == LeaderboardType.monthly
+                  ? 'global:monthly'
+                  : type == LeaderboardType.allTime
+                      ? 'global:alltime'
+                      : 'global:weekly';
+          final rankData = userRanks?[periodKey];
+          final myRank = rankData?['rank'] as int? ?? 0;
+          final myScore = (rankData?['score'] as num?)?.toInt() ?? 0;
+
+          return Container(
+            margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+            padding: EdgeInsets.all(PanAfricanSpacing.md),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [PanAfricanColors.primary.withOpacity(0.15), PanAfricanColors.secondary.withOpacity(0.10)],
+              ),
+              borderRadius: PanAfricanRadius.lgBR,
+              border: Border.all(color: PanAfricanColors.primary, width: 1.5),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.person_pin, color: PanAfricanColors.primary, size: 32.sp),
+                SizedBox(width: PanAfricanSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Your Ranking', style: PanAfricanTypography.titleSmall(context)),
+                      SizedBox(height: PanAfricanSpacing.xxs),
+                      Text(
+                        myRank > 0 ? '#$myRank • $myScore XP' : 'Not ranked yet — earn XP to appear!',
+                        style: PanAfricanTypography.bodySmall(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ).animate().fadeIn(duration: 300.ms).slideY(begin: 0.1, end: 0);
+        }
+
+        final entryIndex = !userInList && user != null ? index - 1 : index;
+        if (entryIndex < 0 || entryIndex >= entries.length) {
           return const SizedBox.shrink();
         }
         
-        final entry = entries[index];
-        final isCurrentUser = entry.userId == 'current_user';
+        final entry = entries[entryIndex];
+        final isCurrentUser = user != null &&
+            entry.userId.isNotEmpty &&
+            entry.userId == user.id.toString();
         
         return _LeaderboardCard(
-          key: ValueKey('leaderboard_card_${entry.userId}_$index'),
+          key: ValueKey('leaderboard_card_${entry.userId}_$entryIndex'),
           entry: entry,
           isCurrentUser: isCurrentUser,
-          rank: index + 1,
+          rank: entryIndex + 1,
           isDark: isDark,
         )
-            .animate(delay: Duration(milliseconds: index * 50))
+            .animate(delay: Duration(milliseconds: entryIndex * 50))
             .fadeIn(duration: 300.ms)
             .slideY(begin: 0.1, end: 0);
       },

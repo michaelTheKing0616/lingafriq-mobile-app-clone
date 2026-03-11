@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
@@ -190,7 +191,17 @@ class _RoomDetailScreenState extends ConsumerState<RoomDetailScreen> {
             child: IconButton(
               icon: const Icon(Icons.share, semanticLabel: 'Share'),
               onPressed: () {
-                // Share room functionality
+                final shareText =
+                    'Join my LingAfriq practice room! https://lingafriq.com/rooms/${widget.roomId}';
+                Clipboard.setData(ClipboardData(text: shareText));
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Room link copied to clipboard!'),
+                      duration: Duration(seconds: 2),
+                    ),
+                  );
+                }
               },
               tooltip: 'Share Room',
             ),

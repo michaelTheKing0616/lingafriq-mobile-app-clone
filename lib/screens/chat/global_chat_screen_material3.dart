@@ -10,12 +10,12 @@ import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:lingafriq/utils/api_service.dart';
 import 'package:lingafriq/utils/api.dart';
-import 'package:lingafriq/widgets/loading/loading_overlay.dart';
 import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 import 'package:lingafriq/utils/error_handler.dart';
 import 'package:lingafriq/screens/chat/user_search_global_id_screen.dart';
 import 'package:lingafriq/widgets/pan_african_components.dart';
 import 'package:lingafriq/providers/user_provider.dart';
+import 'package:lingafriq/providers/chat_socket_provider.dart';
 import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
@@ -30,7 +30,7 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     final messages = useState<List<Map<String, dynamic>>>([]);
     final channels = useState<List<String>>(['general', 'yoruba', 'hausa', 'igbo', 'pidgin', 'swahili', 'zulu']);
     final selectedChannel = useState('general');
-    final isLoading = useState(false);
+    final isSending = useState(false);
     final isLoadingMessages = useState(true);
     final loadError = useState<String?>(null);
     final scrollController = useScrollController();
@@ -80,40 +80,139 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
     }
 
     Future<void> sendMessage() async {
-      if (messageController.text.isEmpty) return;
+      final text = messageController.text.trim();
+      if (text.isEmpty || isSending.value) return;
+      isSending.value = true;
+      final user = ref.read(userProvider);
+      if (user == null) {
+        isSending.value = false;
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Please log in to send messages.')),
+          );
+        }
+        return;
+      }
 
-      isLoading.value = true;
+      // Optimistic: clear input immediately and add local message
+      messageController.clear();
+      final localMsg = <String, dynamic>{
+        'message': text,
+        'sender_id': {'id': user.id, 'username': user.username, 'global_id': user.global_id},
+        'username': user.username,
+        'global_id': user.global_id,
+        'createdAt': DateTime.now().toIso8601String(),
+        'clientMessageId': 'local_${DateTime.now().millisecondsSinceEpoch}',
+      };
+      messages.value = [...messages.value, localMsg];
+
+      // Try socket first for real-time, with REST as reliable fallback
+      bool sent = false;
+      final socketSt = ref.read(chatSocketProvider);
+      if (socketSt.isConnected) {
+        try {
+          final room = 'global_${selectedChannel.value}';
+          ref.read(chatSocketProvider.notifier).sendMessage(
+            room,
+            text,
+            user.id.toString(),
+            user.username,
+            null,
+            user.global_id,
+          );
+          sent = true;
+        } catch (e) {
+          debugPrint('[GlobalChat] Socket send failed: $e');
+        }
+      }
+
+      // Always send via REST to guarantee persistence
       try {
         final response = await ApiService.post(
           Api.chatGlobal,
           data: {
-            'message': messageController.text,
+            'message': text,
             'channel': selectedChannel.value,
           },
         );
-
-        if (response.statusCode == 200) {
-          messageController.clear();
-          loadMessages();
+        if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
+          sent = true;
+        } else {
+          debugPrint('[GlobalChat] REST send non-success: ${response.statusCode}');
         }
       } catch (e) {
-        if (context.mounted) {
-          ErrorHandler.showError(context, e);
+        debugPrint('[GlobalChat] REST send failed: $e');
+        if (!sent && context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Message could not be sent. Check your connection.'),
+              action: SnackBarAction(label: 'Retry', onPressed: () {
+                messageController.text = text;
+                sendMessage();
+              }),
+            ),
+          );
+          // Remove optimistic message on total failure
+          messages.value = messages.value.where((m) => m['clientMessageId'] != localMsg['clientMessageId']).toList();
         }
       } finally {
-        isLoading.value = false;
+        isSending.value = false;
       }
     }
 
+    final socketState = ref.watch(chatSocketProvider);
+    final socketNotifier = ref.read(chatSocketProvider.notifier);
+
+    // Connect socket and join the channel room on mount / channel change
     useEffect(() {
+      final user = ref.read(userProvider);
+      if (user != null) {
+        socketNotifier.connect(
+          user.id.toString(),
+          user.username,
+          globalId: user.global_id,
+        );
+      }
+      final room = 'global_${selectedChannel.value}';
+      socketNotifier.joinRoom(room);
       loadMessages();
-      return null;
+      return () {
+        socketNotifier.leaveRoom(room);
+      };
     }, [selectedChannel.value]);
 
-    return LoadingOverlay(
-      isLoading: isLoading.value,
-      message: 'Sending message...',
-      child: Scaffold(
+    // Merge socket messages into the REST-loaded list
+    useEffect(() {
+      if (!socketState.isConnected) return null;
+      final room = 'global_${selectedChannel.value}';
+      final socketMessages = socketNotifier.messagesForRoom(room);
+      if (socketMessages.isEmpty) return null;
+
+      final existingIds = <String>{};
+      for (final m in messages.value) {
+        final id = m['_id']?.toString() ?? m['id']?.toString() ?? '';
+        if (id.isNotEmpty) existingIds.add(id);
+        final clientId = m['clientMessageId']?.toString() ?? '';
+        if (clientId.isNotEmpty) existingIds.add(clientId);
+      }
+
+      final newMessages = <Map<String, dynamic>>[];
+      for (final m in socketMessages) {
+        final id = m['_id']?.toString() ?? m['id']?.toString() ?? '';
+        final clientId = m['clientMessageId']?.toString() ?? '';
+        if ((id.isNotEmpty && existingIds.contains(id)) ||
+            (clientId.isNotEmpty && existingIds.contains(clientId))) {
+          continue;
+        }
+        newMessages.add(m);
+      }
+      if (newMessages.isNotEmpty) {
+        messages.value = [...messages.value, ...newMessages];
+      }
+      return null;
+    }, [socketState.messages.length]);
+
+    return Scaffold(
         appBar: AppBar(
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,14 +264,27 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           Semantics(
             label: 'More options',
             button: true,
-            child: IconButton(
-            icon: Icon(Icons.more_vert, semanticLabel: 'More'),
-            onPressed: () {
-              HapticFeedback.selectionClick();
-              // Moderation tools
-            },
-            tooltip: 'More',
-          ),
+            child: PopupMenuButton<String>(
+              icon: Icon(Icons.more_vert, semanticLabel: 'More'),
+              tooltip: 'More',
+              onSelected: (value) {
+                HapticFeedback.selectionClick();
+                if (value == 'refresh') {
+                  loadMessages();
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'refresh',
+                  child: ListTile(
+                    leading: Icon(Icons.refresh),
+                    title: Text('Refresh'),
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -287,10 +399,20 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                               final isFromCurrentUser = currentUser != null &&
                                   senderId != null &&
                                   senderId.toString() == currentUser.id.toString();
-                              return _GlobalMessageBubble(
-                                message: message,
-                                isDark: isDark,
-                                isFromCurrentUser: isFromCurrentUser,
+                              return GestureDetector(
+                                onLongPress: isFromCurrentUser
+                                    ? null
+                                    : () => _showMessageActions(
+                                          context,
+                                          ref,
+                                          message,
+                                          isDark,
+                                        ),
+                                child: _GlobalMessageBubble(
+                                  message: message,
+                                  isDark: isDark,
+                                  isFromCurrentUser: isFromCurrentUser,
+                                ),
                               )
                                   .animate(delay: (index * 30).ms)
                                   .fadeIn(duration: 200.ms);
@@ -325,14 +447,14 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
                         ),
                         SizedBox(width: PanAfricanSpacing.sm),
                         Semantics(
-                          label: isLoading.value ? 'Sending message' : 'Send message',
+                          label: isSending.value ? 'Sending message' : 'Send message',
                           button: true,
-                          enabled: !isLoading.value,
+                          enabled: !isSending.value,
                           child: PanAfricanButton(
                           label: 'Send',
                           icon: Icons.send_rounded,
-                          isLoading: isLoading.value,
-                          onPressed: isLoading.value
+                          isLoading: isSending.value,
+                          onPressed: isSending.value
                               ? null
                               : () {
                                   HapticFeedback.lightImpact();
@@ -351,9 +473,78 @@ class GlobalChatScreenMaterial3 extends HookConsumerWidget {
           ],
         ),
       ),
-    ),
     );
   }
+}
+
+void _showMessageActions(
+  BuildContext context,
+  WidgetRef ref,
+  Map<String, dynamic> message,
+  bool isDark,
+) {
+  final messageId = message['_id']?.toString() ?? message['id']?.toString() ?? '';
+  final senderUserId = message['userId']?.toString() ??
+      (message['sender_id'] is Map
+          ? (message['sender_id'] as Map)['id']?.toString()
+          : message['sender_id']?.toString()) ??
+      '';
+
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: isDark
+        ? PanAfricanColors.surfaceContainerDark
+        : PanAfricanColors.surfaceContainerLight,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (ctx) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.flag_outlined, color: PanAfricanColors.warning),
+            title: const Text('Report Message'),
+            onTap: () async {
+              Navigator.pop(ctx);
+              if (messageId.isEmpty) return;
+              try {
+                await ApiService.post(
+                  'chat/messages/$messageId/report',
+                  data: {'reason': 'inappropriate'},
+                );
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Message reported. Thank you.')),
+                  );
+                }
+              } catch (_) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Could not report message. Try again later.')),
+                  );
+                }
+              }
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.block, color: PanAfricanColors.error),
+            title: const Text('Block User'),
+            onTap: () {
+              Navigator.pop(ctx);
+              if (senderUserId.isEmpty) return;
+              ref.read(chatSocketProvider.notifier).markUserBlocked(senderUserId);
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('User blocked for this session.')),
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class _GlobalMessageBubble extends StatelessWidget {

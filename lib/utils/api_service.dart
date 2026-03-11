@@ -235,6 +235,7 @@ class ApiService {
     Map<String, dynamic>? additionalData,
     String fileFieldName = 'file',
     Options? options,
+    ProgressCallback? onSendProgress,
   }) async {
     if (!_initialized) await initialize();
     try {
@@ -252,6 +253,7 @@ class ApiService {
         options: options ?? Options(
           contentType: 'multipart/form-data',
         ),
+        onSendProgress: onSendProgress,
       );
     } on DioException catch (e) {
       throw _handleError(e);

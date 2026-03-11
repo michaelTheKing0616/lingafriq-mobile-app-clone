@@ -11,10 +11,10 @@ import 'package:lingafriq/widgets/empty_state_widget.dart';
 import 'package:lingafriq/widgets/error_state_widget.dart';
 import 'package:lingafriq/widgets/skeleton_loader.dart';
 import 'package:lingafriq/providers/curriculum_provider.dart';
-import 'package:lingafriq/providers/api_provider.dart';
-import 'package:lingafriq/screens/lesson/lesson_flow_screen.dart';
+import 'package:lingafriq/models/curriculum_model.dart';
+import 'package:lingafriq/screens/curriculum/lesson_detail_screen.dart';
+import 'package:lingafriq/widgets/animations/smooth_transitions.dart';
 
-/// Beautiful Material 3 Curriculum Screen
 class CurriculumScreenMaterial3 extends HookConsumerWidget {
   const CurriculumScreenMaterial3({super.key});
 
@@ -23,67 +23,53 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
     final selectedLanguage = useState('yoruba');
     final selectedLevel = useState('A1');
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final isLoading = useState(false);
+    final isLoading = useState(true);
     final error = useState<String?>(null);
 
     final languages = ['yoruba', 'hausa', 'igbo', 'swahili', 'zulu'];
     final levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
-    // Load curriculum data from provider
     final curriculum = ref.watch(curriculumProvider.notifier).curriculum;
-    final weeks = useState<List<Map<String, dynamic>>>([]);
 
-    // Load lessons when language/level changes
+    // Load curriculum bundle on mount (mirrors old CurriculumScreen.initState)
     useEffect(() {
-      safeAsync(
-        context: context,
-        operation: () async {
-          isLoading.value = true;
-          error.value = null;
-          try {
-            // Try to load from curriculum provider first
-            if (curriculum != null) {
-              final languageData = curriculum.languages[selectedLanguage.value];
-              final levelData = languageData?[selectedLevel.value];
-              if (levelData != null) {
-                // Convert curriculum units to weeks format
-                weeks.value = levelData.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final unit = entry.value;
-                  return {
-                    'week': index + 1,
-                    'title': unit.title,
-                    'lessons': unit.lessons.map((lesson) {
-                      // Check completion status from curriculum provider
-                      final curriculumNotifier = ref.read(curriculumProvider.notifier);
-                      final isCompleted = curriculumNotifier.isLessonCompleted(
-                        selectedLanguage.value,
-                        selectedLevel.value,
-                        lesson.id,
-                      );
-                      return {
-                      'id': lesson.id,
-                      'title': lesson.title,
-                      'completed': isCompleted,
-                    };
-                  }).toList(),
-                };
-              }).toList();
-            }
-          }
+      Future<void> doLoad() async {
+        isLoading.value = true;
+        error.value = null;
+        try {
+          await ref.read(curriculumProvider.notifier).loadCurriculumFromBundle();
         } catch (e) {
           error.value = ErrorHandler.getUserFriendlyError(e);
         } finally {
           isLoading.value = false;
         }
-        },
-      );
+      }
+
+      doLoad();
       return null;
-    }, [selectedLanguage.value, selectedLevel.value, curriculum]);
+    }, const []);
+
+    // Re-evaluate loading state when curriculum appears or language/level changes
+    useEffect(() {
+      if (curriculum != null) {
+        isLoading.value = false;
+      }
+      return null;
+    }, [curriculum, selectedLanguage.value, selectedLevel.value]);
+
+    // Extract units for selected language + level
+    List<CurriculumUnit> units = [];
+    if (curriculum != null) {
+      final languageData = curriculum.languages[selectedLanguage.value];
+      final levelData = languageData?[selectedLevel.value];
+      if (levelData != null) {
+        units = levelData;
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Curriculum'),
+        title: const Text('Curriculum'),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -131,7 +117,7 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                         items: languages.map((lang) {
                           return DropdownMenuItem(
                             value: lang,
-                            child: Text(lang.toUpperCase()),
+                            child: Text(lang[0].toUpperCase() + lang.substring(1)),
                           );
                         }).toList(),
                         onChanged: (value) {
@@ -195,67 +181,27 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
                             );
                           },
                         )
-                      : weeks.value.isEmpty
+                      : units.isEmpty
                           ? AppEmptyState(
                               icon: Icons.menu_book_rounded,
                               title: 'No lessons available',
-                              subtitle: 'Check back soon for new content',
+                              subtitle: 'Select a different language or level',
                             )
-                          : OptimizedListView.builder(
+                          : ListView.builder(
                               padding: EdgeInsets.all(PanAfricanSpacing.lg),
-                              itemCount: weeks.value.length,
-                              itemBuilder: (context, index) {
-                                final week = weeks.value[index];
-                                return _WeekCard(
-                                  week: week,
+                              itemCount: units.length,
+                              itemBuilder: (context, unitIndex) {
+                                final unit = units[unitIndex];
+                                return _UnitCard(
+                                  unit: unit,
+                                  unitIndex: unitIndex,
                                   isDark: isDark,
-                                  onTap: () async {
-                                    // Navigate to week details
-                                    if (week['lessons'] != null && (week['lessons'] as List).isNotEmpty) {
-                                      final lessonData = (week['lessons'] as List)[0];
-                                      final lessonId = int.tryParse(
-                                        lessonData['id']?.toString() ?? '',
-                                      );
-                                      if (lessonId == null) return;
-                                      try {
-                                        final sections = await ref
-                                            .read(apiProvider.notifier)
-                                            .getSectionLessons(lessonId);
-                                        if (!context.mounted) return;
-                                        if (sections.isEmpty) {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                              content: Text('No lesson sections available yet.'),
-                                            ),
-                                          );
-                                          return;
-                                        }
-                                        await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => LessonFlowScreen(
-                                              lessonId: lessonId,
-                                              sectionLessons: sections,
-                                              lessonTitle: lessonData['title']?.toString() ?? 'Lesson',
-                                            ),
-                                          ),
-                                        );
-                                      } catch (e) {
-                                        if (!context.mounted) return;
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text(
-                                              'Failed to load lesson content. Please try again.',
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  },
-                                )
-                                    .animate(delay: (index * 50).ms)
+                                  language: selectedLanguage.value,
+                                  level: selectedLevel.value,
+                                  ref: ref,
+                                ).animate(delay: (unitIndex * 60).ms)
                                     .fadeIn(duration: 300.ms)
-                                    .slideY(begin: 0.2);
+                                    .slideY(begin: 0.15);
                               },
                             ),
             ),
@@ -266,87 +212,171 @@ class CurriculumScreenMaterial3 extends HookConsumerWidget {
   }
 }
 
-class _WeekCard extends StatelessWidget {
-  final Map<String, dynamic> week;
+class _UnitCard extends StatelessWidget {
+  final CurriculumUnit unit;
+  final int unitIndex;
+  final bool isDark;
+  final String language;
+  final String level;
+  final WidgetRef ref;
+
+  const _UnitCard({
+    required this.unit,
+    required this.unitIndex,
+    required this.isDark,
+    required this.language,
+    required this.level,
+    required this.ref,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final completedCount = unit.lessons.where((l) {
+      return ref.read(curriculumProvider.notifier).isLessonCompleted(language, level, l.id);
+    }).length;
+    final progress = unit.lessons.isNotEmpty ? completedCount / unit.lessons.length : 0.0;
+
+    return Card(
+      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
+      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(PanAfricanRadius.lg)),
+      child: Padding(
+        padding: EdgeInsets.all(PanAfricanSpacing.lg),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 36.sp,
+                  height: 36.sp,
+                  decoration: BoxDecoration(
+                    color: PanAfricanColors.primary.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    '${unitIndex + 1}',
+                    style: PanAfricanTypography.titleMedium(context).copyWith(
+                      color: PanAfricanColors.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                SizedBox(width: PanAfricanSpacing.sm),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(unit.title, style: PanAfricanTypography.titleMedium(context)),
+                      SizedBox(height: 2),
+                      Text(
+                        '$completedCount / ${unit.lessons.length} lessons',
+                        style: PanAfricanTypography.bodySmall(context).copyWith(
+                          color: isDark ? Colors.grey[400] : Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: PanAfricanSpacing.sm),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: progress,
+                backgroundColor: isDark ? Colors.grey[800] : Colors.grey[300],
+                valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                minHeight: 6.h,
+              ),
+            ),
+            SizedBox(height: PanAfricanSpacing.md),
+            ...unit.lessons.asMap().entries.map((entry) {
+              final lesson = entry.value;
+              final isCompleted = ref.read(curriculumProvider.notifier).isLessonCompleted(language, level, lesson.id);
+              return _LessonTile(
+                lesson: lesson,
+                isCompleted: isCompleted,
+                isDark: isDark,
+                onTap: () async {
+                  final completed = await Navigator.push<bool>(
+                    context,
+                    SmoothPageRoute(
+                      child: LessonDetailScreen(
+                        lesson: lesson,
+                        language: language,
+                        level: level,
+                      ),
+                    ),
+                  );
+                  if (completed == true) {
+                    ref.read(curriculumProvider.notifier).markLessonComplete(language, level, lesson.id);
+                  }
+                },
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LessonTile extends StatelessWidget {
+  final CurriculumLesson lesson;
+  final bool isCompleted;
   final bool isDark;
   final VoidCallback onTap;
 
-  const _WeekCard({
-    required this.week,
+  const _LessonTile({
+    required this.lesson,
+    required this.isCompleted,
     required this.isDark,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final lessons = week['lessons'] as List? ?? [];
-    final completedLessons = lessons.where((l) => l['completed'] == true).length;
-    final progress = lessons.isNotEmpty ? completedLessons / lessons.length : 0.0;
-
-    return Card(
-      margin: EdgeInsets.only(bottom: PanAfricanSpacing.md),
-      color: isDark ? PanAfricanColors.cardDark : PanAfricanColors.cardLight,
-      child: Semantics(
-        label: '${week['title'] ?? 'Week ${week['week']}'}. Progress: $completedLessons out of ${lessons.length} lessons',
-        button: true,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(PanAfricanRadius.lg),
-          child: Padding(
-          padding: EdgeInsets.all(PanAfricanSpacing.lg),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Semantics(
+      label: '${lesson.title}. ${isCompleted ? "Completed" : "Not completed"}',
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(PanAfricanRadius.md),
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            vertical: PanAfricanSpacing.sm,
+            horizontal: PanAfricanSpacing.xs,
+          ),
+          child: Row(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    week['title'] ?? 'Week ${week['week']}',
-                    style: PanAfricanTypography.titleLarge(context),
-                  ),
-                  Chip(
-                    label: Text('$completedLessons/${lessons.length}'),
-                    backgroundColor: PanAfricanColors.primaryContainer.withOpacity(0.3),
-                  ),
-                ],
+              Icon(
+                isCompleted ? Icons.check_circle_rounded : Icons.circle_outlined,
+                color: isCompleted ? PanAfricanColors.success : (isDark ? Colors.grey[500] : Colors.grey[400]),
+                size: 22.sp,
               ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Text(
-                week['description'] ?? '',
-                style: PanAfricanTypography.bodyMedium(context),
-              ),
-              SizedBox(height: PanAfricanSpacing.md),
-              Semantics(
-                label: 'Progress',
-                value: '$completedLessons out of ${lessons.length} lessons completed',
-                child: LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: PanAfricanColors.neutralLight,
-                  valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
-                  minHeight: 8.h,
+              SizedBox(width: PanAfricanSpacing.sm),
+              Expanded(
+                child: Text(
+                  lesson.title,
+                  style: PanAfricanTypography.bodyMedium(context).copyWith(
+                    decoration: isCompleted ? TextDecoration.lineThrough : null,
+                    color: isCompleted
+                        ? (isDark ? Colors.grey[500] : Colors.grey[500])
+                        : null,
+                  ),
                 ),
               ),
-              SizedBox(height: PanAfricanSpacing.sm),
-              Wrap(
-                spacing: PanAfricanSpacing.sm,
-                children: lessons.take(3).map((lesson) {
-                  return Chip(
-                    label: Text(
-                      lesson['title'] ?? 'Lesson',
-                      style: PanAfricanTypography.labelSmall(context),
-                    ),
-                    backgroundColor: lesson['completed'] == true
-                        ? PanAfricanColors.success.withOpacity(0.2)
-                        : PanAfricanColors.neutralLight.withOpacity(0.3),
-                  );
-                }).toList(),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: isDark ? Colors.grey[600] : Colors.grey[400],
+                size: 20.sp,
               ),
             ],
           ),
         ),
       ),
-      ),
     );
   }
 }
-

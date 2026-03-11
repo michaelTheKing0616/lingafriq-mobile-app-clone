@@ -100,7 +100,10 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
       await _cacheLeaderboards();
     } catch (e) {
       logger.error('Error fetching leaderboards', tag: 'leaderboard', error: e);
-      // Fail closed: keep last known cached data (if any). Never fabricate leaderboard entries.
+      // Keep in-memory cache if present; otherwise try local storage fallback (up to 24h old)
+      if (!_cache.containsKey(type) || (_cache[type]?.isEmpty ?? true)) {
+        await _loadLeaderboards(maxAge: const Duration(hours: 24));
+      }
       _cache.putIfAbsent(type, () => []);
       state = state.copyWith(
         errorMessage: 'Unable to load leaderboard right now. Pull to retry.',
@@ -165,14 +168,24 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
                     userDataMap['tribe']?.toString() ?? 
                     entry['tribe']?.toString();
       
+      final avatar = entry['avatar']?.toString() ??
+                     userDataMap['avatar']?.toString() ??
+                     userDataMap['avater']?.toString();
+      final country = entry['nationality']?.toString() ??
+                      userDataMap['nationality']?.toString() ??
+                      entry['country']?.toString() ??
+                      userDataMap['country']?.toString();
+
       return LeaderboardEntry(
         userId: userId,
         username: username,
+        avatar: avatar,
         xp: xp,
         level: level,
         levelTitle: levelTitle,
         dailyStreak: dailyStreak,
         tribe: tribe,
+        country: country,
         rank: (entry['rank'] ?? entry['position'] ?? 0).toInt(),
       );
     }).toList();
@@ -182,6 +195,32 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
   int _calculateLevelFromXP(int xp) {
     // Simple level calculation: level = sqrt(xp / 100)
     return math.sqrt(xp / 100).floor().clamp(1, 999);
+  }
+
+  Map<String, dynamic>? _userRanks;
+  Map<String, dynamic>? get userRanks => _userRanks;
+
+  /// Fetch user's ranks across all global leaderboard periods
+  Future<void> fetchUserRanks(String userId) async {
+    try {
+      final leaderboardsService = ref.read(leaderboardsServiceProvider);
+      final data = await leaderboardsService.getUserRanks(userId);
+      final ranks = data['ranks'];
+      if (ranks is List) {
+        final result = <String, dynamic>{};
+        for (final r in ranks) {
+          if (r is Map) {
+            result[r['leaderboard_id']?.toString() ?? ''] = {
+              'rank': r['rank'],
+              'score': r['score'],
+            };
+          }
+        }
+        _userRanks = result;
+      }
+    } catch (e) {
+      logger.error('Error fetching user ranks', tag: 'leaderboard', error: e);
+    }
   }
 
   /// Get user's rank
@@ -232,8 +271,9 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
     }
   }
 
-  /// Load leaderboards from local cache
-  Future<void> _loadLeaderboards() async {
+  /// Load leaderboards from local cache.
+  /// [maxAge] controls how old stored data can be before it's ignored.
+  Future<void> _loadLeaderboards({Duration maxAge = const Duration(hours: 1)}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
       final cachedData = prefs.getString('leaderboard_cache');
@@ -242,10 +282,9 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
         final cacheTimestamp = decoded['timestamp'] as int?;
         final cacheAge = cacheTimestamp != null 
             ? DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(cacheTimestamp))
-            : const Duration(days: 1);
+            : const Duration(days: 365);
         
-        // Only use cached data if it's less than 1 hour old
-        if (cacheAge.inHours < 1 && decoded['data'] is Map) {
+        if (cacheAge < maxAge && decoded['data'] is Map) {
           final data = decoded['data'] as Map<String, dynamic>;
           for (var entry in data.entries) {
             final type = LeaderboardType.values.firstWhere(
@@ -253,20 +292,18 @@ class LeaderboardProvider extends Notifier<BaseProviderState>
               orElse: () => LeaderboardType.global,
             );
             if (entry.value is List) {
-              _cache[type] = _parseLeaderboardEntries(entry.value as List);
+              _cache.putIfAbsent(type, () => _parseLeaderboardEntries(entry.value as List));
             }
           }
         }
       }
     } catch (e) {
       logger.error('Error loading cached leaderboards', tag: 'leaderboard', error: e);
-      // Continue without cache - will fetch fresh data on next request
     }
   }
 
-  /// Refresh leaderboards
+  /// Refresh leaderboards — invalidates freshness but keeps stale cache as fallback
   Future<void> refresh() async {
-    _cache.clear();
     _lastFetch = null;
     await fetchLeaderboards();
   }

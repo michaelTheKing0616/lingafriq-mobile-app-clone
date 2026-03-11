@@ -73,7 +73,11 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
       ),
       body: isLoading.value
           ? Center(child: CircularProgressIndicator())
-          : Column(
+          : RefreshIndicator(
+              onRefresh: () => _loadPersonalities(
+                context, personalityService, personalities, isLoading,
+              ),
+              child: Column(
               children: [
                 if (personalities.value.length < 26)
                   Container(
@@ -177,9 +181,34 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                 Expanded(
                   child: filteredPersonalities.isEmpty
                       ? Center(
-                          child: Text(
-                            'No personalities found',
-                            style: PanAfricanTypography.bodyLarge(context),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.people_outline, size: 48, color: Colors.grey),
+                              SizedBox(height: PanAfricanSpacing.md),
+                              Text(
+                                personalities.value.isEmpty
+                                    ? 'No personalities available yet'
+                                    : 'No matching personalities',
+                                style: PanAfricanTypography.bodyLarge(context),
+                              ),
+                              if (personalities.value.isEmpty) ...[
+                                SizedBox(height: PanAfricanSpacing.sm),
+                                Text(
+                                  'The personality catalog may need to be synced.',
+                                  style: PanAfricanTypography.bodySmall(context),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: PanAfricanSpacing.md),
+                                FilledButton.icon(
+                                  onPressed: () => _loadPersonalities(
+                                    context, personalityService, personalities, isLoading,
+                                  ),
+                                  icon: const Icon(Icons.refresh),
+                                  label: const Text('Retry'),
+                                ),
+                              ],
+                            ],
                           ),
                         )
                       : OptimizedListView(
@@ -206,6 +235,7 @@ class PersonalitySelectionScreen extends HookConsumerWidget {
                 ),
               ],
             ),
+          ),
     );
   }
 

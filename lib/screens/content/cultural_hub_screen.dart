@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lingafriq/utils/polie_design_tokens.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:dio/dio.dart';
-import 'package:lingafriq/config/api_contract.dart';
+import 'package:lingafriq/utils/api_service.dart';
+import 'package:lingafriq/utils/api.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 /// Cultural Content Hub Screen
@@ -29,6 +29,7 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
   List<CulturalContent> _allContent = [];
   final Map<String, bool> _completedItems = {};
   bool _isLoading = true;
+  bool _hasError = false;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
@@ -47,14 +48,17 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
   }
 
   Future<void> _loadContent() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+    });
     
     try {
-      final fromApi = await _fetchCulturalContent();
-      _allContent = fromApi.isNotEmpty ? fromApi : _getDefaultContent();
+      _allContent = await _fetchCulturalContent();
     } catch (e) {
       debugPrint('Error loading cultural content: $e');
-      _allContent = _getDefaultContent();
+      _allContent = [];
+      _hasError = true;
     }
     
     setState(() => _isLoading = false);
@@ -62,27 +66,27 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
 
   Future<List<CulturalContent>> _fetchCulturalContent() async {
     final language = widget.language ?? 'sw';
-    final response = await Dio().get(
-      '${ApiContract.baseUrl}/api/content/cultural',
+    final response = await ApiService.get(
+      Api.cultureArticles(published: true),
       queryParameters: {
         'language': language,
-        'limit': 60,
       },
-      options: Options(receiveTimeout: const Duration(seconds: 20)),
     );
 
-    final payload = response.data;
-    if (payload is! Map || payload['content'] is! List) return const [];
-    final list = (payload['content'] as List)
-        .whereType<Map>()
-        .map((raw) => Map<String, dynamic>.from(raw))
-        .toList();
+    final raw = response.data;
+    final dynamic listCandidate = raw is Map
+        ? (raw['data'] ?? raw['results'] ?? raw['articles'] ?? raw['content'])
+        : raw;
 
-    return list
-        .map((item) {
+    if (listCandidate is! List) return const [];
+
+    return listCandidate
+        .whereType<Map>()
+        .map((raw) {
+          final item = Map<String, dynamic>.from(raw);
           final id = (item['_id'] ?? item['id'])?.toString();
           final title = item['title']?.toString();
-          final body = item['content']?.toString();
+          final body = (item['content'] ?? item['excerpt'])?.toString();
           if (id == null || title == null || body == null) return null;
           final tags = item['tags'] is List ? List<String>.from(item['tags']) : const <String>[];
           return CulturalContent(
@@ -132,138 +136,6 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
       _completedItems[itemId] = true;
     });
     // Save completion status
-  }
-
-  List<CulturalContent> _getDefaultContent() {
-    return [
-      // Stories
-      CulturalContent(
-        id: 'story_1',
-        type: CulturalContentType.story,
-        title: 'The Wise Tortoise',
-        description: 'A traditional African folktale about wisdom and patience',
-        content: 'Long ago, in the heart of Africa, there lived a wise tortoise...',
-        vocabulary: ['tortoise', 'wisdom', 'patience', 'journey'],
-        xpReward: 50,
-        language: widget.language ?? 'sw',
-      ),
-      CulturalContent(
-        id: 'story_2',
-        type: CulturalContentType.story,
-        title: 'The Lion and the Mouse',
-        description: 'A story teaching the value of kindness',
-        content: 'A lion was sleeping when a mouse ran over him...',
-        vocabulary: ['lion', 'mouse', 'kindness', 'help'],
-        xpReward: 50,
-        language: widget.language ?? 'sw',
-      ),
-      
-      // Proverbs
-      CulturalContent(
-        id: 'proverb_1',
-        type: CulturalContentType.proverb,
-        title: 'Unity is Strength',
-        description: 'Swahili: "Umoja ni nguvu"',
-        content: 'This proverb emphasizes that working together makes us stronger.',
-        vocabulary: ['unity', 'strength', 'together'],
-        xpReward: 30,
-        language: widget.language ?? 'sw',
-        translation: 'Unity is strength',
-        culturalContext: 'Commonly used to encourage cooperation in communities.',
-      ),
-      CulturalContent(
-        id: 'proverb_2',
-        type: CulturalContentType.proverb,
-        title: 'Slow and Steady Wins',
-        description: 'Yoruba: "A kì í rí ìgbà tí a kò ní rí ìgbà"',
-        content: 'Patience and persistence lead to success.',
-        vocabulary: ['patience', 'success', 'persistence'],
-        xpReward: 30,
-        language: widget.language ?? 'yo',
-        translation: 'There is no time we won\'t see time',
-        culturalContext: 'Encourages patience in achieving goals.',
-      ),
-      
-      // Music
-      CulturalContent(
-        id: 'music_1',
-        type: CulturalContentType.music,
-        title: 'Jambo Bwana',
-        description: 'Popular Swahili greeting song',
-        content: 'Jambo, jambo bwana\nHabari gani, mzuri sana...',
-        vocabulary: ['jambo', 'bwana', 'habari', 'sana'],
-        xpReward: 40,
-        language: widget.language ?? 'sw',
-        lyrics: 'Jambo, jambo bwana\nHabari gani, mzuri sana\nWageni, mwakaribishwa\nKenya yetu, hakuna matata',
-        translation: 'Hello, hello sir\nHow are you, very well\nGuests, you are welcome\nOur Kenya, no worries',
-      ),
-      
-      // Traditions
-      CulturalContent(
-        id: 'tradition_1',
-        type: CulturalContentType.tradition,
-        title: 'Greeting Customs',
-        description: 'Learn proper greeting etiquette in African cultures',
-        content: 'Greetings are very important in African cultures. In many communities, you greet elders first...',
-        vocabulary: ['greeting', 'elder', 'respect', 'custom'],
-        xpReward: 40,
-        language: widget.language ?? 'sw',
-      ),
-      CulturalContent(
-        id: 'tradition_2',
-        type: CulturalContentType.tradition,
-        title: 'Naming Ceremonies',
-        description: 'Understanding naming traditions across Africa',
-        content: 'Naming ceremonies are significant events in many African cultures...',
-        vocabulary: ['naming', 'ceremony', 'tradition', 'celebration'],
-        xpReward: 40,
-        language: widget.language ?? 'sw',
-      ),
-      
-      // Food
-      CulturalContent(
-        id: 'food_1',
-        type: CulturalContentType.food,
-        title: 'Jollof Rice',
-        description: 'West African staple dish',
-        content: 'Jollof rice is a beloved dish across West Africa. It\'s made with rice, tomatoes, and spices...',
-        vocabulary: ['rice', 'tomato', 'spice', 'dish'],
-        xpReward: 35,
-        language: widget.language ?? 'pcm',
-      ),
-      CulturalContent(
-        id: 'food_2',
-        type: CulturalContentType.food,
-        title: 'Injera',
-        description: 'Ethiopian sourdough flatbread',
-        content: 'Injera is a traditional Ethiopian flatbread made from teff flour...',
-        vocabulary: ['bread', 'flour', 'traditional', 'flatbread'],
-        xpReward: 35,
-        language: widget.language ?? 'am',
-      ),
-      
-      // History
-      CulturalContent(
-        id: 'history_1',
-        type: CulturalContentType.history,
-        title: 'Ancient Kingdoms',
-        description: 'Great African empires and kingdoms',
-        content: 'Africa was home to many powerful kingdoms including Mali, Ghana, and Songhai...',
-        vocabulary: ['kingdom', 'empire', 'ancient', 'power'],
-        xpReward: 45,
-        language: widget.language ?? 'sw',
-      ),
-      CulturalContent(
-        id: 'history_2',
-        type: CulturalContentType.history,
-        title: 'Trade Routes',
-        description: 'Historical trade networks across Africa',
-        content: 'Africa had extensive trade networks connecting different regions...',
-        vocabulary: ['trade', 'network', 'route', 'exchange'],
-        xpReward: 45,
-        language: widget.language ?? 'sw',
-      ),
-    ];
   }
 
   List<CulturalContent> _getContentByType(CulturalContentType type) {
@@ -383,21 +255,83 @@ class _CulturalHubScreenState extends ConsumerState<CulturalHubScreen>
 
   Widget _buildContentList(CulturalContentType type) {
     final content = _getContentByType(type);
-    
+
+    if (_hasError && content.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: EdgeInsets.all(PolieSpacing.xl),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline_rounded, size: 64.sp, color: PolieColors.error),
+              SizedBox(height: PolieSpacing.md),
+              Text(
+                'Failed to load content',
+                style: PolieTypography.h3(context).copyWith(
+                  color: PolieColors.textPrimary,
+                ),
+              ),
+              SizedBox(height: PolieSpacing.sm),
+              Text(
+                'Check your connection and try again',
+                style: PolieTypography.body(context).copyWith(
+                  color: PolieColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: PolieSpacing.lg),
+              TextButton.icon(
+                onPressed: _loadContent,
+                icon: Icon(Icons.refresh_rounded, color: PolieColors.electricTeal),
+                label: Text(
+                  'Retry',
+                  style: PolieTypography.label(context).copyWith(
+                    color: PolieColors.electricTeal,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (content.isEmpty) {
       return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.inbox_outlined, size: 64.sp, color: PolieColors.textSecondary),
-            SizedBox(height: PolieSpacing.md),
-            Text(
-              'No content available',
-              style: PolieTypography.h3(context).copyWith(
-                color: PolieColors.textSecondary,
+        child: Padding(
+          padding: EdgeInsets.all(PolieSpacing.xl),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.inbox_outlined, size: 64.sp, color: PolieColors.textSecondary),
+              SizedBox(height: PolieSpacing.md),
+              Text(
+                'No cultural content available',
+                style: PolieTypography.h3(context).copyWith(
+                  color: PolieColors.textSecondary,
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: PolieSpacing.sm),
+              Text(
+                'Pull to refresh or check back soon',
+                style: PolieTypography.body(context).copyWith(
+                  color: PolieColors.textSecondary,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: PolieSpacing.lg),
+              TextButton.icon(
+                onPressed: _loadContent,
+                icon: Icon(Icons.refresh_rounded, color: PolieColors.electricTeal),
+                label: Text(
+                  'Retry',
+                  style: PolieTypography.label(context).copyWith(
+                    color: PolieColors.electricTeal,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }

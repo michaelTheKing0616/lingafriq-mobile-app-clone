@@ -15,6 +15,23 @@ import 'package:lingafriq/widgets/primary_button.dart';
 import 'package:lingafriq/services/user_generated_content_service.dart';
 import 'package:lingafriq/utils/supported_languages.dart';
 
+/// Extracts an ID string from a map, checking both '_id' and 'id' keys.
+String? _extractId(Map<String, dynamic>? m) {
+  if (m == null) return null;
+  final v = m['_id'] ?? m['id'];
+  if (v == null) return null;
+  final s = v.toString().trim();
+  return s.isEmpty ? null : s;
+}
+
+/// Extracts media ID from upload response. Handles multiple backend response shapes.
+String? _extractMediaIdFromUploadResponse(dynamic data) {
+  if (data is! Map<String, dynamic>) return null;
+  final inner = data['data'] as Map<String, dynamic>?;
+  final media = data['media'] as Map<String, dynamic>?;
+  return _extractId(inner) ?? _extractId(media) ?? _extractId(data);
+}
+
 /// Enhanced Import Media Screen with Transcription Preview, Lesson Generation Preview, Edit/Customize
 class ImportMediaScreenEnhanced extends HookConsumerWidget {
   const ImportMediaScreenEnhanced({super.key});
@@ -30,6 +47,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     final isGeneratingLesson = useState(false);
     final showTranscriptionPreview = useState(false);
     final showLessonPreview = useState(false);
+    final uploadProgress = useState(0.0);
 
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -61,8 +79,9 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
     }
 
     Future<void> pollTranscription(String mediaId) async {
-      for (int i = 0; i < 30; i++) {
-        await Future.delayed(Duration(seconds: 2));
+      const maxAttempts = 45; // 45 x 2s = 90 seconds max
+      for (int i = 0; i < maxAttempts; i++) {
+        await Future.delayed(const Duration(seconds: 2));
         try {
           final response = await ApiService.get(Api.mediaDetails(mediaId));
 
@@ -75,15 +94,16 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                 'mediaId': mediaId,
               };
               showTranscriptionPreview.value = true;
-              break;
+              return;
             } else if (media['processing_status'] == 'failed') {
               throw Exception('Transcription failed');
             }
           }
         } catch (e) {
-          // Continue polling
+          if (e.toString().contains('Transcription failed')) rethrow;
         }
       }
+      throw Exception('Transcription timed out after ${maxAttempts * 2} seconds. Please try again.');
     }
 
     Future<void> uploadAndTranscribe() async {
@@ -93,6 +113,7 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
       }
 
       isUploading.value = true;
+      uploadProgress.value = 0.0;
       try {
         // Validate language via allowlist (treat input as hostile).
         final lang = selectedLanguage.value.toLowerCase().trim();
@@ -108,11 +129,23 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
             'title': selectedFile.value!.name,
             'language': lang,
           },
+          onSendProgress: (sent, total) {
+            if (total > 0) {
+              uploadProgress.value = sent / total;
+            }
+          },
         );
 
         if (uploadResponse.statusCode == 200) {
-          final mediaId = uploadResponse.data['data']['_id'];
-          
+          final data = uploadResponse.data;
+          final mediaId = _extractMediaIdFromUploadResponse(data);
+          if (mediaId == null || mediaId.isEmpty) {
+            throw Exception(
+              'Upload succeeded but backend did not return a media ID. '
+              'Expected: data.data._id, data.data.id, data._id, data.id, data.media._id, or data.media.id.',
+            );
+          }
+
           // Start transcription
           isTranscribing.value = true;
           final transcribeResponse = await ApiService.post(
@@ -304,6 +337,28 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                         )
                       : null,
                 ),
+                if (isUploading.value) ...[
+                  SizedBox(height: PanAfricanSpacing.md),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(PanAfricanRadius.sm),
+                    child: LinearProgressIndicator(
+                      value: uploadProgress.value,
+                      minHeight: 6,
+                      backgroundColor: isDark
+                          ? PanAfricanColors.surfaceContainerDark
+                          : PanAfricanColors.surfaceContainerLight,
+                      valueColor: AlwaysStoppedAnimation<Color>(PanAfricanColors.primary),
+                    ),
+                  ),
+                  SizedBox(height: PanAfricanSpacing.xs),
+                  Text(
+                    '${(uploadProgress.value * 100).toInt()}% uploaded',
+                    style: PanAfricanTypography.labelSmall(context).copyWith(
+                      color: PanAfricanColors.primary,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
                 SizedBox(height: PanAfricanSpacing.xl),
 
                 // Transcription Preview
@@ -606,11 +661,15 @@ class ImportMediaScreenEnhanced extends HookConsumerWidget {
                           );
 
                           if (result != null) {
-                            if (transcriptionResult.value?['mediaId'] != null) {
+                            final lessonId = _extractId(result);
+                            if (lessonId != null &&
+                                transcriptionResult.value?['mediaId'] != null) {
                               try {
                                 await ApiService.post(
-                                  'media/${transcriptionResult.value!['mediaId']}/link-lesson',
-                                  data: {'lesson_id': result['id']},
+                                  Api.mediaLinkLesson(
+                                    transcriptionResult.value!['mediaId'],
+                                  ),
+                                  data: {'lesson_id': lessonId},
                                 );
                               } catch (e) {
                                 debugPrint('Failed to link media to lesson: $e');

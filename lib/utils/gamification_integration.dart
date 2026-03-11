@@ -7,6 +7,7 @@ import '../providers/hearts_provider.dart';
 import '../providers/gamification_provider.dart';
 import '../providers/api_provider.dart';
 import '../providers/user_provider.dart';
+import '../models/user_gamification_model.dart';
 import '../widgets/gamification/xp_gain_overlay.dart';
 import '../services/sound_effects_service.dart';
 import '../services/rive_gamification_service.dart';
@@ -57,14 +58,25 @@ class _GamificationHelper {
     }
   }
 
-  /// Call when a lesson is completed
+  /// Call when a lesson is completed.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
   Future<void> onLessonComplete({
     required int xpEarned,
     int wordsLearned = 0,
     int timeSpentMinutes = 0,
+    String? sourceId,
   }) async {
     debugPrint('[Gamification] Lesson complete: XP=$xpEarned, words=$wordsLearned');
-    
+
+    final source = 'lesson_complete';
+    final uniqueSourceId = sourceId ?? '${source}_${DateTime.now().millisecondsSinceEpoch}';
+    final baseXP = XPSources.getXP(source);
+    await _ref.read(gamificationProvider.notifier).awardXP(
+      source,
+      multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+      sourceId: uniqueSourceId,
+    );
+
     // React with Rive
     _ref.read(riveGamificationServiceProvider).reactToLessonComplete();
     _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
@@ -121,15 +133,26 @@ class _GamificationHelper {
     }
   }
 
-  /// Call when a quiz is completed
+  /// Call when a quiz is completed.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
   Future<void> onQuizComplete({
     required int score,
     required int xpEarned,
     bool isPerfect = false,
     int wordsLearned = 0,
+    String? sourceId,
   }) async {
     debugPrint('[Gamification] Quiz complete: score=$score, XP=$xpEarned, perfect=$isPerfect');
-    
+
+    final source = 'quiz_complete';
+    final uniqueSourceId = sourceId ?? '${source}_${DateTime.now().millisecondsSinceEpoch}';
+    final baseXP = XPSources.getXP(source);
+    await _ref.read(gamificationProvider.notifier).awardXP(
+      source,
+      multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+      sourceId: uniqueSourceId,
+    );
+
     // React with Rive
     _ref.read(riveGamificationServiceProvider).reactToQuizComplete(isPerfect: isPerfect);
     _ref.read(riveGamificationServiceProvider).reactToXPGain(xpEarned);
@@ -182,14 +205,25 @@ class _GamificationHelper {
     _syncMilestoneStats(newStats);
   }
 
-  /// Call when a game is completed
+  /// Call when a game is completed.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
   Future<void> onGameComplete({
     required int xpEarned,
     int wordsLearned = 0,
     double? accuracy,
+    String? sourceId,
   }) async {
     debugPrint('[Gamification] Game complete: XP=$xpEarned');
-    
+
+    final source = 'game_complete';
+    final uniqueSourceId = sourceId ?? '${source}_${DateTime.now().millisecondsSinceEpoch}';
+    final baseXP = XPSources.getXP(source);
+    await _ref.read(gamificationProvider.notifier).awardXP(
+      source,
+      multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+      sourceId: uniqueSourceId,
+    );
+
     // React with Rive
     if (accuracy != null) {
       _ref.read(riveGamificationServiceProvider).reactToGameComplete(accuracy: accuracy);
@@ -235,11 +269,21 @@ class _GamificationHelper {
     _syncMilestoneStats(newStats);
   }
 
-  /// Call when words are learned
-  Future<void> onWordsLearned({required int count, int xpEarned = 0}) async {
+  /// Call when words are learned.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
+  Future<void> onWordsLearned({required int count, int xpEarned = 0, String? sourceId}) async {
     debugPrint('[Gamification] Words learned: count=$count');
     
     if (xpEarned > 0) {
+      final source = 'lesson_complete';
+      final uniqueSourceId = sourceId ?? 'words_learned_${DateTime.now().millisecondsSinceEpoch}';
+      final baseXP = XPSources.getXP(source);
+      await _ref.read(gamificationProvider.notifier).awardXP(
+        source,
+        multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+        sourceId: uniqueSourceId,
+      );
+
       showXPGain(_ref, amount: xpEarned, source: 'Words Learned');
       _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.xpEarned, xpEarned);
       _ref.read(leagueProvider.notifier).addWeeklyXP(xpEarned);
@@ -263,11 +307,21 @@ class _GamificationHelper {
     _syncMilestoneStats(newStats);
   }
 
-  /// Call when sending a message to Polie
-  Future<void> onPolieMessage({int xpEarned = 5}) async {
+  /// Call when sending a message to Polie.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
+  Future<void> onPolieMessage({int xpEarned = 5, String? sourceId}) async {
     debugPrint('[Gamification] Polie message sent');
     
     if (xpEarned > 0) {
+      final source = 'ai_chat_5min';
+      final uniqueSourceId = sourceId ?? 'polie_msg_${DateTime.now().millisecondsSinceEpoch}';
+      final baseXP = XPSources.getXP(source);
+      await _ref.read(gamificationProvider.notifier).awardXP(
+        source,
+        multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+        sourceId: uniqueSourceId,
+      );
+
       showXPGain(_ref, amount: xpEarned, source: 'AI Chat');
       _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
     }
@@ -293,10 +347,20 @@ class _GamificationHelper {
     _syncMilestoneStats(newStats);
   }
 
-  /// Call when completing a story chapter
-  Future<void> onStoryChapterComplete({required int xpEarned}) async {
+  /// Call when completing a story chapter.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
+  Future<void> onStoryChapterComplete({required int xpEarned, String? sourceId}) async {
     debugPrint('[Gamification] Story chapter complete: XP=$xpEarned');
-    
+
+    final source = 'story_quest_milestone';
+    final uniqueSourceId = sourceId ?? 'story_chapter_${DateTime.now().millisecondsSinceEpoch}';
+    final baseXP = XPSources.getXP(source);
+    await _ref.read(gamificationProvider.notifier).awardXP(
+      source,
+      multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+      sourceId: uniqueSourceId,
+    );
+
     showXPGain(_ref, amount: xpEarned, source: 'Story Chapter');
     
     _ref.read(dailyChallengesProvider.notifier).updateProgress(ChallengeType.storyChapters, 1);
@@ -320,11 +384,21 @@ class _GamificationHelper {
     _syncMilestoneStats(newStats);
   }
 
-  /// Call when reading cultural content
-  Future<void> onCulturalContentRead({int xpEarned = 10}) async {
+  /// Call when reading cultural content.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
+  Future<void> onCulturalContentRead({int xpEarned = 10, String? sourceId}) async {
     debugPrint('[Gamification] Cultural content read');
     
     if (xpEarned > 0) {
+      final uniqueSourceId = sourceId ?? 'cultural_read_${DateTime.now().millisecondsSinceEpoch}';
+      final source = 'lesson_complete';
+      final baseXP = XPSources.getXP(source);
+      await _ref.read(gamificationProvider.notifier).awardXP(
+        source,
+        multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+        sourceId: uniqueSourceId,
+      );
+
       showXPGain(_ref, amount: xpEarned, source: 'Cultural Article');
       _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
     }
@@ -338,11 +412,21 @@ class _GamificationHelper {
     _syncChallengeProgress('xpEarned', xpEarned);
   }
 
-  /// Call when submitting a voice recording
-  Future<void> onVoiceRecording({int xpEarned = 15}) async {
+  /// Call when submitting a voice recording.
+  /// [sourceId] uniquely identifies this event for backend deduplication.
+  Future<void> onVoiceRecording({int xpEarned = 15, String? sourceId}) async {
     debugPrint('[Gamification] Voice recording submitted');
     
     if (xpEarned > 0) {
+      final uniqueSourceId = sourceId ?? 'voice_recording_${DateTime.now().millisecondsSinceEpoch}';
+      final source = 'record_native_phrase';
+      final baseXP = XPSources.getXP(source);
+      await _ref.read(gamificationProvider.notifier).awardXP(
+        source,
+        multiplier: baseXP > 0 ? xpEarned / baseXP : 1.0,
+        sourceId: uniqueSourceId,
+      );
+
       showXPGain(_ref, amount: xpEarned, source: 'Voice Contribution');
       _ref.read(apiProvider.notifier).addLeagueXP(xpEarned);
     }

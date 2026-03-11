@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lingafriq/models/badge_model.dart';
+import 'package:lingafriq/providers/gamification_provider.dart';
 import 'package:lingafriq/utils/pan_african_design_system.dart';
 import 'package:lingafriq/utils/performance_utils.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -16,9 +18,14 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
     final selectedCategory = useState<String?>(null);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Mock data - replace with actual provider
-    final allBadges = useState<List<Map<String, dynamic>>>([]);
-    final unlockedBadges = useState<Set<String>>({});
+    // Watch gamification state for reactive updates when badges are unlocked
+    ref.watch(gamificationProvider);
+    final gamificationNotifier = ref.read(gamificationProvider.notifier);
+
+    final allBadgeMaps = useMemoized(
+      () => BadgeDefinitions.getAllBadges().map((b) => b.toJson()).toList(),
+    );
+    final unlockedBadgeIds = gamificationNotifier.gamification.unlockedBadges.toSet();
 
     final categories = ['All', 'Learning', 'Streak', 'Community', 'Achievement'];
 
@@ -52,7 +59,7 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
             ),
             child: Center(
               child: Text(
-                '${unlockedBadges.value.length}/${allBadges.value.length}',
+                '${unlockedBadgeIds.length}/${allBadgeMaps.length}',
                 style: PanAfricanTypography.titleMedium(context, color: PanAfricanColors.secondary),
               ),
             ),
@@ -100,7 +107,7 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
 
           // Badge Grid
           Expanded(
-            child: allBadges.value.isEmpty
+            child: allBadgeMaps.isEmpty
                 ? Center(
                     child: Padding(
                       padding: EdgeInsets.all(PanAfricanSpacing.lg),
@@ -145,10 +152,10 @@ class BadgeCollectionScreenMaterial3 extends HookConsumerWidget {
                       mainAxisSpacing: PanAfricanSpacing.md,
                       childAspectRatio: 0.85,
                     ),
-                    itemCount: allBadges.value.length,
+                    itemCount: allBadgeMaps.length,
                     itemBuilder: (context, index) {
-                      final badge = allBadges.value[index];
-                      final isUnlocked = unlockedBadges.value.contains(badge['id']);
+                      final badge = allBadgeMaps[index];
+                      final isUnlocked = unlockedBadgeIds.contains(badge['id']);
 
                       return _BadgeCard(
                         badge: badge,

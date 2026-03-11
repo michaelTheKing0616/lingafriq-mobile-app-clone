@@ -1894,7 +1894,7 @@ class ApiProvider extends Notifier<BaseProviderState> with BaseProviderMixin {
           : '?${queryParams.entries.map((e) => '${e.key}=${e.value}').join('&')}';
       
       final res = await ref.read(client).get(
-        ApiContract.url('$_userContentBase/content$queryString'),
+        ApiContract.url('$_userContentBase$queryString'),
       );
       if (res.statusCode == 200) {
         if (res.data is List) {

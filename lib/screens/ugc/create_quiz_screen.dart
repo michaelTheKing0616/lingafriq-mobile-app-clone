@@ -250,12 +250,11 @@ class _QuestionEditor extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final questionController = useTextEditingController(text: question['question'] ?? '');
-    final optionControllers = useMemoized(() => [
-      useTextEditingController(text: question['options']?[0] ?? ''),
-      useTextEditingController(text: question['options']?[1] ?? ''),
-      useTextEditingController(text: question['options']?[2] ?? ''),
-      useTextEditingController(text: question['options']?[3] ?? ''),
-    ]);
+    final option0Controller = useTextEditingController(text: question['options']?[0] ?? '');
+    final option1Controller = useTextEditingController(text: question['options']?[1] ?? '');
+    final option2Controller = useTextEditingController(text: question['options']?[2] ?? '');
+    final option3Controller = useTextEditingController(text: question['options']?[3] ?? '');
+    final optionControllers = [option0Controller, option1Controller, option2Controller, option3Controller];
     final correctAnswer = useState(question['correctAnswer'] ?? 0);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 

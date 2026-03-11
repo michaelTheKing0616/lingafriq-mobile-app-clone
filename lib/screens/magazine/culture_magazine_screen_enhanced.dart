@@ -414,13 +414,33 @@ class _ArticleCard extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                    Center(
-                      child: Icon(
-                        Icons.article,
-                        size: 48.sp,
-                        color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                    if (article['imageUrl'] != null && (article['imageUrl'] as String).isNotEmpty)
+                      ClipRRect(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(PanAfricanRadius.lg),
+                        ),
+                        child: Image.network(
+                          article['imageUrl'] as String,
+                          width: double.infinity,
+                          height: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => Center(
+                            child: Icon(
+                              Icons.article,
+                              size: 48.sp,
+                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      Center(
+                        child: Icon(
+                          Icons.article,
+                          size: 48.sp,
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                        ),
                       ),
-                    ),
                     Positioned(
                       top: PanAfricanSpacing.xs,
                       right: PanAfricanSpacing.xs,

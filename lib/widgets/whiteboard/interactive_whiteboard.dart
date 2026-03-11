@@ -8,12 +8,18 @@ import '../../utils/pan_african_design_system.dart';
 class InteractiveWhiteboard extends StatefulWidget {
   final String? roomId;
   final Function(List<DrawingPoint>)? onDrawingUpdate;
+  final void Function(List<DrawingPoint>)? onStrokeComplete;
+  final VoidCallback? onBoardCleared;
+  final WhiteboardController? controller;
   final List<DrawingPoint>? initialDrawing;
 
   const InteractiveWhiteboard({
     super.key,
     this.roomId,
     this.onDrawingUpdate,
+    this.onStrokeComplete,
+    this.onBoardCleared,
+    this.controller,
     this.initialDrawing,
   });
 
@@ -26,6 +32,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
   Color _currentColor = PanAfricanColors.primary;
   double _strokeWidth = 3.0;
   bool _isErasing = false;
+  int _strokeStartIndex = 0;
   final GlobalKey _repaintKey = GlobalKey();
 
   @override
@@ -34,9 +41,39 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
     if (widget.initialDrawing != null) {
       _points.addAll(widget.initialDrawing!);
     }
+    widget.controller?.addListener(_onControllerUpdate);
+  }
+
+  @override
+  void didUpdateWidget(InteractiveWhiteboard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller?.removeListener(_onControllerUpdate);
+      widget.controller?.addListener(_onControllerUpdate);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller?.removeListener(_onControllerUpdate);
+    super.dispose();
+  }
+
+  void _onControllerUpdate() {
+    final controller = widget.controller;
+    if (controller == null) return;
+    if (controller.consumeClearRequest()) {
+      setState(() => _points.clear());
+      return;
+    }
+    final incoming = controller.consumeIncomingPoints();
+    if (incoming != null && incoming.isNotEmpty) {
+      setState(() => _points.addAll(incoming));
+    }
   }
 
   void _onPanStart(DragStartDetails details) {
+    _strokeStartIndex = _points.length;
     setState(() {
       _points.add(DrawingPoint(
         point: details.localPosition,
@@ -62,6 +99,9 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
 
   void _onPanEnd(DragEndDetails details) {
     _notifyUpdate();
+    if (_strokeStartIndex < _points.length) {
+      widget.onStrokeComplete?.call(_points.sublist(_strokeStartIndex));
+    }
   }
 
   void _notifyUpdate() {
@@ -75,6 +115,7 @@ class _InteractiveWhiteboardState extends State<InteractiveWhiteboard> {
       _points.clear();
     });
     _notifyUpdate();
+    widget.onBoardCleared?.call();
     HapticFeedback.mediumImpact();
   }
 
@@ -310,6 +351,39 @@ class WhiteboardPainter extends CustomPainter {
   @override
   bool shouldRepaint(WhiteboardPainter oldDelegate) {
     return oldDelegate.points.length != points.length;
+  }
+}
+
+/// Controller for receiving remote whiteboard updates via LiveKit data channel.
+///
+/// The parent widget pushes incoming remote drawing data through this controller,
+/// and the [InteractiveWhiteboard] listens and renders it.
+class WhiteboardController extends ChangeNotifier {
+  List<DrawingPoint>? _incomingPoints;
+  bool _clearRequested = false;
+
+  List<DrawingPoint>? consumeIncomingPoints() {
+    final pts = _incomingPoints;
+    _incomingPoints = null;
+    return pts;
+  }
+
+  bool consumeClearRequest() {
+    final val = _clearRequested;
+    _clearRequested = false;
+    return val;
+  }
+
+  void addRemotePoints(List<DrawingPoint> points) {
+    _incomingPoints = points;
+    _clearRequested = false;
+    notifyListeners();
+  }
+
+  void remoteClear() {
+    _clearRequested = true;
+    _incomingPoints = null;
+    notifyListeners();
   }
 }
 

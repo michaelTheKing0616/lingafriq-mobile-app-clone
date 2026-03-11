@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:lingafriq/utils/transport_error_policy.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
@@ -122,25 +123,26 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
     }
   }
 
-  Future<void> _playAudio(String? url) async {
+  final FlutterTts _tts = FlutterTts();
+
+  Future<void> _playAudio(String? url, {String? fallbackText}) async {
     final resolved = resolveMediaUrl(url);
-    if (resolved == null || resolved.isEmpty) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Audio is unavailable for this word right now.')),
-        );
+    if (resolved != null && resolved.isNotEmpty) {
+      try {
+        await _audioPlayer.setUrl(resolved);
+        await _audioPlayer.play();
+        return;
+      } catch (e) {
+        debugPrint('Audio URL playback failed, trying TTS: $e');
       }
-      return;
     }
-    try {
-      await _audioPlayer.setUrl(resolved);
-      await _audioPlayer.play();
-    } catch (e) {
-      debugPrint('Error playing audio: $e');
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not play audio. Please try again.')),
-        );
+
+    // TTS fallback when no audio URL or URL playback failed
+    if (fallbackText != null && fallbackText.isNotEmpty) {
+      try {
+        await _tts.speak(fallbackText);
+      } catch (e) {
+        debugPrint('TTS fallback failed: $e');
       }
     }
   }
@@ -151,7 +153,7 @@ class _WordMatchAudioGameState extends ConsumerState<WordMatchAudioGame> {
         _selectedLeft = _selectedLeft == id ? null : id;
         if (_selectedLeft != null) {
           final tile = _leftTiles.firstWhere((t) => t.id == _selectedLeft);
-          _playAudio(tile.audioUrl);
+          _playAudio(tile.audioUrl, fallbackText: tile.text);
         }
       } else {
         _selectedRight = _selectedRight == id ? null : id;

@@ -98,7 +98,7 @@ class PolieWorkspaceScreen extends HookConsumerWidget {
 
     Future<Map<String, dynamic>?> askForJson(String prompt) async {
       try {
-        final raw = await chat.sendMessage(prompt);
+        final raw = await chat.sendMessageForJson(prompt);
         modeResponse.value = raw;
         final parsed = _tryParseJson(raw);
         if (parsed == null) {
@@ -1547,19 +1547,53 @@ class _ModeSwitcher extends StatelessWidget {
 }
 
 Map<String, dynamic>? _tryParseJson(String raw) {
+  // Strip control characters that break JSON parsing
+  final cleaned = raw
+      .replaceAll(RegExp(r'[\x00-\x08\x0B\x0C\x0E-\x1F]'), '')
+      .replaceAll(RegExp(r'^```json\s*', multiLine: true), '')
+      .replaceAll(RegExp(r'^```\s*', multiLine: true), '')
+      .trim();
+
+  // Attempt 1: direct parse (works when response_format: json_object is used)
   try {
-    final stripped = raw
-        .replaceAll(RegExp(r'^```json', multiLine: true), '')
-        .replaceAll(RegExp(r'^```', multiLine: true), '')
-        .trim();
-    final first = stripped.indexOf('{');
-    final last = stripped.lastIndexOf('}');
+    final decoded = jsonDecode(cleaned);
+    if (decoded is Map<String, dynamic>) return decoded;
+  } catch (_) {}
+
+  // Attempt 2: extract JSON object between first { and last }
+  try {
+    final first = cleaned.indexOf('{');
+    final last = cleaned.lastIndexOf('}');
     if (first >= 0 && last > first) {
-      final jsonBody = stripped.substring(first, last + 1);
+      final jsonBody = cleaned.substring(first, last + 1);
       final decoded = jsonDecode(jsonBody);
       if (decoded is Map<String, dynamic>) return decoded;
     }
   } catch (_) {}
+
+  // Attempt 3: build minimal JSON from key:value prose (graceful degradation)
+  try {
+    final lines = cleaned.split('\n').where((l) => l.trim().isNotEmpty);
+    final map = <String, dynamic>{};
+    for (final line in lines) {
+      final colonIdx = line.indexOf(':');
+      if (colonIdx > 0) {
+        final key = line.substring(0, colonIdx).trim().toLowerCase().replaceAll(RegExp(r'[^a-z0-9_]'), '_');
+        final value = line.substring(colonIdx + 1).trim();
+        if (key.isNotEmpty && value.isNotEmpty) {
+          map[key] = value;
+        }
+      }
+    }
+    if (map.isNotEmpty) {
+      if (!map.containsKey('primary') && map.length == 1) {
+        map['primary'] = map.values.first;
+      }
+      return map;
+    }
+  } catch (_) {}
+
+  debugPrint('[Polie] _tryParseJson failed on: ${raw.length > 200 ? raw.substring(0, 200) : raw}');
   return null;
 }
 

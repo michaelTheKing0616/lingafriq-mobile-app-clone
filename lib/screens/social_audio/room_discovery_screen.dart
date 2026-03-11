@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../models/social_audio/social_audio_room_model.dart';
 import '../../providers/social_audio_provider.dart';
 import '../../utils/pan_african_design_system.dart';
+import '../../utils/supported_languages.dart';
 import '../../widgets/lingafriq_ui_helpers.dart';
 import '../../widgets/loading/loading_overlay.dart';
 import '../../widgets/responsive_safe_area.dart';
@@ -176,12 +177,20 @@ class _RoomDiscoveryScreenState extends ConsumerState<RoomDiscoveryScreen>
                     ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 2.h),
                   ),
-                  items: ['All', 'Yoruba', 'Swahili', 'Zulu', 'Igbo', 'Hausa']
-                      .map((lang) => DropdownMenuItem(
-                            value: lang == 'All' ? null : lang,
-                            child: Text(lang),
-                          ))
-                      .toList(),
+                  items: [
+                    const DropdownMenuItem<String?>(
+                      value: null,
+                      child: Text('All'),
+                    ),
+                    ...SupportedLanguages.allLanguages.map((langKey) {
+                      final info = SupportedLanguages.getLanguageInfo(langKey);
+                      final name = info['name'] as String? ?? langKey;
+                      return DropdownMenuItem<String?>(
+                        value: name,
+                        child: Text(name),
+                      );
+                    }),
+                  ],
                   onChanged: (value) {
                     setState(() => _selectedLanguage = value);
                     ref.read(socialAudioProvider.notifier).discoverRooms(language: value);

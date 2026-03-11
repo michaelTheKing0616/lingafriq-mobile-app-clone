@@ -91,7 +91,7 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
 
   Future<List<PrivateChatContact>> _loadRecentChatContacts() async {
     try {
-      final res = await ref.read(client).get(Api.chatPrivate);
+      final res = await ref.read(client).get(Api.chatConversations);
       if (res.statusCode != 200) return const [];
       final payload = res.data;
       final dynamicList = _extractMessageList(payload);
@@ -127,6 +127,7 @@ class PrivateChatNotifier extends Notifier<PrivateChatState> {
     if (payload is! Map) return const [];
     final map = Map<String, dynamic>.from(payload);
     final candidates = [
+      map['conversations'],
       map['data'],
       map['messages'],
       map['results'],

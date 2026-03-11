@@ -1674,6 +1674,72 @@ Use structured format: Rule -> Example -> Practice.''';
     return corrected['text'] as String;
   }
 
+  /// JSON-only completion: bypasses chat history, hybrid routing, and diacritics
+  /// enforcement to return raw JSON from the LLM for structured mode UIs.
+  Future<String> sendMessageForJson(String userMessage) async {
+    const jsonSystemPrompt =
+        'You are a JSON API. You MUST respond with ONLY valid JSON. '
+        'No markdown fences, no explanation, no prose before or after the JSON. '
+        'Follow the exact schema provided in the user message.';
+
+    if (_groqApiKey.isEmpty || _groqApiKey == 'YOUR_GROQ_API_KEY') {
+      await ApiService.initialize();
+      final resp = await ApiService.post(
+        '/api/ai/chat/completion',
+        data: {
+          'messages': [
+            {'role': 'user', 'content': userMessage},
+          ],
+          'systemPrompt': jsonSystemPrompt,
+          'temperature': 0.3,
+          'max_tokens': _maxTokensForMode(),
+          'language': _targetLanguage,
+          'mode': _mode.name,
+          'response_format': {'type': 'json_object'},
+        },
+      );
+      if (resp.statusCode == 200 && resp.data != null) {
+        final content = (resp.data is Map)
+            ? (resp.data['content']?.toString() ?? '').trim()
+            : '';
+        if (content.isNotEmpty) return content;
+      }
+      throw Exception('Backend returned empty response for JSON request.');
+    }
+
+    final response = await _dio.post(
+      _groqUrl,
+      options: Options(
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_groqApiKey',
+        },
+        receiveTimeout: const Duration(seconds: 60),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+      data: {
+        'model': _modelName,
+        'messages': [
+          {'role': 'system', 'content': jsonSystemPrompt},
+          {'role': 'user', 'content': userMessage},
+        ],
+        'temperature': 0.3,
+        'max_tokens': _maxTokensForMode(),
+        'stream': false,
+        'response_format': {'type': 'json_object'},
+      },
+    );
+
+    if (response.statusCode == 200 && response.data != null) {
+      final choices = response.data['choices'] as List?;
+      if (choices != null && choices.isNotEmpty) {
+        final content = choices[0]['message']?['content']?.toString()?.trim() ?? '';
+        if (content.isNotEmpty) return content;
+      }
+    }
+    throw Exception('Groq returned empty response for JSON request.');
+  }
+
   // Random number generator for roleplay scenarios
   final Random _random = Random();
   

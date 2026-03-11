@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../models/game/game_session_model.dart';
@@ -195,42 +197,140 @@ class ScrabbleSprintArenaGame extends BaseGameScreen {
   GameType getGameType() => GameType.scrabbleSprintArena;
 
   @override
-  ConsumerState<ScrabbleSprintArenaGame> createState() => _ScrabbleSprintArenaGameState();
+  ConsumerState<ScrabbleSprintArenaGame> createState() =>
+      _ScrabbleSprintArenaGameState();
 }
+
+/// Word seed: spaced letters, the target word, and a category-style hint that
+/// does NOT reveal the meaning directly.
+typedef _WordSeed = ({String letters, String word, String hint});
+
+/// Language-keyed word banks. Each entry provides scrambled letters, the
+/// expected answer, and an indirect clue (category / usage context).
+const Map<String, List<_WordSeed>> _scrabbleWordBanks = {
+  'swahili': [
+    (letters: 'A M A N I', word: 'AMANI', hint: 'A feeling people seek after conflict'),
+    (letters: 'U M O J A', word: 'UMOJA', hint: 'A principle celebrated on Kwanzaa'),
+    (letters: 'B A R A K A', word: 'BARAKA', hint: 'Something an elder might bestow'),
+    (letters: 'S A F A R I', word: 'SAFARI', hint: 'An activity tourists love in East Africa'),
+    (letters: 'M A J I', word: 'MAJI', hint: 'Essential for life, flows in rivers'),
+    (letters: 'J A M I I', word: 'JAMII', hint: 'People living and working together'),
+    (letters: 'R A F I K I', word: 'RAFIKI', hint: 'Someone you trust and confide in'),
+    (letters: 'S H U L E', word: 'SHULE', hint: 'Where children go to learn'),
+  ],
+  'yoruba': [
+    (letters: 'A L A F I A', word: 'ALAFIA', hint: 'A greeting wishing wellness'),
+    (letters: 'O M O', word: 'OMO', hint: 'What parents call their young one'),
+    (letters: 'I F E', word: 'IFE', hint: 'A deep emotion of the heart'),
+    (letters: 'O R I S A', word: 'ORISA', hint: 'A spiritual being in Yoruba belief'),
+    (letters: 'O N I L E', word: 'ONILE', hint: 'The person who owns a dwelling'),
+    (letters: 'A G B A R A', word: 'AGBARA', hint: 'What powers machines and muscles'),
+    (letters: 'I L E R A', word: 'ILERA', hint: 'Doctors help you maintain this'),
+  ],
+  'hausa': [
+    (letters: 'L A F I Y A', word: 'LAFIYA', hint: 'How you say you are fine'),
+    (letters: 'R U W A', word: 'RUWA', hint: 'It falls from clouds and fills wells'),
+    (letters: 'G I D A', word: 'GIDA', hint: 'Where a family lives'),
+    (letters: 'A B O K I', word: 'ABOKI', hint: 'Someone you share good times with'),
+    (letters: 'K A S U W A', word: 'KASUWA', hint: 'A place to buy and sell goods'),
+    (letters: 'M A K A R A N T A', word: 'MAKARANTA', hint: 'Where students study'),
+    (letters: 'H A N K A L I', word: 'HANKALI', hint: 'Think before you act — use this'),
+  ],
+  'igbo': [
+    (letters: 'U D O', word: 'UDO', hint: 'Absence of conflict'),
+    (letters: 'N W A N N E', word: 'NWANNE', hint: 'A person from the same parents'),
+    (letters: 'I F U N A N Y A', word: 'IFUNANYA', hint: 'A deep feeling between two people'),
+    (letters: 'A H I A', word: 'AHIA', hint: 'A busy place where traders gather'),
+    (letters: 'M M I R I', word: 'MMIRI', hint: 'Flows in streams, fills the ocean'),
+    (letters: 'E Z I G B O', word: 'EZIGBO', hint: 'Describes someone with fine character'),
+    (letters: 'U L O', word: 'ULO', hint: 'A structure people live inside'),
+  ],
+  'zulu': [
+    (letters: 'U K U T H U L A', word: 'UKUTHULA', hint: 'A calm state societies strive for'),
+    (letters: 'A M A N Z I', word: 'AMANZI', hint: 'Fills lakes and quenches thirst'),
+    (letters: 'U M U Z I', word: 'UMUZI', hint: 'A cluster of dwellings in a homestead'),
+    (letters: 'I S I K O L E', word: 'ISIKOLE', hint: 'Children attend this to learn'),
+    (letters: 'U M N T W A N A', word: 'UMNTWANA', hint: 'A young person not yet grown'),
+    (letters: 'U B U N T U', word: 'UBUNTU', hint: 'I am because we are — a philosophy'),
+    (letters: 'I N D L E L A', word: 'INDLELA', hint: 'You walk or drive along it'),
+  ],
+};
+
+/// Fallback when language has no dedicated bank.
+const List<_WordSeed> _fallbackBank = [
+  (letters: 'A M A N I', word: 'AMANI', hint: 'A feeling people seek after conflict'),
+  (letters: 'U M O J A', word: 'UMOJA', hint: 'A principle celebrated on Kwanzaa'),
+  (letters: 'B A R A K A', word: 'BARAKA', hint: 'Something an elder might bestow'),
+  (letters: 'S A F A R I', word: 'SAFARI', hint: 'An activity tourists love in East Africa'),
+  (letters: 'M A J I', word: 'MAJI', hint: 'Essential for life, flows in rivers'),
+  (letters: 'J A M I I', word: 'JAMII', hint: 'People living and working together'),
+];
 
 class _ScrabbleSprintArenaGameState
     extends BaseGameScreenState<ScrabbleSprintArenaGame> {
   static const _maxRounds = 8;
+  static const _sprintDurationSecs = 60;
+
   final _random = Random();
   final _controller = TextEditingController();
 
   int _round = 1;
   String _letters = '';
+  String _targetWord = '';
   String _hint = '';
   String _resultText = '';
   bool _locked = false;
+
+  int _secondsLeft = _sprintDurationSecs;
+  Timer? _timer;
+  bool _timerExpired = false;
+
+  List<_WordSeed> get _seeds {
+    final key = widget.language.toLowerCase().trim();
+    return _scrabbleWordBanks[key] ?? _fallbackBank;
+  }
 
   @override
   int getCardCount() => _maxRounds;
 
   @override
   Future<void> onGameInitialized() async {
+    _startTimer();
     _prepareRound();
   }
 
+  void _startTimer() {
+    _secondsLeft = _sprintDurationSecs;
+    _timerExpired = false;
+    _timer = Timer.periodic(const Duration(seconds: 1), (t) {
+      if (!mounted) {
+        t.cancel();
+        return;
+      }
+      setState(() {
+        _secondsLeft--;
+        if (_secondsLeft <= 0) {
+          _secondsLeft = 0;
+          _timerExpired = true;
+          t.cancel();
+          _onTimerExpired();
+        }
+      });
+    });
+  }
+
+  Future<void> _onTimerExpired() async {
+    HapticFeedback.heavyImpact();
+    await finishGame();
+  }
+
   void _prepareRound() {
-    const seeds = [
-      ('A M A N I', 'peace'),
-      ('U M O J A', 'unity'),
-      ('B A R A K A', 'blessing'),
-      ('S A F A R I', 'journey'),
-      ('M A J I', 'water'),
-      ('J A M I I', 'community'),
-    ];
-    final (letters, hint) = seeds[_random.nextInt(seeds.length)];
+    final seeds = _seeds;
+    final seed = seeds[_random.nextInt(seeds.length)];
     setState(() {
-      _letters = letters;
-      _hint = hint;
+      _letters = seed.letters;
+      _targetWord = seed.word;
+      _hint = seed.hint;
       _resultText = '';
       _controller.clear();
       _locked = false;
@@ -238,12 +338,13 @@ class _ScrabbleSprintArenaGameState
   }
 
   Future<void> _checkWord() async {
-    if (_locked) return;
+    if (_locked || _timerExpired) return;
     final answer = _controller.text.trim().toLowerCase();
     if (answer.isEmpty) return;
     HapticFeedback.selectionClick();
 
-    final normalizedLetters = _letters.replaceAll(' ', '').toLowerCase().split('');
+    final normalizedLetters =
+        _letters.replaceAll(' ', '').toLowerCase().split('');
     final guessLetters = answer.split('');
     final canBuild = _canBuildWord(guessLetters, normalizedLetters);
     final lengthBonus = answer.length >= 5;
@@ -257,7 +358,7 @@ class _ScrabbleSprintArenaGameState
       durationMs: 1000 + _random.nextInt(1800),
       feedback: {
         'letters': _letters,
-        'hint': _hint,
+        'target': _targetWord,
         'answer': answer,
       },
       userAction: 'submit_word',
@@ -267,10 +368,10 @@ class _ScrabbleSprintArenaGameState
     setState(() {
       _locked = true;
       _resultText = result == GameResult.correct
-          ? 'Brilliant word build.'
+          ? 'Brilliant word build!'
           : result == GameResult.partial
-              ? 'Valid build. Push for a longer word.'
-              : 'Letters do not match this board.';
+              ? 'Valid build — push for a longer word next time.'
+              : 'Those letters don\'t match this board.';
     });
   }
 
@@ -285,7 +386,7 @@ class _ScrabbleSprintArenaGameState
   }
 
   Future<void> _continue() async {
-    if (_round >= _maxRounds) {
+    if (_timerExpired || _round >= _maxRounds) {
       await finishGame();
       return;
     }
@@ -295,6 +396,7 @@ class _ScrabbleSprintArenaGameState
 
   @override
   void dispose() {
+    _timer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -303,6 +405,12 @@ class _ScrabbleSprintArenaGameState
   String? get appBarTitle =>
       '${widget.getGameType().displayName} ($_round/$_maxRounds)';
 
+  Color _timerColor(BuildContext context) {
+    if (_secondsLeft <= 10) return PanAfricanColors.error;
+    if (_secondsLeft <= 20) return PanAfricanColors.warning;
+    return PanAfricanColors.primary;
+  }
+
   @override
   Widget buildGameContent(BuildContext context) {
     return Padding(
@@ -310,6 +418,53 @@ class _ScrabbleSprintArenaGameState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Timer bar
+          PanAfricanCard(
+            padding: EdgeInsets.symmetric(
+              horizontal: PanAfricanSpacing.md,
+              vertical: PanAfricanSpacing.sm,
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.timer_rounded,
+                    size: 22.sp, color: _timerColor(context)),
+                SizedBox(width: PanAfricanSpacing.xs),
+                Text(
+                  '${_secondsLeft}s',
+                  style: PanAfricanTypography.titleMedium(context,
+                      color: _timerColor(context)),
+                ),
+                SizedBox(width: PanAfricanSpacing.sm),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: PanAfricanRadius.smBR,
+                    child: LinearProgressIndicator(
+                      value: _secondsLeft / _sprintDurationSecs,
+                      minHeight: 6.h,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.surfaceContainerHigh,
+                      valueColor:
+                          AlwaysStoppedAnimation(_timerColor(context)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+
+          // Rules reminder
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: PanAfricanSpacing.xs),
+            child: Text(
+              'Form a word using only the letters shown. '
+              'Longer words (5+ letters) earn full marks!',
+              style: PanAfricanTypography.bodySmall(context),
+            ),
+          ),
+          SizedBox(height: PanAfricanSpacing.sm),
+
+          // Board letters + hint
           PanAfricanCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -322,15 +477,29 @@ class _ScrabbleSprintArenaGameState
                   style: PanAfricanTypography.headlineSmall(context),
                 ),
                 SizedBox(height: PanAfricanSpacing.xs),
-                Text('Hint: $_hint',
-                    style: PanAfricanTypography.bodyMedium(context)),
+                Row(
+                  children: [
+                    Icon(Icons.lightbulb_outline_rounded,
+                        size: 16.sp, color: PanAfricanColors.secondary),
+                    SizedBox(width: PanAfricanSpacing.xxs),
+                    Expanded(
+                      child: Text(
+                        _hint,
+                        style: PanAfricanTypography.bodyMedium(context,
+                            color: PanAfricanColors.secondary),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
           SizedBox(height: PanAfricanSpacing.md),
+
+          // Input
           TextField(
             controller: _controller,
-            enabled: !_locked,
+            enabled: !_locked && !_timerExpired,
             decoration: const InputDecoration(
               labelText: 'Build a valid word',
               border: OutlineInputBorder(),
@@ -339,18 +508,22 @@ class _ScrabbleSprintArenaGameState
             onSubmitted: (_) => _checkWord(),
           ),
           SizedBox(height: PanAfricanSpacing.md),
+
           FilledButton.icon(
-            onPressed: _locked ? null : _checkWord,
+            onPressed: (_locked || _timerExpired) ? null : _checkWord,
             icon: const Icon(Icons.spellcheck_rounded),
             label: const Text('Check Word'),
           ),
+
           if (_resultText.isNotEmpty) ...[
             SizedBox(height: PanAfricanSpacing.sm),
-            Text(_resultText, style: PanAfricanTypography.bodyMedium(context)),
+            Text(_resultText,
+                style: PanAfricanTypography.bodyMedium(context)),
             SizedBox(height: PanAfricanSpacing.sm),
             OutlinedButton(
               onPressed: _continue,
-              child: Text(_round >= _maxRounds ? 'Finish Game' : 'Next Board'),
+              child:
+                  Text(_round >= _maxRounds ? 'Finish Game' : 'Next Board'),
             ),
           ],
         ],

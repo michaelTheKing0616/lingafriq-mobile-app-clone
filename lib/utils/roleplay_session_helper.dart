@@ -1,12 +1,12 @@
 // Roleplay Session Helper
 // Utility functions for tracking roleplay sessions
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod/riverpod.dart' show ProviderListenable;
 import '../models/roleplay_progress_model.dart';
 import '../services/ai_chat_integration_service.dart';
 
 /// Track a roleplay session
 class RoleplaySessionHelper {
-  final WidgetRef _ref;
+  final T Function<T>(ProviderListenable<T>) _read;
   DateTime? _startTime;
   String? _scenarioId;
   String? _language;
@@ -17,7 +17,7 @@ class RoleplaySessionHelper {
   final List<String> _corrections = [];
   final Map<String, dynamic> _metadata = {};
 
-  RoleplaySessionHelper(this._ref);
+  RoleplaySessionHelper(this._read);
 
   /// Start a new session
   void startSession({
@@ -87,7 +87,7 @@ class RoleplaySessionHelper {
     );
 
     // Record session
-    final integrationService = _ref.read(aiChatIntegrationServiceProvider);
+    final integrationService = _read(aiChatIntegrationServiceProvider);
     await integrationService.recordRoleplaySession(
       scenarioId: _scenarioId!,
       language: _language!,
