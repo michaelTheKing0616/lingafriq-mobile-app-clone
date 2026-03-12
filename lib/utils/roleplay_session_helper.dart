@@ -1,12 +1,11 @@
 // Roleplay Session Helper
 // Utility functions for tracking roleplay sessions
-import 'package:hooks_riverpod/hooks_riverpod.dart' show ProviderListenable;
 import '../models/roleplay_progress_model.dart';
 import '../services/ai_chat_integration_service.dart';
 
 /// Track a roleplay session
 class RoleplaySessionHelper {
-  final T Function<T>(ProviderListenable<T>) _read;
+  final T Function<T>(dynamic) _read;
   DateTime? _startTime;
   String? _scenarioId;
   String? _language;
