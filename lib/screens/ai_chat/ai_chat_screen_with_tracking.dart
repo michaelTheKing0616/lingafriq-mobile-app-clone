@@ -54,7 +54,7 @@ class AIChatScreenWithTracking extends HookConsumerWidget {
     final isLoadingHistory = useState(false);
     final loadHistoryError = useState<String?>(null);
     final scrollController = useScrollController();
-    final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref.read));
+    final sessionHelper = useMemoized(() => RoleplaySessionHelper(ref));
     final integrationService = ref.read(aiChatIntegrationServiceProvider);
     final tutorService = ref.read(tutorProgressServiceProvider);
     final vocabService = ref.read(vocabularyProgressServiceProvider);
